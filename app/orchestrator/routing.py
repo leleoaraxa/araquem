@@ -1,3 +1,5 @@
+# app/orchestrator/routing.py
+
 import time
 import re
 from typing import Any, Dict
@@ -15,7 +17,7 @@ class Orchestrator:
         self._planner = planner
         self._exec = executor
 
-    def _extract_identifiers(self, question: str) -> Dict[str, Any]:
+    def extract_identifiers(self, question: str) -> Dict[str, Any]:
         m = TICKER_RE.search(question.upper())
         return {"ticker": m.group(1) if m else None}
 
@@ -41,7 +43,7 @@ class Orchestrator:
                 },
             }
 
-        identifiers = self._extract_identifiers(question)
+        identifiers = self.extract_identifiers(question)
         sql, params, result_key, return_columns = build_select_for_entity(entity, identifiers)
 
         rows = self._exec.query(sql, params)

@@ -1,3 +1,5 @@
+# app/formatter/rows.py
+
 from typing import List, Dict, Any
 
 def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str, Any]]:
