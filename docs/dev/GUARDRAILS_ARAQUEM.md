@@ -26,6 +26,7 @@ araquem/
 ├─ grafana/           # dashboards + provisioning
 ├─ prometheus/        # configs
 ├─ tempo/             # tracing configs
+├─ otel-collector/    # configs
 ├─ scripts/           # utilitários (warmup, checks)
 ├─ tests/             # suíte canônica
 └─ docker-compose.yml # docker-compose.yml
