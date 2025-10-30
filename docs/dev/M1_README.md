@@ -8,7 +8,7 @@
 ## Como subir
 ```bash
 cp .env.example .env
-docker compose -f deploy/docker/compose.dev.yml up -d
+docker compose up -d
 ```
 
 ## Verificar

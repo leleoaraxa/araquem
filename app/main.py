@@ -9,6 +9,7 @@ from app.cache.rt_cache import RedisCache, CachePolicies, read_through
 from app.planner.planner import Planner
 from app.orchestrator.routing import Orchestrator
 from app.executor.pg import PgExecutor
+from app.observability.runtime import load_config, init_tracing, init_metrics
 
 REGISTRY = CollectorRegistry()
 REQS = Counter("api_requests_total", "Total API requests", ["path", "method", "status"], registry=REGISTRY)
@@ -16,6 +17,9 @@ LAT = Histogram("api_request_latency_seconds", "Request latency", ["path", "meth
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 CACHE_HITS = Counter("cache_hits_total", "Total cache hits", ["entity"], registry=REGISTRY)
 CACHE_MISSES = Counter("cache_misses_total", "Total cache misses", ["entity"], registry=REGISTRY)
+cfg = load_config()
+init_tracing(service_name="api", cfg=cfg)
+METRICS = init_metrics(cfg)
 
 _cache = RedisCache(os.getenv("REDIS_URL", "redis://redis:6379/0"))
 _policies = CachePolicies()

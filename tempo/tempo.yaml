@@ -1,0 +1,37 @@
+
+server:
+  http_listen_port: 3200
+
+distributor:
+  receivers:
+    otlp:
+      protocols:
+        http:
+        grpc:
+
+storage:
+  trace:
+    backend: local
+    wal:
+      path: /var/tempo/wal
+    local:
+      path: /var/tempo/blocks
+
+compactor:
+  compaction:
+    block_retention: 48h
+
+querier:
+  max_concurrent_queries: 8
+
+query_frontend:
+  search:
+    max_duration: 0
+
+memberlist:
+  abort_if_cluster_join_fails: false
+  join_members: []
+
+ingester:
+  max_block_bytes: 104857600
+  trace_idle_period: 10s

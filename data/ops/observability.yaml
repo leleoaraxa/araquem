@@ -1,0 +1,58 @@
+version: 1
+services:
+  gateway:
+    metrics:
+      http_requests_total: { enabled: true }
+      http_request_duration_seconds:
+        enabled: true
+        buckets: [0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2, 5]
+      ws_messages_total:
+        enabled: true
+    tracing:
+      enabled: true
+      sampling:
+        root_ratio: 0.2
+        slow_threshold_ms: 300
+      pii:
+        drop_attributes: ["nickname", "question_raw"]
+        allow_attributes: ["request_id", "client_id", "user_kind", "route", "method"]
+  orchestrator:
+    metrics:
+      planner_route_decisions_total: { enabled: true }
+      planner_duration_seconds:
+        enabled: true
+        buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25]
+    tracing:
+      enabled: true
+      attributes_allow: ["intent","entity","confidence","ontology_version","tokens_matched"]
+  executor:
+    metrics:
+      sql_query_duration_seconds:
+        enabled: true
+        buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2]
+      sql_rows_returned_total: { enabled: true }
+      sql_errors_total: { enabled: true }
+    tracing:
+      enabled: true
+      statement:
+        sanitize: true
+        max_len: 512
+  cache:
+    metrics:
+      cache_ops_total: { enabled: true }
+      cache_latency_seconds:
+        enabled: true
+        buckets: [0.0005,0.001,0.005,0.01,0.025,0.05,0.1]
+      cache_key_ttl_seconds:
+        enabled: true
+        buckets: [10, 30, 60, 300, 600, 3600]
+    tracing:
+      enabled: true
+      key_handling: hash_sha256
+global:
+  grafana:
+    dashboards:
+      enable_tempo_links: true
+  exporters:
+    otlp_endpoint: "http://otel-collector:4317"
+    prometheus_scrape_path: "/metrics"

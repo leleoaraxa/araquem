@@ -28,7 +28,7 @@ araquem/
 ├─ tempo/             # tracing configs
 ├─ scripts/           # utilitários (warmup, checks)
 ├─ tests/             # suíte canônica
-└─ deploy/docker/     # compose.dev.yml e overrides
+└─ docker-compose.yml # docker-compose.yml
 ```
 - **Compose.dev:** sobe tudo local sem dependência cloud. Portas padronizadas: API 8000, Grafana 3000, Prometheus 9090, Tempo 3200, Ollama 11434, Redis 6379.
 - **Segredos:** `.env` só para DEV. Produção fora do escopo deste documento.
@@ -143,7 +143,7 @@ araquem/
 ## 11. Setup Inicial (passo-a-passo)
 1. **Estrutura inicial:**
 ```
-mkdir -p araquem/{app,data/{entities,ontology,concepts,embeddings},docs/dev,grafana/{dashboards,provisioning},prometheus,tempo,scripts,tests,deploy/docker}
+mkdir -p araquem/{app,data/{entities,ontology,concepts,embeddings},docs/dev,grafana/{dashboards,provisioning},prometheus,tempo,scripts,tests}
 ```
 2. **Variáveis `.env` (dev):**
 ```
@@ -162,7 +162,7 @@ git commit -m "chore: bootstrap Araquem (Guardrails v2.0)"
 git remote add origin <SEU_REMOTE>
 git push -u origin main
 ```
-4. **Subir stack (dev):** `docker compose -f deploy/docker/compose.dev.yml up -d`
+4. **Subir stack (dev):** `docker compose up -d`
 5. **Verificar saúde:** `/healthz`, `/metrics`, Grafana, Redis health.
 
 ---
