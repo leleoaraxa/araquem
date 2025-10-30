@@ -30,9 +30,11 @@ araquem/
 ├─ grafana/           # dashboards + provisioning
 ├─ prometheus/        # configs
 ├─ tempo/             # tracing configs
+├─ otel-collector     # configs
 ├─ scripts/           # utilitários (warmup, checks)
 ├─ tests/             # suíte canônica
 └─ docker-compose.yml # docker-compose.yml
+
 ```
 - **Compose.dev:** sobe tudo local sem dependência cloud. Portas padronizadas: API 8000, Grafana 3000, Prometheus 9090, Tempo 3200, Ollama 11434, Redis 6379.
 - **Segredos:** `.env` só para DEV. Produção fora do escopo deste documento.
