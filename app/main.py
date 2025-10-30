@@ -4,6 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse, JSONResponse
 import os, time
 from prometheus_client import Counter, Histogram, CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST
+from opentelemetry import trace
 
 from app.cache.rt_cache import RedisCache, CachePolicies, read_through
 from app.planner.planner import Planner
@@ -31,10 +32,20 @@ app = FastAPI(title="Araquem API (Dev)")
 
 @app.middleware("http")
 async def metrics_middleware(request: Request, call_next):
+    """Mede tempo e conta requisições HTTP usando métricas configuradas via YAML."""
     start = time.perf_counter()
     response = await call_next(request)
-    LAT.labels(request.url.path, request.method).observe(time.perf_counter() - start)
-    REQS.labels(request.url.path, request.method, str(response.status_code)).inc()
+    dt = time.perf_counter() - start
+
+    route = request.url.path
+    method = request.method
+    status = str(response.status_code)
+
+    if METRICS["http_hist"] is not None:
+        METRICS["http_hist"].labels(route=route, method=method).observe(dt)
+    if METRICS["http_counter"] is not None:
+        METRICS["http_counter"].labels(route=route, method=method, code=status).inc()
+
     return response
 
 @app.get("/healthz")
@@ -60,6 +71,12 @@ def debug_planner(q: str):
         return _planner.explain(q)
     except Exception as e:
         return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/_debug/trace")
+def debug_trace():
+    tr = trace.get_tracer("api.debug")
+    with tr.start_as_current_span("manual_debug_span"):
+        return {"ok": True}
 
 @app.post("/ops/cache/bust")
 def cache_bust(body: dict, request: Request):

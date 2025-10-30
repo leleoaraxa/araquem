@@ -10,8 +10,11 @@ psycopg[binary]==3.2.1
 PyYAML==6.0.3
 redis==5.0.7
 opentelemetry-sdk==1.27.0
+opentelemetry-distro==0.48b0
 opentelemetry-exporter-otlp==1.27.0
 opentelemetry-instrumentation-fastapi==0.48b0
 opentelemetry-instrumentation-logging==0.48b0
 opentelemetry-instrumentation-urllib==0.48b0
 opentelemetry-instrumentation-psycopg==0.48b0
+opentelemetry-instrumentation-requests==0.48b0
+opentelemetry-exporter-otlp-proto-grpc~=1.26
