@@ -1,16 +1,20 @@
+# app/main.py
 from fastapi import FastAPI, Request
 from fastapi.responses import PlainTextResponse, JSONResponse
 import os, time
 from prometheus_client import Counter, Histogram, CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST
 
 from app.planner.planner import Planner
+from app.orchestrator.routing import Orchestrator
+from app.executor.pg import PgExecutor
 
 REGISTRY = CollectorRegistry()
 REQS = Counter("api_requests_total", "Total API requests", ["path", "method", "status"], registry=REGISTRY)
 LAT = Histogram("api_request_latency_seconds", "Request latency", ["path", "method"], registry=REGISTRY)
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 _planner = Planner(ONTO_PATH)
-
+_executor = PgExecutor()
+_orchestrator = Orchestrator(_planner, _executor)
 
 app = FastAPI(title="Araquem API (Dev)")
 
@@ -51,20 +55,12 @@ class AskPayload(BaseModel):
     nickname: str
     client_id: str
 
+
 @app.post("/ask")
 def ask(payload: AskPayload):
-    plan = _planner.explain(payload.question)
-    # Stub response that follows the contract
-    return JSONResponse({
-        "status": {"reason": "unroutable", "message": "Planner not configured yet"},
-        "results": {},
-        "meta": {
-            "planner": plan,
-            "result_key": None,
-            "planner_intent": plan["chosen"]["intent"],
-            "planner_entity": plan["chosen"]["entity"],
-            "planner_score": plan["chosen"]["score"],
-            "rows_total": 0,
-            "elapsed_ms": 0,
-        },
-    })
+    """
+    M3 — Orquestração: planner → builder → executor → formatter
+    """
+    out = _orchestrator.route_question(payload.question)
+    return JSONResponse(out)
+
