@@ -12,7 +12,11 @@ exporters:
     endpoint: tempo:4317
     tls:
       insecure: true
-
+    retry_on_failure:
+      enabled: true
+      initial_interval: 1s
+      max_interval: 10s
+      max_elapsed_time: 60s
   debug:
     verbosity: basic
 
