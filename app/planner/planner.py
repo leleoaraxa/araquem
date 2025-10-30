@@ -3,6 +3,8 @@ from typing import Dict, Any, List
 import re, unicodedata
 from .ontology_loader import load_ontology
 
+PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
+
 def _strip_accents(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
 
@@ -13,6 +15,8 @@ def _normalize(text: str, steps: List[str]) -> str:
             out = out.lower()
         elif step == "strip_accents":
             out = _strip_accents(out)
+        elif step == "strip_punct":
+            out = PUNCT_RE.sub(" ", out)
     return out
 
 def _tokenize(text: str, split_pat: str) -> List[str]:

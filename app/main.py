@@ -53,19 +53,18 @@ class AskPayload(BaseModel):
 
 @app.post("/ask")
 def ask(payload: AskPayload):
+    plan = _planner.explain(payload.question)
     # Stub response that follows the contract
-    return JSONResponse(
-        {
-            "status": {"reason": "unroutable", "message": "Planner not configured yet"},
-            "results": {},
-            "meta": {
-                "planner": _planner.explain(payload.question),
-                "result_key": None,
-                "planner_intent": None,
-                "planner_entity": None,
-                "planner_score": 0,
-                "rows_total": 0,
-                "elapsed_ms": 0,
-            },
-        }
-    )
+    return JSONResponse({
+        "status": {"reason": "unroutable", "message": "Planner not configured yet"},
+        "results": {},
+        "meta": {
+            "planner": plan,
+            "result_key": None,
+            "planner_intent": plan["chosen"]["intent"],
+            "planner_entity": plan["chosen"]["entity"],
+            "planner_score": plan["chosen"]["score"],
+            "rows_total": 0,
+            "elapsed_ms": 0,
+        },
+    })

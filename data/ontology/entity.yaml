@@ -1,6 +1,7 @@
 normalize:
   - lower
   - strip_accents
+  - strip_punct
 
 tokenization:
   split: "\\b"
