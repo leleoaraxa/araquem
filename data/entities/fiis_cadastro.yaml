@@ -9,7 +9,7 @@ order_by_whitelist:
   - created_at
   - updated_at
   - ticker
-  - b3_name
+  - display_name
   - sector
   - classification
 
@@ -18,8 +18,8 @@ presentation:
   return_columns:
     - ticker
     - fii_cnpj
+    - display_name
     - b3_name
-    - ticker_full_name
     - classification
     - sector
     - sub_sector
@@ -43,9 +43,9 @@ columns:
   - name: fii_cnpj
     description: CNPJ do FII (identificador único).
     alias: CNPJ
-  - name: ticker_full_name
-    description: Nome completo do FII.
-    alias: Nome completo
+  - name: display_name
+    description: Nome de exibição do FII.
+    alias: Nome de exibição
   - name: b3_name
     description: Nome de pregão na B3.
     alias: Nome B3

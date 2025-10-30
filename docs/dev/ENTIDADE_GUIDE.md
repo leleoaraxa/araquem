@@ -1,13 +1,13 @@
 # 🧩 Guia de Criação e Evolução de Entidades — Projeto **Araquem**
 
-> Documento de referência para padronizar a criação, revisão e manutenção de **entidades** (views lógicas YAML) no ecossistema Mosaic / Sírios AI.
+> Documento de referência para padronizar a criação, revisão e manutenção de **entidades** (entities lógicas YAML) no ecossistema Mosaic / Sírios AI.
 
 ---
 
 ## 🔹 O que é uma Entidade
 
-Uma **entidade** representa uma *unidade de conhecimento estruturado* do domínio (ex.: FIIs, indicadores, clientes, carteiras, etc.).  
-Ela é declarada em YAML dentro de `data/views/` e é a **fonte de verdade** para o orquestrador (planner → executor → formatter → Íris).
+Uma **entidade** representa uma *unidade de conhecimento estruturado* do domínio (ex.: FIIs, indicadores, clientes, carteiras, etc.).
+Ela é declarada em YAML dentro de `data/entities/` e é a **fonte de verdade** para o orquestrador (planner → executor → formatter → Íris).
 
 Cada entidade contém:
 - metadados (nome, descrição, escopo);
@@ -15,7 +15,7 @@ Cada entidade contém:
 - instruções de roteamento semântico (`ask`);
 - parâmetros de apresentação (`result_key`, `return_columns`);
 - políticas de cache (`cache_policies.yaml`);
-- e links com a ontologia (`data/ask/ontology.yaml`).
+- e links com a ontologia (`data/ontology/entity.yaml`).
 
 ---
 
@@ -24,13 +24,13 @@ Cada entidade contém:
 | Item | Regra | Exemplo |
 |------|--------|---------|
 | **Nome lógico** | sempre em *snake_case*, sem `view_` | `fiis_cadastro`, `fiis_dividendos` |
-| **Arquivo YAML** | mesmo nome do `entity`, dentro de `data/views/` | `data/views/fiis_cadastro.yaml` |
+| **Arquivo YAML** | mesmo nome do `entity`, dentro de `data/entities/` | `data/entities/fiis_cadastro.yaml` |
 | **result_key** | deve ser o mesmo nome da entidade, prefixado se necessário | `cadastro_fii`, `dividendos_fii` |
 | **identifiers** | chaves primárias conhecidas | `[ticker]` ou `[ticker, fii_cnpj]` |
 | **default_date_field** | `updated_at` (ou campo temporal principal) | `default_date_field: updated_at` |
-| **private** | `true` para views com dados sensíveis (ex.: posições de cliente) | `private: true` |
+| **private** | `true` para entidades com dados sensíveis (ex.: posições de cliente) | `private: true` |
 | **ask.intents** | nome canônico do domínio | `cadastro`, `dividendos`, `precos`, etc. |
-| **cache policy** | definida em `data/views/cache_policies.yaml` | TTL e horário de atualização |
+| **cache policy** | definida em `data/entities/cache_policies.yaml` | TTL e horário de atualização |
 | **colunas booleanas** | prefixo `is_` ou `has_` | `is_exclusive`, `has_risk` |
 | **enumeração** | indicar valores válidos (quando aplicável) | `allowed_values: [ATIVA, PASSIVA]` |
 
@@ -56,9 +56,9 @@ Para cada entidade, ele gera (ou revisa):
 
 | Arquivo / Componente | Descrição |
 |-----------------------|------------|
-| `data/views/<entidade>.yaml` | Estrutura base da entidade |
-| `data/views/cache_policies.yaml` | TTL e refresh |
-| `data/ask/ontology.yaml` (patch) | Inclusão do intent |
+| `data/entities/<entidade>.yaml` | Estrutura base da entidade |
+| `data/entities/cache_policies.yaml` | TTL e refresh |
+| `data/ontology/entity.yaml` (patch) | Inclusão do intent |
 | `data/concepts/<entidade>_templates.md` | Frases determinísticas de resposta |
 | `tests/test_ask_<entidade>.py` | Testes ouro do roteamento |
 | `tests/test_results_key_<entidade>.py` | Validação do result_key |
@@ -80,12 +80,12 @@ Para cada entidade, ele gera (ou revisa):
 
 ```
 data/
-  ├── views/
+  ├── entities/
   │   ├── fiis_cadastro.yaml
   │   ├── fiis_rankings.yaml
   │   └── cache_policies.yaml
-  ├── ask/
-  │   └── ontology.yaml
+  ├── ontology/
+  │   └── entity.yaml
   ├── concepts/
   │   ├── catalog.yaml
   │   └── fiis_cadastro_templates.md
@@ -98,12 +98,12 @@ docs/
 tests/
   ├── test_ask_<entidade>.py
   ├── test_results_key_<entidade>.py
-  └── test_cache_views.py
+  └── test_cache_entities.py
 ```
 
 ---
 
-## 🔹 Níveis de Maturidade (entidades)
+## 🔹 Níveis de Maturidade (entities)
 
 | Nível | Estado | Descrição |
 |-------|---------|-----------|
@@ -121,16 +121,16 @@ tests/
 
 ```bash
 # criar branch nova
-git checkout -b feat(views):add-fiis-cadastro
+git checkout -b feat(entities):add-fiis-cadastro
 
 # adicionar arquivos
-git add data/views/fiis_cadastro.yaml data/views/cache_policies.yaml
+git add data/entities/fiis_cadastro.yaml data/entities/cache_policies.yaml
 
 # commit semântico
-git commit -m "feat(views): add fiis_cadastro entity with cache and ontology intent"
+git commit -m "feat(entities): add fiis_cadastro entity with cache and ontology entity intent"
 
 # push e PR
-git push origin feat(views):add-fiis-cadastro
+git push origin feat(entities):add-fiis-cadastro
 ```
 
 ---
@@ -142,14 +142,14 @@ git push origin feat(views):add-fiis-cadastro
 | Posso chamar de “view” em vez de “entidade”? | Sim, mas “entidade” é preferido no contexto do Araquem. |
 | Posso incluir ranking, preço e cadastro na mesma view? | Não — um propósito por entidade. |
 | Como defino se é privada? | `private: true` e inclua o filtro obrigatório (`client_id`, `document_number`). |
-| Como altero TTL do cache? | Em `data/views/cache_policies.yaml`. |
+| Como altero TTL do cache? | Em `data/entities/cache_policies.yaml`. |
 | E se eu quiser revalidar tudo? | Rode `pytest -q` ou o warmup de cache. |
 
 ---
 
 ### 🔸 Exemplo de pedido completo para nova entidade
 
-> Sirius, quero criar uma nova entidade chamada **fiis_dividendos** no padrão Araquem.  
-> Ela representa o histórico de dividendos pagos por cada FII.  
-> Use `ticker` como identificador, TTL diário, e result_key `dividendos_fii`.  
+> Sirius, quero criar uma nova entidade chamada **fiis_dividendos** no padrão Araquem.
+> Ela representa o histórico de dividendos pagos por cada FII.
+> Use `ticker` como identificador, TTL diário, e result_key `dividendos_fii`.
 > Gere também o patch de ontologia e testes ouro.

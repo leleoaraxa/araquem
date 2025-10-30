@@ -4,5 +4,6 @@ fiis_cadastro:
   scope: pub
 
 fiis_rankings:
-  ttl_seconds: 3600
+  ttl_seconds: 86400
+  refresh_at: "00:00"
   scope: pub

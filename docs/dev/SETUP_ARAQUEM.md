@@ -1,16 +1,20 @@
-# Plataforma de Inteligência Imobiliária Sirios — Guardrails v2.0
-**Codinome do projeto:** Araquem  
+Sirius, este e o novo projeto Araquem, sucessor do Mosaic/Sirios.
+- O objetivo e criar um núcleo NL->SQL + conversacional (Iris) robusto, auditável e 100% YAML-driven.
+- Use o documento de fundação (Guardrails Araquem) como contrato permanente.
+
+# Plataforma de Inteligência Imobiliária Sirios — Guardrails Araquem v2.0
+**Codinome do projeto:** Araquem
 **Meta:** Tornar-se a melhor IA do mercado para FIIs no Brasil, com precisão factual, rastreabilidade e evolução contínua — sem heurísticas, sem hardcodes.
 
 ---
 
 ## 0. Princípios Imutáveis
-1. **Fonte de verdade única:** Ontologia + YAML de entidades + SQL real.  
-2. **Sem heurísticas / sem hardcodes:** nenhuma decisão fora dos contratos em `data/*`.  
-3. **Payloads imutáveis:** `/ask` e `/ws` exigem sempre `{question, conversation_id, nickname, client_id}`.  
-4. **Separação de poderes:** Ontologia decide *o que*, SQL decide *os fatos*, Íris (phi3) decide *como falar*.  
-5. **Observabilidade obrigatória:** tudo é mensurável (métricas, logs estruturados, tracing).  
-6. **Qualidade antes de velocidade:** nada vai para *main* sem testes verdes e painéis sem alertas.  
+1. **Fonte de verdade única:** Ontologia + YAML de entidades + SQL real.
+2. **Sem heurísticas / sem hardcodes:** nenhuma decisão fora dos contratos em `data/*`.
+3. **Payloads imutáveis:** `/ask` e `/ws` exigem sempre `{question, conversation_id, nickname, client_id}`.
+4. **Separação de poderes:** Ontologia decide *o que*, SQL decide *os fatos*, Íris (phi3) decide *como falar*.
+5. **Observabilidade obrigatória:** tudo é mensurável (métricas, logs estruturados, tracing).
+6. **Qualidade antes de velocidade:** nada vai para *main* sem testes verdes e painéis sem alertas.
 7. **Aprendizado consciente:** autoaprendizado só com proposta + aprovação humana + versionamento.
 
 ---
@@ -21,7 +25,7 @@
 ```
 araquem/
 ├─ app/               # gateway, orchestrator, executor, registry, responder, observability, infra, core
-├─ data/              # views (YAML), ontology, concepts, embeddings
+├─ data/              # intents (YAML), ontology, concepts, embeddings
 ├─ docs/              # dev, ops, ADRs, guardrails
 ├─ grafana/           # dashboards + provisioning
 ├─ prometheus/        # configs
@@ -35,29 +39,29 @@ araquem/
 
 ---
 
-## 2. Estrutura de Dados & Entidades (Views lógicas)
+## 2. Estrutura de Dados & Entidades (Entities lógicas)
 - **Entidade = unidade semântica** (ex.: `fiis_cadastro`, `fiis_dividendos`, `fiis_precos`, `fiis_noticias`, `fiis_rankings`, etc.).
-- **Arquivo:** `data/views/<entidade>.yaml`.  
-- **Contrato mínimo:**  
+- **Arquivo:** `data/entities/<entidade>.yaml`.
+- **Contrato mínimo:**
   - `entity`, `description`, `private`, `identifiers`, `default_date_field`, `presentation.result_key`, `presentation.return_columns`, `columns[] {name, alias, description}`, `ask {intents, keywords, synonyms, weights}`, `order_by_whitelist` (se aplicável).
-- **Cache policy:** `data/views/cache_policies.yaml` com `ttl_seconds`, `refresh_at` e `scope (pub|prv)`.
+- **Cache policy:** `data/entities/cache_policies.yaml` com `ttl_seconds`, `refresh_at` e `scope (pub|prv)`.
 - **Naming:** snake_case PT-BR; booleanos com `is_`/`has_`; enums com `allowed_values`.
 
 ---
 
 ## 3. Ontologia Inteligente (Planner)
-- **Arquivo:** `data/ask/ontology.yaml`.
+- **Arquivo:** `data/ontology/entity.yaml`.
 - **Conteúdo:** `normalize`, `tokenization`, `weights`, `intents[] {name, tokens {include, exclude}, phrases {include, exclude}, entities[]}`.
 - **Regras:**
-  - Nada de “dedução criativa”: tokens/phrases decidem.  
-  - **Anti-tokens** para evitar vazamentos entre domínios (ex.: `cadastro` ≠ `preços` ≠ `dividendos` ≠ `notícias`).  
+  - Nada de “dedução criativa”: tokens/phrases decidem.
+  - **Anti-tokens** para evitar vazamentos entre domínios (ex.: `cadastro` ≠ `preços` ≠ `dividendos` ≠ `notícias`).
   - `planner.explain()` habilitado (telemetria de decisão).
 
 ---
 
 ## 4. Orquestração (Routing → SQL → Formatter)
 - **Roteador:** lê entidade do planner, aplica **gate privado** conforme YAML (`private: true` + `ask.filters.required`), injeta filtros (ex.: `document_number ← client_id`), gera SQL via `builder` e executa no `executor`.
-- **Contrato de resultado:**  
+- **Contrato de resultado:**
 ```
 {
   "status": { "reason": "ok|forbidden|unroutable|error", "message": "..." },
@@ -77,10 +81,10 @@ araquem/
 ---
 
 ## 5. Cache & Flags (M4/M5)
-- **Read-through** no `/ask` por chave canônica `{namespace}:{build_id}:{scope}:{domain}:{hash}`.  
-- **TTL por entidade** definido em `cache_policies.yaml`.  
-- **Endpoints operacionais:** `/health/redis`, `/ops/cache/bust` (tokenizado).  
-- **Modos:** `ok | degraded | disabled` expostos em health.  
+- **Read-through** no `/ask` por chave canônica `{namespace}:{build_id}:{scope}:{domain}:{hash}`.
+- **TTL por entidade** definido em `cache_policies.yaml`.
+- **Endpoints operacionais:** `/health/redis`, `/ops/cache/bust` (tokenizado).
+- **Modos:** `ok | degraded | disabled` expostos em health.
 - **Warmup:** `scripts/cache_warmup.py` (com `--dry-run`, `--only-ask`).
 
 ---
@@ -95,24 +99,24 @@ araquem/
 ---
 
 ## 7. Segurança, Acesso & LGPD
-- **Payloads imutáveis** (vide Princípios).  
-- **Gate privado** por YAML: `private: true` + `filters.required` (ex.: `document_number`).  
-- **Logs:** `request_id` sempre; mascarar `client_id` / PII; sem payload bruto em erro.  
+- **Payloads imutáveis** (vide Princípios).
+- **Gate privado** por YAML: `private: true` + `filters.required` (ex.: `document_number`).
+- **Logs:** `request_id` sempre; mascarar `client_id` / PII; sem payload bruto em erro.
 - **Retenção:** política mínima de logs em DEV (configurável).
-- **Rate limit básico** no gateway; **CORS** restrito.  
+- **Rate limit básico** no gateway; **CORS** restrito.
 - **Taxonomia de erros:** `reason` + `message` + `code` (quando aplicável).
 
 ---
 
 ## 8. Íris (Responder) — phi3 determinístico
-- **Papel:** transformar dados em respostas naturais **sem inventar**.  
-- **Local:** `app/responder/`.  
-- **Templates por entidade** (ex.: `data/concepts/fiis_cadastro_templates.md`), com *slots* mapeados a `return_columns`.  
-- **Exemplos (cadastro):**  
-  - `O CNPJ do {ticker} é {fii_cnpj}.`  
-  - `O administrador do {ticker} é {admin_name} (CNPJ {admin_cnpj}).`  
-  - `O site oficial do {ticker} é {website_url}.`  
-- **Fallbacks:** campo ausente → resposta declarativa (“não disponível no momento”).  
+- **Papel:** transformar dados em respostas naturais **sem inventar**.
+- **Local:** `app/responder/`.
+- **Templates por entidade** (ex.: `data/concepts/fiis_cadastro_templates.md`), com *slots* mapeados a `return_columns`.
+- **Exemplos (cadastro):**
+  - `O CNPJ do {ticker} é {fii_cnpj}.`
+  - `O administrador do {ticker} é {admin_name} (CNPJ {admin_cnpj}).`
+  - `O site oficial do {ticker} é {website_url}.`
+- **Fallbacks:** campo ausente → resposta declarativa (“não disponível no momento”).
 - **Formatação:** moedas/percentuais/datas tratadas no formatter (não no LLM).
 
 ---
@@ -132,10 +136,10 @@ araquem/
 ---
 
 ## 10. Qualidade, CI e DX
-- **Tests first:** toda feature vem com testes (`pytest -q`) e painel verificado.  
-- **CI (sugestão):** GitHub Actions — `docker compose up -d` + `pytest -q` + upload cobertura + lint (ruff/black/mypy opcional).  
-- **Pre-commit:** `ruff`, `black`, `pip-audit`.  
-- **PR Template + CODEOWNERS:** checklist com payloads, hardcodes, testes, dashboards, docs, métricas/tracing.  
+- **Tests first:** toda feature vem com testes (`pytest -q`) e painel verificado.
+- **CI (sugestão):** GitHub Actions — `docker compose up -d` + `pytest -q` + upload cobertura + lint (ruff/black/mypy opcional).
+- **Pre-commit:** `ruff`, `black`, `pip-audit`.
+- **PR Template + CODEOWNERS:** checklist com payloads, hardcodes, testes, dashboards, docs, métricas/tracing.
 - **SBOM/Deps:** dependências pinadas; auditoria periódica.
 
 ---
@@ -143,7 +147,7 @@ araquem/
 ## 11. Setup Inicial (passo-a-passo)
 1. **Estrutura inicial:**
 ```
-mkdir -p araquem/{app,data/{views,ask,concepts,embeddings},docs/dev,grafana/{dashboards,provisioning},prometheus,tempo,scripts,tests,deploy/docker}
+mkdir -p araquem/{app,data/{entities,ontology,concepts,embeddings},docs/{dev,database},grafana/{dashboards,provisioning},prometheus,tempo,scripts,tests,deploy/docker}
 ```
 2. **Variáveis `.env` (dev):**
 ```
@@ -168,24 +172,41 @@ git push -u origin main
 ---
 
 ## 12. Escopo inicial de entidades (FIIs) — sugestão
-- `fiis_cadastro` (1×1 cadastral) — TTL diário 00:00.  
-- `fiis_dividendos` (histórico, valores pagos) — TTL diário; ordenação por data.  
-- `fiis_precos` (histórico/último) — TTL curto; suporte a “hoje/ontem”.  
-- `fiis_noticias` (RAG indexado) — TTL curto + embeddings (Nomic).  
-- `fiis_rankings` (IFIX/IFIL/usuários/Sirios) — TTL hora.  
+- `fiis_cadastro` (1×1 cadastral) — TTL diário 00:00.
+- `fiis_dividendos` (1xN histórico, valores pagos) — TTL diário; ordenação por data.
+- `fiis_precos` (1xN histórico, cotações) — TTL diário; ordenação por data.
+- `fiis_noticias` (1xN histórico, noticias por FII) — TTL diário + embeddings (Nomic).
+- `fiis_imoveis` (1xN histórico, imoveis/propriedades por FII) — TTL diário + embeddings (Nomic).
+- `fiis_judicial` (1xN histórico, processos judiciais por FII) — TTL diário + embeddings (Nomic).
+- `fiis_rankings` (1x1 IFIX/IFIL/usuários/Sirios) — TTL diário.
+- `indices` (historico, indices IBOV, IFIX, IFIL, etc.) — TTL diário + embeddings (Nomic).
+- `indicadores` (historico, indicadores mercado CDI, SELIC, etc.) — TTL diário + embeddings (Nomic).
+- `moedas` (historico, cotação DOLAR, EURO, etc) — TTL diário + embeddings (Nomic).
 - **Privados:** `client_fiis_positions` (carteira do cliente) — `private: true` + gate `document_number`.
 
 ---
 
 ## 13. Governança de Mudanças
-- Toda alteração em `data/*` gera **diff** + **tests** + **verificação de painel**.  
-- `build_id` em settings para segregar cache por release.  
+- Toda alteração em `data/*` gera **diff** + **tests** + **verificação de painel**.
+- `build_id` em settings para segregar cache por release.
 - `rollback` simples: tag anterior + invalidação de cache.
 
 ---
 
 ### Epílogo
-**Íris é o cérebro. Sirius é o guardião.**  
+**Íris é o cérebro. Sirius é o guardião.**
 O Araquem é o sistema — audita, mede, aprende e melhora, mas só muda com consciência.
 
 — v2.0
+
+— Gravação na Memoria
+  - Sirius, grava este texto como o documento de fundação permanente do projeto Araquem.
+  - Ele define toda a estrutura, regras, guardrails e roadmap ate o final.
+  - Tudo o que for desenvolvido deve respeitar este documento — sem heurísticas, sem hardcode, e sempre baseado em YAML, ontologia e SQL real.
+
+
+— Fluxo de Trabalho (sempre)
+  - Fornecer latest dos arquivos a editar (nada de adivinhacao).
+  - Uma entidade por vez (subir/validar/medir), sem hardcodes.
+  - Commits padronizados: feat(core): ..., fix(gateway): ...
+  - Nao mergear sem pytest verde e painel sem warnings.
