@@ -1,0 +1,10 @@
+# Conventional Commits (Araquem)
+# Tipos: feat, fix, chore, docs, refactor, test, perf, build, ci
+# Escopos comuns: core, gateway, orchestrator, executor, planner, responder, registry, observability, infra, docs
+#
+# Exemplo:
+# feat(core): bootstrap Araquem M1 (Guardrails v2.0)
+#
+# Corpo: explique o que mudou, por que, riscos e rollbacks.
+# Footer: refs #issue, BREAKING CHANGE: ...
+

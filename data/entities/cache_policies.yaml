@@ -1,9 +1,5 @@
-fiis_cadastro:
-  ttl_seconds: 86400
-  refresh_at: "00:00"
-  scope: pub
-
-fiis_rankings:
-  ttl_seconds: 86400
-  refresh_at: "00:00"
-  scope: pub
+policies:
+  fiis_cadastro:
+    ttl_seconds: 86400
+    refresh_at: "00:15"
+    scope: pub

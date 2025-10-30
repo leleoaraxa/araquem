@@ -12,6 +12,7 @@ __pycache__/
 .Python
 .env
 .venv/
+venv/
 pip-wheel-metadata/
 dist/
 build/
@@ -43,3 +44,6 @@ htmlcov/
 # Specific to your project (add as needed)
 # For example, if you have a local settings file:
 support.md
+pgdata/
+grafana/
+__generated__/

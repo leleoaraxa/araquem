@@ -1,17 +1,12 @@
 entity: fiis_cadastro
 private: false
-description: Dados cadastrais 1×1 de cada FII (identificação, gestão e características estruturais).
-identifiers: [ticker, fii_cnpj]
+description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificação e atributos básicos)
 
-default_date_field: updated_at
+identifiers:
+  - name: ticker
+    description: Ticker do FII normalizado (AAAA11)
 
-order_by_whitelist:
-  - created_at
-  - updated_at
-  - ticker
-  - display_name
-  - sector
-  - classification
+default_date_field: null
 
 presentation:
   result_key: cadastro_fii
@@ -19,129 +14,109 @@ presentation:
     - ticker
     - fii_cnpj
     - display_name
-    - b3_name
-    - classification
-    - sector
-    - sub_sector
-    - management_type
-    - publico_alvo
-    - is_exclusive
     - admin_name
     - admin_cnpj
-    - custodian_name
-    - ipo_date
     - website_url
-    - updated_at
-  source:
-    - kind: fixed
-      value: CVM/Market Data Partners
 
 columns:
   - name: ticker
-    description: Código do fundo na B3.
     alias: Código FII
+    description: Código do fundo na B3 (AAAA11).
+
   - name: fii_cnpj
-    description: CNPJ do FII (identificador único).
     alias: CNPJ
+    description: CNPJ do FII (identificador único).
+
   - name: display_name
-    description: Nome de exibição do FII.
     alias: Nome de exibição
+    description: Nome de exibição do FII (ex. nome comercial curto).
+
   - name: b3_name
-    description: Nome de pregão na B3.
     alias: Nome B3
+    description: Nome de pregão na B3.
+
   - name: classification
-    description: Classificação oficial do fundo.
     alias: Classificação
+    description: Classificação oficial do fundo.
+
   - name: sector
-    description: Setor de atuação do fundo.
     alias: Setor
+    description: Setor de atuação do fundo.
+
   - name: sub_sector
-    description: Tipo de indústria.
-    alias: Tipo de indústria
+    alias: Subsetor
+    description: Subsetor/indústria do fundo.
+
   - name: management_type
-    description: Tipo de gestão (ATIVA/PASSIVA).
     alias: Tipo de gestão
+    description: Tipo de gestão do fundo.
     allowed_values: [ATIVA, PASSIVA]
-  - name: publico_alvo
-    description: Público-alvo do fundo.
+
+  - name: target_market
     alias: Público-alvo
+    description: Público-alvo do fundo (Ex. Investidores em geral, Profissionais).
+
   - name: is_exclusive
-    description: Indica se o fundo é exclusivo (boolean).
     alias: Fundo exclusivo
+    description: Indica se o fundo é exclusivo (boolean).
+
   - name: isin
-    description: Código ISIN do fundo.
     alias: Código ISIN
+    description: Código ISIN do fundo.
+
   - name: ipo_date
-    description: Data do IPO do fundo.
     alias: Data IPO
+    description: Data do IPO do fundo.
+
   - name: website_url
-    description: URL oficial do fundo.
     alias: Site oficial
+    description: URL oficial do fundo.
+
   - name: admin_name
-    description: Nome do administrador do fundo.
     alias: Administrador
+    description: Nome do administrador do fundo.
+
   - name: admin_cnpj
-    description: CNPJ do administrador.
     alias: CNPJ administrador
+    description: CNPJ do administrador do fundo.
+
   - name: custodian_name
-    description: Nome do custodiante do fundo.
     alias: Custodiante
+    description: Nome do custodiante do fundo.
+
+  - name: ifil_weight_pct
+    alias: Peso IFIL (%)
+    description: Peso do FII no IFIL, em percentual.
+
+  - name: ifix_weight_pct
+    alias: Peso IFIX (%)
+    description: Peso do FII no IFIX, em percentual.
+
+  - name: shares_count
+    alias: Nº de cotas emitidas
+    description: Quantidade total de cotas emitidas.
+
+  - name: shareholders_count
+    alias: Nº de cotistas
+    description: Quantidade de cotistas.
+
   - name: created_at
-    description: Data de criação do registro.
     alias: Criado em
+    description: Data de criação do registro.
+
   - name: updated_at
-    description: Data da última atualização do registro.
     alias: Atualizado em
+    description: Data da última atualização do registro.
 
 ask:
   intents: [cadastro]
-  keywords:
-    - cadastro
-    - ficha
-    - perfil
-    - cnpj
-    - site
-    - website
-    - administrador
-    - custodiante
-    - gestor
-    - tipo
-    - segmento
-    - classificacao
-    - publico
-    - alvo
-    - ipo
-    - isin
-    - b3
-    - exclusivo
-    - razao
-    - social
-    - nome
+  keywords: [cadastro, cnpj, administrador, administradora, site, custodiante, assembleia]
   synonyms:
-    cadastro:
-      - cadastro
-      - perfil
-      - ficha
-      - informacoes
-      - cnpj
-      - administrador
-      - gestor
-      - custodiante
-      - site
-      - oficial
-      - website
-      - tipo
-      - segmento
-      - classificacao
-      - publico
-      - alvo
-      - ipo
-      - isin
-      - nome
-      - b3
-      - exclusivo
-  latest_words: []
-  timewords: []
+    ticker: [ativo, papel, fundo, fii]
+    administrador: [admin, administradora]
   weights:
+    identifiers: 2.0
     keywords: 1.0
-    synonyms: 2.0
+    synonyms: 0.5
+
+order_by_whitelist: []

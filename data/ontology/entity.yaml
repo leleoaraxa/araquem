@@ -1,0 +1,32 @@
+normalize:
+  - lower
+  - strip_accents
+
+tokenization:
+  split: "\\b"
+
+weights:
+  token: 1.0
+  phrase: 2.0
+
+intents:
+  - name: cadastro
+    tokens:
+      include: [cadastro, cnpj, administrador, administradora, gestor, gestora, custodiante, assembleia, site, "site oficial"]
+      exclude: []
+    phrases:
+      include:
+        - "cnpj do"
+        - "administrador do"
+        - "site do"
+      exclude:
+        - "preco"
+        - "cotacao"
+        - "dividendo"
+        - "noticia"
+    entities: [fiis_cadastro]
+
+anti_tokens:
+  precos: [preco, precos, cotacao, hoje, abrir, fechar, maxima, minima]
+  dividendos: [dividendo, provento, rendimento, yeld, yield, dy]
+  noticias: [noticia, noticias, materia, reportagem, manchete]
