@@ -6,6 +6,7 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+import json, urllib.parse, urllib.request
 
 def load_config():
     cfg_path = os.environ.get("OBSERVABILITY_CONFIG", "data/ops/observability.yaml")
@@ -101,14 +102,13 @@ def init_planner_metrics(cfg: dict, registry=None):
     intent_score_hist = None
     entity_score_hist = None
     explain_depth = None
-    # M6.5 – Quality/Confusion
     routed_total = None
     top1_match_total = None
     confusion_total = None
     top2_gap_hist = None
     quality_last_gap = None
     blocked_by_threshold = None
-
+    projection_total = None
 
     if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
         decisions = Counter(
@@ -230,6 +230,14 @@ def init_planner_metrics(cfg: dict, registry=None):
             ["reason", "intent", "entity"],  # reason: low_score|low_gap
             registry=registry,
         )
+    # ---- M6.7: projection gate outcome ----
+    if ocfg.get("planner_projection_total", {}).get("enabled", True):
+        projection_total = Counter(
+            "sirios_planner_projection_total",
+            "Resultados do projection gate (colunas exigidas presentes)",
+            ["outcome", "entity"],  # ok|fail
+            registry=registry,
+        )
 
     return {
         "decisions": decisions,
@@ -247,7 +255,33 @@ def init_planner_metrics(cfg: dict, registry=None):
         "top2_gap_histogram": top2_gap_hist,
         "quality_last_gap": quality_last_gap,
         "blocked_by_threshold": blocked_by_threshold,
+        "projection_total": projection_total,
     }
+
+# -------------------------------------------------------------------
+# Prometheus instant query helper (sem dependência externa)
+# -------------------------------------------------------------------
+def prom_query_instant(expr: str):
+    """
+    Executa uma PromQL instantânea em PROMETHEUS_URL (env) e retorna:
+      - float se a resposta for um vetor único com 1 amostra
+      - dict bruto (JSON) caso contrário
+    """
+    base = os.getenv("PROMETHEUS_URL", "http://prometheus:9090").rstrip("/")
+    url = f"{base}/api/v1/query?query={urllib.parse.quote_plus(expr)}"
+    req = urllib.request.Request(url, headers={"Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=5) as resp:
+        data = json.loads(resp.read().decode("utf-8"))
+    if data.get("status") != "success":
+        return data
+    result = (data.get("data") or {}).get("result") or []
+    if len(result) == 1 and "value" in result[0] and len(result[0]["value"]) == 2:
+        # ["ts", "val"]
+        try:
+            return float(result[0]["value"][1])
+        except Exception:
+            return data
+    return data
 
 def init_sql_metrics(cfg: dict, registry=None):
     """

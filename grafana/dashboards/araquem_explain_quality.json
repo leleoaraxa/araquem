@@ -47,6 +47,15 @@
       "targets": [
         {"expr": "sirios_planner_quality_last_gap"}
       ]
+    },
+    {
+      "type": "stat",
+      "title": "Projection pass",
+      "gridPos": { "x": 6, "y": 21, "w": 6, "h": 4 },
+      "targets": [
+        { "expr": "sum(sirios_planner_projection_total{outcome=\"ok\"}) / clamp_min(sum(sirios_planner_projection_total),1)" }
+      ],
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] } }
     }
   ]
 }
