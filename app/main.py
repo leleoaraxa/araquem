@@ -13,14 +13,14 @@ from app.executor.pg import PgExecutor
 from app.observability.runtime import load_config, init_tracing, init_metrics
 
 REGISTRY = CollectorRegistry()
-REQS = Counter("api_requests_total", "Total API requests", ["path", "method", "status"], registry=REGISTRY)
-LAT = Histogram("api_request_latency_seconds", "Request latency", ["path", "method"], registry=REGISTRY)
+REQS = Counter("sirios_requests_total", "Total API requests", ["path", "method", "status"], registry=REGISTRY)
+LAT = Histogram("sirios_request_latency_seconds", "Request latency", ["path", "method"], registry=REGISTRY)
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 CACHE_HITS = Counter("cache_hits_total", "Total cache hits", ["entity"], registry=REGISTRY)
 CACHE_MISSES = Counter("cache_misses_total", "Total cache misses", ["entity"], registry=REGISTRY)
 cfg = load_config()
 init_tracing(service_name="api", cfg=cfg)
-METRICS = init_metrics(cfg)
+METRICS = init_metrics(cfg, registry=REGISTRY)
 
 _cache = RedisCache(os.getenv("REDIS_URL", "redis://redis:6379/0"))
 _policies = CachePolicies()

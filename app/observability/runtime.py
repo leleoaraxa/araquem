@@ -29,7 +29,7 @@ def sql_sanitize(sql: str, max_len: int = 512):
 def hash_key(s: str) -> str:
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
-def init_metrics(cfg: dict):
+def init_metrics(cfg: dict, registry=None):
     # exemplo mínimo: buckets do gateway
     gw = cfg["services"]["gateway"]["metrics"]
     http_hist = None
@@ -40,6 +40,7 @@ def init_metrics(cfg: dict):
             "Duração das requisições HTTP",
             ["route","method"],
             buckets=buckets,
+            registry=registry,
         )
     http_counter = None
     if gw["http_requests_total"]["enabled"]:
@@ -47,5 +48,57 @@ def init_metrics(cfg: dict):
             "sirios_http_requests_total",
             "Total de requisições HTTP",
             ["route","method","code"],
+            registry=registry,
         )
     return {"http_hist": http_hist, "http_counter": http_counter}
+
+
+def init_planner_metrics(cfg: dict):
+    """
+    Métricas de Planner/Orchestrator definidas via YAML (services.orchestrator.metrics).
+    """
+    ocfg = cfg["services"]["orchestrator"]["metrics"]
+    decisions = duration = None
+    if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
+        decisions = Counter(
+            "sirios_planner_route_decisions_total",
+            "Decisões de roteamento do planner",
+            ["intent", "entity", "outcome"],
+        )
+    if ocfg.get("planner_duration_seconds", {}).get("enabled", True):
+        buckets = ocfg["planner_duration_seconds"]["buckets"]
+        duration = Histogram(
+            "sirios_planner_duration_seconds",
+            "Duração por estágio do planner",
+            ["stage"],
+            buckets=buckets,
+        )
+    return {"decisions": decisions, "duration": duration}
+
+def init_sql_metrics(cfg: dict):
+    """
+    Métricas de Executor SQL definidas via YAML (services.executor.metrics).
+    """
+    ecfg = cfg["services"]["executor"]["metrics"]
+    qhist = rows = errors = None
+    if ecfg.get("sql_query_duration_seconds", {}).get("enabled", True):
+        buckets = ecfg["sql_query_duration_seconds"]["buckets"]
+        qhist = Histogram(
+            "sirios_sql_query_duration_seconds",
+            "Duração de queries SQL por entidade",
+            ["entity", "db_name"],
+            buckets=buckets,
+        )
+    if ecfg.get("sql_rows_returned_total", {}).get("enabled", True):
+        rows = Counter(
+            "sirios_sql_rows_returned_total",
+            "Linhas retornadas por entidade",
+            ["entity"],
+        )
+    if ecfg.get("sql_errors_total", {}).get("enabled", True):
+        errors = Counter(
+            "sirios_sql_errors_total",
+            "Erros SQL por entidade e código",
+            ["entity", "error_code"],
+        )
+    return {"qhist": qhist, "rows": rows, "errors": errors}

@@ -38,5 +38,5 @@ pytest -q
 ## Dashboard Grafana (API Overview)
 - Já provisionado automaticamente em **Folder: _Araquem_** → **Araquem — API Overview**
 - Painéis inclusos:
-  - p95 de latência (`api_request_latency_seconds` via histogram_quantile)
-  - Requests/seg por status (`api_requests_total`)
+  - p95 de latência (`sirios_request_latency_seconds` via histogram_quantile)
+  - Requests/seg por status (`sirios_requests_total`)

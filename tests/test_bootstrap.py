@@ -12,7 +12,7 @@ def test_healthz_ok():
 def test_metrics_exposes_prometheus_format():
     r = client.get("/metrics")
     assert r.status_code == 200
-    assert "api_requests_total" in r.text
+    assert "sirios_requests_total" in r.text
 
 def test_ask_contract_validation():
     payload = {
