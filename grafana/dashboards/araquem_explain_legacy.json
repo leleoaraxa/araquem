@@ -194,8 +194,8 @@
   "time": { "from": "now-6h", "to": "now" },
   "timepicker": { "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"] },
   "timezone": "",
-  "title": "Araquem — Planner Explain",
-  "uid": "araquem-planner-explain",
+  "title": "Araquem — Explain (Legacy)",
+  "uid": "araquem-explain-legacy",
   "version": 1,
   "weekStart": ""
 }
