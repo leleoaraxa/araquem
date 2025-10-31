@@ -6,6 +6,9 @@ API_URL = os.environ.get("API_URL", "http://localhost:8000")
 TOKEN = os.environ.get("QUALITY_OPS_TOKEN", "")
 GLOB = os.environ.get("QUALITY_SAMPLES_GLOB", "data/ops/quality/*.json")
 SLEEP_BETWEEN = float(os.environ.get("QUALITY_PUSH_SLEEP", "0.2"))
+# Novo: header configurável e opção Authorization: Bearer
+TOKEN_HEADER = os.environ.get("QUALITY_TOKEN_HEADER", "X-QUALITY-TOKEN").strip()
+USE_BEARER = os.environ.get("QUALITY_AUTH_BEARER", "false").lower() in ("1","true","yes","on")
 
 def sha256(p: pathlib.Path) -> str:
     return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -13,12 +16,13 @@ def sha256(p: pathlib.Path) -> str:
 def push(path: pathlib.Path) -> dict:
     with open(path, "rb") as f:
         data = json.load(f)
-    r = httpx.post(
-        f"{API_URL}/ops/quality/push",
-        headers={"X-QUALITY-TOKEN": TOKEN, "Content-Type": "application/json"},
-        json=data,
-        timeout=30.0,
-    )
+    headers = {"Content-Type": "application/json"}
+    if USE_BEARER:
+        headers["Authorization"] = f"Bearer {TOKEN}"
+    else:
+        headers[TOKEN_HEADER] = TOKEN
+    r = httpx.post(f"{API_URL}/ops/quality/push", headers=headers, json=data, timeout=30.0)
+
     r.raise_for_status()
     return r.json()
 
