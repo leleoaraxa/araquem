@@ -1,13 +1,40 @@
-version: 202510311530
+version: 202510311600
+
+# Janela de avaliação (rolling = contínua, considerando últimos pushes)
+window: "rolling"
+
+# ============================================================
+# 1️⃣ Quality Gates globais  (nível de avaliação /ops/quality)
+# ============================================================
+quality_gates:
+  thresholds:
+    # Acerto Top1 (roteamento correto intent+entity)
+    min_top1_accuracy: 0.95
+
+    # Separação entre 1º e 2º score do planner (quanto maior, melhor)
+    min_top2_gap: 0.40
+
+    # Percentual mínimo de perguntas roteadas (vs. unroutable)
+    min_routed_rate: 0.98
+
+    # Tolerância de misses no push (útil em expansão da ontologia)
+    max_misses_absolute: 0
+    max_misses_ratio: 0.0
+
+# ============================================================
+# 2️⃣ Limiares operacionais do planner (nível de decisão)
+# ============================================================
 planner:
   thresholds:
     defaults:
-      min_score: 1.0
-      min_gap: 0.5
+      min_score: 1.0  # Score absoluto mínimo para aceitar decisão
+      min_gap: 0.5    # Gap mínimo entre 1º e 2º candidato
+
     intents:
       cadastro:
         min_score: 1.0
         min_gap: 0.2
+
     entities:
       fiis_cadastro:
         min_score: 1.0
