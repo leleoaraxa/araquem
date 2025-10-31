@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ──────────────────────────────────────────────────────────────
 # 2️⃣ Instala dependências Python
 # ──────────────────────────────────────────────────────────────
-COPY pyproject.toml requirements.txt* ./
+COPY requirements.txt* ./
 RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
 # ──────────────────────────────────────────────────────────────
