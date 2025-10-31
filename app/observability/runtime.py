@@ -56,6 +56,39 @@ def init_metrics(cfg: dict, registry=None):
     return {"http_hist": http_hist, "http_counter": http_counter}
 
 
+# -------------------------------------------------------------------
+# Cache metrics
+# -------------------------------------------------------------------
+def init_cache_metrics(cfg: dict, registry=None):
+    """
+    Métricas do cache (Redis) via YAML (services.cache.metrics).
+    Gera métricas padronizadas por operação e resultado.
+    """
+    ccf = cfg["services"]["cache"]["metrics"]
+    ops = None
+    latency = None
+
+    if ccf.get("cache_ops_total", {}).get("enabled", True):
+        ops = Counter(
+            "sirios_cache_ops_total",
+            "Operações de cache (get/set/bust) por resultado",
+            ["op", "outcome"],
+            registry=registry,
+        )
+
+    if ccf.get("cache_latency_seconds", {}).get("enabled", True):
+        buckets = ccf["cache_latency_seconds"]["buckets"]
+        latency = Histogram(
+            "sirios_cache_latency_seconds",
+            "Latência de operações de cache (s)",
+            ["op"],
+            buckets=buckets,
+            registry=registry,
+        )
+
+    return {"ops": ops, "latency": latency}
+
+
 def init_planner_metrics(cfg: dict, registry=None):
     """
     Métricas do Planner/Orchestrator via YAML (services.orchestrator.metrics).

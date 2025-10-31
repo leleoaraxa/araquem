@@ -1,0 +1,46 @@
+{
+  "title": "Araquem — Traces",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 2,
+  "tags": ["araquem", "tracing"],
+  "panels": [
+    {
+      "type": "traces",
+      "title": "Trace search — service: api",
+      "gridPos": { "h": 15, "w": 24, "x": 0, "y": 0 },
+      "datasource": { "type": "tempo", "uid": "Tempo" },
+      "targets": [
+        {
+          "queryType": "traceqlSearch",
+          "refId": "A",
+          "query": "{ service.name = \"api\" } | duration > 10ms"
+        }
+      ],
+      "options": {
+        "spanBar": { "type": "None" },
+        "showTraces": true,
+        "showQuery": true
+      }
+    },
+    {
+      "type": "traces",
+      "title": "Recent planner / executor spans",
+      "gridPos": { "h": 15, "w": 24, "x": 0, "y": 15 },
+      "datasource": { "type": "tempo", "uid": "Tempo" },
+      "targets": [
+        {
+          "queryType": "traceqlSearch",
+          "refId": "B",
+          "query": "{ name = \"planner.route\" or name = \"sql.execute\" } | duration > 5ms"
+        }
+      ],
+      "options": {
+        "spanBar": { "type": "None" },
+        "showTraces": true,
+        "showQuery": true
+      }
+    }
+  ],
+  "time": { "from": "now-6h", "to": "now" }
+}

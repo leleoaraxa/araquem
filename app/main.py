@@ -15,7 +15,7 @@ from app.orchestrator.routing import Orchestrator
 from app.executor.pg import PgExecutor
 from app.observability.runtime import (
     load_config, init_tracing, init_metrics,
-    init_planner_metrics, init_sql_metrics
+    init_planner_metrics, init_sql_metrics, init_cache_metrics
 )
 
 REGISTRY = CollectorRegistry()
@@ -29,6 +29,7 @@ init_tracing(service_name="api", cfg=cfg)
 METRICS = init_metrics(cfg, registry=REGISTRY)
 PLANNER_METRICS = init_planner_metrics(cfg, registry=REGISTRY)
 SQL_METRICS = init_sql_metrics(cfg, registry=REGISTRY)
+CACHE_METRICS = init_cache_metrics(cfg, registry=REGISTRY)
 
 _cache = RedisCache(os.getenv("REDIS_URL", "redis://redis:6379/0"))
 _policies = CachePolicies()
@@ -36,6 +37,7 @@ _planner = Planner(ONTO_PATH)
 _executor = PgExecutor()
 _orchestrator = Orchestrator(_planner, _executor, planner_metrics=PLANNER_METRICS)
 _executor.bind_metrics(SQL_METRICS)
+_cache.bind_metrics(CACHE_METRICS)
 
 app = FastAPI(title="Araquem API (Dev)")
 
