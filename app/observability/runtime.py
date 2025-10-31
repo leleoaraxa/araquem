@@ -1,6 +1,6 @@
 # app/observability/runtime.py
 import os, yaml, re, hashlib
-from prometheus_client import Counter, Histogram
+from prometheus_client import Counter, Histogram, Gauge
 from opentelemetry import trace
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
@@ -97,6 +97,10 @@ def init_planner_metrics(cfg: dict, registry=None):
     ocfg = cfg["services"]["orchestrator"]["metrics"]
     decisions = duration = None
     explain_enabled = explain_latency = explain_nodes = None
+    explain_weight_sum = None
+    intent_score_hist = None
+    entity_score_hist = None
+    explain_depth = None
     if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
         decisions = Counter(
             "sirios_planner_route_decisions_total",
@@ -137,12 +141,50 @@ def init_planner_metrics(cfg: dict, registry=None):
             ["node_kind"],
             registry=registry,
         )
+    # --- M6.4: métricas adicionais (todas opcionais via YAML) ---
+    if ocfg.get("planner_explain_weight_sum_total", {}).get("enabled", True):
+        explain_weight_sum = Counter(
+            "sirios_planner_explain_weight_sum_total",
+            "Somatório de pesos por tipo de sinal (token|phrase|anti) durante o explain",
+            ["type"],
+            registry=registry,
+        )
+    if ocfg.get("planner_intent_score", {}).get("enabled", True):
+        buckets_i = ocfg.get("planner_intent_score", {}).get("buckets", [0,1,2,3,5,8,13,21])
+        intent_score_hist = Histogram(
+            "sirios_planner_intent_score",
+            "Distribuição de score por intent vencedora",
+            ["intent"],
+            buckets=buckets_i,
+            registry=registry,
+        )
+    if ocfg.get("planner_entity_score", {}).get("enabled", True):
+        buckets_e = ocfg.get("planner_entity_score", {}).get("buckets", [0,1,2,3,5,8,13,21])
+        entity_score_hist = Histogram(
+            "sirios_planner_entity_score",
+            "Distribuição de score por entidade vencedora",
+            ["entity"],
+            buckets=buckets_e,
+            registry=registry,
+        )
+    if ocfg.get("planner_explain_decision_depth", {}).get("enabled", True):
+        explain_depth = Gauge(
+            "sirios_planner_explain_decision_depth",
+            "Profundidade (nós) do decision_path do explain mais recente",
+            [],
+            registry=registry,
+        )
+
     return {
         "decisions": decisions,
         "duration": duration,
         "explain_enabled": explain_enabled,
         "explain_latency": explain_latency,
         "explain_nodes": explain_nodes,
+        "explain_weight_sum": explain_weight_sum,
+        "intent_score_hist": intent_score_hist,
+        "entity_score_hist": entity_score_hist,
+        "explain_depth": explain_depth,
     }
 
 def init_sql_metrics(cfg: dict, registry=None):

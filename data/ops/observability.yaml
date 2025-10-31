@@ -22,6 +22,19 @@ services:
       planner_duration_seconds:
         enabled: true
         buckets: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25]
+      planner_explain_enabled_total: { enabled: true }
+      planner_explain_latency_seconds:
+        enabled: true
+        buckets: [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2]
+      planner_explain_nodes_total: { enabled: true }
+      planner_explain_weight_sum_total: { enabled: true }
+      planner_intent_score:
+        enabled: true
+        buckets: [0, 1, 2, 3, 5, 8, 13, 21]
+      planner_entity_score:
+        enabled: true
+        buckets: [0, 1, 2, 3, 5, 8, 13, 21]
+      planner_explain_decision_depth: { enabled: true }
     tracing:
       enabled: true
       attributes_allow: ["intent","entity","confidence","ontology_version","tokens_matched"]

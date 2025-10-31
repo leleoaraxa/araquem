@@ -3,9 +3,12 @@
 from __future__ import annotations
 from typing import Dict, Any, List
 import re, unicodedata
+import logging
+
 from .ontology_loader import load_ontology
 
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
+_LOG = logging.getLogger("planner.explain")
 
 def _strip_accents(s: str) -> str:
     return "".join(c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn")
@@ -48,6 +51,18 @@ class Planner:
 
         intent_scores = {}
         details = {}
+        decision_path: List[Dict[str, Any]] = [
+            {
+                "stage": "tokenize",
+                "type": "normalization",
+                "value": norm,
+                "result": tokens[:],
+            }
+        ]
+        token_score_items: List[Dict[str, Any]] = []
+        phrase_score_items: List[Dict[str, Any]] = []
+        anti_hits_items: List[Dict[str, Any]] = []
+
 
         for it in self.onto.intents:
             score = 0.0
@@ -66,6 +81,18 @@ class Planner:
                 if _any_in(norm, toks):
                     anti_penalty += 0.5 * token_weight
             score -= anti_penalty
+
+            # construir sinais (por intenção avaliada)
+            for tk in include_hits:
+                token_score_items.append({"token": tk, "weight": token_weight, "hits": 1, "intent": it.name})
+            for tk in exclude_hits:
+                token_score_items.append({"token": tk, "weight": -token_weight, "hits": 1, "intent": it.name})
+            for ph in phrase_incl_hits:
+                phrase_score_items.append({"phrase": ph, "weight": phrase_weight, "hits": 1, "intent": it.name})
+            for ph in phrase_excl_hits:
+                phrase_score_items.append({"phrase": ph, "weight": -phrase_weight, "hits": 1, "intent": it.name})
+            if anti_penalty > 0:
+                anti_hits_items.append({"term_group": "anti_tokens", "penalty": anti_penalty, "intent": it.name})
 
             intent_scores[it.name] = score
             details[it.name] = {
@@ -89,6 +116,62 @@ class Planner:
                     chosen_entity = it.entities[0] if it.entities else None
                     break
 
+        # stages finais na trilha de decisão
+        decision_path.append({
+            "stage": "rank",
+            "type": "intent_scoring",
+            "intent": chosen_intent,
+            "score": chosen_score
+        })
+        if chosen_entity:
+            decision_path.append({
+                "stage": "route",
+                "type": "entity_select",
+                "entity": chosen_entity,
+                "score_after": chosen_score
+            })
+
+        # sumarização de pesos (apenas agregação — sem heurística)
+        token_sum = float(sum(item["weight"] for item in token_score_items))
+        phrase_sum = float(sum(item["weight"] for item in phrase_score_items))
+        anti_sum = float(sum(item.get("penalty", 0.0) for item in anti_hits_items))
+        weights_summary = {
+            "token_sum": token_sum,
+            "phrase_sum": phrase_sum,
+            "anti_sum": anti_sum,
+            "total": token_sum + phrase_sum - anti_sum
+        }
+
+        meta_explain = {
+            "signals": {
+                "token_scores": token_score_items,
+                "phrase_scores": phrase_score_items,
+                "anti_hits": anti_hits_items,
+                "normalizations": [
+                    {"step": s, "applied": True} for s in self.onto.normalize
+                ],
+                "weights_summary": weights_summary
+            },
+            "decision_path": decision_path,
+            "scoring": {
+                "intent": [{"name": chosen_intent, "score": chosen_score, "winner": True}] if chosen_intent else [],
+                "entity": [{"name": chosen_entity, "score": chosen_score, "winner": True}] if chosen_entity else [],
+            }
+        }
+
+        # log estruturado (JSON) – leve; sem dados sensíveis
+        try:
+            _LOG.info({
+                "planner_phase": "explain",
+                "decision_depth": len(decision_path),
+                "signal_weights": weights_summary,
+                "intent_top": chosen_intent,
+                "intent_score": float(chosen_score),
+                "entity_top": chosen_entity
+            })
+        except Exception:
+            pass
+
         return {
             "normalized": norm,
             "tokens": tokens,
@@ -99,4 +182,6 @@ class Planner:
                 "entity": chosen_entity,
                 "score": chosen_score,
             },
+            # bloco hierárquico para M6.4
+            "explain": meta_explain,
         }

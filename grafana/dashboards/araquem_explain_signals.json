@@ -1,0 +1,61 @@
+{
+  "title": "Araquem — Explain · Signals & Path",
+  "uid": "araquem-explain-signals",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "tags": ["Araquem", "Planner", "Explain"],
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Explain enabled (total)",
+      "gridPos": {"x":0,"y":0,"w":6,"h":4},
+      "targets": [
+        {"expr": "sum(sirios_planner_explain_enabled_total)"}
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Decision depth (last)",
+      "gridPos": {"x":6,"y":0,"w":6,"h":4},
+      "fieldConfig": {"defaults":{"min":0}},
+      "targets": [
+        {"expr": "sirios_planner_explain_decision_depth"}
+      ]
+    },
+    {
+      "type": "bargauge",
+      "title": "Explain nodes by kind",
+      "gridPos": {"x":0,"y":4,"w":12,"h":6},
+      "targets": [
+        {"expr": "sum by (node_kind) (sirios_planner_explain_nodes_total)"}
+      ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Signal weight sum (token/phrase/anti)",
+      "gridPos": {"x":0,"y":10,"w":12,"h":6},
+      "targets": [
+        {"expr": "sum by (type) (sirios_planner_explain_weight_sum_total)"}
+      ]
+    },
+    {
+      "type": "histogram",
+      "title": "Intent score distribution",
+      "gridPos": {"x":0,"y":16,"w":12,"h":7},
+      "options": {"legend":{"displayMode":"list","placement":"right"}},
+      "targets": [
+        {"expr": "sum by (le,intent) (rate(sirios_planner_intent_score_bucket[5m]))"}
+      ]
+    },
+    {
+      "type": "histogram",
+      "title": "Entity score distribution",
+      "gridPos": {"x":0,"y":23,"w":12,"h":7},
+      "targets": [
+        {"expr": "sum by (le,entity) (rate(sirios_planner_entity_score_bucket[5m]))"}
+      ]
+    }
+  ]
+}

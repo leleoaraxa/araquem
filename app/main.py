@@ -191,8 +191,8 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 "planner_score": score,
                 "rows_total": 0,
                 "elapsed_ms": int((time.perf_counter() - t0) * 1000),
-                # M6.3: manter transparência mesmo sem entity
-                "explain": plan if explain else None,
+                # M6.4: bloco explain segue contrato (usar plan['explain'])
+                "explain": (plan.get("explain") if explain else None),
             },
         })
 
@@ -227,8 +227,8 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             "planner_score": score,
             "rows_total": len(rows),
             "elapsed_ms": elapsed_ms,
-            # M6.3: bloco explain seguindo contrato — opcional, só quando ?explain=true
-            "explain": plan if explain else None,
+            # M6.4: bloco explain seguindo contrato — opcional, só quando ?explain=true
+            "explain": (plan.get("explain") if explain else None),
             "cache": {
                 "hit": bool(rt.get("cached")),
                 "key": rt.get("key"),
