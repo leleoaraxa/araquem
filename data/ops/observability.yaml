@@ -35,6 +35,13 @@ services:
         enabled: true
         buckets: [0, 1, 2, 3, 5, 8, 13, 21]
       planner_explain_decision_depth: { enabled: true }
+      planner_routed_total: { enabled: true }
+      planner_top1_match_total: { enabled: true }
+      planner_confusion_total: { enabled: true }
+      planner_top2_gap_histogram:
+        enabled: true
+        buckets: [0.0, 0.5, 1, 2, 3, 5]
+      planner_quality_last_gap: { enabled: true }
     tracing:
       enabled: true
       attributes_allow: ["intent","entity","confidence","ontology_version","tokens_matched"]

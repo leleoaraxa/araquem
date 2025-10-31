@@ -170,6 +170,9 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     entity = plan["chosen"]["entity"]
     intent = plan["chosen"]["intent"]
     score = plan["chosen"]["score"]
+    # M6.5 — outcomes básicos (ok/unroutable)
+    if PLANNER_METRICS.get("routed_total") is not None:
+        PLANNER_METRICS["routed_total"].labels(outcome="ok" if entity else "unroutable").inc()
 
     # M6.3: contagem simples de nós do explain (intents avaliadas)
     if explain and PLANNER_METRICS.get("explain_nodes") is not None:
@@ -178,6 +181,13 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             PLANNER_METRICS["explain_nodes"].labels(node_kind="intent").inc(intents_count)
         except Exception:
             pass
+    # M6.5 — observar gap top1-top2 quando explain=true
+    if explain:
+        top2_gap = float(((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap") or 0.0)
+        if PLANNER_METRICS.get("top2_gap_histogram") is not None:
+            PLANNER_METRICS["top2_gap_histogram"].observe(top2_gap)
+        if PLANNER_METRICS.get("quality_last_gap") is not None:
+            PLANNER_METRICS["quality_last_gap"].set(top2_gap)
 
     if not entity:
         return JSONResponse({
@@ -236,3 +246,48 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             },
         },
     })
+
+
+
+# ---------------------------------------------------------------------
+# M6.5 — Quality & Confusion Telemetry endpoint (token-protected)
+# ---------------------------------------------------------------------
+class QualitySample(BaseModel):
+    question: str
+    expected_intent: str
+    expected_entity: Optional[str] = None
+
+class QualityPayload(BaseModel):
+    samples: list[QualitySample]
+
+@app.post("/ops/quality/push")
+def quality_push(payload: QualityPayload, x_ops_token: Optional[str] = Header(default=None)):
+    token_env = os.getenv("QUALITY_OPS_TOKEN", "")
+    if not token_env or (x_ops_token or "") != token_env:
+        return JSONResponse({"error": "forbidden"}, status_code=403)
+
+    matched = 0
+    missed = 0
+    for s in payload.samples:
+        plan = _planner.explain(s.question)
+        predicted = (plan.get("chosen") or {}).get("intent")
+        expected = s.expected_intent
+        # counters hit/miss
+        if PLANNER_METRICS.get("top1_match_total") is not None:
+            PLANNER_METRICS["top1_match_total"].labels(result="hit" if predicted == expected else "miss").inc()
+        # confusion matrix
+        if PLANNER_METRICS.get("confusion_total") is not None and expected and predicted:
+            PLANNER_METRICS["confusion_total"].labels(expected_intent=expected, predicted_intent=predicted).inc()
+        # gap observation por amostra
+        top2_gap = float(((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap") or 0.0)
+        if PLANNER_METRICS.get("top2_gap_histogram") is not None:
+            PLANNER_METRICS["top2_gap_histogram"].observe(top2_gap)
+        if PLANNER_METRICS.get("quality_last_gap") is not None:
+            PLANNER_METRICS["quality_last_gap"].set(top2_gap)
+        # tally
+        if predicted == expected:
+            matched += 1
+        else:
+            missed += 1
+
+    return {"accepted": len(payload.samples), "metrics": {"matched": matched, "missed": missed}}

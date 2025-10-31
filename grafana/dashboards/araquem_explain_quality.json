@@ -1,0 +1,52 @@
+{
+  "title": "Araquem — Explain · Quality & Confusion",
+  "uid": "araquem-explain-quality",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "tags": ["Araquem", "Planner", "Quality"],
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Acurácia (Top1)",
+      "gridPos": {"x":0,"y":0,"w":6,"h":4},
+      "targets": [
+        {"expr": "sum(sirios_planner_top1_match_total{result=\"hit\"}) / clamp_min(sum(sirios_planner_top1_match_total),1)"}
+      ]
+    },
+    {
+      "type": "bargauge",
+      "title": "Outcomes",
+      "gridPos": {"x":6,"y":0,"w":6,"h":4},
+      "targets": [
+        {"expr": "sum by (outcome) (sirios_planner_routed_total)"}
+      ]
+    },
+    {
+      "type": "heatmap",
+      "title": "Confusion Matrix (expected × predicted)",
+      "gridPos": {"x":0,"y":4,"w":12,"h":10},
+      "targets": [
+        {"expr": "sum by (expected_intent, predicted_intent) (sirios_planner_confusion_total)"}
+      ],
+      "options": {"yAxis": {"format": "short"}}
+    },
+    {
+      "type": "timeseries",
+      "title": "Top2 Gap (hist buckets)",
+      "gridPos": {"x":0,"y":14,"w":12,"h":7},
+      "targets": [
+        {"expr": "rate(sirios_planner_top2_gap_histogram_bucket[5m])"}
+      ]
+    },
+    {
+      "type": "gauge",
+      "title": "Last Gap",
+      "gridPos": {"x":0,"y":21,"w":6,"h":4},
+      "targets": [
+        {"expr": "sirios_planner_quality_last_gap"}
+      ]
+    }
+  ]
+}

@@ -101,6 +101,14 @@ def init_planner_metrics(cfg: dict, registry=None):
     intent_score_hist = None
     entity_score_hist = None
     explain_depth = None
+    # M6.5 – Quality/Confusion
+    routed_total = None
+    top1_match_total = None
+    confusion_total = None
+    top2_gap_hist = None
+    quality_last_gap = None
+
+
     if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
         decisions = Counter(
             "sirios_planner_route_decisions_total",
@@ -175,6 +183,45 @@ def init_planner_metrics(cfg: dict, registry=None):
             registry=registry,
         )
 
+    # ---- M6.5: métricas de qualidade/“confusion” ----
+    if ocfg.get("planner_routed_total", {}).get("enabled", True):
+        routed_total = Counter(
+            "sirios_planner_routed_total",
+            "Total de requisições roteadas ou não roteadas",
+            ["outcome"],  # ok|unroutable
+            registry=registry,
+        )
+    if ocfg.get("planner_top1_match_total", {}).get("enabled", True):
+        top1_match_total = Counter(
+            "sirios_planner_top1_match_total",
+            "Acertos/erros do top1 vs esperado (intent)",
+            ["result"],  # hit|miss
+            registry=registry,
+        )
+    if ocfg.get("planner_confusion_total", {}).get("enabled", True):
+        confusion_total = Counter(
+            "sirios_planner_confusion_total",
+            "Matriz de confusão (intent esperada x prevista)",
+            ["expected_intent", "predicted_intent"],
+            registry=registry,
+        )
+    if ocfg.get("planner_top2_gap_histogram", {}).get("enabled", True):
+        buckets_g = ocfg.get("planner_top2_gap_histogram", {}).get("buckets", [0.0, 0.5, 1, 2, 3, 5])
+        top2_gap_hist = Histogram(
+            "sirios_planner_top2_gap_histogram",
+            "Distribuição do gap entre top1 e top2 intents",
+            [],
+            buckets=buckets_g,
+            registry=registry,
+        )
+    if ocfg.get("planner_quality_last_gap", {}).get("enabled", True):
+        quality_last_gap = Gauge(
+            "sirios_planner_quality_last_gap",
+            "Último gap top1-top2 observado",
+            [],
+            registry=registry,
+        )
+
     return {
         "decisions": decisions,
         "duration": duration,
@@ -185,6 +232,12 @@ def init_planner_metrics(cfg: dict, registry=None):
         "intent_score_hist": intent_score_hist,
         "entity_score_hist": entity_score_hist,
         "explain_depth": explain_depth,
+        # M6.5
+        "routed_total": routed_total,
+        "top1_match_total": top1_match_total,
+        "confusion_total": confusion_total,
+        "top2_gap_histogram": top2_gap_hist,
+        "quality_last_gap": quality_last_gap,
     }
 
 def init_sql_metrics(cfg: dict, registry=None):

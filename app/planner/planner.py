@@ -115,6 +115,13 @@ class Planner:
                 if it.name == chosen_intent:
                     chosen_entity = it.entities[0] if it.entities else None
                     break
+        # M6.5 — top2 gap (somente leitura dos scores existentes)
+        ordered = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
+        top2_gap = 0.0
+        if len(ordered) >= 2:
+            top2_gap = float((ordered[0][1] or 0.0) - (ordered[1][1] or 0.0))
+        elif len(ordered) == 1:
+            top2_gap = float(ordered[0][1] or 0.0)
 
         # stages finais na trilha de decisão
         decision_path.append({
@@ -156,6 +163,7 @@ class Planner:
             "scoring": {
                 "intent": [{"name": chosen_intent, "score": chosen_score, "winner": True}] if chosen_intent else [],
                 "entity": [{"name": chosen_entity, "score": chosen_score, "winner": True}] if chosen_entity else [],
+                 "intent_top2_gap": top2_gap
             }
         }
 
