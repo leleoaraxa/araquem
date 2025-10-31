@@ -1,0 +1,9 @@
+###
+POST http://localhost:8000/ops/cache/bust
+Content-Type: application/json
+X-OPS-TOKEN: araquem-secret-bust-2025
+
+{
+  "entity":"fiis_cadastro",
+  "identifiers":{"ticker":"VINO11"}
+}

@@ -2,7 +2,7 @@
 
 import time
 import re
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from app.planner.planner import Planner
 from app.builder.sql_builder import build_select_for_entity
@@ -19,9 +19,10 @@ _PM = init_planner_metrics(_CFG)
 _TR_PLANNER = trace.get_tracer("planner")
 
 class Orchestrator:
-    def __init__(self, planner: Planner, executor: PgExecutor):
+    def __init__(self, planner: Planner, executor: PgExecutor, planner_metrics: Optional[Dict[str, Any]] = None):
         self._planner = planner
         self._exec = executor
+        self._pm = planner_metrics or {"decisions": None, "duration": None}
 
     def extract_identifiers(self, question: str) -> Dict[str, Any]:
         m = TICKER_RE.search(question.upper())
@@ -51,12 +52,12 @@ class Orchestrator:
 
         identifiers = self.extract_identifiers(question)
         # estágio de planning finalizado
-        if _PM["duration"] is not None:
-            _PM["duration"].labels(stage="plan").observe(time.perf_counter() - t0)
+        if self._pm["duration"] is not None:
+            self._pm["duration"].labels(stage="plan").observe(time.perf_counter() - t0)
 
         # marca decisão do planner
-        if _PM["decisions"] is not None:
-            _PM["decisions"].labels(intent=intent, entity=entity, outcome="ok").inc()
+        if self._pm["decisions"] is not None:
+            self._pm["decisions"].labels(intent=intent, entity=entity, outcome="ok").inc()
 
         # span do planner (atributos semânticos)
         with _TR_PLANNER.start_as_current_span("planner.route") as sp:
@@ -65,6 +66,9 @@ class Orchestrator:
             sp.set_attribute("planner.score", float(score) if isinstance(score, (int,float)) else 0.0)
 
             sql, params, result_key, return_columns = build_select_for_entity(entity, identifiers)
+            # garante etiqueta da entidade no executor para métricas SQL
+            if isinstance(params, dict):
+                params = {**params, "entity": entity}
             rows = self._exec.query(sql, params)
 
         results = {result_key: format_rows(rows, return_columns)}
