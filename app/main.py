@@ -8,6 +8,7 @@ from prometheus_client import Counter, Histogram, CollectorRegistry, generate_la
 from opentelemetry import trace
 import os, time
 import psycopg
+import math
 
 from app.cache.rt_cache import RedisCache, CachePolicies, read_through
 from app.planner.planner import Planner
@@ -360,28 +361,29 @@ def quality_report():
     proj_total = prom_query_instant('sum(sirios_planner_projection_total)')
     miss_abs   = prom_query_instant('sum(sirios_planner_top1_match_total{result="miss"})')
 
-    # Safeguards e coerção
+    # Safeguards e coerção robusta
     def _to_float(x) -> float:
+        """Converte qualquer formato Prometheus (float, int, dict com data.result[0].value[1]) em float seguro."""
         if isinstance(x, (int, float)):
             return float(x)
         if isinstance(x, dict):
-            # tenta extrair value[1] da primeira série se existir
-            val = (x.get("data", {}).get("result") or [{}])[0].get("value")
-            if isinstance(val, list) and len(val) == 2:
-                try:
+            try:
+                val = (x.get("data", {}).get("result") or [{}])[0].get("value")
+                if isinstance(val, list) and len(val) == 2:
                     return float(val[1])
-                except Exception:
-                    return 0.0
+            except Exception:
+                pass
             return 0.0
         try:
-            return float(x)
+            return float(str(x))
         except Exception:
             return 0.0
 
-    def _ratio(num, den):
+    def _ratio(num, den) -> float:
         n, d = _to_float(num), _to_float(den)
         return (n / d) if d > 0 else 0.0
 
+    # Normalizações coerentes
     top1_acc   = _ratio(top1_hit, top1_total)
     routed_rt  = _ratio(routed_ok, routed_all)
     proj_pass  = _ratio(proj_ok, proj_total)
@@ -389,6 +391,7 @@ def quality_report():
     miss_ratio = _ratio(miss_abs, top1_total)
     gap_p50_v  = _to_float(gap_p50)
 
+    # Checagem de thresholds
     violations: List[str] = []
     if top1_acc < min_top1_acc:
         violations.append(f"top1_accuracy {top1_acc:.3f} < min {min_top1_acc:.3f}")
@@ -402,18 +405,27 @@ def quality_report():
         violations.append(f"misses_ratio {miss_ratio:.3f} > max {max_miss_ratio:.3f}")
 
     status = "pass" if not violations else "fail"
+
+# Sanitiza NaN e infinitos antes de serializar
+    def _sanitize(v: float) -> float:
+        if not isinstance(v, (int, float)):
+            return 0.0
+        if math.isnan(v) or math.isinf(v):
+            return 0.0
+        return round(float(v), 6)
+
+    metrics = {
+        "top1_accuracy": _sanitize(top1_acc),
+        "routed_rate": _sanitize(routed_rt),
+        "top2_gap_p50": _sanitize(gap_p50_v),
+        "projection_pass": _sanitize(proj_pass),
+        "misses_abs": _sanitize(miss_abs_v),
+        "misses_ratio": _sanitize(miss_ratio),
+    }
+
     return {
         "status": status,
-        "metrics": {
-            "top1_accuracy": round(top1_acc, 6),
-            "routed_rate": round(routed_rt, 6),
-            "top2_gap_p50": round(gap_p50_v, 6),
-            "projection_pass": round(proj_pass, 6),
-            "misses_abs": float(miss_abs or 0.0),
-            "misses_ratio": round(miss_ratio, 6),
-            "misses_abs": miss_abs_v,
-            "misses_ratio": round(miss_ratio, 6)
-        },
+        "metrics": metrics,
         "thresholds": qg,
-        "violations": violations
+        "violations": violations,
     }
