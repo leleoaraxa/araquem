@@ -1,10 +1,13 @@
 # app/main.py
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Header
 from fastapi.responses import PlainTextResponse, JSONResponse
-import os, time
+from typing import Dict, Any, Optional
+from pydantic import BaseModel
 from prometheus_client import Counter, Histogram, CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST
 from opentelemetry import trace
+import os, time
+import psycopg
 
 from app.cache.rt_cache import RedisCache, CachePolicies, read_through
 from app.planner.planner import Planner
@@ -50,7 +53,33 @@ async def metrics_middleware(request: Request, call_next):
 
 @app.get("/healthz")
 def healthz():
-    return {"status": "ok", "build_id": os.getenv("BUILD_ID", "dev"), "services": {"db": "unknown", "redis": "unknown"}}
+    build_id = os.getenv("BUILD_ID", "dev")
+    # Redis
+    try:
+        redis_ok = _cache.ping()
+    except Exception:
+        redis_ok = False
+    # Postgres
+    db_ok = False
+    dsn = os.getenv("DATABASE_URL")
+    if dsn:
+        try:
+            with psycopg.connect(dsn, connect_timeout=2) as conn:
+                with conn.cursor() as cur:
+                    cur.execute("SELECT 1")
+                    _ = cur.fetchone()
+                    db_ok = True
+        except Exception:
+            db_ok = False
+    status = "ok" if (db_ok and redis_ok) else ("degraded" if (db_ok or redis_ok) else "down")
+    return {
+        "status": status,
+        "build_id": build_id,
+        "services": {
+            "db": "ok" if db_ok else "down",
+            "redis": "ok" if redis_ok else "down",
+        },
+    }
 
 @app.get("/metrics")
 def metrics():
@@ -78,20 +107,24 @@ def debug_trace():
     with tr.start_as_current_span("manual_debug_span"):
         return {"ok": True}
 
+class BustPayload(BaseModel):
+    entity: str
+    identifiers: Optional[Dict[str, Any]] = {}
+
+
 @app.post("/ops/cache/bust")
-def cache_bust(body: dict, request: Request):
+def cache_bust(payload: BustPayload, x_ops_token: Optional[str] = Header(default=None)):
     """
     Invalida uma chave de cache específica.
     Segurança simples por token: defina CACHE_OPS_TOKEN no ambiente.
     body esperado: {"entity": "...", "identifiers": {...}}
     """
     token_env = os.getenv("CACHE_OPS_TOKEN", "")
-    token_req = request.headers.get("X-OPS-TOKEN", "")
-    if not token_env or token_req != token_env:
+    if not token_env or (x_ops_token or "") != token_env:
         return JSONResponse({"error": "forbidden"}, status_code=403)
 
-    entity = (body or {}).get("entity")
-    identifiers = (body or {}).get("identifiers") or {}
+    entity = payload.entity
+    identifiers = payload.identifiers or {}
     policy = _policies.get(entity)
     if not (entity and policy):
         return JSONResponse({"error": "invalid entity or missing policy"}, status_code=400)
@@ -102,9 +135,6 @@ def cache_bust(body: dict, request: Request):
     key = make_cache_key(build_id, scope, entity, identifiers)
     deleted = _cache.delete(key)
     return {"deleted": int(deleted), "key": key}
-
-# Guardrails: immutable payload contract for /ask (validation only for now)
-from pydantic import BaseModel
 
 class AskPayload(BaseModel):
     question: str
