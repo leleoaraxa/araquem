@@ -107,6 +107,7 @@ def init_planner_metrics(cfg: dict, registry=None):
     confusion_total = None
     top2_gap_hist = None
     quality_last_gap = None
+    blocked_by_threshold = None
 
 
     if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
@@ -221,6 +222,14 @@ def init_planner_metrics(cfg: dict, registry=None):
             [],
             registry=registry,
         )
+    # ---- M6.6: quality gates (bloqueios) ----
+    if ocfg.get("planner_blocked_by_threshold_total", {}).get("enabled", True):
+        blocked_by_threshold = Counter(
+            "sirios_planner_blocked_by_threshold_total",
+            "Bloqueios por threshold (score/gap) no planner",
+            ["reason", "intent", "entity"],  # reason: low_score|low_gap
+            registry=registry,
+        )
 
     return {
         "decisions": decisions,
@@ -232,12 +241,12 @@ def init_planner_metrics(cfg: dict, registry=None):
         "intent_score_hist": intent_score_hist,
         "entity_score_hist": entity_score_hist,
         "explain_depth": explain_depth,
-        # M6.5
         "routed_total": routed_total,
         "top1_match_total": top1_match_total,
         "confusion_total": confusion_total,
         "top2_gap_histogram": top2_gap_hist,
         "quality_last_gap": quality_last_gap,
+        "blocked_by_threshold": blocked_by_threshold,
     }
 
 def init_sql_metrics(cfg: dict, registry=None):

@@ -42,6 +42,7 @@ services:
         enabled: true
         buckets: [0.0, 0.5, 1, 2, 3, 5]
       planner_quality_last_gap: { enabled: true }
+      planner_blocked_by_threshold_total: { enabled: true }
     tracing:
       enabled: true
       attributes_allow: ["intent","entity","confidence","ontology_version","tokens_matched"]
