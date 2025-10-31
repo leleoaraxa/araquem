@@ -1,0 +1,54 @@
+# ──────────────────────────────────────────────────────────────
+# Araquem — Plataforma NL→SQL + Quality Gates (Guardrails v2.0)
+# ──────────────────────────────────────────────────────────────
+FROM python:3.12-slim AS base
+
+# Evita cache e bytecode
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    TZ=America/Sao_Paulo
+
+WORKDIR /app
+
+# ──────────────────────────────────────────────────────────────
+# 1️⃣ Dependências de sistema (mínimo necessário)
+# ──────────────────────────────────────────────────────────────
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    tzdata \
+    curl \
+    jq \
+    git \
+    postgresql-client \
+ && rm -rf /var/lib/apt/lists/*
+
+# ──────────────────────────────────────────────────────────────
+# 2️⃣ Instala dependências Python
+# ──────────────────────────────────────────────────────────────
+COPY pyproject.toml requirements.txt* ./
+RUN if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+# ──────────────────────────────────────────────────────────────
+# 3️⃣ Copia a aplicação e scripts
+# ──────────────────────────────────────────────────────────────
+COPY . .
+
+# ──────────────────────────────────────────────────────────────
+# 4️⃣ Variáveis de ambiente padrão (produção leve)
+# ──────────────────────────────────────────────────────────────
+ENV EXECUTOR_MODE=read-only
+ENV PROMETHEUS_URL=http://prometheus:9090
+ENV GRAFANA_URL=http://grafana:3000
+ENV API_URL=http://localhost:8000
+ENV QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+
+# ──────────────────────────────────────────────────────────────
+# 5️⃣ Porta da API
+# ──────────────────────────────────────────────────────────────
+EXPOSE 8000
+
+# ──────────────────────────────────────────────────────────────
+# 6️⃣ Comando padrão
+# ──────────────────────────────────────────────────────────────
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
