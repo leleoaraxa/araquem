@@ -18,6 +18,7 @@ services:
       - grafana
       - tempo
       - ollama
+      - otel-collector
     networks: [araquem_network, zaratustra_default]
 
   redis:

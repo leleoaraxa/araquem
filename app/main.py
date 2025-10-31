@@ -3,7 +3,7 @@
 from fastapi import FastAPI, Request, Header
 from fastapi.responses import PlainTextResponse, JSONResponse
 from typing import Dict, Any, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from prometheus_client import Counter, Histogram, CollectorRegistry, generate_latest, CONTENT_TYPE_LATEST
 from opentelemetry import trace
 import os, time
@@ -109,7 +109,7 @@ def debug_trace():
 
 class BustPayload(BaseModel):
     entity: str
-    identifiers: Optional[Dict[str, Any]] = {}
+    identifiers: Dict[str, Any] = Field(default_factory=dict)
 
 
 @app.post("/ops/cache/bust")

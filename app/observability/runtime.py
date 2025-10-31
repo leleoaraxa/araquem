@@ -15,7 +15,10 @@ def load_config():
 def init_tracing(service_name: str, cfg: dict):
     if not cfg["services"]["gateway"]["tracing"]["enabled"] and service_name == "api":
         return
-    otlp_endpoint = cfg["global"]["exporters"]["otlp_endpoint"]
+    # Prefer env var; fallback para YAML. Sempre com esquema http:// para gRPC.
+    otlp_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", cfg["global"]["exporters"]["otlp_endpoint"])
+    if not str(otlp_endpoint).startswith("http://") and not str(otlp_endpoint).startswith("https://"):
+        otlp_endpoint = f"http://{otlp_endpoint}"
     provider = TracerProvider(resource=Resource.create({"service.name": service_name}))
     provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter(endpoint=otlp_endpoint, insecure=True)))
     trace.set_tracer_provider(provider)
