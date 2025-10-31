@@ -1,0 +1,21 @@
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      curl jq bash ca-certificates tzdata tini \
+    && rm -rf /var/lib/apt/lists/*
+
+# Mínimo de deps Python para scripts/quality_push.py
+RUN pip install --no-cache-dir "httpx>=0.24,<1.0"
+
+# Mantemos a imagem como "runner" genérico: os fontes do projeto
+# serão montados por volume (-v) no momento do docker run.
+WORKDIR /workspace
+
+# Entrypoint simples e estável para shell scripts
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["bash", "-lc", "echo 'quality-runner ready'; sleep 1"]

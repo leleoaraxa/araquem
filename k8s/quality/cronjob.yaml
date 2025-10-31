@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: araquem-quality-push
+spec:
+  schedule: "0 * * * *"  # a cada hora
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: runner
+              image: quality-runner:latest
+              env:
+                - name: API_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: araquem-quality
+                      key: api_url
+                - name: QUALITY_OPS_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: araquem-quality
+                      key: ops_token
+              volumeMounts:
+                - name: repo
+                  mountPath: /workspace
+                  readOnly: true
+              workingDir: /workspace
+              command: ["bash","-lc"]
+              args:
+                - >
+                  python ./scripts/quality_push_cron.py &&
+                  ./scripts/quality_gate_check.sh
+          volumes:
+            - name: repo
+              projected:
+                # Monte o repositório via CSI/ConfigMap/Git-Repo conforme seu cluster;
+                # Aqui fica propositalmente genérico para não alterar seu fluxo atual.
+                sources: []
+

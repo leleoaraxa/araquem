@@ -1,0 +1,68 @@
+name: quality-gates
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - "scripts/**"
+      - "data/ops/quality/**"
+      - "grafana/dashboards/**"
+      - ".github/workflows/quality.yml"
+      - "Dockerfile.quality"
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - "scripts/**"
+      - "data/ops/quality/**"
+      - "grafana/dashboards/**"
+      - ".github/workflows/quality.yml"
+      - "Dockerfile.quality"
+
+jobs:
+  run-quality-gates:
+    name: Quality Gates (M6.x)
+    runs-on: ubuntu-latest
+    env:
+      # URL pública/aces­sível do API (ex.: https://api.sirios.dev)
+      API_URL: ${{ secrets.QUALITY_API_URL }}
+      # Token de operações para /ops/quality/*
+      QUALITY_OPS_TOKEN: ${{ secrets.QUALITY_OPS_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate secrets presence
+        run: |
+          set -e
+          if [ -z "${API_URL}" ]; then
+            echo "::error::QUALITY_API_URL secret ausente"; exit 1
+          fi
+          if [ -z "${QUALITY_OPS_TOKEN}" ]; then
+            echo "::error::QUALITY_OPS_TOKEN secret ausente"; exit 1
+          fi
+          echo "API_URL=${API_URL}" | sed 's/=.*/=[REDACTED]/'
+          echo "QUALITY_OPS_TOKEN=[REDACTED]"
+
+      - name: Build quality runner image
+        run: docker build -f Dockerfile.quality -t quality-runner .
+
+      - name: Run quality gate check
+        # Monta o repositório no container para usar os scripts originais
+        run: |
+          set -euo pipefail
+          docker run --rm \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            -e API_URL \
+            -e QUALITY_OPS_TOKEN \
+            quality-runner \
+            ./scripts/quality_gate_check.sh
+
+      # Fallback opcional (sem Docker) — útil em runners restritos.
+      # Mantido desativado por padrão.
+      - name: Fallback (no-docker) — run script directly
+        if: failure()
+        run: |
+          echo "Docker falhou — executando fallback sem Docker..."
+          sudo apt-get update && sudo apt-get install -y --no-install-recommends jq curl
+          bash ./scripts/quality_gate_check.sh
