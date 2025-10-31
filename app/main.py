@@ -1,6 +1,6 @@
 # app/main.py
 
-from fastapi import FastAPI, Request, Header
+from fastapi import FastAPI, Request, Header, Query
 from fastapi.responses import PlainTextResponse, JSONResponse
 from typing import Dict, Any, Optional
 from pydantic import BaseModel, Field
@@ -152,18 +152,32 @@ class AskPayload(BaseModel):
 
 
 @app.post("/ask")
-def ask(payload: AskPayload):
+def ask(payload: AskPayload, explain: bool = Query(default=False)):
     """
     M4 — Cache read-through (Redis) por entidade, respeitando cache_policies.yaml.
     Chave: araquem:{build_id}:{scope}:{entity}:{hash(identifiers)}
     """
     t0 = time.perf_counter()
 
-    # 1) Planejamento (YAML-driven)
+    # 1) Planejamento (YAML-driven) + M6.3: métrica de explain
+    t_plan0 = time.perf_counter()
     plan = _planner.explain(payload.question)
+    t_plan_dt = time.perf_counter() - t_plan0
+    if explain and PLANNER_METRICS.get("explain_enabled") is not None:
+        PLANNER_METRICS["explain_enabled"].inc()
+    if explain and PLANNER_METRICS.get("explain_latency") is not None:
+        PLANNER_METRICS["explain_latency"].observe(t_plan_dt)
     entity = plan["chosen"]["entity"]
     intent = plan["chosen"]["intent"]
     score = plan["chosen"]["score"]
+
+    # M6.3: contagem simples de nós do explain (intents avaliadas)
+    if explain and PLANNER_METRICS.get("explain_nodes") is not None:
+        try:
+            intents_count = len(plan.get("details", {}))
+            PLANNER_METRICS["explain_nodes"].labels(node_kind="intent").inc(intents_count)
+        except Exception:
+            pass
 
     if not entity:
         return JSONResponse({
@@ -177,6 +191,8 @@ def ask(payload: AskPayload):
                 "planner_score": score,
                 "rows_total": 0,
                 "elapsed_ms": int((time.perf_counter() - t0) * 1000),
+                # M6.3: manter transparência mesmo sem entity
+                "explain": plan if explain else None,
             },
         })
 
@@ -211,6 +227,8 @@ def ask(payload: AskPayload):
             "planner_score": score,
             "rows_total": len(rows),
             "elapsed_ms": elapsed_ms,
+            # M6.3: bloco explain seguindo contrato — opcional, só quando ?explain=true
+            "explain": plan if explain else None,
             "cache": {
                 "hit": bool(rt.get("cached")),
                 "key": rt.get("key"),

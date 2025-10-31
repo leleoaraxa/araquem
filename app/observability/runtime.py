@@ -96,6 +96,7 @@ def init_planner_metrics(cfg: dict, registry=None):
     """
     ocfg = cfg["services"]["orchestrator"]["metrics"]
     decisions = duration = None
+    explain_enabled = explain_latency = explain_nodes = None
     if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
         decisions = Counter(
             "sirios_planner_route_decisions_total",
@@ -112,7 +113,37 @@ def init_planner_metrics(cfg: dict, registry=None):
             buckets=buckets,
             registry=registry,
         )
-    return {"decisions": decisions, "duration": duration}
+    # --- M6.3: métricas Explain (todas opcionais conforme YAML) ---
+    if ocfg.get("planner_explain_enabled_total", {}).get("enabled", True):
+        explain_enabled = Counter(
+            "sirios_planner_explain_enabled_total",
+            "Número de requisições com explain habilitado",
+            [],
+            registry=registry,
+        )
+    if ocfg.get("planner_explain_latency_seconds", {}).get("enabled", True):
+        buckets = ocfg.get("planner_explain_latency_seconds", {}).get("buckets", [0.01,0.05,0.1,0.25,0.5,1,2])
+        explain_latency = Histogram(
+            "sirios_planner_explain_latency_seconds",
+            "Latência do cálculo de explain do planner",
+            [],
+            buckets=buckets,
+            registry=registry,
+        )
+    if ocfg.get("planner_explain_nodes_total", {}).get("enabled", True):
+        explain_nodes = Counter(
+            "sirios_planner_explain_nodes_total",
+            "Nós contados no explain do planner por tipo",
+            ["node_kind"],
+            registry=registry,
+        )
+    return {
+        "decisions": decisions,
+        "duration": duration,
+        "explain_enabled": explain_enabled,
+        "explain_latency": explain_latency,
+        "explain_nodes": explain_nodes,
+    }
 
 def init_sql_metrics(cfg: dict, registry=None):
     """
