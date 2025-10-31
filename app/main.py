@@ -360,20 +360,34 @@ def quality_report():
     proj_total = prom_query_instant('sum(sirios_planner_projection_total)')
     miss_abs   = prom_query_instant('sum(sirios_planner_top1_match_total{result="miss"})')
 
-    # Safeguards para divisão
-    def _ratio(num, den):
+    # Safeguards e coerção
+    def _to_float(x) -> float:
+        if isinstance(x, (int, float)):
+            return float(x)
+        if isinstance(x, dict):
+            # tenta extrair value[1] da primeira série se existir
+            val = (x.get("data", {}).get("result") or [{}])[0].get("value")
+            if isinstance(val, list) and len(val) == 2:
+                try:
+                    return float(val[1])
+                except Exception:
+                    return 0.0
+            return 0.0
         try:
-            n = float(num or 0.0)
-            d = float(den or 0.0)
-            return (n / d) if d > 0 else 0.0
+            return float(x)
         except Exception:
             return 0.0
+
+    def _ratio(num, den):
+        n, d = _to_float(num), _to_float(den)
+        return (n / d) if d > 0 else 0.0
 
     top1_acc   = _ratio(top1_hit, top1_total)
     routed_rt  = _ratio(routed_ok, routed_all)
     proj_pass  = _ratio(proj_ok, proj_total)
+    miss_abs_v = _to_float(miss_abs)
     miss_ratio = _ratio(miss_abs, top1_total)
-    gap_p50_v  = float(gap_p50 or 0.0)
+    gap_p50_v  = _to_float(gap_p50)
 
     violations: List[str] = []
     if top1_acc < min_top1_acc:
@@ -382,8 +396,8 @@ def quality_report():
         violations.append(f"routed_rate {routed_rt:.3f} < min {min_routed_rt:.3f}")
     if gap_p50_v < min_top2_gap:
         violations.append(f"top2_gap_p50 {gap_p50_v:.3f} < min {min_top2_gap:.3f}")
-    if float(miss_abs or 0.0) > max_miss_abs:
-        violations.append(f"misses_abs {float(miss_abs or 0.0):.0f} > max {max_miss_abs:.0f}")
+    if miss_abs_v > max_miss_abs:
+        violations.append(f"misses_abs {miss_abs_v:.0f} > max {max_miss_abs:.0f}")
     if miss_ratio > max_miss_ratio:
         violations.append(f"misses_ratio {miss_ratio:.3f} > max {max_miss_ratio:.3f}")
 
@@ -396,6 +410,8 @@ def quality_report():
             "top2_gap_p50": round(gap_p50_v, 6),
             "projection_pass": round(proj_pass, 6),
             "misses_abs": float(miss_abs or 0.0),
+            "misses_ratio": round(miss_ratio, 6),
+            "misses_abs": miss_abs_v,
             "misses_ratio": round(miss_ratio, 6)
         },
         "thresholds": qg,
