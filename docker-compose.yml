@@ -1,0 +1,155 @@
+services:
+  api:
+    build: .
+    container_name: araquem-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
+    environment:
+      - EXECUTOR_MODE=read-only
+      - PROMETHEUS_URL=http://prometheus:9090
+      - GRAFANA_URL=http://grafana:3000
+      - QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+    volumes:
+      - ./:/app
+    depends_on:
+      - redis
+      - prometheus
+      - grafana
+      - tempo
+      - ollama
+      - otel-collector
+    networks: [araquem_network, zaratustra_default]
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/ops/quality/report >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  redis:
+    image: redis:7
+    container_name: araquem-redis
+    ports:
+      - "6379:6379"
+    networks: [araquem_network]
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: araquem-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    networks: [araquem_network]
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: araquem-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks: [araquem_network]
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: araquem-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+    networks: [araquem_network]
+
+  tempo:
+    image: grafana/tempo:latest
+    container_name: araquem-tempo
+    command:
+      - "-config.file=/etc/tempo/tempo.yaml"
+    # ✅ mantenha só a 3200 se quiser ver/usar pelo host (UI/metrics)
+    ports:
+      - "3200:3200"
+    volumes:
+      - tempo-data:/var/tempo
+      - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml:ro
+    restart: unless-stopped
+    networks: [araquem_network]
+
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    container_name: araquem-otel
+    command: ["--config=/etc/otel/config.yaml"]
+    volumes:
+      - ./otel-collector/config.yaml:/etc/otel/config.yaml:ro
+    restart: unless-stopped
+    networks: [araquem_network]
+    depends_on:
+      - tempo
+
+  quality-cron:
+    image: quality-runner
+    container_name: araquem-quality-cron
+    restart: unless-stopped
+    environment:
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
+      - QUALITY_SAMPLES_GLOB=data/ops/quality/*.json
+      - QUALITY_PUSH_SLEEP=0.2
+      - QUALITY_AUTH_BEARER=false
+      - QUALITY_TOKEN_HEADER=X-OPS-TOKEN
+      - QUALITY_REPORT_WAIT_MAX=90
+      - QUALITY_REPORT_WAIT_SLEEP=3
+    command: >
+      bash -lc "
+        echo '⏳ aguardando API saudável...' &&
+        until curl -fsS -H 'X-OPS-TOKEN: '${QUALITY_OPS_TOKEN} http://localhost:8000/ops/quality/report >/dev/null; do
+          sleep 2;
+        done &&
+        echo '✅ API ok, iniciando ciclo de qualidade' &&
+        while true; do
+          python ./scripts/quality_push_cron.py || true;
+          echo '⏳ aguardando consolidação das métricas...';
+          WAIT_MAX=${QUALITY_REPORT_WAIT_MAX:-60};
+          WAIT_SLEEP=${QUALITY_REPORT_WAIT_SLEEP:-2};
+          waited=0;
+          # Espera até routed_rate>0 E top1_accuracy>0, ou até o timeout
+          while [ $$waited -lt $$WAIT_MAX ]; do
+            json=$$(curl -fsS -H 'X-OPS-TOKEN: '${QUALITY_OPS_TOKEN} http://localhost:8000/ops/quality/report || echo '{}');
+            if echo \"$$json\" | jq -e '(.metrics.routed_rate // 0) > 0 and (.metrics.top1_accuracy // 0) > 0' >/dev/null; then
+              rr=$$(echo \"$$json\" | jq -r '.metrics.routed_rate // 0');
+              t1=$$(echo \"$$json\" | jq -r '.metrics.top1_accuracy // 0');
+              echo \"✅ métricas disponíveis (routed_rate=$$rr, top1=$$t1)\";
+              break;
+            fi
+            sleep $$WAIT_SLEEP;
+            waited=$$((waited + WAIT_SLEEP));
+          done;
+          ./scripts/quality_gate_check.sh || true;
+          sleep 3600;
+        done
+      "
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace:ro
+    depends_on:
+      api:
+        condition: service_healthy
+    # Compartilha o namespace de rede com a API → localhost:8000 == API
+    network_mode: "service:api"
+
+volumes:
+  grafana:
+  ollama:
+  tempo-data:
+
+networks:
+  araquem_network:
+    driver: bridge
+  zaratustra_default:
+    external: true
