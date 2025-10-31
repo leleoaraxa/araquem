@@ -277,13 +277,20 @@ def quality_push(payload: Dict[str, Any] = Body(...), x_ops_token: Optional[str]
             q = s.get("question") or ""
             expected = s.get("expected_intent") or ""
             plan = _planner.explain(q)
-            predicted = (plan.get("chosen") or {}).get("intent")
+            chosen     = (plan.get("chosen") or {})
+            predicted  = chosen.get("intent")
+            entity     = chosen.get("entity")  # usado para outcome de roteamento
             # counters hit/miss
             if PLANNER_METRICS.get("top1_match_total") is not None:
                 PLANNER_METRICS["top1_match_total"].labels(result="hit" if predicted == expected else "miss").inc()
             # confusion matrix
             if PLANNER_METRICS.get("confusion_total") is not None and expected and predicted:
                 PLANNER_METRICS["confusion_total"].labels(expected_intent=expected, predicted_intent=predicted).inc()
+            # routed outcome (ok | unroutable) — espelha o comportamento do /ask
+            if PLANNER_METRICS.get("routed_total") is not None:
+                outcome = "ok" if entity else "unroutable"
+                PLANNER_METRICS["routed_total"].labels(outcome=outcome).inc()
+
             # top2 gap
             top2_gap = float(((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap") or 0.0)
             if PLANNER_METRICS.get("top2_gap_histogram") is not None:
