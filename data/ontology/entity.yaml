@@ -27,7 +27,51 @@ intents:
         - "noticia"
     entities: [fiis_cadastro]
 
+  - name: precos
+    tokens:
+      include: [preco, cotacao, hoje, abertura, abrir, fechar, fechamento, maxima, minima, variacao, diaria]
+      exclude: []
+    phrases:
+      include:
+        - "preco do"
+        - "cotacao do"
+        - "abertura do"
+        - "fechamento do"
+        - "maxima do"
+        - "minima do"
+        - "variacao diaria"
+      exclude: []
+    entities: [fiis_precos]
+
+  - name: dividendos
+    tokens:
+      include: [dividendo, dividendos, provento, proventos, rendimento, rendimentos, pagamento, paga, pagou, yield, dy]
+      exclude: []
+    phrases:
+      include:
+        - "dividendo do"
+        - "dividendos do"
+        - "proventos do"
+        - "rendimento do"
+        - "pagamento do"
+      exclude: []
+    entities: [fiis_dividendos]
+
+  - name: rankings
+    tokens:
+      include: [ranking, posicao, posicoes, top, aparicoes, movimentos, ifix, ifil, usuarios, sirios, vezes]
+      exclude: []
+    phrases:
+      include:
+        - "ranking do"
+        - "posicao do"
+        - "aparicoes do"
+        - "movimentos do"
+      exclude:
+        - "preco"
+        - "cotacao"
+        - "dividendo"
+    entities: [fiis_rankings]
+
 anti_tokens:
-  precos: [preco, precos, cotacao, hoje, abrir, fechar, maxima, minima]
-  dividendos: [dividendo, provento, rendimento, yeld, yield, dy]
   noticias: [noticia, noticias, materia, reportagem, manchete]

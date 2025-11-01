@@ -1,0 +1,24 @@
+{
+  "type": "projection",
+  "entity": "fiis_dividendos",
+  "result_key": "dividendos_fii",
+  "must_have_columns": [
+    "ticker",
+    "payment_date",
+    "dividend_amt",
+    "traded_until_date"
+  ],
+  "samples": [
+    { "question": "dividendos do CXTL11" },
+    { "question": "proventos do CXTL11" },
+    { "question": "rendimento do CXTL11" },
+
+    { "question": "dividendos do FPAB11" },
+    { "question": "proventos do FPAB11" },
+    { "question": "rendimento do FPAB11" },
+
+    { "question": "dividendos do HGLG11" },
+    { "question": "proventos do HGLG11" },
+    { "question": "rendimento do HGLG11" }
+  ]
+}

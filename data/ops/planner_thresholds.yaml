@@ -10,17 +10,13 @@ quality_gates:
   thresholds:
     # Acerto Top1 (roteamento correto intent+entity)
     min_top1_accuracy: 0.95
-
     # Separação entre 1º e 2º score do planner (quanto maior, melhor)
     min_top2_gap: 0.40
-
     # Percentual mínimo de perguntas roteadas (vs. unroutable)
     min_routed_rate: 0.98
-
     # Tolerância de misses no push (útil em expansão da ontologia)
     max_misses_absolute: 0
     max_misses_ratio: 0.0
-
 # ============================================================
 # 2️⃣ Limiares operacionais do planner (nível de decisão)
 # ============================================================
@@ -34,8 +30,20 @@ planner:
       cadastro:
         min_score: 1.0
         min_gap: 0.2
+      precos:
+        min_score: 1.0
+        min_gap: 0.2
+      dividendos:
+        min_score: 1.0
+        min_gap: 0.2
 
     entities:
       fiis_cadastro:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_precos:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_dividendos:
         min_score: 1.0
         min_gap: 0.2

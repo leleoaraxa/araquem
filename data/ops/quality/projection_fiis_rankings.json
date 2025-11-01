@@ -1,0 +1,29 @@
+{
+  "type": "projection",
+  "entity": "fiis_rankings",
+  "result_key": "rankings_fii",
+  "must_have_columns": [
+    "ticker",
+    "users_ranking_count",
+    "users_rank_movement_count",
+    "sirios_ranking_count",
+    "sirios_rank_movement_count",
+    "ifix_ranking_count",
+    "ifix_rank_movement_count",
+    "ifil_ranking_count",
+    "ifil_rank_movement_count",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "ranking do HGLG11" },
+    { "question": "quantas aparições do HGLG11 no IFIX" },
+    { "question": "movimentos de ranking do HGLG11 no IFIX" },
+    { "question": "quantas vezes o HGLG11 apareceu no ranking do IFIL" },
+    { "question": "movimentos do HGLG11 no ranking do IFIL" },
+    { "question": "quantas aparições do HGLG11 no ranking da SIRIOS" },
+    { "question": "movimentos do HGLG11 no ranking da SIRIOS" },
+    { "question": "ranking de usuarios do HGLG11" },
+    { "question": "movimentos no ranking de usuarios do HGLG11" }
+  ]
+}

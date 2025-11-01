@@ -14,6 +14,7 @@ $$;
 DROP VIEW IF EXISTS view_fiis_profile CASCADE;
 DROP VIEW IF EXISTS fiis_cadastro CASCADE;
 DROP VIEW IF EXISTS fiis_rankings CASCADE;
+DROP VIEW IF EXISTS fiis_precos CASCADE;
 DROP VIEW IF EXISTS view_fiis_financials CASCADE;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info CASCADE;
 
@@ -478,6 +479,27 @@ SELECT ticker, users_ranking_count, users_rank_movement_count, sirios_ranking_co
 FROM view_fiis_info;
 
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;
+
+
+-- =====================================================================
+-- VIEW: fiis_precos
+-- =====================================================================
+CREATE VIEW fiis_precos AS
+SELECT ticker, price_date as traded_at, close_price, adj_close_price, 
+open_price as open, daily_range_pct as daily_variation_pct, max_price,
+min_price, created_at, updated_at
+FROM view_fiis_history_prices;
+
+ALTER VIEW public.fiis_precos OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_dividendos
+-- =====================================================================
+CREATE VIEW fiis_dividendos AS
+SELECT ticker, traded_until_date, payment_date, dividend_amt, created_at, updated_at
+FROM view_fiis_history_dividends;
+
+ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
 
 -- =====================================================================
 -- VIEW: view_fiis_financials

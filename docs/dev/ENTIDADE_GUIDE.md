@@ -22,83 +22,75 @@ Cada entidade contém:
 ## 🔹 Convenções Gerais
 
 | Item | Regra | Exemplo |
-|------|--------|---------|
-| **Nome lógico** | sempre em *snake_case*, sem `view_` | `fiis_cadastro`, `fiis_dividendos` |
-| **Arquivo YAML** | mesmo nome do `entity`, dentro de `data/entities/` | `data/entities/fiis_cadastro.yaml` |
-| **result_key** | deve ser o mesmo nome da entidade, prefixado se necessário | `cadastro_fii`, `dividendos_fii` |
-| **identifiers** | chaves primárias conhecidas | `[ticker]` ou `[ticker, fii_cnpj]` |
-| **default_date_field** | `updated_at` (ou campo temporal principal) | `default_date_field: updated_at` |
-| **private** | `true` para entidades com dados sensíveis (ex.: posições de cliente) | `private: true` |
-| **ask.intents** | nome canônico do domínio | `cadastro`, `dividendos`, `precos`, etc. |
-| **cache policy** | definida em `data/entities/cache_policies.yaml` | TTL e horário de atualização |
-| **colunas booleanas** | prefixo `is_` ou `has_` | `is_exclusive`, `has_risk` |
-| **enumeração** | indicar valores válidos (quando aplicável) | `allowed_values: [ATIVA, PASSIVA]` |
+|------|------|---------|
+| **Nome lógico** | snake_case, sem `view_` | `fiis_cadastro`, `fiis_precos` |
+| **Arquivo YAML** | mesmo nome do `entity` em `data/entities/` | `data/entities/fiis_precos.yaml` |
+| **result_key** | igual ao nome da entidade (ou prefixado claro) | `cadastro_fii`, `precos_fii` |
+| **identifiers** | chaves primárias conhecidas | `[ticker]` |
+| **default_date_field** | campo temporal principal | `traded_at` (preços) |
+| **private** | `true` p/ dados sensíveis | `private: false` p/ públicos |
+| **ask.intents** | nome canônico do domínio | `cadastro`, `precos`, etc. |
+| **cache policy** | em `data/entities/cache_policies.yaml` | TTL e refresh |
+| **colunas booleanas** | prefixo `is_`/`has_` | `is_exclusive` |
+| **enumeração** | listar valores | `allowed_values: [ATIVA, PASSIVA]` |
 
 ---
 
 ## 🔹 Workflow Padrão
 
 ### 1️⃣ Solicitar uma nova entidade (ou revisão futurista)
+- “Sirius, nova **análise futurista** da entidade `<nome_da_view>`.”
+- “Sirius, quero criar a entidade `<nome>` no padrão Araquem (ontologia + cache + testes + templates).”
 
-Use o comando:
-
-> “Sirius, nova **análise futurista** da entidade `<nome_da_view>`.”
-
-ou, se for gerar do zero:
-
-> “Sirius, quero criar a entidade `<nome>` no padrão Araquem (ontologia + cache + testes + templates).”
-
----
-
-### 2️⃣ Sirius executa o pacote completo
-
-Para cada entidade, ele gera (ou revisa):
+### 2️⃣ Pacote gerado/revisado por entidade
 
 | Arquivo / Componente | Descrição |
-|-----------------------|------------|
+|---|---|
 | `data/entities/<entidade>.yaml` | Estrutura base da entidade |
 | `data/entities/cache_policies.yaml` | TTL e refresh |
-| `data/ontology/entity.yaml` (patch) | Inclusão do intent |
-| `data/concepts/<entidade>_templates.md` | Frases determinísticas de resposta |
-| `tests/test_ask_<entidade>.py` | Testes ouro do roteamento |
-| `tests/test_results_key_<entidade>.py` | Validação do result_key |
-| `docs/dev/<ENTIDADE>_README.md` | Documentação técnica e origem dos dados |
+| `data/ontology/entity.yaml` (patch) | Inclusão/ajuste de intent e entidades |
+| `data/concepts/<entidade>_templates.md` | Frases determinísticas |
+| `tests/test_ask_<entidade>.py` | Testes ouro de roteamento |
+| `tests/test_results_key_<entidade>.py` | Valida `result_key` |
+| `docs/dev/<ENTIDADE>_README.md` | Documentação técnica |
 
 ---
 
-### 3️⃣ Regras de qualidade obrigatórias
+## 🔹 Regras de qualidade obrigatórias
 
-1. Nenhum hardcode — todos os metadados vêm dos YAMLs.
-2. Nenhuma heurística fora da ontologia.
-3. Nomes e aliases devem estar **em português claro** (sem termos técnicos).
-4. Cada entidade deve ter **apenas um propósito semântico** (ex.: cadastro ≠ ranking).
-5. Toda nova entidade precisa passar nos **testes ouro automáticos** antes de ser incluída no catálogo principal.
+1. **Sem hardcodes/heurísticas** — tudo vem de YAML/Ontologia/SQL real.
+2. **Propósito único por entidade** (ex.: `fiis_cadastro` ≠ `fiis_precos`).
+3. **Nomes/aliases em PT-BR claro**.
+4. **Testes ouro obrigatórios** antes de subir ao catálogo.
 
 ---
 
-### 4️⃣ Estrutura de Pastas (Design Contract)
+## 🔹 Estrutura de Pastas (Design Contract)
 
 ```
 data/
-  ├── entities/
-  │   ├── fiis_cadastro.yaml
-  │   ├── fiis_rankings.yaml
-  │   └── cache_policies.yaml
-  ├── ontology/
-  │   └── entity.yaml
-  ├── concepts/
-  │   ├── catalog.yaml
-  │   └── fiis_cadastro_templates.md
+├── entities/
+│   ├── fiis_cadastro.yaml
+│   ├── fiis_precos.yaml
+│   └── cache_policies.yaml
+├── ontology/
+│   └── entity.yaml
+├── concepts/
+│   ├── catalog.yaml
+│   ├── fiis_cadastro_templates.md
+│   └── fiis_precos_templates.md
 docs/
-  ├── dev/
-  │   ├── ENTIDADE_GUIDE.md      ← este documento
-  │   └── fiis_cadastro_README.md
-  └── runbooks/
-      └── cache_incidentes.md
+├── dev/
+│   ├── ENTIDADE_GUIDE.md
+│   ├── fiis_cadastro_README.md
+│   └── fiis_precos_README.md
+└── runbooks/
+└── cache_incidentes.md
 tests/
-  ├── test_ask_<entidade>.py
-  ├── test_results_key_<entidade>.py
-  └── test_cache_entities.py
+├── test_ask_<entidade>.py
+├── test_results_key_<entidade>.py
+└── test_cache_entities.py
+
 ```
 
 ---
@@ -106,50 +98,33 @@ tests/
 ## 🔹 Níveis de Maturidade (entities)
 
 | Nível | Estado | Descrição |
-|-------|---------|-----------|
-| **M0** | Esboço | YAML inicial sem testes nem ontologia |
-| **M1** | Básico | Roteia via `/ask`, resultado plano |
-| **M2** | Com Ontologia | tokens e intents definidos |
-| **M3** | Explicável | `planner.explain()` descreve decisão |
-| **M4** | Cacheado | TTL e políticas no Redis |
-| **M5** | Observável | métricas e telemetria de acesso |
-| **M6+** | Integrado | gera respostas naturais via Íris (phi3) |
+|---|---|---|
+| **M0** | Esboço | YAML inicial |
+| **M1** | Básico | Roteia via `/ask` |
+| **M2** | Com Ontologia | intents/tokens definidos |
+| **M3** | Explicável | `planner.explain()` |
+| **M4** | Cacheado | TTL/Redis |
+| **M5** | Observável | métricas/telemetria |
+| **M6+** | Integrado | Respostas naturais (Íris) |
 
 ---
 
 ## 🔹 Git Flow recomendado
 
 ```bash
-# criar branch nova
-git checkout -b feat(entities):add-fiis-cadastro
-
-# adicionar arquivos
-git add data/entities/fiis_cadastro.yaml data/entities/cache_policies.yaml
-
-# commit semântico
-git commit -m "feat(entities): add fiis_cadastro entity with cache and ontology entity intent"
-
-# push e PR
-git push origin feat(entities):add-fiis-cadastro
+git checkout -b feat(entities):add-fiis-precos
+git add data/entities/fiis_precos.yaml data/ontology/entity.yaml data/golden/m65_quality.yaml
+git commit -m "feat(entities): add fiis_precos and ontology intent precos + golden samples"
+git push origin feat(entities):add-fiis-precos
 ```
-
----
-
-## 🔹 Dúvidas frequentes
-
-| Pergunta | Resposta |
-|-----------|-----------|
-| Posso chamar de “view” em vez de “entidade”? | Sim, mas “entidade” é preferido no contexto do Araquem. |
-| Posso incluir ranking, preço e cadastro na mesma view? | Não — um propósito por entidade. |
-| Como defino se é privada? | `private: true` e inclua o filtro obrigatório (`client_id`, `document_number`). |
-| Como altero TTL do cache? | Em `data/entities/cache_policies.yaml`. |
-| E se eu quiser revalidar tudo? | Rode `pytest -q` ou o warmup de cache. |
 
 ---
 
 ### 🔸 Exemplo de pedido completo para nova entidade
 
-> Sirius, quero criar uma nova entidade chamada **fiis_dividendos** no padrão Araquem.
-> Ela representa o histórico de dividendos pagos por cada FII.
-> Use `ticker` como identificador, TTL diário, e result_key `dividendos_fii`.
-> Gere também o patch de ontologia e testes ouro.
+> “Sirius, criar **fiis_precos** no padrão Araquem, baseada na `CREATE VIEW fiis_precos AS ...`.
+> Identificador `ticker`, `default_date_field: traded_at`, `result_key: precos_fii`, e testes ouro de roteamento.”
+
+```
+
+---
