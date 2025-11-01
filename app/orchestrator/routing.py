@@ -13,6 +13,7 @@ from app.builder.sql_builder import build_select_for_entity
 from app.executor.pg import PgExecutor
 from app.formatter.rows import format_rows
 from app.observability.instrumentation import counter, histogram
+from app.analytics.explain import explain as _explain_analytics
 
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
@@ -183,19 +184,46 @@ class Orchestrator:
                 params = {**params, "entity": entity}  # etiqueta para métricas SQL
             rows = self._exec.query(sql, params)
 
+        # elapsed consolidado para reutilização (meta e explain analytics)
+        elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+        # Explain Analytics (somente quando solicitado)
+        explain_analytics_payload = None
+        if explain:
+            # Usa o trace_id do span corrente como request_id (correlação OTEL)
+            ctx = sp.get_span_context() if sp else None
+            trace_id = getattr(ctx, "trace_id", 0) if ctx else 0
+            request_id = f"{trace_id:032x}"
+            planner_output = {
+                "route": {"intent": intent, "entity": entity, "view": result_key},
+                "chosen": chosen,
+            }
+            metrics_snapshot = {
+                "latency_ms": elapsed_ms,
+                "route_source": "planner",
+                # cache_hit: desconhecido neste ponto; manter None para não inferir
+            }
+            explain_analytics_payload = _explain_analytics(
+                request_id=request_id,
+                planner_output=planner_output,
+                metrics=metrics_snapshot,
+            )
+
         results = {result_key: format_rows(rows, return_columns)}
+
         return {
             "status": {"reason": "ok", "message": "ok"},
             "results": results,
             "meta": {
                 "planner": plan,
                 "explain": exp if explain else None,
+                "explain_analytics": explain_analytics_payload if explain else None,
                 "result_key": result_key,
                 "planner_intent": intent,
                 "planner_entity": entity,
                 "planner_score": score,
                 "rows_total": len(rows),
-                "elapsed_ms": int((time.perf_counter() - t0) * 1000),
+                "elapsed_ms": elapsed_ms,
                 "gate": gate,
             },
         }
