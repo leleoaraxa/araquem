@@ -1,0 +1,15 @@
+{
+  "name": "m66_explain_projection",
+  "type": "explain_contract_check",
+  "checks": [
+    { "field": "intent", "required": true },
+    { "field": "entity", "required": true },
+    { "field": "route_id", "required": true },
+    { "field": "sql_view", "required": true },
+    { "field": "sql_hash", "required": true },
+    { "field": "features.tokens_matched", "required": true },
+    { "field": "latency_ms", "required": true }
+  ],
+  "sources": ["planner.explain()"],
+  "notes": "Verifica o contrato do explain sem tocar em dados de negócio. Labels sempre vindos da Ontologia/YAML/SQL reais."
+}

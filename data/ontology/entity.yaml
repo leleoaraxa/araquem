@@ -13,67 +13,175 @@ weights:
 intents:
   - name: cadastro
     tokens:
-      include: [cadastro, cnpj, administrador, administradora, gestor, gestora, custodiante, assembleia, site, "site oficial"]
-      exclude: []
+      include:
+        - cadastro
+        - cnpj
+        - administrador
+        - administradora
+        - gestor
+        - gestora
+        - custodiante
+        - assembleia
+        - site
+        - site oficial
+        - nome
+        - exibicao
+        - b3
+        - classificacao
+        - setor
+        - subsetor
+        - gestao
+        - publico
+        - alvo
+        - isin
+        - ipo
+        - peso
+        - ifix
+        - ifil
+        - cotas
+        - cotistas
+        - url
+        - oficial
+      exclude:
+        - preco
+        - precos
+        - cotacao
+        - dividendo
+        - ranking
+        - top
     phrases:
       include:
-        - "cnpj do"
-        - "administrador do"
-        - "site do"
+        - cnpj do
+        - administrador do
+        - site do
+        - nome de pregrao do
+        - nome de pregrao b3 do
+        - nome de exibicao do
+        - classificacao do
+        - setor do
+        - subsetor do
+        - tipo de gestao do
+        - publico alvo do
+        - codigo isin do
+        - data do ipo do
+        - peso no ifix do
+        - peso no ifil do
+        - numero de cotas emitidas do
+        - quantos cotistas tem o
+        - url oficial do
       exclude:
-        - "preco"
-        - "cotacao"
-        - "dividendo"
-        - "noticia"
+        - preco do
+        - cotacao do
+        - dividendo do
+        - ranking de
     entities: [fiis_cadastro]
 
   - name: precos
     tokens:
-      include: [preco, cotacao, hoje, abertura, abrir, fechar, fechamento, maxima, minima, variacao, diaria]
-      exclude: []
+      include:
+        - preco
+        - precos
+        - cotacao
+        - hoje
+        - ontem
+        - abertura
+        - abrir
+        - fechamento
+        - fechar
+        - maxima
+        - minima
+        - variacao
+        - diaria
+        - pregrao
+      exclude:
+        - cadastro
+        - dividendo
+        - ranking
+        - top
+        - melhores
+        - piores
     phrases:
       include:
-        - "preco do"
-        - "cotacao do"
-        - "abertura do"
-        - "fechamento do"
-        - "maxima do"
-        - "minima do"
-        - "variacao diaria"
+        - preco do
+        - preco atual
+        - preco pregao
+        - cotacao do
+        - abertura do
+        - fechamento do
+        - maxima do
+        - minima do
+        - variacao diaria
       exclude:
-        - "dividendo"
-        - "provento"
-        - "cadastro"
+        - ranking de
+        - top fiis por
+        - dividendo do
     entities: [fiis_precos]
 
   - name: dividendos
     tokens:
-      include: [dividendo, dividendos, provento, proventos, rendimento, rendimentos, pagamento, paga, pagou, yield, dy]
-      exclude: []
+      include:
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - rendimento
+        - rendimentos
+        - pagamento
+        - paga
+        - pagou
+      exclude:
+        - cadastro
+        - preco
+        - cotacao
+        - ranking
     phrases:
       include:
-        - "dividendo do"
-        - "dividendos do"
-        - "proventos do"
-        - "rendimento do"
-        - "pagamento do"
-      exclude: []
+        - dividendo do
+        - dividendos do
+        - proventos do
+        - rendimento do
+        - pagamento do
+        - data com
+        - data ex
+        - quando paga
+      exclude:
+        - preco do
+        - cotacao do
+        - ranking de
     entities: [fiis_dividendos]
 
   - name: rankings
     tokens:
-      include: [ranking, posicao, posicoes, top, aparicoes, movimentos, ifix, ifil, usuarios, sirios, vezes]
-      exclude: []
+      include:
+        - ranking
+        - posicao
+        - posicoes
+        - top
+        - aparicoes
+        - movimentos
+        - ifix
+        - ifil
+        - usuarios
+        - sirios
+        - vezes
+      exclude:
+        - cadastro
+        - preco
+        - cotacao
+        - dividendo
     phrases:
       include:
-        - "ranking do"
-        - "posicao do"
-        - "aparicoes do"
-        - "movimentos do"
+        - ranking do
+        - posicao do
+        - aparicoes do
+        - movimentos do
+        - ranking de
+        - top fiis por
+        - melhores fiis por
       exclude:
-        - "preco"
-        - "cotacao"
-        - "dividendo"
+        - preco do
+        - cotacao do
+        - dividendo do
     entities: [fiis_rankings]
 
 anti_tokens:
