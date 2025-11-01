@@ -65,6 +65,7 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
     }
 
     total_chunks = 0
+    B = int(os.getenv("EMBED_BATCH_SIZE", "8"))
     with out_jsonl.open("w", encoding="utf-8") as fw:
         for item in include:
             doc_id = str(item.get("id") or "")
@@ -80,12 +81,44 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
                 continue
 
             chunks = _chunk(text, max_chars=max_chars, overlap=overlap)
-            vectors = []
-            # embarca em lotes pequenos p/ não estourar payload
-            B = 8
+            vectors: List[List[float]] = []
+            # embarca em lotes pequenos p/ não estourar payload (configurável via EMBED_BATCH_SIZE)
             for i in range(0, len(chunks), B):
                 batch = chunks[i : i + B]
-                embs = client.embed(batch)
+
+                try:
+                    embs = client.embed(batch)
+                except RuntimeError as e:
+                    # fallback item-a-item quando batch falhar
+                    print(
+                        f"[warn] embed batch falhou ({len(batch)} itens). Fallback item-a-item. Detalhe: {e}"
+                    )
+                    embs = []
+                    for j, t in enumerate(batch):
+                        try:
+                            single = client.embed([t])
+                            if (
+                                not single
+                                or not isinstance(single, list)
+                                or not single[0]
+                            ):
+                                raise RuntimeError("single empty")
+                            embs.append(single[0])
+                        except Exception as ee:
+                            # grava vetor vazio para preservar alinhamento e permitir diagnosticar depois
+                            print(
+                                f"[error] embed falhou no item {i+j} (doc={doc_id}): {ee}"
+                            )
+                            embs.append([])
+                # se vier tamanho diferente, mantemos alinhamento, mas marcamos vazios
+                if len(embs) != len(batch):
+                    print(
+                        f"[warn] embed retornou {len(embs)} para {len(batch)}. Normalizando com vetores vazios."
+                    )
+                    while len(embs) < len(batch):
+                        embs.append([])
+                    if len(embs) > len(batch):
+                        embs = embs[: len(batch)]
                 vectors.extend(embs)
 
             assert len(vectors) == len(chunks)
@@ -98,7 +131,7 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
                     "tags": tags,
                     "sha": _sha(c),
                     "text": c,
-                    "embedding": v,
+                    "embedding": v if isinstance(v, list) else [],
                 }
                 fw.write(json.dumps(rec, ensure_ascii=False) + "\n")
                 total_chunks += 1

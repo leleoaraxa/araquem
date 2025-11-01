@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "collection": "araquem-core",
+  "embedding_model": "nomic-embed-text",
+  "generated_at": "2025-11-01T21:08:04Z",
+  "source": "data/embeddings/index.yaml",
+  "docs": [
+    {
+      "id": "concepts-catalog",
+      "path": "data/concepts/catalog.yaml",
+      "tags": [
+        "concepts",
+        "catalog",
+        "fiis"
+      ],
+      "chunks": 1,
+      "sha_all": "f32e24538528c9cc5554512f8809735f3e95caaeb54022014847ddddf24f7bac"
+    },
+    {
+      "id": "concepts-fiis",
+      "path": "data/concepts/fiis.md",
+      "tags": [
+        "concepts",
+        "fiis"
+      ],
+      "chunks": 9,
+      "sha_all": "c8964d7322f4736494d58e8bbd7f5be7cc507ec5a6fd90183d05b665af54083f"
+    },
+    {
+      "id": "ontology-entity",
+      "path": "data/ontology/entity.yaml",
+      "tags": [
+        "ontology",
+        "intents",
+        "entities"
+      ],
+      "chunks": 3,
+      "sha_all": "c847368afbd215a3e4b04519c71eec432f5c2a992c788fcc66defc693d67852a"
+    },
+    {
+      "id": "entity-fiis-cadastro",
+      "path": "data/entities/fiis_cadastro.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "cadastro"
+      ],
+      "chunks": 3,
+      "sha_all": "dff910d75061189413edeec3624a3b1863b203678664b78fbd2da3702ba8fbc5"
+    },
+    {
+      "id": "entity-fiis-dividendos",
+      "path": "data/entities/fiis_dividendos.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos"
+      ],
+      "chunks": 2,
+      "sha_all": "d52ff12be28ca03fe553177c387274f64b1c64d355f956fc0b37f8d628699332"
+    },
+    {
+      "id": "entity-fiis-precos",
+      "path": "data/entities/fiis_precos.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "precos"
+      ],
+      "chunks": 2,
+      "sha_all": "792f9f5cc6af0e31724c2c7d996c561d79bf187cf7b095f8b0852479f830d5af"
+    },
+    {
+      "id": "entity-fiis-rankings",
+      "path": "data/entities/fiis_rankings.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "rankings"
+      ],
+      "chunks": 3,
+      "sha_all": "d545fe71d397856c9330d5f156a3c8b62a112f46d35b9efd15781c5af8969bf7"
+    },
+    {
+      "id": "entity-cache-policies",
+      "path": "data/entities/cache_policies.yaml",
+      "tags": [
+        "entities",
+        "cache",
+        "policy"
+      ],
+      "chunks": 1,
+      "sha_all": "9e3f671171e992029f4efd2c851c8966b87016be4c9f8247f29849059a1a7f03"
+    },
+    {
+      "id": "ops-planner-thresholds",
+      "path": "data/ops/planner_thresholds.yaml",
+      "tags": [
+        "quality",
+        "thresholds"
+      ],
+      "chunks": 2,
+      "sha_all": "0f4cf3f2676da3a49f433a73a2a9dec61c57337275e47188db8c500ba18af29f"
+    },
+    {
+      "id": "ops-observability",
+      "path": "data/ops/observability.yaml",
+      "tags": [
+        "observability",
+        "metrics",
+        "tracing"
+      ],
+      "chunks": 2,
+      "sha_all": "6d77d8b343e94fc28451cd8ca2efe53d5310b3675b52a3ef91b52b8c2f073847"
+    },
+    {
+      "id": "golden-m65-quality-yaml",
+      "path": "data/golden/m65_quality.yaml",
+      "tags": [
+        "golden",
+        "quality"
+      ],
+      "chunks": 9,
+      "sha_all": "d1eef6ed7efdebb1375ea12deba0835822d96da5094b86cba4f7c8f4bc2e5bd2"
+    },
+    {
+      "id": "golden-m65-quality-json",
+      "path": "data/golden/m65_quality.json",
+      "tags": [
+        "golden",
+        "quality",
+        "json"
+      ],
+      "chunks": 10,
+      "sha_all": "829f52e808b46023c1b04f28ca6170b02866b2165007529f629577fc26fc6884"
+    },
+    {
+      "id": "q-routing-samples",
+      "path": "data/ops/quality/routing_samples.json",
+      "tags": [
+        "quality",
+        "routing",
+        "samples"
+      ],
+      "chunks": 8,
+      "sha_all": "17453b420db513e554fa809bf536fef7654185344f8e5dfefdc2ae5d6b35e49e"
+    },
+    {
+      "id": "q-projection-cadastro",
+      "path": "data/ops/quality/projection_fiis_cadastro.json",
+      "tags": [
+        "quality",
+        "projection",
+        "cadastro"
+      ],
+      "chunks": 1,
+      "sha_all": "681ac90fd1225b741861cb62c95f044c60573ed7187baf498cf6120970d813c1"
+    },
+    {
+      "id": "q-projection-dividendos",
+      "path": "data/ops/quality/projection_fiis_dividendos.json",
+      "tags": [
+        "quality",
+        "projection",
+        "dividendos"
+      ],
+      "chunks": 1,
+      "sha_all": "ee4b8590496efd29238d85070a587aead350a7650bbefead703978a9faf5e263"
+    },
+    {
+      "id": "q-projection-precos",
+      "path": "data/ops/quality/projection_fiis_precos.json",
+      "tags": [
+        "quality",
+        "projection",
+        "precos"
+      ],
+      "chunks": 1,
+      "sha_all": "96efd511586049974909d79b3d0897a37c7813193e5b5d3fc7b023224384b6df"
+    },
+    {
+      "id": "q-projection-rankings",
+      "path": "data/ops/quality/projection_fiis_rankings.json",
+      "tags": [
+        "quality",
+        "projection",
+        "rankings"
+      ],
+      "chunks": 1,
+      "sha_all": "d905ccea8fab798fc42b468cc1a9c353588fee28303112ebc7217f8c832bf3ab"
+    },
+    {
+      "id": "q-m66-projection",
+      "path": "data/ops/quality/m66_projection.json",
+      "tags": [
+        "quality",
+        "projection",
+        "m66"
+      ],
+      "chunks": 1,
+      "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
+    }
+  ]
+}
