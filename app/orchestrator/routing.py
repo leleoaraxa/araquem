@@ -12,7 +12,10 @@ from app.planner.planner import Planner
 from app.builder.sql_builder import build_select_for_entity
 from app.executor.pg import PgExecutor
 from app.formatter.rows import format_rows
-from app.observability.instrumentation import counter, histogram
+from app.observability.metrics import (
+    emit_counter as counter,
+    emit_histogram as histogram,
+)
 from app.analytics.explain import explain as _explain_analytics
 
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)

@@ -19,10 +19,13 @@ from app.planner.planner import Planner
 from app.orchestrator.routing import Orchestrator
 from app.executor.pg import PgExecutor
 from app.observability.runtime import load_config, bootstrap, prom_query_instant
-from app.observability.instrumentation import counter, histogram
+from app.observability.metrics import (
+    emit_counter as counter,
+    emit_histogram as histogram,
+)
 from app.analytics.explain import explain as _explain_analytics
 from app.analytics.repository import fetch_explain_summary, fetch_explain_events
-
+from app.observability.metrics import list_metrics_catalog
 
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 cfg = load_config()
@@ -260,6 +263,11 @@ def ops_analytics_explain_events(
         offset=offset,
     )
     return JSONResponse(_json_sanitize(out))
+
+
+@app.get("/ops/metrics/catalog")
+def ops_metrics_catalog():
+    return list_metrics_catalog()
 
 
 class AskPayload(BaseModel):
