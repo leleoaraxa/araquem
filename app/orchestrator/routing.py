@@ -155,15 +155,9 @@ class Orchestrator:
                 kind = n.get("type") or "unknown"
                 counter("sirios_planner_explain_nodes_total", node_kind=kind)
 
-            # weights_summary: contamos ocorrências por tipo (alinha ao schema: ("type",))
-            ws = (exp.get("signals") or {}).get("weights_summary") or {}
-            for k in ("token_sum", "phrase_sum", "anti_sum"):
-                _ = float(ws.get(k, 0.0) or 0.0)
-                counter(
-                    "sirios_planner_explain_weight_sum_total",
-                    type=k.replace("_sum", ""),
-                )
-
+            # Removido: tentativa de enviar somas como "counter" com _value.
+            # O schema canônico exige labels exatos; sem _value. Se precisarmos
+            # dessas somas no futuro, criaremos um histogram/gauge específico.
             if intent is not None:
                 histogram(
                     "sirios_planner_intent_score", float(score), intent=str(intent)

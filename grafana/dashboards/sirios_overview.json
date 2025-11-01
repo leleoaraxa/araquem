@@ -1,5 +1,7 @@
 {
-  "annotations": { "list": [] },
+  "annotations": {
+    "list": []
+  },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -18,8 +20,17 @@
           "refId": "B"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 0 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      }
     },
     {
       "type": "timeseries",
@@ -30,8 +41,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 8 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      }
     },
     {
       "type": "timeseries",
@@ -42,8 +62,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 16 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      }
     },
     {
       "type": "timeseries",
@@ -54,8 +83,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 23 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      }
     },
     {
       "type": "timeseries",
@@ -66,8 +104,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 30 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      }
     },
     {
       "type": "timeseries",
@@ -78,8 +125,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 37 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      }
     },
     {
       "type": "timeseries",
@@ -90,8 +146,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 44 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 44
+      }
     },
     {
       "type": "timeseries",
@@ -102,8 +167,17 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 51 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 51
+      }
     },
     {
       "type": "timeseries",
@@ -114,16 +188,34 @@
           "refId": "A"
         }
       ],
-      "options": { "legend": { "showLegend": true } },
-      "gridPos": { "h": 7, "w": 24, "x": 0, "y": 58 }
+      "options": {
+        "legend": {
+          "showLegend": true
+        }
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      }
     }
   ],
   "refresh": "10s",
   "schemaVersion": 39,
   "style": "dark",
-  "tags": ["sirios", "araquem", "api"],
-  "templating": { "list": [] },
-  "time": { "from": "now-6h", "to": "now" },
+  "tags": [
+    "sirios",
+    "araquem",
+    "api"
+  ],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
   "timezone": "",
   "title": "Araquem — API Overview",
   "uid": "araquem-api-overview",
