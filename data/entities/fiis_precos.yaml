@@ -14,10 +14,11 @@ presentation:
     - ticker
     - traded_at
     - close_price
-    - daily_variation_pct
-    - open
+    - adj_close_price
+    - open_price
     - max_price
     - min_price
+    - daily_variation_pct
 
 columns:
   - name: ticker
@@ -36,13 +37,9 @@ columns:
     alias: Fechamento ajustado
     description: Preço de fechamento ajustado por eventos.
 
-  - name: open
-    alias: Abertura
+  - name: open_price
+    alias: Preço de abertura
     description: Preço de abertura do dia.
-
-  - name: daily_variation_pct
-    alias: Variação diária (%)
-    description: Variação percentual do dia vs. anterior.
 
   - name: max_price
     alias: Máxima do dia
@@ -51,6 +48,10 @@ columns:
   - name: min_price
     alias: Mínima do dia
     description: Menor preço negociado no dia.
+
+  - name: daily_variation_pct
+    alias: Variação diária (%)
+    description: Variação percentual do dia vs. anterior.
 
   - name: created_at
     alias: Criado em
@@ -65,8 +66,10 @@ ask:
   keywords: [preco, cotacao, abertura, fechar, fechamento, maxima, minima, variacao, diaria, hoje]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
+    traded_at: [negociacao]
     close_price: [fechamento, fechar]
-    open: [abertura, abrir]
+    adj_close_price: [ajustado]
+    open_price: [abertura, abrir]
     max_price: [maxima, máxima]
     min_price: [minima, mínima]
     daily_variation_pct: [variacao, variação, variação diária, oscilação]

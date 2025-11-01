@@ -54,7 +54,8 @@ class RedisCache:
     def set_json(self, key: str, value: Any, ttl_seconds: int) -> None:
         t0 = time.perf_counter()
         try:
-            s = json.dumps(value, ensure_ascii=False)
+            # serialização segura (str() para tipos não nativos JSON)
+            s = json.dumps(value, ensure_ascii=False, default=str)
             self._cli.set(key, s, ex=ttl_seconds)
             dt = time.perf_counter() - t0
             if self._metrics["latency"] is not None:
@@ -65,6 +66,7 @@ class RedisCache:
             if self._metrics["ops"] is not None:
                 self._metrics["ops"].labels(op="set", outcome="error").inc()
             raise
+
 
     def delete(self, key: str) -> int:
         return self._cli.delete(key)

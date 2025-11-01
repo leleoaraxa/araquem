@@ -7,7 +7,7 @@
     "traded_at",
     "close_price",
     "adj_close_price",
-    "open",
+    "open_price",
     "max_price",
     "min_price",
     "daily_variation_pct"
@@ -19,13 +19,11 @@
     { "question": "máxima do CXTL11 em 2025-10-27" },
     { "question": "mínima do CXTL11 em 2025-10-27" },
     { "question": "variação diária (%) do CXTL11 em 2025-10-27" },
-
     { "question": "preço do FPAB11 em 2025-10-27" },
     { "question": "abertura do FPAB11 em 2025-10-27" },
     { "question": "máxima do FPAB11 em 2025-10-27" },
     { "question": "mínima do FPAB11 em 2025-10-27" },
     { "question": "variação diária (%) do FPAB11 em 2025-10-27" },
-
     { "question": "preço do HGLG11 em 2025-10-27" },
     { "question": "abertura do HGLG11 em 2025-10-27" },
     { "question": "máxima do HGLG11 em 2025-10-27" },

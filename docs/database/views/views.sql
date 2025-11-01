@@ -486,8 +486,7 @@ ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 -- =====================================================================
 CREATE VIEW fiis_precos AS
 SELECT ticker, price_date as traded_at, close_price, adj_close_price, 
-open_price as open, daily_range_pct as daily_variation_pct, max_price,
-min_price, created_at, updated_at
+open_price, max_price, min_price, daily_range_pct as daily_variation_pct, created_at, updated_at
 FROM view_fiis_history_prices;
 
 ALTER VIEW public.fiis_precos OWNER TO edge_user;

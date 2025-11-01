@@ -40,7 +40,10 @@ intents:
         - "maxima do"
         - "minima do"
         - "variacao diaria"
-      exclude: []
+      exclude:
+        - "dividendo"
+        - "provento"
+        - "cadastro"
     entities: [fiis_precos]
 
   - name: dividendos
