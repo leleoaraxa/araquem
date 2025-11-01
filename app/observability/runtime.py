@@ -1,272 +1,66 @@
 # app/observability/runtime.py
-import os, yaml, re, hashlib
-from prometheus_client import Counter, Histogram, Gauge
+# Backend Prometheus + (no-op) spans e bootstrap. Registro centralizado de métricas.
+import os, yaml, re, hashlib, json, urllib.parse, urllib.request
+from typing import Dict, Any, Tuple
+
+from prometheus_client import (
+    Counter as PromCounter,
+    Histogram as PromHistogram,
+    Gauge as PromGauge,
+)
 from opentelemetry import trace
 from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
-import json, urllib.parse, urllib.request
+
+from app.observability import instrumentation as obs
+
+# ---------------- Config -----------------------------------------------------
+
 
 def load_config():
     cfg_path = os.environ.get("OBSERVABILITY_CONFIG", "data/ops/observability.yaml")
     with open(cfg_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
+
+# ---------------- Tracing (opcional) ----------------------------------------
+
+
 def init_tracing(service_name: str, cfg: dict):
-    if not cfg["services"]["gateway"]["tracing"]["enabled"] and service_name == "api":
+    # keep behavior; só inicializa para a API conforme config
+    if service_name == "api" and not cfg["services"]["gateway"]["tracing"]["enabled"]:
         return
-    # Prefer env var; fallback para YAML. Sempre com esquema http:// para gRPC.
-    otlp_endpoint = os.getenv("OTEL_EXPORTER_OTLP_ENDPOINT", cfg["global"]["exporters"]["otlp_endpoint"])
-    if not str(otlp_endpoint).startswith("http://") and not str(otlp_endpoint).startswith("https://"):
+    otlp_endpoint = os.getenv(
+        "OTEL_EXPORTER_OTLP_ENDPOINT", cfg["global"]["exporters"]["otlp_endpoint"]
+    )
+    if not str(otlp_endpoint).startswith(("http://", "https://")):
         otlp_endpoint = f"http://{otlp_endpoint}"
     provider = TracerProvider(resource=Resource.create({"service.name": service_name}))
-    provider.add_span_processor(BatchSpanProcessor(OTLPSpanExporter(endpoint=otlp_endpoint, insecure=True)))
+    provider.add_span_processor(
+        BatchSpanProcessor(OTLPSpanExporter(endpoint=otlp_endpoint, insecure=True))
+    )
     trace.set_tracer_provider(provider)
 
+
+# ---------------- Utils ------------------------------------------------------
+
+
 def sql_sanitize(sql: str, max_len: int = 512):
-    # elide literals rudimentar: números e strings → '?'
     sql = re.sub(r"\'[^']*\'", "?", sql)
     sql = re.sub(r"\b\d+(\.\d+)?\b", "?", sql)
     return sql[:max_len]
 
+
 def hash_key(s: str) -> str:
     return hashlib.sha256(s.encode("utf-8")).hexdigest()
 
-def init_metrics(cfg: dict, registry=None):
-    # exemplo mínimo: buckets do gateway
-    gw = cfg["services"]["gateway"]["metrics"]
-    http_hist = None
-    if gw["http_request_duration_seconds"]["enabled"]:
-        buckets = gw["http_request_duration_seconds"]["buckets"]
-        http_hist = Histogram(
-            "sirios_http_request_duration_seconds",
-            "Duração das requisições HTTP",
-            ["route","method"],
-            buckets=buckets,
-            registry=registry,
-        )
-    http_counter = None
-    if gw["http_requests_total"]["enabled"]:
-        http_counter = Counter(
-            "sirios_http_requests_total",
-            "Total de requisições HTTP",
-            ["route","method","code"],
-            registry=registry,
-        )
-    return {"http_hist": http_hist, "http_counter": http_counter}
+
+# ---------------- Prom Instant Query helper ---------------------------------
 
 
-# -------------------------------------------------------------------
-# Cache metrics
-# -------------------------------------------------------------------
-def init_cache_metrics(cfg: dict, registry=None):
-    """
-    Métricas do cache (Redis) via YAML (services.cache.metrics).
-    Gera métricas padronizadas por operação e resultado.
-    """
-    ccf = cfg["services"]["cache"]["metrics"]
-    ops = None
-    latency = None
-
-    if ccf.get("cache_ops_total", {}).get("enabled", True):
-        ops = Counter(
-            "sirios_cache_ops_total",
-            "Operações de cache (get/set/bust) por resultado",
-            ["op", "outcome"],
-            registry=registry,
-        )
-
-    if ccf.get("cache_latency_seconds", {}).get("enabled", True):
-        buckets = ccf["cache_latency_seconds"]["buckets"]
-        latency = Histogram(
-            "sirios_cache_latency_seconds",
-            "Latência de operações de cache (s)",
-            ["op"],
-            buckets=buckets,
-            registry=registry,
-        )
-
-    return {"ops": ops, "latency": latency}
-
-
-def init_planner_metrics(cfg: dict, registry=None):
-    """
-    Métricas do Planner/Orchestrator via YAML (services.orchestrator.metrics).
-    Retorna dict com handlers já registrados no 'registry' informado.
-    """
-    ocfg = cfg["services"]["orchestrator"]["metrics"]
-    decisions = duration = None
-    explain_enabled = explain_latency = explain_nodes = None
-    explain_weight_sum = None
-    intent_score_hist = None
-    entity_score_hist = None
-    explain_depth = None
-    routed_total = None
-    top1_match_total = None
-    confusion_total = None
-    top2_gap_hist = None
-    quality_last_gap = None
-    blocked_by_threshold = None
-    projection_total = None
-
-    if ocfg.get("planner_route_decisions_total", {}).get("enabled", True):
-        decisions = Counter(
-            "sirios_planner_route_decisions_total",
-            "Decisões de roteamento do planner",
-            ["intent", "entity", "outcome"],
-            registry=registry,
-        )
-    if ocfg.get("planner_duration_seconds", {}).get("enabled", True):
-        buckets = ocfg["planner_duration_seconds"]["buckets"]
-        duration = Histogram(
-            "sirios_planner_duration_seconds",
-            "Duração por estágio do planner",
-            ["stage"],
-            buckets=buckets,
-            registry=registry,
-        )
-    # --- M6.3: métricas Explain (todas opcionais conforme YAML) ---
-    if ocfg.get("planner_explain_enabled_total", {}).get("enabled", True):
-        explain_enabled = Counter(
-            "sirios_planner_explain_enabled_total",
-            "Número de requisições com explain habilitado",
-            [],
-            registry=registry,
-        )
-    if ocfg.get("planner_explain_latency_seconds", {}).get("enabled", True):
-        buckets = ocfg.get("planner_explain_latency_seconds", {}).get("buckets", [0.01,0.05,0.1,0.25,0.5,1,2])
-        explain_latency = Histogram(
-            "sirios_planner_explain_latency_seconds",
-            "Latência do cálculo de explain do planner",
-            [],
-            buckets=buckets,
-            registry=registry,
-        )
-    if ocfg.get("planner_explain_nodes_total", {}).get("enabled", True):
-        explain_nodes = Counter(
-            "sirios_planner_explain_nodes_total",
-            "Nós contados no explain do planner por tipo",
-            ["node_kind"],
-            registry=registry,
-        )
-    # --- M6.4: métricas adicionais (todas opcionais via YAML) ---
-    if ocfg.get("planner_explain_weight_sum_total", {}).get("enabled", True):
-        explain_weight_sum = Counter(
-            "sirios_planner_explain_weight_sum_total",
-            "Somatório de pesos por tipo de sinal (token|phrase|anti) durante o explain",
-            ["type"],
-            registry=registry,
-        )
-    if ocfg.get("planner_intent_score", {}).get("enabled", True):
-        buckets_i = ocfg.get("planner_intent_score", {}).get("buckets", [0,1,2,3,5,8,13,21])
-        intent_score_hist = Histogram(
-            "sirios_planner_intent_score",
-            "Distribuição de score por intent vencedora",
-            ["intent"],
-            buckets=buckets_i,
-            registry=registry,
-        )
-    if ocfg.get("planner_entity_score", {}).get("enabled", True):
-        buckets_e = ocfg.get("planner_entity_score", {}).get("buckets", [0,1,2,3,5,8,13,21])
-        entity_score_hist = Histogram(
-            "sirios_planner_entity_score",
-            "Distribuição de score por entidade vencedora",
-            ["entity"],
-            buckets=buckets_e,
-            registry=registry,
-        )
-    if ocfg.get("planner_explain_decision_depth", {}).get("enabled", True):
-        explain_depth = Gauge(
-            "sirios_planner_explain_decision_depth",
-            "Profundidade (nós) do decision_path do explain mais recente",
-            [],
-            registry=registry,
-        )
-
-    # ---- M6.5: métricas de qualidade/“confusion” ----
-    if ocfg.get("planner_routed_total", {}).get("enabled", True):
-        routed_total = Counter(
-            "sirios_planner_routed_total",
-            "Total de requisições roteadas ou não roteadas",
-            ["outcome"],  # ok|unroutable
-            registry=registry,
-        )
-    if ocfg.get("planner_top1_match_total", {}).get("enabled", True):
-        top1_match_total = Counter(
-            "sirios_planner_top1_match_total",
-            "Acertos/erros do top1 vs esperado (intent)",
-            ["result"],  # hit|miss
-            registry=registry,
-        )
-    if ocfg.get("planner_confusion_total", {}).get("enabled", True):
-        confusion_total = Counter(
-            "sirios_planner_confusion_total",
-            "Matriz de confusão (intent esperada x prevista)",
-            ["expected_intent", "predicted_intent"],
-            registry=registry,
-        )
-    if ocfg.get("planner_top2_gap_histogram", {}).get("enabled", True):
-        buckets_g = ocfg.get("planner_top2_gap_histogram", {}).get("buckets", [0.0, 0.5, 1, 2, 3, 5])
-        top2_gap_hist = Histogram(
-            "sirios_planner_top2_gap_histogram",
-            "Distribuição do gap entre top1 e top2 intents",
-            [],
-            buckets=buckets_g,
-            registry=registry,
-        )
-    if ocfg.get("planner_quality_last_gap", {}).get("enabled", True):
-        quality_last_gap = Gauge(
-            "sirios_planner_quality_last_gap",
-            "Último gap top1-top2 observado",
-            [],
-            registry=registry,
-        )
-    # ---- M6.6: quality gates (bloqueios) ----
-    if ocfg.get("planner_blocked_by_threshold_total", {}).get("enabled", True):
-        blocked_by_threshold = Counter(
-            "sirios_planner_blocked_by_threshold_total",
-            "Bloqueios por threshold (score/gap) no planner",
-            ["reason", "intent", "entity"],  # reason: low_score|low_gap
-            registry=registry,
-        )
-    # ---- M6.7: projection gate outcome ----
-    if ocfg.get("planner_projection_total", {}).get("enabled", True):
-        projection_total = Counter(
-            "sirios_planner_projection_total",
-            "Resultados do projection gate (colunas exigidas presentes)",
-            ["outcome", "entity"],  # ok|fail
-            registry=registry,
-        )
-
-    return {
-        "decisions": decisions,
-        "duration": duration,
-        "explain_enabled": explain_enabled,
-        "explain_latency": explain_latency,
-        "explain_nodes": explain_nodes,
-        "explain_weight_sum": explain_weight_sum,
-        "intent_score_hist": intent_score_hist,
-        "entity_score_hist": entity_score_hist,
-        "explain_depth": explain_depth,
-        "routed_total": routed_total,
-        "top1_match_total": top1_match_total,
-        "confusion_total": confusion_total,
-        "top2_gap_histogram": top2_gap_hist,
-        "quality_last_gap": quality_last_gap,
-        "blocked_by_threshold": blocked_by_threshold,
-        "projection_total": projection_total,
-    }
-
-# -------------------------------------------------------------------
-# Prometheus instant query helper (sem dependência externa)
-# -------------------------------------------------------------------
 def prom_query_instant(expr: str):
-    """
-    Executa uma PromQL instantânea em PROMETHEUS_URL (env) e retorna:
-      - float se a resposta for um vetor único com 1 amostra
-      - dict bruto (JSON) caso contrário
-    """
     base = os.getenv("PROMETHEUS_URL", "http://prometheus:9090").rstrip("/")
     url = f"{base}/api/v1/query?query={urllib.parse.quote_plus(expr)}"
     req = urllib.request.Request(url, headers={"Accept": "application/json"})
@@ -276,41 +70,316 @@ def prom_query_instant(expr: str):
         return data
     result = (data.get("data") or {}).get("result") or []
     if len(result) == 1 and "value" in result[0] and len(result[0]["value"]) == 2:
-        # ["ts", "val"]
         try:
             return float(result[0]["value"][1])
         except Exception:
             return data
     return data
 
+
+# ---------------- Backend Prometheus (injeção) -------------------------------
+
+_COUNTERS: Dict[Tuple[str, Tuple[str, ...]], PromCounter] = {}
+_HISTOS: Dict[Tuple[str, Tuple[str, ...]], PromHistogram] = {}
+_GAUGES: Dict[Tuple[str, Tuple[str, ...]], PromGauge] = {}
+
+_DEFAULT_BUCKETS_MS = (0.5, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)
+
+# Esquemas CANÔNICOS de métricas → força labelnames e tipo, evita cardinalidade acidental
+_METRIC_SCHEMAS = {
+    # Explain (M6.6)
+    "planner_explain_total": ("counter", ("intent", "entity", "route_id")),
+    "planner_explain_errors_total": ("counter", ("stage",)),
+    "planner_explain_match_total": (
+        "counter",
+        ("intent", "entity", "route_id", "match"),
+    ),
+    "planner_explain_gold_total": ("counter", ("intent", "entity")),
+    "planner_explain_gold_agree_total": ("counter", ("intent", "entity")),
+    "planner_explain_latency_ms_bucket": (
+        "histogram",
+        ("intent", "entity", "route_id"),
+    ),
+    # Decorator padrão de operações
+    "app_op_total": ("counter", ("component", "operation", "status")),
+    # Exemplos existentes (gateway/cache/planner/executor) — mantidos
+    "sirios_http_request_duration_seconds": ("histogram", ("route", "method")),
+    "sirios_http_requests_total": ("counter", ("route", "method", "code")),
+    "sirios_cache_ops_total": ("counter", ("op", "outcome")),
+    "sirios_cache_latency_seconds": ("histogram", ("op",)),
+    "sirios_planner_route_decisions_total": (
+        "counter",
+        ("intent", "entity", "outcome"),
+    ),
+    "sirios_planner_duration_seconds": ("histogram", ("stage",)),
+    "sirios_planner_explain_enabled_total": ("counter", ()),
+    "sirios_planner_explain_latency_seconds": ("histogram", ()),
+    "sirios_planner_explain_nodes_total": ("counter", ("node_kind",)),
+    "sirios_planner_explain_weight_sum_total": ("counter", ("type",)),
+    "sirios_planner_intent_score": ("histogram", ("intent",)),
+    "sirios_planner_entity_score": ("histogram", ("entity",)),
+    "sirios_planner_explain_decision_depth": ("gauge", ()),
+    "sirios_planner_routed_total": ("counter", ("outcome",)),
+    "sirios_planner_top1_match_total": ("counter", ("result",)),
+    "sirios_planner_confusion_total": (
+        "counter",
+        ("expected_intent", "predicted_intent"),
+    ),
+    "sirios_planner_top2_gap_histogram": ("histogram", ()),
+    "sirios_planner_quality_last_gap": ("gauge", ()),
+    "sirios_planner_blocked_by_threshold_total": (
+        "counter",
+        ("reason", "intent", "entity"),
+    ),
+    "sirios_planner_projection_total": ("counter", ("outcome", "entity")),
+    "sirios_sql_query_duration_seconds": ("histogram", ("entity", "db_name")),
+    "sirios_sql_rows_returned_total": ("counter", ("entity",)),
+    "sirios_sql_errors_total": ("counter", ("entity", "error_code")),
+}
+
+
+def _get_counter(name: str, labelnames: Tuple[str, ...]) -> PromCounter:
+    key = (name, labelnames)
+    if key not in _COUNTERS:
+        _COUNTERS[key] = PromCounter(
+            name, name.replace("_", " "), labelnames=labelnames
+        )
+    return _COUNTERS[key]
+
+
+def _get_histogram(
+    name: str, labelnames: Tuple[str, ...], buckets=None
+) -> PromHistogram:
+    key = (name, labelnames)
+    if key not in _HISTOS:
+        _HISTOS[key] = PromHistogram(
+            name,
+            name.replace("_", " "),
+            labelnames=labelnames,
+            buckets=(buckets or _DEFAULT_BUCKETS_MS),
+        )
+    return _HISTOS[key]
+
+
+def _get_gauge(name: str, labelnames: Tuple[str, ...]) -> PromGauge:
+    key = (name, labelnames)
+    if key not in _GAUGES:
+        _GAUGES[key] = PromGauge(name, name.replace("_", " "), labelnames=labelnames)
+    return _GAUGES[key]
+
+
+def _ensure_metric(name: str, labels: Dict[str, str]):
+    """
+    Garante tipo e labels conforme schema canônico.
+    """
+    if name not in _METRIC_SCHEMAS:
+        raise ValueError(f"Métrica '{name}' não declarada no schema canônico.")
+    kind, labelnames = _METRIC_SCHEMAS[name]
+    # valida labels
+    lbls_tuple = tuple(sorted((labels or {}).keys()))
+    if tuple(sorted(labelnames)) != lbls_tuple:
+        raise ValueError(
+            f"Labels inválidos para '{name}'. Esperado {labelnames}, recebido {lbls_tuple}."
+        )
+    return kind, labelnames
+
+
+class _PromBackend(obs._Backend):
+    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None:
+        kind, labelnames = _ensure_metric(name, labels)
+        if kind != "counter":
+            raise ValueError(f"'{name}' não é counter.")
+        ctr = _get_counter(name, labelnames)
+        if labelnames:
+            ctr.labels(**labels).inc(float(value))
+        else:
+            ctr.inc(float(value))
+
+    def observe(self, name: str, value: float, labels: Dict[str, str]) -> None:
+        kind, labelnames = _ensure_metric(name, labels)
+        if kind != "histogram":
+            raise ValueError(f"'{name}' não é histogram.")
+        h = _get_histogram(name, labelnames)
+        if labelnames:
+            h.labels(**labels).observe(float(value))
+        else:
+            h.observe(float(value))
+
+    # Spans no-op (pluggable para OTEL quando desejar)
+    def start_span(self, name: str, attributes: Dict[str, Any]):
+        return {"name": name, "attrs": dict(attributes)}
+
+    def end_span(self, span) -> None:
+        return
+
+    def set_span_attr(self, span, key: str, value: Any) -> None:
+        span["attrs"][key] = value
+
+
+def bootstrap(service_name: str = "api", cfg: dict = None) -> None:
+    """
+    Chamar no app.main: inicializa tracing (opcional) e injeta backend Prometheus.
+    """
+    if cfg is None:
+        cfg = load_config()
+    # Tracing opcional conforme config
+    init_tracing(service_name, cfg)
+    # Injeção do backend Prometheus na facade
+    obs.set_backend(_PromBackend())
+
+
+# ----------------- Inicializadores compat (caso queira manter) --------------
+
+
+def init_metrics(cfg: dict, registry=None):
+    # Mantido por compatibilidade com seu código atual de gateway
+    gw = cfg["services"]["gateway"]["metrics"]
+    http_hist = http_counter = None
+    if gw.get("http_request_duration_seconds", {}).get("enabled", False):
+        buckets = gw["http_request_duration_seconds"]["buckets"]
+        _get_histogram(
+            "sirios_http_request_duration_seconds", ("route", "method"), buckets=buckets
+        )
+        http_hist = True
+    if gw.get("http_requests_total", {}).get("enabled", False):
+        _get_counter("sirios_http_requests_total", ("route", "method", "code"))
+        http_counter = True
+    return {"http_hist": http_hist, "http_counter": http_counter}
+
+
+def init_cache_metrics(cfg: dict, registry=None):
+    ccf = cfg["services"]["cache"]["metrics"]
+    if ccf.get("cache_ops_total", {}).get("enabled", True):
+        _get_counter("sirios_cache_ops_total", ("op", "outcome"))
+    if ccf.get("cache_latency_seconds", {}).get("enabled", True):
+        buckets = ccf["cache_latency_seconds"]["buckets"]
+        _get_histogram("sirios_cache_latency_seconds", ("op",), buckets=buckets)
+    return {"ops": True, "latency": True}
+
+
+def init_planner_metrics(cfg: dict, registry=None):
+    ocfg = cfg["services"]["orchestrator"]["metrics"]
+
+    def on(flag, name, kind, labels, *, buckets=None):
+        if ocfg.get(flag, {}).get("enabled", False):
+            if kind == "counter":
+                _get_counter(name, labels)
+            elif kind == "gauge":
+                _get_gauge(name, labels)
+            elif kind == "histogram":
+                _get_histogram(name, labels, buckets=buckets)
+
+    on(
+        "planner_route_decisions_total",
+        "sirios_planner_route_decisions_total",
+        "counter",
+        ("intent", "entity", "outcome"),
+    )
+    on(
+        "planner_duration_seconds",
+        "sirios_planner_duration_seconds",
+        "histogram",
+        ("stage",),
+        buckets=ocfg.get("planner_duration_seconds", {}).get("buckets"),
+    )
+    on(
+        "planner_explain_enabled_total",
+        "sirios_planner_explain_enabled_total",
+        "counter",
+        (),
+    )
+    on(
+        "planner_explain_latency_seconds",
+        "sirios_planner_explain_latency_seconds",
+        "histogram",
+        (),
+        buckets=ocfg.get("planner_explain_latency_seconds", {}).get(
+            "buckets", [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2]
+        ),
+    )
+    on(
+        "planner_explain_nodes_total",
+        "sirios_planner_explain_nodes_total",
+        "counter",
+        ("node_kind",),
+    )
+    on(
+        "planner_explain_weight_sum_total",
+        "sirios_planner_explain_weight_sum_total",
+        "counter",
+        ("type",),
+    )
+    on(
+        "planner_intent_score",
+        "sirios_planner_intent_score",
+        "histogram",
+        ("intent",),
+        buckets=ocfg.get("planner_intent_score", {}).get(
+            "buckets", [0, 1, 2, 3, 5, 8, 13, 21]
+        ),
+    )
+    on(
+        "planner_entity_score",
+        "sirios_planner_entity_score",
+        "histogram",
+        ("entity",),
+        buckets=ocfg.get("planner_entity_score", {}).get(
+            "buckets", [0, 1, 2, 3, 5, 8, 13, 21]
+        ),
+    )
+    on(
+        "planner_explain_decision_depth",
+        "sirios_planner_explain_decision_depth",
+        "gauge",
+        (),
+    )
+    on("planner_routed_total", "sirios_planner_routed_total", "counter", ("outcome",))
+    on(
+        "planner_top1_match_total",
+        "sirios_planner_top1_match_total",
+        "counter",
+        ("result",),
+    )
+    on(
+        "planner_confusion_total",
+        "sirios_planner_confusion_total",
+        "counter",
+        ("expected_intent", "predicted_intent"),
+    )
+    on(
+        "planner_top2_gap_histogram",
+        "sirios_planner_top2_gap_histogram",
+        "histogram",
+        (),
+        buckets=ocfg.get("planner_top2_gap_histogram", {}).get(
+            "buckets", [0.0, 0.5, 1, 2, 3, 5]
+        ),
+    )
+    on("planner_quality_last_gap", "sirios_planner_quality_last_gap", "gauge", ())
+    on(
+        "planner_blocked_by_threshold_total",
+        "sirios_planner_blocked_by_threshold_total",
+        "counter",
+        ("reason", "intent", "entity"),
+    )
+    on(
+        "planner_projection_total",
+        "sirios_planner_projection_total",
+        "counter",
+        ("outcome", "entity"),
+    )
+    return {"ok": True}
+
+
 def init_sql_metrics(cfg: dict, registry=None):
-    """
-    Métricas do Executor SQL via YAML (services.executor.metrics).
-    Retorna dict com handlers já registrados no 'registry' informado.
-    """
     ecfg = cfg["services"]["executor"]["metrics"]
-    qhist = rows = errors = None
     if ecfg.get("sql_query_duration_seconds", {}).get("enabled", True):
         buckets = ecfg["sql_query_duration_seconds"]["buckets"]
-        qhist = Histogram(
-            "sirios_sql_query_duration_seconds",
-            "Duração de queries SQL por entidade",
-            ["entity", "db_name"],
-            buckets=buckets,
-            registry=registry,
+        _get_histogram(
+            "sirios_sql_query_duration_seconds", ("entity", "db_name"), buckets=buckets
         )
     if ecfg.get("sql_rows_returned_total", {}).get("enabled", True):
-        rows = Counter(
-            "sirios_sql_rows_returned_total",
-            "Linhas retornadas por entidade",
-            ["entity"],
-            registry=registry,
-        )
+        _get_counter("sirios_sql_rows_returned_total", ("entity",))
     if ecfg.get("sql_errors_total", {}).get("enabled", True):
-        errors = Counter(
-            "sirios_sql_errors_total",
-            "Erros SQL por entidade e código",
-            ["entity", "error_code"],
-            registry=registry,
-        )
-    return {"qhist": qhist, "rows": rows, "errors": errors}
+        _get_counter("sirios_sql_errors_total", ("entity", "error_code"))
+    return {"ok": True}

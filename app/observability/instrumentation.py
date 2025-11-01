@@ -10,7 +10,7 @@ import time
 
 
 class _Backend:
-    def inc(self, name: str, labels: Dict[str, str]) -> None: ...
+    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None: ...
     def observe(self, name: str, value: float, labels: Dict[str, str]) -> None: ...
     def start_span(self, name: str, attributes: Dict[str, Any]): ...
     def end_span(self, span) -> None: ...
@@ -37,7 +37,9 @@ def _ensure():
 
 def counter(name: str, **labels) -> None:
     _ensure()
-    _backend.inc(name, labels)
+    # Suporte a incremento arbitrário sem virar label
+    value = float(labels.pop("_value", 1.0))
+    _backend.inc(name, labels, value=value)
 
 
 def histogram(name: str, value: float, **labels) -> None:
