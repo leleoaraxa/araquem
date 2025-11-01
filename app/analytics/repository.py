@@ -152,6 +152,8 @@ def fetch_explain_summary(
           date_trunc('minute', ts) AS bucket_minute,
           COUNT(*)::bigint AS requests,
           AVG(latency_ms)::float AS avg_latency_ms,
+          PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY latency_ms) AS p50_latency_ms,
+          PERCENTILE_CONT(0.90) WITHIN GROUP (ORDER BY latency_ms) AS p90_latency_ms,
           PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY latency_ms) AS p95_latency_ms,
           AVG(CASE WHEN (features->>'cache_hit')::bool IS TRUE THEN 1 ELSE 0 END)::float AS cache_ratio
         FROM base
@@ -200,8 +202,10 @@ def fetch_explain_summary(
                         "bucket": r[0].isoformat(),
                         "requests": int(r[1]),
                         "avg_latency_ms": float(r[2]) if r[2] is not None else None,
-                        "p95_latency_ms": float(r[3]) if r[3] is not None else None,
-                        "cache_ratio": float(r[4]) if r[4] is not None else None,
+                        "p50_latency_ms": float(r[3]) if r[3] is not None else None,
+                        "p90_latency_ms": float(r[4]) if r[4] is not None else None,
+                        "p95_latency_ms": float(r[5]) if r[5] is not None else None,
+                        "cache_ratio": float(r[6]) if r[6] is not None else None,
                     }
                 )
 
@@ -315,6 +319,61 @@ def fetch_explain_summary(
                     }
                 )
 
+            # -------- Top N mais lentos (por latency_ms) --------
+            # Mantém os mesmos filtros (where_sql/params) para coerência.
+            # Ordena por maior latência e, em empate, por ts mais recente.
+            cur.execute(
+                f"""
+                WITH base AS (
+                  SELECT * FROM explain_events WHERE {where_sql}
+                )
+                SELECT
+                  ts, request_id, question, intent, entity, route_id, latency_ms
+                FROM base
+                ORDER BY latency_ms DESC NULLS LAST, ts DESC
+                LIMIT 10
+                """,
+                params,
+            )
+            top_slowest = []
+            for r in cur.fetchall() or []:
+                top_slowest.append(
+                    {
+                        "ts": r[0].isoformat(),
+                        "request_id": r[1],
+                        "question": r[2],
+                        "intent": r[3],
+                        "entity": r[4],
+                        "route_id": r[5],
+                        "latency_ms": float(r[6]) if r[6] is not None else None,
+                    }
+                )
+            # -------- Top rotas por volume --------
+            cur.execute(
+                f"""
+                WITH base AS (
+                  SELECT * FROM explain_events WHERE {where_sql}
+                )
+                SELECT
+                  route_id,
+                  COUNT(*)::bigint AS requests,
+                  PERCENTILE_CONT(0.95) WITHIN GROUP (ORDER BY latency_ms) AS p95_latency_ms
+                FROM base
+                GROUP BY 1
+                ORDER BY requests DESC NULLS LAST
+                LIMIT 10
+                """,
+                params,
+            )
+            top_routes = []
+            for r in cur.fetchall() or []:
+                top_routes.append(
+                    {
+                        "route_id": r[0],
+                        "requests": int(r[1]),
+                        "p95_latency_ms": float(r[2]) if r[2] is not None else None,
+                    }
+                )
     return {
         "window": window,
         "filters": {
@@ -329,4 +388,6 @@ def fetch_explain_summary(
         "by_intent": by_intent,
         "by_entity": by_entity,
         "cache_by_route_id": cache_by_route_id,
+        "top_slowest": top_slowest,
+        "top_routes": top_routes,
     }
