@@ -51,6 +51,16 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
         "type": "counter",
         "labels": {"outcome", "entity"},
     },
+    # Quality / routing checks (usadas no /ops/quality/push e no quality_report)
+    "sirios_planner_top1_match_total": {
+        "type": "counter",
+        "labels": {"result"},  # result=hit|miss
+    },
+    "sirios_planner_confusion_total": {
+        "type": "counter",
+        "labels": {"expected_intent", "predicted_intent"},
+    },
+    # (mantém-se o restante do catálogo)
     # Cache
     "sirios_cache_ops_total": {
         "type": "counter",
