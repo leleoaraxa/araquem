@@ -59,7 +59,6 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
-    # ✅ Espera o daemon responder via CLI e só então faz o pull do modelo
     entrypoint: ["/bin/sh","-lc","until ollama ps >/dev/null 2>&1; do sleep 1; done; ollama pull nomic-embed-text"]
     networks: [araquem_network]
 

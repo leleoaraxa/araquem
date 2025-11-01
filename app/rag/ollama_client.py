@@ -1,7 +1,8 @@
 # app/rag/ollama_client.py
 from __future__ import annotations
-import os, json, urllib.request
-from typing import List, Dict, Any, Sequence
+import os, json, time
+from typing import List, Dict, Any
+import urllib.request, urllib.error
 
 
 class OllamaClient:
@@ -9,86 +10,98 @@ class OllamaClient:
         self,
         base_url: str | None = None,
         model: str | None = None,
-        timeout: int = 30,
+        timeout: float = 60.0,
+        retries: int = 2,
+        backoff_s: float = 0.5,
     ):
         self.base_url = (
-            base_url or os.getenv("OLLAMA_BASE_URL") or "http://localhost:11434"
+            base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
         ).rstrip("/")
-        self.model = model or os.getenv("OLLAMA_EMBED_MODEL") or "nomic-embed-text"
-        self.timeout = int(timeout)
+        self.model = model or os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text")
+        self.timeout = float(timeout)
+        self.retries = int(retries)
+        self.backoff_s = float(backoff_s)
 
     def _post(self, path: str, payload: Dict[str, Any]) -> Dict[str, Any]:
         url = f"{self.base_url}{path}"
-        data = json.dumps(payload).encode("utf-8")
+        body = json.dumps(payload).encode("utf-8")
         req = urllib.request.Request(
-            url, data=data, headers={"Content-Type": "application/json"}
+            url,
+            data=body,
+            headers={"Content-Type": "application/json", "Accept": "application/json"},
+            method="POST",
         )
-        with urllib.request.urlopen(req, timeout=self.timeout) as resp:
-            return json.loads(resp.read().decode("utf-8"))
+        try:
+            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                if not isinstance(data, dict):
+                    return {"error": f"invalid-json: {type(data)}"}
+                return data
+        except urllib.error.HTTPError as e:
+            try:
+                err = json.loads(e.read().decode("utf-8"))
+            except Exception:
+                err = {"error": f"http {e.code}"}
+            return {"error": err}
+        except Exception as e:
+            return {"error": repr(e)}
 
-    def embed(self, texts: Sequence[str]) -> List[List[float]]:
+    def _extract_vector(self, data: Dict[str, Any]) -> list[float]:
         """
-        Chama /api/embeddings do Ollama.
-        - API espera "input": str | [str]
-        - Pode responder {"embeddings":[...]} (batch) ou {"embedding":[...]} (single)
-        - Fallback item-a-item se a resposta vier vazia/inconsistente
+        Ollama /api/embeddings costuma retornar:
+          { "embedding": [ ... ] }   # unitário
+        Alguns wrappers retornam:
+          { "embeddings": [[...], ...] }
         """
-        if not isinstance(texts, (list, tuple)):
-            texts = [str(texts)]
-        payload = {"model": self.model, "input": list(texts)}
-        data = self._post("/api/embeddings", payload)
+        if not isinstance(data, dict):
+            return []
+        if "embedding" in data and isinstance(data["embedding"], list):
+            return data["embedding"]
+        if "embeddings" in data and isinstance(data["embeddings"], list):
+            # pega o primeiro vetor se houver
+            arr = data["embeddings"]
+            if arr and isinstance(arr[0], list):
+                return arr[0]
+        return []
 
-        # Caminhos felizes
-        if isinstance(data, dict):
-            if (
-                "embeddings" in data
-                and isinstance(data["embeddings"], list)
-                and data["embeddings"]
-            ):
-                return data["embeddings"]
-            if (
-                "embedding" in data
-                and isinstance(data["embedding"], list)
-                and data["embedding"]
-            ):
-                # normaliza para lista de listas
-                return [data["embedding"]]
-
-        # Fallback robusto: tenta um a um
+    def embed(self, texts: List[str]) -> List[List[float]]:
+        """
+        Garante 1:1 (len(vectors) == len(texts)).
+        Faz POST individual a cada texto (Ollama embeddings são unitários).
+        """
         out: List[List[float]] = []
-        bad: List[int] = []
-        for i, t in enumerate(texts):
-            single = self._post("/api/embeddings", {"model": self.model, "input": t})
-            vec = None
-            if isinstance(single, dict):
-                if (
-                    "embedding" in single
-                    and isinstance(single["embedding"], list)
-                    and single["embedding"]
-                ):
-                    vec = single["embedding"]
-                elif (
-                    "embeddings" in single
-                    and isinstance(single["embeddings"], list)
-                    and single["embeddings"]
-                ):
-                    vec = single["embeddings"][0]
-            if vec and isinstance(vec, list) and len(vec) > 0:
-                out.append(vec)
+        for idx, t in enumerate(texts):
+            last_resp: Dict[str, Any] | None = None
+            for attempt in range(self.retries + 1):
+                payload = {"model": self.model, "prompt": t}
+                data = self._post("/api/embeddings", payload)
+                last_resp = data
+                if "error" in data:
+                    time.sleep(self.backoff_s)
+                    continue
+                vec = self._extract_vector(data)
+                if isinstance(vec, list) and len(vec) > 0:
+                    out.append(vec)
+                    break
+                time.sleep(self.backoff_s)
             else:
-                bad.append(i)
-
-        if out and not bad and len(out) == len(texts):
-            return out
-
-        meta = {
-            "model": self.model,
-            "base_url": self.base_url,
-            "requested": len(texts),
-            "ok": len(out),
-            "failed_indexes": bad,
-            "raw_first": data,
-        }
-        raise RuntimeError(
-            f"Ollama embeddings vazios/inconsistentes: {json.dumps(meta)[:800]}"
-        )
+                # Falhou após retries
+                meta = {
+                    "model": self.model,
+                    "base_url": self.base_url,
+                    "requested": 1,
+                    "ok": 0,
+                    "failed_indexes": [0],
+                    "raw_first": (
+                        last_resp if isinstance(last_resp, dict) else {"raw": last_resp}
+                    ),
+                }
+                raise RuntimeError(
+                    f"Ollama embeddings vazios/inconsistentes: {json.dumps(meta, ensure_ascii=False)}"
+                )
+        # sanity
+        if len(out) != len(texts):
+            raise RuntimeError(
+                f"Inconsistência: len(out)={len(out)} != len(texts)={len(texts)}"
+            )
+        return out
