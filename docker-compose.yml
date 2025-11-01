@@ -11,6 +11,8 @@ services:
       - PROMETHEUS_URL=http://prometheus:9090
       - GRAFANA_URL=http://grafana:3000
       - QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+      - RAG_INDEX_PATH=data/embeddings/store/embeddings.jsonl
+      - OLLAMA_BASE_URL=http://ollama:11434
     volumes:
       - ./:/app
     depends_on:
@@ -42,6 +44,28 @@ services:
       - "11434:11434"
     volumes:
       - ollama:/root/.ollama
+    networks: [araquem_network]
+
+  ollama-init:
+    image: ollama/ollama:0.3.14
+    container_name: araquem-ollama-init
+    depends_on: [ollama]
+    entrypoint: ["/bin/sh","-lc","sleep 2 && ollama pull nomic-embed-text"]
+    networks: [araquem_network]
+
+  rag-indexer:
+    build: .
+    container_name: araquem-rag-indexer
+    depends_on: [ollama, ollama-init]
+    command: >
+      python scripts/embeddings_build.py
+      --index data/embeddings/index.yaml
+      --out   data/embeddings/store
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./:/app
     networks: [araquem_network]
 
   prometheus:

@@ -1,0 +1,86 @@
+version: 1
+collection: araquem-core
+embedding_model: nomic-embed-text
+
+chunk:
+  max_chars: 1200
+  overlap_chars: 120
+
+include:
+  # ── Conceitos (documentos de base do produto) ──────────────────────────────
+  - id: concepts-catalog
+    path: data/concepts/catalog.yaml
+    tags: [concepts, catalog, fiis]
+
+  - id: concepts-fiis
+    path: data/concepts/fiis.md
+    tags: [concepts, fiis]
+
+  # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────
+  - id: ontology-entity
+    path: data/ontology/entity.yaml
+    tags: [ontology, intents, entities]
+
+  # ── Entidades (contratos YAML das views) ───────────────────────────────────
+  - id: entity-fiis-cadastro
+    path: data/entities/fiis_cadastro.yaml
+    tags: [entities, fiis, cadastro]
+
+  - id: entity-fiis-dividendos
+    path: data/entities/fiis_dividendos.yaml
+    tags: [entities, fiis, dividendos]
+
+  - id: entity-fiis-precos
+    path: data/entities/fiis_precos.yaml
+    tags: [entities, fiis, precos]
+
+  - id: entity-fiis-rankings
+    path: data/entities/fiis_rankings.yaml
+    tags: [entities, fiis, rankings]
+
+  - id: entity-cache-policies
+    path: data/entities/cache_policies.yaml
+    tags: [entities, cache, policy]
+
+  # ── Quality gates & thresholds (telemetria de qualidade) ───────────────────
+  - id: ops-planner-thresholds
+    path: data/ops/planner_thresholds.yaml
+    tags: [quality, thresholds]
+
+  - id: ops-observability
+    path: data/ops/observability.yaml
+    tags: [observability, metrics, tracing]
+
+  # ── Golden set (esperados de qualidade) ────────────────────────────────────
+  - id: golden-m65-quality-yaml
+    path: data/golden/m65_quality.yaml
+    tags: [golden, quality]
+
+  - id: golden-m65-quality-json
+    path: data/golden/m65_quality.json
+    tags: [golden, quality, json]
+
+  # ── Samples de qualidade (routing + projeções) ─────────────────────────────
+  - id: q-routing-samples
+    path: data/ops/quality/routing_samples.json
+    tags: [quality, routing, samples]
+
+  - id: q-projection-cadastro
+    path: data/ops/quality/projection_fiis_cadastro.json
+    tags: [quality, projection, cadastro]
+
+  - id: q-projection-dividendos
+    path: data/ops/quality/projection_fiis_dividendos.json
+    tags: [quality, projection, dividendos]
+
+  - id: q-projection-precos
+    path: data/ops/quality/projection_fiis_precos.json
+    tags: [quality, projection, precos]
+
+  - id: q-projection-rankings
+    path: data/ops/quality/projection_fiis_rankings.json
+    tags: [quality, projection, rankings]
+
+  - id: q-m66-projection
+    path: data/ops/quality/m66_projection.json
+    tags: [quality, projection, m66]
