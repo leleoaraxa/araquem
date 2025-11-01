@@ -21,7 +21,8 @@ from app.executor.pg import PgExecutor
 from app.observability.runtime import load_config, bootstrap, prom_query_instant
 from app.observability.instrumentation import counter, histogram
 from app.analytics.explain import explain as _explain_analytics
-from app.analytics.repository import fetch_explain_summary
+from app.analytics.repository import fetch_explain_summary, fetch_explain_events
+
 
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 cfg = load_config()
@@ -202,12 +203,62 @@ def ops_analytics_explain(
     window: str = Query(default="24h"),
     intent: Optional[str] = Query(default=None),
     entity: Optional[str] = Query(default=None),
+    route_id: Optional[str] = Query(default=None),
+    cache_hit: Optional[bool] = Query(default=None),
 ):
     """
     M6.8 — Explain from DB
     KPIs e série temporal derivados de explain_events (SQL real).
     """
-    out = fetch_explain_summary(window=window, intent=intent, entity=entity)
+    out = fetch_explain_summary(
+        window=window,
+        intent=intent,
+        entity=entity,
+        route_id=route_id,
+        cache_hit=cache_hit,
+    )
+    return JSONResponse(_json_sanitize(out))
+
+
+class ExplainFilters(BaseModel):
+    window: str = "24h"
+    intent: Optional[str] = None
+    entity: Optional[str] = None
+    route_id: Optional[str] = None
+    cache_hit: Optional[bool] = None
+
+
+@app.post("/ops/analytics/explain")
+def ops_analytics_explain_post(body: ExplainFilters):
+    out = fetch_explain_summary(
+        window=body.window,
+        intent=body.intent,
+        entity=body.entity,
+        route_id=body.route_id,
+        cache_hit=body.cache_hit,
+    )
+    return JSONResponse(_json_sanitize(out))
+
+
+@app.get("/ops/analytics/explain/events")
+def ops_analytics_explain_events(
+    window: str = Query(default="24h"),
+    intent: Optional[str] = Query(default=None),
+    entity: Optional[str] = Query(default=None),
+    route_id: Optional[str] = Query(default=None),
+    cache_hit: Optional[bool] = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=500),
+    offset: int = Query(default=0, ge=0),
+):
+    out = fetch_explain_events(
+        window=window,
+        intent=intent,
+        entity=entity,
+        route_id=route_id,
+        cache_hit=cache_hit,
+        limit=limit,
+        offset=offset,
+    )
     return JSONResponse(_json_sanitize(out))
 
 
