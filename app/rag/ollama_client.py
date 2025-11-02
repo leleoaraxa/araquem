@@ -67,8 +67,12 @@ class OllamaClient:
     def embed(self, texts: List[str]) -> List[List[float]]:
         """
         Garante 1:1 (len(vectors) == len(texts)).
-        Faz POST individual a cada texto (Ollama embeddings são unitários).
+        POST em /api/embeddings com campo **'prompt'** (API nativa do Ollama).
+        Respostas válidas:
+          - unitária: {"embedding": [...]}
+          - batelada (alguns wrappers): {"embeddings": [[...], ...]}
         """
+
         out: List[List[float]] = []
         for idx, t in enumerate(texts):
             last_resp: Dict[str, Any] | None = None
@@ -79,10 +83,18 @@ class OllamaClient:
                 if "error" in data:
                     time.sleep(self.backoff_s)
                     continue
+                # tenta extrair vetor unitário...
                 vec = self._extract_vector(data)
                 if isinstance(vec, list) and len(vec) > 0:
                     out.append(vec)
                     break
+                # ...ou, se a API devolveu 'embeddings', pega o primeiro
+                if isinstance(data, dict) and isinstance(data.get("embeddings"), list):
+                    arr = data["embeddings"]
+                    if arr and isinstance(arr[0], list) and len(arr[0]) > 0:
+                        out.append(arr[0])
+                        break
+
                 time.sleep(self.backoff_s)
             else:
                 # Falhou após retries
