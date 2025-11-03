@@ -26,6 +26,7 @@ from app.observability.metrics import (
 from app.analytics.explain import explain as _explain_analytics
 from app.analytics.repository import fetch_explain_summary, fetch_explain_events
 from app.observability.metrics import list_metrics_catalog
+from app.planner.param_inference import infer_params
 
 ONTO_PATH = os.getenv("ONTOLOGY_PATH", "data/ontology/entity.yaml")
 cfg = load_config()
@@ -345,7 +346,6 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 "elapsed_ms": elapsed_ms_unr,
                 "explain": (plan.get("explain") if explain else None),
                 "explain_analytics": explain_analytics_payload if explain else None,
-                # padronizamos o bloco de cache (sem valores) para manter o contrato
                 "cache": {"hit": False, "key": None, "ttl": None},
             },
         }
@@ -353,6 +353,18 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
 
     # 2) Identificadores na camada de ENTRADA (sem heurística)
     identifiers = _orchestrator.extract_identifiers(payload.question)
+
+    # 2.1) Inferência compute-on-read (para meta)
+    try:
+        agg_params = infer_params(
+            question=payload.question,
+            intent=intent,
+            entity=entity,
+            entity_yaml_path=f"data/entities/{entity}.yaml",
+            defaults_yaml_path="data/ops/param_inference.yaml",
+        )
+    except Exception:
+        agg_params = {}
 
     # 3) Cache read-through
     def _fetch():
@@ -453,6 +465,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                     else rt.get("ttl")
                 ),
             },
+            "aggregates": agg_params,
         },
     }
     return JSONResponse(_json_sanitize(payload_out))

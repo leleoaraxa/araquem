@@ -112,17 +112,22 @@ def infer_params(
             try:
                 limit = int((window or "").split(":")[1])
             except Exception:
-                limit = icfg.get("defaults", {}).get("list", {}).get("limit", 10)
                 limit = None
-        else:
-            # sem count → usa limit default se existir
-            limit = icfg.get("defaults", {}).get("list", {}).get("limit", 10)
-        order = icfg.get("defaults", {}).get("list", {}).get("order", "desc")
+        if limit is None:
+            limit = ent_def.get("list", {}).get("limit") or icfg.get(
+                "defaults", {}
+            ).get("list", {}).get("limit", 10)
+        order = ent_def.get("list", {}).get("order") or icfg.get("defaults", {}).get(
+            "list", {}
+        ).get("order", "desc")
         # b) fallback para defaults da ENTIDADE (preferência) e, na falta, manter None/desc
         if limit is None:
             limit = ent_def.get("list", {}).get("limit")
         order = ent_def.get("list", {}).get("order", "desc")
 
+    # 3.5) Semântica canônica: latest => janela sempre count:1
+    if agg == "latest":
+        window = "count:1"
     # 4) validar janela contra windows_allowed (intent + entidade)
     intent_allowed = set(str(w) for w in (icfg.get("windows_allowed") or []))
     allowed = (
@@ -130,6 +135,10 @@ def infer_params(
         if intent_allowed or ent_windows_allowed
         else set()
     )
+    # Não invalida 'count:1' quando agg=latest
+    if agg != "latest" and allowed and (str(window) not in allowed):
+        window = icfg.get("default_window")
+
     if allowed and (str(window) not in allowed):
         # fallback no default da intent
         window = icfg.get("default_window")
