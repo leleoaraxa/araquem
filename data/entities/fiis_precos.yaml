@@ -81,6 +81,7 @@ ask:
 order_by_whitelist:
   - traded_at desc
 
+# Esta seção é a fonte de verdade das capacidades de agregação (compute-on-read)
 aggregations:
   enabled: true
   defaults:
