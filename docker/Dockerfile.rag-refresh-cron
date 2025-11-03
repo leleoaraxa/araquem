@@ -1,5 +1,5 @@
 FROM curlimages/curl:8.10.1
 ENV TZ=America/Sao_Paulo
-COPY docker/rag-refresh-cron.sh /usr/local/bin/rag-refresh-cron.sh
-RUN chmod +x /usr/local/bin/rag-refresh-cron.sh
+# garante permissão de execução já no COPY
+COPY --chmod=0755 docker/rag-refresh-cron.sh /usr/local/bin/rag-refresh-cron.sh
 ENTRYPOINT ["/usr/local/bin/rag-refresh-cron.sh"]

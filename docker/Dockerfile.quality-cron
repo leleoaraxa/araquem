@@ -1,7 +1,9 @@
 FROM quality-runner:latest
 WORKDIR /workspace
 ENV PYTHONUNBUFFERED=1
+
+# (se quiser manter o bind-mount, pode comentar este COPY)
 COPY . /workspace
-COPY docker/quality-cron.sh /usr/local/bin/quality-cron.sh
-RUN chmod +x /usr/local/bin/quality-cron.sh
+
+COPY --chmod=0755 docker/quality-cron.sh /usr/local/bin/quality-cron.sh
 ENTRYPOINT ["/usr/local/bin/quality-cron.sh"]

@@ -1,13 +1,19 @@
 FROM python:3.12-slim
 WORKDIR /app
-ENV PYTHONUNBUFFERED=1
-# Dependências mínimas (se seu projeto usa requirements, adicione aqui)
-# COPY requirements.txt /app/requirements.txt
-# RUN pip install --no-cache-dir -r /app/requirements.txt
-COPY . /app
-ENV PYTHONPATH=/app \
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
     OLLAMA_BASE_URL=http://ollama:11434 \
     TZ=America/Sao_Paulo \
     OLLAMA_EMBED_MODEL=nomic-embed-text \
     EMBED_BATCH_SIZE=8
+
+# 🔧 dependências do indexer
+RUN pip install --no-cache-dir pyyaml
+
+# (se o seu embeddings_build.py usar httpx/requests/tqdm, pode instalar aqui também)
+# RUN pip install --no-cache-dir pyyaml httpx tqdm
+
+COPY . /app
+
+# Sem ENTRYPOINT/CMD no compose; fica definido aqui:
 CMD ["python","scripts/embeddings_build.py","--index","data/embeddings/index.yaml","--out","data/embeddings/store"]
