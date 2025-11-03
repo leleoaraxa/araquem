@@ -169,81 +169,99 @@ class Planner:
             }
 
         # --- configurações RAG ---
+        rag_cfg = (_THRESH_DEFAULTS.get("planner", {}).get("rag") or {})
         cfg = _load_thresholds()
-        rag_cfg = (cfg.get("planner") or {}).get("rag") or {}
+        rag_cfg = (cfg.get("planner") or {}).get("rag") or rag_cfg
         rag_enabled = bool(rag_cfg.get("enabled", False))
         rag_k = int(rag_cfg.get("k", 5))
-        rag_min = float(rag_cfg.get("min_score", 0.20))
-        rag_w = float(rag_cfg.get("weight", 0.35))
+        rag_min_score = float(rag_cfg.get("min_score", 0.20))
+        rag_weight = float(rag_cfg.get("weight", 0.30))
         rag_index_path = os.getenv(
             "RAG_INDEX_PATH", "data/embeddings/store/embeddings.jsonl"
         )
 
-        rag_results = []
         rag_entity_hints: Dict[str, float] = {}
-        rag_error = None
+        rag_error: Any = None
+        rag_used = False
 
         if rag_enabled:
+            from app.observability.metrics import emit_counter
+
             try:
                 store = cached_embedding_store(rag_index_path)
                 embedder = OllamaClient(
                     base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
                     model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),
                 )
-                # Embedding explícito + busca vetorial (modo B)
                 qvec = embedder.embed([question])[0]
-                rag_results = store.search_by_vector(qvec, k=rag_k) or []
-                # cutoff mínimo
-                rag_results = [
-                    r for r in rag_results if float(r.get("score") or 0.0) >= rag_min
-                ]
-                rag_entity_hints = entity_hints_from_rag(
-                    rag_results
-                )  # ex.: {"fiis_cadastro": 0.83, ...}
-            except Exception as e:
-                rag_error = repr(e)
-                rag_results = []
-                rag_entity_hints = {}
+                results = (
+                    store.search_by_vector(qvec, k=rag_k, min_score=rag_min_score) or []
+                )
+                from app.rag.hints import entity_hints_from_rag
 
-        # --- decisão base (mantém) ---
+                rag_entity_hints = entity_hints_from_rag(results)
+                rag_used = bool(rag_entity_hints)
+                try:
+                    emit_counter(
+                        "sirios_rag_search_total",
+                        outcome=("used" if rag_used else "skipped"),
+                    )
+                except Exception:
+                    pass
+            except Exception as e:
+                rag_error = str(e)
+                rag_entity_hints = {}
+                rag_used = False
+                try:
+                    emit_counter("sirios_rag_search_total", outcome="error")
+                except Exception:
+                    pass
+
+        # --- fusão linear base + RAG (apenas se hints disponíveis) ---
+        combined_scores: Dict[str, Dict[str, Any]] = {}
+        fused_scores: Dict[str, float] = {}
+        rag_fusion_applied = rag_enabled and rag_used and (rag_weight > 0.0)
+
+        for it in self.onto.intents:
+            base = float(intent_scores.get(it.name, 0.0))
+            entity_name = it.entities[0] if it.entities else None
+            rag_signal = 0.0
+            if entity_name:
+                rag_signal = float(
+                    rag_entity_hints.get((entity_name or "").strip(), 0.0)
+                )
+            final_score = (
+                base * (1.0 - rag_weight) + rag_signal * rag_weight
+                if rag_fusion_applied
+                else base
+            )
+            fused_scores[it.name] = final_score
+            if rag_enabled:
+                combined_scores[it.name] = {
+                    "base": base,
+                    "rag": rag_signal,
+                    "combined": final_score,
+                    "entity": entity_name,
+                }
+
         chosen_intent = None
         chosen_entity = None
         chosen_score = 0.0
-        if intent_scores:
-            chosen_intent = max(intent_scores, key=lambda k: intent_scores[k])
-            chosen_score = float(intent_scores[chosen_intent])
+        if fused_scores:
+            chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
+            chosen_score = float(fused_scores[chosen_intent])
             for it in self.onto.intents:
                 if it.name == chosen_intent:
                     chosen_entity = it.entities[0] if it.entities else None
                     break
 
-        # --- score COMPOSTO (base + RAG) mantendo contrato ---
-        combined_scores: Dict[str, Dict[str, Any]] = {}
-        if intent_scores:
-            for it in self.onto.intents:
-                base = float(intent_scores.get(it.name, 0.0))
-                ent = it.entities[0] if it.entities else None
-                rag_sig = float(rag_entity_hints.get((ent or "").strip(), 0.0))
-                combined = (
-                    (1.0 - rag_w) * base + (rag_w) * rag_sig if rag_enabled else base
-                )
-                combined_scores[it.name] = {
-                    "base": base,
-                    "rag": rag_sig,
-                    "combined": combined,
-                    "entity": ent,
-                }
-
-            # escolhe pela pontuação combinada (ou base, se rag desabilitado)
-            best = max(combined_scores.items(), key=lambda kv: kv[1]["combined"])
-            chosen_intent = best[0]
-            chosen_score = float(best[1]["combined"] or 0.0)
-            chosen_entity = best[1]["entity"]
-
-        # estágio de fusão para trilha (após definição do chosen_* acima)
-        if rag_enabled:
+        if rag_fusion_applied:
             decision_path.append(
-                {"stage": "fuse", "type": "rag_integration", "rag_weight": rag_w}
+                {
+                    "stage": "fuse",
+                    "type": "rag_integration",
+                    "rag_weight": rag_weight,
+                }
             )
         # --- top2 gap calculado sobre scores base (telemetria M6.5) ---
         ordered = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
@@ -277,8 +295,8 @@ class Planner:
                     "stage": "rag",
                     "type": "entity_hints",
                     "k": rag_k,
-                    "min_score": rag_min,
-                    "weight": rag_w,
+                    "min_score": rag_min_score,
+                    "weight": rag_weight,
                     "hints_keys": sorted(list(rag_entity_hints.keys())),
                 }
             )
@@ -321,41 +339,15 @@ class Planner:
             },
         }
         if rag_enabled:
-            # signals.rag_hits — preview priorizando docs de entidade (visual only)
-            def _hit_row(r):
-                return {
-                    "doc_id": r.get("doc_id"),
-                    "score": float(r.get("score") or 0.0),
-                    "chunk_id": r.get("chunk_id"),
-                }
-
-            _ents = [
-                r for r in rag_results if str(r.get("doc_id", "")).startswith("entity-")
-            ]
-            _others = [
-                r
-                for r in rag_results
-                if not str(r.get("doc_id", "")).startswith("entity-")
-            ]
-            _preview = (_ents + _others)[: min(len(rag_results), rag_k)]
-            meta_explain["signals"]["rag_hits"] = [_hit_row(r) for r in _preview]
-
             meta_explain["rag"] = {
                 "enabled": True,
                 "index_path": rag_index_path,
-                "weight": rag_w,
                 "k": rag_k,
-                "min_score": rag_min,
+                "min_score": rag_min_score,
+                "weight": rag_weight,
                 "entity_hints": rag_entity_hints,
-                "results_preview": [
-                    {
-                        "doc_id": r.get("doc_id"),
-                        "score": float(r.get("score") or 0.0),
-                        "chunk_id": r.get("chunk_id"),
-                    }
-                    for r in (rag_results[: min(len(rag_results), 10)])
-                ],
                 "error": rag_error,
+                "used": bool(rag_entity_hints),
             }
             # scoring.rag_hint — lista [{entity, score}]
             meta_explain["scoring"]["rag_hint"] = [
@@ -373,6 +365,8 @@ class Planner:
                 }
                 for name, vals in combined_scores.items()
             }
+        else:
+            meta_explain["rag"] = {"enabled": False}
 
         # --- log estruturado leve ---
         try:
