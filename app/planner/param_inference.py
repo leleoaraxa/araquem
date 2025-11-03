@@ -5,7 +5,7 @@ from typing import Dict, Any, Optional, Tuple, List
 import re, json, unicodedata
 from pathlib import Path
 
-import yaml
+from app.utils.filecache import load_yaml_cached
 
 _DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
@@ -26,8 +26,7 @@ def _norm(text: str) -> str:
 def _load_yaml(path: Path) -> Dict[str, Any]:
     if not path or not Path(path).exists():
         return {}
-    with Path(path).open("r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    return load_yaml_cached(str(path))
 
 
 def _token_set(text: str) -> set[str]:

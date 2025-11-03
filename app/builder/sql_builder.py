@@ -2,15 +2,15 @@
 
 from pathlib import Path
 from typing import Dict, Tuple, List, Any, Optional
-import yaml
+
+from app.utils.filecache import load_yaml_cached
 
 ENTITIES_DIR = Path("data/entities")
 
 
 def _load_entity_yaml(entity: str) -> dict:
     ypath = ENTITIES_DIR / f"{entity}.yaml"
-    with open(ypass := ypath, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    return load_yaml_cached(str(ypass := ypath)) or {}
 
 
 def build_select_for_entity(
