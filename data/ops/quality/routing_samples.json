@@ -1,80 +1,455 @@
 {
   "type": "routing",
   "samples": [
-    { "question": "cnpj do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do MAXR11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do MAXR11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do MAXR11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do MAXR11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do MAXR11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do MANA11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do MANA11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do MANA11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do MANA11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do MANA11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do LVBI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do LVBI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do LVBI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do LVBI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do LVBI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do LTMT11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do LTMT11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do LTMT11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do LTMT11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do LTMT11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do LRDI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "administrador do LRDI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "custodiante do LRDI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "site do LRDI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "assembleia do LRDI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "nome de exibição do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "nome de pregão (B3) do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "classificação do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "setor do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "subsetor do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "tipo de gestão do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "público-alvo do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "MCCI11 é fundo exclusivo?", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "código ISIN do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "data do IPO do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "peso do MCCI11 no IFIL", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "peso do MCCI11 no IFIX", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "número de cotas emitidas do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "quantos cotistas tem o MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "qual o nome do administrador do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "cnpj do administrador do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "qual o custodiante do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "url oficial do MCCI11", "expected_intent": "cadastro", "expected_entity": "fiis_cadastro" },
-    { "question": "preço do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "cotação do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "abertura do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "máxima do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "mínima do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "variação diária (%) do CXTL11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "preço do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "cotação do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "abertura do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "máxima do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "mínima do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "variação diária (%) do FPAB11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "preço do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "cotação do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "abertura do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "máxima do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "mínima do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "variação diária (%) do HGLG11 em 2025-10-27", "expected_intent": "precos", "expected_entity": "fiis_precos" },
-    { "question": "dividendos do CXTL11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "proventos do CXTL11",  "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "rendimento do CXTL11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "dividendos do FPAB11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "proventos do FPAB11",  "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "rendimento do FPAB11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "dividendos do HGLG11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "proventos do HGLG11",  "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" },
-    { "question": "rendimento do HGLG11", "expected_intent": "dividendos", "expected_entity": "fiis_dividendos" }
+    {
+      "question": "administrador do LRDI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "administrador do LTMT11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "administrador do LVBI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "administrador do MANA11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "administrador do MAXR11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "administrador do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do LRDI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do LTMT11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do LVBI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do MANA11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do MAXR11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "assembleia do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "classificação do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do administrador do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do LRDI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do LTMT11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do LVBI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do MANA11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do MAXR11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cnpj do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do LRDI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do LTMT11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do LVBI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do MANA11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do MAXR11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "custodiante do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "código ISIN do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "data do IPO do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "MCCI11 é fundo exclusivo?",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "nome de exibição do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "nome de pregão (B3) do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "número de cotas emitidas do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "peso do MCCI11 no IFIL",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "peso do MCCI11 no IFIX",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "público-alvo do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "qual o custodiante do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "qual o nome do administrador do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "quantos cotistas tem o MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "setor do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do LRDI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do LTMT11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do LVBI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do MANA11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do MAXR11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "subsetor do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "tipo de gestão do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "url oficial do MCCI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "dividendos do CXTL11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "dividendos do FPAB11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "dividendos do HGLG11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "proventos do CXTL11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "proventos do FPAB11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "proventos do HGLG11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "rendimento do CXTL11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "rendimento do FPAB11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "rendimento do HGLG11",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "abertura do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "abertura do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "abertura do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "cotação do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "cotação do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "cotação do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "máxima do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "máxima do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "máxima do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "mínima do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "mínima do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "mínima do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "preço do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "preço do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "preço do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "variação diária (%) do CXTL11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "variação diária (%) do FPAB11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "variação diária (%) do HGLG11 em 2025-10-27",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "movimentos do HGLG11 no ranking do IFIL",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "movimentos do HGLG11 no ranking do IFIX",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "movimentos no ranking de usuarios do CXTL11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "movimentos no ranking de usuarios do HGLG11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "posicao do HGLG11 no IFIX",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quantas aparições do FPAB11 no IFIL",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quantas aparições do FPAB11 no IFIX",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quantas aparições do HGLG11 no IFIX",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quantas vezes o HGLG11 apareceu no IFIL",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking da sirios do CXTL11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking da sirios do HGLG11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking de usuarios do HGLG11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking do CXTL11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking do FPAB11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking do HGLG11",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    }
   ]
 }
