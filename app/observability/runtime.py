@@ -135,6 +135,8 @@ _METRIC_SCHEMAS = {
     "sirios_sql_query_duration_seconds": ("histogram", ("entity", "db_name")),
     "sirios_sql_rows_returned_total": ("counter", ("entity",)),
     "sirios_sql_errors_total": ("counter", ("entity", "error_code")),
+    "sirios_rag_search_total": ("counter", ("outcome",)),
+    "sirios_rag_topscore": ("histogram", ()),
 }
 
 
