@@ -139,6 +139,16 @@ _METRIC_SCHEMAS = {
     "sirios_sql_errors_total": ("counter", ("entity", "error_code")),
     "sirios_rag_search_total": ("counter", ("outcome",)),
     "sirios_rag_topscore": ("histogram", ()),
+
+    # ---------- M7.3 (RAG Context Explain) ----------
+    "planner_rag_hits_total": ("counter", ("intent", "entity")),
+    "planner_rag_context_used_total": ("counter", ("intent", "entity")),
+    "planner_rag_context_latency_ms": ("histogram", ("intent", "entity")),
+
+    # ---------- M7.4 (Re-rank leve) ----------
+    "planner_rerank_applied_total": ("counter", ("mode", "accepted")),
+    "planner_decision_gap_before": ("histogram", ()),
+    "planner_decision_gap_after": ("histogram", ()),
 }
 
 

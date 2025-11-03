@@ -255,6 +255,7 @@ class Planner:
         fused_scores: Dict[str, float] = {}
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
+        # M7.4: aplicamos fusão somente se re_rank.enabled=true
         rag_fusion_applied = (
             rag_enabled and rag_used and re_rank_enabled and (re_rank_weight > 0.0)
         )
@@ -269,7 +270,12 @@ class Planner:
             ) if entity_name else 0.0
             intent_rag_signals[it.name] = rag_signal
             if rag_fusion_applied:
-                final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                if re_rank_mode == "additive":
+                    # score_final = base + w * rag_sig
+                    final_score = base + fusion_weight * rag_signal
+                else:
+                    # score_final = (1 - w) * base + w * rag_sig
+                    final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
             else:
                 final_score = base
             fused_scores[it.name] = final_score
@@ -356,13 +362,21 @@ class Planner:
                     "affected": len(affected_entities),
                 }
             )
-        # --- top2 gap calculado sobre scores finais (telemetria M6.5) ---
-        ordered = sorted(fused_scores.items(), key=lambda kv: kv[1], reverse=True)
-        top2_gap = 0.0
-        if len(ordered) >= 2:
-            top2_gap = float((ordered[0][1] or 0.0) - (ordered[1][1] or 0.0))
-        elif len(ordered) == 1:
-            top2_gap = float(ordered[0][1] or 0.0)
+        # --- top2 gap calculado sobre scores base e finais (telemetria M7.4) ---
+        # gap_base: ordenado por score base
+        ordered_base = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
+        gap_base = 0.0
+        if len(ordered_base) >= 2:
+            gap_base = float((ordered_base[0][1] or 0.0) - (ordered_base[1][1] or 0.0))
+        elif len(ordered_base) == 1:
+            gap_base = float(ordered_base[0][1] or 0.0)
+        # gap_final: ordenado por score final (fused_scores)
+        ordered_final = sorted(fused_scores.items(), key=lambda kv: kv[1], reverse=True)
+        gap_final = 0.0
+        if len(ordered_final) >= 2:
+            gap_final = float((ordered_final[0][1] or 0.0) - (ordered_final[1][1] or 0.0))
+        elif len(ordered_final) == 1:
+            gap_final = float(ordered_final[0][1] or 0.0)
 
         # --- trilha de decisão ---
         decision_path.append(
@@ -496,15 +510,29 @@ class Planner:
                     if chosen_entity
                     else []
                 ),
-                "intent_top2_gap": top2_gap,
+                # Mantemos ambos para comparação no M7.4
+                "intent_top2_gap_base": gap_base,
+                "intent_top2_gap_final": gap_final,
             },
         }
         combined_block = {
             "intent": ordered_combined,
             "entity": combined_entities,
             "weight": fusion_weight,
-            "notes": "linear_fusion=base*(1-w)+rag*w",
+            "notes": (
+                "additive=base+w*rag"
+                if re_rank_mode == "additive"
+                else "blend=base*(1-w)+rag*w"
+            ),
         }
+        # Expor final_combined por intent (M7.4)
+        try:
+            meta_explain["scoring"]["final_combined"] = [
+                {"intent": name, "score": float(fused_scores.get(name, 0.0))}
+                for name in [it["name"] for it in ordered_combined]
+            ]
+        except Exception:
+            pass
 
         if rag_enabled:
             meta_explain["rag"] = {
@@ -614,23 +642,39 @@ class Planner:
             entity_thr.get("min_gap", intent_thr.get("min_gap", dfl["min_gap"]))
         )
 
-        ordered = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
-        gap = float(
-            (ordered[0][1] - ordered[1][1])
-            if len(ordered) >= 2
-            else ordered[0][1] if ordered else 0.0
+        # Fonte do gate: base|final (apenas se re-rank estiver ligado)
+        gate_source_is_final = bool(re_rank_enabled and (thr_apply_on == "final"))
+        # score usado no gate: base do vencedor ou final do vencedor
+        chosen_base_score = float(intent_scores.get(chosen_intent or "", 0.0))
+        score_for_gate = (
+            float(fused_scores.get(chosen_intent or "", 0.0))
+            if gate_source_is_final
+            else chosen_base_score
         )
-        accepted = (float(chosen_score) >= min_score) and (gap >= min_gap)
+        gap_used = float(gap_final if gate_source_is_final else gap_base)
+        accepted = (score_for_gate >= min_score) and (gap_used >= min_gap)
 
         meta_explain["scoring"]["thresholds_applied"] = {
             "min_score": min_score,
             "min_gap": min_gap,
-            "gap": gap,
+            "gap": gap_used,
             "accepted": accepted,
-            "source": "final"
-            if (re_rank_enabled and thr_apply_on == "final")
-            else "base",
+            "source": ("final" if gate_source_is_final else "base"),
         }
+
+        # --------- Métricas M7.4: re-rank aplicado e gaps before/after ----------
+        try:
+            if re_rank_enabled:
+                counter(
+                    "planner_rerank_applied_total",
+                    mode=re_rank_mode,
+                    accepted=("true" if accepted else "false"),
+                )
+                # Mesmo se apply_on=base, coletamos os dois gaps para análise
+                histogram("planner_decision_gap_before", float(gap_base))
+                histogram("planner_decision_gap_after", float(gap_final))
+        except Exception:
+            pass
 
         return {
             "normalized": norm,

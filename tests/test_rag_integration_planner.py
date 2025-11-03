@@ -31,6 +31,13 @@ def _patch_rag_config(monkeypatch, **overrides):
     thresholds_cfg = copy.deepcopy((existing.get("planner") or {}).get("thresholds") or {})
     rag_cfg = dict(_THRESH_DEFAULTS["planner"]["rag"])
     rag_cfg.update(overrides)
+    re_rank_cfg = dict(rag_cfg.get("re_rank") or {})
+    re_rank_cfg.update({
+        "enabled": overrides.get("enabled", re_rank_cfg.get("enabled", False)),
+        "mode": overrides.get("re_rank_mode", "blend"),
+        "weight": overrides.get("weight", re_rank_cfg.get("weight", 0.25)),
+    })
+    rag_cfg["re_rank"] = re_rank_cfg
 
     monkeypatch.setitem(
         planner_module._THRESH_DEFAULTS["planner"], "rag", dict(rag_cfg)

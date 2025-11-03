@@ -58,8 +58,19 @@ class Orchestrator:
         score = chosen.get("score")
         exp = plan.get("explain") or {}
 
-        # top2 gap do planner (M6.5 calculado no planner)
-        top2_gap = float(((exp.get("scoring") or {}).get("intent_top2_gap")) or 0.0)
+        # top2 gap do planner (M7.4: usa gap consolidado do planner)
+        scoring_block = exp.get("scoring") or {}
+        thr_info = scoring_block.get("thresholds_applied") or {}
+        top2_gap = float(
+            thr_info.get(
+                "gap",
+                scoring_block.get(
+                    "intent_top2_gap_final",
+                    scoring_block.get("intent_top2_gap_base", 0.0),
+                ),
+            )
+            or 0.0
+        )
 
         # --------- M6.6: aplicar GATES por YAML ----------
         th = _load_thresholds(_TH_PATH)
