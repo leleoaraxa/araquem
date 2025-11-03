@@ -9,7 +9,7 @@ intents:
   dividendos:
     default_agg: list
     default_window: count:6
-    windows_allowed: [months:3, months:6, months:12, months:24, count:3, count:6, count:12, count:24]
+    windows_allowed: [months:3, months:6, months:12, months:24, count:3, count:6, count:12, count:24, count:1]
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, recente, atual]
@@ -37,7 +37,7 @@ intents:
   precos:
     default_agg: latest
     default_window: count:1
-    windows_allowed: [months:3, months:6, months:12, months:24, count:3, count:6, count:12, count:24]
+    windows_allowed: [months:3, months:6, months:12, months:24, count:3, count:6, count:12, count:24, count:1]
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, fechamento, atual]
