@@ -6,6 +6,13 @@ chunk:
   max_chars: 1200
   overlap_chars: 120
 
+hint_filters:
+  allowlist: ["entity-*", "concepts-*"]
+  denylist: ["golden-*", "ontology-*"]
+required_entity_doc: true
+weight: 0.25
+min_score: 0.20
+
 include:
   # ── Conceitos (documentos de base do produto) ──────────────────────────────
   - id: concepts-catalog

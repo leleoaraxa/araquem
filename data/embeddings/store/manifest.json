@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-02T00:38:42Z",
+  "generated_at": "2025-11-02T21:40:00Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -35,7 +35,7 @@
         "entities"
       ],
       "chunks": 3,
-      "sha_all": "c847368afbd215a3e4b04519c71eec432f5c2a992c788fcc66defc693d67852a"
+      "sha_all": "51515e5cafdd9eff491a44f8f08d1f5fc80cad1f86d5a486068203c2968a4f7a"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -57,7 +57,7 @@
         "dividendos"
       ],
       "chunks": 2,
-      "sha_all": "d52ff12be28ca03fe553177c387274f64b1c64d355f956fc0b37f8d628699332"
+      "sha_all": "89bf70e3efca09399962cfb9b97409d89f20ed7c92b08eb1cda0de69dd11591a"
     },
     {
       "id": "entity-fiis-precos",
@@ -68,7 +68,7 @@
         "precos"
       ],
       "chunks": 2,
-      "sha_all": "792f9f5cc6af0e31724c2c7d996c561d79bf187cf7b095f8b0852479f830d5af"
+      "sha_all": "77cc7e5968e8ce9d15382d3086419e6f773d897073ad07b1e4964e1cdf883cd7"
     },
     {
       "id": "entity-fiis-rankings",
@@ -100,7 +100,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "0f4cf3f2676da3a49f433a73a2a9dec61c57337275e47188db8c500ba18af29f"
+      "sha_all": "9ba3215744870736fdc7d9a4445191988db76219bfab4a3f231b213298e2a472"
     },
     {
       "id": "ops-observability",

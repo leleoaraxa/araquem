@@ -1,0 +1,36 @@
+{
+  "type": "rag_search",
+  "contract": "guardrails-v2.0",
+  "runner": "ops-quality",
+  "defaults": {
+    "request": {
+      "conversation_id": "quality-rag-basics",
+      "nickname": "quality",
+      "client_id": "ops-quality",
+      "params": { "k": 10, "min_score": 0.2, "tags": [], "doc_id": [] }
+    },
+    "expect": { "top_n": 3 }
+  },
+  "samples": [
+    {
+      "name": "cadastro-cnpj-MCCI11",
+      "request": { "question": "cnpj do MCCI11" },
+      "expect": { "doc_id_prefix": "entity-fiis-cadastro", "top_n": 3 }
+    },
+    {
+      "name": "dividendos-HGLG11",
+      "request": { "question": "dividendos do HGLG11" },
+      "expect": { "doc_id_prefix": "entity-fiis-dividendos", "top_n": 3 }
+    },
+    {
+      "name": "preco-MXRF11",
+      "request": { "question": "preço do MXRF11" },
+      "expect": { "doc_id_prefix": "entity-fiis-precos", "top_n": 3 }
+    },
+    {
+      "name": "ranking-HGLG11",
+      "request": { "question": "ranking de usuarios do HGLG11" },
+      "expect": { "doc_id_prefix": "entity-fiis-rankings", "top_n": 5 }
+    }
+  ]
+}

@@ -17,6 +17,7 @@ from app.observability.metrics import (
     emit_histogram as histogram,
 )
 from app.analytics.explain import explain as _explain_analytics
+from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
 
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
@@ -141,6 +142,19 @@ class Orchestrator:
 
         identifiers = self.extract_identifiers(question)
 
+        # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
+        # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
+        try:
+            agg_params = infer_params(
+                question=question,
+                intent=intent,
+                entity=entity,
+                entity_yaml_path=f"data/entities/{entity}.yaml",
+                defaults_yaml_path="data/ops/param_inference.yaml",
+            )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
+        except Exception:
+            agg_params = None  # fallback seguro: SELECT básico (sem agregação)
+
         # estágio de planning finalizado
         histogram(
             "sirios_planner_duration_seconds", time.perf_counter() - t0, stage="plan"
@@ -181,7 +195,9 @@ class Orchestrator:
             )
 
             sql, params, result_key, return_columns = build_select_for_entity(
-                entity, identifiers
+                entity=entity,
+                identifiers=identifiers,
+                agg_params=agg_params,  # <- passa inferência para o builder
             )
             if isinstance(params, dict):
                 params = {**params, "entity": entity}  # etiqueta para métricas SQL

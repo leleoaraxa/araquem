@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "samples": [
+    {
+      "question": "Qual o último dividendo do XPLG11?",
+      "expected": {
+        "intent": "dividendos",
+        "entity": "fiis_dividendos",
+        "aggregates": { "agg": "latest", "window": "count:1" }
+      }
+    },
+    {
+      "question": "Média dos últimos 6 meses de dividendos do XPLG11",
+      "expected": {
+        "intent": "dividendos",
+        "entity": "fiis_dividendos",
+        "aggregates": { "agg": "avg", "window": "months:6" }
+      }
+    },
+    {
+      "question": "Quais foram os 12 últimos dividendos do XPLG11?",
+      "expected": {
+        "intent": "dividendos",
+        "entity": "fiis_dividendos",
+        "aggregates": { "agg": "list", "window": "count:12", "limit": 12, "order": "desc" }
+      }
+    },
+    {
+      "question": "Preço atual do MXRF11",
+      "expected": {
+        "intent": "precos",
+        "entity": "fiis_precos",
+        "aggregates": { "agg": "latest", "window": "count:1" }
+      }
+    },
+    {
+      "question": "Preço médio dos últimos 6 meses do HGLG11",
+      "expected": {
+        "intent": "precos",
+        "entity": "fiis_precos",
+        "aggregates": { "agg": "avg", "window": "months:6" }
+      }
+    },
+    {
+      "question": "Liste os últimos 24 preços do KNRI11",
+      "expected": {
+        "intent": "precos",
+        "entity": "fiis_precos",
+        "aggregates": { "agg": "list", "window": "count:24", "limit": 24, "order": "desc" }
+      }
+    }
+  ]
+}

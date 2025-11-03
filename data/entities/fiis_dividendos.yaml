@@ -55,3 +55,24 @@ ask:
 
 order_by_whitelist:
   - payment_date desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc
+    avg:
+      window: months:6
+    sum:
+      window: months:12
+  windows_allowed:
+    - months:3
+    - months:6
+    - months:12
+    - months:24
+    - count:3
+    - count:6
+    - count:12
+    - count:24

@@ -122,6 +122,11 @@ intents:
       include:
         - dividendo
         - dividendos
+        - ultimo
+        - ultima
+        - recentes
+        - mais
+        - mais recentes
         - provento
         - proventos
         - rendimento
@@ -138,6 +143,11 @@ intents:
       include:
         - dividendo do
         - dividendos do
+        - ultimo dividendo
+        - ultima distribuicao
+        - mais recentes dividendos
+        - qual o ultimo dividendo do
+        - quando foi o ultimo pagamento do
         - proventos do
         - rendimento do
         - pagamento do
