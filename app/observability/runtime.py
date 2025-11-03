@@ -1,12 +1,14 @@
 # app/observability/runtime.py
 # Backend Prometheus + (no-op) spans e bootstrap. Registro centralizado de métricas.
 import os, yaml, re, hashlib, json, urllib.parse, urllib.request
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Tuple, Optional
 
 from prometheus_client import (
+    CONTENT_TYPE_LATEST,
     Counter as PromCounter,
-    Histogram as PromHistogram,
     Gauge as PromGauge,
+    Histogram as PromHistogram,
+    generate_latest,
 )
 from opentelemetry import trace
 from opentelemetry.sdk.resources import Resource
@@ -186,7 +188,18 @@ def _ensure_metric(name: str, labels: Dict[str, str]):
     return kind, labelnames
 
 
+class _SpanHandle:
+    __slots__ = ("span", "_cm")
+
+    def __init__(self, span, cm=None):
+        self.span = span
+        self._cm = cm
+
+
 class _PromBackend(obs._Backend):
+    def __init__(self) -> None:
+        self._tracer = trace.get_tracer("app")
+
     def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None:
         kind, labelnames = _ensure_metric(name, labels)
         if kind != "counter":
@@ -207,15 +220,57 @@ class _PromBackend(obs._Backend):
         else:
             h.observe(float(value))
 
-    # Spans no-op (pluggable para OTEL quando desejar)
     def start_span(self, name: str, attributes: Dict[str, Any]):
-        return {"name": name, "attrs": dict(attributes)}
+        cm = self._tracer.start_as_current_span(name)
+        span = cm.__enter__()
+        handle = _SpanHandle(span, cm)
+        for key, value in attributes.items():
+            if value is not None:
+                self.set_span_attr(handle, key, value)
+        return handle
 
-    def end_span(self, span) -> None:
-        return
+    def end_span(
+        self,
+        span,
+        exc_type: Optional[type] = None,
+        exc_value: Optional[BaseException] = None,
+        exc_tb: Any = None,
+    ) -> None:
+        cm = getattr(span, "_cm", None)
+        if cm is not None:
+            cm.__exit__(exc_type, exc_value, exc_tb)
 
     def set_span_attr(self, span, key: str, value: Any) -> None:
-        span["attrs"][key] = value
+        raw = getattr(span, "span", span)
+        if raw is None:
+            return
+        setter = getattr(raw, "set_attribute", None)
+        if callable(setter):
+            setter(key, value)
+        else:
+            raw.setdefault("attrs", {})[key] = value
+
+    def span_trace_id(self, span) -> Optional[str]:
+        raw = getattr(span, "span", span)
+        if raw is None:
+            return None
+        ctx = getattr(raw, "get_span_context", lambda: None)()
+        trace_id = getattr(ctx, "trace_id", 0) if ctx else 0
+        if trace_id:
+            return f"{trace_id:032x}"
+        return None
+
+    def current_trace_id(self) -> Optional[str]:
+        current = trace.get_current_span()
+        ctx = current.get_span_context() if current else None
+        trace_id = getattr(ctx, "trace_id", 0) if ctx else 0
+        if trace_id:
+            return f"{trace_id:032x}"
+        return None
+
+
+def render_prometheus_latest():
+    return generate_latest(), CONTENT_TYPE_LATEST
 
 
 def bootstrap(service_name: str = "api", cfg: dict = None) -> None:

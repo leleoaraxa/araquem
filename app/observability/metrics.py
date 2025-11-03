@@ -91,8 +91,9 @@ def _validate_and_normalize(name: str, labels: Mapping[str, Any]) -> Mapping[str
 
 
 def emit_counter(name: str, **labels: Any) -> None:
+    value = float(labels.pop("_value", 1.0))
     labs = _validate_and_normalize(name, labels)
-    _counter(name, **labs)
+    _counter(name, _value=value, **labs)
 
 
 def emit_histogram(name: str, value: float, **labels: Any) -> None:
