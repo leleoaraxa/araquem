@@ -3,7 +3,6 @@
 import os
 import re
 import time
-import yaml
 from typing import Any, Dict, Optional
 
 from opentelemetry import trace
@@ -18,6 +17,7 @@ from app.observability.metrics import (
 )
 from app.analytics.explain import explain as _explain_analytics
 from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
+from app.utils.filecache import load_yaml_cached
 
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
@@ -27,12 +27,8 @@ _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yam
 
 
 def _load_thresholds(path: str) -> Dict[str, Any]:
-    try:
-        with open(path, "r", encoding="utf-8") as f:
-            raw = yaml.safe_load(f) or {}
-        return (raw.get("planner") or {}).get("thresholds") or {}
-    except Exception:
-        return {}
+    raw = load_yaml_cached(path) or {}
+    return (raw.get("planner") or {}).get("thresholds") or {}
 
 
 class Orchestrator:

@@ -3,20 +3,14 @@ from __future__ import annotations
 from typing import Dict, Any, List
 import re, unicodedata
 import logging
-import os, json
-from pathlib import Path
-
-try:
-    import yaml
-except Exception:
-    yaml = None
+import os
 
 from .ontology_loader import load_ontology
 
 # RAG: leitor de índice e hints
-from app.rag.index_reader import EmbeddingStore
 from app.rag.hints import entity_hints_from_rag
 from app.rag.ollama_client import OllamaClient
+from app.utils.filecache import cached_embedding_store, load_yaml_cached
 
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
@@ -34,13 +28,8 @@ _THRESH_DEFAULTS = {
 
 
 def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str, Any]:
-    if yaml is None:
-        return _THRESH_DEFAULTS
-    p = Path(path)
-    if not p.exists():
-        return _THRESH_DEFAULTS
     try:
-        data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        data = load_yaml_cached(path) or {}
         planner = data.get("planner") or {}
         thresholds = (
             planner.get("thresholds") or _THRESH_DEFAULTS["planner"]["thresholds"]
@@ -196,7 +185,7 @@ class Planner:
 
         if rag_enabled:
             try:
-                store = EmbeddingStore(rag_index_path)
+                store = cached_embedding_store(rag_index_path)
                 embedder = OllamaClient(
                     base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
                     model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),
