@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "[check] validating data contracts..."
+python scripts/validate_data_contracts.py || exit 1
+
 API_URL="${API_URL:-http://localhost:8000}"
 
 report_json="$(curl -s "${API_URL}/ops/quality/report")"
