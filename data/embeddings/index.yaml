@@ -63,9 +63,6 @@ include:
     path: data/golden/m65_quality.yaml
     tags: [golden, quality]
 
-  - id: golden-m65-quality-json
-    path: data/golden/m65_quality.json
-    tags: [golden, quality, json]
 
   # ── Samples de qualidade (routing + projeções) ─────────────────────────────
   - id: q-routing-samples
