@@ -1,3 +1,4 @@
+# app/api/ops/cache.py
 import os
 from typing import Any, Dict, Optional
 
@@ -25,7 +26,9 @@ def cache_bust(payload: BustPayload, x_ops_token: Optional[str] = Header(default
     identifiers = payload.identifiers or {}
     policy = policies.get(entity)
     if not (entity and policy):
-        return JSONResponse({"error": "invalid entity or missing policy"}, status_code=400)
+        return JSONResponse(
+            {"error": "invalid entity or missing policy"}, status_code=400
+        )
 
     scope = str(policy.get("scope", "pub"))
     build_id = os.getenv("BUILD_ID", "dev")

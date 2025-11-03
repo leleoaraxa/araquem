@@ -1,3 +1,4 @@
+# app/api/ops/metrics.py
 from fastapi import APIRouter
 
 from app.observability.metrics import list_metrics_catalog

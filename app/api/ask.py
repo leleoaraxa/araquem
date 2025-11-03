@@ -1,3 +1,4 @@
+# app/api/ask.py
 import json
 import os
 import time
@@ -49,7 +50,8 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
 
     if explain:
         top2_gap = float(
-            ((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap") or 0.0
+            ((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap")
+            or 0.0
         )
         histogram("sirios_planner_top2_gap_histogram", top2_gap)
 
@@ -117,7 +119,9 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
 
     results = rt.get("value") or {}
     result_key = next(iter(results.keys()), None)
-    rows = results.get(result_key, []) if isinstance(results.get(result_key), list) else []
+    rows = (
+        results.get(result_key, []) if isinstance(results.get(result_key), list) else []
+    )
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
     explain_analytics_payload = None

@@ -26,7 +26,7 @@ services:
     networks: [araquem_network, zaratustra_default]
     restart: unless-stopped
     healthcheck:
-      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/ops/quality/report >/dev/null || exit 1"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/healthz >/dev/null || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 30
@@ -90,6 +90,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
     networks: [araquem_network]
 
   grafana:
@@ -170,7 +171,7 @@ services:
               break;
             fi
             sleep $$WAIT_SLEEP;
-            waited=$$((waited + WAIT_SLEEP));
+            waited=$$((waited + $$WAIT_SLEEP));
           done;
           ./scripts/quality_gate_check.sh || true;
           sleep 3600;
@@ -189,6 +190,7 @@ volumes:
   grafana:
   ollama:
   tempo-data:
+  prometheus-data:
 
 networks:
   araquem_network:

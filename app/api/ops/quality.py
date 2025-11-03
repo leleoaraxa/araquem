@@ -1,3 +1,4 @@
+# app/api/ops/quality.py
 import math
 import os
 from typing import Any, Dict, List, Optional
@@ -64,7 +65,9 @@ def quality_push(
             )
 
             top2_gap = float(
-                ((plan.get("explain") or {}).get("scoring") or {}).get("intent_top2_gap")
+                ((plan.get("explain") or {}).get("scoring") or {}).get(
+                    "intent_top2_gap"
+                )
                 or 0.0
             )
             histogram("sirios_planner_top2_gap_histogram", top2_gap)
@@ -87,7 +90,9 @@ def quality_push(
 
         if not isinstance(samples_raw, list) or not samples_raw:
             return JSONResponse(
-                {"error": "invalid rag_search payload: samples must be a non-empty list"},
+                {
+                    "error": "invalid rag_search payload: samples must be a non-empty list"
+                },
                 status_code=400,
             )
 
@@ -115,13 +120,17 @@ def quality_push(
         for key in ("k", "min_score", "tags"):
             err = _validate_threshold(defaults.get(key), key, f"defaults.{key}")
             if err:
-                return JSONResponse({"error": f"invalid rag_search payload: {err}"}, status_code=400)
+                return JSONResponse(
+                    {"error": f"invalid rag_search payload: {err}"}, status_code=400
+                )
 
         normalized_samples: List[Dict[str, Any]] = []
         for idx, sample in enumerate(samples_raw):
             if not isinstance(sample, dict):
                 return JSONResponse(
-                    {"error": f"invalid rag_search payload: samples[{idx}] must be an object"},
+                    {
+                        "error": f"invalid rag_search payload: samples[{idx}] must be an object"
+                    },
                     status_code=400,
                 )
             question = sample.get("question")
@@ -136,7 +145,9 @@ def quality_push(
             expect = sample.get("expect") or {}
             if not isinstance(expect, dict):
                 return JSONResponse(
-                    {"error": f"invalid rag_search payload: samples[{idx}].expect must be an object"},
+                    {
+                        "error": f"invalid rag_search payload: samples[{idx}].expect must be an object"
+                    },
                     status_code=400,
                 )
             doc_prefix = expect.get("doc_id_prefix")
@@ -163,7 +174,9 @@ def quality_push(
                 }
             )
 
-        thr_path = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
+        thr_path = os.getenv(
+            "PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml"
+        )
         thresholds = _load_thresholds(thr_path)
         rag_cfg = (thresholds.get("planner") or {}).get("rag") or {}
         if not bool(rag_cfg.get("enabled", False)):
@@ -209,9 +222,7 @@ def quality_push(
             if defaults_min_score_raw is not None
             else 0.20
         )
-        defaults_tags_raw = (
-            defaults.get("tags") if isinstance(defaults, dict) else None
-        )
+        defaults_tags_raw = defaults.get("tags") if isinstance(defaults, dict) else None
         defaults_tags = list(defaults_tags_raw or [])
 
         for sample in normalized_samples:
@@ -296,7 +307,11 @@ def quality_push(
 
             details.append(detail)
 
-        return {"accepted": accepted, "metrics": {"ok": ok, "fail": fail}, "details": details}
+        return {
+            "accepted": accepted,
+            "metrics": {"ok": ok, "fail": fail},
+            "details": details,
+        }
 
     if ptype == "projection":
         entity = payload.get("entity")
@@ -304,7 +319,9 @@ def quality_push(
         must_have = payload.get("must_have_columns") or []
         samples_raw: List[Dict[str, Any]] = payload.get("samples", [])
         if not (entity and result_key and isinstance(must_have, list)):
-            return JSONResponse({"error": "invalid projection payload"}, status_code=400)
+            return JSONResponse(
+                {"error": "invalid projection payload"}, status_code=400
+            )
 
         ok = fail = 0
         for s in samples_raw:
@@ -319,7 +336,9 @@ def quality_push(
                     passed = all(col in first.keys() for col in must_have)
             if passed:
                 ok += 1
-                counter("sirios_planner_projection_total", outcome="ok", entity=str(entity))
+                counter(
+                    "sirios_planner_projection_total", outcome="ok", entity=str(entity)
+                )
             else:
                 fail += 1
                 counter(
@@ -341,7 +360,9 @@ def quality_report():
         with open(thr_path, "r", encoding="utf-8") as f:
             thr = yaml.safe_load(f) or {}
     except Exception as e:
-        return JSONResponse({"error": f"failed to load thresholds: {e}"}, status_code=500)
+        return JSONResponse(
+            {"error": f"failed to load thresholds: {e}"}, status_code=500
+        )
 
     qg = (thr.get("quality_gates") or {}).get("thresholds") or {}
     min_top1_acc = float(qg.get("min_top1_accuracy", 0.0))
@@ -352,7 +373,9 @@ def quality_report():
 
     top1_hit = prom_query_instant('sum(sirios_planner_top1_match_total{result="hit"})')
     top1_total = prom_query_instant("sum(sirios_planner_top1_match_total)")
-    routed_ok = prom_query_instant('sum(sirios_planner_routed_total{outcome!="unroutable"})')
+    routed_ok = prom_query_instant(
+        'sum(sirios_planner_routed_total{outcome!="unroutable"})'
+    )
     routed_all = prom_query_instant("sum(sirios_planner_routed_total)")
     gap_p50 = prom_query_instant(
         "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[5m])) by (le))"

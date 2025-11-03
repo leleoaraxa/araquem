@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-03T17:37:51Z",
+  "generated_at": "2025-11-03T18:45:39Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {

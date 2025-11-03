@@ -1,3 +1,4 @@
+# app/api/health.py
 import os
 
 import psycopg
@@ -28,7 +29,11 @@ def healthz():
                     db_ok = True
         except Exception:
             db_ok = False
-    status = "ok" if (db_ok and redis_ok) else ("degraded" if (db_ok or redis_ok) else "down")
+    status = (
+        "ok"
+        if (db_ok and redis_ok)
+        else ("degraded" if (db_ok or redis_ok) else "down")
+    )
     return {
         "status": status,
         "build_id": build_id,

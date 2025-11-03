@@ -1,3 +1,4 @@
+# app/api/__init__.py
 from fastapi import FastAPI
 
 from app.api.ask import router as ask_router
