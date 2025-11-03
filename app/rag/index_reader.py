@@ -1,9 +1,15 @@
 # app/rag/index_reader.py
 from __future__ import annotations
-import os, json
+
+import json
 import math
 from pathlib import Path
-from typing import Dict, Any, List, Optional
+from typing import Any, Dict, List
+
+from app.core.hotreload import get_manifest_hash
+
+
+_EMB_CACHE = {"key": None, "rows": None, "mtime": None}
 
 
 def _has_vec(row: Dict[str, Any]) -> bool:
@@ -25,13 +31,42 @@ def _cos(a: List[float], b: List[float]) -> float:
 class EmbeddingStore:
     def __init__(self, jsonl_path: str):
         self.path = Path(jsonl_path)
-        self._rows: List[Dict[str, Any]] = []
-        if self.path.exists():
+        if not self.path.exists():
+            raise FileNotFoundError(jsonl_path)
+
+        resolved_path = str(self.path.resolve())
+        manifest_path = self.path.parent / "manifest.json"
+        manifest_hash = get_manifest_hash(str(manifest_path))
+        cache_key = (resolved_path, manifest_hash)
+
+        try:
+            current_mtime = self.path.stat().st_mtime
+        except OSError:
+            current_mtime = None
+
+        cached_rows = _EMB_CACHE.get("rows")
+        cached_key = _EMB_CACHE.get("key")
+        cached_mtime = _EMB_CACHE.get("mtime")
+
+        if (
+            cached_rows is not None
+            and cached_key == cache_key
+            and (
+                current_mtime is None
+                or cached_mtime is None
+                or math.isclose(cached_mtime, current_mtime)
+            )
+        ):
+            self._rows = cached_rows
+        else:
+            rows: List[Dict[str, Any]] = []
             with self.path.open("r", encoding="utf-8") as f:
                 for line in f:
-                    self._rows.append(json.loads(line))
-        else:
-            raise FileNotFoundError(jsonl_path)
+                    rows.append(json.loads(line))
+            _EMB_CACHE["key"] = cache_key
+            _EMB_CACHE["rows"] = rows
+            _EMB_CACHE["mtime"] = current_mtime
+            self._rows = rows
 
     def rows_with_vectors(self) -> List[Dict[str, Any]]:
         """Retorna somente linhas com vetor não-vazio (sanity)."""
