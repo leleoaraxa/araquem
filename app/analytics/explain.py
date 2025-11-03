@@ -24,10 +24,10 @@ from typing import Any, Dict, Optional
 from dataclasses import dataclass, asdict
 from datetime import datetime, timezone
 
-from opentelemetry import trace
-
-# Tracer namespace dedicated to analytics/explain layer
-_TRACER = trace.get_tracer("analytics.explain")
+from app.observability.instrumentation import (
+    set_trace_attribute,
+    trace as start_trace,
+)
 
 
 @dataclass
@@ -141,7 +141,7 @@ def explain(
           "details": { ...ExplainDetails... }
         }
     """
-    with _TRACER.start_as_current_span("analytics.explain") as span:
+    with start_trace("analytics.explain", component="analytics", operation="explain") as span:
         # Extract fields without coupling to a specific schema.
         # Direct keys
         intent = _pick(planner_output, "intent", "matched_intent", default=None)
@@ -179,17 +179,17 @@ def explain(
         # Tracing attributes for correlation
         if span is not None:
             if intent:
-                span.set_attribute("explain.intent", intent)
+                set_trace_attribute(span, "explain.intent", intent)
             if entity:
-                span.set_attribute("explain.entity", entity)
+                set_trace_attribute(span, "explain.entity", entity)
             if view:
-                span.set_attribute("explain.view", view)
+                set_trace_attribute(span, "explain.view", view)
             if latency_ms is not None:
-                span.set_attribute("explain.latency_ms", latency_ms)
+                set_trace_attribute(span, "explain.latency_ms", latency_ms)
             if cache_hit is not None:
-                span.set_attribute("explain.cache_hit", bool(cache_hit))
+                set_trace_attribute(span, "explain.cache_hit", bool(cache_hit))
             if route_source:
-                span.set_attribute("explain.route_source", route_source)
+                set_trace_attribute(span, "explain.route_source", route_source)
 
         payload = {
             "request_id": request_id,

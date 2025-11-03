@@ -5,9 +5,12 @@ import time
 from typing import List, Dict, Any, Optional
 import psycopg
 
-from opentelemetry import trace
 from app.observability.runtime import load_config, sql_sanitize
-from app.observability.instrumentation import counter, histogram
+from app.observability.instrumentation import (
+    set_trace_attribute,
+    trace as start_trace,
+)
+from app.observability.metrics import emit_counter, emit_histogram
 
 
 class PgExecutor:
@@ -21,7 +24,6 @@ class PgExecutor:
 
     def query(self, sql: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
         _cfg = load_config()
-        _tr = trace.get_tracer("executor")
         with psycopg.connect(self._dsn, autocommit=True) as conn:
             dbname = getattr(getattr(conn, "info", None), "dbname", "db")
             entity = (params or {}).get("entity", "unknown")
@@ -33,24 +35,28 @@ class PgExecutor:
                     .get("statement", {})
                     .get("max_len", 512),
                 )
-                with _tr.start_as_current_span("sql.execute") as sp:
-                    sp.set_attribute("db.system", "postgresql")
-                    sp.set_attribute("db.name", dbname)
-                    sp.set_attribute("db.sql.table", entity)
-                    sp.set_attribute("db.statement", stmt)
+                with start_trace(
+                    "executor.sql.execute",
+                    component="executor",
+                    operation="sql.execute",
+                ) as span:
+                    set_trace_attribute(span, "db.system", "postgresql")
+                    set_trace_attribute(span, "db.name", dbname)
+                    set_trace_attribute(span, "db.sql.table", entity)
+                    set_trace_attribute(span, "db.statement", stmt)
                     with conn.cursor(row_factory=psycopg.rows.dict_row) as cur:
                         cur.execute(sql, params or {})
                         rows = cur.fetchall()
                 dt = time.perf_counter() - t0
                 # Latência da query
-                histogram(
+                emit_histogram(
                     "sirios_sql_query_duration_seconds",
                     dt,
                     entity=str(entity),
                     db_name=str(dbname),
                 )
                 # Linhas retornadas (usa _value suportado pela facade)
-                counter(
+                emit_counter(
                     "sirios_sql_rows_returned_total",
                     entity=str(entity),
                     _value=len(rows),
@@ -59,7 +65,7 @@ class PgExecutor:
                 return rows
             except psycopg.Error as e:
                 code = getattr(e, "pgcode", "unknown")
-                counter(
+                emit_counter(
                     "sirios_sql_errors_total", entity=str(entity), error_code=str(code)
                 )
                 raise

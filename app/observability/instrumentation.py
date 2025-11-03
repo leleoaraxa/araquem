@@ -10,11 +10,32 @@ import time
 
 
 class _Backend:
-    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None: ...
-    def observe(self, name: str, value: float, labels: Dict[str, str]) -> None: ...
-    def start_span(self, name: str, attributes: Dict[str, Any]): ...
-    def end_span(self, span) -> None: ...
-    def set_span_attr(self, span, key: str, value: Any) -> None: ...
+    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None:
+        ...
+
+    def observe(self, name: str, value: float, labels: Dict[str, str]) -> None:
+        ...
+
+    def start_span(self, name: str, attributes: Dict[str, Any]):
+        ...
+
+    def end_span(
+        self,
+        span,
+        exc_type: Optional[type] = None,
+        exc_value: Optional[BaseException] = None,
+        exc_tb: Any = None,
+    ) -> None:
+        ...
+
+    def set_span_attr(self, span, key: str, value: Any) -> None:
+        ...
+
+    def span_trace_id(self, span) -> Optional[str]:
+        return None
+
+    def current_trace_id(self) -> Optional[str]:
+        return None
 
 
 _backend: Optional[_Backend] = None
@@ -52,15 +73,33 @@ def trace(op: str, **attributes):
     _ensure()
     span = _backend.start_span(op, attributes)
     t0 = time.perf_counter()
+    exc: Optional[BaseException] = None
     try:
         yield span
     except Exception as e:
+        exc = e
         _backend.set_span_attr(span, "error", True)
         _backend.set_span_attr(span, "exception", repr(e))
         raise
     finally:
         _backend.set_span_attr(span, "latency_ms", (time.perf_counter() - t0) * 1000.0)
-        _backend.end_span(span)
+        if exc is not None:
+            _backend.end_span(span, type(exc), exc, exc.__traceback__)
+        else:
+            _backend.end_span(span, None, None, None)
+
+
+def set_trace_attribute(span, key: str, value: Any) -> None:
+    _ensure()
+    _backend.set_span_attr(span, key, value)
+
+
+def get_trace_id(span=None) -> Optional[str]:
+    if _backend is None:
+        return None
+    if span is not None:
+        return _backend.span_trace_id(span)
+    return _backend.current_trace_id()
 
 
 def instrument(component: str, operation: str) -> Callable:

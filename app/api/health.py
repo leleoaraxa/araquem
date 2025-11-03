@@ -3,9 +3,9 @@ import os
 import psycopg
 from fastapi import APIRouter
 from fastapi.responses import PlainTextResponse
-from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 
 from app.core.context import cache
+from app.observability.runtime import render_prometheus_latest
 
 router = APIRouter()
 
@@ -41,7 +41,8 @@ def healthz():
 
 @router.get("/metrics")
 def metrics():
-    return PlainTextResponse(generate_latest(), media_type=CONTENT_TYPE_LATEST)
+    payload, media_type = render_prometheus_latest()
+    return PlainTextResponse(payload, media_type=media_type)
 
 
 @router.get("/health/redis")

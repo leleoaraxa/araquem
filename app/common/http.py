@@ -6,22 +6,19 @@ from typing import Any
 from uuid import uuid4
 
 from fastapi import Request
-from opentelemetry.trace import get_current_span
 
 from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
+from app.observability.instrumentation import get_trace_id
 
 
 def _make_request_id() -> str:
     """Replica da implementação original de geração de request_id."""
-    try:
-        ctx = get_current_span().get_span_context()
-        if ctx and getattr(ctx, "trace_id", 0):
-            return f"{ctx.trace_id:032x}"
-    except Exception:
-        pass
+    trace_id = get_trace_id()
+    if trace_id:
+        return trace_id
     return uuid4().hex
 
 

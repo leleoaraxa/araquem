@@ -1,8 +1,8 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from opentelemetry import trace
 
 from app.core.context import planner
+from app.observability.instrumentation import trace as start_trace
 
 router = APIRouter()
 
@@ -17,6 +17,5 @@ def debug_planner(q: str):
 
 @router.get("/_debug/trace")
 def debug_trace():
-    tr = trace.get_tracer("api.debug")
-    with tr.start_as_current_span("manual_debug_span"):
+    with start_trace("api.debug.manual", component="api", operation="debug"):
         return {"ok": True}

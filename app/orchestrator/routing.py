@@ -4,8 +4,7 @@ import os
 import re
 import time
 from typing import Any, Dict, Optional
-
-from opentelemetry import trace
+from uuid import uuid4
 
 from app.planner.planner import Planner
 from app.builder.sql_builder import build_select_for_entity
@@ -15,6 +14,11 @@ from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
+from app.observability.instrumentation import (
+    get_trace_id,
+    set_trace_attribute,
+    trace as start_trace,
+)
 from app.analytics.explain import explain as _explain_analytics
 from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
 from app.utils.filecache import load_yaml_cached
@@ -22,7 +26,6 @@ from app.utils.filecache import load_yaml_cached
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
-_TR_PLANNER = trace.get_tracer("planner")
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
 
 
@@ -182,10 +185,15 @@ class Orchestrator:
                 )
 
         # span do planner (atributos semânticos)
-        with _TR_PLANNER.start_as_current_span("planner.route") as sp:
-            sp.set_attribute("planner.intent", intent)
-            sp.set_attribute("planner.entity", entity)
-            sp.set_attribute(
+        with start_trace(
+            "planner.route",
+            component="planner",
+            operation="route_question",
+        ) as span:
+            set_trace_attribute(span, "planner.intent", intent)
+            set_trace_attribute(span, "planner.entity", entity)
+            set_trace_attribute(
+                span,
                 "planner.score",
                 float(score) if isinstance(score, (int, float)) else 0.0,
             )
@@ -206,9 +214,8 @@ class Orchestrator:
         explain_analytics_payload = None
         if explain:
             # Usa o trace_id do span corrente como request_id (correlação OTEL)
-            ctx = sp.get_span_context() if sp else None
-            trace_id = getattr(ctx, "trace_id", 0) if ctx else 0
-            request_id = f"{trace_id:032x}"
+            trace_id = get_trace_id(span)
+            request_id = trace_id or uuid4().hex
             planner_output = {
                 "route": {"intent": intent, "entity": entity, "view": result_key},
                 "chosen": chosen,
