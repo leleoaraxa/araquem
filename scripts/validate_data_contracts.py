@@ -114,35 +114,44 @@ def validate_param_inference(path: Path) -> Tuple[List[str], Dict[str, Set[str]]
     return errors, intent_windows
 
 
-def validate_entity(path: Path, intent_windows: Dict[str, Set[str]]) -> List[str]:
+def validate_entity(
+    path: Path,
+    intent_windows: Dict[str, Set[str]],
+    is_temporal_entity: bool,
+) -> Tuple[List[str], List[str]]:
     data, errors = load_yaml(path)
     if data is None:
-        return errors
+        return errors, []
 
+    warnings: List[str] = []
     presentation = data.get("presentation")
     if not isinstance(presentation, dict) or "result_key" not in presentation:
         errors.append("missing presentation.result_key")
 
-    aggregations = data.get("aggregations")
     normalized_windows: Set[str] = set()
-    if not isinstance(aggregations, dict):
-        errors.append("missing aggregations section")
-    else:
-        defaults = aggregations.get("defaults")
-        if not isinstance(defaults, dict):
-            errors.append("missing aggregations.defaults")
-        windows_allowed = aggregations.get("windows_allowed")
-        if not isinstance(windows_allowed, list):
-            errors.append("missing aggregations.windows_allowed")
+    if is_temporal_entity:
+        aggregations = data.get("aggregations")
+        if not isinstance(aggregations, dict):
+            errors.append("missing aggregations section")
         else:
-            for entry in windows_allowed:
-                normalized = normalize_window(entry)
-                if not normalized:
-                    errors.append(f"invalid window format in aggregations.windows_allowed entry: {entry!r}")
-                    continue
-                normalized_windows.add(normalized)
-            if "count:1" not in normalized_windows:
-                errors.append("aggregations.windows_allowed must include count:1")
+            defaults = aggregations.get("defaults")
+            if not isinstance(defaults, dict):
+                errors.append("missing aggregations.defaults")
+            windows_allowed = aggregations.get("windows_allowed")
+            if not isinstance(windows_allowed, list):
+                errors.append("missing aggregations.windows_allowed")
+            else:
+                for entry in windows_allowed:
+                    normalized = normalize_window(entry)
+                    if not normalized:
+                        errors.append(
+                            "invalid window format in aggregations.windows_allowed entry: "
+                            f"{entry!r}"
+                        )
+                        continue
+                    normalized_windows.add(normalized)
+                if "count:1" not in normalized_windows:
+                    errors.append("aggregations.windows_allowed must include count:1")
 
     ask = data.get("ask", {})
     intents = ask.get("intents") if isinstance(ask, dict) else None
@@ -156,18 +165,26 @@ def validate_entity(path: Path, intent_windows: Dict[str, Set[str]]) -> List[str
     for intent_name in entity_intents:
         intent_required = intent_windows.get(intent_name)
         if intent_required is None:
-            errors.append(f"unknown intent '{intent_name}' (not defined in param_inference.yaml)")
+            if is_temporal_entity:
+                errors.append(
+                    f"unknown intent '{intent_name}' (not defined in param_inference.yaml)"
+                )
+            else:
+                warnings.append(
+                    f"intent '{intent_name}' not in param_inference.yaml (non-temporal)"
+                )
             continue
-        required_windows.update(intent_required)
+        if is_temporal_entity:
+            required_windows.update(intent_required)
 
-    if required_windows and normalized_windows:
+    if is_temporal_entity and required_windows and normalized_windows:
         missing = sorted(required_windows - normalized_windows)
         if missing:
             errors.append(
                 "missing windows in aggregations.windows_allowed: " + ", ".join(missing)
             )
 
-    return errors
+    return errors, warnings
 
 
 def validate_embeddings_index(path: Path) -> List[str]:
@@ -206,16 +223,69 @@ def main() -> int:
     else:
         print(f"[ok] {param_path.relative_to(ROOT_DIR)}")
 
+    onto_path = DATA_DIR / "ontology" / "entity.yaml"
+    with onto_path.open("r", encoding="utf-8") as handle:
+        onto_data = yaml.safe_load(handle)
+    if not isinstance(onto_data, dict):
+        onto_data = {}
+    intent_to_entities = {
+        intent.get("name"): intent.get("entities", [])
+        for intent in onto_data.get("intents", []) or []
+        if isinstance(intent, dict)
+    }
+
+    with param_path.open("r", encoding="utf-8") as handle:
+        pi_data = yaml.safe_load(handle)
+    if not isinstance(pi_data, dict):
+        pi_data = {}
+    intents_config = pi_data.get("intents")
+    if isinstance(intents_config, dict):
+        temporal_intents = set(intents_config.keys())
+    else:
+        temporal_intents = set()
+
+    entities_temporais = {
+        entity
+        for intent, entities in intent_to_entities.items()
+        if intent in temporal_intents and isinstance(entities, list)
+        for entity in entities
+        if isinstance(entity, str)
+    }
+
     entities_dir = DATA_DIR / "entities"
     entity_paths = sorted(entities_dir.glob("*.yaml"))
     for entity_path in entity_paths:
-        errors = validate_entity(entity_path, intent_windows)
+        try:
+            with entity_path.open("r", encoding="utf-8") as handle:
+                raw_data = yaml.safe_load(handle)
+        except Exception:  # pragma: no cover - defensive loading
+            raw_data = None
+
+        if (
+            isinstance(raw_data, dict)
+            and "policies" in raw_data
+            and "presentation" not in raw_data
+        ):
+            print(f"[skip] {entity_path.relative_to(ROOT_DIR)} → policies schema")
+            continue
+
+        entity_name = None
+        if isinstance(raw_data, dict):
+            entity_name = raw_data.get("name")
+        if not isinstance(entity_name, str) or not entity_name:
+            entity_name = entity_path.stem
+
+        is_temporal = entity_name in entities_temporais
+
+        errors, warnings = validate_entity(entity_path, intent_windows, is_temporal)
         if errors:
             failed = True
             for error in errors:
                 print(f"[fail] {entity_path.relative_to(ROOT_DIR)} → {error}")
         else:
             print(f"[ok] {entity_path.relative_to(ROOT_DIR)}")
+        for warning in warnings:
+            print(f"[warn] {entity_path.relative_to(ROOT_DIR)} → {warning}")
 
     embeddings_path = DATA_DIR / "embeddings" / "index.yaml"
     embedding_errors = validate_embeddings_index(embeddings_path)
