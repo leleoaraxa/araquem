@@ -218,31 +218,45 @@ class Planner:
                     pass
 
         # --- fusão linear base + RAG (apenas se hints disponíveis) ---
-        combined_scores: Dict[str, Dict[str, Any]] = {}
+        combined_intents: List[Dict[str, Any]] = []
+        entity_base_scores: Dict[str, float] = {}
+        entity_combined_scores: Dict[str, float] = {}
+        entity_rag_scores: Dict[str, float] = {}
         fused_scores: Dict[str, float] = {}
         rag_fusion_applied = rag_enabled and rag_used and (rag_weight > 0.0)
+        fusion_weight = rag_weight if rag_fusion_applied else 0.0
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
             entity_name = it.entities[0] if it.entities else None
             rag_signal = 0.0
-            if entity_name:
+            if rag_fusion_applied and entity_name:
                 rag_signal = float(
                     rag_entity_hints.get((entity_name or "").strip(), 0.0)
                 )
-            final_score = (
-                base * (1.0 - rag_weight) + rag_signal * rag_weight
-                if rag_fusion_applied
-                else base
-            )
+            final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
             fused_scores[it.name] = final_score
-            if rag_enabled:
-                combined_scores[it.name] = {
+
+            combined_intents.append(
+                {
+                    "name": it.name,
                     "base": base,
-                    "rag": rag_signal,
+                    "rag": rag_signal if rag_fusion_applied else 0.0,
                     "combined": final_score,
-                    "entity": entity_name,
+                    "winner": False,
                 }
+            )
+
+            if entity_name:
+                prev_base = entity_base_scores.get(entity_name)
+                if prev_base is None or base > prev_base:
+                    entity_base_scores[entity_name] = base
+                prev_combined = entity_combined_scores.get(entity_name)
+                if prev_combined is None or final_score > prev_combined:
+                    entity_combined_scores[entity_name] = final_score
+                current_rag = entity_rag_scores.get(entity_name, 0.0)
+                new_rag = rag_signal if rag_fusion_applied else 0.0
+                entity_rag_scores[entity_name] = max(current_rag, new_rag)
 
         chosen_intent = None
         chosen_entity = None
@@ -255,6 +269,40 @@ class Planner:
                     chosen_entity = it.entities[0] if it.entities else None
                     break
 
+        ordered_combined = sorted(
+            combined_intents, key=lambda item: item["combined"], reverse=True
+        )
+        top_intent_name = ordered_combined[0]["name"] if ordered_combined else None
+        for item in ordered_combined:
+            item["winner"] = bool(item["name"] == top_intent_name)
+
+        combined_entities: List[Dict[str, Any]] = []
+        for entity_name, base_val in entity_base_scores.items():
+            combined_val = entity_combined_scores.get(entity_name, base_val)
+            rag_val = entity_rag_scores.get(entity_name, 0.0)
+            combined_entities.append(
+                {
+                    "name": entity_name,
+                    "base": base_val,
+                    "rag": rag_val if rag_fusion_applied else 0.0,
+                    "combined": combined_val,
+                    "winner": False,
+                }
+            )
+
+        combined_entities = sorted(
+            combined_entities, key=lambda item: item["combined"], reverse=True
+        )
+        top_entity_name = combined_entities[0]["name"] if combined_entities else None
+        for item in combined_entities:
+            item["winner"] = bool(item["name"] == top_entity_name)
+
+        affected_entities = [
+            item["name"]
+            for item in combined_entities
+            if abs(float(item["combined"]) - float(item["base"])) > 1e-9
+        ]
+
         if rag_fusion_applied:
             decision_path.append(
                 {
@@ -263,8 +311,16 @@ class Planner:
                     "rag_weight": rag_weight,
                 }
             )
-        # --- top2 gap calculado sobre scores base (telemetria M6.5) ---
-        ordered = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
+            decision_path.append(
+                {
+                    "stage": "fuse",
+                    "type": "rag_fusion",
+                    "weight": rag_weight,
+                    "affected": len(affected_entities),
+                }
+            )
+        # --- top2 gap calculado sobre scores finais (telemetria M6.5) ---
+        ordered = sorted(fused_scores.items(), key=lambda kv: kv[1], reverse=True)
         top2_gap = 0.0
         if len(ordered) >= 2:
             top2_gap = float((ordered[0][1] or 0.0) - (ordered[1][1] or 0.0))
@@ -338,6 +394,13 @@ class Planner:
                 "intent_top2_gap": top2_gap,
             },
         }
+        combined_block = {
+            "intent": ordered_combined,
+            "entity": combined_entities,
+            "weight": fusion_weight,
+            "notes": "linear_fusion=base*(1-w)+rag*w",
+        }
+
         if rag_enabled:
             meta_explain["rag"] = {
                 "enabled": True,
@@ -356,17 +419,16 @@ class Planner:
                     rag_entity_hints.items(), key=lambda kv: kv[1], reverse=True
                 )
             ]
-            meta_explain["scoring"]["combined"] = {
-                name: {
-                    "base": vals["base"],
-                    "rag": vals["rag"],
-                    "combined": vals["combined"],
-                    "entity": vals["entity"],
-                }
-                for name, vals in combined_scores.items()
-            }
         else:
             meta_explain["rag"] = {"enabled": False}
+        meta_explain["scoring"]["combined"] = combined_block
+        meta_explain["fusion"] = {
+            "enabled": bool(rag_enabled),
+            "used": bool(rag_fusion_applied),
+            "weight": rag_weight if rag_fusion_applied else 0.0,
+            "affected_entities": affected_entities,
+            "error": rag_error,
+        }
 
         # --- log estruturado leve ---
         try:
