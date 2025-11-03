@@ -4,6 +4,7 @@ from typing import Dict, Any, List
 import re, unicodedata
 import logging
 import os
+import time
 
 from .ontology_loader import load_ontology
 
@@ -11,6 +12,7 @@ from .ontology_loader import load_ontology
 from app.rag.hints import entity_hints_from_rag
 from app.rag.ollama_client import OllamaClient
 from app.utils.filecache import cached_embedding_store, load_yaml_cached
+from app.observability.instrumentation import counter, histogram
 
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
@@ -183,11 +185,15 @@ class Planner:
         rag_entity_hints: Dict[str, float] = {}
         rag_error: Any = None
         rag_used = False
+        rag_raw_results: List[Dict[str, Any]] = []
+        rag_hits_count = 0
+        rag_t0 = None
 
         if rag_enabled:
             from app.observability.metrics import emit_counter
 
             try:
+                rag_t0 = time.perf_counter()
                 store = cached_embedding_store(rag_index_path)
                 embedder = OllamaClient(
                     base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
@@ -197,6 +203,8 @@ class Planner:
                 results = (
                     store.search_by_vector(qvec, k=rag_k, min_score=rag_min_score) or []
                 )
+                rag_raw_results = results
+                rag_hits_count = len(results) if results else 0
                 from app.rag.hints import entity_hints_from_rag
 
                 rag_entity_hints = entity_hints_from_rag(results)
@@ -368,6 +376,74 @@ class Planner:
             "total": token_sum + phrase_sum - anti_sum,
         }
 
+        # --- RAG Context Explain (somente explicativo; não altera roteamento) ---
+        rag_context = None
+        rag_latency_ms = None
+        if rag_enabled and rag_used and rag_raw_results:
+            # tokens "include" do intent vencedor (da ontologia) para barreira semântica
+            winner_tokens = []
+            for it in self.onto.intents:
+                if it.name == chosen_intent:
+                    winner_tokens = list(it.tokens_include or [])
+                    break
+
+            def _chunk_text(item: Dict[str, Any]) -> str:
+                # Campos comuns: text/content/body
+                for key in ("text", "content", "body"):
+                    val = item.get(key)
+                    if isinstance(val, str) and val.strip():
+                        return val
+                return ""
+
+            def _chunk_doc_id(item: Dict[str, Any]) -> str:
+                # Campos comuns: doc, id, doc_id, source
+                for key in ("doc", "id", "doc_id", "source"):
+                    val = item.get(key)
+                    if isinstance(val, str) and val.strip():
+                        return val
+                return "unknown"
+
+            # Seleção de snippets: precisa conter pelo menos 1 token do intent vencedor
+            norm_tokens = [t.lower() for t in winner_tokens if t]
+            filtered_snippets: List[str] = []
+            matched_tokens: List[str] = []
+            for item in rag_raw_results:
+                txt = _chunk_text(item)
+                if not txt:
+                    continue
+                low = txt.lower()
+                hit_toks = [t for t in norm_tokens if t in low]
+                if not hit_toks:
+                    continue
+                # corta o snippet ~240 chars, respeitando limite em palavra
+                snippet = txt.strip()
+                if len(snippet) > 240:
+                    # tenta cortar no último espaço antes de 240
+                    cut = snippet[:240]
+                    sp = cut.rfind(" ")
+                    snippet = cut if sp < 40 else cut[:sp]
+                    snippet = snippet.rstrip() + "…"
+                filtered_snippets.append(snippet)
+                matched_tokens.extend(hit_toks)
+                if len(filtered_snippets) >= 3:
+                    break
+
+            if filtered_snippets:
+                top_doc = _chunk_doc_id(rag_raw_results[0])
+                # Reason determinística (1 linha)
+                uniq_matched = []
+                for t in matched_tokens:
+                    if t not in uniq_matched:
+                        uniq_matched.append(t)
+                reason_tokens = ", ".join(uniq_matched[:3]) if uniq_matched else ""
+                rag_context = {
+                    "top_doc": top_doc,
+                    "snippets": filtered_snippets,
+                    "reason": f"Contexto cita tokens do intent vencedor: {reason_tokens} para entity {chosen_entity}.",
+                }
+                if rag_t0 is not None:
+                    rag_latency_ms = (time.perf_counter() - rag_t0) * 1000.0
+
         # --- explain (mantém + adiciona bloco RAG e combined) ---
         meta_explain: Dict[str, Any] = {
             "signals": {
@@ -421,6 +497,8 @@ class Planner:
             ]
         else:
             meta_explain["rag"] = {"enabled": False}
+        if rag_context:
+            meta_explain["rag_context"] = rag_context
         meta_explain["scoring"]["combined"] = combined_block
         meta_explain["fusion"] = {
             "enabled": bool(rag_enabled),
@@ -429,6 +507,33 @@ class Planner:
             "affected_entities": affected_entities,
             "error": rag_error,
         }
+
+        # --- Métricas M7.3 (apenas quando rag_context foi emitido) ---
+        if rag_context:
+            lbl_intent = str(chosen_intent or "")
+            lbl_entity = str(chosen_entity or "")
+            try:
+                counter(
+                    "planner_rag_hits_total",
+                    intent=lbl_intent,
+                    entity=lbl_entity,
+                    _value=float(rag_hits_count or 0),
+                )
+                counter(
+                    "planner_rag_context_used_total",
+                    intent=lbl_intent,
+                    entity=lbl_entity,
+                    _value=1.0,
+                )
+                if rag_latency_ms is not None:
+                    histogram(
+                        "planner_rag_context_latency_ms",
+                        float(rag_latency_ms),
+                        intent=lbl_intent,
+                        entity=lbl_entity,
+                    )
+            except Exception:
+                pass
 
         # --- log estruturado leve ---
         try:
