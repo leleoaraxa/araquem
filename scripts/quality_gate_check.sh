@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "[check] validating data contracts..."
-python scripts/validate_data_contracts.py || exit 1
+python scripts/validate_data_contracts.py
 
 API_URL="${API_URL:-http://localhost:8000}"
 
