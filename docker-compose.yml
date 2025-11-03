@@ -58,12 +58,13 @@ services:
     networks: [araquem_network]
 
   ollama-init:
-    image: ollama/ollama:0.3.14
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ollama-init
     container_name: araquem-ollama-init
     depends_on:
       ollama:
         condition: service_healthy
-    entrypoint: ["/bin/sh","-lc","until ollama ps >/dev/null 2>&1; do sleep 1; done; ollama pull nomic-embed-text"]
     networks: [araquem_network]
 
   rag-indexer:
@@ -72,10 +73,6 @@ services:
       dockerfile: docker/Dockerfile.rag-indexer
     container_name: araquem-rag-indexer
     depends_on: [ollama, ollama-init]
-    command: >
-      python scripts/embeddings_build.py
-      --index data/embeddings/index.yaml
-      --out   data/embeddings/store
     environment:
       - PYTHONPATH=/app
       - OLLAMA_BASE_URL=http://ollama:11434
@@ -116,10 +113,10 @@ services:
     networks: [araquem_network]
 
   tempo:
-    image: grafana/tempo:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tempo
     container_name: araquem-tempo
-    command:
-      - "-config.file=/etc/tempo/tempo.yaml"
     # ✅ mantenha só a 3200 se quiser ver/usar pelo host (UI/metrics)
     ports:
       - "3200:3200"
@@ -130,9 +127,10 @@ services:
     networks: [araquem_network]
 
   otel-collector:
-    image: otel/opentelemetry-collector:latest
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.otel-collector
     container_name: araquem-otel
-    command: ["--config=/etc/otel/config.yaml"]
     volumes:
       - ./otel-collector/config.yaml:/etc/otel/config.yaml:ro
     restart: unless-stopped
@@ -143,8 +141,7 @@ services:
   quality-cron:
     build:
       context: .
-      dockerfile: docker/Dockerfile.quality-runner
-    image: quality-runner:latest
+      dockerfile: docker/Dockerfile.quality-cron
     container_name: araquem-quality-cron
     restart: unless-stopped
     environment:
@@ -155,41 +152,6 @@ services:
       - QUALITY_TOKEN_HEADER=X-OPS-TOKEN
       - QUALITY_REPORT_WAIT_MAX=90
       - QUALITY_REPORT_WAIT_SLEEP=3
-
-    command: >
-      bash -lc "
-        python - <<'PY'
-        import sys, subprocess, pkgutil
-        # instala PyYAML se não existir
-        sys.exit(0) if pkgutil.find_loader('yaml') else subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', 'pyyaml'])
-        PY
-        echo '⏳ aguardando API saudável...' &&
-        until curl -fsS -H 'X-OPS-TOKEN: '${QUALITY_OPS_TOKEN} http://localhost:8000/ops/quality/report >/dev/null; do
-          sleep 2;
-        done &&
-        echo '✅ API ok, iniciando ciclo de qualidade' &&
-        while true; do
-          python ./scripts/quality_push_cron.py || true;
-          echo '⏳ aguardando consolidação das métricas...';
-          WAIT_MAX=${QUALITY_REPORT_WAIT_MAX:-60};
-          WAIT_SLEEP=${QUALITY_REPORT_WAIT_SLEEP:-2};
-          waited=0;
-          # Espera até routed_rate>0 E top1_accuracy>0, ou até o timeout
-          while [ $$waited -lt $$WAIT_MAX ]; do
-            json=$$(curl -fsS -H 'X-OPS-TOKEN: '${QUALITY_OPS_TOKEN} http://localhost:8000/ops/quality/report || echo '{}');
-            if echo \"$$json\" | jq -e '(.metrics.routed_rate // 0) > 0 and (.metrics.top1_accuracy // 0) > 0' >/dev/null; then
-              rr=$$(echo \"$$json\" | jq -r '.metrics.routed_rate // 0');
-              t1=$$(echo \"$$json\" | jq -r '.metrics.top1_accuracy // 0');
-              echo \"✅ métricas disponíveis (routed_rate=$$rr, top1=$$t1)\";
-              break;
-            fi
-            sleep $$WAIT_SLEEP;
-            waited=$$((waited + $$WAIT_SLEEP));
-          done;
-          ./scripts/quality_gate_check.sh || true;
-          sleep 3600;
-        done
-      "
     working_dir: /workspace
     volumes:
       - ./:/workspace:ro
@@ -200,32 +162,14 @@ services:
     network_mode: "service:api"
 
   rag-refresh-cron:
-    image: curlimages/curl:8.10.1
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-refresh-cron
     container_name: araquem-rag-refresh-cron
     restart: unless-stopped
     environment:
       - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
       - TZ=America/Sao_Paulo
-    command: >
-      sh -lc "
-        echo '⏳ aguardando API saudável...' &&
-        until curl -fsS http://localhost:8000/healthz >/dev/null; do sleep 2; done &&
-        echo '✅ API ok; cron RAG iniciado' ;
-        while true; do
-          # espera até 02:10 (America/Sao_Paulo)
-          now=$$(date +%s);
-          tgt=$$(date -d '02:10' +%s 2>/dev/null || date -j -f '%H:%M' '02:10' +%s);
-          [ $$tgt -le $$now ] && tgt=$$(( $$tgt + 86400 ));
-          sleep $$(( $$tgt - $$now ));
-          echo '▶️  /ops/rag/refresh' ;
-          curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true;
-          # segurança: roda de novo 5 min depois (caso ingestão atrase)
-          sleep 300;
-          curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true;
-          # volta a dormir até o próximo dia
-          sleep 82800;
-        done
-      "
     depends_on:
       api:
         condition: service_healthy

@@ -1,0 +1,2 @@
+FROM grafana/tempo:latest
+CMD ["-config.file=/etc/tempo/tempo.yaml"]
