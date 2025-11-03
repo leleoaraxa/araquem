@@ -60,7 +60,11 @@ def test_ask_with_explain_includes_explain_block():
     assert body["status"]["reason"] == "ok"
     assert body["meta"]["planner_entity"] == "fiis_cadastro"
     assert "explain" in body["meta"]
-    assert isinstance(body["meta"]["explain"], dict)
-    # sanidade mínima do conteúdo do explain
     exp = body["meta"]["explain"]
-    assert "chosen" in exp and "intent_scores" in exp and "details" in exp
+    assert isinstance(exp, dict)
+
+    for key in ("decision_path", "scoring", "signals", "rag"):
+        assert key in exp
+
+    ea = body["meta"].get("explain_analytics")
+    assert isinstance(ea, dict) and "summary" in ea and "details" in ea

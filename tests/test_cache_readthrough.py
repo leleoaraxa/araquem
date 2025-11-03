@@ -16,11 +16,23 @@ def _post(question: str):
     return r.json()
 
 @pytest.mark.integration
-def test_cache_miss_then_hit_for_cadastro():
+def test_cache_miss_then_hit_for_cadastro(monkeypatch):
     # Requer REDIS_URL válido e policies para fiis_cadastro
     red = os.getenv("REDIS_URL")
     if not red:
         pytest.skip("REDIS_URL não definido — pulando teste de cache.")
+    token = "test"
+    monkeypatch.setenv("CACHE_OPS_TOKEN", token)
+    bust_payload = {
+        "entity": "fiis_cadastro",
+        "identifiers": {"ticker": "VINO11"},
+    }
+    bust = client.post(
+        "/ops/cache/bust",
+        headers={"x-ops-token": token},
+        json=bust_payload,
+    )
+    assert bust.status_code == 200, bust.text
     # 1ª chamada — MISS
     body1 = _post("Qual o CNPJ do VINO11?")
     assert body1["status"]["reason"] == "ok"
