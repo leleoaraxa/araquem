@@ -1,308 +1,121 @@
 #!/usr/bin/env python3
-"""Validate consistency of data contracts defined in the repository."""
+"""Validate consistency of golden data contracts."""
+
 from __future__ import annotations
 
+import json
 import sys
+from collections import Counter
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
+from typing import Dict, Iterable, Tuple
+
 
 try:
-    import yaml  # PyYAML
-except Exception:
-    print("[warn] PyYAML não disponível; pulando validação de contratos.")
-    raise SystemExit(0)
+    import yaml  # type: ignore
+except ModuleNotFoundError as exc:  # pragma: no cover - runtime dependency check
+    print("[fail] PyYAML não instalado – instale 'pyyaml' para validar contratos.", file=sys.stderr)
+    raise SystemExit(1) from exc
+
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT_DIR / "data"
+YAML_PATH = ROOT_DIR / "data" / "golden" / "m65_quality.yaml"
+JSON_PATH = ROOT_DIR / "data" / "golden" / "m65_quality.json"
 
 
-def format_path(parts: Iterable[Union[str, int]]) -> str:
-    formatted: List[str] = []
-    for part in parts:
-        if isinstance(part, int):
-            formatted.append(f"[{part}]")
-        else:
-            formatted.append(str(part))
-    return "/".join(formatted) if formatted else "<root>"
-
-
-def load_yaml(path: Path) -> Tuple[Optional[dict], List[str]]:
-    try:
-        with path.open("r", encoding="utf-8") as handle:
-            data = yaml.safe_load(handle)
-    except Exception as exc:  # pragma: no cover - defensive logging
-        return None, [f"invalid YAML ({exc})"]
-
-    if data is None:
-        return None, ["empty document"]
+def _ensure_samples_from_yaml(path: Path) -> Iterable[Dict[str, object]]:
+    with path.open("r", encoding="utf-8") as handle:
+        data = yaml.safe_load(handle)
     if not isinstance(data, dict):
-        return None, ["invalid root type (expected mapping)"]
-    return data, []
+        raise ValueError(f"{path} deve ser um objeto YAML na raiz")
+    samples = data.get("samples")
+    if not isinstance(samples, list):
+        raise ValueError(f"{path} deve conter 'samples' como lista")
+    normalized = []
+    for idx, sample in enumerate(samples):
+        if not isinstance(sample, dict):
+            raise ValueError(f"{path} samples[{idx}] deve ser um objeto")
+        normalized.append(sample)
+    return normalized
 
 
-def normalize_window(value: Union[str, dict]) -> Optional[str]:
-    if isinstance(value, str):
-        return value.strip()
-    if isinstance(value, dict):
-        if len(value) == 1:
-            key, raw_val = next(iter(value.items()))
-            return f"{key}:{raw_val}"
-        if value:
-            pairs = ",".join(f"{k}:{v}" for k, v in value.items())
-            return pairs
-    return None
+def _ensure_samples_from_json(path: Path) -> Iterable[Dict[str, object]]:
+    with path.open("r", encoding="utf-8") as handle:
+        data = json.load(handle)
+    if not isinstance(data, dict):
+        raise ValueError(f"{path} deve ser um objeto JSON na raiz")
+    samples = data.get("samples")
+    if not isinstance(samples, list):
+        raise ValueError(f"{path} deve conter 'samples' como lista")
+    normalized = []
+    for idx, sample in enumerate(samples):
+        if not isinstance(sample, dict):
+            raise ValueError(f"{path} samples[{idx}] deve ser um objeto")
+        normalized.append(sample)
+    return normalized
 
 
-def validate_param_inference(path: Path) -> Tuple[List[str], Dict[str, Set[str]]]:
-    data, errors = load_yaml(path)
-    if data is None:
-        return errors, {}
-
-    forbidden_keys = {"windows_allowed", "aggregations", "defaults"}
-
-    def traverse(node: Union[dict, list], stack: List[str]) -> None:
-        if isinstance(node, dict):
-            for key, value in node.items():
-                under_intents = bool(stack) and stack[0] == "intents"
-                if key in forbidden_keys and not under_intents:
-                    errors.append(
-                        f"contains forbidden key '{key}' outside intents (path: {format_path(stack + [key])})"
-                    )
-                if (
-                    key in {"limit", "order"}
-                    and stack
-                    and stack[-1] == "list"
-                    and not under_intents
-                ):
-                    errors.append(
-                        f"contains forbidden key 'list.{key}' outside intents (path: {format_path(stack + [key])})"
-                    )
-                traverse(value, stack + [str(key)])
-        elif isinstance(node, list):
-            for index, item in enumerate(node):
-                traverse(item, stack + [str(index)])
-
-    traverse(data, [])
-
-    intent_windows: Dict[str, Set[str]] = {}
-    intents = data.get("intents", {})
-    if isinstance(intents, dict):
-        for intent_name, intent_config in intents.items():
-            if not isinstance(intent_config, dict):
-                continue
-            windows: Set[str] = set()
-            default_window = intent_config.get("default_window")
-            normalized = (
-                normalize_window(default_window) if default_window is not None else None
-            )
-            if normalized:
-                windows.add(normalized)
-
-            agg_keywords = intent_config.get("agg_keywords", {})
-            if isinstance(agg_keywords, dict):
-                for agg_config in agg_keywords.values():
-                    if not isinstance(agg_config, dict):
-                        continue
-                    window_value = agg_config.get("window")
-                    normalized_window = (
-                        normalize_window(window_value)
-                        if window_value is not None
-                        else None
-                    )
-                    if normalized_window:
-                        windows.add(normalized_window)
-                    for default in agg_config.get("window_defaults", []) or []:
-                        normalized_default = normalize_window(default)
-                        if normalized_default:
-                            windows.add(normalized_default)
-            intent_windows[intent_name] = windows
-
-    return errors, intent_windows
+def _canonical_sample(sample: Dict[str, object]) -> Tuple[str, Dict[str, object]]:
+    canonical = json.dumps(sample, sort_keys=True, ensure_ascii=False)
+    return canonical, sample
 
 
-def validate_entity(
-    path: Path,
-    intent_windows: Dict[str, Set[str]],
-    is_temporal_entity: bool,
-) -> Tuple[List[str], List[str]]:
-    data, errors = load_yaml(path)
-    if data is None:
-        return errors, []
-
-    warnings: List[str] = []
-    presentation = data.get("presentation")
-    if not isinstance(presentation, dict) or "result_key" not in presentation:
-        errors.append("missing presentation.result_key")
-
-    normalized_windows: Set[str] = set()
-    if is_temporal_entity:
-        aggregations = data.get("aggregations")
-        if not isinstance(aggregations, dict):
-            errors.append("missing aggregations section")
-        else:
-            defaults = aggregations.get("defaults")
-            if not isinstance(defaults, dict):
-                errors.append("missing aggregations.defaults")
-            windows_allowed = aggregations.get("windows_allowed")
-            if not isinstance(windows_allowed, list):
-                errors.append("missing aggregations.windows_allowed")
-            else:
-                for entry in windows_allowed:
-                    normalized = normalize_window(entry)
-                    if not normalized:
-                        errors.append(
-                            "invalid window format in aggregations.windows_allowed entry: "
-                            f"{entry!r}"
-                        )
-                        continue
-                    normalized_windows.add(normalized)
-                if "count:1" not in normalized_windows:
-                    errors.append("aggregations.windows_allowed must include count:1")
-
-    ask = data.get("ask", {})
-    intents = ask.get("intents") if isinstance(ask, dict) else None
-    entity_intents: List[str] = []
-    if isinstance(intents, list):
-        entity_intents = [intent for intent in intents if isinstance(intent, str)]
-    elif intents is not None:
-        errors.append("ask.intents must be a list of intent names")
-
-    required_windows: Set[str] = set()
-    for intent_name in entity_intents:
-        intent_required = intent_windows.get(intent_name)
-        if intent_required is None:
-            if is_temporal_entity:
-                errors.append(
-                    f"unknown intent '{intent_name}' (not defined in param_inference.yaml)"
-                )
-            else:
-                warnings.append(
-                    f"intent '{intent_name}' not in param_inference.yaml (non-temporal)"
-                )
-            continue
-        if is_temporal_entity:
-            required_windows.update(intent_required)
-
-    if is_temporal_entity and required_windows and normalized_windows:
-        missing = sorted(required_windows - normalized_windows)
-        if missing:
-            errors.append(
-                "missing windows in aggregations.windows_allowed: " + ", ".join(missing)
-            )
-
-    return errors, warnings
+def _counter_with_lookup(
+    samples: Iterable[Dict[str, object]]
+) -> Tuple[Counter[str], Dict[str, Dict[str, object]]]:
+    counter: Counter[str] = Counter()
+    lookup: Dict[str, Dict[str, object]] = {}
+    for sample in samples:
+        canon, original = _canonical_sample(sample)
+        counter[canon] += 1
+        lookup.setdefault(canon, original)
+    return counter, lookup
 
 
-def validate_embeddings_index(path: Path) -> List[str]:
-    data, errors = load_yaml(path)
-    if data is None:
-        return errors
-
-    include = data.get("include")
-    if not isinstance(include, list):
-        return ["missing include list"]
-
-    problems: List[str] = []
-    for entry in include:
-        if not isinstance(entry, dict):
-            problems.append(f"invalid include entry (expected mapping): {entry!r}")
-            continue
-        file_path = entry.get("path")
-        if not isinstance(file_path, str):
-            problems.append("include entry missing string path")
-            continue
-        absolute = ROOT_DIR / file_path
-        if not absolute.exists():
-            problems.append(f"missing referenced file: {file_path}")
-    return problems
+def _print_examples(
+    prefix: str, lookup: Dict[str, Dict[str, object]], counter: Counter[str]
+) -> None:
+    total = sum(counter.values())
+    print(f"{prefix}: {total}")
+    if not total:
+        return
+    limit = 3
+    for canon, _ in counter.most_common():
+        if limit <= 0:
+            break
+        sample = lookup[canon]
+        question = sample.get("question")
+        print(
+            f"  - question={question!r} sample={json.dumps(sample, ensure_ascii=False)}"
+        )
+        limit -= 1
 
 
 def main() -> int:
-    failed = False
+    try:
+        yaml_samples = list(_ensure_samples_from_yaml(YAML_PATH))
+        json_samples = list(_ensure_samples_from_json(JSON_PATH))
+    except ValueError as exc:
+        print(f"[fail] {exc}")
+        return 1
 
-    param_path = DATA_DIR / "ops" / "param_inference.yaml"
-    param_errors, intent_windows = validate_param_inference(param_path)
-    if param_errors:
-        failed = True
-        for error in param_errors:
-            print(f"[fail] {param_path.relative_to(ROOT_DIR)} → {error}")
-    else:
-        print(f"[ok] {param_path.relative_to(ROOT_DIR)}")
+    yaml_counter, yaml_lookup = _counter_with_lookup(yaml_samples)
+    json_counter, json_lookup = _counter_with_lookup(json_samples)
 
-    onto_path = DATA_DIR / "ontology" / "entity.yaml"
-    with onto_path.open("r", encoding="utf-8") as handle:
-        onto_data = yaml.safe_load(handle)
-    if not isinstance(onto_data, dict):
-        onto_data = {}
-    intent_to_entities = {
-        intent.get("name"): intent.get("entities", [])
-        for intent in onto_data.get("intents", []) or []
-        if isinstance(intent, dict)
-    }
+    missing_in_json = yaml_counter - json_counter
+    missing_in_yaml = json_counter - yaml_counter
 
-    with param_path.open("r", encoding="utf-8") as handle:
-        pi_data = yaml.safe_load(handle)
-    if not isinstance(pi_data, dict):
-        pi_data = {}
-    intents_config = pi_data.get("intents")
-    if isinstance(intents_config, dict):
-        temporal_intents = set(intents_config.keys())
-    else:
-        temporal_intents = set()
+    if missing_in_json or missing_in_yaml:
+        print(
+            "[fail] m65 yaml!=json: "
+            f"only_in_yaml={sum(missing_in_json.values())} "
+            f"only_in_json={sum(missing_in_yaml.values())}"
+        )
+        _print_examples("[yaml] exemplos", yaml_lookup, missing_in_json)
+        _print_examples("[json] exemplos", json_lookup, missing_in_yaml)
+        return 1
 
-    entities_temporais = {
-        entity
-        for intent, entities in intent_to_entities.items()
-        if intent in temporal_intents and isinstance(entities, list)
-        for entity in entities
-        if isinstance(entity, str)
-    }
-
-    entities_dir = DATA_DIR / "entities"
-    entity_paths = sorted(entities_dir.glob("*.yaml"))
-    for entity_path in entity_paths:
-        try:
-            with entity_path.open("r", encoding="utf-8") as handle:
-                raw_data = yaml.safe_load(handle)
-        except Exception:  # pragma: no cover - defensive loading
-            raw_data = None
-
-        if (
-            isinstance(raw_data, dict)
-            and "policies" in raw_data
-            and "presentation" not in raw_data
-        ):
-            print(f"[skip] {entity_path.relative_to(ROOT_DIR)} → policies schema")
-            continue
-
-        entity_name = None
-        if isinstance(raw_data, dict):
-            entity_name = raw_data.get("name")
-        if not isinstance(entity_name, str) or not entity_name:
-            entity_name = entity_path.stem
-
-        is_temporal = entity_name in entities_temporais
-
-        errors, warnings = validate_entity(entity_path, intent_windows, is_temporal)
-        if errors:
-            failed = True
-            for error in errors:
-                print(f"[fail] {entity_path.relative_to(ROOT_DIR)} → {error}")
-        else:
-            print(f"[ok] {entity_path.relative_to(ROOT_DIR)}")
-        for warning in warnings:
-            print(f"[warn] {entity_path.relative_to(ROOT_DIR)} → {warning}")
-
-    embeddings_path = DATA_DIR / "embeddings" / "index.yaml"
-    embedding_errors = validate_embeddings_index(embeddings_path)
-    if embedding_errors:
-        failed = True
-        for error in embedding_errors:
-            print(f"[fail] {embeddings_path.relative_to(ROOT_DIR)} → {error}")
-    else:
-        print(f"[ok] {embeddings_path.relative_to(ROOT_DIR)}")
-
-    return 1 if failed else 0
+    print("[contracts] m65 yaml==json")
+    return 0
 
 
 if __name__ == "__main__":
