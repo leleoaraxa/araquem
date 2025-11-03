@@ -6,6 +6,7 @@ from typing import Dict, Iterable, Mapping, Any
 
 from app.observability.instrumentation import counter as _counter
 from app.observability.instrumentation import histogram as _histogram
+from app.observability.instrumentation import gauge as _gauge
 
 STRICT = os.getenv("SIRIOS_METRICS_STRICT", "false").strip().lower() in (
     "1",
@@ -68,6 +69,11 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     },  # op=get|set, outcome=hit|miss|ok|fail
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
+    # ---------- M7.5 ----------
+    "rag_index_size_total": {"type": "gauge", "labels": set()},
+    "rag_index_docs_total": {"type": "gauge", "labels": set()},
+    "rag_index_last_refresh_timestamp": {"type": "gauge", "labels": set()},
+    "rag_index_density_score": {"type": "gauge", "labels": set()},
 }
 
 
@@ -99,6 +105,11 @@ def emit_counter(name: str, **labels: Any) -> None:
 def emit_histogram(name: str, value: float, **labels: Any) -> None:
     labs = _validate_and_normalize(name, labels)
     _histogram(name, float(value), **labs)
+
+
+def emit_gauge(name: str, value: float, **labels: Any) -> None:
+    labs = _validate_and_normalize(name, labels)
+    _gauge(name, float(value), **labs)
 
 
 # Opcional: utilidade para consultar o catálogo (debug/admin)

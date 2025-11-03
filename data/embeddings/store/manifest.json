@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-03T18:45:39Z",
+  "generated_at": "2025-11-03T19:58:48Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -100,7 +100,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "9ba3215744870736fdc7d9a4445191988db76219bfab4a3f231b213298e2a472"
+      "sha_all": "6a537d0428ff1a00d9fb56d7d34905c39fe1395831bf6ad57e20712b1a8cfd82"
     },
     {
       "id": "ops-observability",

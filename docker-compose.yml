@@ -148,6 +148,7 @@ services:
       - QUALITY_TOKEN_HEADER=X-OPS-TOKEN
       - QUALITY_REPORT_WAIT_MAX=90
       - QUALITY_REPORT_WAIT_SLEEP=3
+      - QUALITY_HTTP_TIMEOUT=180
     command: >
       bash -lc "
         echo '⏳ aguardando API saudável...' &&
@@ -184,6 +185,39 @@ services:
       api:
         condition: service_healthy
     # Compartilha o namespace de rede com a API → localhost:8000 == API
+    network_mode: "service:api"
+
+  rag-refresh-cron:
+    image: curlimages/curl:8.10.1
+    container_name: araquem-rag-refresh-cron
+    restart: unless-stopped
+    environment:
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
+      - TZ=America/Sao_Paulo
+    command: >
+      sh -lc "
+        echo '⏳ aguardando API saudável...' &&
+        until curl -fsS http://localhost:8000/healthz >/dev/null; do sleep 2; done &&
+        echo '✅ API ok; cron RAG iniciado' ;
+        while true; do
+          # espera até 02:10 (America/Sao_Paulo)
+          now=$$(date +%s);
+          tgt=$$(date -d '02:10' +%s 2>/dev/null || date -j -f '%H:%M' '02:10' +%s);
+          [ $$tgt -le $$now ] && tgt=$$(( $$tgt + 86400 ));
+          sleep $$(( $$tgt - $$now ));
+          echo '▶️  /ops/rag/refresh' ;
+          curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true;
+          # segurança: roda de novo 5 min depois (caso ingestão atrase)
+          sleep 300;
+          curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true;
+          # volta a dormir até o próximo dia
+          sleep 82800;
+        done
+      "
+    depends_on:
+      api:
+        condition: service_healthy
+    # Compartilha a rede com a API → localhost:8000 aponta p/ API
     network_mode: "service:api"
 
 volumes:

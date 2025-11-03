@@ -10,14 +10,13 @@ import time
 
 
 class _Backend:
-    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None:
-        ...
+    def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None: ...
 
-    def observe(self, name: str, value: float, labels: Dict[str, str]) -> None:
-        ...
+    def observe(self, name: str, value: float, labels: Dict[str, str]) -> None: ...
 
-    def start_span(self, name: str, attributes: Dict[str, Any]):
-        ...
+    def set_gauge(self, name: str, value: float, labels: Dict[str, str]) -> None: ...
+
+    def start_span(self, name: str, attributes: Dict[str, Any]): ...
 
     def end_span(
         self,
@@ -25,11 +24,9 @@ class _Backend:
         exc_type: Optional[type] = None,
         exc_value: Optional[BaseException] = None,
         exc_tb: Any = None,
-    ) -> None:
-        ...
+    ) -> None: ...
 
-    def set_span_attr(self, span, key: str, value: Any) -> None:
-        ...
+    def set_span_attr(self, span, key: str, value: Any) -> None: ...
 
     def span_trace_id(self, span) -> Optional[str]:
         return None
@@ -66,6 +63,11 @@ def counter(name: str, **labels) -> None:
 def histogram(name: str, value: float, **labels) -> None:
     _ensure()
     _backend.observe(name, value, labels)
+
+
+def gauge(name: str, value: float, **labels) -> None:
+    _ensure()
+    _backend.set_gauge(name, float(value), labels)
 
 
 @contextmanager

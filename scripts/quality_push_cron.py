@@ -1,4 +1,5 @@
 """Quality samples cron script."""
+
 from __future__ import annotations
 
 import argparse
@@ -12,6 +13,7 @@ from urllib import error, request
 BASE_ALLOWED_TYPES: Set[str] = {"routing", "projection"}
 DEFAULT_GLOB = "data/ops/quality/*.json"
 DEFAULT_API_URL = "http://localhost:8000"
+DEFAULT_TIMEOUT = int(os.getenv("QUALITY_HTTP_TIMEOUT", "60"))
 
 
 def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
@@ -23,7 +25,9 @@ def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
         return None, str(exc)
 
 
-def _validate_samples_list(data: Dict[str, Any]) -> Tuple[bool, Optional[str], List[Any]]:
+def _validate_samples_list(
+    data: Dict[str, Any],
+) -> Tuple[bool, Optional[str], List[Any]]:
     samples = data.get("samples")
     if not isinstance(samples, list) or not samples:
         return False, "samples must be a non-empty list", []
@@ -58,7 +62,10 @@ def validate_routing_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]
         if "expected_entity" in sample:
             expected_entity = sample["expected_entity"]
             if not isinstance(expected_entity, str) or not expected_entity.strip():
-                return False, f"samples[{index}].expected_entity must be a non-empty string when provided"
+                return (
+                    False,
+                    f"samples[{index}].expected_entity must be a non-empty string when provided",
+                )
 
     return True, None
 
@@ -128,7 +135,10 @@ def validate_rag_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
             return False, f"samples[{index}].expect must be an object"
         doc_id_prefix = expect.get("doc_id_prefix")
         if not isinstance(doc_id_prefix, str) or not doc_id_prefix.strip():
-            return False, f"samples[{index}].expect.doc_id_prefix must be a non-empty string"
+            return (
+                False,
+                f"samples[{index}].expect.doc_id_prefix must be a non-empty string",
+            )
 
         if "k" in expect:
             value = expect["k"]
@@ -137,12 +147,20 @@ def validate_rag_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
         if "min_score" in expect:
             value = expect["min_score"]
             if not isinstance(value, (int, float)):
-                return False, f"samples[{index}].expect.min_score must be a number between 0 and 1"
+                return (
+                    False,
+                    f"samples[{index}].expect.min_score must be a number between 0 and 1",
+                )
             value_f = float(value)
             if value_f < 0 or value_f > 1:
-                return False, f"samples[{index}].expect.min_score must be between 0 and 1"
+                return (
+                    False,
+                    f"samples[{index}].expect.min_score must be between 0 and 1",
+                )
 
-        ok_tags, err_tags = _validate_tags(expect.get("tags"), f"samples[{index}].expect.tags")
+        ok_tags, err_tags = _validate_tags(
+            expect.get("tags"), f"samples[{index}].expect.tags"
+        )
         if not ok_tags:
             return False, err_tags
 
@@ -171,7 +189,7 @@ def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
     if not isinstance(data, dict):
         return False, "invalid schema: payload must be an object", "", 0
 
-    raw_type = (data.get("type") or "")
+    raw_type = data.get("type") or ""
     type_name = raw_type.strip().lower()
     allowed = allowed_types()
     if type_name not in allowed:
@@ -185,13 +203,18 @@ def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
         valid, error_message = validate_rag_payload(data)
 
     if not valid:
-        return False, f"invalid schema: {error_message}", type_name, len(data.get("samples") or [])
+        return (
+            False,
+            f"invalid schema: {error_message}",
+            type_name,
+            len(data.get("samples") or []),
+        )
 
     samples = data.get("samples") or []
     return True, None, type_name, len(samples)
 
 
-def post_payload(data: Dict[str, Any], timeout: float = 15.0) -> Tuple[int, str]:
+def post_payload(data: Dict[str, Any], timeout=DEFAULT_TIMEOUT) -> Tuple[int, str]:
     api_url = os.environ.get("API_URL", DEFAULT_API_URL).rstrip("/")
     url = f"{api_url}/ops/quality/push"
     body = json.dumps(data).encode("utf-8")
@@ -209,16 +232,16 @@ def post_payload(data: Dict[str, Any], timeout: float = 15.0) -> Tuple[int, str]
 
 def parse_args(argv: Iterable[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Push quality samples to API")
-    parser.add_argument("--dry-run", action="store_true", help="List files that would be posted")
+    parser.add_argument(
+        "--dry-run", action="store_true", help="List files that would be posted"
+    )
     parser.add_argument("--glob", help="Override glob pattern for sample discovery")
     return parser.parse_args(list(argv))
 
 
 def main(argv: Iterable[str]) -> int:
     args = parse_args(argv)
-    glob_pattern = os.environ.get(
-        "QUALITY_SAMPLES_GLOB", args.glob or DEFAULT_GLOB
-    )
+    glob_pattern = os.environ.get("QUALITY_SAMPLES_GLOB", args.glob or DEFAULT_GLOB)
     base = Path.cwd()
     files = sorted(base.glob(glob_pattern))
 
@@ -250,7 +273,9 @@ def main(argv: Iterable[str]) -> int:
 
         try:
             status, response_body = post_payload(data)
-        except error.URLError as exc:  # pragma: no cover - network issues are hard to simulate
+        except (
+            error.URLError
+        ) as exc:  # pragma: no cover - network issues are hard to simulate
             errors_http += 1
             print(f"[error] post {path} → network error: {exc}")
             continue

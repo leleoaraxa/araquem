@@ -139,16 +139,19 @@ _METRIC_SCHEMAS = {
     "sirios_sql_errors_total": ("counter", ("entity", "error_code")),
     "sirios_rag_search_total": ("counter", ("outcome",)),
     "sirios_rag_topscore": ("histogram", ()),
-
     # ---------- M7.3 (RAG Context Explain) ----------
     "planner_rag_hits_total": ("counter", ("intent", "entity")),
     "planner_rag_context_used_total": ("counter", ("intent", "entity")),
     "planner_rag_context_latency_ms": ("histogram", ("intent", "entity")),
-
     # ---------- M7.4 (Re-rank leve) ----------
     "planner_rerank_applied_total": ("counter", ("mode", "accepted")),
     "planner_decision_gap_before": ("histogram", ()),
     "planner_decision_gap_after": ("histogram", ()),
+    # ---------- M7.5 ----------
+    "rag_index_size_total": ("gauge", ()),
+    "rag_index_docs_total": ("gauge", ()),
+    "rag_index_last_refresh_timestamp": ("gauge", ()),
+    "rag_index_density_score": ("gauge", ()),
 }
 
 
@@ -229,6 +232,16 @@ class _PromBackend(obs._Backend):
             h.labels(**labels).observe(float(value))
         else:
             h.observe(float(value))
+
+    def set_gauge(self, name: str, value: float, labels: Dict[str, str]) -> None:
+        kind, labelnames = _ensure_metric(name, labels)
+        if kind != "gauge":
+            raise ValueError(f"'{name}' não é gauge.")
+        g = _get_gauge(name, labelnames)
+        if labelnames:
+            g.labels(**labels).set(float(value))
+        else:
+            g.set(float(value))
 
     def start_span(self, name: str, attributes: Dict[str, Any]):
         cm = self._tracer.start_as_current_span(name)
