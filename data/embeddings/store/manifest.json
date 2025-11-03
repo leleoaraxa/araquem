@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-03T16:17:59Z",
+  "generated_at": "2025-11-03T17:37:51Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -131,8 +131,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 8,
-      "sha_all": "17453b420db513e554fa809bf536fef7654185344f8e5dfefdc2ae5d6b35e49e"
+      "chunks": 10,
+      "sha_all": "c545fd27ede56f93fa1ea69f0860052cd55caf8b18baa1882bf189da3d94bf1c"
     },
     {
       "id": "q-projection-cadastro",
