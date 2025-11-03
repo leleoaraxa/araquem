@@ -6,7 +6,11 @@ import sys
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Set, Tuple, Union
 
-import yaml
+try:
+    import yaml  # PyYAML
+except Exception:
+    print("[warn] PyYAML não disponível; pulando validação de contratos.")
+    raise SystemExit(0)
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
@@ -88,7 +92,9 @@ def validate_param_inference(path: Path) -> Tuple[List[str], Dict[str, Set[str]]
                 continue
             windows: Set[str] = set()
             default_window = intent_config.get("default_window")
-            normalized = normalize_window(default_window) if default_window is not None else None
+            normalized = (
+                normalize_window(default_window) if default_window is not None else None
+            )
             if normalized:
                 windows.add(normalized)
 

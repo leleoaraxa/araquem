@@ -148,9 +148,14 @@ services:
       - QUALITY_TOKEN_HEADER=X-OPS-TOKEN
       - QUALITY_REPORT_WAIT_MAX=90
       - QUALITY_REPORT_WAIT_SLEEP=3
-      - QUALITY_HTTP_TIMEOUT=180
+
     command: >
       bash -lc "
+        python - <<'PY'
+        import sys, subprocess, pkgutil
+        # instala PyYAML se não existir
+        sys.exit(0) if pkgutil.find_loader('yaml') else subprocess.check_call([sys.executable, '-m', 'pip', 'install', '--no-cache-dir', 'pyyaml'])
+        PY
         echo '⏳ aguardando API saudável...' &&
         until curl -fsS -H 'X-OPS-TOKEN: '${QUALITY_OPS_TOKEN} http://localhost:8000/ops/quality/report >/dev/null; do
           sleep 2;
