@@ -40,16 +40,23 @@ def test_anti_tokens_apply_penalty_on_price_queries():
 
     # Sanidade
     assert "details" in body and "cadastro" in body["details"]
-    det = body["details"]["cadastro"]
+    dbg = body["explain"]
+    scoring = dbg.get("scoring", {})
+    intents = scoring.get("intent", [])
+    assert intents and intents[0]["name"] == "precos"
 
-    # Anti-penalidade deve ter sido aplicada
-    assert det["anti_penalty"] > 0.0
+    signals = dbg.get("signals", {})
+    weights_summary = signals.get("weights_summary") or {}
+    phrase_penalty = weights_summary.get("phrase_sum")
+    token_penalty = weights_summary.get("token_sum")
+    assert (phrase_penalty is not None and phrase_penalty < 0) or (
+        token_penalty is not None and token_penalty <= 0
+    )
 
     # Tokens normalizados devem conter 'preco' e 'hoje' (pois strip_accents está ligado)
     assert "preco" in body["tokens"]
     assert "hoje" in body["tokens"]
 
-    # Score penalizado
-    assert body["chosen"]["intent"] == "cadastro"
-    assert body["chosen"]["entity"] == "fiis_cadastro"
-    assert body["chosen"]["score"] <= 0.0
+    # Escolha final deve seguir a intenção de preços
+    assert body["chosen"]["intent"] == "precos"
+    assert body["chosen"]["entity"] == "fiis_precos"

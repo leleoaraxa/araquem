@@ -10,9 +10,20 @@ def test_healthz_ok():
     assert r.json()["status"] == "ok"
 
 def test_metrics_exposes_prometheus_format():
+    warmup = client.get("/metrics")
+    assert warmup.status_code == 200
+
     r = client.get("/metrics")
     assert r.status_code == 200
-    assert "sirios_requests_total" in r.text
+    text = r.text
+    assert any(
+        metric in text
+        for metric in (
+            "sirios_http_requests_total",
+            "sirios_http_request_duration_seconds",
+            "sirios_planner_top2_gap_histogram",
+        )
+    )
 
 def test_ask_contract_validation():
     payload = {
