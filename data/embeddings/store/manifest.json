@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-03T15:01:12Z",
+  "generated_at": "2025-11-03T15:44:41Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -57,7 +57,7 @@
         "dividendos"
       ],
       "chunks": 2,
-      "sha_all": "89bf70e3efca09399962cfb9b97409d89f20ed7c92b08eb1cda0de69dd11591a"
+      "sha_all": "36ec5e8e268953404d77e303766ef47e48b165c9648ee2147a0357ba47683673"
     },
     {
       "id": "entity-fiis-precos",
@@ -68,7 +68,7 @@
         "precos"
       ],
       "chunks": 2,
-      "sha_all": "77cc7e5968e8ce9d15382d3086419e6f773d897073ad07b1e4964e1cdf883cd7"
+      "sha_all": "6f2ef0840bb947257499fab16b641b6bb8b0ad6528d84f8dfec804f1cbc1e5c0"
     },
     {
       "id": "entity-fiis-rankings",
