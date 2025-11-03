@@ -30,9 +30,28 @@ def _load_yaml(path: Path) -> Dict[str, Any]:
         return yaml.safe_load(f)
 
 
+def _token_set(text: str) -> set[str]:
+    return set(_norm(text).split())
+
+
 def _match_keywords(text: str, kw_list: List[str]) -> bool:
-    # normaliza keywords (lower+strip_accents) antes de checar substring
-    return any(_norm(k) in text for k in kw_list if k)
+    """Verifica se qualquer palavra ou frase de kw_list aparece isolada em text."""
+    if not kw_list:
+        return False
+    tokens = _token_set(text)
+    norm_kws = [_norm(k) for k in kw_list if k]
+    for kw in norm_kws:
+        # frases de múltiplas palavras
+        if " " in kw:
+            if re.search(rf"\b{re.escape(kw)}\b", _norm(text)):
+                return True
+            kw_tokens = set(kw.split())
+            if kw_tokens.issubset(tokens):
+                return True
+        else:
+            if kw in tokens:
+                return True
+    return False
 
 
 def _entity_agg_defaults(entity_yaml_path: Optional[str]) -> Dict[str, Any]:
@@ -87,23 +106,31 @@ def infer_params(
     # 1) detectar agg por palavras
     agg_kw = icfg.get("agg_keywords") or {}
 
-    for agg_name, spec in agg_kw.items():
+    candidates = []
+    for agg_name, spec in (agg_kw or {}).items():
         if _match_keywords(text, spec.get("include", [])):
-            agg = agg_name
-            # janelas default por agg (quando aplicável)
-            if spec.get("window"):
-                window = spec["window"]
-            elif spec.get("window_defaults"):
-                # pega a primeira janela default declarada
-                window = spec["window_defaults"][0]
-            break
+            candidates.append((agg_name, spec))
+
+    if candidates:
+        priority = icfg.get("agg_priority", ["avg", "sum", "latest", "list"])
+        priority_order = {name: i for i, name in enumerate(priority)}
+        agg, spec = sorted(candidates, key=lambda t: priority_order.get(t[0], 1_000))[0]
+
+        if spec.get("window"):
+            window = spec["window"]
+        elif spec.get("window_defaults"):
+            window = spec["window_defaults"][0]
 
     # 2) detectar janela (months:X ou count:Y)
     wkw = icfg.get("window_keywords") or {}
+    window_kind: Optional[str] = None
     for kind, mapping in wkw.items():
         for num, kws in mapping.items():
             if _match_keywords(text, kws):
+                if window_kind == "months" and kind != "months":
+                    continue
                 window = f"{kind}:{num}"
+                window_kind = kind
 
     # 3) list → definir limit/order
     if agg == "list":
