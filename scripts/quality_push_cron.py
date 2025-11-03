@@ -1,64 +1,197 @@
-# scripts/quality_push_cron.py
-import os, sys, json, hashlib, time, pathlib
-import httpx
+"""Quality samples cron script."""
+from __future__ import annotations
 
-API_URL = os.environ.get("API_URL", "http://localhost:8000")
-TOKEN = os.environ.get("QUALITY_OPS_TOKEN", "")
-GLOB = os.environ.get("QUALITY_SAMPLES_GLOB", "data/ops/quality/*.json")
-SLEEP_BETWEEN = float(os.environ.get("QUALITY_PUSH_SLEEP", "0.2"))
-# Novo: header configurável e opção Authorization: Bearer
-TOKEN_HEADER = os.environ.get("QUALITY_TOKEN_HEADER", "X-QUALITY-TOKEN").strip()
-USE_BEARER = os.environ.get("QUALITY_AUTH_BEARER", "false").lower() in ("1","true","yes","on")
-
-def sha256(p: pathlib.Path) -> str:
-    return hashlib.sha256(p.read_bytes()).hexdigest()
+import argparse
+import json
+import os
+import sys
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Tuple
+from urllib import error, request
 
 ALLOWED_TYPES = {"routing", "projection"}
+DEFAULT_GLOB = "data/ops/quality/*.json"
+DEFAULT_API_URL = "http://localhost:8000"
 
 
-def load_payload(path: pathlib.Path):
-    with open(path, "rb") as f:
-        return json.load(f)
+def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
+    """Load a JSON file returning the payload or an error message."""
+    try:
+        with path.open("r", encoding="utf-8") as handle:
+            return json.load(handle), None
+    except Exception as exc:  # pragma: no cover - exercised via tests/cli
+        return None, str(exc)
 
 
-def push(path: pathlib.Path, data) -> dict:
+def _validate_samples_list(data: Dict[str, Any]) -> Tuple[bool, Optional[str], List[Any]]:
+    samples = data.get("samples")
+    if not isinstance(samples, list) or not samples:
+        return False, "samples must be a non-empty list", []
+    return True, None, samples
+
+
+def validate_routing_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
+    ok, error_message, samples = _validate_samples_list(data)
+    if not ok:
+        return False, error_message
+
+    for index, sample in enumerate(samples):
+        if not isinstance(sample, dict):
+            return False, f"samples[{index}] must be an object"
+        question = sample.get("question")
+        expected_intent = sample.get("expected_intent")
+        if not isinstance(question, str) or not question.strip():
+            return False, f"samples[{index}].question must be a non-empty string"
+        if not isinstance(expected_intent, str) or not expected_intent.strip():
+            return False, f"samples[{index}].expected_intent must be a non-empty string"
+        if "expected_entity" in sample:
+            expected_entity = sample["expected_entity"]
+            if not isinstance(expected_entity, str) or not expected_entity.strip():
+                return False, f"samples[{index}].expected_entity must be a non-empty string when provided"
+
+    return True, None
+
+
+def validate_projection_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
+    entity = data.get("entity")
+    result_key = data.get("result_key")
+    must_have_columns = data.get("must_have_columns")
+
+    if not isinstance(entity, str) or not entity.strip():
+        return False, "entity must be a non-empty string"
+    if not isinstance(result_key, str) or not result_key.strip():
+        return False, "result_key must be a non-empty string"
+    if not isinstance(must_have_columns, list) or not all(
+        isinstance(column, str) and column.strip() for column in must_have_columns
+    ):
+        return False, "must_have_columns must be a list of non-empty strings"
+
+    ok, error_message, samples = _validate_samples_list(data)
+    if not ok:
+        return False, error_message
+
+    for index, sample in enumerate(samples):
+        if not isinstance(sample, dict):
+            return False, f"samples[{index}] must be an object"
+        question = sample.get("question")
+        if not isinstance(question, str) or not question.strip():
+            return False, f"samples[{index}].question must be a non-empty string"
+
+    return True, None
+
+
+def make_headers() -> Dict[str, str]:
     headers = {"Content-Type": "application/json"}
-    if USE_BEARER:
-        headers["Authorization"] = f"Bearer {TOKEN}"
+    token = os.environ.get("QUALITY_OPS_TOKEN")
+    if token:
+        headers["X-Ops-Token"] = token
+    bearer = os.environ.get("QUALITY_AUTH_BEARER")
+    if bearer:
+        headers["Authorization"] = f"Bearer {bearer}"
+    return headers
+
+
+def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
+    if not isinstance(data, dict):
+        return False, "invalid schema: payload must be an object", "", 0
+
+    raw_type = (data.get("type") or "")
+    type_name = raw_type.strip().lower()
+    if type_name not in ALLOWED_TYPES:
+        return False, f"unsupported type '{type_name}'", type_name, 0
+
+    if type_name == "routing":
+        valid, error_message = validate_routing_payload(data)
     else:
-        headers[TOKEN_HEADER] = TOKEN
-    r = httpx.post(f"{API_URL}/ops/quality/push", headers=headers, json=data, timeout=30.0)
+        valid, error_message = validate_projection_payload(data)
 
-    r.raise_for_status()
-    return r.json()
+    if not valid:
+        return False, f"invalid schema: {error_message}", type_name, len(data.get("samples") or [])
 
-def main():
-    base = pathlib.Path(".")
-    files = sorted(base.glob(GLOB))
-    if not files:
-        print("[warn] no files matched:", GLOB)
-        sys.exit(0)
-    accepted = 0
-    dry_run = "--dry-run" in sys.argv
-    for p in files:
+    samples = data.get("samples") or []
+    return True, None, type_name, len(samples)
+
+
+def post_payload(data: Dict[str, Any], timeout: float = 15.0) -> Tuple[int, str]:
+    api_url = os.environ.get("API_URL", DEFAULT_API_URL).rstrip("/")
+    url = f"{api_url}/ops/quality/push"
+    body = json.dumps(data).encode("utf-8")
+    headers = make_headers()
+    req = request.Request(url, data=body, headers=headers, method="POST")
+    try:
+        with request.urlopen(req, timeout=timeout) as response:
+            status = response.getcode()
+            payload = response.read().decode("utf-8", "replace")
+            return status, payload
+    except error.HTTPError as exc:
+        payload = exc.read().decode("utf-8", "replace")
+        return exc.code, payload
+
+
+def parse_args(argv: Iterable[str]) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Push quality samples to API")
+    parser.add_argument("--dry-run", action="store_true", help="List files that would be posted")
+    parser.add_argument("--glob", help="Override glob pattern for sample discovery")
+    return parser.parse_args(list(argv))
+
+
+def main(argv: Iterable[str]) -> int:
+    args = parse_args(argv)
+    glob_pattern = os.environ.get(
+        "QUALITY_SAMPLES_GLOB", args.glob or DEFAULT_GLOB
+    )
+    base = Path.cwd()
+    files = sorted(base.glob(glob_pattern))
+
+    posted = 0
+    skipped = 0
+    errors_parse = 0
+    errors_http = 0
+    total = 0
+
+    for path in files:
+        total += 1
+        data, load_error = load_json(path)
+        if load_error is not None:
+            errors_parse += 1
+            print(f"[error] parse {path} → {load_error}")
+            continue
+
+        ok, reason, type_name, samples_len = should_post(data)
+        if not ok:
+            skipped += 1
+            message = reason or "unknown reason"
+            print(f"[skip] {path} → {message}")
+            continue
+
+        print(f"[post] {path} (type={type_name}, samples={samples_len})")
+        if args.dry_run:
+            posted += 1
+            continue
+
         try:
-            data = load_payload(p)
-            data_type = data.get("type") if isinstance(data, dict) else None
-            if data_type not in ALLOWED_TYPES:
-                print(f"[skip] {p} (unsupported or missing \"type\")")
-                continue
-            if dry_run:
-                print(f"[post] {p}")
-                accepted += 1
-                continue
-            h = sha256(p)
-            out = push(p, data)
-            print(f"[ok] {p} ({h[:8]}): {json.dumps(out, ensure_ascii=False)}")
-            accepted += 1
-            time.sleep(SLEEP_BETWEEN)
-        except Exception as e:
-            print(f"[err] {p}: {e}")
-    print(f"[done] total accepted={accepted}")
+            status, response_body = post_payload(data)
+        except error.URLError as exc:  # pragma: no cover - network issues are hard to simulate
+            errors_http += 1
+            print(f"[error] post {path} → network error: {exc}")
+            continue
+
+        if status != 200:
+            errors_http += 1
+            truncated_body = response_body.strip()
+            print(f"[error] post {path} → {status}: {truncated_body}")
+            continue
+
+        posted += 1
+
+    summary = (
+        f"[summary] posted={posted} skipped={skipped} "
+        f"errors_parse={errors_parse} errors_http={errors_http} total={total}"
+    )
+    print(summary)
+
+    return 0 if errors_parse == 0 and errors_http == 0 else 1
+
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main(sys.argv[1:]))
