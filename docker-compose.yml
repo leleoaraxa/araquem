@@ -1,6 +1,8 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
     container_name: araquem-api
     ports:
       - "8000:8000"
@@ -65,7 +67,9 @@ services:
     networks: [araquem_network]
 
   rag-indexer:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-indexer
     container_name: araquem-rag-indexer
     depends_on: [ollama, ollama-init]
     command: >
@@ -137,7 +141,10 @@ services:
       - tempo
 
   quality-cron:
-    image: quality-runner
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.quality-runner
+    image: quality-runner:latest
     container_name: araquem-quality-cron
     restart: unless-stopped
     environment:

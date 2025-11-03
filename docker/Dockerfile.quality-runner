@@ -1,0 +1,13 @@
+# docker/Dockerfile.quality-runner
+FROM python:3.12-slim
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends jq ca-certificates curl \
+ && rm -rf /var/lib/apt/lists/*
+
+RUN pip install --no-cache-dir pyyaml
+
+WORKDIR /workspace
+
+# Sem COPY do código: o compose monta o repo como volume read-only.
+# Sem CMD/ENTRYPOINT fixos: definido via docker-compose.
