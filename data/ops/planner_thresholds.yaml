@@ -25,6 +25,7 @@ planner:
     defaults:
       min_score: 1.0  # Score absoluto mínimo para aceitar decisão
       min_gap: 0.5    # Gap mínimo entre 1º e 2º candidato
+    apply_on: base    # base|final (preparado para M7.4; manter base)
 
     intents:
       cadastro:
@@ -52,3 +53,7 @@ planner:
     k: 8
     min_score: 0.20
     weight: 0.35
+    re_rank:
+      enabled: false   # Não ligar agora
+      mode: blend      # additive|blend (preparado)
+      weight: 0.25     # 0..1 (preparado)
