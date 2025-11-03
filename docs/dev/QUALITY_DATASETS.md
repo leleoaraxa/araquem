@@ -6,6 +6,10 @@ Este documento descreve quais datasets de QA são considerados canônicos para o
 - `data/golden/m65_quality.yaml` é a única fonte oficial (golden) para os cenários de QA.
 - O arquivo JSON equivalente (`data/golden/m65_quality.json`) permanece apenas como legado/histórico e **não** deve ser indexado nem utilizado como referência principal.
 
+## Sincronização do `routing_samples.json`
+- O arquivo `data/ops/quality/routing_samples.json` é gerado automaticamente a partir do YAML canônico via `scripts/golden_sync.py`.
+- Pipelines/CI devem chamar `python scripts/golden_sync.py --in data/golden/m65_quality.yaml --out data/ops/quality/routing_samples.json --check` antes de builds/deploys; se houver divergência, rode o mesmo comando sem `--check` para atualizar o JSON.
+
 ## Publicação no `/ops/quality/push`
 O endpoint aceita somente payloads com o campo `"type"` definido como:
 - `routing`
