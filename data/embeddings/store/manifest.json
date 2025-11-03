@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-03T15:44:41Z",
+  "generated_at": "2025-11-03T16:17:59Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -57,7 +57,7 @@
         "dividendos"
       ],
       "chunks": 2,
-      "sha_all": "36ec5e8e268953404d77e303766ef47e48b165c9648ee2147a0357ba47683673"
+      "sha_all": "562449120cbdb8dbe9a3e2d56334114f5f0dd8fef37a443be3f2ab1602185fb2"
     },
     {
       "id": "entity-fiis-precos",
@@ -68,7 +68,7 @@
         "precos"
       ],
       "chunks": 2,
-      "sha_all": "6f2ef0840bb947257499fab16b641b6bb8b0ad6528d84f8dfec804f1cbc1e5c0"
+      "sha_all": "8c2653c95561c4bbde8bdb0ea37b0d93fcd57ba3d97581de90323d7f7598792c"
     },
     {
       "id": "entity-fiis-rankings",
@@ -122,17 +122,6 @@
       ],
       "chunks": 9,
       "sha_all": "d1eef6ed7efdebb1375ea12deba0835822d96da5094b86cba4f7c8f4bc2e5bd2"
-    },
-    {
-      "id": "golden-m65-quality-json",
-      "path": "data/golden/m65_quality.json",
-      "tags": [
-        "golden",
-        "quality",
-        "json"
-      ],
-      "chunks": 10,
-      "sha_all": "829f52e808b46023c1b04f28ca6170b02866b2165007529f629577fc26fc6884"
     },
     {
       "id": "q-routing-samples",
