@@ -23,8 +23,15 @@ _THRESH_DEFAULTS = {
             "defaults": {"min_score": 1.0, "min_gap": 0.5},
             "intents": {},
             "entities": {},
+            "apply_on": "base",
         },
-        "rag": {"enabled": False, "k": 5, "min_score": 0.20, "weight": 0.35},
+        "rag": {
+            "enabled": False,
+            "k": 5,
+            "min_score": 0.20,
+            "weight": 0.35,
+            "re_rank": {"enabled": False, "mode": "blend", "weight": 0.25},
+        },
     }
 }
 
@@ -33,10 +40,17 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
     try:
         data = load_yaml_cached(path) or {}
         planner = data.get("planner") or {}
-        thresholds = (
-            planner.get("thresholds") or _THRESH_DEFAULTS["planner"]["thresholds"]
+        thresholds = planner.get("thresholds") or dict(
+            _THRESH_DEFAULTS["planner"]["thresholds"]
         )
-        rag = planner.get("rag") or _THRESH_DEFAULTS["planner"]["rag"]
+        rag = planner.get("rag") or dict(_THRESH_DEFAULTS["planner"]["rag"])
+        # Garantir chaves novas (defaults se ausentes)
+        if "apply_on" not in thresholds:
+            thresholds["apply_on"] = _THRESH_DEFAULTS["planner"]["thresholds"][
+                "apply_on"
+            ]
+        if "re_rank" not in rag:
+            rag["re_rank"] = dict(_THRESH_DEFAULTS["planner"]["rag"]["re_rank"])
         return {"planner": {"thresholds": thresholds, "rag": rag}}
     except Exception:
         return _THRESH_DEFAULTS
@@ -173,7 +187,9 @@ class Planner:
         # --- configurações RAG ---
         rag_cfg = (_THRESH_DEFAULTS.get("planner", {}).get("rag") or {})
         cfg = _load_thresholds()
-        rag_cfg = (cfg.get("planner") or {}).get("rag") or rag_cfg
+        planner_cfg = cfg.get("planner") or {}
+        rag_cfg = planner_cfg.get("rag") or rag_cfg
+        thresholds_cfg = planner_cfg.get("thresholds") or {}
         rag_enabled = bool(rag_cfg.get("enabled", False))
         rag_k = int(rag_cfg.get("k", 5))
         rag_min_score = float(rag_cfg.get("min_score", 0.20))
@@ -181,6 +197,12 @@ class Planner:
         rag_index_path = os.getenv(
             "RAG_INDEX_PATH", "data/embeddings/store/embeddings.jsonl"
         )
+        # Re-rank (Preparação M7.4 — desligado por padrão)
+        re_rank_cfg = rag_cfg.get("re_rank") or {}
+        re_rank_enabled = bool(re_rank_cfg.get("enabled", False))
+        re_rank_mode = str(re_rank_cfg.get("mode", "blend"))
+        re_rank_weight = float(re_rank_cfg.get("weight", 0.25))
+        thr_apply_on = str(thresholds_cfg.get("apply_on", "base"))
 
         rag_entity_hints: Dict[str, float] = {}
         rag_error: Any = None
@@ -231,18 +253,25 @@ class Planner:
         entity_combined_scores: Dict[str, float] = {}
         entity_rag_scores: Dict[str, float] = {}
         fused_scores: Dict[str, float] = {}
-        rag_fusion_applied = rag_enabled and rag_used and (rag_weight > 0.0)
-        fusion_weight = rag_weight if rag_fusion_applied else 0.0
+        intent_rag_signals: Dict[str, float] = {}
+        intent_entities: Dict[str, Any] = {}
+        rag_fusion_applied = (
+            rag_enabled and rag_used and re_rank_enabled and (re_rank_weight > 0.0)
+        )
+        fusion_weight = re_rank_weight if rag_fusion_applied else 0.0
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
             entity_name = it.entities[0] if it.entities else None
-            rag_signal = 0.0
-            if rag_fusion_applied and entity_name:
-                rag_signal = float(
-                    rag_entity_hints.get((entity_name or "").strip(), 0.0)
-                )
-            final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+            intent_entities[it.name] = entity_name
+            rag_signal = float(
+                rag_entity_hints.get((entity_name or "").strip(), 0.0)
+            ) if entity_name else 0.0
+            intent_rag_signals[it.name] = rag_signal
+            if rag_fusion_applied:
+                final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+            else:
+                final_score = base
             fused_scores[it.name] = final_score
 
             combined_intents.append(
@@ -316,14 +345,14 @@ class Planner:
                 {
                     "stage": "fuse",
                     "type": "rag_integration",
-                    "rag_weight": rag_weight,
+                    "rag_weight": fusion_weight,
                 }
             )
             decision_path.append(
                 {
                     "stage": "fuse",
                     "type": "rag_fusion",
-                    "weight": rag_weight,
+                    "weight": fusion_weight,
                     "affected": len(affected_entities),
                 }
             )
@@ -487,6 +516,11 @@ class Planner:
                 "entity_hints": rag_entity_hints,
                 "error": rag_error,
                 "used": bool(rag_entity_hints),
+                "re_rank": {
+                    "enabled": re_rank_enabled,
+                    "mode": re_rank_mode,
+                    "weight": re_rank_weight,
+                },
             }
             # scoring.rag_hint — lista [{entity, score}]
             meta_explain["scoring"]["rag_hint"] = [
@@ -496,14 +530,30 @@ class Planner:
                 )
             ]
         else:
-            meta_explain["rag"] = {"enabled": False}
+            meta_explain["rag"] = {
+                "enabled": False,
+                "re_rank": {
+                    "enabled": re_rank_enabled,
+                    "mode": re_rank_mode,
+                    "weight": re_rank_weight,
+                },
+            }
+        meta_explain["scoring"]["rag_signal"] = [
+            {
+                "intent": item["name"],
+                "entity": intent_entities.get(item["name"]),
+                "score": float(intent_rag_signals.get(item["name"], 0.0)),
+            }
+            for item in combined_intents
+        ]
         if rag_context:
             meta_explain["rag_context"] = rag_context
         meta_explain["scoring"]["combined"] = combined_block
         meta_explain["fusion"] = {
             "enabled": bool(rag_enabled),
             "used": bool(rag_fusion_applied),
-            "weight": rag_weight if rag_fusion_applied else 0.0,
+            "weight": fusion_weight,
+            "mode": re_rank_mode,
             "affected_entities": affected_entities,
             "error": rag_error,
         }
@@ -552,7 +602,7 @@ class Planner:
             pass
 
         # imediatamente antes do return:
-        thr = (cfg.get("planner") or {}).get("thresholds") or {}
+        thr = thresholds_cfg or {}
         dfl = thr.get("defaults") or {"min_score": 1.0, "min_gap": 0.5}
         intent_thr = (thr.get("intents") or {}).get(chosen_intent or "", {})
         entity_thr = (thr.get("entities") or {}).get(chosen_entity or "", {})
@@ -577,6 +627,9 @@ class Planner:
             "min_gap": min_gap,
             "gap": gap,
             "accepted": accepted,
+            "source": "final"
+            if (re_rank_enabled and thr_apply_on == "final")
+            else "base",
         }
 
         return {
