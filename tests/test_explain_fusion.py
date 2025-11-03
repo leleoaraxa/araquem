@@ -29,6 +29,9 @@ def _configure_rag(monkeypatch, *, enabled=True, weight=0.5, hints=None, k=3, mi
         "k": k,
         "min_score": min_score,
     })
+    re_rank_cfg = dict(rag_cfg.get("re_rank") or {})
+    re_rank_cfg.update({"enabled": enabled, "mode": "blend", "weight": weight})
+    rag_cfg["re_rank"] = re_rank_cfg
 
     def _fake_load():
         return {"planner": {"thresholds": thresholds_cfg, "rag": dict(rag_cfg)}}
@@ -101,7 +104,7 @@ def test_explain_combined_block_structure(monkeypatch, simple_ontology):
     combined = result["explain"]["scoring"]["combined"]
 
     assert set(combined.keys()) == {"intent", "entity", "weight", "notes"}
-    assert "linear_fusion" in combined["notes"]
+    assert any(token in combined["notes"] for token in ("blend=", "additive="))
 
     for bucket in ("intent", "entity"):
         entries = combined[bucket]
@@ -135,7 +138,7 @@ def test_top2_gap_updates_after_fusion(monkeypatch, simple_ontology):
     ordered = sorted(combined["intent"], key=lambda item: item["combined"], reverse=True)
     assert len(ordered) >= 2
     expected_gap = ordered[0]["combined"] - ordered[1]["combined"]
-    assert result["explain"]["scoring"]["intent_top2_gap"] == pytest.approx(expected_gap)
+    assert result["explain"]["scoring"]["intent_top2_gap_final"] == pytest.approx(expected_gap)
     assert ordered[0]["winner"] is True
     assert ordered[1]["winner"] is False
 
@@ -194,7 +197,12 @@ def test_no_contract_change_for_results(monkeypatch):
                     "score": 1.0,
                     "accepted": True,
                 },
-                "explain": {"scoring": {"intent_top2_gap": 0.0}},
+                "explain": {
+                    "scoring": {
+                        "intent_top2_gap_base": 0.0,
+                        "intent_top2_gap_final": 0.0,
+                    }
+                },
             }
 
     class DummyOrchestrator:
