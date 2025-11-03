@@ -1,3 +1,4 @@
+# app/analytics/metrics.py
 """
 Analytics KPIs summarizer — Guardrails v2.0 compliant
 
