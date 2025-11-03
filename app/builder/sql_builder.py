@@ -77,6 +77,13 @@ def build_select_for_entity(
     order = (agg_params.get("order") or "desc").lower()
     limit = int(agg_params.get("limit") or 10)
 
+    # Normaliza "latest" -> list + count:1, order desc, limit 1 (sem alterar meta)
+    if agg == "latest":
+        agg = "list"
+        order = "desc"
+        limit = 1
+        window = window or "count:1"
+
     # Whitelist de ORDER do YAML da entidade
     order_whitelist = [str(x) for x in (cfg.get("order_by_whitelist") or [])]
     # Fallback de coluna de ordenação temporal se não houver whitelist:

@@ -244,5 +244,6 @@ class Orchestrator:
                 "rows_total": len(rows),
                 "elapsed_ms": elapsed_ms,
                 "gate": gate,
+                "aggregates": (agg_params or {}),
             },
         }

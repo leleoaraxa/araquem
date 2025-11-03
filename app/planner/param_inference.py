@@ -1,34 +1,71 @@
+# app/planner/param_inference.py
+
 from __future__ import annotations
-from typing import Dict, Any, Tuple
-import re, json
+from typing import Dict, Any, Optional, Tuple, List
+import re, json, unicodedata
 from pathlib import Path
 
 import yaml
 
-_PARAM_PATH = Path("data/ops/param_inference.yaml")
-
+_DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
 
 
+def _strip_accents(s: str) -> str:
+    return "".join(
+        c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn"
+    )
+
+
 def _norm(text: str) -> str:
-    return " ".join(_WORD_RE.findall(text.lower()))
+    lowered = text.lower()
+    no_accents = _strip_accents(lowered)
+    return " ".join(_WORD_RE.findall(no_accents))
 
 
-def _load_cfg() -> Dict[str, Any]:
-    with _PARAM_PATH.open("r", encoding="utf-8") as f:
+def _load_yaml(path: Path) -> Dict[str, Any]:
+    if not path or not Path(path).exists():
+        return {}
+    with Path(path).open("r", encoding="utf-8") as f:
         return yaml.safe_load(f)
 
 
-def _match_keywords(text: str, kw_list: list[str]) -> bool:
-    return any(k in text for k in kw_list)
+def _match_keywords(text: str, kw_list: List[str]) -> bool:
+    # normaliza keywords (lower+strip_accents) antes de checar substring
+    return any(_norm(k) in text for k in kw_list if k)
 
 
-def infer_params(question: str, intent: str) -> Dict[str, Any]:
+def _entity_agg_defaults(entity_yaml_path: Optional[str]) -> Dict[str, Any]:
+    """
+    Lê defaults de agregação da entidade (limit/order para list, janelas permitidas, etc).
+    Retorna dict com chaves: list (limit/order), avg, sum, windows_allowed
+    """
+    y = _load_yaml(Path(entity_yaml_path)) if entity_yaml_path else {}
+    agg = (y.get("aggregations") or {}) if isinstance(y, dict) else {}
+    defaults = (agg.get("defaults") or {}) if isinstance(agg, dict) else {}
+    return {
+        "list": defaults.get("list") or {},
+        "avg": defaults.get("avg") or {},
+        "sum": defaults.get("sum") or {},
+        "windows_allowed": agg.get("windows_allowed") or [],
+    }
+
+
+def infer_params(
+    question: str,
+    intent: str,
+    entity: Optional[str] = None,
+    entity_yaml_path: Optional[str] = None,
+    defaults_yaml_path: Optional[str] = None,
+) -> Dict[str, Any]:
     """
     Retorna dict {"agg": ..., "window": ..., "limit": ..., "order": ...}
-    seguindo data/ops/param_inference.yaml. Não usa querystring externa.
+    seguindo data/ops/param_inference.yaml + defaults do YAML da entidade.
+    Não usa querystring externa (compute-on-read).
     """
-    cfg = _load_cfg()
+    # Carrega regras declarativas (param_inference.yaml)
+    cfg_path = Path(defaults_yaml_path) if defaults_yaml_path else _DEFAULTS_PATH
+    cfg = _load_yaml(cfg_path) or {}
     intents = (cfg or {}).get("intents", {})
     icfg = intents.get(intent, {})
     text = _norm(question)
@@ -38,10 +75,18 @@ def infer_params(question: str, intent: str) -> Dict[str, Any]:
     window = icfg.get("default_window")
     limit = None
     order = "desc"
+    # Defaults da entidade (limit/order e windows_allowed adicionais)
+    ent_def = _entity_agg_defaults(entity_yaml_path)
+    ent_windows_allowed = set(str(w) for w in (ent_def.get("windows_allowed") or []))
 
+    # defaults da intent (param_inference.yaml)
+    agg = icfg.get("default_agg")
+    window = icfg.get("default_window")
+    limit: Optional[int] = None
+    order: Optional[str] = "desc"
     # 1) detectar agg por palavras
     agg_kw = icfg.get("agg_keywords") or {}
-    found = False
+
     for agg_name, spec in agg_kw.items():
         if _match_keywords(text, spec.get("include", [])):
             agg = agg_name
@@ -51,7 +96,6 @@ def infer_params(question: str, intent: str) -> Dict[str, Any]:
             elif spec.get("window_defaults"):
                 # pega a primeira janela default declarada
                 window = spec["window_defaults"][0]
-            found = True
             break
 
     # 2) detectar janela (months:X ou count:Y)
@@ -61,22 +105,33 @@ def infer_params(question: str, intent: str) -> Dict[str, Any]:
             if _match_keywords(text, kws):
                 window = f"{kind}:{num}"
 
-    # 3) list → definir limit a partir de "count:Y" quando presente
+    # 3) list → definir limit/order
     if agg == "list":
+        # a) se janela é count:N, usar N como limit
         if (window or "").startswith("count:"):
             try:
                 limit = int((window or "").split(":")[1])
             except Exception:
                 limit = icfg.get("defaults", {}).get("list", {}).get("limit", 10)
+                limit = None
         else:
             # sem count → usa limit default se existir
             limit = icfg.get("defaults", {}).get("list", {}).get("limit", 10)
         order = icfg.get("defaults", {}).get("list", {}).get("order", "desc")
+        # b) fallback para defaults da ENTIDADE (preferência) e, na falta, manter None/desc
+        if limit is None:
+            limit = ent_def.get("list", {}).get("limit")
+        order = ent_def.get("list", {}).get("order", "desc")
 
-    # 4) validar janela contra windows_allowed
-    allowed = set(icfg.get("windows_allowed", []))
-    if allowed and window not in allowed:
-        # fallback nos defaults da intent
+    # 4) validar janela contra windows_allowed (intent + entidade)
+    intent_allowed = set(str(w) for w in (icfg.get("windows_allowed") or []))
+    allowed = (
+        intent_allowed.union(ent_windows_allowed)
+        if intent_allowed or ent_windows_allowed
+        else set()
+    )
+    if allowed and (str(window) not in allowed):
+        # fallback no default da intent
         window = icfg.get("default_window")
 
     out = {"agg": agg, "window": window}
