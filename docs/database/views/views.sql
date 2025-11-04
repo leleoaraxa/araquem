@@ -13,8 +13,9 @@ $$;
 -- =====================================================================
 DROP VIEW IF EXISTS view_fiis_profile CASCADE;
 DROP VIEW IF EXISTS fiis_cadastro CASCADE;
-DROP VIEW IF EXISTS fiis_rankings CASCADE;
+DROP VIEW IF EXISTS fiis_dividendos CASCADE;
 DROP VIEW IF EXISTS fiis_precos CASCADE;
+DROP VIEW IF EXISTS fiis_rankings CASCADE;
 DROP VIEW IF EXISTS view_fiis_financials CASCADE;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info CASCADE;
 
