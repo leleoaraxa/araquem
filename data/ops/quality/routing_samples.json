@@ -530,6 +530,46 @@
       "question": "fundos com maior dividend yield no IFIX (rankings)",
       "expected_intent": "rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "soma de dividendos do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "quanto de dividendos o HGLG11 pagou nos últimos 12 meses?",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "preço médio do HGLG11 nos últimos 6 meses",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "dy médio do HGLG11 no ano",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "contagem de pagamentos do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "dividendos totais do VISC11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "média de preço do KNRI11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "qual o dividend yield médio do HGRU11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_metrics"
     }
   ]
 }
