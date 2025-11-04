@@ -1,16 +1,118 @@
 # app/builder/sql_builder.py
 
 from pathlib import Path
+import datetime as dt
 from typing import Dict, Tuple, List, Any, Optional
 
 from app.utils.filecache import load_yaml_cached
 
 ENTITIES_DIR = Path("data/entities")
+_METRIC_PLACEHOLDERS = {
+    "{{ticker}}": "%(ticker)s",
+    "{{period_start}}": "%(period_start)s",
+    "{{period_end}}": "%(period_end)s",
+    "{{window_months}}": "%(window_months)s",
+}
+_METRIC_COLUMN_TYPES = {
+    "ticker": "text",
+    "metric": "text",
+    "value": "numeric",
+    "window_months": "int",
+    "period_start": "date",
+    "period_end": "date",
+}
 
 
 def _load_entity_yaml(entity: str) -> dict:
     ypath = ENTITIES_DIR / f"{entity}.yaml"
     return load_yaml_cached(str(ypass := ypath)) or {}
+
+
+def _months_from_window(window: Optional[str], default: int = 12) -> int:
+    if not window:
+        return default
+    try:
+        kind, raw = str(window).split(":", 1)
+    except ValueError:
+        return default
+    if kind != "months":
+        return default
+    try:
+        value = int(raw)
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
+def _build_metrics_sql(
+    metrics_cfg: List[Dict[str, Any]],
+    identifiers: Dict[str, Any],
+    agg_params: Dict[str, Any],
+    result_key: str,
+    return_cols: List[str],
+) -> Tuple[str, Dict[str, Any], str, List[str]]:
+    requested = agg_params.get("metric")
+    selected_metrics: List[Dict[str, Any]]
+    if requested:
+        selected_metrics = [m for m in metrics_cfg if m.get("name") == requested]
+        if not selected_metrics:
+            selected_metrics = metrics_cfg
+    else:
+        selected_metrics = metrics_cfg
+
+    ticker = identifiers.get("ticker") if identifiers else None
+    if isinstance(ticker, str):
+        ticker = ticker.upper()
+
+    window_months = agg_params.get("window_months")
+    try:
+        window_months = int(window_months)
+    except Exception:
+        window_months = None
+    if not window_months:
+        window_months = _months_from_window(agg_params.get("window"))
+
+    period_start = agg_params.get("period_start")
+    if isinstance(period_start, dt.date):
+        period_start = period_start.isoformat()
+    period_end = agg_params.get("period_end")
+    if isinstance(period_end, dt.date):
+        period_end = period_end.isoformat()
+    today_iso = dt.date.today().isoformat()
+    if not period_end:
+        period_end = today_iso
+    if not period_start:
+        period_start = today_iso
+
+    params: Dict[str, Any] = {
+        "ticker": ticker,
+        "window_months": window_months,
+        "period_start": period_start,
+        "period_end": period_end,
+    }
+
+    sql_parts: List[str] = []
+    for metric in selected_metrics:
+        raw_sql = (metric.get("sql") or "").strip()
+        if not raw_sql:
+            continue
+        rendered = raw_sql
+        for placeholder, repl in _METRIC_PLACEHOLDERS.items():
+            rendered = rendered.replace(placeholder, repl)
+        rendered = rendered.rstrip(";\n ")
+        sql_parts.append(f"({rendered})")
+
+    if not sql_parts:
+        casts = []
+        for col in return_cols:
+            ctype = _METRIC_COLUMN_TYPES.get(col, "text")
+            casts.append(f"NULL::{ctype} AS {col}")
+        empty_cols = ", ".join(casts)
+        sql = f"SELECT {empty_cols} WHERE 1=0"
+    else:
+        sql = " UNION ALL ".join(sql_parts)
+
+    return sql, params, result_key, return_cols
 
 
 def build_select_for_entity(
@@ -60,6 +162,17 @@ def build_select_for_entity(
 
     def _entity_is_dividendos() -> bool:
         return entity == "fiis_dividendos"
+
+    # Compute-on-read metrics: custom SQLs por métrica
+    if cfg.get("metrics") and (agg_params or {}).get("agg") == "metrics":
+        metrics_cfg = cfg.get("metrics") or []
+        return _build_metrics_sql(
+            metrics_cfg,
+            identifiers or {},
+            agg_params or {},
+            result_key,
+            return_cols,
+        )
 
     # Campos base (p/ manter contract de return_columns mesmo em avg/sum)
     base_cols_sql = ", ".join(return_cols)

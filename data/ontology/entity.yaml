@@ -194,5 +194,38 @@ intents:
         - dividendo do
     entities: [fiis_rankings]
 
+  - name: metricas
+    tokens:
+      include:
+        - soma
+        - dy
+        - "dividend yield"
+        - "dividendo yield"
+        - "preço médio"
+        - "preco medio"
+        - "soma de dividendos"
+        - "soma dividendos"
+        - "soma proventos"
+        - "quantidade de dividendos"
+        - "contagem de dividendos"
+        - "média de preço"
+        - "media de preco"
+      exclude: []
+    phrases:
+      include:
+        - "soma de dividendos"
+        - "soma de dividendos do"
+        - "preço médio"
+        - "preco medio"
+        - "qual o dy"
+        - "qual o dy do"
+        - "dy médio"
+        - "dy médio do"
+        - "dy medio do"
+        - "preço médio do"
+        - "preco medio do"
+      exclude: []
+    entities: [fiis_metrics]
+
 anti_tokens:
   noticias: [noticia, noticias, materia, reportagem, manchete]

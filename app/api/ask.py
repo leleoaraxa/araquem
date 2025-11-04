@@ -18,6 +18,7 @@ from app.observability.metrics import (
     emit_histogram as histogram,
 )
 from app.planner.param_inference import infer_params
+from app.responder import render_answer
 
 router = APIRouter()
 
@@ -90,6 +91,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 "explain_analytics": explain_analytics_payload if explain else None,
                 "cache": {"hit": False, "key": None, "ttl": None},
             },
+            "answer": "",
         }
         return JSONResponse(json_sanitize(payload_out_unr))
 
@@ -123,6 +125,13 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         results.get(result_key, []) if isinstance(results.get(result_key), list) else []
     )
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+    answer = render_answer(
+        entity,
+        rows,
+        identifiers=identifiers,
+        aggregates=agg_params,
+    )
 
     explain_analytics_payload = None
     if explain:
@@ -194,5 +203,6 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             },
             "aggregates": agg_params,
         },
+        "answer": answer,
     }
     return JSONResponse(json_sanitize(payload_out))
