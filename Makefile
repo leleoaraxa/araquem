@@ -1,4 +1,16 @@
-.PHONY: obs-check
+.PHONY: dashboards alerts audit ci obs-check
+
+dashboards:
+	python scripts/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards
+
+alerts:
+	python scripts/gen_alerts.py --config data/ops/observability.yaml
+
+audit:
+	python scripts/obs_audit.py
+
+ci: dashboards alerts audit
+	pytest -q
 
 obs-check:
 	python scripts/obs_audit.py && \
