@@ -1,0 +1,51 @@
+groups:
+  - name: sirios_alerts_api
+    rules:
+      - alert: APIHighLatencyP95
+        expr: job:api_latency_ms:p95 > {{ thresholds.api.slo_ms_p95 }}
+        for: {{ alerts.windows.long }}
+        labels:
+          severity: warning
+        annotations:
+          summary: "API p95 acima do SLO"
+          description: "p95={{ '{{' }} $value {{ '}}' }}ms > SLO={{ thresholds.api.slo_ms_p95 }}ms"
+
+      - alert: APIHighErrorRate
+        expr: 100 * job:api_error_rate:ratio > {{ thresholds.api.error_rate_pct }}
+        for: {{ alerts.windows.long }}
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taxa de erro acima do limite"
+          description: "error%={{ '{{' }} $value {{ '}}' }} > {{ thresholds.api.error_rate_pct }}%"
+
+  - name: sirios_alerts_cache
+    rules:
+      - alert: CacheLowHitRatio
+        expr: job:cache_hit_ratio:pct < {{ thresholds.cache.min_hit_ratio_pct }}
+        for: {{ alerts.windows.long }}
+        labels:
+          severity: warning
+        annotations:
+          summary: "Cache hit ratio baixo"
+          description: "hit%={{ '{{' }} $value {{ '}}' }} < {{ thresholds.cache.min_hit_ratio_pct }}%"
+
+  - name: sirios_alerts_rag
+    rules:
+      - alert: RAGRefreshStale
+        expr: job:rag_last_refresh_age_seconds > {{ thresholds.rag.max_refresh_age_hours }} * 3600
+        for: {{ alerts.windows.long }}
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAG sem refresh recente"
+          description: "Último refresh há {{ '{{' }} $value {{ '}}' }}s (> {{ thresholds.rag.max_refresh_age_hours }}h)"
+
+      - alert: RAGLowDensity
+        expr: job:rag_density_score < {{ thresholds.rag.min_density_docs_per_mb }}
+        for: {{ alerts.windows.long }}
+        labels:
+          severity: warning
+        annotations:
+          summary: "Densidade do RAG baixa"
+          description: "density={{ '{{' }} $value {{ '}}' }} < {{ thresholds.rag.min_density_docs_per_mb }} docs/MB"

@@ -1,0 +1,52 @@
+groups:
+  - name: sirios_alerts_api
+    rules:
+      - alert: APIHighLatencyP95
+        expr: job:api_latency_ms:p95 > 1500
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "API p95 acima do SLO"
+          description: "p95={{ $value }}ms > SLO=1500ms"
+
+      - alert: APIHighErrorRate
+        expr: 100 * job:api_error_rate:ratio > 1.0
+        for: 15m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Taxa de erro acima do limite"
+          description: "error%={{ $value }} > 1.0%"
+
+  - name: sirios_alerts_cache
+    rules:
+      - alert: CacheLowHitRatio
+        expr: job:cache_hit_ratio:pct < 60
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Cache hit ratio baixo"
+          description: "hit%={{ $value }} < 60%"
+
+  - name: sirios_alerts_rag
+    rules:
+      - alert: RAGRefreshStale
+        expr: job:rag_last_refresh_age_seconds > 24 * 3600
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAG sem refresh recente"
+          description: "Último refresh há {{ $value }}s (> 24h)"
+
+      - alert: RAGLowDensity
+        expr: job:rag_density_score < 10
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Densidade do RAG baixa"
+          description: "density={{ $value }} < 10 docs/MB"
+

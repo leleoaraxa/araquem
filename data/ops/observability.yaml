@@ -40,6 +40,14 @@ thresholds:
     min_top1_accuracy_pct: 95
     min_routed_rate_pct: 90
 
+alerts:
+  windows:
+    short: 5m
+    long: 15m
+  receivers:
+    slack_webhook_url: ""
+    email: ""
+
 variables:
   default_job: "araquem-api"
   default_entity: "fiis_cadastro"

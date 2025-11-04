@@ -1,0 +1,36 @@
+groups:
+  - name: sirios_recording_api
+    interval: {{ alerts.windows.short }}
+    rules:
+      - record: job:api_requests_per_s:rate
+        expr: sum(rate({{ bindings.api_requests_total }}[{{ alerts.windows.short }}])) by ({{ labels.job }})
+      - record: job:api_errors_per_s:rate
+        expr: sum(rate({{ bindings.api_errors_total }}[{{ alerts.windows.short }}])) by ({{ labels.job }})
+      - record: job:api_error_rate:ratio
+        expr: clamp_min(job:api_errors_per_s:rate / job:api_requests_per_s:rate, 0)
+
+      # Latência p50/p95/p99 (histogram_quantile)
+      - record: job:api_latency_ms:p50
+        expr: histogram_quantile(0.50, sum(rate({{ bindings.api_latency_bucket }}[{{ alerts.windows.short }}])) by (le, {{ labels.job }}))
+      - record: job:api_latency_ms:p95
+        expr: histogram_quantile(0.95, sum(rate({{ bindings.api_latency_bucket }}[{{ alerts.windows.short }}])) by (le, {{ labels.job }}))
+      - record: job:api_latency_ms:p99
+        expr: histogram_quantile(0.99, sum(rate({{ bindings.api_latency_bucket }}[{{ alerts.windows.short }}])) by (le, {{ labels.job }}))
+
+  - name: sirios_recording_cache
+    interval: {{ alerts.windows.short }}
+    rules:
+      - record: job:cache_hits_per_s:rate
+        expr: sum(rate({{ bindings.cache_hits_total }}[{{ alerts.windows.short }}]))
+      - record: job:cache_misses_per_s:rate
+        expr: sum(rate({{ bindings.cache_misses_total }}[{{ alerts.windows.short }}]))
+      - record: job:cache_hit_ratio:pct
+        expr: 100 * job:cache_hits_per_s:rate / clamp_min(job:cache_hits_per_s:rate + job:cache_misses_per_s:rate, 1)
+
+  - name: sirios_recording_rag
+    interval: {{ alerts.windows.short }}
+    rules:
+      - record: job:rag_last_refresh_age_seconds
+        expr: time() - {{ bindings.rag_index_last_refresh_timestamp }}
+      - record: job:rag_density_score
+        expr: avg({{ bindings.rag_index_density_score }})
