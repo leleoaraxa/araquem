@@ -14,7 +14,7 @@
       "type": "table",
       "title": "Top intents por volume",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "topk(10, sum(rate(api_requests_total{job=~'$job', entity=~'$entity'}[5m])) by (intent))",
@@ -48,7 +48,7 @@
       "type": "stat",
       "title": "Misses / Unroutable (proxy)",
       "gridPos": {"h": 4, "w": 12, "x": 12, "y": 4},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m]))",
@@ -66,7 +66,7 @@
       "type": "timeseries",
       "title": "RAG · Docs e tamanho",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "sum(rag_index_docs_total{store=~'$store'})",
@@ -98,7 +98,7 @@
       "type": "timeseries",
       "title": "RAG · Density score",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "avg(rag_index_density_score{store=~'$store'})",
@@ -123,7 +123,7 @@
       "type": "stat",
       "title": "Horas desde refresh",
       "gridPos": {"h": 4, "w": 6, "x": 0, "y": 16},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "(time() - max(rag_index_last_refresh_timestamp{store=~'$store'})) / 3600",
@@ -148,7 +148,7 @@
       "type": "table",
       "title": "Density por store",
       "gridPos": {"h": 8, "w": 18, "x": 6, "y": 16},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "avg(rag_index_density_score{store=~'$store'}) by (store)",
@@ -172,7 +172,7 @@
       "type": "timeseries",
       "title": "Correlação Latência x Density",
       "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity'}[5m])) by (le, entity))",
@@ -202,7 +202,7 @@
       "type": "stat",
       "title": "RAG · Recall@5",
       "gridPos": {"h": 4, "w": 4, "x": 0, "y": 32},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [{"expr": "rag_eval_recall_at_5", "refId": "A"}],
       "fieldConfig": { "defaults": { "unit": "percentunit" } },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
@@ -213,7 +213,7 @@
       "type": "stat",
       "title": "RAG · Recall@10",
       "gridPos": {"h": 4, "w": 4, "x": 4, "y": 32},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [{"expr": "rag_eval_recall_at_10", "refId": "A"}],
       "fieldConfig": { "defaults": { "unit": "percentunit" } },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
@@ -224,7 +224,7 @@
       "type": "stat",
       "title": "RAG · MRR",
       "gridPos": {"h": 4, "w": 4, "x": 8, "y": 32},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [{"expr": "rag_eval_mrr", "refId": "A"}],
       "fieldConfig": { "defaults": { "unit": "none" } },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
@@ -235,7 +235,7 @@
       "type": "stat",
       "title": "RAG · nDCG@10",
       "gridPos": {"h": 4, "w": 4, "x": 12, "y": 32},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [{"expr": "rag_eval_ndcg_at_10", "refId": "A"}],
       "fieldConfig": { "defaults": { "unit": "none" } },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
@@ -246,7 +246,7 @@
       "type": "stat",
       "title": "RAG · Last Eval (epoch)",
       "gridPos": {"h": 4, "w": 8, "x": 16, "y": 32},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [{"expr": "rag_eval_last_run_timestamp", "refId": "A"}],
       "fieldConfig": { "defaults": { "unit": "s" } },
       "options": { "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false } },
@@ -258,7 +258,7 @@
       {
         "name": "job",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
         "query": "label_values(api_requests_total, job)",
         "definition": "label_values(api_requests_total, job)",
         "includeAll": true,
@@ -272,7 +272,7 @@
       {
         "name": "entity",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
         "query": "label_values(api_requests_total, entity)",
         "definition": "label_values(api_requests_total, entity)",
         "includeAll": true,
@@ -286,7 +286,7 @@
       {
         "name": "store",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
         "query": "label_values(rag_index_docs_total, store)",
         "definition": "label_values(rag_index_docs_total, store)",
         "includeAll": true,

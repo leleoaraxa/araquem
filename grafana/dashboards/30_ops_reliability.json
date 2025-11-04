@@ -14,7 +14,7 @@
       "type": "timeseries",
       "title": "Cache hits vs misses",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "sum(rate(cache_hits_total{entity=~'$entity'}[5m]))",
@@ -36,7 +36,7 @@
       "type": "stat",
       "title": "Cache hit ratio",
       "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "100 * sum(rate(cache_hits_total{entity=~'$entity'}[5m])) / (sum(rate(cache_hits_total{entity=~'$entity'}[5m])) + sum(rate(cache_misses_total{entity=~'$entity'}[5m])))",
@@ -61,7 +61,7 @@
       "type": "table",
       "title": "Cache por entidade",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "sum(rate(cache_hits_total{entity=~'$entity'}[5m])) by (entity)",
@@ -94,7 +94,7 @@
       "type": "stat",
       "title": "Top1 accuracy",
       "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "avg(quality_top1_accuracy) * 100",
@@ -119,7 +119,7 @@
       "type": "stat",
       "title": "Routed rate",
       "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "avg(quality_routed_rate) * 100",
@@ -144,7 +144,7 @@
       "type": "timeseries",
       "title": "Health · up",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
-      "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
       "targets": [
         {
           "expr": "avg(up{job=~'$job'})",
@@ -181,7 +181,7 @@
       {
         "name": "job",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
         "query": "label_values(api_requests_total, job)",
         "definition": "label_values(api_requests_total, job)",
         "includeAll": true,
@@ -195,7 +195,7 @@
       {
         "name": "entity",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "PBFA97CFB590B2093"},
+        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
         "query": "label_values(cache_hits_total, entity)",
         "definition": "label_values(cache_hits_total, entity)",
         "includeAll": true,

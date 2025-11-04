@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-04T18:44:12Z",
+  "generated_at": "2025-11-04T19:11:02Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -100,7 +100,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "6a537d0428ff1a00d9fb56d7d34905c39fe1395831bf6ad57e20712b1a8cfd82"
+      "sha_all": "cb648bbfa43470e604411cfaeaa0169c208b506084562f4d971f6da86cbe16f7"
     },
     {
       "id": "ops-observability",
@@ -111,7 +111,7 @@
         "tracing"
       ],
       "chunks": 4,
-      "sha_all": "12abdecacda44a96806e7851cc64f2ba994e31bcc52d221fc2d78af6762e921e"
+      "sha_all": "7eb1a125aeda0a91dffa7f372694bbe01665d47f4481c52a10743cfd22dffbe5"
     },
     {
       "id": "golden-m65-quality-yaml",
@@ -190,5 +190,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762281901
+  "last_refresh_epoch": 1762283509
 }
