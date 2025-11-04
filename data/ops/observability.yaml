@@ -1,4 +1,51 @@
-version: 1
+version: 2
+datasource: prometheus
+
+bindings:
+  api_requests_total: "api_requests_total"
+  api_latency_bucket: "api_latency_ms_bucket"
+  api_latency_sum: "api_latency_ms_sum"
+  api_latency_count: "api_latency_ms_count"
+  api_errors_total: "api_errors_total"
+  cache_hits_total: "cache_hits_total"
+  cache_misses_total: "cache_misses_total"
+  rag_index_size_total: "rag_index_size_total"
+  rag_index_docs_total: "rag_index_docs_total"
+  rag_index_last_refresh_timestamp: "rag_index_last_refresh_timestamp"
+  rag_index_density_score: "rag_index_density_score"
+  quality_top1_accuracy: "quality_top1_accuracy"
+  quality_routed_rate: "quality_routed_rate"
+
+labels:
+  job: "job"
+  instance: "instance"
+  entity: "entity"
+  intent: "intent"
+  route: "route"
+  result_key: "result_key"
+  status: "status"
+  private: "private"
+  store: "store"
+
+thresholds:
+  api:
+    slo_ms_p95: 1500
+    error_rate_pct: 1.0
+  rag:
+    max_refresh_age_hours: 24
+    min_density_docs_per_mb: 10
+  cache:
+    min_hit_ratio_pct: 60
+  quality:
+    min_top1_accuracy_pct: 95
+    min_routed_rate_pct: 90
+
+variables:
+  default_job: "araquem-api"
+  default_entity: "fiis_cadastro"
+  default_intent: "cadastro"
+  default_store: "embeddings.jsonl"
+
 services:
   gateway:
     metrics:
@@ -70,6 +117,7 @@ services:
     tracing:
       enabled: true
       key_handling: hash_sha256
+
 global:
   grafana:
     dashboards:
