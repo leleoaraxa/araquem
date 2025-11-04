@@ -1,5 +1,6 @@
 version: 2
 datasource: prometheus
+datasource_uid: PBFA97CFB590B2093
 
 bindings:
   api_requests_total: "api_requests_total"

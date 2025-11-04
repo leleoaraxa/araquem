@@ -16,7 +16,7 @@
       "type": "stat",
       "title": "Tráfego (req/s)",
       "gridPos": {"h": 4, "w": 4, "x": 0, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {
           "expr": "sum(rate({{ bindings.api_requests_total }}{{ promql_filter(['job','entity','intent']) }}[5m]))",
@@ -37,7 +37,7 @@
       "type": "stat",
       "title": "Erros (%)",
       "gridPos": {"h": 4, "w": 4, "x": 4, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {
           "expr": "100 * sum(rate({{ bindings.api_errors_total }}{{ promql_filter(['job','entity','intent']) }}[5m])) / sum(rate({{ bindings.api_requests_total }}{{ promql_filter(['job','entity','intent']) }}[5m]))",
@@ -64,7 +64,7 @@
       "type": "stat",
       "title": "Latência p95 (ms)",
       "gridPos": {"h": 4, "w": 4, "x": 8, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {
           "expr": "histogram_quantile(0.95, sum(rate({{ bindings.api_latency_bucket }}{{ promql_filter(['job','entity','intent']) }}[5m])) by (le)) * 1000",
@@ -91,7 +91,7 @@
       "type": "stat",
       "title": "Cache hit ratio (%)",
       "gridPos": {"h": 4, "w": 4, "x": 12, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {
           "expr": "100 * sum(rate({{ bindings.cache_hits_total }}{{ promql_filter(['entity']) }}[5m])) / (sum(rate({{ bindings.cache_hits_total }}{{ promql_filter(['entity']) }}[5m])) + sum(rate({{ bindings.cache_misses_total }}{{ promql_filter(['entity']) }}[5m])))",
@@ -118,7 +118,7 @@
       "type": "stat",
       "title": "RAG density",
       "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "avg({{ bindings.rag_index_density_score }}{{ promql_filter(['store']) }})","refId": "A"}],
       "fieldConfig": {
         "defaults": {
@@ -140,7 +140,7 @@
       "type": "stat",
       "title": "Horas desde último refresh RAG",
       "gridPos": {"h": 4, "w": 4, "x": 20, "y": 0},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "(time() - max({{ bindings.rag_index_last_refresh_timestamp }}{{ promql_filter(['store']) }})) / 3600","refId": "A"}],
       "fieldConfig": {
         "defaults": {
@@ -162,7 +162,7 @@
       "type": "timeseries",
       "title": "Throughput por status",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {
           "expr": "sum(rate({{ bindings.api_requests_total }}{{ promql_filter(['job','entity','intent']) }}[5m])) by ({{ labels.status }})",
@@ -178,7 +178,7 @@
       "type": "timeseries",
       "title": "Latência p50/p95/p99",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {"expr": "histogram_quantile(0.50, sum(rate({{ bindings.api_latency_bucket }}{{ promql_filter(['job','entity','intent']) }}[5m])) by (le)) * 1000","refId": "A","legendFormat": "p50"},
         {"expr": "histogram_quantile(0.95, sum(rate({{ bindings.api_latency_bucket }}{{ promql_filter(['job','entity','intent']) }}[5m])) by (le)) * 1000","refId": "B","legendFormat": "p95"},
@@ -204,7 +204,7 @@
       "type": "table",
       "title": "Top entidades por tráfego",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {"expr": "topk(10, sum(rate({{ bindings.api_requests_total }}{{ promql_filter(['job','intent']) }}[15m])) by ({{ labels.entity }}))","format": "table","refId": "A"}
       ],
@@ -216,7 +216,7 @@
       "type": "table",
       "title": "Top intents por erro",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [
         {"expr": "topk(10, sum(rate({{ bindings.api_errors_total }}{{ promql_filter(['job','entity']) }}[15m])) by ({{ labels.intent }}))","format": "table","refId": "A"}
       ],
@@ -228,7 +228,7 @@
       "type": "stat",
       "title": "RAG Recall@5",
       "gridPos": {"h": 4, "w": 4, "x": 0, "y": 20},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "rag_eval_recall_at_5","refId": "A"}],
       "description": "Binding: rag_eval_recall_at_5 | Threshold ref: {{ thresholds.rag_eval.min_recall_at_10_pct }}",
       "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
@@ -238,7 +238,7 @@
       "type": "stat",
       "title": "RAG Recall@10",
       "gridPos": {"h": 4, "w": 4, "x": 4, "y": 20},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "rag_eval_recall_at_10","refId": "A"}],
       "description": "Binding: rag_eval_recall_at_10 | Threshold ref: {{ thresholds.rag_eval.min_recall_at_10_pct }}",
       "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
@@ -248,7 +248,7 @@
       "type": "stat",
       "title": "RAG MRR",
       "gridPos": {"h": 4, "w": 4, "x": 8, "y": 20},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "rag_eval_mrr","refId": "A"}],
       "description": "Binding: rag_eval_mrr",
       "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
@@ -258,7 +258,7 @@
       "type": "stat",
       "title": "RAG nDCG@10",
       "gridPos": {"h": 4, "w": 4, "x": 12, "y": 20},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "rag_eval_ndcg_at_10","refId": "A"}],
       "description": "Binding: rag_eval_ndcg_at_10 | Threshold ref: {{ thresholds.rag_eval.min_ndcg_at_10 }}",
       "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
@@ -268,7 +268,7 @@
       "type": "stat",
       "title": "RAG Last Run (epoch)",
       "gridPos": {"h": 4, "w": 4, "x": 16, "y": 20},
-      "datasource": {"type": "{{ datasource }}", "uid": "-"},
+      "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
       "targets": [{"expr": "rag_eval_last_run_timestamp","refId": "A"}],
       "description": "Binding: rag_eval_last_run_timestamp",
       "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
@@ -280,7 +280,7 @@
         "name": "job",
         "label": "Job",
         "type": "query",
-        "datasource": {"type": "{{ datasource }}", "uid": "-"},
+        "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
         "definition": "label_values({{ bindings.api_requests_total }}, {{ labels.job }})",
         "query": "label_values({{ bindings.api_requests_total }}, {{ labels.job }})",
         "refresh": 1,
@@ -292,7 +292,7 @@
         "name": "entity",
         "label": "Entity",
         "type": "query",
-        "datasource": {"type": "{{ datasource }}", "uid": "-"},
+        "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
         "definition": "label_values({{ bindings.api_requests_total }}, {{ labels.entity }})",
         "query": "label_values({{ bindings.api_requests_total }}, {{ labels.entity }})",
         "refresh": 1,
@@ -304,7 +304,7 @@
         "name": "intent",
         "label": "Intent",
         "type": "query",
-        "datasource": {"type": "{{ datasource }}", "uid": "-"},
+        "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
         "definition": "label_values({{ bindings.api_requests_total }}, {{ labels.intent }})",
         "query": "label_values({{ bindings.api_requests_total }}, {{ labels.intent }})",
         "refresh": 1,
@@ -316,7 +316,7 @@
         "name": "store",
         "label": "Store",
         "type": "query",
-        "datasource": {"type": "{{ datasource }}", "uid": "-"},
+        "datasource": {"type": "{{ datasource }}", "uid": "{{ datasource_uid }}"},
         "definition": "label_values({{ bindings.rag_index_docs_total }}, {{ labels.store }})",
         "query": "label_values({{ bindings.rag_index_docs_total }}, {{ labels.store }})",
         "refresh": 1,
