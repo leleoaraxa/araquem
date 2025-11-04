@@ -115,7 +115,8 @@ araquem/
     "planner_entity": "...",
     "planner_score": N,
     "rows_total": N,
-    "elapsed_ms": N
+    "elapsed_ms": N,
+    "aggregates": { ... }   // quando houver (compute-on-read)
   }
 }
 ```
@@ -213,18 +214,27 @@ mkdir -p araquem/{app,data/{entities,ontology,concepts,embeddings},docs/dev,graf
 ```
 2. **Variáveis `.env` (dev):**
 ```
-DATABASE_URL=postgresql://user:pass@localhost:5432/edge_db
-REDIS_URL=redis://localhost:6379/0
-OLLAMA_URL=http://localhost:11434
-PROMETHEUS_URL=http://localhost:9090
-GRAFANA_URL=http://localhost:3000
+DATABASE_URL=postgresql://edge_user:senha@sirios_db:5432/edge_db
+REDIS_URL=redis://redis:6379/0
+OLLAMA_URL=http://ollama:11434
+PROMETHEUS_URL=http://prometheus:9090
+GRAFANA_URL=http://grafana:3000
+BUILD_ID=dev-20251030
+LOG_LEVEL=INFO
+ONTOLOGY_PATH=data/ontology/entity.yaml
+CACHE_OPS_TOKEN=araquem-secret-bust-2025
+QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+OTEL_SERVICE_NAME=api
+OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4317
+OBSERVABILITY_CONFIG=data/ops/observability.yaml
+SIRIOS_METRICS_STRICT=false
 ```
 3. **Bootstrap git:**
 ```
 git init
 git branch -M main
 git add .
-git commit -m "chore: bootstrap Araquem (Guardrails v2.0)"
+git commit -m "chore: bootstrap Araquem (Guardrails v2.1.1)"
 git remote add origin <SEU_REMOTE>
 git push -u origin main
 ```
