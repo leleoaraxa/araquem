@@ -97,6 +97,14 @@ RAG_INDEX_DENSITY_SCORE = Gauge(
     "Docs per MB for the RAG embeddings index",
 )
 
+RAG_EVAL_RECALL_AT_5 = Gauge("rag_eval_recall_at_5", "RAG retrieval recall@5")
+RAG_EVAL_RECALL_AT_10 = Gauge("rag_eval_recall_at_10", "RAG retrieval recall@10")
+RAG_EVAL_MRR = Gauge("rag_eval_mrr", "RAG retrieval mean reciprocal rank")
+RAG_EVAL_NDCG_AT_10 = Gauge("rag_eval_ndcg_at_10", "RAG retrieval nDCG@10")
+RAG_EVAL_LAST_RUN_TS = Gauge(
+    "rag_eval_last_run_timestamp", "Epoch seconds of last retrieval QA run"
+)
+
 
 def _validate_and_normalize(name: str, labels: Mapping[str, Any]) -> Mapping[str, str]:
     spec = _METRICS_SCHEMA.get(name)
@@ -228,3 +236,22 @@ def register_rag_index_metrics(metrics: Mapping[str, Any]) -> None:
     RAG_INDEX_DOCS_TOTAL.labels(store=store).set(float(metrics.get("docs_total", 0)))
     RAG_INDEX_LAST_REFRESH_TS.set(float(metrics.get("last_refresh_ts", 0)))
     RAG_INDEX_DENSITY_SCORE.set(float(metrics.get("density_score", 0.0)))
+
+
+def register_rag_eval_metrics(payload: dict) -> None:
+    """
+    payload = {
+      "recall_at_5": float,
+      "recall_at_10": float,
+      "mrr": float,
+      "ndcg_at_10": float,
+      "ts": int (epoch)  # opcional; se ausente, usa time.time()
+    }
+    """
+
+    ts = int(payload.get("ts") or time.time())
+    RAG_EVAL_RECALL_AT_5.set(float(payload["recall_at_5"]))
+    RAG_EVAL_RECALL_AT_10.set(float(payload["recall_at_10"]))
+    RAG_EVAL_MRR.set(float(payload["mrr"]))
+    RAG_EVAL_NDCG_AT_10.set(float(payload["ndcg_at_10"]))
+    RAG_EVAL_LAST_RUN_TS.set(ts)
