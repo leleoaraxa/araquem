@@ -1,0 +1,359 @@
+{
+  "title": "10 · API SLO & Pipeline",
+  "uid": "api-slo-pipeline",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "30s",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "p95 Latência (ms)",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) by (le)) * 1000",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green"},
+              {"color": "red", "value": 1500}
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "p99 Latência (ms)",
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) by (le)) * 1000",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ms",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green"},
+              {"color": "red", "value": 1800.0}
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Erro (%)",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "100 * sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) / sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval]))",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green"},
+              {"color": "red", "value": 1.0}
+            ]
+          }
+        }
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Throughput (req/s)",
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval]))",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"unit": "req/s"}
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": ["lastNotNull"],
+          "fields": "",
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Distribuição de latência",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
+          "legendFormat": "p50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
+          "legendFormat": "p95",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
+          "legendFormat": "p99",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"unit": "ms"}
+      },
+      "options": {
+        "legend": {"showLegend": true},
+        "tooltip": {"mode": "multi"}
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Throughput por rota",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (route)",
+          "legendFormat": "{{route}}",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"unit": "req/s"}
+      },
+      "options": {
+        "legend": {"showLegend": true},
+        "tooltip": {"mode": "multi"}
+      }
+    },
+    {
+      "id": 7,
+      "type": "bargauge",
+      "title": "Erros por status",
+      "gridPos": {"h": 8, "w": 6, "x": 0, "y": 12},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (status)",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "req/s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green"},
+              {"color": "red", "value": 0.01 }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "bargauge",
+      "title": "Erros por código",
+      "gridPos": {"h": 8, "w": 6, "x": 6, "y": 12},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (code)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "type": "table",
+      "title": "Pipeline · Latência média",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_latency_ms_sum{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) / sum(rate(api_latency_ms_count{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m]))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "Value": 1
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "heatmap",
+      "title": "p95 por entidade vs intent",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job'}[5m])) by (le, entity, intent)) * 1000",
+          "format": "heatmap",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "table",
+      "title": "Rows por entidade (proxy)",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_latency_ms_count{job=~'$job', entity=~'$entity'}[5m])) by (entity)",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": "text",
+      "title": "Tracing (Tempo)",
+      "gridPos": {"h": 6, "w": 24, "x": 0, "y": 28},
+      "options": {
+        "content": "[Abrir traces no Tempo](d/tempo/tempo?var-service.name=job&var-operation=%2Fask)",
+        "mode": "markdown"
+      }
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, job)",
+        "definition": "label_values(api_requests_total, job)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "araquem-api",
+          "value": "araquem-api"
+        }
+      },
+      {
+        "name": "entity",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, entity)",
+        "definition": "label_values(api_requests_total, entity)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "fiis_cadastro",
+          "value": "fiis_cadastro"
+        }
+      },
+      {
+        "name": "intent",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, intent)",
+        "definition": "label_values(api_requests_total, intent)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "cadastro",
+          "value": "cadastro"
+        }
+      }
+    ]
+  },
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {"type": "-- Grafana --", "uid": "grafana"},
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  }
+}
+

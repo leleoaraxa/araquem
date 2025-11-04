@@ -1,0 +1,10 @@
+{
+  "name": "Sirios Ops",
+  "interval": "5m",
+  "items": [
+    {"type": "dashboard_by_uid", "value": "sirios-overview"},
+    {"type": "dashboard_by_uid", "value": "api-slo-pipeline"},
+    {"type": "dashboard_by_uid", "value": "planner-rag-intelligence"},
+    {"type": "dashboard_by_uid", "value": "ops-reliability"}
+  ]
+}

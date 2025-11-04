@@ -1,0 +1,212 @@
+{
+  "title": "30 · Ops Reliability",
+  "uid": "ops-reliability",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "1m",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Cache hits vs misses",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(cache_hits_total{entity=~'$entity'}[5m]))",
+          "legendFormat": "Hits",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(cache_misses_total{entity=~'$entity'}[5m]))",
+          "legendFormat": "Misses",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"unit": "req/s"}
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Cache hit ratio",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "100 * sum(rate(cache_hits_total{entity=~'$entity'}[5m])) / (sum(rate(cache_hits_total{entity=~'$entity'}[5m])) + sum(rate(cache_misses_total{entity=~'$entity'}[5m])))",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red"},
+              {"color": "green", "value": 60}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "type": "table",
+      "title": "Cache por entidade",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(cache_hits_total{entity=~'$entity'}[5m])) by (entity)",
+          "format": "table",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(cache_misses_total{entity=~'$entity'}[5m])) by (entity)",
+          "format": "table",
+          "refId": "B"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Top1 accuracy",
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "avg(quality_top1_accuracy) * 100",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red"},
+              {"color": "green", "value": 95}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Routed rate",
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "avg(quality_routed_rate) * 100",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red"},
+              {"color": "green", "value": 90}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Health · up",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "avg(up{job=~'$job'})",
+          "legendFormat": "up",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red"},
+              {"color": "green", "value": 0.5}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "text",
+      "title": "Cron jobs",
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 12},
+      "options": {
+        "content": "Adicione métricas de cron (`quality-cron`, `rag-refresh-cron`) no YAML para preencher este painel.",
+        "mode": "markdown"
+      }
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, job)",
+        "definition": "label_values(api_requests_total, job)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "araquem-api",
+          "value": "araquem-api"
+        }
+      },
+      {
+        "name": "entity",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(cache_hits_total, entity)",
+        "definition": "label_values(cache_hits_total, entity)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "fiis_cadastro",
+          "value": "fiis_cadastro"
+        }
+      }
+    ]
+  }
+}
+

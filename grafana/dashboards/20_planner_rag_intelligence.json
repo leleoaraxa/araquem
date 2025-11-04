@@ -1,0 +1,248 @@
+{
+  "title": "20 · Planner & RAG Intelligence",
+  "uid": "planner-rag-intelligence",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "1m",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "table",
+      "title": "Top intents por volume",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "topk(10, sum(rate(api_requests_total{job=~'$job', entity=~'$entity'}[5m])) by (intent))",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "title": "Planner score",
+      "gridPos": {"h": 4, "w": 12, "x": 12, "y": 0},
+      "options": {
+        "content": "Planner score não instrumentado — adicione bindings em `data/ops/observability.yaml`.",
+        "mode": "markdown"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Misses / Unroutable (proxy)",
+      "gridPos": {"h": 4, "w": 12, "x": 12, "y": 4},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m]))",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "req/s"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "RAG · Docs e tamanho",
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "sum(rag_index_docs_total{store=~'$store'})",
+          "legendFormat": "Docs",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rag_index_size_total{store=~'$store'})",
+          "legendFormat": "Tamanho (MB)",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Tamanho (MB)"},
+            "properties": [
+              {"id": "unit", "value": "decmbytes"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "RAG · Density score",
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "avg(rag_index_density_score{store=~'$store'})",
+          "legendFormat": "Density",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "red"},
+              {"color": "green", "value": 10}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Horas desde refresh",
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 16},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "(time() - max(rag_index_last_refresh_timestamp{store=~'$store'})) / 3600",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "h",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"color": "green"},
+              {"color": "red", "value": 24}
+            ]
+          }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "type": "table",
+      "title": "Density por store",
+      "gridPos": {"h": 8, "w": 18, "x": 6, "y": 16},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "avg(rag_index_density_score{store=~'$store'}) by (store)",
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "Correlação Latência x Density",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity'}[5m])) by (le, entity))",
+          "legendFormat": "p95 {{entity}}",
+          "refId": "A"
+        },
+        {
+          "expr": "avg(rag_index_density_score{store=~'$store'})",
+          "legendFormat": "Density média",
+          "refId": "B"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {"unit": "ms"},
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "Density média"},
+            "properties": [
+              {"id": "unit", "value": "none"}
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "job",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, job)",
+        "definition": "label_values(api_requests_total, job)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "araquem-api",
+          "value": "araquem-api"
+        }
+      },
+      {
+        "name": "entity",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(api_requests_total, entity)",
+        "definition": "label_values(api_requests_total, entity)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "fiis_cadastro",
+          "value": "fiis_cadastro"
+        }
+      },
+      {
+        "name": "store",
+        "type": "query",
+        "datasource": {"type": "prometheus", "uid": "-"},
+        "query": "label_values(rag_index_docs_total, store)",
+        "definition": "label_values(rag_index_docs_total, store)",
+        "includeAll": true,
+        "refresh": 1,
+        "current": {
+          "selected": false,
+          "text": "embeddings.jsonl",
+          "value": "embeddings.jsonl"
+        }
+      }
+    ]
+  }
+}
+
