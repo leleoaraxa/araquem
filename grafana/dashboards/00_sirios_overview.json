@@ -26,23 +26,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "req/s",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {"color": "green"}
-            ]
-          }
+          "thresholds": {"mode": "absolute","steps": [{"color": "green"}]}
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 2,
@@ -69,14 +57,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 3,
@@ -103,14 +84,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 4,
@@ -137,14 +111,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 5,
@@ -152,12 +119,7 @@
       "title": "RAG density",
       "gridPos": {"h": 4, "w": 4, "x": 16, "y": 0},
       "datasource": {"type": "prometheus", "uid": "-"},
-      "targets": [
-        {
-          "expr": "avg(rag_index_density_score{store=~'$store'})",
-          "refId": "A"
-        }
-      ],
+      "targets": [{"expr": "avg(rag_index_density_score{store=~'$store'})","refId": "A"}],
       "fieldConfig": {
         "defaults": {
           "unit": "none",
@@ -171,14 +133,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 6,
@@ -186,12 +141,7 @@
       "title": "Horas desde último refresh RAG",
       "gridPos": {"h": 4, "w": 4, "x": 20, "y": 0},
       "datasource": {"type": "prometheus", "uid": "-"},
-      "targets": [
-        {
-          "expr": "(time() - max(rag_index_last_refresh_timestamp{store=~'$store'})) / 3600",
-          "refId": "A"
-        }
-      ],
+      "targets": [{"expr": "(time() - max(rag_index_last_refresh_timestamp{store=~'$store'})) / 3600","refId": "A"}],
       "fieldConfig": {
         "defaults": {
           "unit": "h",
@@ -205,14 +155,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "reduceOptions": {
-          "calcs": ["lastNotNull"],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "horizontal"
-      }
+      "options": {"reduceOptions": {"calcs": ["lastNotNull"],"fields": "","values": false},"orientation": "horizontal"}
     },
     {
       "id": 7,
@@ -227,14 +170,8 @@
           "refId": "A"
         }
       ],
-      "options": {
-        "legend": {"showLegend": true},
-        "tooltip": {"mode": "multi"}
-      },
-      "fieldConfig": {
-        "defaults": {"unit": "req/s"},
-        "overrides": []
-      }
+      "options": {"legend": {"showLegend": true},"tooltip": {"mode": "multi"}},
+      "fieldConfig": {"defaults": {"unit": "req/s"},"overrides": []}
     },
     {
       "id": 8,
@@ -243,21 +180,9 @@
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
       "datasource": {"type": "prometheus", "uid": "-"},
       "targets": [
-        {
-          "expr": "histogram_quantile(0.50, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
-          "refId": "A",
-          "legendFormat": "p50"
-        },
-        {
-          "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
-          "refId": "B",
-          "legendFormat": "p95"
-        },
-        {
-          "expr": "histogram_quantile(0.99, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
-          "refId": "C",
-          "legendFormat": "p99"
-        }
+        {"expr": "histogram_quantile(0.50, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000","refId": "A","legendFormat": "p50"},
+        {"expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000","refId": "B","legendFormat": "p95"},
+        {"expr": "histogram_quantile(0.99, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000","refId": "C","legendFormat": "p99"}
       ],
       "fieldConfig": {
         "defaults": {
@@ -272,10 +197,7 @@
         },
         "overrides": []
       },
-      "options": {
-        "legend": {"showLegend": true},
-        "tooltip": {"mode": "multi"}
-      }
+      "options": {"legend": {"showLegend": true},"tooltip": {"mode": "multi"}}
     },
     {
       "id": 9,
@@ -284,25 +206,10 @@
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 12},
       "datasource": {"type": "prometheus", "uid": "-"},
       "targets": [
-        {
-          "expr": "topk(10, sum(rate(api_requests_total{job=~'$job', intent=~'$intent'}[15m])) by (entity))",
-          "format": "table",
-          "refId": "A"
-        }
+        {"expr": "topk(10, sum(rate(api_requests_total{job=~'$job', intent=~'$intent'}[15m])) by (entity))","format": "table","refId": "A"}
       ],
-      "options": {
-        "showHeader": true
-      },
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            }
-          }
-        }
-      ]
+      "options": {"showHeader": true},
+      "transformations": [{"id": "organize","options": {"excludeByName": {"Time": true}}}]
     },
     {
       "id": 10,
@@ -311,25 +218,60 @@
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
       "datasource": {"type": "prometheus", "uid": "-"},
       "targets": [
-        {
-          "expr": "topk(10, sum(rate(api_errors_total{job=~'$job', entity=~'$entity'}[15m])) by (intent))",
-          "format": "table",
-          "refId": "A"
-        }
+        {"expr": "topk(10, sum(rate(api_errors_total{job=~'$job', entity=~'$entity'}[15m])) by (intent))","format": "table","refId": "A"}
       ],
-      "options": {
-        "showHeader": true
-      },
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            }
-          }
-        }
-      ]
+      "options": {"showHeader": true},
+      "transformations": [{"id": "organize","options": {"excludeByName": {"Time": true}}}]
+    },
+    {
+      "id": 11,
+      "type": "stat",
+      "title": "RAG Recall@5",
+      "gridPos": {"h": 4, "w": 4, "x": 0, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [{"expr": "rag_eval_recall_at_5","refId": "A"}],
+      "description": "Binding: rag_eval_recall_at_5 | Threshold ref: 70",
+      "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
+    },
+    {
+      "id": 12,
+      "type": "stat",
+      "title": "RAG Recall@10",
+      "gridPos": {"h": 4, "w": 4, "x": 4, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [{"expr": "rag_eval_recall_at_10","refId": "A"}],
+      "description": "Binding: rag_eval_recall_at_10 | Threshold ref: 70",
+      "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
+    },
+    {
+      "id": 13,
+      "type": "stat",
+      "title": "RAG MRR",
+      "gridPos": {"h": 4, "w": 4, "x": 8, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [{"expr": "rag_eval_mrr","refId": "A"}],
+      "description": "Binding: rag_eval_mrr",
+      "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
+    },
+    {
+      "id": 14,
+      "type": "stat",
+      "title": "RAG nDCG@10",
+      "gridPos": {"h": 4, "w": 4, "x": 12, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [{"expr": "rag_eval_ndcg_at_10","refId": "A"}],
+      "description": "Binding: rag_eval_ndcg_at_10 | Threshold ref: 0.6",
+      "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
+    },
+    {
+      "id": 15,
+      "type": "stat",
+      "title": "RAG Last Run (epoch)",
+      "gridPos": {"h": 4, "w": 4, "x": 16, "y": 20},
+      "datasource": {"type": "prometheus", "uid": "-"},
+      "targets": [{"expr": "rag_eval_last_run_timestamp","refId": "A"}],
+      "description": "Binding: rag_eval_last_run_timestamp",
+      "options": {"reduceOptions": {"calcs": ["last"],"fields": "","values": false}}
     }
   ],
   "templating": {
@@ -344,11 +286,7 @@
         "refresh": 1,
         "includeAll": true,
         "multi": false,
-        "current": {
-          "selected": false,
-          "text": "araquem-api",
-          "value": "araquem-api"
-        }
+        "current": {"selected": false,"text": "araquem-api","value": "araquem-api"}
       },
       {
         "name": "entity",
@@ -360,11 +298,7 @@
         "refresh": 1,
         "includeAll": true,
         "multi": false,
-        "current": {
-          "selected": false,
-          "text": "fiis_cadastro",
-          "value": "fiis_cadastro"
-        }
+        "current": {"selected": false,"text": "fiis_cadastro","value": "fiis_cadastro"}
       },
       {
         "name": "intent",
@@ -376,11 +310,7 @@
         "refresh": 1,
         "includeAll": true,
         "multi": false,
-        "current": {
-          "selected": false,
-          "text": "cadastro",
-          "value": "cadastro"
-        }
+        "current": {"selected": false,"text": "cadastro","value": "cadastro"}
       },
       {
         "name": "store",
@@ -392,11 +322,7 @@
         "refresh": 1,
         "includeAll": true,
         "multi": false,
-        "current": {
-          "selected": false,
-          "text": "embeddings.jsonl",
-          "value": "embeddings.jsonl"
-        }
+        "current": {"selected": false,"text": "embeddings.jsonl","value": "embeddings.jsonl"}
       },
       {
         "name": "interval",
