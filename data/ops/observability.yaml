@@ -1,6 +1,6 @@
 version: 2
 datasource: prometheus
-datasource_uid: araquem-prom
+datasource_uid: grafana
 
 bindings:
   api_requests_total: "api_requests_total"
@@ -21,6 +21,8 @@ bindings:
   rag_eval_last_run_timestamp: "rag_eval_last_run_timestamp"
   quality_top1_accuracy: "quality_top1_accuracy"
   quality_routed_rate: "quality_routed_rate"
+  cron_last_run_timestamp: "cron_last_run_timestamp"
+  cron_last_status: "cron_last_status"
 
 labels:
   job: "job"
@@ -32,6 +34,7 @@ labels:
   status: "status"
   private: "private"
   store: "store"
+  cron: "cron"
 
 thresholds:
   api:
