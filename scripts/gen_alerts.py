@@ -80,7 +80,9 @@ def render_without_jinja(template_path: Path, cfg: Dict[str, Any]) -> str:
                     try:
                         rendered_expr = str(eval(expr, {}, context))
                     except Exception as exc:  # pragma: no cover - error path
-                        raise RuntimeError(f"Failed to render expression '{expr}': {exc}") from exc
+                        raise RuntimeError(
+                            f"Failed to render expression '{expr}': {exc}"
+                        ) from exc
                     result.append(rendered_expr)
                     i = j + 2
                     break
