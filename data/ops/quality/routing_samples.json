@@ -490,6 +490,46 @@
       "question": "maiores liquidezes do IFIX (rankings)",
       "expected_intent": "rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "qual é o CNPJ do HCTR11 (cadastro)",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site de RI oficial do VISC11 (cadastro)",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "valor de fechamento do VISC11 ontem (preços)",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "preço por cota do MXRF11 hoje (preços)",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "dividendo anunciado pelo HCTR11 em 2024-08 (dividendos)",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "quanto o MXRF11 distribuiu em 2024-07 (dividendos)",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "top 5 FIIs por liquidez média 3m (rankings)",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "fundos com maior dividend yield no IFIX (rankings)",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
     }
   ]
 }
