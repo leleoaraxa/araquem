@@ -4,7 +4,7 @@
 3. `docker compose up -d api grafana` → cheque `curl -f localhost:8000/healthz` e `/metrics`.【F:docker-compose.yml†L1-L125】
 4. `docker compose up -d quality-cron rag-refresh-cron` — ativa automações contínuas.【F:docker-compose.yml†L160-L196】
 5. `python scripts/quality_push_cron.py --dry-run` — valida amostras antes de enviar.【F:scripts/quality_push_cron.py†L139-L181】
-6. `scripts/quality_gate_check.sh` — confirma status PASS no quality gate.【F:scripts/quality_gate_check.sh†L1-L16】
+6. `bash scripts/quality_gate_check.sh` — confirma status PASS no quality gate.【F:scripts/quality_gate_check.sh†L1-L16】
 7. `docker compose run --rm rag-indexer` — reconstrói embeddings e manifest.【F:docker/Dockerfile.rag-indexer†L1-L20】
 8. `curl -s -X POST localhost:8000/ops/rag/refresh` — força refresh imediato.【F:docker/rag-refresh-cron.sh†L1-L20】
 9. `python scripts/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards` — atualiza painéis.【F:scripts/gen_dashboards.py†L47-L98】
