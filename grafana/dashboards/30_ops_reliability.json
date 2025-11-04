@@ -166,13 +166,41 @@
       }
     },
     {
-      "id": 7,
-      "type": "text",
-      "title": "Cron jobs",
-      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 12},
-      "options": {
-        "content": "Adicione métricas de cron (`quality-cron`, `rag-refresh-cron`) no YAML para preencher este painel.",
-        "mode": "markdown"
+      "id": 71,
+      "type": "stat",
+      "title": "quality-cron · minutos desde última execução",
+      "gridPos": { "h": 4, "w": 6, "x": 12, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "grafana" },
+      "targets": [
+        {
+          "expr": "(time() - max(cron_last_run_timestamp{cron=~'$cron'})) / 60",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": { "defaults": { "unit": "m" } }
+    },
+    {
+      "id": 72,
+      "type": "stat",
+      "title": "rag-refresh-cron · status",
+      "gridPos": { "h": 4, "w": 6, "x": 18, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "grafana" },
+      "targets": [
+        {
+          "expr": "max(cron_last_status{cron=~'$cron'})",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": { "0": { "text": "fail" }, "1": { "text": "ok" } } }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [ { "color": "red", "value": 0 }, { "color": "green", "value": 1 } ]
+          }
+        }
       }
     }
   ],
