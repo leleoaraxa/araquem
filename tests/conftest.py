@@ -83,6 +83,31 @@ def _test_infra():
                     "traded_until_date": "2023-12-28",
                 }
             ]
+        if entity == "fiis_metrics":
+            if ticker == "XXXX11":
+                return []
+            sql_lower = (sql or "").lower()
+            metric = "dividends_sum"
+            value = 12.34
+            if "dy_avg" in sql_lower:
+                metric = "dy_avg"
+                value = 8.76
+            elif "price_avg" in sql_lower:
+                metric = "price_avg"
+                value = 95.43
+            elif "dividends_count" in sql_lower:
+                metric = "dividends_count"
+                value = 4
+            return [
+                {
+                    "ticker": ticker,
+                    "metric": metric,
+                    "value": value,
+                    "window_months": (params or {}).get("window_months") or 12,
+                    "period_start": (params or {}).get("period_start") or "2023-01-01",
+                    "period_end": (params or {}).get("period_end") or "2024-01-01",
+                }
+            ]
         return []
 
     class _DummyCursor:

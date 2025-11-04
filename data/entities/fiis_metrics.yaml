@@ -1,0 +1,112 @@
+entity: fiis_metrics
+private: false
+description: Métricas compute-on-read por FII (base D-1 já garantida pela ingestão).
+
+identifiers:
+  - name: ticker
+    description: Ticker do FII normalizado (AAAA11)
+
+presentation:
+  result_key: fii_metrics
+  return_columns:
+    - ticker
+    - metric
+    - value
+    - window_months
+    - period_start
+    - period_end
+
+columns:
+  - { name: ticker,        alias: Ticker,           description: Código FII (AAAA11) }
+  - { name: metric,        alias: Métrica,          description: Nome canônico da métrica }
+  - { name: value,         alias: Valor,            description: Valor numérico da métrica }
+  - { name: window_months, alias: Janela (meses),   description: Tamanho da janela temporal }
+  - { name: period_start,  alias: Início do período,description: Data inicial }
+  - { name: period_end,    alias: Fim do período,   description: Data final }
+
+ask:
+  intents: [metricas]
+  keywords: [dy, "dividend yield", "preço médio", "soma dividendos", "contagem de dividendos", "media de preco"]
+  synonyms:
+    dy_avg: [dy, "dividend yield", "yield"]
+    dividends_sum: ["soma de dividendos", "soma proventos"]
+    dividends_count: ["quantidade de dividendos", "contagem de dividendos"]
+    price_avg: ["preço médio", "media de preco"]
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+
+# compute-on-read (SQL parametrizado pelo Builder)
+metrics:
+  - name: dividends_sum
+    description: Soma de dividendos no período (R$ por cota)
+    sql: |
+      SELECT
+        d.ticker,
+        'dividends_sum' AS metric,
+        COALESCE(SUM(d.dividend_amt), 0) AS value,
+        {{window_months}}::int AS window_months,
+        {{period_start}}::date AS period_start,
+        {{period_end}}::date AS period_end
+      FROM fiis_dividendos d
+      WHERE d.ticker = {{ticker}}
+        AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+      GROUP BY d.ticker
+
+  - name: dividends_count
+    description: Contagem de pagamentos no período
+    sql: |
+      SELECT
+        d.ticker,
+        'dividends_count' AS metric,
+        COUNT(*)::numeric AS value,
+        {{window_months}}::int AS window_months,
+        {{period_start}}::date AS period_start,
+        {{period_end}}::date AS period_end
+      FROM fiis_dividendos d
+      WHERE d.ticker = {{ticker}}
+        AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+      GROUP BY d.ticker
+
+  - name: price_avg
+    description: Preço médio de fechamento no período
+    sql: |
+      SELECT
+        p.ticker,
+        'price_avg' AS metric,
+        AVG(p.close_price)::numeric AS value,
+        {{window_months}}::int AS window_months,
+        {{period_start}}::date AS period_start,
+        {{period_end}}::date AS period_end
+      FROM fiis_precos p
+      WHERE p.ticker = {{ticker}}
+        AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
+      GROUP BY p.ticker
+
+  - name: dy_avg
+    description: "Dividend Yield médio no período (métrica simples: soma(div)/média(preço))"
+    sql: |
+      WITH agg_div AS (
+        SELECT SUM(d.dividend_amt)::numeric AS div_sum
+        FROM fiis_dividendos d
+        WHERE d.ticker = {{ticker}}
+          AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+      ),
+      agg_px AS (
+        SELECT AVG(p.close_price)::numeric AS px_avg
+        FROM fiis_precos p
+        WHERE p.ticker = {{ticker}}
+          AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
+      )
+      SELECT
+        {{ticker}} AS ticker,
+        'dy_avg' AS metric,
+        CASE
+          WHEN (SELECT px_avg FROM agg_px) IS NULL OR (SELECT px_avg FROM agg_px) = 0
+            THEN NULL
+          ELSE ROUND((SELECT div_sum FROM agg_div) / (SELECT px_avg FROM agg_px) * 100, 4)
+        END AS value,
+        {{window_months}}::int AS window_months,
+        {{period_start}}::date AS period_start,
+        {{period_end}}::date AS period_end;
