@@ -3,6 +3,9 @@ WORKDIR /workspace
 ENV PYTHONUNBUFFERED=1
 
 # (se quiser manter o bind-mount, pode comentar este COPY)
+COPY requirements.txt /workspace/requirements.txt
+RUN pip install --no-cache-dir -r /workspace/requirements.txt
+
 COPY . /workspace
 
 COPY --chmod=0755 docker/quality-cron.sh /usr/local/bin/quality-cron.sh

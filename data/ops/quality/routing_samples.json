@@ -450,6 +450,46 @@
       "question": "ranking do HGLG11",
       "expected_intent": "rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "qual é o CNPJ do MCCI11 (cadastral)",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "site oficial do HGLG11 (cadastral)",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "cotação de fechamento do HGLG11 ontem (preços)",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "preço do MCCI11 hoje (preços)",
+      "expected_intent": "precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "dividendo pago pelo HGLG11 em 2024-07 (dividendos)",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "último DY mensal do MCCI11 (dividendos)",
+      "expected_intent": "dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "top 10 FIIs por dividend yield 12m (rankings)",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "maiores liquidezes do IFIX (rankings)",
+      "expected_intent": "rankings",
+      "expected_entity": "fiis_rankings"
     }
   ]
 }
