@@ -11,7 +11,9 @@ while true; do
   echo "▶️  /ops/rag/refresh"
   curl -fsS -X POST http://localhost:8000/ops/quality/push || true
   curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true
+  curl -fsS -X POST http://localhost:8000/ops/metrics/rag/register || true
   sleep 300
   curl -fsS -X POST http://localhost:8000/ops/rag/refresh || true
+  curl -fsS -X POST http://localhost:8000/ops/metrics/rag/register || true
   sleep 82800
 done

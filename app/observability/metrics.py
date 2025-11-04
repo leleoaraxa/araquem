@@ -1,12 +1,19 @@
 # app/observability/metrics.py
 
 from __future__ import annotations
+
+import json
 import os
-from typing import Dict, Iterable, Mapping, Any
+import time
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any, Dict, Mapping, Optional
+
+from prometheus_client import Gauge
 
 from app.observability.instrumentation import counter as _counter
-from app.observability.instrumentation import histogram as _histogram
 from app.observability.instrumentation import gauge as _gauge
+from app.observability.instrumentation import histogram as _histogram
 
 STRICT = os.getenv("SIRIOS_METRICS_STRICT", "false").strip().lower() in (
     "1",
@@ -69,12 +76,26 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     },  # op=get|set, outcome=hit|miss|ok|fail
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
-    # ---------- M7.5 ----------
-    "rag_index_size_total": {"type": "gauge", "labels": set()},
-    "rag_index_docs_total": {"type": "gauge", "labels": set()},
-    "rag_index_last_refresh_timestamp": {"type": "gauge", "labels": set()},
-    "rag_index_density_score": {"type": "gauge", "labels": set()},
 }
+
+RAG_INDEX_SIZE_TOTAL = Gauge(
+    "rag_index_size_total",
+    "Size in bytes of the RAG embeddings index",
+    labelnames=["store"],
+)
+RAG_INDEX_DOCS_TOTAL = Gauge(
+    "rag_index_docs_total",
+    "Total docs (lines) in the RAG embeddings index",
+    labelnames=["store"],
+)
+RAG_INDEX_LAST_REFRESH_TS = Gauge(
+    "rag_index_last_refresh_timestamp",
+    "Epoch seconds of the last RAG index refresh",
+)
+RAG_INDEX_DENSITY_SCORE = Gauge(
+    "rag_index_density_score",
+    "Docs per MB for the RAG embeddings index",
+)
 
 
 def _validate_and_normalize(name: str, labels: Mapping[str, Any]) -> Mapping[str, str]:
@@ -118,3 +139,92 @@ def list_metrics_catalog() -> Dict[str, Dict[str, Any]]:
         k: {"type": v["type"], "labels": sorted(list(v["labels"]))}
         for k, v in _METRICS_SCHEMA.items()
     }
+
+
+def _parse_epoch(value: Any) -> Optional[int]:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def _parse_iso_timestamp(raw: Any) -> Optional[int]:
+    if not isinstance(raw, str) or not raw.strip():
+        return None
+    text = raw.strip()
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    candidates = [text]
+    # Garante suporte a timestamps sem timezone explícito
+    if "+" not in text and not text.endswith("Z"):
+        candidates.append(text + "+00:00")
+    for candidate in candidates:
+        try:
+            dt = datetime.fromisoformat(candidate)
+        except ValueError:
+            continue
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+        return int(dt.timestamp())
+    return None
+
+
+def compute_rag_index_metrics(
+    base_dir: Path = Path("data/embeddings/store"),
+    filename: str = "embeddings.jsonl",
+    manifest_name: str = "manifest.json",
+) -> Dict[str, Any]:
+    store_path = base_dir / filename
+    manifest_path = base_dir / manifest_name
+
+    size_bytes = store_path.stat().st_size if store_path.exists() else 0
+    docs_total = 0
+    if store_path.exists():
+        with store_path.open("r", encoding="utf-8") as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    json.loads(line)
+                except Exception:
+                    continue
+                docs_total += 1
+
+    last_ts = int(time.time())
+    if manifest_path.exists():
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:
+            manifest = {}
+        epoch = _parse_epoch(manifest.get("last_refresh_epoch"))
+        if epoch is None:
+            epoch = _parse_iso_timestamp(
+                manifest.get("last_refresh_iso") or manifest.get("generated_at")
+            )
+        if epoch is None:
+            try:
+                epoch = int(manifest_path.stat().st_mtime)
+            except FileNotFoundError:
+                epoch = None
+        if epoch is not None:
+            last_ts = epoch
+
+    mb = max(size_bytes / 1_000_000.0, 1e-6)
+    density = float(docs_total) / mb if docs_total else 0.0
+
+    return {
+        "store": filename,
+        "size_bytes": int(size_bytes),
+        "docs_total": int(docs_total),
+        "last_refresh_ts": int(last_ts),
+        "density_score": float(density),
+    }
+
+
+def register_rag_index_metrics(metrics: Mapping[str, Any]) -> None:
+    store = str(metrics.get("store") or "embeddings.jsonl")
+    RAG_INDEX_SIZE_TOTAL.labels(store=store).set(float(metrics.get("size_bytes", 0)))
+    RAG_INDEX_DOCS_TOTAL.labels(store=store).set(float(metrics.get("docs_total", 0)))
+    RAG_INDEX_LAST_REFRESH_TS.set(float(metrics.get("last_refresh_ts", 0)))
+    RAG_INDEX_DENSITY_SCORE.set(float(metrics.get("density_score", 0.0)))
