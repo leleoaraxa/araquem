@@ -147,11 +147,6 @@ _METRIC_SCHEMAS = {
     "planner_rerank_applied_total": ("counter", ("mode", "accepted")),
     "planner_decision_gap_before": ("histogram", ()),
     "planner_decision_gap_after": ("histogram", ()),
-    # ---------- M7.5 ----------
-    "rag_index_size_total": ("gauge", ()),
-    "rag_index_docs_total": ("gauge", ()),
-    "rag_index_last_refresh_timestamp": ("gauge", ()),
-    "rag_index_density_score": ("gauge", ()),
     # ---------- M7.6 (Quality influence & contexto RAG) ----------
     "planner_quality_rerank_influence_total": ("counter", ()),
     "planner_quality_rag_context_total": ("counter", ()),

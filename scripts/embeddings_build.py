@@ -146,9 +146,10 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
                 }
             )
 
-    (Path(out_dir) / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    manifest_path = Path(out_dir) / "manifest.json"
+    manifest["last_refresh_epoch"] = int(time.time())
+    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"[manifest] updated {manifest_path}")
     print(f"[done] {total_chunks} chunks → {out_jsonl}")
     return {"chunks": total_chunks, "out": str(out_jsonl)}
 
