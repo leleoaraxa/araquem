@@ -15,7 +15,7 @@
       "type": "stat",
       "title": "p95 Latência (ms)",
       "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) by (le)) * 1000",
@@ -48,7 +48,7 @@
       "type": "stat",
       "title": "p99 Latência (ms)",
       "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "histogram_quantile(0.99, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) by (le)) * 1000",
@@ -80,7 +80,7 @@
       "type": "stat",
       "title": "Erro (%)",
       "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "100 * sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval])) / sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval]))",
@@ -112,7 +112,7 @@
       "type": "stat",
       "title": "Throughput (req/s)",
       "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[$interval]))",
@@ -135,7 +135,7 @@
       "type": "timeseries",
       "title": "Distribuição de latência",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "histogram_quantile(0.50, sum(rate(api_latency_ms_bucket{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (le)) * 1000",
@@ -166,7 +166,7 @@
       "type": "timeseries",
       "title": "Throughput por rota",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_requests_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (route)",
@@ -187,7 +187,7 @@
       "type": "bargauge",
       "title": "Erros por status",
       "gridPos": {"h": 8, "w": 6, "x": 0, "y": 12},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (status)",
@@ -212,7 +212,7 @@
       "type": "bargauge",
       "title": "Erros por código",
       "gridPos": {"h": 8, "w": 6, "x": 6, "y": 12},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_errors_total{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) by (code)",
@@ -225,7 +225,7 @@
       "type": "table",
       "title": "Pipeline · Latência média",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 12},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_latency_ms_sum{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m])) / sum(rate(api_latency_ms_count{job=~'$job', entity=~'$entity', intent=~'$intent'}[5m]))",
@@ -252,7 +252,7 @@
       "type": "heatmap",
       "title": "p95 por entidade vs intent",
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 20},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "histogram_quantile(0.95, sum(rate(api_latency_ms_bucket{job=~'$job'}[5m])) by (le, entity, intent)) * 1000",
@@ -266,7 +266,7 @@
       "type": "table",
       "title": "Rows por entidade (proxy)",
       "gridPos": {"h": 8, "w": 12, "x": 12, "y": 20},
-      "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
       "targets": [
         {
           "expr": "sum(rate(api_latency_ms_count{job=~'$job', entity=~'$entity'}[5m])) by (entity)",
@@ -301,7 +301,7 @@
       {
         "name": "job",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+        "datasource": {"type": "prometheus", "uid": "grafana"},
         "query": "label_values(api_requests_total, job)",
         "definition": "label_values(api_requests_total, job)",
         "includeAll": true,
@@ -315,7 +315,7 @@
       {
         "name": "entity",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+        "datasource": {"type": "prometheus", "uid": "grafana"},
         "query": "label_values(api_requests_total, entity)",
         "definition": "label_values(api_requests_total, entity)",
         "includeAll": true,
@@ -329,7 +329,7 @@
       {
         "name": "intent",
         "type": "query",
-        "datasource": {"type": "prometheus", "uid": "araquem-prom"},
+        "datasource": {"type": "prometheus", "uid": "grafana"},
         "query": "label_values(api_requests_total, intent)",
         "definition": "label_values(api_requests_total, intent)",
         "includeAll": true,
