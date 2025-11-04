@@ -1,25 +1,13 @@
 entity: fiis_metrics
 private: false
-description: Catálogo canônico de métricas de FIIs (compute-on-read).
+description: Métricas compute-on-read por FII (base D-1 já garantida pela ingestão).
 
 identifiers:
   - name: ticker
-    description: Ticker do FII (AAAA11)
-
-defaults:
-  window: { months: 12 }
-
-windows_allowed:
-  - { months: 3 }
-  - { months: 6 }
-  - { months: 12 }
-  - { months: 24 }
-  - { count: 3 }
-  - { count: 6 }
-  - { count: 12 }
+    description: Ticker do FII normalizado (AAAA11)
 
 presentation:
-  result_key: fiis_metrics
+  result_key: fii_metrics
   return_columns:
     - ticker
     - metric
@@ -28,15 +16,29 @@ presentation:
     - period_start
     - period_end
 
+columns:
+  - { name: ticker,        alias: Ticker,           description: Código FII (AAAA11) }
+  - { name: metric,        alias: Métrica,          description: Nome canônico da métrica }
+  - { name: value,         alias: Valor,            description: Valor numérico da métrica }
+  - { name: window_months, alias: Janela (meses),   description: Tamanho da janela temporal }
+  - { name: period_start,  alias: Início do período,description: Data inicial }
+  - { name: period_end,    alias: Fim do período,   description: Data final }
+
 ask:
-  intents: [metricas, dividendos, precos]
-  keywords: [dy, dividend yield, soma de dividendos, preço médio, preço atual, payout]
+  intents: [metricas]
+  keywords: [dy, "dividend yield", "preço médio", "soma dividendos", "contagem de dividendos", "media de preco"]
+  synonyms:
+    dy_avg: [dy, "dividend yield", "yield"]
+    dividends_sum: ["soma de dividendos", "soma proventos"]
+    dividends_count: ["quantidade de dividendos", "contagem de dividendos"]
+    price_avg: ["preço médio", "media de preco"]
   weights:
     identifiers: 2.0
     keywords: 1.0
+    synonyms: 0.5
 
+# compute-on-read (SQL parametrizado pelo Builder)
 metrics:
-  # 1) Soma de dividendos no período (usa fiis_dividendos)
   - name: dividends_sum
     description: Soma de dividendos no período (R$ por cota)
     sql: |
@@ -52,9 +54,8 @@ metrics:
         AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
       GROUP BY d.ticker
 
-  # 2) Quantidade de pagamentos no período
   - name: dividends_count
-    description: Quantidade de pagamentos de dividendos no período
+    description: Contagem de pagamentos no período
     sql: |
       SELECT
         d.ticker,
@@ -68,36 +69,13 @@ metrics:
         AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
       GROUP BY d.ticker
 
-  # 3) Último dividendo (valor do último pagamento dentro da janela)
-  - name: last_dividend_amt
-    description: Valor do último dividendo no período
-    sql: |
-      WITH lastp AS (
-        SELECT d.ticker, d.payment_date, d.dividend_amt
-        FROM fiis_dividendos d
-        WHERE d.ticker = {{ticker}}
-          AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
-        ORDER BY d.payment_date DESC
-        LIMIT 1
-      )
-      SELECT
-        {{ticker}} AS ticker,
-        'last_dividend_amt' AS metric,
-        COALESCE(lastp.dividend_amt, NULL)::numeric AS value,
-        {{window_months}}::int AS window_months,
-        {{period_start}}::date AS period_start,
-        {{period_end}}::date AS period_end
-      FROM lastp
-      RIGHT JOIN (SELECT 1) z ON TRUE
-
-  # 4) Preço médio (adj_close_price) no período (usa fiis_precos)
   - name: price_avg
-    description: Preço médio (close) no período
+    description: Preço médio de fechamento no período
     sql: |
       SELECT
         p.ticker,
         'price_avg' AS metric,
-        AVG(p.adj_close_price)::numeric AS value,
+        AVG(p.close_price)::numeric AS value,
         {{window_months}}::int AS window_months,
         {{period_start}}::date AS period_start,
         {{period_end}}::date AS period_end
@@ -106,40 +84,17 @@ metrics:
         AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
       GROUP BY p.ticker
 
-  # 5) Último preço (adj_close_price) dentro do período
-  - name: price_last
-    description: Último preço de fechamento no período
-    sql: |
-      WITH lastpx AS (
-        SELECT p.ticker, p.traded_at, p.adj_close_price
-        FROM fiis_precos p
-        WHERE p.ticker = {{ticker}}
-          AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
-        ORDER BY p.traded_at DESC
-        LIMIT 1
-      )
-      SELECT
-        {{ticker}} AS ticker,
-        'price_last' AS metric,
-        COALESCE(lastpx.adj_close_price, NULL)::numeric AS value,
-        {{window_months}}::int AS window_months,
-        {{period_start}}::date AS period_start,
-        {{period_end}}::date AS period_end
-      FROM lastpx
-      RIGHT JOIN (SELECT 1) z ON TRUE
-
-  # 6) DY médio no período = soma de dividendos / preço médio
   - name: dy_avg
-    description: Dividend Yield médio no período (soma de dividendos ÷ preço médio)
+    description: "Dividend Yield médio no período (métrica simples: soma(div)/média(preço))"
     sql: |
-      WITH divs AS (
-        SELECT COALESCE(SUM(d.dividend_amt),0) AS div_sum
+      WITH agg_div AS (
+        SELECT SUM(d.dividend_amt)::numeric AS div_sum
         FROM fiis_dividendos d
         WHERE d.ticker = {{ticker}}
           AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
       ),
-      px AS (
-        SELECT AVG(p.adj_close_price) AS px_avg
+      agg_px AS (
+        SELECT AVG(p.close_price)::numeric AS px_avg
         FROM fiis_precos p
         WHERE p.ticker = {{ticker}}
           AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
@@ -147,8 +102,11 @@ metrics:
       SELECT
         {{ticker}} AS ticker,
         'dy_avg' AS metric,
-        CASE WHEN px.px_avg > 0 THEN (divs.div_sum / px.px_avg) ELSE NULL END::numeric AS value,
+        CASE
+          WHEN (SELECT px_avg FROM agg_px) IS NULL OR (SELECT px_avg FROM agg_px) = 0
+            THEN NULL
+          ELSE ROUND((SELECT div_sum FROM agg_div) / (SELECT px_avg FROM agg_px) * 100, 4)
+        END AS value,
         {{window_months}}::int AS window_months,
         {{period_start}}::date AS period_start,
-        {{period_end}}::date AS period_end
-      FROM divs, px
+        {{period_end}}::date AS period_end;

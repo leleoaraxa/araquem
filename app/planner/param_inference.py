@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 from typing import Dict, Any, Optional, Tuple, List
+import calendar
+import datetime as dt
 import re, json, unicodedata
 from pathlib import Path
 
@@ -69,6 +71,80 @@ def _entity_agg_defaults(entity_yaml_path: Optional[str]) -> Dict[str, Any]:
     }
 
 
+def _months_from_window(window: Optional[str], default: int) -> int:
+    if not window:
+        return default
+    try:
+        kind, raw = str(window).split(":", 1)
+    except ValueError:
+        return default
+    if kind != "months":
+        return default
+    try:
+        value = int(raw)
+    except ValueError:
+        return default
+    return value if value > 0 else default
+
+
+def _shift_months(base: dt.date, months: int) -> dt.date:
+    if months <= 0:
+        return base
+    year = base.year
+    month = base.month - months
+    while month <= 0:
+        month += 12
+        year -= 1
+    last_day = calendar.monthrange(year, month)[1]
+    day = min(base.day, last_day)
+    return dt.date(year, month, day)
+
+
+def _infer_metricas_params(
+    question: str,
+    icfg: Dict[str, Any],
+    entity_yaml_path: Optional[str],
+) -> Dict[str, Any]:
+    metric = None
+    metric_keywords = icfg.get("metric_keywords") or {}
+    for metric_name, spec in metric_keywords.items():
+        if _match_keywords(question, spec.get("include", [])):
+            metric = metric_name
+            break
+
+    if not metric:
+        metric = icfg.get("default_metric")
+
+    window = icfg.get("default_window")
+    wkw = icfg.get("window_keywords") or {}
+    for kind, mapping in wkw.items():
+        for num, kws in mapping.items():
+            if _match_keywords(question, kws):
+                window = f"{kind}:{num}"
+                break
+
+    months = _months_from_window(window, default=12)
+    today = dt.date.today()
+    period_end = icfg.get("period_end") or today
+    if isinstance(period_end, str):
+        try:
+            period_end_dt = dt.date.fromisoformat(period_end)
+        except ValueError:
+            period_end_dt = today
+    else:
+        period_end_dt = today
+    period_start_dt = _shift_months(period_end_dt, months)
+
+    return {
+        "agg": "metrics",
+        "metric": metric,
+        "window": f"months:{months}",
+        "window_months": months,
+        "period_start": period_start_dt.isoformat(),
+        "period_end": period_end_dt.isoformat(),
+    }
+
+
 def infer_params(
     question: str,
     intent: str,
@@ -87,6 +163,9 @@ def infer_params(
     intents = (cfg or {}).get("intents", {})
     icfg = intents.get(intent, {})
     text = _norm(question)
+
+    if intent == "metricas":
+        return _infer_metricas_params(question, icfg, entity_yaml_path)
 
     # defaults
     agg = icfg.get("default_agg")

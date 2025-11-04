@@ -57,3 +57,23 @@ intents:
         6: [6 ultimos, seis ultimos]
         12: [12 ultimos, doze ultimos]
         24: [24 ultimos, vinte e quatro ultimos]
+
+  metricas:
+    default_agg: metrics
+    default_window: months:12
+    default_metric: dividends_sum
+    metric_keywords:
+      dividends_sum:
+        include: [soma de dividendos, soma dividendos, soma proventos]
+      dividends_count:
+        include: [quantidade de dividendos, contagem de dividendos]
+      price_avg:
+        include: [preço médio, preco medio, média de preço, media de preco]
+      dy_avg:
+        include: [dy, dividend yield, dividendo yield, yield, dy médio, dy medio]
+    window_keywords:
+      months:
+        3: [trimestre, 3 meses, tres meses]
+        6: [semestre, 6 meses, seis meses]
+        12: [ano, anual, 12 meses, doze meses, ultimo ano, últimos 12 meses]
+        24: [2 anos, dois anos, 24 meses]
