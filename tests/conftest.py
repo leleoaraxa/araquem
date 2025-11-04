@@ -86,28 +86,35 @@ def _test_infra():
         if entity == "fiis_metrics":
             if ticker == "XXXX11":
                 return []
+            base = {
+                "ticker": ticker,
+                "window_months": (params or {}).get("window_months") or 12,
+                "period_start": (params or {}).get("period_start") or "2023-01-01",
+                "period_end": (params or {}).get("period_end") or "2024-01-01",
+            }
+            metrics = [
+                ("dividends_sum", 12.34),
+                ("dividends_count", 4),
+                ("price_avg", 95.43),
+                ("dy_avg", 8.76),
+            ]
             sql_lower = (sql or "").lower()
-            metric = "dividends_sum"
-            value = 12.34
-            if "dy_avg" in sql_lower:
-                metric = "dy_avg"
-                value = 8.76
-            elif "price_avg" in sql_lower:
-                metric = "price_avg"
-                value = 95.43
-            elif "dividends_count" in sql_lower:
-                metric = "dividends_count"
-                value = 4
-            return [
-                {
-                    "ticker": ticker,
+            requested = next((m for m, _ in metrics if m in sql_lower), None)
+            if requested:
+                ordered = [pair for pair in metrics if pair[0] == requested]
+                ordered.extend(pair for pair in metrics if pair[0] != requested)
+            else:
+                ordered = metrics
+            rows = []
+            for metric, value in ordered:
+                row = {
+                    **base,
                     "metric": metric,
                     "value": value,
-                    "window_months": (params or {}).get("window_months") or 12,
-                    "period_start": (params or {}).get("period_start") or "2023-01-01",
-                    "period_end": (params or {}).get("period_end") or "2024-01-01",
+                    "meta": {"metric_key": metric},
                 }
-            ]
+                rows.append(row)
+            return rows
         return []
 
     class _DummyCursor:
