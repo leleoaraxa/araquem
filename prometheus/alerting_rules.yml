@@ -49,4 +49,3 @@ groups:
         annotations:
           summary: "Densidade do RAG baixa"
           description: "density={{ $value }} < 10 docs/MB"
-

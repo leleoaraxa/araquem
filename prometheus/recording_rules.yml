@@ -34,4 +34,3 @@ groups:
         expr: time() - rag_index_last_refresh_timestamp
       - record: job:rag_density_score
         expr: avg(rag_index_density_score)
-
