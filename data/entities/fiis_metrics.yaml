@@ -42,21 +42,54 @@ metrics:
   - name: dividends_sum
     description: Soma de dividendos no período (R$ por cota)
     sql: |
+      WITH dividends_window AS (
+        SELECT
+          d.ticker,
+          d.payment_date,
+          d.dividend_amt,
+          d.traded_until_date,
+          ROW_NUMBER() OVER (
+            PARTITION BY d.ticker
+            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+          ) AS rn
+        FROM fiis_dividendos d
+        WHERE d.ticker = {{ticker}}
+          AND (
+            ({{window_kind}} = 'months' AND d.payment_date BETWEEN {{period_start}} AND {{period_end}})
+            OR {{window_kind}} = 'count'
+          )
+      )
       SELECT
         d.ticker,
         'dividends_sum' AS metric,
-        COALESCE(SUM(d.dividend_amt), 0) AS value,
+        COALESCE(SUM(d.dividend_amt), 0)::numeric AS value,
         {{window_months}}::int AS window_months,
         {{period_start}}::date AS period_start,
         {{period_end}}::date AS period_end
-      FROM fiis_dividendos d
-      WHERE d.ticker = {{ticker}}
-        AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+      FROM dividends_window d
+      WHERE {{window_kind}} = 'months'
+         OR d.rn <= COALESCE({{window_value}}::int, 0)
       GROUP BY d.ticker
 
   - name: dividends_count
     description: Contagem de pagamentos no período
     sql: |
+      WITH dividends_window AS (
+        SELECT
+          d.ticker,
+          d.payment_date,
+          d.traded_until_date,
+          ROW_NUMBER() OVER (
+            PARTITION BY d.ticker
+            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+          ) AS rn
+        FROM fiis_dividendos d
+        WHERE d.ticker = {{ticker}}
+          AND (
+            ({{window_kind}} = 'months' AND d.payment_date BETWEEN {{period_start}} AND {{period_end}})
+            OR {{window_kind}} = 'count'
+          )
+      )
       SELECT
         d.ticker,
         'dividends_count' AS metric,
@@ -64,9 +97,9 @@ metrics:
         {{window_months}}::int AS window_months,
         {{period_start}}::date AS period_start,
         {{period_end}}::date AS period_end
-      FROM fiis_dividendos d
-      WHERE d.ticker = {{ticker}}
-        AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+      FROM dividends_window d
+      WHERE {{window_kind}} = 'months'
+         OR d.rn <= COALESCE({{window_value}}::int, 0)
       GROUP BY d.ticker
 
   - name: price_avg
@@ -85,28 +118,57 @@ metrics:
       GROUP BY p.ticker
 
   - name: dy_avg
-    description: "Dividend Yield médio no período (métrica simples: soma(div)/média(preço))"
+    description: "Dividend Yield médio no período (média dos DY diários de cada pagamento)"
     sql: |
-      WITH agg_div AS (
-        SELECT SUM(d.dividend_amt)::numeric AS div_sum
+      WITH dividends_window AS (
+        SELECT
+          d.ticker,
+          d.payment_date,
+          d.dividend_amt,
+          d.traded_until_date,
+          ROW_NUMBER() OVER (
+            PARTITION BY d.ticker
+            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+          ) AS rn
         FROM fiis_dividendos d
         WHERE d.ticker = {{ticker}}
-          AND d.payment_date BETWEEN {{period_start}} AND {{period_end}}
+          AND (
+            ({{window_kind}} = 'months' AND d.payment_date BETWEEN {{period_start}} AND {{period_end}})
+            OR {{window_kind}} = 'count'
+          )
       ),
-      agg_px AS (
-        SELECT AVG(p.close_price)::numeric AS px_avg
-        FROM fiis_precos p
-        WHERE p.ticker = {{ticker}}
-          AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
+      limited_dividends AS (
+        SELECT *
+        FROM dividends_window dw
+        WHERE {{window_kind}} = 'months'
+           OR dw.rn <= COALESCE({{window_value}}::int, 0)
+      ),
+      dy_calc AS (
+        SELECT
+          ld.ticker,
+          ld.payment_date,
+          ld.traded_until_date,
+          ld.dividend_amt,
+          px.close_price,
+          CASE
+            WHEN px.close_price IS NULL OR px.close_price = 0 THEN NULL
+            ELSE ld.dividend_amt / px.close_price
+          END AS dy_diario
+        FROM limited_dividends ld
+        LEFT JOIN LATERAL (
+          SELECT p.close_price
+          FROM fiis_precos p
+          WHERE p.ticker = ld.ticker
+            AND p.traded_at <= COALESCE(ld.traded_until_date, ld.payment_date)
+          ORDER BY p.traded_at DESC
+          LIMIT 1
+        ) px ON TRUE
       )
       SELECT
         {{ticker}} AS ticker,
         'dy_avg' AS metric,
-        CASE
-          WHEN (SELECT px_avg FROM agg_px) IS NULL OR (SELECT px_avg FROM agg_px) = 0
-            THEN NULL
-          ELSE ROUND((SELECT div_sum FROM agg_div) / (SELECT px_avg FROM agg_px) * 100, 4)
-        END AS value,
+        AVG(dy_diario)::numeric AS value,
         {{window_months}}::int AS window_months,
         {{period_start}}::date AS period_start,
-        {{period_end}}::date AS period_end;
+        {{period_end}}::date AS period_end
+      FROM dy_calc

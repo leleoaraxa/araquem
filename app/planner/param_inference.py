@@ -116,12 +116,29 @@ def _infer_metricas_params(
         metric = icfg.get("default_metric")
 
     window = icfg.get("default_window")
+    detected_kind: Optional[str] = None
     wkw = icfg.get("window_keywords") or {}
     for kind, mapping in wkw.items():
         for num, kws in mapping.items():
             if _match_keywords(question, kws):
-                window = f"{kind}:{num}"
-                break
+                candidate = f"{kind}:{num}"
+                # Prioriza janela por contagem; meses podem ser sobrescritos
+                if kind == "count":
+                    window = candidate
+                    detected_kind = kind
+                    break
+                if detected_kind != "count":
+                    window = candidate
+                    detected_kind = kind
+        
+        if detected_kind == "count":
+            break
+
+    if not detected_kind and isinstance(window, str):
+        try:
+            detected_kind = window.split(":", 1)[0]
+        except ValueError:
+            detected_kind = None
 
     months = _months_from_window(window, default=12)
     today = dt.date.today()
@@ -135,10 +152,17 @@ def _infer_metricas_params(
         period_end_dt = today
     period_start_dt = _shift_months(period_end_dt, months)
 
+    if detected_kind != "count":
+        ytd_keywords = icfg.get("ytd_keywords") or []
+        if _match_keywords(question, ytd_keywords):
+            period_start_dt = dt.date(period_end_dt.year, 1, 1)
+            months = 12
+            window = "months:12"
+
     return {
         "agg": "metrics",
         "metric": metric,
-        "window": f"months:{months}",
+        "window": window or f"months:{months}",
         "window_months": months,
         "period_start": period_start_dt.isoformat(),
         "period_end": period_end_dt.isoformat(),
