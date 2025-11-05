@@ -15,3 +15,12 @@ policies:
     ttl_seconds: 86400
     refresh_at: "01:15"
     scope: pub
+  fiis_metrics:
+    enabled: true
+    ttl_seconds: 43200
+    key:
+      template: "fiis_metrics:{ticker}:{metric_key}:{window_norm}"
+    deny_if:
+      - field: "window_type"
+        equals: "count"
+        value: 1

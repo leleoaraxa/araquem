@@ -14,7 +14,7 @@ cache = RedisCache(os.getenv("REDIS_URL", "redis://redis:6379/0"))
 policies = CachePolicies()
 planner = Planner(ONTO_PATH)
 executor = PgExecutor()
-orchestrator = Orchestrator(planner, executor)
+orchestrator = Orchestrator(planner, executor, cache=cache, cache_policies=policies)
 
 __all__ = [
     "cache",

@@ -74,6 +74,10 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
         "type": "counter",
         "labels": {"op", "outcome"},
     },  # op=get|set, outcome=hit|miss|ok|fail
+    "cache_hits_total": {"type": "counter", "labels": {"entity"}},
+    "cache_misses_total": {"type": "counter", "labels": {"entity"}},
+    "metrics_cache_hits_total": {"type": "counter", "labels": {"entity"}},
+    "metrics_cache_misses_total": {"type": "counter", "labels": {"entity"}},
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
 }

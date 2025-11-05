@@ -109,6 +109,10 @@ _METRIC_SCHEMAS = {
     "sirios_http_requests_total": ("counter", ("route", "method", "code")),
     "sirios_cache_ops_total": ("counter", ("op", "outcome")),
     "sirios_cache_latency_seconds": ("histogram", ("op",)),
+    "cache_hits_total": ("counter", ("entity",)),
+    "cache_misses_total": ("counter", ("entity",)),
+    "metrics_cache_hits_total": ("counter", ("entity",)),
+    "metrics_cache_misses_total": ("counter", ("entity",)),
     "sirios_planner_route_decisions_total": (
         "counter",
         ("intent", "entity", "outcome"),
