@@ -2,7 +2,7 @@
 
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Callable
 
 
 def _to_decimal(value: Any) -> Optional[Decimal]:
@@ -27,11 +27,6 @@ def _format_decimal_br(value: Decimal, places: int) -> str:
     return formatted.replace(",", "_").replace(".", ",").replace("_", ".")
 
 
-DATE_COLUMNS = {"published_at", "initiation_date", "updated_at", "created_at"}
-PERCENT_COLUMNS = {"vacancy_ratio", "non_compliant_ratio", "loss_risk_pct"}
-CURRENCY_COLUMNS = {"cause_amt"}
-
-
 def _format_date(value: Any) -> Any:
     if isinstance(value, (dt.datetime, dt.date)):
         return value.isoformat()
@@ -42,7 +37,7 @@ def _format_percentage(value: Any) -> Any:
     decimal_value = _to_decimal(value)
     if decimal_value is None:
         return value
-    if decimal_value.copy_abs() <= Decimal('1'):
+    if decimal_value.copy_abs() <= Decimal("1"):
         decimal_value = decimal_value * Decimal(100)
     return f"{_format_decimal_br(decimal_value, 2)}%"
 
@@ -52,6 +47,19 @@ def _format_currency(value: Any) -> Any:
     if decimal_value is None:
         return value
     return f"R$ {_format_decimal_br(decimal_value, 2)}"
+
+
+def _detect_formatter(column_name: str) -> Optional[Callable[[Any], Any]]:
+    lowered = (column_name or "").lower()
+    # TODO: tornar declarativo em data/ontology quando existir mapa dedicado.
+    if lowered.endswith("_at") or lowered.endswith("_date"):
+        return _format_date
+    if lowered.endswith("_pct") or lowered.endswith("_ratio"):
+        return _format_percentage
+    if lowered.endswith("_amt"):
+        return _format_currency
+    return None
+
 
 def format_metric_value(metric_key: str, value: Any) -> Any:
     """Formata valores de métricas fiis_metrics conforme a regra declarada."""
@@ -77,6 +85,7 @@ def format_metric_value(metric_key: str, value: Any) -> Any:
 
     return value
 
+
 def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str, Any]]:
     """
     Formatação mínima: mantém apenas as colunas pedidas e preserva tipos simples.
@@ -90,11 +99,10 @@ def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str
         if metric_key and "value" in item:
             item["value"] = format_metric_value(metric_key, item.get("value"))
         for col_name, col_value in list(item.items()):
-            if col_name in DATE_COLUMNS and col_value is not None:
-                item[col_name] = _format_date(col_value)
-            elif col_name in PERCENT_COLUMNS and col_value is not None:
-                item[col_name] = _format_percentage(col_value)
-            elif col_name in CURRENCY_COLUMNS and col_value is not None:
-                item[col_name] = _format_currency(col_value)
+            if col_value is None:
+                continue
+            formatter = _detect_formatter(col_name)
+            if formatter:
+                item[col_name] = formatter(col_value)
         out.append(item)
     return out

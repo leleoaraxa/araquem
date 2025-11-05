@@ -29,6 +29,13 @@ if TYPE_CHECKING:
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
+
+def _extract_ticker_identifier(question: str) -> Optional[str]:
+    """Extrai ticker normalizado a partir da pergunta."""
+    # TODO: tornar declarativo em data/ontology
+    match = TICKER_RE.search((question or "").upper())
+    return match.group(1) if match else None
+
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
 
 
@@ -62,8 +69,7 @@ class Orchestrator:
         self._cache_policies = policies
 
     def extract_identifiers(self, question: str) -> Dict[str, Any]:
-        m = TICKER_RE.search(question.upper())
-        return {"ticker": m.group(1) if m else None}
+        return {"ticker": _extract_ticker_identifier(question)}
 
     def _normalize_metrics_window(
         self, agg_params: Optional[Dict[str, Any]]
