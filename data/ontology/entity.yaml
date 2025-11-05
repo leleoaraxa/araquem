@@ -210,6 +210,16 @@ intents:
         - "contagem de dividendos"
         - "média de preço"
         - "media de preco"
+        - pagamentos
+        - pagamento
+        - distribuicoes
+        - distribuições
+        - distribuicao
+        - distribuição
+        - 3m
+        - 6m
+        - 12m
+        - 24m
       exclude: []
     phrases:
       include:
@@ -224,6 +234,9 @@ intents:
         - "dy medio do"
         - "preço médio do"
         - "preco medio do"
+        - "últimos pagamentos"
+        - "ultimas distribuicoes"
+        - "últimas distribuições"
       exclude: []
     entities: [fiis_metrics]
 

@@ -12,6 +12,8 @@ _METRIC_PLACEHOLDERS = {
     "{{period_start}}": "%(period_start)s",
     "{{period_end}}": "%(period_end)s",
     "{{window_months}}": "%(window_months)s",
+    "{{window_kind}}": "%(window_kind)s",
+    "{{window_value}}": "%(window_value)s",
 }
 _METRIC_COLUMN_TYPES = {
     "ticker": "text",
@@ -69,8 +71,37 @@ def _build_metrics_sql(
         window_months = int(window_months)
     except Exception:
         window_months = None
-    if not window_months:
-        window_months = _months_from_window(agg_params.get("window"))
+
+    window_raw = agg_params.get("window")
+    window_kind: Optional[str] = None
+    window_value: Optional[int] = None
+    if isinstance(window_raw, str):
+        try:
+            window_kind, raw_value = window_raw.split(":", 1)
+            window_value = int(raw_value)
+        except Exception:
+            window_kind = None
+            window_value = None
+
+    if window_kind == "months":
+        if not window_months:
+            window_months = window_value or _months_from_window(window_raw)
+        if window_value is None:
+            window_value = window_months
+    elif window_kind == "count":
+        if window_value is None and window_months:
+            window_value = window_months
+        # Count não usa window_months como cardinalidade obrigatória
+        if window_months:
+            try:
+                window_months = int(window_months)
+            except Exception:
+                window_months = None
+    else:
+        window_kind = "months"
+        if not window_months:
+            window_months = _months_from_window(window_raw)
+        window_value = window_months
 
     period_start = agg_params.get("period_start")
     if isinstance(period_start, dt.date):
@@ -89,6 +120,8 @@ def _build_metrics_sql(
         "window_months": window_months,
         "period_start": period_start,
         "period_end": period_end,
+        "window_kind": window_kind,
+        "window_value": window_value,
     }
 
     sql_parts: List[str] = []
