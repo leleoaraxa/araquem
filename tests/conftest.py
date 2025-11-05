@@ -157,6 +157,8 @@ def _test_infra():
     original_ask_cache = ask_module.cache
     original_health_cache = health_module.cache
     original_ops_cache = ops_cache_module.cache
+    original_orchestrator_cache = getattr(ctx.orchestrator, "_cache", None)
+    original_orchestrator_policies = getattr(ctx.orchestrator, "_cache_policies", None)
     original_pg_query = PgExecutor.query
     original_psycopg_connect = psycopg.connect
 
@@ -164,6 +166,7 @@ def _test_infra():
     ask_module.cache = dummy
     health_module.cache = dummy
     ops_cache_module.cache = dummy
+    ctx.orchestrator.set_cache_backend(dummy, ctx.policies)
 
     def _fake_query(self, sql, params):
         entity = (params or {}).get("entity")
@@ -312,6 +315,9 @@ def _test_infra():
         ask_module.cache = original_ask_cache
         health_module.cache = original_health_cache
         ops_cache_module.cache = original_ops_cache
+        ctx.orchestrator.set_cache_backend(
+            original_orchestrator_cache, original_orchestrator_policies
+        )
         PgExecutor.query = original_pg_query
         psycopg.connect = original_psycopg_connect
 

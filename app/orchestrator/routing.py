@@ -3,7 +3,7 @@
 import os
 import re
 import time
-from typing import Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, Optional
 from uuid import uuid4
 
 from app.planner.planner import Planner
@@ -23,6 +23,9 @@ from app.analytics.explain import explain as _explain_analytics
 from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
 from app.utils.filecache import load_yaml_cached
 
+if TYPE_CHECKING:
+    from app.cache.rt_cache import CachePolicies, RedisCache
+
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
@@ -40,14 +43,130 @@ class Orchestrator:
         planner: Planner,
         executor: PgExecutor,
         planner_metrics: Optional[Dict[str, Any]] = None,
+        cache: Optional["RedisCache"] = None,
+        cache_policies: Optional["CachePolicies"] = None,
     ):
         # `planner_metrics` mantido p/ compatibilidade de assinatura; métricas via façade.
         self._planner = planner
         self._exec = executor
+        self._cache: Optional["RedisCache"] = None
+        self._cache_policies: Optional["CachePolicies"] = None
+        self.set_cache_backend(cache, cache_policies)
+
+    def set_cache_backend(
+        self,
+        cache: Optional["RedisCache"],
+        policies: Optional["CachePolicies"],
+    ) -> None:
+        self._cache = cache
+        self._cache_policies = policies
 
     def extract_identifiers(self, question: str) -> Dict[str, Any]:
         m = TICKER_RE.search(question.upper())
         return {"ticker": m.group(1) if m else None}
+
+    def _normalize_metrics_window(
+        self, agg_params: Optional[Dict[str, Any]]
+    ) -> Optional[str]:
+        if not agg_params:
+            return None
+        window = agg_params.get("window")
+        if isinstance(window, str) and window:
+            return window
+        window_months = agg_params.get("window_months")
+        try:
+            window_months_int = int(window_months)
+        except (TypeError, ValueError):
+            window_months_int = None
+        if window_months_int and window_months_int > 0:
+            return f"months:{window_months_int}"
+        period_start = agg_params.get("period_start")
+        period_end = agg_params.get("period_end")
+        if period_start and period_end:
+            return f"range:{period_start}:{period_end}"
+        return None
+
+    def _split_window(self, window_norm: Optional[str]) -> Dict[str, Any]:
+        if not window_norm:
+            return {"window_type": None, "window_value": None}
+        raw = str(window_norm)
+        if ":" not in raw:
+            return {"window_type": raw, "window_value": None}
+        kind, remainder = raw.split(":", 1)
+        try:
+            value_int = int(remainder)
+        except (TypeError, ValueError):
+            value_int = None
+        window_value = value_int if value_int is not None else remainder
+        return {"window_type": kind, "window_value": window_value}
+
+    def _metrics_cache_denied(
+        self, policy: Dict[str, Any], context: Dict[str, Any]
+    ) -> bool:
+        for rule in policy.get("deny_if") or []:
+            if not isinstance(rule, dict):
+                continue
+            field = str(rule.get("field") or "").strip()
+            if not field:
+                continue
+            actual = context.get(field)
+            expected = rule.get("equals")
+            if expected is not None and actual != expected:
+                continue
+            if expected is None and rule.get("value") is None and actual is None:
+                continue
+            if "value" in rule:
+                target_field = rule.get("value_field") or (
+                    "window_value" if field == "window_type" else field
+                )
+                if context.get(target_field) != rule.get("value"):
+                    continue
+            return True
+        return False
+
+    def _prepare_metrics_cache_context(
+        self,
+        entity: Optional[str],
+        identifiers: Dict[str, Any],
+        agg_params: Optional[Dict[str, Any]],
+    ) -> Optional[Dict[str, Any]]:
+        if entity != "fiis_metrics":
+            return None
+        if self._cache is None or self._cache_policies is None:
+            return None
+        policy = self._cache_policies.get(entity) if self._cache_policies else None
+        if not policy or not policy.get("enabled"):
+            return None
+        template = ((policy.get("key") or {}).get("template"))
+        if not template:
+            return None
+        ticker = (identifiers or {}).get("ticker")
+        if not ticker:
+            return None
+        metric_key = (agg_params or {}).get("metric")
+        if not metric_key:
+            return None
+        window_norm = self._normalize_metrics_window(agg_params or {})
+        if not window_norm:
+            return None
+        window_info = self._split_window(window_norm)
+        context = {
+            "ticker": ticker.upper(),
+            "metric_key": metric_key,
+            "window_norm": window_norm,
+            **window_info,
+        }
+        if self._metrics_cache_denied(policy, context):
+            return None
+        ttl = int(policy.get("ttl_seconds") or 0)
+        if ttl <= 0:
+            return None
+        key = template.format(
+            ticker=context["ticker"],
+            metric_key=metric_key,
+            window_norm=window_norm,
+        )
+        return {"key": key, "ttl": ttl, "entity": entity, "context": context}
 
     def route_question(self, question: str, explain: bool = False) -> Dict[str, Any]:
         t0 = time.perf_counter()
@@ -165,6 +284,39 @@ class Orchestrator:
         except Exception:
             agg_params = None  # fallback seguro: SELECT básico (sem agregação)
 
+        cache_ctx = self._prepare_metrics_cache_context(entity, identifiers, agg_params)
+        metrics_cache_hit = False
+        metrics_cache_key: Optional[str] = None
+        metrics_cache_ttl: Optional[int] = None
+        cached_rows_formatted = None
+        cached_result_key = None
+        cache_lookup_error = False
+        entity_label = str(entity or "")
+        if cache_ctx:
+            metrics_cache_key = cache_ctx.get("key")
+            metrics_cache_ttl = cache_ctx.get("ttl")
+            try:
+                cached_payload = self._cache.get_json(metrics_cache_key)
+            except Exception:
+                cache_lookup_error = True
+                cached_payload = None
+            if not cache_lookup_error and isinstance(cached_payload, dict):
+                cached_result_key = cached_payload.get("result_key")
+                cached_rows_formatted = cached_payload.get("rows")
+                if (
+                    cached_result_key is not None
+                    and isinstance(cached_rows_formatted, list)
+                ):
+                    metrics_cache_hit = True
+                    counter("metrics_cache_hits_total", entity=entity_label)
+                    counter("cache_hits_total", entity=entity_label)
+                else:
+                    cached_rows_formatted = None
+                    cached_result_key = None
+            if cache_ctx and not metrics_cache_hit and not cache_lookup_error:
+                counter("metrics_cache_misses_total", entity=entity_label)
+                counter("cache_misses_total", entity=entity_label)
+
         # estágio de planning finalizado
         histogram(
             "sirios_planner_duration_seconds", time.perf_counter() - t0, stage="plan"
@@ -195,6 +347,11 @@ class Orchestrator:
                     "sirios_planner_entity_score", float(score), entity=str(entity)
                 )
 
+        rows_raw = []
+        rows_formatted = cached_rows_formatted if metrics_cache_hit else None
+        result_key = cached_result_key if metrics_cache_hit else None
+        return_columns = None
+
         # span do planner (atributos semânticos)
         with start_trace(
             "planner.route",
@@ -208,18 +365,43 @@ class Orchestrator:
                 "planner.score",
                 float(score) if isinstance(score, (int, float)) else 0.0,
             )
-
-            sql, params, result_key, return_columns = build_select_for_entity(
-                entity=entity,
-                identifiers=identifiers,
-                agg_params=agg_params,  # <- passa inferência para o builder
-            )
-            if isinstance(params, dict):
-                params = {**params, "entity": entity}  # etiqueta para métricas SQL
-            rows = self._exec.query(sql, params)
+            if metrics_cache_hit:
+                set_trace_attribute(span, "cache.hit", True)
+            else:
+                sql, params, result_key, return_columns = build_select_for_entity(
+                    entity=entity,
+                    identifiers=identifiers,
+                    agg_params=agg_params,  # <- passa inferência para o builder
+                )
+                if isinstance(params, dict):
+                    params = {**params, "entity": entity}  # etiqueta para métricas SQL
+                rows_raw = self._exec.query(sql, params)
+                set_trace_attribute(span, "cache.hit", False)
 
         # elapsed consolidado para reutilização (meta e explain analytics)
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+        if not metrics_cache_hit:
+            rows_formatted = format_rows(rows_raw, return_columns)
+            if (
+                cache_ctx
+                and self._cache is not None
+                and metrics_cache_key
+                and isinstance(metrics_cache_ttl, int)
+                and metrics_cache_ttl > 0
+                and rows_formatted
+                and result_key
+            ):
+                try:
+                    self._cache.set_json(
+                        metrics_cache_key,
+                        {"result_key": result_key, "rows": rows_formatted},
+                        ttl_seconds=metrics_cache_ttl,
+                    )
+                except Exception:
+                    pass
+        else:
+            rows_formatted = list(rows_formatted or [])
 
         # Explain Analytics (somente quando solicitado)
         explain_analytics_payload = None
@@ -233,8 +415,8 @@ class Orchestrator:
             }
             metrics_snapshot = {
                 "latency_ms": elapsed_ms,
-                "route_source": "planner",
-                # cache_hit: desconhecido neste ponto; manter None para não inferir
+                "route_source": "cache" if metrics_cache_hit else "planner",
+                "cache_hit": metrics_cache_hit,
             }
             explain_analytics_payload = _explain_analytics(
                 request_id=request_id,
@@ -242,7 +424,8 @@ class Orchestrator:
                 metrics=metrics_snapshot,
             )
 
-        results = {result_key: format_rows(rows, return_columns)}
+        final_rows = rows_formatted or []
+        results = {result_key: final_rows}
 
         return {
             "status": {"reason": "ok", "message": "ok"},
@@ -255,7 +438,7 @@ class Orchestrator:
                 "planner_intent": intent,
                 "planner_entity": entity,
                 "planner_score": score,
-                "rows_total": len(rows),
+                "rows_total": len(final_rows),
                 "elapsed_ms": elapsed_ms,
                 "gate": gate,
                 "aggregates": (agg_params or {}),
