@@ -1,0 +1,53 @@
+{
+  "title": "Quality · Entidades 1xN",
+  "uid": "quality-entities-1xn",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "5m",
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Volume por entidade (linhas/s)",
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+      "datasource": {"type": "prometheus", "uid": "grafana"},
+      "targets": [
+        {
+          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_imoveis\"}[5m]))",
+          "legendFormat": "fiis_imoveis",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_processos\"}[5m]))",
+          "legendFormat": "fiis_processos",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_noticias\"}[5m]))",
+          "legendFormat": "fiis_noticias",
+          "refId": "C"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "rows/s"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "type": "text",
+      "title": "Responder latency",
+      "gridPos": {"h": 4, "w": 24, "x": 0, "y": 8},
+      "datasource": null,
+      "options": {
+        "mode": "markdown",
+        "content": "// TODO: bind sirios_responder_latency_seconds para fiis_imoveis\\n// TODO: bind sirios_responder_latency_seconds para fiis_processos\\n// TODO: bind sirios_responder_latency_seconds para fiis_noticias"
+      }
+    }
+  ]
+}

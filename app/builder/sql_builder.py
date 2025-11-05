@@ -168,6 +168,22 @@ def build_select_for_entity(
     where = []
     params: Dict[str, Any] = {}
 
+    raw_period_start = None
+    raw_period_end = None
+    if agg_params and isinstance(agg_params, dict):
+        raw_period_start = agg_params.get("period_start")
+        raw_period_end = agg_params.get("period_end")
+
+    def _normalize_period_value(value: Any) -> Any:
+        if isinstance(value, dt.datetime):
+            return value.isoformat()
+        if isinstance(value, dt.date):
+            return value.isoformat()
+        return value
+
+    period_start = _normalize_period_value(raw_period_start)
+    period_end = _normalize_period_value(raw_period_end)
+
     if identifiers and identifiers.get("ticker"):
         where.append("ticker = %(ticker)s")
         params["ticker"] = identifiers["ticker"].upper()
@@ -176,6 +192,20 @@ def build_select_for_entity(
     agg_cfg = cfg.get("aggregations") or {}
     agg_enabled = bool(agg_cfg.get("enabled", False))
     default_date_field = cfg.get("default_date_field") or None
+
+    period_field = None
+    if period_start and period_end:
+        raw_field = cfg.get("period_filter_field")
+        if isinstance(raw_field, str) and raw_field.strip():
+            period_field = raw_field.strip()
+        elif entity == "fiis_noticias":
+            period_field = "published_at"
+        elif default_date_field:
+            period_field = default_date_field
+        if period_field:
+            where.append(f"{period_field} BETWEEN %(period_start)s AND %(period_end)s")
+            params["period_start"] = period_start
+            params["period_end"] = period_end
 
     def _months_window_sql(field: str, months: int) -> str:
         # Usa CURRENT_DATE - INTERVAL '<n> months' e força o campo para timestamp.
@@ -232,22 +262,41 @@ def build_select_for_entity(
         window = window or "count:1"
 
     # Whitelist de ORDER do YAML da entidade
-    order_whitelist = [str(x) for x in (cfg.get("order_by_whitelist") or [])]
+    order_whitelist = [
+        str(x).strip() for x in (cfg.get("order_by_whitelist") or []) if str(x).strip()
+    ]
     # Fallback de coluna de ordenação temporal se não houver whitelist:
     order_col = default_date_field or (
         order_whitelist[0].split()[0] if order_whitelist else None
     )
-    if order_col is None and agg == "list":
-        # sem coluna de data — não força ORDER
-        order_clause = ""
-    else:
-        # Se whitelist existir, tenta respeitar (direção vem de 'order')
+
+    def _select_order_value(preferred_direction: str) -> Optional[str]:
+        requested = None
+        if isinstance(agg_params, dict):
+            requested = agg_params.get("order_by")
+        normalized_whitelist = [entry.lower() for entry in order_whitelist]
+        if requested:
+            req_norm = str(requested).strip().lower()
+            if req_norm in normalized_whitelist:
+                idx = normalized_whitelist.index(req_norm)
+                return order_whitelist[idx]
+        if default_date_field:
+            for entry in order_whitelist:
+                parts = entry.split()
+                if len(parts) == 2 and parts[0] == default_date_field and parts[1].lower() == preferred_direction:
+                    return entry
+        for entry in order_whitelist:
+            parts = entry.split()
+            if len(parts) == 2 and parts[1].lower() == preferred_direction:
+                return entry
         if order_whitelist:
-            # mantém a primeira coluna autorizada e só varia a direção
-            base_ord_col = order_whitelist[0].split()[0]
-            order_clause = f" ORDER BY {base_ord_col} {order}"
-        else:
-            order_clause = f" ORDER BY {order_col} {order}" if order_col else ""
+            return order_whitelist[0]
+        if order_col:
+            return f"{order_col} {preferred_direction}"
+        return None
+
+    order_value = _select_order_value(order)
+    order_clause = f" ORDER BY {order_value}" if order_value else ""
 
     # WHERE + janela temporal (months)
     where_local = list(where)

@@ -1,6 +1,7 @@
 # app/formatter/rows.py
 
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
+import datetime as dt
 from typing import List, Dict, Any, Optional
 
 
@@ -25,6 +26,32 @@ def _format_decimal_br(value: Decimal, places: int) -> str:
     formatted = f"{quantized:,.{places}f}" if places else f"{quantized:,}"
     return formatted.replace(",", "_").replace(".", ",").replace("_", ".")
 
+
+DATE_COLUMNS = {"published_at", "initiation_date", "updated_at", "created_at"}
+PERCENT_COLUMNS = {"vacancy_ratio", "non_compliant_ratio", "loss_risk_pct"}
+CURRENCY_COLUMNS = {"cause_amt"}
+
+
+def _format_date(value: Any) -> Any:
+    if isinstance(value, (dt.datetime, dt.date)):
+        return value.isoformat()
+    return value
+
+
+def _format_percentage(value: Any) -> Any:
+    decimal_value = _to_decimal(value)
+    if decimal_value is None:
+        return value
+    if decimal_value.copy_abs() <= Decimal('1'):
+        decimal_value = decimal_value * Decimal(100)
+    return f"{_format_decimal_br(decimal_value, 2)}%"
+
+
+def _format_currency(value: Any) -> Any:
+    decimal_value = _to_decimal(value)
+    if decimal_value is None:
+        return value
+    return f"R$ {_format_decimal_br(decimal_value, 2)}"
 
 def format_metric_value(metric_key: str, value: Any) -> Any:
     """Formata valores de métricas fiis_metrics conforme a regra declarada."""
@@ -62,5 +89,12 @@ def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str
         metric_key = meta.get("metric_key") if isinstance(meta, dict) else None
         if metric_key and "value" in item:
             item["value"] = format_metric_value(metric_key, item.get("value"))
+        for col_name, col_value in list(item.items()):
+            if col_name in DATE_COLUMNS and col_value is not None:
+                item[col_name] = _format_date(col_value)
+            elif col_name in PERCENT_COLUMNS and col_value is not None:
+                item[col_name] = _format_percentage(col_value)
+            elif col_name in CURRENCY_COLUMNS and col_value is not None:
+                item[col_name] = _format_currency(col_value)
         out.append(item)
     return out

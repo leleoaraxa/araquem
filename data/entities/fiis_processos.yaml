@@ -1,0 +1,98 @@
+entity: fiis_processos
+private: false
+description: Processos judiciais associados a FIIs (dados 1×N com risco e andamento)
+
+d_minus: 1
+
+identifiers:
+  - name: ticker
+    description: Ticker do FII normalizado (AAAA11)
+
+default_date_field: updated_at
+
+presentation:
+  result_key: processos_fii
+  return_columns:
+    - ticker
+    - process_number
+    - judgment
+    - instance
+    - initiation_date
+    - cause_amt
+    - process_parts
+    - loss_risk_pct
+    - main_facts
+    - loss_impact_analysis
+    - created_at
+    - updated_at
+
+columns:
+  - name: ticker
+    alias: Código FII
+    description: Código do fundo na B3 (AAAA11).
+
+  - name: process_number
+    alias: Número do processo
+    description: Identificador do processo judicial.
+
+  - name: judgment
+    alias: Julgamento
+    description: Situação ou fase de julgamento do processo.
+
+  - name: instance
+    alias: Instância
+    description: Instância em que o processo tramita.
+
+  - name: initiation_date
+    alias: Data de início
+    description: Data de distribuição ou início do processo.
+
+  - name: cause_amt
+    alias: Valor da causa
+    description: Valor envolvido na causa.
+
+  - name: process_parts
+    alias: Partes
+    description: Partes envolvidas no processo.
+
+  - name: loss_risk_pct
+    alias: Risco de perda (%)
+    description: Percentual estimado de risco de perda.
+
+  - name: main_facts
+    alias: Fatos principais
+    description: Principais fatos alegados ou descritos no processo.
+
+  - name: loss_impact_analysis
+    alias: Análise de impacto
+    description: Avaliação do impacto potencial do processo.
+
+  - name: created_at
+    alias: Criado em
+    description: Data de criação do registro.
+
+  - name: updated_at
+    alias: Atualizado em
+    description: Data da última atualização do registro.
+
+ask:
+  intents: [cadastro]
+  keywords: [processo, processos, judicial, judiciais, andamento, status, litígio, litgio, causa, risco]
+  synonyms:
+    ticker: [ativo, papel, fundo, fii]
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+
+order_by_whitelist:
+  - updated_at desc
+  - initiation_date desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc
