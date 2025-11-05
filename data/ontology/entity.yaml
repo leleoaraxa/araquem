@@ -43,9 +43,7 @@ intents:
         - url
         - oficial
         - imoveis
-        - imóvel
         - propriedades
-        - propriedade
         - processos
         - processo
         - status
@@ -62,8 +60,8 @@ intents:
         - cnpj do
         - administrador do
         - site do
-        - nome de pregrao do
-        - nome de pregrao b3 do
+        - nome de pregão do
+        - nome de pregão b3 do
         - nome de exibicao do
         - classificacao do
         - setor do
@@ -77,7 +75,6 @@ intents:
         - numero de cotas emitidas do
         - quantos cotistas tem o
         - url oficial do
-        - imóveis do
         - propriedades do
         - quais imóveis do
         - processos do
@@ -177,19 +174,16 @@ intents:
     tokens:
       include:
         - noticia
-        - notícias
+        - noticias
         - materia
         - reportagem
-        - atualização
         - atualizacao
-        - últimas
         - ultimas
       exclude: []
     phrases:
       include:
         - notícias do
         - ultimas do
-        - últimas do
         - novidades do
       exclude: []
     entities: [fiis_noticias]
@@ -235,21 +229,17 @@ intents:
         - dy
         - "dividend yield"
         - "dividendo yield"
-        - "preço médio"
         - "preco medio"
         - "soma de dividendos"
         - "soma dividendos"
         - "soma proventos"
         - "quantidade de dividendos"
         - "contagem de dividendos"
-        - "média de preço"
         - "media de preco"
         - pagamentos
         - pagamento
         - distribuicoes
-        - distribuições
         - distribuicao
-        - distribuição
         - 3m
         - 6m
         - 12m
@@ -259,18 +249,13 @@ intents:
       include:
         - "soma de dividendos"
         - "soma de dividendos do"
-        - "preço médio"
         - "preco medio"
         - "qual o dy"
         - "qual o dy do"
-        - "dy médio"
-        - "dy médio do"
         - "dy medio do"
-        - "preço médio do"
         - "preco medio do"
-        - "últimos pagamentos"
+        - "ultimos pagamentos"
         - "ultimas distribuicoes"
-        - "últimas distribuições"
       exclude: []
     entities: [fiis_metrics]
 

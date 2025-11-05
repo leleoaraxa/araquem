@@ -36,7 +36,7 @@ columns:
 
   - name: asset_class
     alias: Classe do ativo
-    description: Classe do ativo (ex. logístico, corporativo, varejo).
+    description: Classe do ativo (ex. Imóveis para renda acabados, Imóveis para renda em construção).
 
   - name: asset_address
     alias: Endereço
