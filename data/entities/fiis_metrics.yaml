@@ -50,7 +50,10 @@ metrics:
           d.traded_until_date,
           ROW_NUMBER() OVER (
             PARTITION BY d.ticker
-            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+            ORDER BY
+              d.payment_date DESC,
+              d.traded_until_date DESC,
+              COALESCE((d.updated_at)::timestamp, (d.created_at)::timestamp, d.payment_date::timestamp) DESC
           ) AS rn
         FROM fiis_dividendos d
         WHERE d.ticker = {{ticker}}
@@ -81,7 +84,10 @@ metrics:
           d.traded_until_date,
           ROW_NUMBER() OVER (
             PARTITION BY d.ticker
-            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+            ORDER BY
+              d.payment_date DESC,
+              d.traded_until_date DESC,
+              COALESCE((d.updated_at)::timestamp, (d.created_at)::timestamp, d.payment_date::timestamp) DESC
           ) AS rn
         FROM fiis_dividendos d
         WHERE d.ticker = {{ticker}}
@@ -128,7 +134,10 @@ metrics:
           d.traded_until_date,
           ROW_NUMBER() OVER (
             PARTITION BY d.ticker
-            ORDER BY d.payment_date DESC, d.traded_until_date DESC, COALESCE(d.updated_at, d.created_at, d.payment_date::timestamp) DESC
+            ORDER BY
+              d.payment_date DESC,
+              d.traded_until_date DESC,
+              COALESCE((d.updated_at)::timestamp, (d.created_at)::timestamp, d.payment_date::timestamp) DESC
           ) AS rn
         FROM fiis_dividendos d
         WHERE d.ticker = {{ticker}}
@@ -159,7 +168,7 @@ metrics:
           SELECT p.close_price
           FROM fiis_precos p
           WHERE p.ticker = ld.ticker
-            AND p.traded_at <= COALESCE(ld.traded_until_date, ld.payment_date)
+            AND p.traded_at::date <= COALESCE((ld.traded_until_date)::date, (ld.payment_date)::date)
           ORDER BY p.traded_at DESC
           LIMIT 1
         ) px ON TRUE

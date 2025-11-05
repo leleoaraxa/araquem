@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-04T21:08:02Z",
+  "generated_at": "2025-11-05T11:11:29Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -34,8 +34,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 3,
-      "sha_all": "cba89f733ef8ad786710f7dcc89eacf3050706c2d44e935e7649389b37f55fb5"
+      "chunks": 4,
+      "sha_all": "38a508a7ab35989e8f4199363c8b601154eaa7e8541670f7dd474509c973e032"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -90,7 +90,7 @@
         "policy"
       ],
       "chunks": 1,
-      "sha_all": "9e3f671171e992029f4efd2c851c8966b87016be4c9f8247f29849059a1a7f03"
+      "sha_all": "fd48ce7c7494ef20b41414c6d7fa88c762769e6f4bd50aa2bbb8ada51b9c8c24"
     },
     {
       "id": "ops-planner-thresholds",
@@ -131,8 +131,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 12,
-      "sha_all": "85858fd0341a768137804567e6657153402c7759c20dcb471902d2d129c83524"
+      "chunks": 13,
+      "sha_all": "ee3cf29e63a39049934f3270beaf6d4304a38a170cf1d0b9f967529435f5b20e"
     },
     {
       "id": "q-projection-cadastro",
@@ -190,5 +190,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762290534
+  "last_refresh_epoch": 1762341138
 }
