@@ -178,8 +178,9 @@ def build_select_for_entity(
     default_date_field = cfg.get("default_date_field") or None
 
     def _months_window_sql(field: str, months: int) -> str:
-        # Usa CURRENT_DATE - INTERVAL '<n> months'
-        return f"{field} >= (CURRENT_DATE - INTERVAL '{months} months')"
+        # Usa CURRENT_DATE - INTERVAL '<n> months' e força o campo para timestamp.
+        # Alguns views expõem datas como texto; o cast evita comparações text >= timestamp.
+        return f"({field})::timestamp >= (CURRENT_DATE - INTERVAL '{months} months')"
 
     def _apply_window(where_list: List[str], window: Optional[str]) -> None:
         if not window or not default_date_field:

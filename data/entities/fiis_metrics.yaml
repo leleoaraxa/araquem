@@ -120,7 +120,7 @@ metrics:
         {{period_end}}::date AS period_end
       FROM fiis_precos p
       WHERE p.ticker = {{ticker}}
-        AND p.traded_at BETWEEN {{period_start}} AND {{period_end}}
+        AND p.traded_at::timestamp BETWEEN {{period_start}}::timestamp AND {{period_end}}::timestamp
       GROUP BY p.ticker
 
   - name: dy_avg

@@ -37,7 +37,9 @@ def _run_diag(monkeypatch, diag_client, capsys, question: str, stop_after: int =
 
     def _diag_query(self, sql, params):
         rendered = sql
-        for key, value in sorted((params or {}).items(), key=lambda item: len(item[0]), reverse=True):
+        for key, value in sorted(
+            (params or {}).items(), key=lambda item: len(item[0]), reverse=True
+        ):
             placeholder = f"%({key})s"
             rendered = rendered.replace(placeholder, _quote(value))
         print("=== RENDERED SQL ===")

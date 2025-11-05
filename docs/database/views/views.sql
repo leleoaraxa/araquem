@@ -16,6 +16,9 @@ DROP VIEW IF EXISTS fiis_cadastro CASCADE;
 DROP VIEW IF EXISTS fiis_dividendos CASCADE;
 DROP VIEW IF EXISTS fiis_precos CASCADE;
 DROP VIEW IF EXISTS fiis_rankings CASCADE;
+DROP VIEW IF EXISTS fiis_imoveis CASCADE;
+DROP VIEW IF EXISTS fiis_processos CASCADE;
+DROP VIEW IF EXISTS fiis_noticias CASCADE;
 DROP VIEW IF EXISTS view_fiis_financials CASCADE;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info CASCADE;
 
@@ -500,6 +503,67 @@ SELECT ticker, traded_until_date, payment_date, dividend_amt, created_at, update
 FROM view_fiis_history_dividends;
 
 ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_imoveis
+-- =====================================================================
+CREATE VIEW fiis_imoveis AS
+SELECT
+    ticker,
+    asset_name,
+    asset_class,
+    asset_address,
+    total_area,
+    units_count,
+    vacancy_ratio,
+    non_compliant_ratio,
+    assets_status,
+    created_at,
+    updated_at
+FROM view_fiis_history_assets;
+
+ALTER VIEW public.fiis_imoveis OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_processos
+-- =====================================================================
+CREATE VIEW fiis_processos AS
+SELECT
+    ticker,
+    process_number,
+    judgment,
+    instance,
+	initiation_date,
+	cause_amt,
+    process_parts,
+    loss_risk_pct,
+    main_facts,
+    loss_impact_analysis,
+    created_at,
+    updated_at
+FROM view_fiis_history_judicial;
+
+
+ALTER VIEW public.fiis_processos OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_noticias
+-- =====================================================================
+CREATE VIEW fiis_noticias AS
+SELECT
+    ticker,
+    source,
+    title,
+    tags,
+    description,
+    url,
+	image_url,
+	published_at,
+	created_at,
+    updated_at
+FROM view_fiis_history_news;
+
+ALTER VIEW public.fiis_noticias OWNER TO edge_user;
 
 -- =====================================================================
 -- VIEW: view_fiis_financials
