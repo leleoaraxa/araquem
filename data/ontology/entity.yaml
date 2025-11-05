@@ -43,6 +43,7 @@ intents:
         - url
         - oficial
         - imoveis
+        - imovel
         - propriedades
         - processos
         - processo
@@ -75,16 +76,26 @@ intents:
         - numero de cotas emitidas do
         - quantos cotistas tem o
         - url oficial do
-        - propriedades do
+        # —— imóveis
+        - imoveis do
+        - imóveis do
+        - quais imoveis do
         - quais imóveis do
+        - propriedades do
+        - quais propriedades do
+        - lista de propriedades do
+        # —— processos
         - processos do
+        - processos judiciais do
         - status dos processos do
+        - andamento dos processos do
       exclude:
         - preco do
         - cotacao do
         - dividendo do
         - ranking de
     entities: [fiis_cadastro, fiis_imoveis, fiis_processos]
+
 
   - name: precos
     tokens:
@@ -110,6 +121,7 @@ intents:
         - top
         - melhores
         - piores
+        - media           # <— evita “média de preço” cair aqui
     phrases:
       include:
         - preco do
@@ -122,10 +134,13 @@ intents:
         - minima do
         - variacao diaria
       exclude:
+        - "media de preco"
+        - "preco medio"
         - ranking de
         - top fiis por
         - dividendo do
     entities: [fiis_precos]
+
 
   - name: dividendos
     tokens:
@@ -149,6 +164,18 @@ intents:
         - preco
         - cotacao
         - ranking
+        - soma
+        - somatorio
+        - total
+        - totais
+        - contagem
+        - quantos
+        - quantidade
+        - media
+        - "preco medio"
+        - "media de preco"
+        - "dividend yield"
+        - dy
     phrases:
       include:
         - dividendo do
@@ -165,10 +192,16 @@ intents:
         - data ex
         - quando paga
       exclude:
-        - preco do
-        - cotacao do
+        - "soma de dividendos"
+        - "dividendos totais"
+        - "contagem de pagamentos"
+        - "preco medio"
+        - "media de preco"
+        - "qual o dy"
+        - "dy medio"
         - ranking de
     entities: [fiis_dividendos]
+
 
   - name: noticias
     tokens:
@@ -226,20 +259,27 @@ intents:
     tokens:
       include:
         - soma
-        - dy
+        - total
+        - totais
+        - somatorio
         - "dividend yield"
         - "dividendo yield"
+        - dy
         - "preco medio"
+        - "media de preco"
         - "soma de dividendos"
         - "soma dividendos"
         - "soma proventos"
         - "quantidade de dividendos"
         - "contagem de dividendos"
-        - "media de preco"
         - pagamentos
         - pagamento
         - distribuicoes
         - distribuicao
+        - quantos
+        - quantidade
+        - contagem
+        - media
         - 3m
         - 6m
         - 12m
@@ -247,13 +287,19 @@ intents:
       exclude: []
     phrases:
       include:
+        - "quanto de dividendos"
+        - "dividendos totais"
         - "soma de dividendos"
         - "soma de dividendos do"
-        - "preco medio"
+        - "soma de proventos"
+        - "contagem de pagamentos"
+        - "quantos pagamentos"
+        - "quantas distribuicoes"
+        - "preco medio do"
+        - "media de preco do"
         - "qual o dy"
         - "qual o dy do"
         - "dy medio do"
-        - "preco medio do"
         - "ultimos pagamentos"
         - "ultimas distribuicoes"
       exclude: []
