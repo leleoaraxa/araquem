@@ -71,7 +71,7 @@ columns:
     description: Data da última atualização do registro.
 
 ask:
-  intents: [cadastro]
+  intents: [cadastro, imoveis]
   keywords: [imovel, imóveis, propriedades, propriedade, ativos, portfolio, vacancia, ocupacao, unidades]
   synonyms:
     ticker: [ativo, papel, fundo, fii]

@@ -76,7 +76,7 @@ columns:
     description: Data da última atualização do registro.
 
 ask:
-  intents: [cadastro]
+  intents: [cadastro, processos]
   keywords: [processo, processos, judicial, judiciais, andamento, status, litígio, litgio, causa, risco]
   synonyms:
     ticker: [ativo, papel, fundo, fii]

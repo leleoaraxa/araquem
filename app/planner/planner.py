@@ -185,7 +185,7 @@ class Planner:
             }
 
         # --- configurações RAG ---
-        rag_cfg = (_THRESH_DEFAULTS.get("planner", {}).get("rag") or {})
+        rag_cfg = _THRESH_DEFAULTS.get("planner", {}).get("rag") or {}
         cfg = _load_thresholds()
         planner_cfg = cfg.get("planner") or {}
         rag_cfg = planner_cfg.get("rag") or rag_cfg
@@ -222,9 +222,7 @@ class Planner:
                     model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),
                 )
                 qvec = embedder.embed([question])[0]
-                results = (
-                    store.search_by_vector(qvec, k=rag_k, min_score=rag_min_score) or []
-                )
+                results = store.search_by_vector(qvec, k=rag_k) or []
                 rag_raw_results = results
                 rag_hits_count = len(results) if results else 0
                 from app.rag.hints import entity_hints_from_rag
@@ -265,9 +263,11 @@ class Planner:
             base = float(intent_scores.get(it.name, 0.0))
             entity_name = it.entities[0] if it.entities else None
             intent_entities[it.name] = entity_name
-            rag_signal = float(
-                rag_entity_hints.get((entity_name or "").strip(), 0.0)
-            ) if entity_name else 0.0
+            rag_signal = (
+                float(rag_entity_hints.get((entity_name or "").strip(), 0.0))
+                if entity_name
+                else 0.0
+            )
             intent_rag_signals[it.name] = rag_signal
             if rag_fusion_applied:
                 if re_rank_mode == "additive":
@@ -275,7 +275,9 @@ class Planner:
                     final_score = base + fusion_weight * rag_signal
                 else:
                     # score_final = (1 - w) * base + w * rag_sig
-                    final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                    final_score = (
+                        base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                    )
             else:
                 final_score = base
             fused_scores[it.name] = final_score
@@ -374,7 +376,9 @@ class Planner:
         ordered_final = sorted(fused_scores.items(), key=lambda kv: kv[1], reverse=True)
         gap_final = 0.0
         if len(ordered_final) >= 2:
-            gap_final = float((ordered_final[0][1] or 0.0) - (ordered_final[1][1] or 0.0))
+            gap_final = float(
+                (ordered_final[0][1] or 0.0) - (ordered_final[1][1] or 0.0)
+            )
         elif len(ordered_final) == 1:
             gap_final = float(ordered_final[0][1] or 0.0)
 
