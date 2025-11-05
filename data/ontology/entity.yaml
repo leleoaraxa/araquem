@@ -42,6 +42,14 @@ intents:
         - cotistas
         - url
         - oficial
+        - imoveis
+        - imóvel
+        - propriedades
+        - propriedade
+        - processos
+        - processo
+        - status
+        - andamento
       exclude:
         - preco
         - precos
@@ -69,12 +77,17 @@ intents:
         - numero de cotas emitidas do
         - quantos cotistas tem o
         - url oficial do
+        - imóveis do
+        - propriedades do
+        - quais imóveis do
+        - processos do
+        - status dos processos do
       exclude:
         - preco do
         - cotacao do
         - dividendo do
         - ranking de
-    entities: [fiis_cadastro]
+    entities: [fiis_cadastro, fiis_imoveis, fiis_processos]
 
   - name: precos
     tokens:
@@ -159,6 +172,27 @@ intents:
         - cotacao do
         - ranking de
     entities: [fiis_dividendos]
+
+  - name: noticias
+    tokens:
+      include:
+        - noticia
+        - notícias
+        - materia
+        - reportagem
+        - atualização
+        - atualizacao
+        - últimas
+        - ultimas
+      exclude: []
+    phrases:
+      include:
+        - notícias do
+        - ultimas do
+        - últimas do
+        - novidades do
+      exclude: []
+    entities: [fiis_noticias]
 
   - name: rankings
     tokens:

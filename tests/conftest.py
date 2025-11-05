@@ -3,6 +3,7 @@
 import os
 import calendar
 import datetime as dt
+from decimal import Decimal
 from typing import Dict, List, Optional
 
 import pytest
@@ -202,6 +203,54 @@ def _test_infra():
                     "payment_date": "2024-01-10",
                     "dividend_amt": 1.23,
                     "traded_until_date": "2023-12-28",
+                }
+            ]
+        if entity == "fiis_imoveis":
+            return [
+                {
+                    "ticker": ticker,
+                    "asset_name": "Galpão Alpha",
+                    "asset_class": "Logístico",
+                    "asset_address": "São Paulo - SP",
+                    "total_area": 12500,
+                    "units_count": 4,
+                    "vacancy_ratio": 0.075,
+                    "non_compliant_ratio": 0.02,
+                    "assets_status": "Operacional",
+                    "created_at": dt.datetime(2024, 1, 5, 9, 0, 0),
+                    "updated_at": dt.datetime(2024, 1, 6, 18, 30, 0),
+                }
+            ]
+        if entity == "fiis_processos":
+            return [
+                {
+                    "ticker": ticker,
+                    "process_number": "1234567-89.2023.8.26.0100",
+                    "judgment": "Em análise",
+                    "instance": "2ª instância",
+                    "initiation_date": dt.date(2023, 6, 1),
+                    "cause_amt": Decimal('1200000.50'),
+                    "process_parts": "FII vs Locatário",
+                    "loss_risk_pct": 0.35,
+                    "main_facts": "Revisão de contrato de aluguel",
+                    "loss_impact_analysis": "Impacto moderado no fluxo de caixa",
+                    "created_at": dt.datetime(2023, 6, 2, 10, 15, 0),
+                    "updated_at": dt.datetime(2024, 1, 7, 11, 45, 0),
+                }
+            ]
+        if entity == "fiis_noticias":
+            return [
+                {
+                    "ticker": ticker,
+                    "source": "Valor Econômico",
+                    "title": "FII anuncia nova aquisição",
+                    "tags": "aquisição, portfólio",
+                    "description": "Fundo compra novo imóvel logístico em SP",
+                    "url": "https://example.com/noticia",
+                    "image_url": "https://example.com/imagem.jpg",
+                    "published_at": dt.datetime(2024, 1, 8, 14, 30, 0),
+                    "created_at": dt.datetime(2024, 1, 8, 14, 35, 0),
+                    "updated_at": dt.datetime(2024, 1, 8, 15, 0, 0),
                 }
             ]
         if entity == "fiis_metrics":

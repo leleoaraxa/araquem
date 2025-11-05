@@ -570,6 +570,66 @@
       "question": "qual o dividend yield médio do HGRU11",
       "expected_intent": "metricas",
       "expected_entity": "fiis_metrics"
+    },
+    {
+      "question": "imóveis do HGLG11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "question": "quais propriedades do KNRI11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "question": "imóveis do KNRI11 em SP",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "question": "lista de propriedades do VISC11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "question": "processos do VISC11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "question": "status dos processos do HGRU11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "question": "andamento dos processos do MXRF11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "question": "processos judiciais do XPLG11",
+      "expected_intent": "cadastro",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "question": "notícias do MXRF11",
+      "expected_intent": "noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "últimas do XPLG11",
+      "expected_intent": "noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "notícias recentes do KNRI11",
+      "expected_intent": "noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "as notícias do HGLG11",
+      "expected_intent": "noticias",
+      "expected_entity": "fiis_noticias"
     }
   ]
 }
