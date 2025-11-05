@@ -1,10 +1,13 @@
-# app/builder/sql_builder.py
+"""SQL builder guided exclusively by entity YAML configuration."""
 
 from pathlib import Path
 import datetime as dt
-from typing import Dict, Tuple, List, Any, Optional
+import logging
+from typing import Dict, Tuple, List, Any, Optional, Sequence
 
 from app.utils.filecache import load_yaml_cached
+
+logger = logging.getLogger(__name__)
 
 ENTITIES_DIR = Path("data/entities")
 _METRIC_PLACEHOLDERS = {
@@ -27,7 +30,141 @@ _METRIC_COLUMN_TYPES = {
 
 def _load_entity_yaml(entity: str) -> dict:
     ypath = ENTITIES_DIR / f"{entity}.yaml"
-    return load_yaml_cached(str(ypass := ypath)) or {}
+    data = load_yaml_cached(str(ypass := ypath))
+    if not isinstance(data, dict) or not data:
+        message = f"Entity YAML not found or empty for '{entity}' at {ypass}"
+        logger.error(message)
+        raise ValueError(message)
+    return data
+
+
+def _require_dict(config: dict, path: Sequence[str], entity: str) -> dict:
+    current: Any = config
+    for key in path:
+        if not isinstance(current, dict) or key not in current:
+            joined = ".".join(path)
+            message = f"Missing key '{joined}' for entity '{entity}'"
+            logger.error(message)
+            raise ValueError(message)
+        current = current[key]
+    if not isinstance(current, dict):
+        joined = ".".join(path)
+        message = f"Expected dict at '{joined}' for entity '{entity}'"
+        logger.error(message)
+        raise ValueError(message)
+    return current
+
+
+def _require_list(config: dict, path: Sequence[str], entity: str) -> List[Any]:
+    parent = _require_dict(config, path[:-1], entity) if len(path) > 1 else config
+    key = path[-1]
+    value = parent.get(key)
+    if not isinstance(value, list) or not value:
+        joined = ".".join(path)
+        message = f"Expected non-empty list at '{joined}' for entity '{entity}'"
+        logger.error(message)
+        raise ValueError(message)
+    return list(value)
+
+
+def _require_str(config: dict, path: Sequence[str], entity: str) -> str:
+    parent = _require_dict(config, path[:-1], entity) if len(path) > 1 else config
+    key = path[-1]
+    value = parent.get(key)
+    if not isinstance(value, str) or not value.strip():
+        joined = ".".join(path)
+        message = f"Expected non-empty string at '{joined}' for entity '{entity}'"
+        logger.error(message)
+        raise ValueError(message)
+    return value.strip()
+
+
+def _normalize_period_value(value: Any) -> Any:
+    if isinstance(value, dt.datetime):
+        return value.isoformat()
+    if isinstance(value, dt.date):
+        return value.isoformat()
+    return value
+
+
+def _parse_window(window: Optional[str]) -> Tuple[Optional[str], Optional[int]]:
+    if not window:
+        return None, None
+    try:
+        kind, raw = str(window).split(":", 1)
+    except ValueError:
+        return None, None
+    try:
+        value = int(raw)
+    except ValueError:
+        value = None
+    return kind, value
+
+
+def _normalize_limit(limit: Any) -> Optional[int]:
+    if limit is None:
+        return None
+    try:
+        value = int(limit)
+    except (TypeError, ValueError):
+        return None
+    return value if value > 0 else None
+
+
+def _infer_sql_type_from_name(column: str) -> Optional[str]:
+    lower = (column or "").lower()
+    if lower.endswith("_at"):
+        return "timestamp"
+    if lower.endswith("_date"):
+        return "date"
+    if lower.endswith("_amt") or lower.endswith("_price"):
+        return "numeric"
+    if lower.endswith("_pct") or lower.endswith("_ratio"):
+        return "numeric"
+    return None
+
+
+def _null_expression(column: str) -> str:
+    inferred = _infer_sql_type_from_name(column)
+    return f"NULL::{inferred}" if inferred else "NULL"
+
+
+def _literal_expression(column: str) -> str:
+    inferred = _infer_sql_type_from_name(column)
+    cast = f"::{inferred}" if inferred else ""
+    return f"%({column})s{cast}"
+
+
+def _select_order_value(
+    requested: Any,
+    preferred_direction: Optional[str],
+    whitelist: List[str],
+    default_column: Optional[str] = None,
+) -> Optional[str]:
+    if not whitelist:
+        return None
+    normalized = {entry.lower(): entry for entry in whitelist}
+    if requested:
+        key = str(requested).strip().lower()
+        if key in normalized:
+            return normalized[key]
+    if default_column:
+        for entry in whitelist:
+            parts = entry.strip().split()
+            if len(parts) == 2 and parts[0] == default_column:
+                if not preferred_direction or parts[1].lower() == preferred_direction:
+                    return entry
+        for entry in whitelist:
+            parts = entry.strip().split()
+            if len(parts) == 2 and parts[0] == default_column:
+                return entry
+    if preferred_direction:
+        direction = preferred_direction.lower()
+        for entry in whitelist:
+            parts = entry.strip().split()
+            if len(parts) == 2 and parts[1].lower() == direction:
+                return entry
+    return whitelist[0]
 
 
 def _months_from_window(window: Optional[str], default: int = 12) -> int:
@@ -91,7 +228,6 @@ def _build_metrics_sql(
     elif window_kind == "count":
         if window_value is None and window_months:
             window_value = window_months
-        # Count não usa window_months como cardinalidade obrigatória
         if window_months:
             try:
                 window_months = int(window_months)
@@ -148,6 +284,65 @@ def _build_metrics_sql(
     return sql, params, result_key, return_cols
 
 
+def _build_numeric_aggregation_sql(
+    *,
+    entity: str,
+    function: str,
+    return_cols: List[str],
+    view_name: str,
+    where_sql: str,
+    order_clause: str,
+    window_kind: Optional[str],
+    window_value: Optional[int],
+    params: Dict[str, Any],
+) -> str:
+    if len(return_cols) < 3:
+        message = ("Entity '{entity}' requires at least 3 return_columns for aggregation")
+        logger.error(message)
+        raise ValueError(message)
+
+    value_index = 2
+    value_column = return_cols[value_index]
+    select_parts: List[str] = []
+    group_by: List[str] = []
+
+    first_column = return_cols[0]
+    if first_column in params:
+        select_parts.append(f"{_literal_expression(first_column)} AS {first_column}")
+    else:
+        select_parts.append(f"{first_column} AS {first_column}")
+        group_by.append(first_column)
+
+    for idx, column in enumerate(return_cols[1:], start=1):
+        if idx == value_index:
+            select_parts.append(f"{function}({value_column}) AS {column}")
+        else:
+            select_parts.append(f"{_null_expression(column)} AS {column}")
+
+    count_limit = (
+        window_value
+        if window_kind == "count" and isinstance(window_value, int) and window_value > 0
+        else None
+    )
+
+    if count_limit:
+        order_segment = order_clause if order_clause else ""
+        subquery = (
+            f"(SELECT {', '.join(return_cols)} FROM {view_name}{where_sql}"
+            f"{order_segment} LIMIT {count_limit}) windowed"
+        )
+        from_sql = f" FROM {subquery}"
+        literal_group = first_column in params
+    else:
+        from_sql = f" FROM {view_name}{where_sql}"
+        literal_group = False
+
+    sql = "SELECT " + ", ".join(select_parts) + from_sql
+    if not literal_group and group_by:
+        sql += " GROUP BY " + ", ".join(group_by)
+    return sql
+
+
 def build_select_for_entity(
     entity: str,
     identifiers: Dict[str, Any],
@@ -161,213 +356,150 @@ def build_select_for_entity(
     - Suporte a compute-on-read (aggregations.* no YAML + infer_params).
     """
     cfg = _load_entity_yaml(entity)
-    result_key: str = cfg["presentation"]["result_key"]
-    return_cols: List[str] = cfg["presentation"]["return_columns"]
+    result_key = _require_str(cfg, ["presentation", "result_key"], entity)
+    return_cols = _require_list(cfg, ["presentation", "return_columns"], entity)
 
-    view_name = entity  # entidade lógica == view real
-    where = []
+    view_name = entity
     params: Dict[str, Any] = {}
+    where_terms: List[str] = []
 
-    raw_period_start = None
-    raw_period_end = None
-    if agg_params and isinstance(agg_params, dict):
-        raw_period_start = agg_params.get("period_start")
-        raw_period_end = agg_params.get("period_end")
+    identifiers = identifiers or {}
+    identifier_specs = cfg.get("identifiers") or []
+    identifier_names = [
+        spec.get("name")
+        for spec in identifier_specs
+        if isinstance(spec, dict) and spec.get("name")
+    ]
+    for name in identifier_names:
+        value = identifiers.get(name)
+        if value is None or value == "":
+            continue
+        if name == "ticker" and isinstance(value, str):
+            value = value.upper()
+        params[name] = value
+        where_terms.append(f"{name} = %({name})s")
 
-    def _normalize_period_value(value: Any) -> Any:
-        if isinstance(value, dt.datetime):
-            return value.isoformat()
-        if isinstance(value, dt.date):
-            return value.isoformat()
-        return value
-
-    period_start = _normalize_period_value(raw_period_start)
-    period_end = _normalize_period_value(raw_period_end)
-
-    if identifiers and identifiers.get("ticker"):
-        where.append("ticker = %(ticker)s")
-        params["ticker"] = identifiers["ticker"].upper()
-
-    # ---------- Aggregations (compute-on-read) ----------
-    agg_cfg = cfg.get("aggregations") or {}
-    agg_enabled = bool(agg_cfg.get("enabled", False))
+    agg_params = agg_params if isinstance(agg_params, dict) else {}
+    is_metrics_request = (agg_params.get("agg") or "").lower() == "metrics"
+    period_start = _normalize_period_value(agg_params.get("period_start"))
+    period_end = _normalize_period_value(agg_params.get("period_end"))
     default_date_field = cfg.get("default_date_field") or None
 
-    period_field = None
-    if period_start and period_end:
-        raw_field = cfg.get("period_filter_field")
-        if isinstance(raw_field, str) and raw_field.strip():
-            period_field = raw_field.strip()
-        elif entity == "fiis_noticias":
-            period_field = "published_at"
-        elif default_date_field:
-            period_field = default_date_field
-        if period_field:
-            where.append(f"{period_field} BETWEEN %(period_start)s AND %(period_end)s")
-            params["period_start"] = period_start
-            params["period_end"] = period_end
+    if (period_start or period_end) and not is_metrics_request:
+        if not default_date_field:
+            message = ("Entity '{entity}' missing default_date_field for period filtering")
+            logger.error(message)
+            raise ValueError(message)
+        if not period_start or not period_end:
+            message = ("Entity '{entity}' requires both period_start and period_end for filtering")
+            logger.error(message)
+            raise ValueError(message)
+        params["period_start"] = period_start
+        params["period_end"] = period_end
+        where_terms.append(
+            f"{default_date_field} BETWEEN %(period_start)s AND %(period_end)s"
+        )
 
-    def _months_window_sql(field: str, months: int) -> str:
-        # Usa CURRENT_DATE - INTERVAL '<n> months' e força o campo para timestamp.
-        # Alguns views expõem datas como texto; o cast evita comparações text >= timestamp.
-        return f"({field})::timestamp >= (CURRENT_DATE - INTERVAL '{months} months')"
+    agg_cfg = cfg.get("aggregations") or {}
+    agg_enabled = bool(agg_cfg.get("enabled", False))
+    agg_defaults = agg_cfg.get("defaults") or {}
+    list_defaults = agg_defaults.get("list") or {}
+    default_limit = _normalize_limit(list_defaults.get("limit"))
+    default_order_dir_raw = list_defaults.get("order")
+    default_order_dir = (
+        default_order_dir_raw.strip().lower()
+        if isinstance(default_order_dir_raw, str) and default_order_dir_raw.strip()
+        else None
+    )
 
-    def _apply_window(where_list: List[str], window: Optional[str]) -> None:
-        if not window or not default_date_field:
-            return
-        try:
-            kind, raw = str(window).split(":", 1)
-            n = int(raw)
-        except Exception:
-            return
-        if kind == "months":
-            where_list.append(_months_window_sql(default_date_field, n))
-        # kind == "count" é tratado na camada de ORDER/LIMIT (subqueries)
+    order_by_whitelist = [
+        str(entry).strip()
+        for entry in (cfg.get("order_by_whitelist") or [])
+        if str(entry).strip()
+    ]
 
-    def _entity_is_dividendos() -> bool:
-        return entity == "fiis_dividendos"
-
-    # Compute-on-read metrics: custom SQLs por métrica
-    if cfg.get("metrics") and (agg_params or {}).get("agg") == "metrics":
-        metrics_cfg = cfg.get("metrics") or []
+    metrics_cfg = cfg.get("metrics") or []
+    if metrics_cfg and is_metrics_request:
         return _build_metrics_sql(
             metrics_cfg,
             identifiers or {},
-            agg_params or {},
+            agg_params,
             result_key,
             return_cols,
         )
 
-    # Campos base (p/ manter contract de return_columns mesmo em avg/sum)
-    base_cols_sql = ", ".join(return_cols)
-
-    # Escolha de via: simples SELECT (sem agg) OU com agg_params
-    if not (agg_enabled and agg_params and isinstance(agg_params, dict)):
-        where_sql = f" WHERE {' AND '.join(where)}" if where else ""
-        cols_sql = base_cols_sql
-        sql = f"SELECT {cols_sql} FROM {view_name}{where_sql} LIMIT 100"
-        return sql, params, result_key, return_cols
-
-    # Temos parâmetros inferidos
-    agg = (agg_params.get("agg") or "").lower()
+    agg_mode = (agg_params.get("agg") or "").lower()
     window = agg_params.get("window")
-    order = (agg_params.get("order") or "desc").lower()
-    limit = int(agg_params.get("limit") or 10)
+    requested_limit = _normalize_limit(agg_params.get("limit"))
 
-    # Normaliza "latest" -> list + count:1, order desc, limit 1 (sem alterar meta)
-    if agg == "latest":
-        agg = "list"
-        order = "desc"
-        limit = 1
+    preferred_order_dir: Optional[str] = None
+    order_param = agg_params.get("order")
+    if isinstance(order_param, str) and order_param.strip():
+        preferred_order_dir = order_param.strip().lower()
+    elif default_order_dir:
+        preferred_order_dir = default_order_dir
+
+    if agg_mode == "latest":
+        agg_mode = "list"
         window = window or "count:1"
+        requested_limit = 1
+        preferred_order_dir = "desc"
 
-    # Whitelist de ORDER do YAML da entidade
-    order_whitelist = [
-        str(x).strip() for x in (cfg.get("order_by_whitelist") or []) if str(x).strip()
-    ]
-    # Fallback de coluna de ordenação temporal se não houver whitelist:
-    order_col = default_date_field or (
-        order_whitelist[0].split()[0] if order_whitelist else None
+    limit_value = requested_limit if requested_limit is not None else default_limit
+    window_kind, window_value = _parse_window(window)
+
+    where_with_window = list(where_terms)
+    if window_kind == "months" and window_value:
+        if not default_date_field:
+            message = ("Entity '{entity}' missing default_date_field for window filtering")
+            logger.error(message)
+            raise ValueError(message)
+        where_with_window.append(
+            f"({default_date_field})::timestamp >= (CURRENT_DATE - INTERVAL '{window_value} months')"
+        )
+
+    order_value = _select_order_value(
+        agg_params.get("order_by"), preferred_order_dir, order_by_whitelist, default_date_field
     )
-
-    def _select_order_value(preferred_direction: str) -> Optional[str]:
-        requested = None
-        if isinstance(agg_params, dict):
-            requested = agg_params.get("order_by")
-        normalized_whitelist = [entry.lower() for entry in order_whitelist]
-        if requested:
-            req_norm = str(requested).strip().lower()
-            if req_norm in normalized_whitelist:
-                idx = normalized_whitelist.index(req_norm)
-                return order_whitelist[idx]
-        if default_date_field:
-            for entry in order_whitelist:
-                parts = entry.split()
-                if len(parts) == 2 and parts[0] == default_date_field and parts[1].lower() == preferred_direction:
-                    return entry
-        for entry in order_whitelist:
-            parts = entry.split()
-            if len(parts) == 2 and parts[1].lower() == preferred_direction:
-                return entry
-        if order_whitelist:
-            return order_whitelist[0]
-        if order_col:
-            return f"{order_col} {preferred_direction}"
-        return None
-
-    order_value = _select_order_value(order)
     order_clause = f" ORDER BY {order_value}" if order_value else ""
 
-    # WHERE + janela temporal (months)
-    where_local = list(where)
-    _apply_window(where_local, window)
-    where_sql = f" WHERE {' AND '.join(where_local)}" if where_local else ""
+    where_sql = (
+        f" WHERE {' AND '.join(where_with_window)}" if where_with_window else ""
+    )
 
-    # Implementação por modo:
-    if agg in ("list", "", None):
-        # Lista simples respeitando janela e limites
-        cols_sql = base_cols_sql
+    if not agg_enabled or agg_mode in ("", None):
+        agg_mode = "list"
+
+    if agg_mode == "list":
+        limit_clause = f" LIMIT {limit_value}" if limit_value else ""
         sql = (
-            f"SELECT {cols_sql} FROM {view_name}{where_sql}{order_clause} LIMIT {limit}"
+            f"SELECT {', '.join(return_cols)} FROM {view_name}{where_sql}"
+            f"{order_clause}{limit_clause}"
         )
         return sql, params, result_key, return_cols
 
-    # Para avg/sum precisamos escolher a coluna numérica alvo
-    # Regras: fiis_dividendos -> dividend_amt; fiis_precos -> close_price (média/soma)
-    if _entity_is_dividendos():
-        metric_col = "dividend_amt"
-        null_date_cast = "NULL::timestamp"
-        other_null = "NULL::timestamp"
-    else:
-        # preços: usar close_price como métrica padrão (contrato simples)
-        metric_col = "close_price"
-        null_date_cast = "NULL::date"
-        other_null = "NULL::date"
-
-    if agg in ("avg", "sum"):
-        fun = "AVG" if agg == "avg" else "SUM"
-        # Suporte a window count:N — usar subquery limitada + agregação
-        try:
-            kind, raw = str(window).split(":", 1) if window else ("", "")
-            n_count = int(raw) if kind == "count" else None
-        except Exception:
-            n_count = None
-
-        if n_count is not None and order_col:
-            # subselect com último N registros, depois agrega
-            base_sub = f"SELECT {metric_col} FROM {view_name}{where_sql}{order_clause} LIMIT {n_count}"
-            sql = (
-                "SELECT "
-                "ticker, "
-                f"{null_date_cast} AS {cfg['presentation']['return_columns'][1]}, "  # payment_date/ traded_at
-                f"{fun}({metric_col}) AS {cfg['presentation']['return_columns'][2]}, "  # metric at pos 2
-                f"{other_null} AS {cfg['presentation']['return_columns'][3]} "  # traded_until_date ou outro
-                f"FROM ({base_sub}) t, (SELECT %(ticker)s::text AS ticker) tk"
-                if "ticker" in params
-                else "SELECT "
-                "'*'::text AS ticker, "
-                f"{null_date_cast} AS {cfg['presentation']['return_columns'][1]}, "
-                f"{fun}({metric_col}) AS {cfg['presentation']['return_columns'][2]}, "
-                f"{other_null} AS {cfg['presentation']['return_columns'][3]} "
-                f"FROM ({base_sub}) t"
-            )
-            return sql, params, result_key, return_cols
-
-        # caso geral: months:N (já aplicado no WHERE) ou sem window explícito
-        sql = (
-            "SELECT "
-            "ticker, "
-            f"{null_date_cast} AS {cfg['presentation']['return_columns'][1]}, "
-            f"{fun}({metric_col}) AS {cfg['presentation']['return_columns'][2]}, "
-            f"{other_null} AS {cfg['presentation']['return_columns'][3]} "
-            f"FROM {view_name}{where_sql}"
+    if agg_mode in ("avg", "sum"):
+        function = "AVG" if agg_mode == "avg" else "SUM"
+        order_for_window = order_clause if window_kind == "count" else ""
+        sql = _build_numeric_aggregation_sql(
+            entity=entity,
+            function=function,
+            return_cols=return_cols,
+            view_name=view_name,
+            where_sql=where_sql,
+            order_clause=order_for_window,
+            window_kind=window_kind,
+            window_value=window_value,
+            params=params,
         )
-        if "ticker" in params:
-            sql += " GROUP BY ticker"
         return sql, params, result_key, return_cols
 
-    # Qualquer outro agg não suportado: fallback para list
-    cols_sql = base_cols_sql
-    sql = f"SELECT {cols_sql} FROM {view_name}{where_sql}{order_clause} LIMIT {limit}"
-
+    limit_clause = f" LIMIT {limit_value}" if limit_value else ""
+    sql = (
+        f"SELECT {', '.join(return_cols)} FROM {view_name}{where_sql}"
+        f"{order_clause}{limit_clause}"
+    )
     return sql, params, result_key, return_cols
+
+
+__all__ = ["build_select_for_entity"]

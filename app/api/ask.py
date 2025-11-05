@@ -112,13 +112,24 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         out = orchestrator.route_question(payload.question)
         return out["results"]
 
-    if entity == "fiis_metrics":
-        # Compute-on-read metrics possuem cache especializado no Orchestrator
-        rt = {"cached": False, "value": _fetch(), "key": None, "ttl": None}
-        cache_outcome = "miss"
-    else:
+    policy = policies.get(entity) if policies else None
+    strategy = str((policy or {}).get("strategy") or "read_through").lower()
+    ttl_seconds = None
+    if policy and "ttl_seconds" in policy:
+        try:
+            ttl_candidate = int(policy.get("ttl_seconds"))
+        except (TypeError, ValueError):
+            ttl_candidate = None
+        if ttl_candidate and ttl_candidate > 0:
+            ttl_seconds = ttl_candidate
+
+    if strategy == "read_through" and ttl_seconds:
         rt = read_through(cache, policies, entity, identifiers, _fetch)
         cache_outcome = "hit" if rt.get("cached") else "miss"
+    else:
+        value = _fetch()
+        rt = {"cached": False, "value": value, "key": None, "ttl": ttl_seconds}
+        cache_outcome = "miss"
     counter("sirios_cache_ops_total", op="get", outcome=cache_outcome)
 
     results = rt.get("value") or {}
