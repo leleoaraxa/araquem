@@ -620,5 +620,5 @@ WHERE specification_code = 'Cotas'
   AND product_type_name = 'FII - Fundo de Investimento Imobiliário' 
   AND product_category_name = 'Renda Variavel';
 
-
 ALTER VIEW public.view_client_fiis_positions OWNER TO edge_user;
+
