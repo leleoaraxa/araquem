@@ -12,19 +12,27 @@ quality_gates:
 
 planner:
   thresholds:
-    defaults: { min_score: 1.0, min_gap: 0.5 }
-    apply_on: base   # base|final
-
+    defaults:
+      min_score: 1.0
+      min_gap: 0.5
+    apply_on: base
     intents:
       cadastro:   { min_score: 1.0, min_gap: 0.2 }
       precos:     { min_score: 1.0, min_gap: 0.2 }
       dividendos: { min_score: 1.0, min_gap: 0.2 }
+      metricas:   { min_score: 1.0, min_gap: 0.2 }
+      imoveis:    { min_score: 1.0, min_gap: 0.2 }
+      processos:  { min_score: 1.0, min_gap: 0.2 }
+      noticias:   { min_score: 1.0, min_gap: 0.2 }
       rankings:   { min_score: 1.0, min_gap: 0.2 }
-
     entities:
       fiis_cadastro:   { min_score: 1.0, min_gap: 0.2 }
       fiis_precos:     { min_score: 1.0, min_gap: 0.2 }
       fiis_dividendos: { min_score: 1.0, min_gap: 0.2 }
+      fiis_metrics:    { min_score: 1.0, min_gap: 0.2 }
+      fiis_imoveis:    { min_score: 1.0, min_gap: 0.2 }
+      fiis_processos:  { min_score: 1.0, min_gap: 0.2 }
+      fiis_noticias:   { min_score: 1.0, min_gap: 0.2 }
       fiis_rankings:   { min_score: 1.0, min_gap: 0.2 }
 
   rag:

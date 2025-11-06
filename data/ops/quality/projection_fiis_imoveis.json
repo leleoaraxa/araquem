@@ -1,3 +1,6 @@
-[
-  {"input": "imóveis do XPML11", "expect": {"rows>=1": true}}
-]
+{
+  "cases": [
+    { "input": "imóveis do XPML11", "expect": { "rows>=1": true } },
+    { "input": "lista de propriedades do VISC11", "expect": { "rows>=1": true } }
+  ]
+}

@@ -193,7 +193,9 @@ class Planner:
         rag_enabled = bool(rag_cfg.get("enabled", False))
         rag_k = int(rag_cfg.get("k", 5))
         rag_min_score = float(rag_cfg.get("min_score", 0.20))
-        rag_weight = float(rag_cfg.get("weight", 0.30))
+        rag_weight = float(
+            rag_cfg.get("weight", 0.30)
+        )  # só informativo quando re_rank desliga
         rag_index_path = os.getenv(
             "RAG_INDEX_PATH", "data/embeddings/store/embeddings.jsonl"
         )
@@ -253,9 +255,11 @@ class Planner:
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
 
-        # ✅ Permitir fusão mesmo com re_rank desativado se rag.weight>0
-        fusion_weight = re_rank_weight if re_rank_enabled else float(rag_weight)
-        rag_fusion_applied = bool(rag_enabled and rag_used and (fusion_weight > 0.0))
+        # Fusão somente quando re_rank.enabled = true (guardrails M7.4)
+        fusion_weight = re_rank_weight if re_rank_enabled else 0.0
+        rag_fusion_applied = bool(
+            rag_enabled and rag_used and re_rank_enabled and (fusion_weight > 0.0)
+        )
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
@@ -273,7 +277,9 @@ class Planner:
                 if re_rank_mode == "additive":
                     final_score = base + fusion_weight * rag_signal
                 else:
-                    final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                    final_score = (
+                        base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                    )
             else:
                 final_score = base
 

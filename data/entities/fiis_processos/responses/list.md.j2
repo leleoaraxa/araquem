@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 %}
+Processos ({{ rows|length }}):
+{% for r in rows %}
+- proc {{ r.process_number or loop.index }} — {{ r.judgment }}
+{% endfor %}
+{% else %}
+Nenhum processo encontrado.
+{% endif %}

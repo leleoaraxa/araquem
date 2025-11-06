@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 %}
+Notícias recentes:
+{% for r in rows %}
+- {{ r.title }} — {{ r.url }}
+{% endfor %}
+{% else %}
+Nenhuma notícia encontrada.
+{% endif %}

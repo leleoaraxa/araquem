@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 %}
+Imóveis ({{ rows|length }}):
+{% for r in rows %}
+- {{ r.asset_name }}
+{% endfor %}
+{% else %}
+Nenhum imóvel encontrado.
+{% endif %}

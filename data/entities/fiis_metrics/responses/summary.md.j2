@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 %}
+Resumo de métricas:
+{% for r in rows %}
+- {{ r.metric }} = {{ r.value }}
+{% endfor %}
+{% else %}
+Sem métricas calculadas.
+{% endif %}
