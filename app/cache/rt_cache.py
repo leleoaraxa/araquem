@@ -27,13 +27,17 @@ class CachePolicies:
                 self.data = yaml.safe_load(f) or {}
             self.path = selected
             self.mtime = self.path.stat().st_mtime
+            # Extrai bloco de policies para acesso rápido
+            self._policies: Dict[str, Any] = self.data.get("policies", {}) or {}
         else:
             # Não explode a API se o arquivo não existir
             self.data = {}
             self.path = POLICY_PATH
             self.mtime = None
+            self._policies: Dict[str, Any] = {}
 
     def get(self, entity: str) -> Optional[Dict[str, Any]]:
+        # Lê do bloco "policies" do YAML; None quando não houver
         return self._policies.get(entity)
 
 
@@ -49,10 +53,10 @@ class RedisCache:
             return False
 
     def get_json(self, key: str) -> Optional[Any]:
-        t0 = dt.time.perf_counter()
+        t0 = time.perf_counter()
         try:
             s = self._cli.get(key)
-            dt_ = dt.time.perf_counter() - t0
+            dt_ = time.perf_counter() - t0
             histogram("sirios_cache_latency_seconds", dt_, op="get")
             outcome = "hit" if s is not None else "miss"
             counter("sirios_cache_ops_total", op="get", outcome=outcome)
