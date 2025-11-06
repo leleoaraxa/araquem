@@ -5,7 +5,6 @@ from pathlib import Path
 
 import redis
 import yaml
-from prometheus_client import Counter as _PCounter
 
 from app.observability.instrumentation import counter, histogram
 
@@ -88,15 +87,6 @@ class RedisCache:
         return self._cli.delete(key)
 
 
-# --- Métricas Prometheus (garante presença no /metrics) ---
-_METRICS_CACHE_HITS = _PCounter(
-    "metrics_cache_hits_total", "metrics cache hits total", ["entity"]
-)
-_METRICS_CACHE_MISSES = _PCounter(
-    "metrics_cache_misses_total", "metrics cache misses total", ["entity"]
-)
-
-
 def _stable_hash(obj: Any) -> str:
     """Gera hash estável para dicionários/params."""
     s = json.dumps(obj, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
@@ -115,6 +105,18 @@ def _mk_hit_guard(key: str) -> str:
 
 def _mk_miss_guard(key: str) -> str:
     return f"{key}:miss_once"
+
+
+def _mark_once(cache: "RedisCache", guard_key: str, ttl_seconds: int) -> bool:
+    """Attempts to mark a guard key once, tolerating simplified cache fakes."""
+    raw = getattr(cache, "raw", None)
+    setter = getattr(raw, "set", None) if raw is not None else None
+    if not callable(setter):
+        return True
+    try:
+        return bool(setter(guard_key, "1", ex=ttl_seconds, nx=True))
+    except Exception:
+        return False
 
 
 def _is_empty_payload(val: Any) -> bool:
@@ -166,7 +168,6 @@ def read_through(
 
     ttl = int(policy.get("ttl_seconds", 0) or 0)
     scope = str(policy.get("scope", "pub"))
-    expose_metrics = bool(policy.get("expose_metrics", False))
     build_id = os.getenv("BUILD_ID", "dev")
     key = make_cache_key(build_id, scope, entity, identifiers or {})
 
@@ -190,26 +191,20 @@ def read_through(
     if val is not None:
         # métricas de HIT por entidade (deduplicadas em ~1s)
         try:
-            if cache.raw.set(_mk_hit_guard(key), "1", ex=1, nx=True):
+            if _mark_once(cache, _mk_hit_guard(key), ttl_seconds=1):
                 counter("cache_hits_total", entity=entity)
-                if expose_metrics:
-                    counter("metrics_cache_hits_total", entity=entity)
+                counter("metrics_cache_hits_total", entity=entity)
         except Exception:
             pass
-            # também limpa chave legada em HIT para o teste enxergar só 1 chave
-            if expose_metrics:
-                counter("metrics_cache_misses_total", entity=entity)
 
         return {"cached": True, "key": key, "value": val, "ttl": ttl}
 
     val = fetch_fn()
     # métricas de MISS por entidade (deduplicadas em ~1s)
     try:
-        if cache.raw.set(_mk_miss_guard(key), "1", ex=1, nx=True):
+        if _mark_once(cache, _mk_miss_guard(key), ttl_seconds=1):
             counter("cache_misses_total", entity=entity)
-            if entity == "fiis_metrics":
-                # garante presença e incremento no /metrics
-                _METRICS_CACHE_MISSES.labels(entity=entity).inc()
+            counter("metrics_cache_misses_total", entity=entity)
     except Exception:
         pass
 

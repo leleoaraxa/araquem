@@ -6,6 +6,7 @@ import time
 from typing import TYPE_CHECKING, Any, Dict, Optional
 from uuid import uuid4
 
+from app.cache.rt_cache import make_cache_key
 from app.planner.planner import Planner
 from app.builder.sql_builder import build_select_for_entity
 from app.executor.pg import PgExecutor
@@ -136,28 +137,26 @@ class Orchestrator:
         identifiers: Dict[str, Any],
         agg_params: Optional[Dict[str, Any]],
     ) -> Optional[Dict[str, Any]]:
-        if entity != "fiis_metrics":
-            return None
         if self._cache is None or self._cache_policies is None:
             return None
         policy = self._cache_policies.get(entity) if self._cache_policies else None
-        if not policy or not policy.get("enabled"):
+        if not policy:
             return None
-        template = ((policy.get("key") or {}).get("template"))
-        if not template:
-            return None
-        ticker = (identifiers or {}).get("ticker")
+        identifiers = identifiers or {}
+        agg_params = agg_params or {}
+        ticker_raw = identifiers.get("ticker")
+        ticker = str(ticker_raw).upper() if ticker_raw else ""
         if not ticker:
             return None
-        metric_key = (agg_params or {}).get("metric")
+        metric_key = agg_params.get("metric")
         if not metric_key:
             return None
-        window_norm = self._normalize_metrics_window(agg_params or {})
+        window_norm = self._normalize_metrics_window(agg_params)
         if not window_norm:
             return None
         window_info = self._split_window(window_norm)
         context = {
-            "ticker": ticker.upper(),
+            "ticker": ticker,
             "metric_key": metric_key,
             "window_norm": window_norm,
             **window_info,
@@ -167,10 +166,18 @@ class Orchestrator:
         ttl = int(policy.get("ttl_seconds") or 0)
         if ttl <= 0:
             return None
-        key = template.format(
-            ticker=context["ticker"],
-            metric_key=metric_key,
-            window_norm=window_norm,
+        scope = str(policy.get("scope") or "pub")
+        cache_identifiers = {
+            **identifiers,
+            "metric_key": metric_key,
+            "window_norm": window_norm,
+            **window_info,
+        }
+        key = make_cache_key(
+            os.getenv("BUILD_ID", "dev"),
+            scope,
+            entity,
+            cache_identifiers,
         )
         return {"key": key, "ttl": ttl, "entity": entity, "context": context}
 
@@ -297,7 +304,6 @@ class Orchestrator:
         cached_rows_formatted = None
         cached_result_key = None
         cache_lookup_error = False
-        entity_label = str(entity or "")
         if cache_ctx:
             metrics_cache_key = cache_ctx.get("key")
             metrics_cache_ttl = cache_ctx.get("ttl")
@@ -314,14 +320,9 @@ class Orchestrator:
                     and isinstance(cached_rows_formatted, list)
                 ):
                     metrics_cache_hit = True
-                    counter("metrics_cache_hits_total", entity=entity_label)
-                    counter("cache_hits_total", entity=entity_label)
                 else:
                     cached_rows_formatted = None
                     cached_result_key = None
-            if cache_ctx and not metrics_cache_hit and not cache_lookup_error:
-                counter("metrics_cache_misses_total", entity=entity_label)
-                counter("cache_misses_total", entity=entity_label)
 
         # estágio de planning finalizado
         histogram(

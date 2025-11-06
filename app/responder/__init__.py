@@ -5,7 +5,8 @@ from pathlib import Path
 import string
 from typing import Any, Dict, Iterable, List, Set
 
-_TEMPLATE_DIR = Path("data/concepts")
+_ENTITY_TEMPLATE_ROOT = Path("data/entities")
+_LEGACY_TEMPLATE_ROOT = Path("data/concepts")
 
 
 _FORMATTER = string.Formatter()
@@ -13,8 +14,12 @@ _FORMATTER = string.Formatter()
 
 @lru_cache(maxsize=32)
 def _load_templates(entity: str) -> Dict[str, str]:
-    path = _TEMPLATE_DIR / f"{entity}_templates.md"
-    if not path.exists():
+    candidates = [
+        _ENTITY_TEMPLATE_ROOT / entity / "templates.md",
+        _LEGACY_TEMPLATE_ROOT / f"{entity}_templates.md",
+    ]
+    path = next((p for p in candidates if p.exists()), None)
+    if path is None:
         return {}
     content = path.read_text(encoding="utf-8")
     templates: Dict[str, str] = {}

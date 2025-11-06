@@ -1,10 +1,13 @@
 # app/observability/runtime.py
 # Backend Prometheus + (no-op) spans e bootstrap. Registro centralizado de métricas.
+import logging
 import os, yaml, re, hashlib, json, urllib.parse, urllib.request
 from typing import Dict, Any, Tuple, Optional
 
 from prometheus_client import (
     CONTENT_TYPE_LATEST,
+    CollectorRegistry,
+    REGISTRY,
     Counter as PromCounter,
     Gauge as PromGauge,
     Histogram as PromHistogram,
@@ -81,9 +84,13 @@ def prom_query_instant(expr: str):
 
 # ---------------- Backend Prometheus (injeção) -------------------------------
 
+_LOGGER = logging.getLogger(__name__)
+
+_REGISTRY: CollectorRegistry = REGISTRY
 _COUNTERS: Dict[Tuple[str, Tuple[str, ...]], PromCounter] = {}
 _HISTOS: Dict[Tuple[str, Tuple[str, ...]], PromHistogram] = {}
 _GAUGES: Dict[Tuple[str, Tuple[str, ...]], PromGauge] = {}
+_REGISTERED_LABELS: Dict[str, Tuple[str, ...]] = {}
 
 _DEFAULT_BUCKETS_MS = (0.5, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)
 
@@ -159,11 +166,31 @@ _METRIC_SCHEMAS = {
 }
 
 
+def _ensure_registration(name: str, labelnames: Tuple[str, ...]) -> Tuple[str, ...]:
+    canonical = tuple(labelnames)
+    existing = _REGISTERED_LABELS.get(name)
+    if existing is None:
+        _REGISTERED_LABELS[name] = canonical
+        return canonical
+    if existing != canonical:
+        msg = (
+            f"Duplicated Prometheus metric registration for '{name}' with labels "
+            f"{canonical}; already registered with {existing}"
+        )
+        _LOGGER.error(msg)
+        raise ValueError(msg)
+    return existing
+
+
 def _get_counter(name: str, labelnames: Tuple[str, ...]) -> PromCounter:
-    key = (name, labelnames)
+    canonical = _ensure_registration(name, labelnames)
+    key = (name, canonical)
     if key not in _COUNTERS:
         _COUNTERS[key] = PromCounter(
-            name, name.replace("_", " "), labelnames=labelnames
+            name,
+            name.replace("_", " "),
+            labelnames=canonical,
+            registry=_REGISTRY,
         )
     return _COUNTERS[key]
 
@@ -171,21 +198,29 @@ def _get_counter(name: str, labelnames: Tuple[str, ...]) -> PromCounter:
 def _get_histogram(
     name: str, labelnames: Tuple[str, ...], buckets=None
 ) -> PromHistogram:
-    key = (name, labelnames)
+    canonical = _ensure_registration(name, labelnames)
+    key = (name, canonical)
     if key not in _HISTOS:
         _HISTOS[key] = PromHistogram(
             name,
             name.replace("_", " "),
-            labelnames=labelnames,
+            labelnames=canonical,
             buckets=(buckets or _DEFAULT_BUCKETS_MS),
+            registry=_REGISTRY,
         )
     return _HISTOS[key]
 
 
 def _get_gauge(name: str, labelnames: Tuple[str, ...]) -> PromGauge:
-    key = (name, labelnames)
+    canonical = _ensure_registration(name, labelnames)
+    key = (name, canonical)
     if key not in _GAUGES:
-        _GAUGES[key] = PromGauge(name, name.replace("_", " "), labelnames=labelnames)
+        _GAUGES[key] = PromGauge(
+            name,
+            name.replace("_", " "),
+            labelnames=canonical,
+            registry=_REGISTRY,
+        )
     return _GAUGES[key]
 
 
@@ -297,7 +332,7 @@ class _PromBackend(obs._Backend):
 
 
 def render_prometheus_latest():
-    return generate_latest(), CONTENT_TYPE_LATEST
+    return generate_latest(_REGISTRY), CONTENT_TYPE_LATEST
 
 
 def bootstrap(service_name: str = "api", cfg: dict = None) -> None:

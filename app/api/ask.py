@@ -123,8 +123,23 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         if ttl_candidate and ttl_candidate > 0:
             ttl_seconds = ttl_candidate
 
+    cache_identifiers = dict(identifiers)
+    if isinstance(agg_params, dict):
+        metric_key = agg_params.get("metric")
+        window_norm = (
+            orchestrator._normalize_metrics_window(agg_params)
+            if metric_key
+            else None
+        )
+        if metric_key and window_norm:
+            window_info = orchestrator._split_window(window_norm)
+            cache_identifiers.update(
+                metric_key=metric_key,
+                window_norm=window_norm,
+                **window_info,
+            )
     if strategy == "read_through" and ttl_seconds:
-        rt = read_through(cache, policies, entity, identifiers, _fetch)
+        rt = read_through(cache, policies, entity, cache_identifiers, _fetch)
         cache_outcome = "hit" if rt.get("cached") else "miss"
     else:
         value = _fetch()
