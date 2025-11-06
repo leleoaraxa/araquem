@@ -125,3 +125,18 @@ class OllamaClient:
                 f"Inconsistência: len(out)={len(out)} != len(texts)={len(texts)}"
             )
         return out
+
+    def generate(
+        self, prompt: str, model: str | None = None, stream: bool = False
+    ) -> str:
+        """
+        Chama /api/generate do Ollama para respostas de linguagem.
+        Não afeta call sites atuais (método opcional).
+        """
+        gen_model = model or os.getenv("LLM_MODEL", "qwen2.5:7b")
+        payload = {"model": gen_model, "prompt": prompt, "stream": bool(stream)}
+        data = self._post("/api/generate", payload)
+        if "error" in data:
+            raise RuntimeError(f"Ollama generate error: {data['error']}")
+        # API do Ollama quando stream=False retorna 'response'
+        return str(data.get("response", "")) or ""

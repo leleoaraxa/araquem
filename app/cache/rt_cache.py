@@ -71,7 +71,7 @@ class RedisCache:
             # serialização segura (str() para tipos não nativos JSON)
             s = json.dumps(value, ensure_ascii=False, default=str)
             self._cli.set(key, s, ex=ttl_seconds)
-            dt_ = dt.time.perf_counter() - t0
+            dt_ = time.perf_counter() - t0
             histogram("sirios_cache_latency_seconds", dt_, op="set")
             counter("sirios_cache_ops_total", op="set", outcome="ok")
         except Exception:
