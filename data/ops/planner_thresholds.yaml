@@ -25,7 +25,7 @@ planner:
     defaults:
       min_score: 1.0  # Score absoluto mínimo para aceitar decisão
       min_gap: 0.5    # Gap mínimo entre 1º e 2º candidato
-    apply_on: final   # base|final — ativando gate no score final combinado
+    apply_on: base    # base|final — ativando gate no score final combinado
 
     intents:
       cadastro:
@@ -50,10 +50,10 @@ planner:
         min_gap: 0.2
   rag:
     enabled: true
-    k: 8
+    k: 5
     min_score: 0.20
     weight: 0.35
     re_rank:
-      enabled: true    # ✅ ativar M7.4
+      enabled: false   # ✅ ativar M7.4
       mode: blend      # additive|blend
       weight: 0.25     # 0..1

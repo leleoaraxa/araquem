@@ -14,6 +14,7 @@ except ModuleNotFoundError:  # pragma: no cover - runtime dependency check
 API = os.getenv("API_URL", "http://localhost:8000")
 TOKEN = os.getenv("QUALITY_OPS_TOKEN", "araquem-secret-bust-2025")
 
+
 def load_payload(path: str):
     suffix = Path(path).suffix.lower()
     if suffix == ".json":
@@ -33,10 +34,16 @@ def push(path: str):
         f"{API}/ops/quality/push",
         headers={"x-ops-token": TOKEN, "Content-Type": "application/json"},
         json=payload,
-        timeout=30.0
+        timeout=30.0,
     )
-    r.raise_for_status()
+    try:
+        r.raise_for_status()
+    except httpx.HTTPStatusError as e:
+        print(f"[error] {path}: HTTP {r.status_code}")
+        print(r.text)  # <- mostra o motivo do 422
+        raise
     return r.json()
+
 
 def main():
     if len(sys.argv) < 2:
@@ -52,6 +59,7 @@ def main():
         total += int(out.get("accepted") or 0)
         print(f"[ok] {p}: {json.dumps(out, ensure_ascii=False)}")
     print(f"[done] total accepted={total}")
+
 
 if __name__ == "__main__":
     main()

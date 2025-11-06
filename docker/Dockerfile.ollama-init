@@ -1,17 +1,6 @@
 # docker/Dockerfile.ollama-init
 FROM ollama/ollama:0.3.14
 SHELL ["/bin/sh","-lc"]
-
-# Modelos que queremos garantir no cache
-ENV OLLAMA_MODELS="nomic-embed-text qwen2.5:3b"
-
-# Espera o daemon subir e puxa modelos com retry
-ENTRYPOINT ["/bin/sh","-lc", "\
-  until ollama ps >/dev/null 2>&1; do sleep 1; done; \
-  for m in $OLLAMA_MODELS; do \
-    echo \"[ollama-init] pulling $m\"; \
-    for i in 1 2 3; do \
-      ollama pull \"$m\" && break || { echo \"retry $i...\"; sleep 2; }; \
-    done; \
-  done \
-"]
+ENTRYPOINT ["sh","-lc","until ollama ps >/dev/null 2>&1; do sleep 1; done; \
+  ollama pull nomic-embed-text && \
+  ollama pull qwen2.5:3b"]

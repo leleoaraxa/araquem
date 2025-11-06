@@ -261,9 +261,7 @@ class Planner:
         fusion_weight = re_rank_weight if re_rank_enabled else float(rag_weight)
 
         rag_fusion_applied = (
-            bool(rag_enabled)
-            and bool(rag_used)
-            and (fusion_weight > 0.0)
+            bool(rag_enabled) and bool(rag_used) and (fusion_weight > 0.0)
         )
 
         if not rag_fusion_applied:
@@ -271,7 +269,9 @@ class Planner:
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
-            raw_entity = it.entities[0] if it.entities else _DEFAULT_INTENT_ENTITY.get(it.name)
+            raw_entity = (
+                it.entities[0] if it.entities else _DEFAULT_INTENT_ENTITY.get(it.name)
+            )
             effective_entity = raw_entity
             if not effective_entity and rag_entity_hints:
                 try:
