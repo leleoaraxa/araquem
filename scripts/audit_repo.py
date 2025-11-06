@@ -20,9 +20,11 @@ def md_header(title, level=2):
 
 def detect_entities():
     ent_root = REPO / "data" / "entities"
+    quality_root = REPO / "data" / "ops" / "quality"
     ents = []
     if not ent_root.exists():
         return ents
+    quality_lookup = quality_root if quality_root.exists() else None
     for d in sorted([p for p in ent_root.iterdir() if p.is_dir()]):
         ent = {
             "name": d.name,
@@ -32,16 +34,42 @@ def detect_entities():
                 sorted(
                     [
                         str(p)
-                        for p in (REPO / "data" / "ops" / "quality").rglob(
+                        for p in quality_lookup.rglob(
                             f"projection*{d.name}*.json"
                         )
                     ]
                 )
-                if (REPO / "data" / "ops" / "quality").exists()
+                if quality_lookup is not None
                 else []
             ),
         }
         ents.append(ent)
+    # detectar YAMLs "flat" (ex.: fiis_precos.yaml)
+    for f in sorted(
+        [
+            p
+            for p in ent_root.iterdir()
+            if p.is_file()
+            and p.suffix in {".yaml", ".yml"}
+            and p.stem.startswith("fiis_")
+        ],
+        key=lambda p: p.stem,
+    ):
+        name = f.stem
+        projections = []
+        if quality_lookup is not None:
+            projections = sorted(
+                str(p)
+                for p in quality_lookup.rglob(f"projection_*{name}*.json")
+            )
+        ents.append(
+            {
+                "name": name,
+                "schema": True,
+                "responses": False,
+                "projections": projections,
+            }
+        )
     return ents
 
 

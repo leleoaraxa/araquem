@@ -1,0 +1,3 @@
+[
+  {"input": "imóveis do XPML11", "expect": {"rows>=1": true}}
+]

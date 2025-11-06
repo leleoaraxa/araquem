@@ -1,0 +1,4 @@
+[
+  {"input": "métricas do MCCI11 no ano", "expect": {"rows>=1": true}},
+  {"input": "métricas 6m do MXRF11", "expect": {"contains_cols": ["dy_avg", "price_avg"]}}
+]
