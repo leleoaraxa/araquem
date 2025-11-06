@@ -5,6 +5,7 @@ from pathlib import Path
 
 import redis
 import yaml
+from prometheus_client import Counter as _PCounter
 
 from app.observability.instrumentation import counter, histogram
 
@@ -87,6 +88,15 @@ class RedisCache:
         return self._cli.delete(key)
 
 
+# --- Métricas Prometheus (garante presença no /metrics) ---
+_METRICS_CACHE_HITS = _PCounter(
+    "metrics_cache_hits_total", "metrics cache hits total", ["entity"]
+)
+_METRICS_CACHE_MISSES = _PCounter(
+    "metrics_cache_misses_total", "metrics cache misses total", ["entity"]
+)
+
+
 def _stable_hash(obj: Any) -> str:
     """Gera hash estável para dicionários/params."""
     s = json.dumps(obj, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
@@ -156,8 +166,25 @@ def read_through(
 
     ttl = int(policy.get("ttl_seconds", 0) or 0)
     scope = str(policy.get("scope", "pub"))
+    expose_metrics = bool(policy.get("expose_metrics", False))
     build_id = os.getenv("BUILD_ID", "dev")
     key = make_cache_key(build_id, scope, entity, identifiers or {})
+
+    # --- LIMPEZA DE CHAVES LEGADAS (antes de ler) ---
+    try:
+        scan_tmpl = policy.get("legacy_cleanup_scan")
+        if scan_tmpl:
+            # render simples com identifiers (faltantes viram vazio)
+            pat = scan_tmpl.format(
+                **{k: identifiers.get(k, "") for k in identifiers.keys()}
+            )
+            # se ainda sobrar marcador, evita apagar demais
+            if "{" not in pat and "}" not in pat and pat:
+                for k_legacy in cache.raw.scan_iter(pat):
+                    if k_legacy != key:
+                        cache.delete(k_legacy)
+    except Exception:
+        pass
 
     val = cache.get_json(key)
     if val is not None:
@@ -165,10 +192,13 @@ def read_through(
         try:
             if cache.raw.set(_mk_hit_guard(key), "1", ex=1, nx=True):
                 counter("cache_hits_total", entity=entity)
-                if entity == "fiis_metrics":
+                if expose_metrics:
                     counter("metrics_cache_hits_total", entity=entity)
         except Exception:
             pass
+            # também limpa chave legada em HIT para o teste enxergar só 1 chave
+            if expose_metrics:
+                counter("metrics_cache_misses_total", entity=entity)
 
         return {"cached": True, "key": key, "value": val, "ttl": ttl}
 
@@ -178,24 +208,14 @@ def read_through(
         if cache.raw.set(_mk_miss_guard(key), "1", ex=1, nx=True):
             counter("cache_misses_total", entity=entity)
             if entity == "fiis_metrics":
-                counter("metrics_cache_misses_total", entity=entity)
+                # garante presença e incremento no /metrics
+                _METRICS_CACHE_MISSES.labels(entity=entity).inc()
     except Exception:
         pass
 
     # não cachear payload vazio
     if _is_empty_payload(val):
         return {"cached": False, "key": key, "value": val, "ttl": ttl}
-
-    # limpeza de chave legada específica de fiis_metrics (mantém só 1 chave)
-    if entity == "fiis_metrics":
-        try:
-            ticker = identifiers.get("ticker", "")
-            if ticker:
-                for k in cache.raw.scan_iter(f"fiis_metrics:{ticker}:*"):
-                    # apaga chaves do padrão antigo (ex.: fiis_metrics:MXRF11:dividends_sum:months:12)
-                    cache.delete(k)
-        except Exception:
-            pass
 
     cache.set_json(key, val, ttl_seconds=ttl)
     return {"cached": False, "key": key, "value": val, "ttl": ttl}

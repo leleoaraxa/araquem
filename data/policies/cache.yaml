@@ -3,23 +3,30 @@ policies:
     ttl_seconds: 86400
     refresh_at: "01:15"
     scope: pub
+
   fiis_precos:
     ttl_seconds: 86400
     refresh_at: "01:15"
     scope: pub
+
   fiis_dividendos:
     ttl_seconds: 86400
     refresh_at: "01:15"
     scope: pub
+
   fiis_rankings:
     ttl_seconds: 86400
     refresh_at: "01:15"
     scope: pub
+
   fiis_metrics:
     enabled: true
     ttl_seconds: 43200
+    scope: pub
     key:
-      template: "fiis_metrics:{ticker}:{metric_key}:{window_norm}"
+      template: "fiis_metrics{ticker}:{metric_key}:{window_norm}"
+    expose_metrics: true
+    legacy_cleanup_scan: "fiis_metrics:{ticker}:*"
     deny_if:
       - field: "window_type"
         equals: "count"
