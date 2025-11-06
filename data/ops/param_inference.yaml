@@ -9,19 +9,23 @@ description: >
 intents:
   dividendos:
     default_agg: list
-    default_window: count:6
+    default_window:
+      count: 6
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, recente, atual]
-        window: count:1
+        window:
+          count: 1
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
       avg:
         include: [media, média, medio, médio, em media, em média]
-        window_defaults: [months:6]
+        window_defaults:
+          - months: 6
       sum:
         include: [soma, total, somatorio, somatória, acumulado]
-        window_defaults: [months:12]
+        window_defaults:
+          - months: 12
     window_keywords:
       months:
         3: [trimestre, 3 meses, tres meses]
@@ -36,16 +40,19 @@ intents:
 
   precos:
     default_agg: latest
-    default_window: count:1
+    default_window:
+      count: 1
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, fechamento, atual]
-        window: count:1
+        window:
+          count: 1
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
       avg:
         include: [media, média, medio, médio, em media, em média, preco medio, preço médio]
-        window_defaults: [months:6]
+        window_defaults:
+          - months: 6
     window_keywords:
       months:
         3: [trimestre, 3 meses, tres meses]
@@ -60,7 +67,8 @@ intents:
 
   metricas:
     default_agg: metrics
-    default_window: months:12
+    default_window:
+      months: 12
     default_metric: dividends_sum
     metric_keywords:
       dividends_sum:
