@@ -1,8 +1,12 @@
 # app/rag/ollama_client.py
 from __future__ import annotations
-import os, json, time
-from typing import List, Dict, Any
-import urllib.request, urllib.error
+
+import json
+import os
+import time
+import urllib.error
+import urllib.request
+from typing import Any, Dict, List
 
 
 class OllamaClient:
@@ -10,15 +14,19 @@ class OllamaClient:
         self,
         base_url: str | None = None,
         model: str | None = None,
-        timeout: float = 60.0,
+        timeout: float | int = 25,
         retries: int = 2,
         backoff_s: float = 0.5,
     ):
-        self.base_url = (
-            base_url or os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        ).rstrip("/")
+        env_url = (
+            os.getenv("OLLAMA_URL")
+            or os.getenv("OLLAMA_BASE_URL")
+            or "http://ollama:11434"
+        )
+        self.base_url = (base_url or env_url).rstrip("/")
         self.model = model or os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text")
-        self.timeout = float(timeout)
+        env_timeout = os.getenv("LLM_TIMEOUT")
+        self.timeout = float(env_timeout) if env_timeout is not None else float(timeout)
         self.retries = int(retries)
         self.backoff_s = float(backoff_s)
 
