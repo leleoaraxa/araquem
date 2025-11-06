@@ -9,6 +9,14 @@ import time
 # ---------------- Backend plugável (injetado por runtime.bootstrap) ---------
 
 
+_CACHE_ENTITY_COUNTERS = {
+    "cache_hits_total",
+    "cache_misses_total",
+    "metrics_cache_hits_total",
+    "metrics_cache_misses_total",
+}
+
+
 class _Backend:
     def inc(self, name: str, labels: Dict[str, str], value: float = 1.0) -> None: ...
 
@@ -57,6 +65,13 @@ def counter(name: str, **labels) -> None:
     _ensure()
     # Suporte a incremento arbitrário sem virar label
     value = float(labels.pop("_value", 1.0))
+    if name in _CACHE_ENTITY_COUNTERS:
+        entity = labels.pop("entity", "")
+        if labels:
+            raise ValueError(
+                f"Cache metric '{name}' only accepts the 'entity' label."
+            )
+        labels = {"entity": "" if entity is None else str(entity)}
     _backend.inc(name, labels, value=value)
 
 
