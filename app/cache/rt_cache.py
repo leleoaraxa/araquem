@@ -46,6 +46,11 @@ class RedisCache:
         self._url = url or os.getenv("REDIS_URL", "redis://localhost:6379/0")
         self._cli = redis.from_url(self._url, decode_responses=True)
 
+    @property
+    def raw(self):
+        # acesso controlado para operações utilitárias (scan/set nx)
+        return self._cli
+
     def ping(self) -> bool:
         try:
             return bool(self._cli.ping())
@@ -92,6 +97,14 @@ def make_cache_key(
     build_id: str, scope: str, entity: str, identifiers: Dict[str, Any]
 ) -> str:
     return f"araquem:{build_id}:{scope}:{entity}:{_stable_hash(identifiers or {})}"
+
+
+def _mk_hit_guard(key: str) -> str:
+    return f"{key}:hit_once"
+
+
+def _mk_miss_guard(key: str) -> str:
+    return f"{key}:miss_once"
 
 
 def _is_empty_payload(val: Any) -> bool:
@@ -148,27 +161,41 @@ def read_through(
 
     val = cache.get_json(key)
     if val is not None:
-        # métricas de HIT por entidade
+        # métricas de HIT por entidade (deduplicadas em ~1s)
         try:
-            counter("cache_hits_total", entity=entity)
-            if entity == "fiis_metrics":
-                counter("metrics_cache_hits_total", entity=entity)
+            if cache.raw.set(_mk_hit_guard(key), "1", ex=1, nx=True):
+                counter("cache_hits_total", entity=entity)
+                if entity == "fiis_metrics":
+                    counter("metrics_cache_hits_total", entity=entity)
         except Exception:
             pass
+
         return {"cached": True, "key": key, "value": val, "ttl": ttl}
 
     val = fetch_fn()
-    # métricas de MISS por entidade
+    # métricas de MISS por entidade (deduplicadas em ~1s)
     try:
-        counter("cache_misses_total", entity=entity)
-        if entity == "fiis_metrics":
-            counter("metrics_cache_misses_total", entity=entity)
+        if cache.raw.set(_mk_miss_guard(key), "1", ex=1, nx=True):
+            counter("cache_misses_total", entity=entity)
+            if entity == "fiis_metrics":
+                counter("metrics_cache_misses_total", entity=entity)
     except Exception:
         pass
 
     # não cachear payload vazio
     if _is_empty_payload(val):
         return {"cached": False, "key": key, "value": val, "ttl": ttl}
+
+    # limpeza de chave legada específica de fiis_metrics (mantém só 1 chave)
+    if entity == "fiis_metrics":
+        try:
+            ticker = identifiers.get("ticker", "")
+            if ticker:
+                for k in cache.raw.scan_iter(f"fiis_metrics:{ticker}:*"):
+                    # apaga chaves do padrão antigo (ex.: fiis_metrics:MXRF11:dividends_sum:months:12)
+                    cache.delete(k)
+        except Exception:
+            pass
 
     cache.set_json(key, val, ttl_seconds=ttl)
     return {"cached": False, "key": key, "value": val, "ttl": ttl}
