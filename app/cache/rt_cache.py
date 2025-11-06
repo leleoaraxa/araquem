@@ -1,22 +1,37 @@
 # app/cache/rt_cache.py
+import os, json, hashlib, time, datetime as dt
+from typing import Any, Dict, Optional
+from pathlib import Path
 
-import os, json, hashlib, datetime as dt
-import time
 import redis
 import yaml
 
-from typing import Any, Dict, Optional
-from pathlib import Path
 from app.observability.instrumentation import counter, histogram
 
-POLICY_PATH = Path("data/entities/cache_policies.yaml")
+# Fonte oficial (novo) e caminho legado (compat)
+POLICY_PATH = Path("data/policies/cache.yaml")
 
 
 class CachePolicies:
-    def __init__(self, path: Path = POLICY_PATH):
-        with open(path, "r", encoding="utf-8") as f:
-            raw = yaml.safe_load(f) or {}
-        self._policies = raw.get("policies") or {}
+    def __init__(self, path: Optional[Path] = None):
+        # Escolhe automaticamente: novo caminho > legado
+        selected = None
+        if path:
+            selected = Path(path)
+        else:
+            selected = POLICY_PATH
+
+        # Fallback seguro: sem arquivo -> política vazia
+        if selected and selected.exists():
+            with open(selected, "r", encoding="utf-8") as f:
+                self.data = yaml.safe_load(f) or {}
+            self.path = selected
+            self.mtime = self.path.stat().st_mtime
+        else:
+            # Não explode a API se o arquivo não existir
+            self.data = {}
+            self.path = POLICY_PATH
+            self.mtime = None
 
     def get(self, entity: str) -> Optional[Dict[str, Any]]:
         return self._policies.get(entity)
@@ -34,10 +49,10 @@ class RedisCache:
             return False
 
     def get_json(self, key: str) -> Optional[Any]:
-        t0 = time.perf_counter()
+        t0 = dt.time.perf_counter()
         try:
             s = self._cli.get(key)
-            dt_ = time.perf_counter() - t0
+            dt_ = dt.time.perf_counter() - t0
             histogram("sirios_cache_latency_seconds", dt_, op="get")
             outcome = "hit" if s is not None else "miss"
             counter("sirios_cache_ops_total", op="get", outcome=outcome)
@@ -52,7 +67,7 @@ class RedisCache:
             # serialização segura (str() para tipos não nativos JSON)
             s = json.dumps(value, ensure_ascii=False, default=str)
             self._cli.set(key, s, ex=ttl_seconds)
-            dt_ = time.perf_counter() - t0
+            dt_ = dt.time.perf_counter() - t0
             histogram("sirios_cache_latency_seconds", dt_, op="set")
             counter("sirios_cache_ops_total", op="set", outcome="ok")
         except Exception:
