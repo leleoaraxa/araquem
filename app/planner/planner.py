@@ -17,10 +17,6 @@ from app.observability.instrumentation import counter, histogram
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
 
-_DEFAULT_INTENT_ENTITY = {
-    "cadastro": "fiis_cadastro",
-}
-
 _THRESH_DEFAULTS = {
     "planner": {
         "thresholds": {
@@ -256,50 +252,32 @@ class Planner:
         fused_scores: Dict[str, float] = {}
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
-        # NOVO: permitir fusão mesmo com re_rank desativado se rag.weight>0
-        # usa re_rank.weight quando re_rank.enabled=true, senão usa rag.weight
+
+        # ✅ Permitir fusão mesmo com re_rank desativado se rag.weight>0
         fusion_weight = re_rank_weight if re_rank_enabled else float(rag_weight)
-
-        rag_fusion_applied = (
-            bool(rag_enabled) and bool(rag_used) and (fusion_weight > 0.0)
-        )
-
-        if not rag_fusion_applied:
-            fusion_weight = 0.0
+        rag_fusion_applied = bool(rag_enabled and rag_used and (fusion_weight > 0.0))
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
-            raw_entity = (
-                it.entities[0] if it.entities else _DEFAULT_INTENT_ENTITY.get(it.name)
-            )
-            effective_entity = raw_entity
-            if not effective_entity and rag_entity_hints:
-                try:
-                    effective_entity = max(
-                        rag_entity_hints, key=lambda key: rag_entity_hints[key]
-                    )
-                except ValueError:
-                    effective_entity = None
-            intent_entities[it.name] = effective_entity
+            entity_name = it.entities[0] if it.entities else None
+            intent_entities[it.name] = entity_name
+
             rag_signal = (
-                float(rag_entity_hints.get((effective_entity or "").strip(), 0.0))
-                if effective_entity
+                float(rag_entity_hints.get((entity_name or "").strip(), 0.0))
+                if entity_name
                 else 0.0
             )
             intent_rag_signals[it.name] = rag_signal
+
             if rag_fusion_applied:
                 if re_rank_mode == "additive":
-                    # score_final = base + w * rag_sig
                     final_score = base + fusion_weight * rag_signal
                 else:
-                    # score_final = (1 - w) * base + w * rag_sig
-                    final_score = (
-                        base * (1.0 - fusion_weight) + rag_signal * fusion_weight
-                    )
+                    final_score = base * (1.0 - fusion_weight) + rag_signal * fusion_weight
             else:
                 final_score = base
-            fused_scores[it.name] = final_score
 
+            fused_scores[it.name] = final_score
             combined_intents.append(
                 {
                     "name": it.name,
@@ -310,7 +288,6 @@ class Planner:
                 }
             )
 
-            entity_name = effective_entity
             if entity_name:
                 prev_base = entity_base_scores.get(entity_name)
                 if prev_base is None or base > prev_base:

@@ -78,6 +78,7 @@ intents:
         - quais imoveis do
         - processos do
         - status dos processos do
+    entities: [fiis_cadastro]
 
   - name: precos
     tokens:
