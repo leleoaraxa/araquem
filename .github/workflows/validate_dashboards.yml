@@ -1,0 +1,25 @@
+name: Validate Dashboards
+on:
+  pull_request:
+  push:
+    paths:
+      - 'grafana/**'
+jobs:
+  validate-dashboards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate JSON dashboards
+        run: |
+          python - << 'PY'
+          import json, pathlib, sys
+          errs=0
+          for p in pathlib.Path('grafana').rglob('*.json'):
+            try:
+              j=json.loads(p.read_text(encoding='utf-8', errors='ignore'))
+              if 'panels' not in j:
+                print(f'WARN: {p} has no "panels" key')
+            except Exception as e:
+              print(f'JSON ERROR: {p}: {e}'); errs+=1
+          sys.exit(1 if errs else 0)
+          PY
