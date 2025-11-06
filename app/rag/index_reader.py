@@ -72,11 +72,16 @@ class EmbeddingStore:
         """Retorna somente linhas com vetor não-vazio (sanity)."""
         return [r for r in self._rows if _has_vec(r)]
 
-    def search_by_vector(self, qvec: List[float], k: int = 5) -> List[Dict[str, Any]]:
+    def search_by_vector(
+        self, qvec: List[float], k: int = 5, min_score: float | None = None
+    ) -> List[Dict[str, Any]]:
         rows = self.rows_with_vectors()  # <-- filtra vazios
         scored = [(_cos(qvec, r["embedding"]), r) for r in rows]
         scored.sort(key=lambda t: t[0], reverse=True)
-        return [dict(score=s, **r) for s, r in scored[:k]]
+        ranked = [dict(score=s, **r) for s, r in scored]
+        if min_score is not None:
+            ranked = [r for r in ranked if float(r.get("score", 0.0)) >= min_score]
+        return ranked[:k]
 
     def search_by_text(self, text: str, embedder, k: int = 5) -> List[Dict[str, Any]]:
         """

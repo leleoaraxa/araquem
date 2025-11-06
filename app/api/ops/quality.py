@@ -203,10 +203,7 @@ def quality_push(
                 {"error": f"failed to load rag index: {exc}"}, status_code=500
             )
 
-        embedder = OllamaClient(
-            base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-            model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),
-        )
+        embedder = OllamaClient()
 
         accepted = len(normalized_samples)
         ok = fail = 0

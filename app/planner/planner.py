@@ -17,6 +17,10 @@ from app.observability.instrumentation import counter, histogram
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
 
+_DEFAULT_INTENT_ENTITY = {
+    "cadastro": "fiis_cadastro",
+}
+
 _THRESH_DEFAULTS = {
     "planner": {
         "thresholds": {
@@ -217,12 +221,11 @@ class Planner:
             try:
                 rag_t0 = time.perf_counter()
                 store = cached_embedding_store(rag_index_path)
-                embedder = OllamaClient(
-                    base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434"),
-                    model=os.getenv("OLLAMA_EMBED_MODEL", "nomic-embed-text"),
-                )
+                embedder = OllamaClient()
                 qvec = embedder.embed([question])[0]
-                results = store.search_by_vector(qvec, k=rag_k) or []
+                results = (
+                    store.search_by_vector(qvec, k=rag_k, min_score=rag_min_score) or []
+                )
                 rag_raw_results = results
                 rag_hits_count = len(results) if results else 0
                 from app.rag.hints import entity_hints_from_rag
@@ -253,19 +256,34 @@ class Planner:
         fused_scores: Dict[str, float] = {}
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
-        # M7.4: aplicamos fusão somente se re_rank.enabled=true
+        # NOVO: permitir fusão mesmo com re_rank desativado se rag.weight>0
+        # usa re_rank.weight quando re_rank.enabled=true, senão usa rag.weight
+        fusion_weight = re_rank_weight if re_rank_enabled else float(rag_weight)
+
         rag_fusion_applied = (
-            rag_enabled and rag_used and re_rank_enabled and (re_rank_weight > 0.0)
+            bool(rag_enabled)
+            and bool(rag_used)
+            and (fusion_weight > 0.0)
         )
-        fusion_weight = re_rank_weight if rag_fusion_applied else 0.0
+
+        if not rag_fusion_applied:
+            fusion_weight = 0.0
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
-            entity_name = it.entities[0] if it.entities else None
-            intent_entities[it.name] = entity_name
+            raw_entity = it.entities[0] if it.entities else _DEFAULT_INTENT_ENTITY.get(it.name)
+            effective_entity = raw_entity
+            if not effective_entity and rag_entity_hints:
+                try:
+                    effective_entity = max(
+                        rag_entity_hints, key=lambda key: rag_entity_hints[key]
+                    )
+                except ValueError:
+                    effective_entity = None
+            intent_entities[it.name] = effective_entity
             rag_signal = (
-                float(rag_entity_hints.get((entity_name or "").strip(), 0.0))
-                if entity_name
+                float(rag_entity_hints.get((effective_entity or "").strip(), 0.0))
+                if effective_entity
                 else 0.0
             )
             intent_rag_signals[it.name] = rag_signal
@@ -292,6 +310,7 @@ class Planner:
                 }
             )
 
+            entity_name = effective_entity
             if entity_name:
                 prev_base = entity_base_scores.get(entity_name)
                 if prev_base is None or base > prev_base:
@@ -309,10 +328,7 @@ class Planner:
         if fused_scores:
             chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
             chosen_score = float(fused_scores[chosen_intent])
-            for it in self.onto.intents:
-                if it.name == chosen_intent:
-                    chosen_entity = it.entities[0] if it.entities else None
-                    break
+            chosen_entity = intent_entities.get(chosen_intent)
 
         ordered_combined = sorted(
             combined_intents, key=lambda item: item["combined"], reverse=True
