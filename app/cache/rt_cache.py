@@ -9,8 +9,7 @@ import yaml
 from app.observability.instrumentation import counter, histogram
 
 # Fonte oficial (novo) e caminho legado (compat)
-NEW_POLICY_PATH = Path("data/policies/cache.yaml")
-LEGACY_POLICY_PATH = Path("data/entities/cache_policies.yaml")
+POLICY_PATH = Path("data/policies/cache.yaml")
 
 
 class CachePolicies:
@@ -20,10 +19,7 @@ class CachePolicies:
         if path:
             selected = Path(path)
         else:
-            if NEW_POLICY_PATH.exists():
-                selected = NEW_POLICY_PATH
-            elif LEGACY_POLICY_PATH.exists():
-                selected = LEGACY_POLICY_PATH
+            selected = POLICY_PATH
 
         # Fallback seguro: sem arquivo -> política vazia
         if selected and selected.exists():
@@ -34,7 +30,7 @@ class CachePolicies:
         else:
             # Não explode a API se o arquivo não existir
             self.data = {}
-            self.path = NEW_POLICY_PATH
+            self.path = POLICY_PATH
             self.mtime = None
 
     def get(self, entity: str) -> Optional[Dict[str, Any]]:
