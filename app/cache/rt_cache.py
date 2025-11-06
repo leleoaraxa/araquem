@@ -94,6 +94,39 @@ def make_cache_key(
     return f"araquem:{build_id}:{scope}:{entity}:{_stable_hash(identifiers or {})}"
 
 
+def _is_empty_payload(val: Any) -> bool:
+    """
+    Heurística segura para considerar payload 'vazio' (não cacheável).
+    Cobre os formatos mais comuns do projeto:
+      - None / False / []
+      - {"rows": []}
+      - {"fii_metrics": []}
+      - dict onde todos os valores são coleções vazias
+    """
+    if not val:
+        return True
+    if isinstance(val, dict):
+        # casos explícitos
+        rows = val.get("rows")
+        if isinstance(rows, list) and len(rows) == 0:
+            return True
+        fm = val.get("fii_metrics")
+        if isinstance(fm, list) and len(fm) == 0:
+            return True
+        # todo dict só com coleções vazias
+        all_empty = True
+        for v in val.values():
+            if isinstance(v, (list, tuple, set, dict)):
+                if len(v) > 0:
+                    all_empty = False
+                    break
+            elif v not in (None, "", False):
+                all_empty = False
+                break
+        return all_empty
+    return False
+
+
 def read_through(
     cache: RedisCache,
     policies: CachePolicies,
@@ -105,7 +138,8 @@ def read_through(
     policy = policies.get(entity)
     if not policy:
         # sem política → bypass cache
-        return {"cached": False, "key": None, "value": fetch_fn()}
+        val = fetch_fn()
+        return {"cached": False, "key": None, "value": val}
 
     ttl = int(policy.get("ttl_seconds", 0) or 0)
     scope = str(policy.get("scope", "pub"))
@@ -114,8 +148,27 @@ def read_through(
 
     val = cache.get_json(key)
     if val is not None:
+        # métricas de HIT por entidade
+        try:
+            counter("cache_hits_total", entity=entity)
+            if entity == "fiis_metrics":
+                counter("metrics_cache_hits_total", entity=entity)
+        except Exception:
+            pass
         return {"cached": True, "key": key, "value": val, "ttl": ttl}
 
     val = fetch_fn()
+    # métricas de MISS por entidade
+    try:
+        counter("cache_misses_total", entity=entity)
+        if entity == "fiis_metrics":
+            counter("metrics_cache_misses_total", entity=entity)
+    except Exception:
+        pass
+
+    # não cachear payload vazio
+    if _is_empty_payload(val):
+        return {"cached": False, "key": key, "value": val, "ttl": ttl}
+
     cache.set_json(key, val, ttl_seconds=ttl)
     return {"cached": False, "key": key, "value": val, "ttl": ttl}
