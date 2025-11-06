@@ -1,39 +1,69 @@
 [
   {
-    "idx": 108,
-    "question": "quanto de dividendos o HGLG11 pagou nos últimos 12 meses?",
+    "idx": 111,
+    "question": "contagem de pagamentos do HGLG11",
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "dividendos",
     "got_entity": "fiis_dividendos",
-    "score": 4.0,
-    "normalized": "quanto de dividendos o hglg11 pagou nos ultimos 12 meses ",
+    "score": 2.0,
+    "normalized": "contagem de pagamentos do hglg11",
     "tokens": [
-      "quanto",
+      "contagem",
       "de",
+      "pagamentos",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 2.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 2.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "base"
+    }
+  },
+  {
+    "idx": 112,
+    "question": "dividendos totais do VISC11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "dividendos",
+    "got_entity": "fiis_dividendos",
+    "score": 2.0,
+    "normalized": "dividendos totais do visc11",
+    "tokens": [
       "dividendos",
-      "o",
-      "hglg11",
-      "pagou",
-      "nos",
-      "ultimos",
-      "12",
-      "meses"
+      "totais",
+      "do",
+      "visc11"
     ],
     "intent_scores": {
       "cadastro": -1.0,
       "precos": -1.0,
-      "dividendos": 4.0,
+      "dividendos": 2.0,
       "noticias": 0.0,
       "rankings": -1.0,
-      "metricas": 2.0
+      "metricas": 0.0,
+      "imoveis": 0.0,
+      "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
       "gap": 2.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -41,8 +71,8 @@
     "question": "imóveis do HGLG11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_imoveis",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
+    "got_intent": "imoveis",
+    "got_entity": "fiis_imoveis",
     "score": 3.0,
     "normalized": "imoveis do hglg11",
     "tokens": [
@@ -51,19 +81,21 @@
       "hglg11"
     ],
     "intent_scores": {
-      "cadastro": 3.0,
+      "cadastro": 0.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 3.0,
+      "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.5,
       "gap": 3.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -71,9 +103,9 @@
     "question": "quais propriedades do KNRI11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_imoveis",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
-    "score": 5.0,
+    "got_intent": "imoveis",
+    "got_entity": "fiis_imoveis",
+    "score": 2.0,
     "normalized": "quais propriedades do knri11",
     "tokens": [
       "quais",
@@ -82,19 +114,21 @@
       "knri11"
     ],
     "intent_scores": {
-      "cadastro": 5.0,
+      "cadastro": -2.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 2.0,
+      "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 5.0,
+      "min_gap": 0.5,
+      "gap": 2.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -102,9 +136,9 @@
     "question": "imóveis do KNRI11 em SP",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_imoveis",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
-    "score": 3.0,
+    "got_intent": "imoveis",
+    "got_entity": "fiis_imoveis",
+    "score": 5.0,
     "normalized": "imoveis do knri11 em sp",
     "tokens": [
       "imoveis",
@@ -114,19 +148,21 @@
       "sp"
     ],
     "intent_scores": {
-      "cadastro": 3.0,
+      "cadastro": 0.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 5.0,
+      "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 3.0,
+      "min_gap": 0.5,
+      "gap": 5.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -134,9 +170,9 @@
     "question": "lista de propriedades do VISC11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_imoveis",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
-    "score": 5.0,
+    "got_intent": "imoveis",
+    "got_entity": "fiis_imoveis",
+    "score": 4.0,
     "normalized": "lista de propriedades do visc11",
     "tokens": [
       "lista",
@@ -146,19 +182,21 @@
       "visc11"
     ],
     "intent_scores": {
-      "cadastro": 5.0,
+      "cadastro": -2.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 4.0,
+      "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 5.0,
+      "min_gap": 0.5,
+      "gap": 4.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -166,8 +204,8 @@
     "question": "processos do VISC11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_processos",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
+    "got_intent": "processos",
+    "got_entity": "fiis_processos",
     "score": 4.0,
     "normalized": "processos do visc11",
     "tokens": [
@@ -176,19 +214,21 @@
       "visc11"
     ],
     "intent_scores": {
-      "cadastro": 4.0,
+      "cadastro": -2.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 0.0,
+      "processos": 4.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.5,
       "gap": 4.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -196,8 +236,8 @@
     "question": "status dos processos do HGRU11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_processos",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
+    "got_intent": "processos",
+    "got_entity": "fiis_processos",
     "score": 7.0,
     "normalized": "status dos processos do hgru11",
     "tokens": [
@@ -208,19 +248,21 @@
       "hgru11"
     ],
     "intent_scores": {
-      "cadastro": 7.0,
+      "cadastro": -4.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 0.0,
+      "processos": 7.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.5,
       "gap": 7.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -228,8 +270,8 @@
     "question": "andamento dos processos do MXRF11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_processos",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
+    "got_intent": "processos",
+    "got_entity": "fiis_processos",
     "score": 7.0,
     "normalized": "andamento dos processos do mxrf11",
     "tokens": [
@@ -240,19 +282,21 @@
       "mxrf11"
     ],
     "intent_scores": {
-      "cadastro": 7.0,
+      "cadastro": -2.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 0.0,
+      "processos": 7.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.5,
       "gap": 7.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   },
   {
@@ -260,9 +304,9 @@
     "question": "processos judiciais do XPLG11",
     "expected_intent": "cadastro",
     "expected_entity": "fiis_processos",
-    "got_intent": "cadastro",
-    "got_entity": "fiis_cadastro",
-    "score": 4.0,
+    "got_intent": "processos",
+    "got_entity": "fiis_processos",
+    "score": 5.0,
     "normalized": "processos judiciais do xplg11",
     "tokens": [
       "processos",
@@ -271,19 +315,21 @@
       "xplg11"
     ],
     "intent_scores": {
-      "cadastro": 4.0,
+      "cadastro": 0.0,
       "precos": 0.0,
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 0.0
+      "metricas": 0.0,
+      "imoveis": 0.0,
+      "processos": 5.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 4.0,
+      "min_gap": 0.5,
+      "gap": 5.0,
       "accepted": true,
-      "source": "final"
+      "source": "base"
     }
   }
 ]
