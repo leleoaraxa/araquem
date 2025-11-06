@@ -1,0 +1,3 @@
+[
+  {"input": "notícias do KNRI11", "expect": {"rows>=1": true}}
+]
