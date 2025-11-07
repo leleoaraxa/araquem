@@ -1,0 +1,94 @@
+id: fiis_dividendos
+result_key: dividendos_fii
+sql_view: fiis_dividendos
+private: false
+description: Histórico de proventos (dividendos) por FII
+identifiers:
+- name: ticker
+  description: Ticker do FII normalizado (AAAA11)
+default_date_field: payment_date
+columns:
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: payment_date
+  alias: Data de pagamento
+  description: Data em que o dividendo foi pago.
+- name: dividend_amt
+  alias: Valor (R$ por cota)
+  description: Valor do dividendo/provento por cota.
+- name: traded_until_date
+  alias: Data-com (cutoff)
+  description: Último dia com direito ao provento (data-com).
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
+presentation:
+  kind: table
+  fields:
+    key: payment_date
+    value: dividend_amt
+  empty_message: Sem dividendos para exibir.
+ask:
+  intents:
+  - dividendos
+  keywords:
+  - dividendo
+  - dividendos
+  - provento
+  - proventos
+  - rendimento
+  - rendimentos
+  - pagamento
+  - paga
+  - pagou
+  - yield
+  - dy
+  synonyms:
+    ticker:
+    - ativo
+    - papel
+    - fundo
+    - fii
+    dividend_amt:
+    - dividendo
+    - provento
+    - rendimento
+    - yield
+    - dy
+    - valor
+    payment_date:
+    - pagamento
+    - data de pagamento
+    - paga
+    - pagou
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+order_by_whitelist:
+- payment_date desc
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc
+    avg:
+      window: months:6
+    sum:
+      window: months:12
+  windows_allowed:
+  - months:3
+  - months:6
+  - months:12
+  - months:24
+  - count:3
+  - count:6
+  - count:12
+  - count:24
+  - count:1

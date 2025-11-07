@@ -1,0 +1,79 @@
+id: fiis_noticias
+result_key: noticias_fii
+sql_view: fiis_noticias
+private: false
+description: Notícias e matérias relevantes sobre FIIs (fonte externa consolidada
+  D-1)
+d_minus: 1
+identifiers:
+- name: ticker
+  description: Ticker do FII normalizado (AAAA11)
+default_date_field: published_at
+columns:
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: source
+  alias: Fonte
+  description: Fonte ou veículo da notícia.
+- name: title
+  alias: Título
+  description: Título da matéria/notícia.
+- name: tags
+  alias: Tags
+  description: Palavras-chave associadas à notícia.
+- name: description
+  alias: Descrição
+  description: Resumo curto ou descrição da notícia.
+- name: url
+  alias: URL
+  description: Link completo para a notícia.
+- name: image_url
+  alias: URL da imagem
+  description: URL de imagem de destaque da notícia.
+- name: published_at
+  alias: Publicada em
+  description: Data/hora de publicação da notícia.
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
+presentation:
+  kind: list
+  fields:
+    key: title
+    value: url
+  empty_message: Nenhuma notícia encontrada.
+ask:
+  intents:
+  - noticias
+  keywords:
+  - noticia
+  - notícias
+  - materia
+  - reportagem
+  - atualização
+  - últimas
+  - novidades
+  synonyms:
+    ticker:
+    - ativo
+    - papel
+    - fundo
+    - fii
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+order_by_whitelist:
+- published_at desc
+- updated_at desc
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc

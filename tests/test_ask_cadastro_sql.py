@@ -65,6 +65,7 @@ def test_ask_returns_data_from_fiis_cadastro_when_ticker_exists():
     assert body["status"]["reason"] == "ok"
     assert body["meta"]["planner_entity"] == "fiis_cadastro"
     assert body["meta"]["result_key"] == "cadastro_fii"
+    assert body["meta"].get("rendered_response")
 
     data = body["results"].get("cadastro_fii", [])
     assert isinstance(data, list)

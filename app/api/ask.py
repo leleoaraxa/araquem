@@ -17,6 +17,7 @@ from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
+from app.formatter.rows import render_rows_template
 from app.planner.param_inference import infer_params
 from app.responder import render_answer
 
@@ -102,7 +103,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             question=payload.question,
             intent=intent,
             entity=entity,
-            entity_yaml_path=f"data/entities/{entity}.yaml",
+            entity_yaml_path=f"data/entities/{entity}/entity.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
     except Exception:
@@ -160,6 +161,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         identifiers=identifiers,
         aggregates=agg_params,
     )
+    rendered_response = render_rows_template(entity, rows)
 
     explain_analytics_payload = None
     if explain:
@@ -230,6 +232,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 ),
             },
             "aggregates": agg_params,
+            "rendered_response": rendered_response,
         },
         "answer": answer,
     }

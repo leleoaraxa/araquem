@@ -2,7 +2,7 @@
 
 **Regra geral**  
 - As intents (em `data/ops/param_inference.yaml`) definem **semântica** — palavras, padrões e janelas padrão.  
-- As entidades (em `data/entities/*.yaml`) definem **capacidades** — o que pode ser agregado, listado, ou calculado.
+- As entidades (em `data/entities/<entidade>/entity.yaml`) definem **capacidades** — o que pode ser agregado, listado, ou calculado.
 
 **Princípio**  
 > A intent decide, a entidade valida.

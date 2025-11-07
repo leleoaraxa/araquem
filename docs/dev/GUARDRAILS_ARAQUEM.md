@@ -72,9 +72,11 @@ araquem/
 ## 2. Estrutura de Dados & Entidades (entities lógicas)
 
 - **Entidade = unidade semântica** (ex.: `fiis_cadastro`, `fiis_dividendos`, `fiis_precos`, `fiis_noticias`, `fiis_rankings`, etc.).
-- **Arquivo:** `data/entities/<entidade>.yaml`.
+- **Arquivo:** `data/entities/<entidade>/entity.yaml`.
 - **Contrato mínimo:**
-  - `entity`, `description`, `private`, `identifiers`, `default_date_field`, `presentation.result_key`, `presentation.return_columns`, `columns[] {name, alias, description}`, `ask {intents, keywords, synonyms, weights}`, `order_by_whitelist` (se aplicável).
+  - `id`, `result_key`, `sql_view`, `description`, `private`, `identifiers`, `default_date_field`,
+    `columns[] {name, alias, description}`, `presentation {kind, fields {key, value}, empty_message}`,
+    `ask {intents, keywords, synonyms, weights}`, `order_by_whitelist` (se aplicável).
 - **Cache policy:** `data/entities/cache_policies.yaml` com `ttl_seconds`, `refresh_at` e `scope (pub|prv)`.
 - **Naming:** snake_case PT-BR; booleanos com `is_`/`has_`; enums com `allowed_values`.
 
@@ -167,7 +169,7 @@ araquem/
 
 - **Papel:** transformar dados em respostas naturais **sem inventar**.
 - **Local:** `app/responder/`.
-- **Templates por entidade** (ex.: `data/concepts/fiis_cadastro_templates.md`), com *slots* mapeados a `return_columns`.
+- **Templates por entidade** (ex.: `data/concepts/fiis_cadastro_templates.md`), com *slots* mapeados às colunas declaradas.
 - **Exemplos (cadastro):**
   - `O CNPJ do {ticker} é {fii_cnpj}.`
   - `O administrador do {ticker} é {admin_name} (CNPJ {admin_cnpj}).`

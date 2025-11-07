@@ -27,6 +27,7 @@ def _get_metric_value(response, metric_key: str):
 
 def test_dividends_sum_is_br_currency(ask):
     res = ask("soma de dividendos do HGLG11 nos ultimos 12 meses")
+    assert res["meta"].get("rendered_response")
     value = _get_metric_value(res, "dividends_sum")
     assert value == "R$ 12,34"
 

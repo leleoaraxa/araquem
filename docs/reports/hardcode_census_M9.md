@@ -218,7 +218,7 @@ CURRENCY_COLUMNS = {"cause_amt"}
         return f"{_format_decimal_br(decimal_value, 2)}%"
 ```
 **Correção sugerida (alinhada ao guardrails):**
-- Declarar formatos por métrica em `data/entities/fiis_metrics.yaml` ou arquivo dedicado a métricas.
+- Declarar formatos por métrica em `data/entities/fiis_metrics/entity.yaml` ou arquivo dedicado a métricas.
 - Converter o formatter para ler regras (tipo, casas, sufixo) desse dicionário declarativo.
 - Permitir extensibilidade adicionando métricas sem editar o código Python.
 - Criar teste cobrindo mapeamento de formato baseado em configuração externa.

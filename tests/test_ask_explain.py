@@ -59,6 +59,7 @@ def test_ask_with_explain_includes_explain_block():
 
     assert body["status"]["reason"] == "ok"
     assert body["meta"]["planner_entity"] == "fiis_cadastro"
+    assert body["meta"].get("rendered_response")
     assert "explain" in body["meta"]
     exp = body["meta"]["explain"]
     assert isinstance(exp, dict)

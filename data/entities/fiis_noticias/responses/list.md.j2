@@ -1,8 +1,8 @@
-{% if rows and rows|length > 0 %}
-Notícias recentes:
-{% for r in rows %}
-- {{ r.title }} — {{ r.url }}
-{% endfor %}
-{% else %}
-Nenhuma notícia encontrada.
-{% endif %}
+{% if rows and rows|length > 0 -%}
+Lista ({{ rows|length }}):
+{%- for r in rows %}
+- {{ r[fields.key] }} — {{ r[fields.value] }}
+{%- endfor %}
+{%- else -%}
+{{ empty_message or "Nenhum registro encontrado." }}
+{%- endif %}
