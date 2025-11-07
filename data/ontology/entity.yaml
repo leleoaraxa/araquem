@@ -272,6 +272,9 @@ intents:
         - "imoveis do"
         - "quais imoveis do"
         - "lista de propriedades do"
+        - "area total do"
+        - "status dos"
+        - "status do"
       exclude: []
     entities: [fiis_imoveis]
 
