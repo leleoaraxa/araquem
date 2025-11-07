@@ -210,7 +210,7 @@
     "expected_entity": "fiis_financials_snapshot",
     "got_intent": "metricas",
     "got_entity": "fiis_metrics",
-    "score": 6.0,
+    "score": 3.9000000000000004,
     "normalized": "market cap e ev do knri11",
     "tokens": [
       "market",
@@ -414,7 +414,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_metrics",
-    "score": 9.0,
+    "score": 5.8500000000000005,
     "normalized": "minhas posicoes cpf 66140994691",
     "tokens": [
       "minhas",
