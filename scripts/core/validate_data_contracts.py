@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
-"""Validate consistency of golden data contracts."""
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: validate_data_contracts.py
+Purpose: Validar consistência entre os contratos golden em YAML e JSON.
+Compliance: Guardrails Araquem v2.1.1
+"""
 
 from __future__ import annotations
 
@@ -17,7 +23,7 @@ except ModuleNotFoundError as exc:  # pragma: no cover - runtime dependency chec
     raise SystemExit(1) from exc
 
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
+ROOT_DIR = Path(__file__).resolve().parents[2]
 YAML_PATH = ROOT_DIR / "data" / "golden" / "m65_quality.yaml"
 JSON_PATH = ROOT_DIR / "data" / "golden" / "m65_quality.json"
 

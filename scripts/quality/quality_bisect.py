@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: quality_bisect.py
+Purpose: Bisectar amostras de roteamento para isolar falhas em quality gates.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 import os, json, sys
 from pathlib import Path
 import httpx

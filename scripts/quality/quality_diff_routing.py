@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: quality_diff_routing.py
+Purpose: Comparar roteamento atual com amostras de qualidade para detectar divergências.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 import os, json, uuid, httpx
 from pathlib import Path
 

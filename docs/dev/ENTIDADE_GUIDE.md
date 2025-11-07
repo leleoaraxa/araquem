@@ -105,7 +105,7 @@ data/
 | 4️⃣   | Atualizar ontologia (`intent`)         | via patch          |
 | 5️⃣   | Adicionar samples no `golden`          | YAML + JSON        |
 | 6️⃣   | Criar projection para schema check     | JSON               |
-| 7️⃣   | Rodar `python scripts/quality_push.py` | garante 100% verde |
+| 7️⃣   | Rodar `python scripts/quality/quality_push.py` | garante 100% verde |
 
 ---
 

@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Generate Prometheus recording and alerting rules from observability bindings."""
+# -*- coding: utf-8 -*-
+"""
+Script: gen_alerts.py
+Purpose: Gerar regras de recording e alerting Prometheus usando bindings declarados.
+Compliance: Guardrails Araquem v2.1.1
+"""
 
 from __future__ import annotations
 

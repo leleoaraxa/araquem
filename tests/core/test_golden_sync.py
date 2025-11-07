@@ -6,7 +6,7 @@ import sys
 
 def _run(args):
     return subprocess.run(
-        [sys.executable, "scripts/golden_sync.py", *args],
+        [sys.executable, "scripts/core/golden_sync.py", *args],
         capture_output=True,
         text=True,
     )

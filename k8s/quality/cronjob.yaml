@@ -33,8 +33,8 @@ spec:
               command: ["bash","-lc"]
               args:
                 - >
-                  python ./scripts/quality_push_cron.py &&
-                  ./scripts/quality_gate_check.sh
+                  python ./scripts/quality/quality_push_cron.py &&
+                  ./scripts/quality/quality_gate_check.sh
           volumes:
             - name: repo
               projected:

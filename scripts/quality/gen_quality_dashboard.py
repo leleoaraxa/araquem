@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: gen_quality_dashboard.py
+Purpose: Gerar dashboards de qualidade a partir dos thresholds configurados.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 import json, os, sys, yaml
 from pathlib import Path
 from datetime import datetime, UTC

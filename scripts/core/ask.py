@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-scripts/ask.py — wrapper CLI para chamar a rota /ask do Araquem
+Script: ask.py
+Purpose: CLI wrapper para chamar a rota /ask do Araquem.
+Compliance: Guardrails Araquem v2.1.1
 
 Uso rápido:
-  python scripts/ask.py "Qual o CNPJ do ABCD11?"
+  python scripts/core/ask.py "Qual o CNPJ do ABCD11?"
 
 Com token:
-  python scripts/ask.py "Qual o CNPJ do ABCD11?" --token %ARQ_API_TOKEN%
+  python scripts/core/ask.py "Qual o CNPJ do ABCD11?" --token %ARQ_API_TOKEN%
 
 Com arquivo JSON:
-  python scripts/ask.py --file data/samples/ask_sample.json
+  python scripts/core/ask.py --file data/samples/ask_sample.json
 
 Opções:
   --url            URL do endpoint /ask (default: http://localhost:8000/ask)

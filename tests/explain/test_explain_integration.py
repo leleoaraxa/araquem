@@ -1,4 +1,4 @@
-# /tests/test_ask_explain.py
+# tests/explain/test_explain_integration.py
 import os
 import pytest
 import psycopg

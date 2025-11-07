@@ -26,7 +26,7 @@ Atualizado automaticamente a cada lote de sincronização.
 ### ⚖️ Fontes únicas (decisões de governança)
 
 * **Ontologia:** `data/ontology/entity.yaml` é a única fonte de intents/tokens.
-* **Golden set:** `data/golden/m65_quality.yaml` é a única fonte canônica de QA; o `routing_samples.json` é **gerado automaticamente** via `scripts/golden_sync.py`.
+* **Golden set:** `data/golden/m65_quality.yaml` é a única fonte canônica de QA; o `routing_samples.json` é **gerado automaticamente** via `scripts/core/golden_sync.py`.
 * **Inferência:** semântica em `param_inference.yaml`, capacidades em `entities/*.yaml`.
 * **Embeddings:** `index.yaml` define *o que entra*, `manifest.json` controla invalidação de cache.
 
@@ -37,9 +37,9 @@ Atualizado automaticamente a cada lote de sincronização.
 | Script                                    | Função                                                  | Saída                    | Execução                                         |
 | ----------------------------------------- | ------------------------------------------------------- | ------------------------ | ------------------------------------------------ |
 | `scripts/gen_projection_from_entities.py` | Gera projeções QA (`projection_*.json`)                 | `data/ops/quality/`      | `python scripts/gen_projection_from_entities.py` |
-| `scripts/golden_sync.py`                  | Sincroniza `m65_quality.yaml` → `routing_samples.json`  | `data/ops/quality/`      | `python scripts/golden_sync.py --check`          |
-| `scripts/validate_data_contracts.py`      | Valida contratos YAML e inferência                      | Console                  | `python scripts/validate_data_contracts.py`      |
-| `scripts/embeddings_build.py`             | Regera índice RAG (`embeddings.jsonl`, `manifest.json`) | `data/embeddings/store/` | `python scripts/embeddings_build.py`             |
+| `scripts/core/golden_sync.py`                  | Sincroniza `m65_quality.yaml` → `routing_samples.json`  | `data/ops/quality/`      | `python scripts/core/golden_sync.py --check`          |
+| `scripts/core/validate_data_contracts.py`      | Valida contratos YAML e inferência                      | Console                  | `python scripts/core/validate_data_contracts.py`      |
+| `scripts/embeddings/embeddings_build.py`             | Regera índice RAG (`embeddings.jsonl`, `manifest.json`) | `data/embeddings/store/` | `python scripts/embeddings/embeddings_build.py`             |
 
 ---
 
@@ -66,11 +66,11 @@ Atualizado automaticamente a cada lote de sincronização.
 * Antes do build:
 
   ```
-  python scripts/validate_data_contracts.py
-  python scripts/golden_sync.py --check
+  python scripts/core/validate_data_contracts.py
+  python scripts/core/golden_sync.py --check
   ```
 * Durante QA contínuo:
 
   ```
-  python scripts/quality_push_cron.py --dry-run
+  python scripts/quality/quality_push_cron.py --dry-run
   ```
