@@ -257,9 +257,7 @@ class Planner:
 
         # Fusão linear: prioriza peso do re_rank se habilitado; caso contrário usa peso do RAG
         fusion_weight = re_rank_weight if re_rank_enabled else rag_weight
-        rag_fusion_applied = bool(
-            rag_enabled and rag_used and (fusion_weight > 0.0)
-        )
+        rag_fusion_applied = bool(rag_enabled and rag_used and (fusion_weight > 0.0))
         effective_weight = fusion_weight if rag_fusion_applied else 0.0
 
         for it in self.onto.intents:
@@ -312,7 +310,8 @@ class Planner:
         if fused_scores:
             chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
             chosen_score = float(fused_scores[chosen_intent])
-            chosen_entity = intent_entities.get(chosen_intent)
+            # usar o vencedor entre entidades (baseado em combined/base+rag)
+            chosen_entity = top_entity_name or intent_entities.get(chosen_intent)
 
         ordered_combined = sorted(
             combined_intents, key=lambda item: item["combined"], reverse=True
