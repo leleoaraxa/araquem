@@ -15,10 +15,10 @@
     "updated_at"
   ],
   "samples": [
-    { "question": "notícias do KNRI11" },
-    { "question": "últimas do MXRF11" },
-    { "question": "matérias recentes do HGLG11" },
-    { "question": "notícias do VISC11 na mídia" },
+    { "question": "noticias do KNRI11" },
+    { "question": "ultimas noticias do MXRF11" },
+    { "question": "noticias recentes do HGLG11" },
+    { "question": "as noticias do VISC11" },
     { "question": "novidades sobre o XPML11" }
   ]
 }

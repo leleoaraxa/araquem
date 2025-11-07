@@ -54,8 +54,8 @@ intents:
         - cnpj do
         - administrador do
         - site do
-        - nome de pregrao do
-        - nome de pregrao b3 do
+        - nome de pregao do
+        - nome de pregao b3 do
         - nome de exibicao do
         - classificacao do
         - setor do
@@ -96,7 +96,7 @@ intents:
         - minima
         - variacao
         - diaria
-        - pregrao
+        - pregao
       exclude:
         - cadastro
         - dividendo
@@ -179,12 +179,15 @@ intents:
         - reportagem
         - atualizacao
         - ultimas
+        - novidades
       exclude: []
     phrases:
       include:
         - noticias do
         - ultimas do
         - novidades do
+        - ultimas noticias do
+        - as noticias do
       exclude: []
     entities: [fiis_noticias]
 
@@ -225,34 +228,16 @@ intents:
   - name: metricas
     tokens:
       include:
+        - metricas
+        - metrica
+        - media
         - soma
         - dy
         - "dividend yield"
-        - "dividendo yield"
-        - "preco medio"
-        - "soma de dividendos"
-        - "soma dividendos"
-        - "soma proventos"
-        - "quantidade de dividendos"
-        - "contagem de dividendos"
-        - "media de preco"
-        - pagamentos
-        - pagamento
-        - distribuicoes
-        - distribuicao
-        - 3m
-        - 6m
-        - 12m
-        - 24m
-        - ultimos
-        - meses
-        - "12 meses"
-        - "24 meses"
-        - total
-        - quanto
       exclude: []
     phrases:
       include:
+        - "metricas do"
         - "soma de dividendos"
         - "soma de dividendos do"
         - "preco medio"
@@ -303,6 +288,8 @@ intents:
         - litgio
         - causa
         - risco
+        - acao
+        - acoes
       exclude: []
     phrases:
       include:
@@ -310,6 +297,7 @@ intents:
         - "status dos processos do"
         - "andamento dos processos do"
         - "processos judiciais do"
+        - "acoes judiciais do"
       exclude: []
     entities: [fiis_processos]
 

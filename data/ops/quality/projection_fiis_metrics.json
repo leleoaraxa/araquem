@@ -11,10 +11,10 @@
     "period_end"
   ],
   "samples": [
-    { "question": "métricas do MCCI11 no ano" },
-    { "question": "métricas 6m do MXRF11" },
-    { "question": "média de DY do HGLG11 em 12m" },
-    { "question": "preço médio do KNRI11 em 6m" },
-    { "question": "DY médio do VISC11 no período" }
+    { "question": "metricas do MCCI11 no ano" },
+    { "question": "metricas 6m do MXRF11" },
+    { "question": "media de dy do HGLG11 em 12m" },
+    { "question": "preco medio do KNRI11 em 6m" },
+    { "question": "dy medio do VISC11 no periodo" }
   ]
 }

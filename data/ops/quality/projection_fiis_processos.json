@@ -18,9 +18,9 @@
   ],
   "samples": [
     { "question": "processos do HGLG11" },
-    { "question": "ações judiciais do MXRF11" },
-    { "question": "processos do KNRI11 e estágio (instância)" },
-    { "question": "risco de perda do XPLG11" },
-    { "question": "principais fatos do BRCR11 em processos" }
+    { "question": "acoes judiciais do MXRF11" },
+    { "question": "instancia dos processos do KNRI11" },
+    { "question": "status dos processos do XPLG11" },
+    { "question": "risco de perda do BRCR11" }
   ]
 }
