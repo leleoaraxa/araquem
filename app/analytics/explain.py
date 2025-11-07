@@ -150,7 +150,7 @@ def explain(
         intent = _pick(planner_output, "intent", "matched_intent", default=None)
         entity = _pick(planner_output, "entity", "matched_entity", default=None)
         view = _pick(planner_output, "view", "selected_view", default=None)
-        route_id = _pick(planner_output, "route_id", default=None)
+        route_id: Optional[str] = None
 
         # Nested route forms commonly used by planners
         route = (
@@ -160,8 +160,10 @@ def explain(
             intent = intent or _pick(route, "intent")
             entity = entity or _pick(route, "entity")
             view = view or _pick(route, "view")
-            # Prefer explicit route_id; fallback to view, then entity
-            route_id = route_id or _pick(route, "route_id")
+            route_id = _pick(route, "route_id") or route_id
+
+        if route_id is None:
+            route_id = _pick(planner_output, "route_id", default=None)
 
         # Final fallback policy (retrocompatível):
         # route_id <- view <- entity <- ""

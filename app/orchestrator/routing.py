@@ -422,8 +422,8 @@ class Orchestrator:
                 "route": {
                     "intent": intent,
                     "entity": entity,
-                    "route_id": route_id,
                     "view": result_key,
+                    "route_id": route_id,
                 },
                 "chosen": chosen,
             }
