@@ -686,5 +686,3 @@ SELECT
 FROM fiis_financials;
 
 ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
-
-
