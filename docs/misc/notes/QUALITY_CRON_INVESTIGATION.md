@@ -24,7 +24,7 @@ Não foi possível consultar `http://localhost:8000` (resposta vazia), indicando
 `docker/quality-cron.sh` aguarda a API ficar saudável e, após cada ciclo de push, aguarda até 60 s (sleep padrão de 2 s) por métricas válidas antes de rodar o _gate_.【F:docker/quality-cron.sh†L1-L27】
 
 ### 6. Tipos ignorados
-Os arquivos em `data/ops/quality` incluem tipos como `rag_search` e `explain_contract_check`, mas `quality_push_cron.py` aceita apenas `routing` e `projection` por padrão, pulando os demais como "unsupported type".【F:data/ops/quality/rag_search_basics.json†L1-L26】【F:data/ops/quality/planner_rag_integration.json†L1-L12】【F:data/ops/quality/m66_projection.json†L1-L14】【F:scripts/quality/quality_push_cron.py†L12-L128】
+Os arquivos em `data/ops/quality_experimental` incluem tipos como `rag_search` e `explain_contract_check`, mas `quality_push_cron.py` aceita apenas `routing` e `projection` por padrão, pulando os demais como "unsupported type".【F:data/ops/quality_experimental/rag_search_basics.json†L1-L26】【F:data/ops/quality_experimental/planner_rag_integration.json†L1-L12】【F:data/ops/quality_experimental/m66_projection.json†L1-L14】【F:scripts/quality/quality_push_cron.py†L12-L128】
 
 ### 7. Dependências do container
 O cron instala `PyYAML` em runtime, o que evidencia dependência tratada dinamicamente, mas o `Dockerfile.quality-cron` não executa `pip install` durante o build.【F:docker/quality-cron.sh†L1-L27】【F:docker/Dockerfile.quality-cron†L1-L8】

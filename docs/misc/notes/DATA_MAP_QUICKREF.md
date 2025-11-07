@@ -13,11 +13,11 @@
 | data/golden/m65_quality.{yaml,json} | Casos golden de roteamento | `scripts/embeddings/embeddings_build.py` | Pipeline de embeddings | Mesmas perguntas também em `routing_samples.json` |
 | data/ontology/.hash | Hash da ontologia | `scripts/observability/hash_guard.py` | Script | Precisa atualização manual |
 | data/ontology/entity.yaml | Ontologia intents→entities | `load_ontology`, `scripts/core/try_m3.py`, `scripts/embeddings/embeddings_build.py` | Bootstrap + todas as rotas que usam planner | Alterações impactam roteamento imediatamente |
-| data/ops/quality/m66_projection.json | QA contract check explain | `scripts/quality/quality_push_cron.py` | Script (push `/ops/quality/push`) | Endpoint ainda não suporta o tipo |
-| data/ops/quality/param_inference_samples.json | Regressão de inferência | `tests/test_param_inference.py` | Testes | Cron envia arquivo incompatível |
-| data/ops/quality/planner_rag_integration.json | QA Planner+RAG | `scripts/quality/quality_push_cron.py`, `scripts/embeddings/embeddings_build.py` | Script | Backend não trata o tipo |
+| data/ops/quality_experimental/m66_projection.json | QA contract check explain | `scripts/quality/quality_push_cron.py` | Script (push `/ops/quality/push`) | Endpoint ainda não suporta o tipo |
+| data/ops/quality_experimental/param_inference_samples.json | Regressão de inferência | `tests/test_param_inference.py` | Testes | Cron envia arquivo incompatível |
+| data/ops/quality_experimental/planner_rag_integration.json | QA Planner+RAG | `scripts/quality/quality_push_cron.py`, `scripts/embeddings/embeddings_build.py` | Script | Backend não trata o tipo |
 | data/ops/quality/projection_*.json | QA projeções por entidade | `scripts/quality/quality_push_cron.py` | Script (push `/ops/quality/push`) | Repete `columns` das entidades |
-| data/ops/quality/rag_search_basics.json | QA busca vetorial | `scripts/quality/quality_push_cron.py` | Script | Endpoint sem implementação |
+| data/ops/quality_experimental/rag_search_basics.json | QA busca vetorial | `scripts/quality/quality_push_cron.py` | Script | Endpoint sem implementação |
 | data/ops/quality/routing_samples.json | QA roteamento contínuo | `scripts/quality/quality_push_cron.py`, `scripts/embeddings/embeddings_build.py` | Script + corpus RAG | Conteúdo duplicado com golden |
 | data/ops/observability.yaml | Config de métricas/tracing | `load_config` (bootstrap) | Bootstrap | Deve refletir métricas reais definidas em código |
 | data/ops/param_inference.yaml | Regras declarativas de agregação | `infer_params` | Request `/ask`, `/ops/quality/push` | Divergência com YAMLs de entidade |

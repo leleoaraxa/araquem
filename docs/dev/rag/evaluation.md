@@ -4,14 +4,14 @@ A avaliação de retrieval garante que o blend sem re-rank permaneça confiável
 
 ## Datasets
 
-- `data/ops/quality/rag_eval_set.json` — conjunto base.
-- `data/ops/quality/rag_eval_last.json` — última execução registrada.
-- `data/ops/quality/rag_search_basics.json` — cenários controlados.
+- `data/ops/quality_experimental/rag_eval_set.json` — conjunto base.
+- `data/ops/quality_experimental/rag_eval_last.json` — última execução registrada.
+- `data/ops/quality_experimental/rag_search_basics.json` — cenários controlados.
 - Projections adicionais (`projection_fiis_*`) validam consistência entity/doc-id para o índice.【F:data/ops/quality/projection_fiis_dividendos.json†L1-L20】
 
 ## Processo
 
-1. Execute `python scripts/embeddings/rag_retrieval_eval.py --samples data/ops/quality/rag_eval_set.json`.
+1. Execute `python scripts/embeddings/rag_retrieval_eval.py --samples data/ops/quality_experimental/rag_eval_set.json`.
 2. O script calcula métricas (`recall@5`, `recall@10`, `mrr`, `ndcg@10`) e atualiza os gauges via `register_rag_eval_metrics`.【F:scripts/embeddings/rag_retrieval_eval.py†L1-L200】【F:app/observability/metrics.py†L60-L120】
 3. Opcional: publique os resultados chamando `POST /ops/metrics/rag/eval` com o payload produzido (ver `app/api/ops/metrics.py`).【F:app/api/ops/metrics.py†L80-L140】
 4. Para rodar regressões completas, inclua `--refresh-index` para reconstruir embeddings conforme `data/embeddings/index.yaml`.
