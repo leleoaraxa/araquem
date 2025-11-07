@@ -18,7 +18,7 @@ Cada nova entidade precisa obrigatoriamente dos **7 arquivos/pontos** abaixo:
 | Ordem | Componente                 | Local                                         | Descrição                              |
 | :---- | :------------------------- | :-------------------------------------------- | :------------------------------------- |
 | 1️⃣   | View SQL real              | `CREATE VIEW <nome>`                          | Base de verdade no banco               |
-| 2️⃣   | YAML da entidade           | `data/entities/<nome>.yaml`                   | Estrutura completa da entidade         |
+| 2️⃣   | YAML da entidade           | `data/entities/<nome>/entity.yaml`            | Estrutura completa da entidade         |
 | 3️⃣   | Cache policy               | `data/entities/cache_policies.yaml`           | TTL, refresh e escopo                  |
 | 4️⃣   | Ontologia                  | `data/ontology/entity.yaml`                   | Inclusão de intent + tokens + entities |
 | 5️⃣   | Golden routing (YAML/JSON) | `data/golden/m65_quality.yaml` e `.json`      | Casos ouro de roteamento (NL→SQL)      |
@@ -100,7 +100,7 @@ data/
 | Etapa | Ação                                   | Ferramenta         |
 | :---- | :------------------------------------- | :----------------- |
 | 1️⃣   | Criar view SQL no banco                | SQL real           |
-| 2️⃣   | Gerar `data/entities/<nome>.yaml`      | via Sirius         |
+| 2️⃣   | Gerar `data/entities/<nome>/entity.yaml` | via Sirius         |
 | 3️⃣   | Incluir cache policy                   | manual/YAML        |
 | 4️⃣   | Atualizar ontologia (`intent`)         | via patch          |
 | 5️⃣   | Adicionar samples no `golden`          | YAML + JSON        |
@@ -113,7 +113,7 @@ data/
 
 ```bash
 git checkout -b feat(entities):add-fiis-dividendos
-git add data/entities/fiis_dividendos.yaml data/ontology/entity.yaml data/golden/m65_quality.yaml data/ops/quality/projection_fiis_dividendos.json
+git add data/entities/fiis_dividendos/entity.yaml data/ontology/entity.yaml data/golden/m65_quality.yaml data/ops/quality/projection_fiis_dividendos.json
 git commit -m "feat(entities): add fiis_dividendos with ontology intent dividendos + golden + projection"
 git push origin feat(entities):add-fiis-dividendos
 ```

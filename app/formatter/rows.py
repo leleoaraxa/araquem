@@ -2,7 +2,20 @@
 
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
+from pathlib import Path
 from typing import List, Dict, Any, Optional, Callable
+
+from jinja2 import Environment, StrictUndefined
+
+from app.utils.filecache import load_yaml_cached
+
+_ENTITY_ROOT = Path("data/entities")
+_JINJA_ENV = Environment(
+    autoescape=False,
+    undefined=StrictUndefined,
+    trim_blocks=True,
+    lstrip_blocks=True,
+)
 
 
 def _to_decimal(value: Any) -> Optional[Decimal]:
@@ -84,6 +97,43 @@ def format_metric_value(metric_key: str, value: Any) -> Any:
         return f"{_format_decimal_br(decimal_value, 2)}%"
 
     return value
+
+
+def render_rows_template(entity: str, rows: List[Dict[str, Any]]) -> str:
+    """Renderiza a resposta declarativa via templates de entidade."""
+
+    try:
+        cfg = load_yaml_cached(str((_ENTITY_ROOT / entity / "entity.yaml")))
+    except Exception:
+        cfg = None
+    if not isinstance(cfg, dict):
+        return ""
+
+    presentation = cfg.get("presentation") or {}
+    kind = presentation.get("kind") if isinstance(presentation, dict) else None
+    if not isinstance(kind, str) or not kind.strip():
+        return ""
+    template_path = _ENTITY_ROOT / entity / "responses" / f"{kind}.md.j2"
+    if not template_path.exists():
+        return ""
+
+    fields = presentation.get("fields") if isinstance(presentation, dict) else {}
+    key_field = fields.get("key") if isinstance(fields, dict) else None
+    value_field = fields.get("value") if isinstance(fields, dict) else None
+    if not key_field or not value_field:
+        return ""
+
+    context = {
+        "rows": list(rows or []),
+        "fields": {"key": key_field, "value": value_field},
+        "empty_message": presentation.get("empty_message"),
+    }
+    try:
+        template = _JINJA_ENV.from_string(template_path.read_text(encoding="utf-8"))
+        rendered = template.render(**context)
+    except Exception:
+        return ""
+    return rendered.strip()
 
 
 def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str, Any]]:

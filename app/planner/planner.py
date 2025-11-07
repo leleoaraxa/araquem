@@ -260,6 +260,7 @@ class Planner:
         rag_fusion_applied = bool(
             rag_enabled and rag_used and (fusion_weight > 0.0)
         )
+        effective_weight = fusion_weight if rag_fusion_applied else 0.0
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
@@ -521,7 +522,7 @@ class Planner:
         combined_block = {
             "intent": ordered_combined,
             "entity": combined_entities,
-            "weight": fusion_weight,
+            "weight": effective_weight,
             "notes": (
                 "additive=base+w*rag"
                 if re_rank_mode == "additive"
@@ -583,7 +584,7 @@ class Planner:
         meta_explain["fusion"] = {
             "enabled": bool(rag_enabled),
             "used": bool(rag_fusion_applied),
-            "weight": fusion_weight,
+            "weight": effective_weight,
             "mode": re_rank_mode,
             "affected_entities": affected_entities,
             "error": rag_error,

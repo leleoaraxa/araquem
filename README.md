@@ -1,17 +1,28 @@
 # Araquem — Catálogo de Entidades
 
+## Estrutura declarativa
+
+- `data/entities/<entidade>/entity.yaml`: contrato completo (identificadores, colunas, aggregations e apresentação).
+- `data/entities/<entidade>/responses/<kind>.md.j2`: template de resposta alinhado a `presentation.kind` (summary, list ou table).
+- `data/entities/<entidade>/view.sql.j2`: referência canônica da view consumida pelo builder (placeholder quando o SQL ainda está em outro repositório).
+- `data/entities/<entidade>/templates.md`: respostas legadas formatadas via `render_answer` (mantidas para compatibilidade).
+
 ## Entidades disponíveis
 
-| Entidade | Result key | Principais colunas |
-| --- | --- | --- |
-| fiis_cadastro | `cadastro_fii` | ticker, fii_cnpj, display_name, admin_name, admin_cnpj, website_url |
-| fiis_precos | `precos_fii` | ticker, traded_at, close_price, open_price, max_price, min_price, daily_variation_pct |
-| fiis_dividendos | `dividendos_fii` | ticker, payment_date, dividend_amt, traded_until_date |
-| fiis_rankings | `rankings_fii` | ticker, users_ranking_count, sirios_ranking_count, ifix_ranking_count, created_at, updated_at |
-| fiis_metrics | `fii_metrics` | ticker, metric, value, window_months, period_start, period_end |
-| fiis_imoveis | `imoveis_fii` | ticker, asset_name, asset_class, asset_address, total_area, units_count, vacancy_ratio, non_compliant_ratio, assets_status, updated_at |
-| fiis_processos | `processos_fii` | ticker, process_number, judgment, instance, initiation_date, cause_amt, loss_risk_pct, main_facts, loss_impact_analysis, updated_at |
-| fiis_noticias | `noticias_fii` | ticker, source, title, tags, description, url, published_at, updated_at |
+| Entidade | result_key | sql_view | presentation.kind |
+| --- | --- | --- | --- |
+| client_fiis_positions | `positions` | `client_fiis_positions` | `table` |
+| fiis_cadastro | `cadastro_fii` | `fiis_cadastro` | `list` |
+| fiis_dividendos | `dividendos_fii` | `fiis_dividendos` | `table` |
+| fiis_financials_revenue_schedule | `financials_revenue` | `fiis_financials_revenue_schedule` | `table` |
+| fiis_financials_risk | `financials_risk` | `fiis_financials_risk` | `summary` |
+| fiis_financials_snapshot | `financials_snapshot` | `fiis_financials_snapshot` | `summary` |
+| fiis_imoveis | `imoveis_fii` | `fiis_imoveis` | `list` |
+| fiis_metrics | `fii_metrics` | `fiis_metrics` | `summary` |
+| fiis_noticias | `noticias_fii` | `fiis_noticias` | `list` |
+| fiis_precos | `precos_fii` | `fiis_precos` | `table` |
+| fiis_processos | `processos_fii` | `fiis_processos` | `list` |
+| fiis_rankings | `rankings_fii` | `fiis_rankings` | `table` |
 
 > Todas as entidades operam com dados D-1 já consolidados na ingestão.
 

@@ -292,7 +292,7 @@ class Orchestrator:
                 question=question,
                 intent=intent,
                 entity=entity,
-                entity_yaml_path=f"data/entities/{entity}.yaml",
+                entity_yaml_path=f"data/entities/{entity}/entity.yaml",
                 defaults_yaml_path="data/ops/param_inference.yaml",
             )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
         except Exception:

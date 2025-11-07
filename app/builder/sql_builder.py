@@ -30,8 +30,12 @@ _METRIC_COLUMN_TYPES = {
 }
 
 
+def _entity_yaml_path(entity: str) -> Path:
+    return ENTITIES_DIR / entity / "entity.yaml"
+
+
 def _load_entity_yaml(entity: str) -> dict:
-    ypath = ENTITIES_DIR / f"{entity}.yaml"
+    ypath = _entity_yaml_path(entity)
     data = load_yaml_cached(str(ypass := ypath))
     if not isinstance(data, dict) or not data:
         message = f"Entity YAML not found or empty for '{entity}' at {ypass}"
@@ -79,6 +83,26 @@ def _require_str(config: dict, path: Sequence[str], entity: str) -> str:
         logger.error(message)
         raise ValueError(message)
     return value.strip()
+
+
+def _column_names(config: dict, entity: str) -> List[str]:
+    columns_cfg = _require_list(config, ["columns"], entity)
+    column_names: List[str] = []
+    for idx, entry in enumerate(columns_cfg):
+        name: Optional[str]
+        if isinstance(entry, dict):
+            raw = entry.get("name")
+            name = str(raw).strip() if isinstance(raw, str) else None
+        elif isinstance(entry, str):
+            name = entry.strip()
+        else:
+            name = None
+        if not name:
+            message = f"Column index {idx} missing name for entity '{entity}'"
+            logger.error(message)
+            raise ValueError(message)
+        column_names.append(name)
+    return column_names
 
 
 def _normalize_period_value(value: Any) -> Any:
@@ -299,7 +323,7 @@ def _build_numeric_aggregation_sql(
     params: Dict[str, Any],
 ) -> str:
     if len(return_cols) < 3:
-        message = "Entity '{entity}' requires at least 3 return_columns for aggregation"
+        message = "Entity '{entity}' requires at least 3 columns for aggregation"
         logger.error(message)
         raise ValueError(message)
 
@@ -352,16 +376,16 @@ def build_select_for_entity(
 ) -> Tuple[str, Dict[str, Any], str, List[str]]:
     """
     Constrói SELECT baseado no YAML da entidade.
-    - view real = nome da entidade (contrato Araquem).
-    - return_columns = colunas que vão para a resposta.
+    - view real = sql_view declarado no contrato.
+    - return_columns = colunas derivadas de columns[].
     - WHERE opcional por identificadores (p.ex., ticker).
     - Suporte a compute-on-read (aggregations.* no YAML + infer_params).
     """
     cfg = _load_entity_yaml(entity)
-    result_key = _require_str(cfg, ["presentation", "result_key"], entity)
-    return_cols = _require_list(cfg, ["presentation", "return_columns"], entity)
+    result_key = _require_str(cfg, ["result_key"], entity)
+    return_cols = _column_names(cfg, entity)
 
-    view_name = entity
+    view_name = _require_str(cfg, ["sql_view"], entity)
     params: Dict[str, Any] = {}
     where_terms: List[str] = []
 

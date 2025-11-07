@@ -1,0 +1,111 @@
+id: fiis_cadastro
+result_key: cadastro_fii
+sql_view: fiis_cadastro
+private: false
+description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificação e
+  atributos básicos)
+identifiers:
+- name: ticker
+  description: Ticker do FII normalizado (AAAA11)
+default_date_field: null
+columns:
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: fii_cnpj
+  alias: CNPJ
+  description: CNPJ do FII (identificador único).
+- name: display_name
+  alias: Nome de exibição
+  description: Nome de exibição do FII (ex. nome comercial curto).
+- name: b3_name
+  alias: Nome B3
+  description: Nome de pregão na B3.
+- name: classification
+  alias: Classificação
+  description: Classificação oficial do fundo.
+- name: sector
+  alias: Setor
+  description: Setor de atuação do fundo.
+- name: sub_sector
+  alias: Subsetor
+  description: Subsetor/indústria do fundo.
+- name: management_type
+  alias: Tipo de gestão
+  description: Tipo de gestão do fundo.
+  allowed_values:
+  - ATIVA
+  - PASSIVA
+- name: target_market
+  alias: Público-alvo
+  description: Público-alvo do fundo (Ex. Investidores em geral, Profissionais).
+- name: is_exclusive
+  alias: Fundo exclusivo
+  description: Indica se o fundo é exclusivo (boolean).
+- name: isin
+  alias: Código ISIN
+  description: Código ISIN do fundo.
+- name: ipo_date
+  alias: Data IPO
+  description: Data do IPO do fundo.
+- name: website_url
+  alias: Site oficial
+  description: URL oficial do fundo.
+- name: admin_name
+  alias: Administrador
+  description: Nome do administrador do fundo.
+- name: admin_cnpj
+  alias: CNPJ administrador
+  description: CNPJ do administrador do fundo.
+- name: custodian_name
+  alias: Custodiante
+  description: Nome do custodiante do fundo.
+- name: ifil_weight_pct
+  alias: Peso IFIL (%)
+  description: Peso do FII no IFIL, em percentual.
+- name: ifix_weight_pct
+  alias: Peso IFIX (%)
+  description: Peso do FII no IFIX, em percentual.
+- name: shares_count
+  alias: Nº de cotas emitidas
+  description: Quantidade total de cotas emitidas.
+- name: shareholders_count
+  alias: Nº de cotistas
+  description: Quantidade de cotistas.
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
+presentation:
+  kind: list
+  fields:
+    key: ticker
+    value: display_name
+  empty_message: Nenhum cadastro encontrado.
+ask:
+  intents:
+  - cadastro
+  keywords:
+  - cadastro
+  - cnpj
+  - administrador
+  - administradora
+  - site
+  - custodiante
+  - assembleia
+  synonyms:
+    ticker:
+    - ativo
+    - papel
+    - fundo
+    - fii
+    administrador:
+    - admin
+    - administradora
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+order_by_whitelist: []

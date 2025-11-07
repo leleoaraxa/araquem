@@ -27,6 +27,8 @@ def test_dividends_sum_returns_row():
     row = res["results"]["fii_metrics"][0]
     assert row["metric"] == "dividends_sum"
     assert "value" in row
+    rendered = res["meta"].get("rendered_response") or ""
+    assert rendered.startswith("Resumo")
 
 
 def test_dy_avg_uses_prices_and_divs():
@@ -36,3 +38,4 @@ def test_dy_avg_uses_prices_and_divs():
     row = res["results"]["fii_metrics"][0]
     assert row["metric"] == "dy_avg"
     assert "value" in row
+    assert res["meta"].get("rendered_response")

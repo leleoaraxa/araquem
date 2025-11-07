@@ -44,6 +44,7 @@ def test_dividends_sum_3m_lt_12m(client, ask_payload):
     data_3m = resp_3m.json()
     assert data_3m["meta"]["planner_entity"] == "fiis_metrics"
     assert data_3m["meta"]["planner_intent"] == "metricas"
+    assert data_3m["meta"].get("rendered_response")
 
     resp_12m = client.post(
         "/ask",
@@ -71,6 +72,7 @@ def test_price_avg_6m_differs_from_12m(client, ask_payload):
     )
     assert resp_6m.status_code == 200
     data_6m = resp_6m.json()
+    assert data_6m["meta"].get("rendered_response")
 
     resp_12m = client.post(
         "/ask",
