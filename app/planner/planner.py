@@ -255,10 +255,10 @@ class Planner:
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
 
-        # Fusão somente quando re_rank.enabled = true (guardrails M7.4)
-        fusion_weight = re_rank_weight if re_rank_enabled else 0.0
+        # Fusão linear: prioriza peso do re_rank se habilitado; caso contrário usa peso do RAG
+        fusion_weight = re_rank_weight if re_rank_enabled else rag_weight
         rag_fusion_applied = bool(
-            rag_enabled and rag_used and re_rank_enabled and (fusion_weight > 0.0)
+            rag_enabled and rag_used and (fusion_weight > 0.0)
         )
 
         for it in self.onto.intents:
