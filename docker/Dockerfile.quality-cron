@@ -6,6 +6,26 @@ ENV PYTHONUNBUFFERED=1
 COPY requirements.txt /workspace/requirements.txt
 RUN pip install --no-cache-dir -r /workspace/requirements.txt
 
+# --- utilitários necessários pelos scripts de qualidade ---
+# Instala yq e jq via download direto dos binários oficiais (sem depender de apt/apk)
+ARG YQ_VERSION=4.44.3
+ARG JQ_VERSION=1.7.1
+RUN python - <<'PY'
+import urllib.request, os, stat, sys
+def dl(url, dest):
+    with urllib.request.urlopen(url) as r, open(dest, 'wb') as f:
+        f.write(r.read())
+    os.chmod(dest, os.stat(dest).st_mode | stat.S_IEXEC)
+base_yq = f"https://github.com/mikefarah/yq/releases/download/v{os.environ.get('YQ_VERSION','4.44.3')}/yq_linux_amd64"
+base_jq = f"https://github.com/jqlang/jq/releases/download/jq-{os.environ.get('JQ_VERSION','1.7.1')}/jq-linux-amd64"
+dl(base_yq, "/usr/local/bin/yq")
+dl(base_jq, "/usr/local/bin/jq")
+PY
+
+# sanity check (falha o build se algo vier corrompido)
+RUN /usr/local/bin/yq --version && /usr/local/bin/jq --version
+
+
 COPY . /workspace
 
 COPY --chmod=0755 docker/quality-cron.sh /usr/local/bin/quality-cron.sh
