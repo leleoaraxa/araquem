@@ -2,6 +2,7 @@
 
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
+import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Callable
 
@@ -114,7 +115,16 @@ def render_rows_template(entity: str, rows: List[Dict[str, Any]]) -> str:
     if not isinstance(kind, str) or not kind.strip():
         return ""
     template_path = _ENTITY_ROOT / entity / "responses" / f"{kind}.md.j2"
-    if not template_path.exists():
+
+    # Normalize and ensure template_path is within _ENTITY_ROOT
+    try:
+        template_path_resolved = template_path.resolve(strict=False)
+    except Exception:
+        return ""
+    if not str(template_path_resolved).startswith(str(_ENTITY_ROOT.resolve())):
+        # Outside allowed root directory
+        return ""
+    if not template_path_resolved.exists():
         return ""
 
     fields = presentation.get("fields") if isinstance(presentation, dict) else {}
@@ -129,7 +139,9 @@ def render_rows_template(entity: str, rows: List[Dict[str, Any]]) -> str:
         "empty_message": presentation.get("empty_message"),
     }
     try:
-        template = _JINJA_ENV.from_string(template_path.read_text(encoding="utf-8"))
+        template = _JINJA_ENV.from_string(
+            template_path_resolved.read_text(encoding="utf-8")
+        )
         rendered = template.render(**context)
     except Exception:
         return ""
