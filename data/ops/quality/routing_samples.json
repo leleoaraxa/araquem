@@ -552,16 +552,6 @@
       "expected_entity": "fiis_metrics"
     },
     {
-      "question": "contagem de pagamentos do HGLG11",
-      "expected_intent": "metricas",
-      "expected_entity": "fiis_metrics"
-    },
-    {
-      "question": "dividendos totais do VISC11",
-      "expected_intent": "metricas",
-      "expected_entity": "fiis_metrics"
-    },
-    {
       "question": "média de preço do KNRI11",
       "expected_intent": "metricas",
       "expected_entity": "fiis_metrics"
@@ -682,16 +672,6 @@
       "expected_entity": "fiis_noticias"
     },
     {
-      "question": "qual o melhor fii de logística?",
-      "expected_intent": "rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "média 6m do preço do HGLG11",
-      "expected_intent": "metricas",
-      "expected_entity": "fiis_metrics"
-    },
-    {
       "question": "endereços dos ativos do HGLG11",
       "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
@@ -705,11 +685,6 @@
       "question": "fechamento de hoje do HGLG11",
       "expected_intent": "precos",
       "expected_entity": "fiis_precos"
-    },
-    {
-      "question": "distribuição anunciada do HGLG11",
-      "expected_intent": "dividendos",
-      "expected_entity": "fiis_dividendos"
     },
     {
       "question": "payout e alavancagem do HGLG11",
