@@ -11,15 +11,21 @@ $$;
 -- =====================================================================
 -- VIEW: view_fiis_info
 -- =====================================================================
-DROP VIEW IF EXISTS view_fiis_profile CASCADE;
-DROP VIEW IF EXISTS fiis_cadastro CASCADE;
-DROP VIEW IF EXISTS fiis_dividendos CASCADE;
-DROP VIEW IF EXISTS fiis_precos CASCADE;
-DROP VIEW IF EXISTS fiis_rankings CASCADE;
-DROP VIEW IF EXISTS fiis_imoveis CASCADE;
-DROP VIEW IF EXISTS fiis_processos CASCADE;
-DROP VIEW IF EXISTS fiis_noticias CASCADE;
-DROP VIEW IF EXISTS view_fiis_financials CASCADE;
+DROP VIEW IF EXISTS view_fiis_profile;
+DROP VIEW IF EXISTS fiis_cadastro;
+DROP VIEW IF EXISTS fiis_dividendos;
+DROP VIEW IF EXISTS fiis_precos;
+DROP VIEW IF EXISTS fiis_rankings;
+DROP VIEW IF EXISTS fiis_imoveis;
+DROP VIEW IF EXISTS fiis_processos;
+DROP VIEW IF EXISTS fiis_noticias;
+DROP VIEW IF EXISTS fiis_financials_snapshot;
+DROP VIEW IF EXISTS fiis_financials_risk;
+DROP VIEW IF EXISTS fiis_financials_revenue_schedule;
+DROP VIEW IF EXISTS fiis_financials;
+DROP VIEW IF EXISTS client_fiis_positions;
+DROP VIEW IF EXISTS public.view_fiis_financials
+DROP VIEW IF EXISTS public.view_client_fiis_positions
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info CASCADE;
 
 CREATE MATERIALIZED VIEW view_fiis_info AS
@@ -566,9 +572,9 @@ FROM view_fiis_history_news;
 ALTER VIEW public.fiis_noticias OWNER TO edge_user;
 
 -- =====================================================================
--- VIEW: view_fiis_financials
+-- VIEW: fiis_financials
 -- =====================================================================
-CREATE VIEW view_fiis_financials AS
+CREATE VIEW fiis_financials AS
 SELECT ticker, dy_monthly_pct, dy_pct, sum_anual_dy_amt, last_dividend_amt, last_payment_date, market_cap_value,
 	enterprise_value, price_book_ratio, equity_per_share, revenue_per_share, dividend_payout_pct, growth_rate,
 	cap_rate, volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, leverage_ratio, equity_value,
@@ -580,39 +586,39 @@ SELECT ticker, dy_monthly_pct, dy_pct, sum_anual_dy_amt, last_dividend_amt, last
 	updated_at
 FROM view_fiis_info;
 
-ALTER VIEW public.view_fiis_financials OWNER TO edge_user;
+ALTER VIEW public.fiis_financials OWNER TO edge_user;
 
-DROP VIEW view_client_fiis_positions;
-
-CREATE OR REPLACE VIEW view_client_fiis_positions AS
+-- =====================================================================
+-- VIEW: client_fiis_positions
+-- =====================================================================
+DROP VIEW client_fiis_positions
+CREATE OR REPLACE VIEW client_fiis_positions AS
+WITH base AS (
+  SELECT
+    ep.*,
+    ROW_NUMBER() OVER (
+      PARTITION BY ep.document_number, ep.ticker_symbol, ep.participant_name
+      ORDER BY ep.reference_date DESC
+    ) AS rn
+  FROM equities_positions ep
+  WHERE ep.specification_code = 'Cotas'
+    AND ep.product_type_name = 'FII - Fundo de Investimento Imobiliário'
+    AND ep.product_category_name = 'Renda Variavel'
+)
 SELECT 
-    ep.document_number, 
-    ep.reference_date AS position_date, 
-    ep.ticker_symbol AS ticker, 
-    ep.corporation_name AS fii_name, 
-    ep.participant_name, 
-    ep.equities_quantity AS qty, 
-    ep.closing_price, 
-    ep.update_value, 
-    ep.available_quantity 
-FROM equities_positions ep 
-INNER JOIN (
-    SELECT 
-        document_number, 
-        MAX(reference_date) AS ultima_reference_date 
-    FROM equities_positions 
-    WHERE specification_code = 'Cotas' 
-    AND product_type_name = 'FII - Fundo de Investimento Imobiliário' 
-    AND product_category_name = 'Renda Variavel' 
-    GROUP BY document_number
-) ult 
-ON ep.document_number = ult.document_number 
-AND ep.reference_date = ult.ultima_reference_date 
-WHERE ep.specification_code = 'Cotas' 
-AND ep.product_type_name = 'FII - Fundo de Investimento Imobiliário' 
-AND ep.product_category_name = 'Renda Variavel';
+    document_number, 
+    reference_date AS position_date, 
+    ticker_symbol AS ticker, 
+    corporation_name AS fii_name, 
+    participant_name, 
+    equities_quantity AS qty, 
+    closing_price, 
+    update_value, 
+    available_quantity 
+FROM base
+WHERE rn = 1;
 
-DROP INDEX view_client_fiis_positions;
+DROP INDEX idx_client_position_filter;
 
 CREATE INDEX IF NOT EXISTS idx_client_position_filter 
 ON equities_positions (document_number, specification_code, product_type_name, product_category_name, reference_date)
@@ -620,5 +626,64 @@ WHERE specification_code = 'Cotas'
   AND product_type_name = 'FII - Fundo de Investimento Imobiliário' 
   AND product_category_name = 'Renda Variavel';
 
-ALTER VIEW public.view_client_fiis_positions OWNER TO edge_user;
+ALTER VIEW public.client_fiis_positions OWNER TO edge_user;
+
+
+-- =====================================================================
+-- VIEW: fiis_financials_snapshot
+-- =====================================================================
+CREATE OR REPLACE VIEW fiis_financials_snapshot AS
+SELECT
+  ticker,
+  dy_monthly_pct, dy_pct, sum_anual_dy_amt,
+  last_dividend_amt, last_payment_date,
+  market_cap_value, enterprise_value, price_book_ratio,
+  equity_per_share, revenue_per_share, dividend_payout_pct,
+  growth_rate, cap_rate,
+  leverage_ratio, equity_value,
+  variation_month_ratio, variation_year_ratio, equity_month_ratio,
+  dividend_reserve_amt, admin_fee_due_amt, perf_fee_due_amt,
+  total_cash_amt, expected_revenue_amt, liabilities_total_amt,
+  created_at, updated_at
+FROM fiis_financials;
+
+ALTER VIEW public.fiis_financials_snapshot OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_financials_revenue_schedule
+-- =====================================================================
+CREATE OR REPLACE VIEW fiis_financials_revenue_schedule AS
+SELECT
+  ticker,
+  revenue_due_0_3m_pct,
+  revenue_due_3_6m_pct,
+  revenue_due_6_9m_pct,
+  revenue_due_9_12m_pct,
+  revenue_due_12_15m_pct,
+  revenue_due_15_18m_pct,
+  revenue_due_18_21m_pct,
+  revenue_due_21_24m_pct,
+  revenue_due_24_27m_pct,
+  revenue_due_27_30m_pct,
+  revenue_due_30_33m_pct,
+  revenue_due_33_36m_pct,
+  revenue_due_over_36m_pct,
+  revenue_due_undetermined_pct,
+  revenue_igpm_pct, revenue_inpc_pct, revenue_ipca_pct, revenue_incc_pct,
+  created_at, updated_at
+FROM fiis_financials;
+
+ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: fiis_financials_risk
+-- =====================================================================
+CREATE OR REPLACE VIEW fiis_financials_risk AS
+SELECT
+  ticker,
+  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index,
+  created_at, updated_at
+FROM fiis_financials;
+
+ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
 

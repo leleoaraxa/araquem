@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "client_fiis_positions",
+  "result_key": "positions",
+  "must_have_columns": [
+    "document_number",
+    "position_date",
+    "ticker",
+    "qty",
+    "closing_price",
+    "available_quantity"
+  ],
+  "samples": [
+    { "question": "minhas posições de FIIs" },
+    { "question": "quantidade e preço dos meus fiis" }
+  ],
+  "params": { "document_number": "66140994691" }
+}

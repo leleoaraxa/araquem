@@ -1,0 +1,20 @@
+{
+  "type": "projection",
+  "entity": "fiis_financials_revenue_schedule",
+  "result_key": "financials_revenue",
+  "must_have_columns": [
+    "ticker",
+    "revenue_due_0_3m_pct",
+    "revenue_due_9_12m_pct",
+    "revenue_due_over_36m_pct",
+    "revenue_ipca_pct",
+    "revenue_igpm_pct",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "estrutura de recebiveis do HGLG11" },
+    { "question": "quanto vence em 12 meses do KNRI11" },
+    { "question": "indexadores de receita do VISC11" }
+  ]
+}

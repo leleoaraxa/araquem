@@ -631,7 +631,7 @@
       "expected_intent": "noticias",
       "expected_entity": "fiis_noticias"
     },
-        {
+    {
       "question": "imóveis do HGLG11",
       "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
@@ -711,6 +711,46 @@
       "question": "distribuição anunciada do HGLG11",
       "expected_intent": "dividendos",
       "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "payout e alavancagem do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "market cap e EV do KNRI11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "estrutura de recebíveis do VISC11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "quanto vence em 12 meses do XPML11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "volatilidade e sharpe do HGRU11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "beta do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "minhas posições de FIIs",
+      "expected_intent": "metricas",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "minhas posições cpf 66140994691",
+      "expected_intent": "metricas",
+      "expected_entity": "client_fiis_positions"
     }
-   ]
+  ]
 }

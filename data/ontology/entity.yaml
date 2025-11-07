@@ -234,6 +234,46 @@ intents:
         - soma
         - dy
         - "dividend yield"
+        - payout
+        - alavancagem
+        - endividamento
+        - caixa
+        - caixa total
+        - enterprise
+        - "enterprise value"
+        - ev
+        - market
+        - "market cap"
+        - patrimonio
+        - "preco/patrimonio"
+        - "price book"
+        - cap
+        - "cap rate"
+        - crescimento
+        - receitas
+        - recebiveis
+        - vencimento
+        - prazos
+        - buckets
+        - indexador
+        - igpm
+        - ipca
+        - inpc
+        - incc
+        - risco
+        - volatilidade
+        - sharpe
+        - treynor
+        - jensen
+        - "alfa de jensen"
+        - beta
+        - posicao
+        - posicoes
+        - carteira
+        - minhas
+        - meu
+        - documento
+        - cpf
       exclude: []
     phrases:
       include:
@@ -251,8 +291,38 @@ intents:
         - "pagou nos ultimos"
         - "dividendos nos ultimos"
         - "dividendos nos ultimos 12 meses"
+        - "payout do"
+        - "alavancagem do"
+        - "endividamento do"
+        - "caixa do"
+        - "market cap do"
+        - "ev do"
+        - "enterprise value do"
+        - "preco/patrimonio do"
+        - "price book do"
+        - "cap rate do"
+        - "crescimento do"
+        - "estrutura de recebiveis do"
+        - "receitas por prazo do"
+        - "quanto vence em 12 meses do"
+        - "indexadores de receita do"
+        - "volatilidade do"
+        - "sharpe do"
+        - "treynor do"
+        - "jensen do"
+        - "alfa de jensen do"
+        - "beta do"
+        - "minhas posicoes"
+        - "minhas posicoes cpf"
+        - "minha carteira"
+        - "posicoes cpf"
       exclude: []
-    entities: [fiis_metrics]
+    entities:
+      - fiis_metrics
+      - fiis_financials_snapshot
+      - fiis_financials_revenue_schedule
+      - fiis_financials_risk
+      - client_fiis_positions
 
   - name: imoveis
     tokens:

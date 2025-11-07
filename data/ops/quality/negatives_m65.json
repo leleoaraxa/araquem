@@ -1,0 +1,108 @@
+{
+  "samples": [
+    {
+      "question": "preço do MCCI11 hoje",
+      "not_intent": "cadastro"
+    },
+    {
+      "question": "dividendo do HGLG11",
+      "not_intent": "cadastro"
+    },
+    {
+      "question": "notícias do KNRI11",
+      "not_intent": "cadastro"
+    },
+    {
+      "question": "quem é o administrador do HGLG11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "endereço dos imóveis do RBVA11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "processos do SCPF11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "preço do MALL11 agora",
+      "not_intent": "dividendos"
+    },
+    {
+      "question": "site oficial do MAXR11",
+      "not_intent": "dividendos"
+    },
+    {
+      "question": "quais imóveis do HGRU11",
+      "not_intent": "dividendos"
+    },
+    {
+      "question": "preço de hoje do XPML11",
+      "not_intent": "noticias"
+    },
+    {
+      "question": "cnpj do HGRE11",
+      "not_intent": "noticias"
+    },
+    {
+      "question": "dividendo recente do GGRC11",
+      "not_intent": "noticias"
+    },
+    {
+      "question": "preço do RBFF11",
+      "not_intent": "processos"
+    },
+    {
+      "question": "cnpj do RBFF11",
+      "not_intent": "processos"
+    },
+    {
+      "question": "dividendos do RBFF11",
+      "not_intent": "processos"
+    },
+    {
+      "question": "qual o administrador do VISC11",
+      "not_intent": "imoveis"
+    },
+    {
+      "question": "dividendos do VISC11",
+      "not_intent": "imoveis"
+    },
+    {
+      "question": "notícias do VISC11",
+      "not_intent": "imoveis"
+    },
+    {
+      "question": "preço do HGLG11 agora",
+      "not_intent": "metricas"
+    },
+    {
+      "question": "últimas notícias do KNRI11",
+      "not_intent": "metricas"
+    },
+    {
+      "question": "payout do VISC11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "alavancagem do HGRU11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "estrutura de recebíveis do VISC11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "beta do HGLG11",
+      "not_intent": "precos"
+    },
+    {
+      "question": "minhas posições",
+      "not_intent": "precos"
+    },
+    {
+      "question": "minhas posições cpf 000",
+      "not_intent": "noticias"
+     }
+  ]
+}

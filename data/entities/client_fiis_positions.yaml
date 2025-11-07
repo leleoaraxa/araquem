@@ -1,0 +1,57 @@
+entity: client_fiis_positions
+private: true
+description: Posições do cliente em FIIs (PRIVADA; exige parâmetro document_number).
+
+identifiers:
+  - name: document_number
+    description: Documento do cliente (CPF/CNPJ)
+  - name: position_date
+    description: Data da posição
+  - name: ticker
+    description: Ticker do FII (AAAA11)
+
+default_date_field: position_date
+
+presentation:
+  result_key: positions
+  return_columns:
+    - document_number
+    - position_date
+    - ticker
+    - fii_name
+    - participant_name
+    - qty
+    - closing_price
+    - update_value
+    - available_quantity
+
+columns:
+  - { name: document_number,   alias: Documento,        description: CPF/CNPJ do cliente (PII). }
+  - { name: position_date,     alias: Data da posição,  description: Data de referência. }
+  - { name: ticker,            alias: Código FII,       description: Código do fundo na B3 (AAAA11). }
+  - { name: fii_name,          alias: Nome do FII,      description: Nome do fundo. }
+  - { name: participant_name,  alias: Participante,     description: Corretora/participante. }
+  - { name: qty,               alias: Quantidade,       description: Quantidade em custódia. }
+  - { name: closing_price,     alias: Preço fechamento, description: Preço de fechamento do dia. }
+  - { name: update_value,      alias: Variação (R$),    description: Variação de valor. }
+  - { name: available_quantity,alias: Quantidade disp., description: Quantidade disponível. }
+
+ask:
+  intents: [metricas]
+  keywords: [minhas posicoes, minha carteira, posicao, quantidade, preco, cpf, documento]
+  synonyms:
+    ticker: [ativo, papel, fundo, fii]
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+
+params:
+  required:
+    - document_number
+
+order_by_whitelist:
+  - position_date desc
+
+aggregations:
+  enabled: false

@@ -7,7 +7,7 @@ chunk:
   overlap_chars: 120
 
 hint_filters:
-  allowlist: ["entity-*", "concepts-*"]
+  allowlist: ["entity-*", "concepts-*", "q-*"]
   denylist: ["golden-*", "ontology-*"]
 required_entity_doc: true
 weight: 0.25
@@ -45,9 +45,51 @@ include:
     path: data/entities/fiis_rankings.yaml
     tags: [entities, fiis, rankings]
 
-  - id: entity-cache-policies
-    path: data/entities/cache_policies.yaml
-    tags: [entities, cache, policy]
+  - id: entity-fiis-metrics
+    path: data/entities/fiis_metrics.yaml
+    tags: [entities, fiis, metricas]
+
+  - id: entity-fiis-imoveis
+    path: data/entities/fiis_imoveis.yaml
+    tags: [entities, fiis, imoveis]
+
+  - id: entity-fiis-noticias
+    path: data/entities/fiis_noticias.yaml
+    tags: [entities, fiis, noticias]
+
+  - id: entity-fiis-processos
+    path: data/entities/fiis_processos.yaml
+    tags: [entities, fiis, processos]
+
+  - id: entity-fiis-financials-snapshot
+    path: data/entities/fiis_financials_snapshot.yaml
+    tags: [entities, fiis, financials, snapshot]
+
+  - id: entity-fiis-financials-revenue
+    path: data/entities/fiis_financials_revenue_schedule.yaml
+    tags: [entities, fiis, financials, revenue]
+
+  - id: entity-fiis-financials-risk
+    path: data/entities/fiis_financials_risk.yaml
+    tags: [entities, fiis, financials, risk]
+
+  - id: entity-client-fiis-positions
+    path: data/entities/client_fiis_positions.yaml
+    tags: [entities, private, positions]
+
+# ── Entidades (contratos YAML das views) ───────────────────────────────────
+
+  - id: policies-cache
+    path: data/policies/cache.yaml
+    tags: [policies, cache]
+
+  - id: policies-quality
+    path: data/policies/quality.yaml
+    tags: [policies, quality]
+
+  - id: policies-rag
+    path: data/policies/rag.yaml
+    tags: [policies, rag]
 
   # ── Quality gates & thresholds (telemetria de qualidade) ───────────────────
   - id: ops-planner-thresholds
@@ -84,6 +126,39 @@ include:
   - id: q-projection-rankings
     path: data/ops/quality/projection_fiis_rankings.json
     tags: [quality, projection, rankings]
+
+
+  - id: q-projection-imoveis
+    path: data/ops/quality/projection_fiis_imoveis.json
+    tags: [quality, projection, imoveis]
+
+  - id: q-projection-noticias
+    path: data/ops/quality/projection_fiis_noticias.json
+    tags: [quality, projection, noticias]
+
+  - id: q-projection-processos
+    path: data/ops/quality/projection_fiis_processos.json
+    tags: [quality, projection, processos]
+
+  - id: q-projection-metrics
+    path: data/ops/quality/projection_fiis_metrics.json
+    tags: [quality, projection, metricas]
+
+  - id: q-projection-fin-snapshot
+    path: data/ops/quality/projection_fiis_financials_snapshot.json
+    tags: [quality, projection, financials]
+
+  - id: q-projection-fin-revenue
+    path: data/ops/quality/projection_fiis_financials_revenue_schedule.json
+    tags: [quality, projection, financials]
+
+  - id: q-projection-fin-risk
+    path: data/ops/quality/projection_fiis_financials_risk.json
+    tags: [quality, projection, financials]
+
+  - id: q-projection-client-positions
+    path: data/ops/quality/projection_client_fiis_positions.json
+    tags: [quality, projection, private]
 
   - id: q-m66-projection
     path: data/ops/quality/m66_projection.json

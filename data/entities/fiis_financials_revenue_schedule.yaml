@@ -1,0 +1,89 @@
+entity: fiis_financials_revenue_schedule
+private: false
+description: Estrutura temporal de recebíveis e indexadores de receita por FII (percentuais sobre a receita).
+
+identifiers:
+  - name: ticker
+    description: Ticker do FII normalizado (AAAA11)
+
+default_date_field: updated_at
+
+presentation:
+  result_key: financials_revenue
+  return_columns:
+    - ticker
+    - revenue_due_0_3m_pct
+    - revenue_due_3_6m_pct
+    - revenue_due_6_9m_pct
+    - revenue_due_9_12m_pct
+    - revenue_due_12_15m_pct
+    - revenue_due_15_18m_pct
+    - revenue_due_18_21m_pct
+    - revenue_due_21_24m_pct
+    - revenue_due_24_27m_pct
+    - revenue_due_27_30m_pct
+    - revenue_due_30_33m_pct
+    - revenue_due_33_36m_pct
+    - revenue_due_over_36m_pct
+    - revenue_due_undetermined_pct
+    - revenue_igpm_pct
+    - revenue_inpc_pct
+    - revenue_ipca_pct
+    - revenue_incc_pct
+    - created_at
+    - updated_at
+
+columns:
+  - { name: ticker,                    alias: Código FII,                  description: Código do fundo na B3 (AAAA11). }
+  - { name: revenue_due_0_3m_pct,      alias: 0–3m (%),                    description: Receita com vencimento em 0–3 meses. }
+  - { name: revenue_due_3_6m_pct,      alias: 3–6m (%),                    description: Receita com vencimento em 3–6 meses. }
+  - { name: revenue_due_6_9m_pct,      alias: 6–9m (%),                    description: Receita com vencimento em 6–9 meses. }
+  - { name: revenue_due_9_12m_pct,     alias: 9–12m (%),                   description: Receita com vencimento em 9–12 meses. }
+  - { name: revenue_due_12_15m_pct,    alias: 12–15m (%),                  description: Receita com vencimento em 12–15 meses. }
+  - { name: revenue_due_15_18m_pct,    alias: 15–18m (%),                  description: Receita com vencimento em 15–18 meses. }
+  - { name: revenue_due_18_21m_pct,    alias: 18–21m (%),                  description: Receita com vencimento em 18–21 meses. }
+  - { name: revenue_due_21_24m_pct,    alias: 21–24m (%),                  description: Receita com vencimento em 21–24 meses. }
+  - { name: revenue_due_24_27m_pct,    alias: 24–27m (%),                  description: Receita com vencimento em 24–27 meses. }
+  - { name: revenue_due_27_30m_pct,    alias: 27–30m (%),                  description: Receita com vencimento em 27–30 meses. }
+  - { name: revenue_due_30_33m_pct,    alias: 30–33m (%),                  description: Receita com vencimento em 30–33 meses. }
+  - { name: revenue_due_33_36m_pct,    alias: 33–36m (%),                  description: Receita com vencimento em 33–36 meses. }
+  - { name: revenue_due_over_36m_pct,  alias: maior 36m (%),                     description: Receita com vencimento acima de 36 meses. }
+  - { name: revenue_due_undetermined_pct, alias: Indeterminado (%),        description: Receita com vencimento indeterminado. }
+  - { name: revenue_igpm_pct,          alias: IGPM (%),                    description: Percentual de receitas indexadas ao IGPM. }
+  - { name: revenue_inpc_pct,          alias: INPC (%),                    description: Percentual de receitas indexadas ao INPC. }
+  - { name: revenue_ipca_pct,          alias: IPCA (%),                    description: Percentual de receitas indexadas ao IPCA. }
+  - { name: revenue_incc_pct,          alias: INCC (%),                    description: Percentual de receitas indexadas ao INCC. }
+  - { name: created_at,                alias: Criado em,                   description: Data de criação. }
+  - { name: updated_at,                alias: Atualizado em,               description: Data da última atualização. }
+
+ask:
+  intents: [metricas]
+  keywords: [receitas, recebiveis, vencimento, estrutura de recebiveis, prazo, buckets, indexador, igpm, ipca, inpc, incc]
+  synonyms:
+    ticker: [ativo, papel, fundo, fii]
+    revenue_ipca_pct: [ipca]
+    revenue_igpm_pct: [igpm]
+    revenue_inpc_pct: [inpc]
+    revenue_incc_pct: [incc]
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+
+order_by_whitelist:
+  - updated_at desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc
+  windows_allowed:
+    - months:3
+    - months:6
+    - months:12
+    - months:24
+    - count:3
+    - count:6

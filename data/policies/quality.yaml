@@ -1,1 +1,12 @@
-# Metas globais de qualidade (top-1, routed_rate, min_gap)
+terms:
+  - name: "quality"
+    kind: "policy"
+    scope: "quality"
+    version: 1
+
+targets:
+  min_top1_accuracy: 0.95
+  min_top2_gap: 0.25
+  min_routed_rate: 0.98
+  max_misses_absolute: 0
+  max_misses_ratio: 0.0
