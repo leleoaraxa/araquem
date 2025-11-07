@@ -310,8 +310,6 @@ class Planner:
         if fused_scores:
             chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
             chosen_score = float(fused_scores[chosen_intent])
-            # usar o vencedor entre entidades (baseado em combined/base+rag)
-            chosen_entity = top_entity_name or intent_entities.get(chosen_intent)
 
         ordered_combined = sorted(
             combined_intents, key=lambda item: item["combined"], reverse=True
@@ -340,6 +338,12 @@ class Planner:
         top_entity_name = combined_entities[0]["name"] if combined_entities else None
         for item in combined_entities:
             item["winner"] = bool(item["name"] == top_entity_name)
+
+        # Só agora que top_entity_name existe, definimos chosen_entity
+        if chosen_intent is not None:
+            chosen_entity = top_entity_name or intent_entities.get(chosen_intent)
+        else:
+            chosen_entity = None
 
         affected_entities = [
             item["name"]
