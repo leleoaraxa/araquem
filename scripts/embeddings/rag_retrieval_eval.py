@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: rag_retrieval_eval.py
+Purpose: Calcular métricas de recuperação RAG e registrar resultados operacionais.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 from __future__ import annotations
 
 import argparse

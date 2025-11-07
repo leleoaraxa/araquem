@@ -3,8 +3,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-AUDIT = ROOT / "scripts" / "obs_audit.py"
+ROOT = Path(__file__).resolve().parents[2]
+AUDIT = ROOT / "scripts" / "observability" / "obs_audit.py"
 YAML_PATH = ROOT / "data" / "ops" / "observability.yaml"
 DASHBOARD_PATHS = [
     ROOT / "grafana" / "dashboards" / name

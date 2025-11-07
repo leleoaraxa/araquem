@@ -1,4 +1,11 @@
-# scripts/embeddings_build.py
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: embeddings_build.py
+Purpose: Regenerar o índice RAG lendo configurações declarativas e chamando o gerador de embeddings.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 from __future__ import annotations
 import os, sys, re, json, argparse, hashlib, yaml, time
 from pathlib import Path

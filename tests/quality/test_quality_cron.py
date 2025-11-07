@@ -1,4 +1,4 @@
-from scripts.quality_push_cron import (
+from scripts.quality.quality_push_cron import (
     validate_projection_payload,
     validate_routing_payload,
 )

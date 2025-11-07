@@ -78,23 +78,23 @@ full-ci: dashboards alerts audit
 # - obs-check: auditoria + testes focados + amostra de /metrics
 # --------------------------------------------------------------
 dashboards:
-	python scripts/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards
+	python scripts/observability/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards
 
 regen-observability:
-	python scripts/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards
-	python scripts/gen_alerts.py --config data/ops/observability.yaml
+	python scripts/observability/gen_dashboards.py --config data/ops/observability.yaml --out grafana/dashboards
+	python scripts/observability/gen_alerts.py --config data/ops/observability.yaml
 
 alerts:
-	python scripts/gen_alerts.py --config data/ops/observability.yaml
+	python scripts/observability/gen_alerts.py --config data/ops/observability.yaml
 
 audit:
-	python scripts/obs_audit.py
+	python scripts/observability/obs_audit.py
 
 ci: dashboards alerts audit
 	pytest -q
 
 obs-check:
-	python scripts/obs_audit.py
+	python scripts/observability/obs_audit.py
 	pytest -q -k "metrics or planner or cache or executor or ask"
 	$(MAKE) metrics-peek || true
 
@@ -103,7 +103,7 @@ obs-check:
 # --------------------------------------------------------------
 quality-gate:
 	# Executa o gate DENTRO do container da API (Python garantido)
-	docker compose exec api bash -lc "bash scripts/quality_gate_check.sh"
+	docker compose exec api bash -lc "bash scripts/quality/quality_gate_check.sh"
 
 metrics-peek:
 	# Amostra útil do /metrics (Windows usa Select-String; Linux usa grep)
@@ -131,7 +131,7 @@ sos-refresh:
 sos-rebuild:
 	@echo "[Rebuild] Observabilidade (dash + alerts) e quality..."
 	$(MAKE) dashboards alerts
-	python scripts/obs_audit.py
-	- python scripts/quality_push_cron.py --dry-run
+	python scripts/observability/obs_audit.py
+	- python scripts/quality/quality_push_cron.py --dry-run
 	- $(MAKE) quality-gate
 	@echo "[OK] Rebuild completo."

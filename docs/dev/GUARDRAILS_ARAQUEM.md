@@ -259,7 +259,7 @@ git push -u origin main
 
 ## 13. Governança de Mudanças
 
-* **RAG Lifecycle:** qualquer mudança em `data/embeddings/*` → rebuild com `scripts/embeddings_build.py` + atualização `store/manifest.json` + registro das `rag_index_*` (via `docker/rag-refresh-cron.sh` ou `/ops/metrics/rag/register`).
+* **RAG Lifecycle:** qualquer mudança em `data/embeddings/*` → rebuild com `scripts/embeddings/embeddings_build.py` + atualização `store/manifest.json` + registro das `rag_index_*` (via `docker/rag-refresh-cron.sh` ou `/ops/metrics/rag/register`).
   *(restante inalterado)*
 - Toda alteração em `data/*` gera **diff** + **tests** + **verificação de painel**.
 - `build_id` em settings para segregar cache por release.

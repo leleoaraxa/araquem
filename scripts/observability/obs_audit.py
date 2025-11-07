@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-obs_audit.py — Anti-drift auditor para observabilidade:
+Script: obs_audit.py
+Purpose: Auditar dashboards e rules contra o YAML de observabilidade para evitar drift.
+Compliance: Guardrails Araquem v2.1.1
+
 - Verifica presença de bindings/thresholds do YAML nos dashboards e rules.
-- Enforce mtime: artefatos gerados >= YAML.
+- Exige que artefatos gerados sejam mais recentes que o YAML.
 - Detecta placeholders não renderizados.
 """
 
@@ -59,8 +62,8 @@ def assert_mtime_not_older(src: Path, targets: Iterable[Path]) -> None:
     if too_old:
         raise SystemExit(
             "[audit] generated artifacts older than YAML. Run generators:\n"
-            f"  - python scripts/gen_dashboards.py --config {YAML_PATH} --out {DASH_DIR}\n"
-            f"  - python scripts/gen_alerts.py --config {YAML_PATH}\n"
+            f"  - python scripts/observability/gen_dashboards.py --config {YAML_PATH} --out {DASH_DIR}\n"
+            f"  - python scripts/observability/gen_alerts.py --config {YAML_PATH}\n"
             f"Outdated: {too_old}"
         )
 

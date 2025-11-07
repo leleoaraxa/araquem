@@ -8,7 +8,7 @@
 - Comandos de verificação:
   ```bash
   pytest -q -k "imoveis or processos or noticias or responder"
-  python scripts/quality_push.py data/ops/quality/routing_samples.json
+  python scripts/quality/quality_push.py data/ops/quality/routing_samples.json
   curl -s http://localhost:8000/ops/quality/report | jq
   grep -H . data/entities/*/entity.yaml
   ```

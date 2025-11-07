@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-python /app/scripts/rag_retrieval_eval.py \
+python /app/scripts/embeddings/rag_retrieval_eval.py \
   --eval data/ops/quality/rag_eval_set.json \
   --k 10 \
   --index data/embeddings/store/embeddings.jsonl \

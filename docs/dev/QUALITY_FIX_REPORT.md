@@ -94,7 +94,7 @@ chunk 3: {'accepted': 6, 'metrics': {'matched': 6, 'missed': 0}} (t=0.02s)
 - Validação de contratos segue verde:
 
 ```sh
-$ python scripts/validate_data_contracts.py
+$ python scripts/core/validate_data_contracts.py
 [contracts] m65 yaml==json
 ```
 

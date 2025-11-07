@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: audit_repo.py
+Purpose: Gerar relatório da estrutura do repositório e detectar desvios declarativos.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 import os, re, json, sys
 from pathlib import Path
 
@@ -167,7 +174,7 @@ def main():
     OUT.parent.mkdir(parents=True, exist_ok=True)
     md = []
     md.append("# Audit Araquem — estrutura do repositório\\n")
-    md.append("_Gerado por scripts/audit_repo.py_\\n")
+    md.append("_Gerado por scripts/core/audit_repo.py_\\n")
 
     # Ontologia vs Entidades
     md.append(md_header("Ontologia x Entidades"))

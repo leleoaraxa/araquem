@@ -215,13 +215,13 @@ Grafana usa esses valores diretamente — **sem hardcode**.
 
 ## 🔒 9. Governança dos Dashboards
 
-* Todos os dashboards são **gerados automaticamente** via `scripts/gen_dashboards.py`.
+* Todos os dashboards são **gerados automaticamente** via `scripts/observability/gen_dashboards.py`.
 * O versionamento é controlado em `grafana/dashboards/_README.md` e no Git.
 * Alterações manuais **não devem ser feitas diretamente** no JSON.
 * A atualização segue o ciclo:
 
   1. Editar `data/ops/observability.yaml`
-  2. Rodar `python scripts/gen_dashboards.py`
+  2. Rodar `python scripts/observability/gen_dashboards.py`
   3. Revisar no Grafana
   4. Commitar a nova versão (`feat(obs): regenerate dashboards`)
 

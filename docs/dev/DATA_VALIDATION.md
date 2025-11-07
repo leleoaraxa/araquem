@@ -5,7 +5,7 @@ Garantir coerência entre os contratos YAML e as políticas de dados Araquem.
 
 **Como rodar**
 ```bash
-python scripts/validate_data_contracts.py
+python scripts/core/validate_data_contracts.py
 ```
 
 **Validações realizadas**

@@ -11,7 +11,7 @@ until curl -fsS -H "X-OPS-TOKEN: ${QUALITY_OPS_TOKEN}" http://localhost:8000/ops
 done
 echo "✅ API ok, iniciando ciclo de qualidade"
 while true; do
-  python ./scripts/quality_push_cron.py || true
+  python ./scripts/quality/quality_push_cron.py || true
   echo "⏳ aguardando consolidação das métricas..."
   WAIT_MAX=${QUALITY_REPORT_WAIT_MAX:-60}
   WAIT_SLEEP=${QUALITY_REPORT_WAIT_SLEEP:-2}
@@ -22,6 +22,6 @@ while true; do
     sleep $WAIT_SLEEP
     waited=$(( waited + WAIT_SLEEP ))
   done
-  ./scripts/quality_gate_check.sh || true
+  ./scripts/quality/quality_gate_check.sh || true
   sleep 3600
 done

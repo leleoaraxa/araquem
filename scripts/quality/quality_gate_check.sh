@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "[check] validating data contracts..."
-python scripts/validate_data_contracts.py
+python scripts/core/validate_data_contracts.py
 
 QUALITY_SRC="${QUALITY_POLICY_PATH:-data/policies/quality.yaml}"
 if [[ ! -f "${QUALITY_SRC}" ]]; then

@@ -7,6 +7,27 @@
 - `data/entities/<entidade>/view.sql.j2`: referência canônica da view consumida pelo builder (placeholder quando o SQL ainda está em outro repositório).
 - `data/entities/<entidade>/templates.md`: respostas legadas formatadas via `render_answer` (mantidas para compatibilidade).
 
+## 🧰 Developer Utilities (scripts/)
+
+| Área            | Caminho                          | Descrição |
+|-----------------|----------------------------------|------------|
+| Qualidade       | `scripts/quality/`               | Push, diff e dashboards de qualidade |
+| Observabilidade | `scripts/observability/`         | Métricas, alerts, dashboards e auditorias |
+| Embeddings      | `scripts/embeddings/`            | Build e avaliação do índice RAG |
+| Core            | `scripts/core/`                  | Comandos principais e manutenção de contratos |
+| Maintenance     | `scripts/maintenance/`           | Ferramentas utilitárias e setup local |
+
+## 🧪 Test Suites (tests/)
+
+Estrutura por domínio:
+- `core/`: pipeline base, cache, parâmetros
+- `entities/`: validação das entidades YAML + SQL
+- `planner/`: ontologia, explain e RAG
+- `observability/`: dashboards e métricas Prometheus
+- `quality/`: projeções, cron e gates
+- `explain/`: fusão, re-rank e analytics
+- `rag/`: métricas e integração RAG
+
 ## Entidades disponíveis
 
 | Entidade | result_key | sql_view | presentation.kind |

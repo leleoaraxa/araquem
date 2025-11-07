@@ -1,4 +1,10 @@
-"""Quality samples cron script."""
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: quality_push_cron.py
+Purpose: Automatizar envio e validação de datasets de qualidade para /ops/quality/push.
+Compliance: Guardrails Araquem v2.1.1
+"""
 
 from __future__ import annotations
 

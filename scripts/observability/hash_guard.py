@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
-# scripts/hash_guard.py
-# Guardrails Araquem v2.0 — anti-drift de ontologia e golden
+# -*- coding: utf-8 -*-
+"""
+Script: hash_guard.py
+Purpose: Calcular hashes de referência para detectar drift em ontologia e golden sets.
+Compliance: Guardrails Araquem v2.1.1
+"""
 
 import hashlib
 import json

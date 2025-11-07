@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: golden_sync.py
+Purpose: Normalizar datasets golden e sincronizar arquivos YAML/JSON do quality gate.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 from __future__ import annotations
 
 import argparse

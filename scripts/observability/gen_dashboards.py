@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Generate Grafana dashboards from Jinja templates and observability bindings."""
+# -*- coding: utf-8 -*-
+"""
+Script: gen_dashboards.py
+Purpose: Gerar dashboards Grafana a partir de templates Jinja e bindings de observabilidade.
+Compliance: Guardrails Araquem v2.1.1
+"""
 
 from __future__ import annotations
 

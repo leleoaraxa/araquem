@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir pyyaml
 COPY . /app
 
 # Sem ENTRYPOINT/CMD no compose; fica definido aqui:
-CMD ["python","scripts/embeddings_build.py","--index","data/embeddings/index.yaml","--out","data/embeddings/store"]
+CMD ["python","scripts/embeddings/embeddings_build.py","--index","data/embeddings/index.yaml","--out","data/embeddings/store"]

@@ -1,4 +1,11 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Script: quality_push.py
+Purpose: Enviar payloads de qualidade para o endpoint /ops/quality/push.
+Compliance: Guardrails Araquem v2.1.1
+"""
+
 import os
 import sys
 import json
@@ -48,7 +55,7 @@ def push(path: str):
 def main():
     if len(sys.argv) < 2:
         print(
-            "usage: scripts/quality_push.py <payload.(json|yaml|yml)> "
+            "usage: scripts/quality/quality_push.py <payload.(json|yaml|yml)> "
             "[<payload.(json|yaml|yml)> ...]",
             file=sys.stderr,
         )
