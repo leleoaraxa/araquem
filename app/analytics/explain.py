@@ -35,6 +35,7 @@ class ExplainDetails:
     intent: Optional[str] = None
     entity: Optional[str] = None
     view: Optional[str] = None
+    route_id: Optional[str] = None
     cache_hit: Optional[bool] = None
     latency_ms: Optional[float] = None
     route_source: Optional[str] = None  # e.g., "planner", "cache", "fallback"
@@ -141,12 +142,15 @@ def explain(
           "details": { ...ExplainDetails... }
         }
     """
-    with start_trace("analytics.explain", component="analytics", operation="explain") as span:
+    with start_trace(
+        "analytics.explain", component="analytics", operation="explain"
+    ) as span:
         # Extract fields without coupling to a specific schema.
         # Direct keys
         intent = _pick(planner_output, "intent", "matched_intent", default=None)
         entity = _pick(planner_output, "entity", "matched_entity", default=None)
         view = _pick(planner_output, "view", "selected_view", default=None)
+        route_id = _pick(planner_output, "route_id", default=None)
 
         # Nested route forms commonly used by planners
         route = (
@@ -156,6 +160,13 @@ def explain(
             intent = intent or _pick(route, "intent")
             entity = entity or _pick(route, "entity")
             view = view or _pick(route, "view")
+            # Prefer explicit route_id; fallback to view, then entity
+            route_id = route_id or _pick(route, "route_id")
+
+        # Final fallback policy (retrocompatível):
+        # route_id <- view <- entity <- ""
+        if not route_id:
+            route_id = view or entity or ""
 
         # Metrics inputs (caller-supplied)
         cache_hit = _pick(metrics, "cache_hit", default=None)
@@ -168,6 +179,7 @@ def explain(
             intent=intent,
             entity=entity,
             view=view,
+            route_id=route_id,
             cache_hit=cache_hit if isinstance(cache_hit, bool) else None,
             latency_ms=latency_ms,
             route_source=route_source,
@@ -184,6 +196,8 @@ def explain(
                 set_trace_attribute(span, "explain.entity", entity)
             if view:
                 set_trace_attribute(span, "explain.view", view)
+            if route_id:
+                set_trace_attribute(span, "explain.route_id", route_id)
             if latency_ms is not None:
                 set_trace_attribute(span, "explain.latency_ms", latency_ms)
             if cache_hit is not None:

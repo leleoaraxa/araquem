@@ -37,6 +37,7 @@ def _extract_ticker_identifier(question: str) -> Optional[str]:
     match = TICKER_RE.search((question or "").upper())
     return match.group(1) if match else None
 
+
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
 
 
@@ -315,9 +316,8 @@ class Orchestrator:
             if not cache_lookup_error and isinstance(cached_payload, dict):
                 cached_result_key = cached_payload.get("result_key")
                 cached_rows_formatted = cached_payload.get("rows")
-                if (
-                    cached_result_key is not None
-                    and isinstance(cached_rows_formatted, list)
+                if cached_result_key is not None and isinstance(
+                    cached_rows_formatted, list
                 ):
                     metrics_cache_hit = True
                 else:
@@ -416,8 +416,15 @@ class Orchestrator:
             # Usa o trace_id do span corrente como request_id (correlação OTEL)
             trace_id = get_trace_id(span)
             request_id = trace_id or uuid4().hex
+            # Defina explicitamente route_id = result_key (com fallback para entity)
+            route_id = result_key or entity or ""
             planner_output = {
-                "route": {"intent": intent, "entity": entity, "view": result_key},
+                "route": {
+                    "intent": intent,
+                    "entity": entity,
+                    "route_id": route_id,
+                    "view": result_key,
+                },
                 "chosen": chosen,
             }
             metrics_snapshot = {
