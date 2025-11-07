@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-07T12:20:25Z",
+  "generated_at": "2025-11-07T13:24:38Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -82,6 +82,127 @@
       "sha_all": "d545fe71d397856c9330d5f156a3c8b62a112f46d35b9efd15781c5af8969bf7"
     },
     {
+      "id": "entity-fiis-metrics",
+      "path": "data/entities/fiis_metrics.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "metricas"
+      ],
+      "chunks": 5,
+      "sha_all": "64c586179e785a82e6659738c3f24be00570afa960298bfedf53839321dbfb44"
+    },
+    {
+      "id": "entity-fiis-imoveis",
+      "path": "data/entities/fiis_imoveis.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "imoveis"
+      ],
+      "chunks": 2,
+      "sha_all": "5f4beba24231195fe5344d8e2422e0f35a1b2d21b9db4863b132ba082f9119ce"
+    },
+    {
+      "id": "entity-fiis-noticias",
+      "path": "data/entities/fiis_noticias.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "noticias"
+      ],
+      "chunks": 2,
+      "sha_all": "27b17514999b95d9f7df34a27c481427f8de860386075683ab0db7f091bf7809"
+    },
+    {
+      "id": "entity-fiis-processos",
+      "path": "data/entities/fiis_processos.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "processos"
+      ],
+      "chunks": 2,
+      "sha_all": "bff9c250fc66fad8cb81020dcc9a11b318db7ec26c224fa8fd296000857e9b73"
+    },
+    {
+      "id": "entity-fiis-financials-snapshot",
+      "path": "data/entities/fiis_financials_snapshot.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "financials",
+        "snapshot"
+      ],
+      "chunks": 4,
+      "sha_all": "e31be241afc2665477a71fb1d1a8830ae5b9ffcc266662017d2ecb430d0929dc"
+    },
+    {
+      "id": "entity-fiis-financials-revenue",
+      "path": "data/entities/fiis_financials_revenue_schedule.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "financials",
+        "revenue"
+      ],
+      "chunks": 4,
+      "sha_all": "3537f7a93d6cb0353f06796a26d5e8673f9807503c3946a3e5bc13fe32dbc1de"
+    },
+    {
+      "id": "entity-fiis-financials-risk",
+      "path": "data/entities/fiis_financials_risk.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "financials",
+        "risk"
+      ],
+      "chunks": 2,
+      "sha_all": "6147a49cf30651eadaf5dea21757c5e332538e47034a6199c703a053cd2a6ab8"
+    },
+    {
+      "id": "entity-client-fiis-positions",
+      "path": "data/entities/client_fiis_positions.yaml",
+      "tags": [
+        "entities",
+        "private",
+        "positions"
+      ],
+      "chunks": 2,
+      "sha_all": "5246cbb1e213d682a53bf3050d71822366b061c79ad82dff001290ce2e294a32"
+    },
+    {
+      "id": "policies-cache",
+      "path": "data/policies/cache.yaml",
+      "tags": [
+        "policies",
+        "cache"
+      ],
+      "chunks": 1,
+      "sha_all": "fa471322b098a3d1554fe14e36c6498f4c4323ad997e51bdb0438fea0d134fe9"
+    },
+    {
+      "id": "policies-quality",
+      "path": "data/policies/quality.yaml",
+      "tags": [
+        "policies",
+        "quality"
+      ],
+      "chunks": 1,
+      "sha_all": "7647314a9fd9b214434ccff8c13a08e2abbfa1982f046b542fe8e7169cf38820"
+    },
+    {
+      "id": "policies-rag",
+      "path": "data/policies/rag.yaml",
+      "tags": [
+        "policies",
+        "rag"
+      ],
+      "chunks": 1,
+      "sha_all": "85d5090d41fc3bf09dc747f20dc38f1f19026f3a36a9bd1f2b63067d1eee6229"
+    },
+    {
       "id": "ops-planner-thresholds",
       "path": "data/ops/planner_thresholds.yaml",
       "tags": [
@@ -120,8 +241,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 16,
-      "sha_all": "34e085fe7eeedc3aad420cfba276aefedc8aa88168fc063df6b1d5d46d5f06fc"
+      "chunks": 17,
+      "sha_all": "f4716da7aebc8757d5ddf336fe530b0bc4fe14017d665374dcf2a8d5e2a751c3"
     },
     {
       "id": "q-projection-cadastro",
@@ -168,6 +289,94 @@
       "sha_all": "d905ccea8fab798fc42b468cc1a9c353588fee28303112ebc7217f8c832bf3ab"
     },
     {
+      "id": "q-projection-imoveis",
+      "path": "data/ops/quality/projection_fiis_imoveis.json",
+      "tags": [
+        "quality",
+        "projection",
+        "imoveis"
+      ],
+      "chunks": 1,
+      "sha_all": "9491e9484dbac7dc0a31059e7f7f90b08c51a55196e043b10dd6788f4960e282"
+    },
+    {
+      "id": "q-projection-noticias",
+      "path": "data/ops/quality/projection_fiis_noticias.json",
+      "tags": [
+        "quality",
+        "projection",
+        "noticias"
+      ],
+      "chunks": 1,
+      "sha_all": "27c0f7290e0263f8480e819290ad0481a6b9022b2a494906242a39773434e5a7"
+    },
+    {
+      "id": "q-projection-processos",
+      "path": "data/ops/quality/projection_fiis_processos.json",
+      "tags": [
+        "quality",
+        "projection",
+        "processos"
+      ],
+      "chunks": 1,
+      "sha_all": "b5817eaf8206f20dcb3ebe286bc1e49eb6b061d75ddc94a58745cb28335e8ae2"
+    },
+    {
+      "id": "q-projection-metrics",
+      "path": "data/ops/quality/projection_fiis_metrics.json",
+      "tags": [
+        "quality",
+        "projection",
+        "metricas"
+      ],
+      "chunks": 1,
+      "sha_all": "4aba7f9651394824169d312eff33d1b9021269a723480624fa8c529390e2092d"
+    },
+    {
+      "id": "q-projection-fin-snapshot",
+      "path": "data/ops/quality/projection_fiis_financials_snapshot.json",
+      "tags": [
+        "quality",
+        "projection",
+        "financials"
+      ],
+      "chunks": 1,
+      "sha_all": "db8cd35142380349266b0480c138cba83e414251776f110fc02d10cf5b375de1"
+    },
+    {
+      "id": "q-projection-fin-revenue",
+      "path": "data/ops/quality/projection_fiis_financials_revenue_schedule.json",
+      "tags": [
+        "quality",
+        "projection",
+        "financials"
+      ],
+      "chunks": 1,
+      "sha_all": "e94f5c435b2a85e2748981dd6b6a18f91eafdec5a04b2849717d58205b7676b9"
+    },
+    {
+      "id": "q-projection-fin-risk",
+      "path": "data/ops/quality/projection_fiis_financials_risk.json",
+      "tags": [
+        "quality",
+        "projection",
+        "financials"
+      ],
+      "chunks": 1,
+      "sha_all": "37e0148549838e14abf82495d4ad4efabfef23eb8e814f160545e540c51574bf"
+    },
+    {
+      "id": "q-projection-client-positions",
+      "path": "data/ops/quality/projection_client_fiis_positions.json",
+      "tags": [
+        "quality",
+        "projection",
+        "private"
+      ],
+      "chunks": 1,
+      "sha_all": "3ad972c63fa29b11d0a8959e4a19f032b1af99cfe7da8e674750d90296539e07"
+    },
+    {
       "id": "q-m66-projection",
       "path": "data/ops/quality/m66_projection.json",
       "tags": [
@@ -179,5 +388,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762518099
+  "last_refresh_epoch": 1762521954
 }
