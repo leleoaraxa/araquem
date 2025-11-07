@@ -26,10 +26,10 @@ Exemplo de corpo mínimo aceito:
 ```
 
 Qualquer arquivo sem o campo `type` ou com valores diferentes é ignorado pelo cron, incluindo:
-- `data/ops/quality/param_inference_samples.json`
-- `data/ops/quality/rag_search_basics.json`
-- `data/ops/quality/planner_rag_integration.json`
-- `data/ops/quality/m66_projection.json`
+- `data/ops/quality_experimental/param_inference_samples.json`
+- `data/ops/quality_experimental/rag_search_basics.json`
+- `data/ops/quality_experimental/planner_rag_integration.json`
+- `data/ops/quality_experimental/m66_projection.json`
 
 ## Execução do cron
 Para validar o filtro localmente, execute o cron em modo dry-run:

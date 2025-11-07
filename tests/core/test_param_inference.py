@@ -6,7 +6,9 @@ from app.planner.param_inference import infer_params
 
 def test_inference_samples():
     with open(
-        "data/ops/quality/param_inference_samples.json", "r", encoding="utf-8"
+        "data/ops/quality_experimental/param_inference_samples.json",
+        "r",
+        encoding="utf-8",
     ) as f:
         samples = json.load(f)["samples"]
     for s in samples:

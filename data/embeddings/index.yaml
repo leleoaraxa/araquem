@@ -163,5 +163,5 @@ include:
     tags: [quality, projection, private]
 
   - id: q-m66-projection
-    path: data/ops/quality/m66_projection.json
+    path: data/ops/quality_experimental/m66_projection.json
     tags: [quality, projection, m66]

@@ -14,7 +14,7 @@ CID = os.getenv("QUALITY_CONVERSATION_ID", "ops-quality")
 NICK = os.getenv("QUALITY_NICK", "ops")
 CLIENT = os.getenv("QUALITY_CLIENT", "ops")
 SRC = Path("data/ops/quality/routing_samples.json")
-OUT = Path("data/ops/quality/routing_misses_via_ask.json")
+OUT = Path("data/ops/quality_experimental/routing_misses_via_ask.json")
 
 
 def pick(d, *paths, default=None):

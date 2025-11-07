@@ -149,7 +149,7 @@ def main() -> None:
     response.raise_for_status()
 
     out = {"per_query": per_query, "aggregate": payload}
-    Path("data/ops/quality/rag_eval_last.json").write_text(
+    Path("data/ops/quality_experimental/rag_eval_last.json").write_text(
         json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8"
     )
     print("[rag-eval] done:", json.dumps(payload))
