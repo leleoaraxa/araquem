@@ -7,6 +7,7 @@ chunk:
   overlap_chars: 120
 
 hint_filters:
+  # OPCIONAL: para que projections (q-*) também virem hints semânticos.
   allowlist: ["entity-*", "concepts-*", "q-*"]
   denylist: ["golden-*", "ontology-*"]
 required_entity_doc: true
@@ -79,6 +80,7 @@ include:
 
 # ── Entidades (contratos YAML das views) ───────────────────────────────────
 
+  # Policies (paths corrigidos)
   - id: policies-cache
     path: data/policies/cache.yaml
     tags: [policies, cache]

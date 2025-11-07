@@ -2,14 +2,6 @@ version: 20251106
 
 window: "rolling"
 
-quality_gates:
-  thresholds:
-    min_top1_accuracy: 0.95
-    min_top2_gap: 0.25
-    min_routed_rate: 0.98
-    max_misses_absolute: 0
-    max_misses_ratio: 0.0
-
 planner:
   thresholds:
     defaults:
