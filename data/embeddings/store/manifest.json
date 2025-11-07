@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-06T18:32:30Z",
+  "generated_at": "2025-11-07T00:04:46Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -34,8 +34,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 5,
-      "sha_all": "ecb22f0c99ca3d1433ca659fbceabdbae50738c91fbe8ccb5e822d32fa7bc504"
+      "chunks": 4,
+      "sha_all": "2bdbe05394e1dd3c528ccdb369ba16d579484c034ad15a54b56d85732dab61de"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -120,8 +120,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 14,
-      "sha_all": "f9be870e483fdefb34f48b0de8eb39b825e7de79c6faacc64830ce11297f271a"
+      "chunks": 18,
+      "sha_all": "f6a41e4b4e3086c7abf1e8b10f164dd9012f73608133e9a15ad3a13324d0b36a"
     },
     {
       "id": "q-projection-cadastro",
@@ -179,5 +179,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762454001
+  "last_refresh_epoch": 1762473943
 }

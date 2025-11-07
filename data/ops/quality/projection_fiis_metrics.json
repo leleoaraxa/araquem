@@ -1,4 +1,20 @@
-[
-  {"input": "métricas do MCCI11 no ano", "expect": {"rows>=1": true}},
-  {"input": "métricas 6m do MXRF11", "expect": {"contains_cols": ["dy_avg", "price_avg"]}}
-]
+{
+  "type": "projection",
+  "entity": "fiis_metrics",
+  "result_key": "fii_metrics",
+  "must_have_columns": [
+    "ticker",
+    "metric",
+    "value",
+    "window_months",
+    "period_start",
+    "period_end"
+  ],
+  "samples": [
+    { "question": "métricas do MCCI11 no ano" },
+    { "question": "métricas 6m do MXRF11" },
+    { "question": "média de DY do HGLG11 em 12m" },
+    { "question": "preço médio do KNRI11 em 6m" },
+    { "question": "DY médio do VISC11 no período" }
+  ]
+}

@@ -1,6 +1,26 @@
 {
-  "cases": [
-    { "input": "imóveis do XPML11", "expect": { "rows>=1": true } },
-    { "input": "lista de propriedades do VISC11", "expect": { "rows>=1": true } }
+  "type": "projection",
+  "entity": "fiis_imoveis",
+  "result_key": "imoveis_fii",
+  "must_have_columns": [
+    "ticker",
+    "asset_name",
+    "asset_class",
+    "asset_address",
+    "total_area",
+    "units_count",
+    "vacancy_ratio",
+    "non_compliant_ratio",
+    "assets_status",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "imóveis do XPML11" },
+    { "question": "lista de propriedades do VISC11" },
+    { "question": "segmento dos imóveis do HGLG11" },
+    { "question": "cidade e endereço dos ativos do KNRI11" },
+    { "question": "área total do VILG11" },
+    { "question": "situação dos ativos do BRCR11" }
   ]
 }

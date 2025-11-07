@@ -1,3 +1,24 @@
-[
-  {"input": "notícias do KNRI11", "expect": {"rows>=1": true}}
-]
+{
+  "type": "projection",
+  "entity": "fiis_noticias",
+  "result_key": "noticias_fii",
+  "must_have_columns": [
+    "ticker",
+    "source",
+    "title",
+    "tags",
+    "description",
+    "url",
+    "image_url",
+    "published_at",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "notícias do KNRI11" },
+    { "question": "últimas do MXRF11" },
+    { "question": "matérias recentes do HGLG11" },
+    { "question": "notícias do VISC11 na mídia" },
+    { "question": "novidades sobre o XPML11" }
+  ]
+}

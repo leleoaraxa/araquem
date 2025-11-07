@@ -54,8 +54,8 @@ intents:
         - cnpj do
         - administrador do
         - site do
-        - nome de pregão do
-        - nome de pregão b3 do
+        - nome de pregrao do
+        - nome de pregrao b3 do
         - nome de exibicao do
         - classificacao do
         - setor do
@@ -182,7 +182,7 @@ intents:
       exclude: []
     phrases:
       include:
-        - notícias do
+        - noticias do
         - ultimas do
         - novidades do
       exclude: []
@@ -287,8 +287,6 @@ intents:
         - "imoveis do"
         - "quais imoveis do"
         - "lista de propriedades do"
-        - "imoveis do  "
-        - "imoveis do knri11 em"
       exclude: []
     entities: [fiis_imoveis]
 

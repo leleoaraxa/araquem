@@ -1,3 +1,5 @@
+# app/builder/sql_builder.py
+
 """SQL builder guided exclusively by entity YAML configuration."""
 
 from pathlib import Path
@@ -297,7 +299,7 @@ def _build_numeric_aggregation_sql(
     params: Dict[str, Any],
 ) -> str:
     if len(return_cols) < 3:
-        message = ("Entity '{entity}' requires at least 3 return_columns for aggregation")
+        message = "Entity '{entity}' requires at least 3 return_columns for aggregation"
         logger.error(message)
         raise ValueError(message)
 
@@ -387,11 +389,13 @@ def build_select_for_entity(
 
     if (period_start or period_end) and not is_metrics_request:
         if not default_date_field:
-            message = ("Entity '{entity}' missing default_date_field for period filtering")
+            message = (
+                "Entity '{entity}' missing default_date_field for period filtering"
+            )
             logger.error(message)
             raise ValueError(message)
         if not period_start or not period_end:
-            message = ("Entity '{entity}' requires both period_start and period_end for filtering")
+            message = "Entity '{entity}' requires both period_start and period_end for filtering"
             logger.error(message)
             raise ValueError(message)
         params["period_start"] = period_start
@@ -451,7 +455,9 @@ def build_select_for_entity(
     where_with_window = list(where_terms)
     if window_kind == "months" and window_value:
         if not default_date_field:
-            message = ("Entity '{entity}' missing default_date_field for window filtering")
+            message = (
+                "Entity '{entity}' missing default_date_field for window filtering"
+            )
             logger.error(message)
             raise ValueError(message)
         where_with_window.append(
@@ -459,13 +465,14 @@ def build_select_for_entity(
         )
 
     order_value = _select_order_value(
-        agg_params.get("order_by"), preferred_order_dir, order_by_whitelist, default_date_field
+        agg_params.get("order_by"),
+        preferred_order_dir,
+        order_by_whitelist,
+        default_date_field,
     )
     order_clause = f" ORDER BY {order_value}" if order_value else ""
 
-    where_sql = (
-        f" WHERE {' AND '.join(where_with_window)}" if where_with_window else ""
-    )
+    where_sql = f" WHERE {' AND '.join(where_with_window)}" if where_with_window else ""
 
     if not agg_enabled or agg_mode in ("", None):
         agg_mode = "list"
