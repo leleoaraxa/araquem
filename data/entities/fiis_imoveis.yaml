@@ -72,7 +72,7 @@ columns:
 
 ask:
   intents: [cadastro, imoveis]
-  keywords: [imovel, imóveis, propriedades, propriedade, ativos, portfolio, vacancia, ocupacao, unidades]
+  keywords: [imovel, imóveis, propriedades, propriedade, ativos, portfolio, vacancia, ocupacao, unidades, area, metragem, endereco, localizacao, status operacional]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:

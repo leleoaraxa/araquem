@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-07T13:24:38Z",
+  "generated_at": "2025-11-07T17:44:02Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -101,7 +101,7 @@
         "imoveis"
       ],
       "chunks": 2,
-      "sha_all": "5f4beba24231195fe5344d8e2422e0f35a1b2d21b9db4863b132ba082f9119ce"
+      "sha_all": "ee05070069f77dcc527478999cd3f5f7483366cdcf7e806fbd14d7392080cbf7"
     },
     {
       "id": "entity-fiis-noticias",
@@ -123,7 +123,7 @@
         "processos"
       ],
       "chunks": 2,
-      "sha_all": "bff9c250fc66fad8cb81020dcc9a11b318db7ec26c224fa8fd296000857e9b73"
+      "sha_all": "de70201b127b706f42775382b83704d2f8fd1bc5aef8d9b97274f2101bd4eac8"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -135,7 +135,7 @@
         "snapshot"
       ],
       "chunks": 4,
-      "sha_all": "e31be241afc2665477a71fb1d1a8830ae5b9ffcc266662017d2ecb430d0929dc"
+      "sha_all": "a73ad79a1098aabc46d5ca69e1b71b0e5bad1a71b081bf322a43bc489fae5b17"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -147,7 +147,7 @@
         "revenue"
       ],
       "chunks": 4,
-      "sha_all": "3537f7a93d6cb0353f06796a26d5e8673f9807503c3946a3e5bc13fe32dbc1de"
+      "sha_all": "60a5683cebef8f3c3cbb251361ec38b87c593873980bcf1483bf764f216f01bc"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -159,7 +159,7 @@
         "risk"
       ],
       "chunks": 2,
-      "sha_all": "6147a49cf30651eadaf5dea21757c5e332538e47034a6199c703a053cd2a6ab8"
+      "sha_all": "4e7a7ac9608aac35b05ac79d7d0023a0f367610a95a4c3ac5d7060347e998ed8"
     },
     {
       "id": "entity-client-fiis-positions",
@@ -170,7 +170,7 @@
         "positions"
       ],
       "chunks": 2,
-      "sha_all": "5246cbb1e213d682a53bf3050d71822366b061c79ad82dff001290ce2e294a32"
+      "sha_all": "2a6b6f20047227d67a2c0736a6899293697542106d8f997b2c161b992119b107"
     },
     {
       "id": "policies-cache",
@@ -180,7 +180,7 @@
         "cache"
       ],
       "chunks": 1,
-      "sha_all": "fa471322b098a3d1554fe14e36c6498f4c4323ad997e51bdb0438fea0d134fe9"
+      "sha_all": "f0fce1d30abb13279af5bd69231859b371689d6b0cb46d3678a84df5e6e81578"
     },
     {
       "id": "policies-quality",
@@ -210,7 +210,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "8daa1db26ad32e7d1c7a941c61a8d13d23b409af258fda4a5a5e65ea1741df98"
+      "sha_all": "cc7dbab25ceba17565c218b48f5d0075397ea8f7eec6d57aef539f9b23afffbd"
     },
     {
       "id": "ops-observability",
@@ -242,7 +242,7 @@
         "samples"
       ],
       "chunks": 17,
-      "sha_all": "f4716da7aebc8757d5ddf336fe530b0bc4fe14017d665374dcf2a8d5e2a751c3"
+      "sha_all": "93ec8f81e005a69dc39aa9c3725af3b51b4a4bf3cf41a2634fbe09da30b5d44c"
     },
     {
       "id": "q-projection-cadastro",
@@ -341,7 +341,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "db8cd35142380349266b0480c138cba83e414251776f110fc02d10cf5b375de1"
+      "sha_all": "7639c3d2026bd075e93f099f66eda5627d3fc79a206f2152328a13765835d38a"
     },
     {
       "id": "q-projection-fin-revenue",
@@ -352,7 +352,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "e94f5c435b2a85e2748981dd6b6a18f91eafdec5a04b2849717d58205b7676b9"
+      "sha_all": "069bbf6b578bb522fea4ca5e3b77256ac4edafda059946701b4304332332479b"
     },
     {
       "id": "q-projection-fin-risk",
@@ -363,7 +363,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "37e0148549838e14abf82495d4ad4efabfef23eb8e814f160545e540c51574bf"
+      "sha_all": "2ae462b1c60334362c4a26e2f8378ec6cd5c5d6634aeae2160c2b7a89e4d0524"
     },
     {
       "id": "q-projection-client-positions",
@@ -374,7 +374,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "3ad972c63fa29b11d0a8959e4a19f032b1af99cfe7da8e674750d90296539e07"
+      "sha_all": "6a5a70d7fc96e60651e386281cea641ef5218be09b30e09dc84f6a1d56721689"
     },
     {
       "id": "q-m66-projection",
@@ -388,5 +388,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762521954
+  "last_refresh_epoch": 1762537520
 }

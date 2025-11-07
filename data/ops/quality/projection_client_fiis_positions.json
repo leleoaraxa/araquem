@@ -11,8 +11,8 @@
     "available_quantity"
   ],
   "samples": [
-    { "question": "minhas posições de FIIs" },
-    { "question": "quantidade e preço dos meus fiis" }
+    { "question": "minhas posições de FIIs cpf 66140994691" },
+    { "question": "quantidade e preço dos meus fiis cpf 66140994691" }
   ],
   "params": { "document_number": "66140994691" }
 }

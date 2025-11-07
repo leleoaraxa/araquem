@@ -15,8 +15,8 @@
     "updated_at"
   ],
   "samples": [
-    { "question": "payout e alavancagem do HGLG11" },
-    { "question": "valor de mercado e EV do KNRI11" },
-    { "question": "caixa total e passivos do VISC11" }
+    { "question": "payout e alavancagem do GFDL11" },
+    { "question": "valor de mercado e EV do STRX11" },
+    { "question": "caixa total e passivos do AZPL11" }
   ]
 }

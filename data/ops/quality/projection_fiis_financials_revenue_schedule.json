@@ -13,8 +13,8 @@
     "updated_at"
   ],
   "samples": [
-    { "question": "estrutura de recebiveis do HGLG11" },
-    { "question": "quanto vence em 12 meses do KNRI11" },
-    { "question": "indexadores de receita do VISC11" }
+    { "question": "estrutura de recebiveis do GFDL11" },
+    { "question": "quanto vence em 12 meses do STRX11" },
+    { "question": "indexadores de receita do AZPL11" }
   ]
 }

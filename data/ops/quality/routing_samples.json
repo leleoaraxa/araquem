@@ -573,42 +573,42 @@
     },
     {
       "question": "imóveis do HGLG11",
-      "expected_intent": "cadastro",
+      "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "question": "quais propriedades do KNRI11",
-      "expected_intent": "cadastro",
+      "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "question": "imóveis do KNRI11 em SP",
-      "expected_intent": "cadastro",
+      "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "question": "lista de propriedades do VISC11",
-      "expected_intent": "cadastro",
+      "expected_intent": "imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "question": "processos do VISC11",
-      "expected_intent": "cadastro",
+      "expected_intent": "processos",
       "expected_entity": "fiis_processos"
     },
     {
       "question": "status dos processos do HGRU11",
-      "expected_intent": "cadastro",
+      "expected_intent": "processos",
       "expected_entity": "fiis_processos"
     },
     {
       "question": "andamento dos processos do MXRF11",
-      "expected_intent": "cadastro",
+      "expected_intent": "processos",
       "expected_entity": "fiis_processos"
     },
     {
       "question": "processos judiciais do XPLG11",
-      "expected_intent": "cadastro",
+      "expected_intent": "processos",
       "expected_entity": "fiis_processos"
     },
     {
@@ -694,8 +694,7 @@
     {
       "question": "endereços dos ativos do HGLG11",
       "expected_intent": "imoveis",
-      "expected_entity":
-      "fiis_imoveis"
+      "expected_entity": "fiis_imoveis"
     },
     {
       "question": "status de processos do HGLG11",

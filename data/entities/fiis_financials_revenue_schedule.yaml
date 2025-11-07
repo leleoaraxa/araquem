@@ -58,7 +58,7 @@ columns:
 
 ask:
   intents: [metricas]
-  keywords: [receitas, recebiveis, vencimento, estrutura de recebiveis, prazo, buckets, indexador, igpm, ipca, inpc, incc]
+  keywords: [receitas, recebiveis, vencimento, estrutura de recebiveis, prazo, buckets, indexador, igpm, ipca, inpc, incc, duration da receita, cronograma de receitas]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
     revenue_ipca_pct: [ipca]

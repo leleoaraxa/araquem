@@ -38,7 +38,7 @@ columns:
 
 ask:
   intents: [metricas]
-  keywords: [minhas posicoes, minha carteira, posicao, quantidade, preco, cpf, documento]
+  keywords: [minhas posicoes, minha carteira, posicao, quantidade, custodia, carteira de fii, carteira de fundos imobiliarios]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:

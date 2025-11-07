@@ -32,7 +32,7 @@ columns:
 
 ask:
   intents: [metricas]
-  keywords: [risco, volatilidade, sharpe, treynor, jensen, alfa, beta]
+  keywords: [risco, volatilidade, sharpe, treynor, jensen, alfa, beta, volatilidade, desvio-padrão, drawdown, risco ajustado, performance ajustada, risco vs retorno]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:

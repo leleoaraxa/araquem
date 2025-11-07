@@ -77,7 +77,7 @@ columns:
 
 ask:
   intents: [cadastro, processos]
-  keywords: [processo, processos, judicial, judiciais, andamento, status, litígio, litgio, causa, risco]
+  keywords: [processo, processos, judicial, judiciais, andamento, status, litígio, litgio, causa, risco de perde, partes envolvidas, valor da causa, fatos principais, impacto, análise de impacto]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:

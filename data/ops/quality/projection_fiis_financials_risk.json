@@ -13,8 +13,8 @@
     "updated_at"
   ],
   "samples": [
-    { "question": "volatilidade e sharpe do HGLG11" },
-    { "question": "treynor e jensen do KNRI11" },
-    { "question": "beta do VISC11" }
+    { "question": "volatilidade e sharpe do GFDL11" },
+    { "question": "treynor e jensen do STRX11" },
+    { "question": "beta do AZPL11" }
   ]
 }

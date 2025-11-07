@@ -70,7 +70,7 @@ columns:
 
 ask:
   intents: [metricas]
-  keywords: [payout, alavancagem, caixa, endividamento, ev, enterprise value, market cap, patrimonio, preco/patrimonio, price book, cap rate, crescimento]
+  keywords: [payout, alavancagem, caixa, endividamento, ev, enterprise value, market cap, patrimonio, preco/patrimonio, price book, cap rate, crescimento, leverage, dividas]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
     dividend_payout_pct: [payout, distribuicao]
