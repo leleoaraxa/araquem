@@ -34,10 +34,10 @@ policies:
       - field: "window_type"
         equals: "count"
         value: 1
-  fiis_imoveis:                    { ttl_seconds: 86400, refresh_at: "02:10", scope: pub }
-  fiis_noticias:                   { ttl_seconds:  3600, refresh_at: "hourly", scope: pub }
-  fiis_processos:                  { ttl_seconds: 43200, refresh_at: "03:00",  scope: pub }
-  fiis_financials_snapshot:        { ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
-  fiis_financials_revenue_schedule:{ ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
-  fiis_financials_risk:            { ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
-  client_fiis_positions:           { ttl_seconds:   900, refresh_at: "none",   scope: prv }
+  fiis_imoveis:                     { ttl_seconds: 86400, refresh_at: "02:10", scope: pub }
+  fiis_noticias:                    { ttl_seconds:  3600, refresh_at: "hourly", scope: pub }
+  fiis_processos:                   { ttl_seconds: 43200, refresh_at: "03:00",  scope: pub }
+  fiis_financials_snapshot:         { ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
+  fiis_financials_revenue_schedule: { ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
+  fiis_financials_risk:             { ttl_seconds: 43200, refresh_at: "01:30",  scope: pub }
+  client_fiis_positions:            { ttl_seconds:   900, refresh_at: "none",   scope: prv }

@@ -1,6 +1,7 @@
 # app/api/ops/quality.py
 import math
 import os
+import logging
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Body, Header
@@ -351,13 +352,14 @@ def quality_push(
 @router.get("/ops/quality/report")
 def quality_report():
     policy_path = os.getenv("QUALITY_POLICY_PATH", "data/policies/quality.yaml")
-    fallback_path = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
+    fallback_path = os.getenv(
+        "PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml"
+    )
     try:
         import yaml
     except Exception as e:
-        return JSONResponse(
-            {"error": f"failed to load quality policy: {e}"}, status_code=500
-        )
+        logging.exception("Failed to import yaml module in quality_report")
+        return JSONResponse({"error": "failed to load quality policy"}, status_code=500)
 
     policy = None
     errors: List[str] = []
@@ -369,9 +371,13 @@ def quality_report():
                 policy = yaml.safe_load(f) or {}
                 break
         except FileNotFoundError:
-            errors.append(f"file not found '{candidate}'")
+            error_msg = f"file not found '{candidate}'"
+            errors.append(error_msg)
+            logging.error(error_msg)
         except Exception as exc:
-            errors.append(f"{candidate}: {exc}")
+            error_msg = f"Error loading '{candidate}': {exc}"
+            errors.append(error_msg)
+            logging.exception(error_msg)
 
     if policy is None:
         return JSONResponse(
@@ -379,9 +385,9 @@ def quality_report():
             status_code=500,
         )
 
-    targets = (policy.get("targets") or {})
+    targets = policy.get("targets") or {}
     if not targets:
-        targets = ((policy.get("quality_gates") or {}).get("thresholds") or {})
+        targets = (policy.get("quality_gates") or {}).get("thresholds") or {}
 
     min_top1_acc = float(targets.get("min_top1_accuracy", 0.0))
     min_routed_rt = float(targets.get("min_routed_rate", 0.0))
@@ -462,6 +468,6 @@ def quality_report():
     return {
         "status": status,
         "metrics": metrics,
-        "thresholds": qg,
+        "thresholds": targets,
         "violations": violations,
     }
