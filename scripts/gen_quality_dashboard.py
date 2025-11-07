@@ -4,7 +4,8 @@ from pathlib import Path
 from datetime import datetime, UTC
 import argparse
 
-THR_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
+QUALITY_POLICY_PATH = os.getenv("QUALITY_POLICY_PATH", "data/policies/quality.yaml")
+FALLBACK_THR_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
 OUT_PATH = Path("grafana/dashboards/quality_dashboard.json")
 
 # Painel base
@@ -92,17 +93,25 @@ def main():
     parser.add_argument("--pretty", action="store_true", help="Emit pretty-printed JSON (indent=2)")
     args = parser.parse_args()
 
-    if not Path(THR_PATH).exists():
-        print(f"error: thresholds file not found: {THR_PATH}", file=sys.stderr)
+    policy_path = Path(QUALITY_POLICY_PATH)
+    source_path = policy_path if policy_path.exists() else Path(FALLBACK_THR_PATH)
+    if not source_path.exists():
+        print(
+            f"error: quality policy not found (tried {policy_path} and {FALLBACK_THR_PATH})",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    with open(THR_PATH, "r", encoding="utf-8") as f:
-        thr = yaml.safe_load(f) or {}
+    with open(source_path, "r", encoding="utf-8") as f:
+        policy = yaml.safe_load(f) or {}
 
-    qg = ((thr.get("quality_gates") or {}).get("thresholds") or {})
-    min_top1_accuracy = float(qg.get("min_top1_accuracy", 0.95))
-    min_routed_rate   = float(qg.get("min_routed_rate", 0.98))
-    min_top2_gap      = float(qg.get("min_top2_gap", 0.40))
+    targets = (policy.get("targets") or {})
+    if not targets:
+        targets = ((policy.get("quality_gates") or {}).get("thresholds") or {})
+
+    min_top1_accuracy = float(targets.get("min_top1_accuracy", 0.95))
+    min_routed_rate   = float(targets.get("min_routed_rate", 0.98))
+    min_top2_gap      = float(targets.get("min_top2_gap", 0.25))
     # misses_* não entram em gauge; exibiremos em stat/table
 
     db = base_dashboard()

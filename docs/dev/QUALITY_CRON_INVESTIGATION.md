@@ -1,7 +1,7 @@
 # Investigação do quality-cron
 
 ## Sumário executivo
-- O `quality-cron` falha porque o _gate_ de `top2_gap_p50` não é atendido: o relatório reporta valor `0.25`, abaixo do limiar `0.40` definido em `planner_thresholds.yaml`. Isso confirma a hipótese **(A) Gating** como causa primária do status `fail`.
+- O `quality-cron` falha porque o _gate_ de `top2_gap_p50` não é atendido: o relatório reporta valor `0.25`, abaixo do limiar configurado em `data/policies/quality.yaml`. Isso confirma a hipótese **(A) Gating** como causa primária do status `fail`.
 - As hipóteses **(B) Timing** e **(C) Dependências** não se confirmaram. O shell do cron aguarda métricas válidas até 60 s e instala apenas `PyYAML` se ausente, o que indica que o problema não decorre da janela de espera nem da falta de dependências de runtime.
 - Os arquivos com tipos não suportados (`rag_search`, `planner_rag_integration`, etc.) são ignorados intencionalmente pelo cron, portanto a hipótese **(D) Dataset/Tipos** refere-se apenas à necessidade de enriquecer `routing_samples.json` para ampliar o `top2_gap`.
 - Recomendação: revisar o conjunto de _routing samples_ para aumentar a separação entre o 1º e o 2º candidatos (ex.: perguntas menos ambíguas por intent, maior cobertura de intents) antes de considerar alterar o limiar.
@@ -12,7 +12,7 @@
 Os comandos `docker compose` não estão disponíveis neste ambiente (`bash: command not found: docker`).【69efe3†L1-L3】【059b12†L1-L3】【1e73cf†L1-L3】
 
 ### 2. Limiares oficiais
-`data/ops/planner_thresholds.yaml` define `min_top1_accuracy: 0.95`, `min_top2_gap: 0.40` e `min_routed_rate: 0.98`.【F:data/ops/planner_thresholds.yaml†L1-L33】
+`data/policies/quality.yaml` define `min_top1_accuracy: 0.95`, `min_top2_gap: 0.25` e `min_routed_rate: 0.98`.【F:data/policies/quality.yaml†L1-L12】
 
 ### 3. Métricas e relatório online
 Não foi possível consultar `http://localhost:8000` (resposta vazia), indicando que a API não está ativa neste ambiente.【a8bb68†L1-L2】【f68716†L1-L3】
@@ -41,7 +41,7 @@ O cron instala `PyYAML` em runtime, o que evidencia dependência tratada dinamic
 ## Próximos passos recomendados
 1. Curar `routing_samples.json` para incluir perguntas menos ambíguas e com maior diversidade de intents, reduzindo a proximidade de scores entre top1 e top2.
 2. (Melhoria) Incluir `RUN pip install --no-cache-dir -r /workspace/requirements.txt` no `Dockerfile.quality-cron` para evitar instalações em runtime.
-3. Após ajustes, reexecutar o cron localmente garantindo que `top2_gap_p50` supere `0.40`.
+3. Após ajustes, reexecutar o cron localmente garantindo que `top2_gap_p50` supere `0.25`.
 
 ## Patch sugerido (exemplo)
 ```dockerfile

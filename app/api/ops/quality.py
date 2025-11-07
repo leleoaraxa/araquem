@@ -350,23 +350,44 @@ def quality_push(
 
 @router.get("/ops/quality/report")
 def quality_report():
-    thr_path = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
+    policy_path = os.getenv("QUALITY_POLICY_PATH", "data/policies/quality.yaml")
+    fallback_path = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
     try:
         import yaml
-
-        with open(thr_path, "r", encoding="utf-8") as f:
-            thr = yaml.safe_load(f) or {}
     except Exception as e:
         return JSONResponse(
-            {"error": f"failed to load thresholds: {e}"}, status_code=500
+            {"error": f"failed to load quality policy: {e}"}, status_code=500
         )
 
-    qg = (thr.get("quality_gates") or {}).get("thresholds") or {}
-    min_top1_acc = float(qg.get("min_top1_accuracy", 0.0))
-    min_routed_rt = float(qg.get("min_routed_rate", 0.0))
-    min_top2_gap = float(qg.get("min_top2_gap", 0.0))
-    max_miss_abs = float(qg.get("max_misses_absolute", 0.0))
-    max_miss_ratio = float(qg.get("max_misses_ratio", 1.0))
+    policy = None
+    errors: List[str] = []
+    for candidate in [policy_path, fallback_path]:
+        if not candidate:
+            continue
+        try:
+            with open(candidate, "r", encoding="utf-8") as f:
+                policy = yaml.safe_load(f) or {}
+                break
+        except FileNotFoundError:
+            errors.append(f"file not found '{candidate}'")
+        except Exception as exc:
+            errors.append(f"{candidate}: {exc}")
+
+    if policy is None:
+        return JSONResponse(
+            {"error": f"failed to load quality policy: {'; '.join(errors)}"},
+            status_code=500,
+        )
+
+    targets = (policy.get("targets") or {})
+    if not targets:
+        targets = ((policy.get("quality_gates") or {}).get("thresholds") or {})
+
+    min_top1_acc = float(targets.get("min_top1_accuracy", 0.0))
+    min_routed_rt = float(targets.get("min_routed_rate", 0.0))
+    min_top2_gap = float(targets.get("min_top2_gap", 0.0))
+    max_miss_abs = float(targets.get("max_misses_absolute", 0.0))
+    max_miss_ratio = float(targets.get("max_misses_ratio", 1.0))
 
     top1_hit = prom_query_instant('sum(sirios_planner_top1_match_total{result="hit"})')
     top1_total = prom_query_instant("sum(sirios_planner_top1_match_total)")
