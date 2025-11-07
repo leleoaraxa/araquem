@@ -288,6 +288,8 @@ intents:
         - "ultimos pagamentos"
         - "ultimas distribuicoes"
         - "quanto de dividendos"
+        - "dividendos totais do"
+        - "contagem de pagamentos do"
         - "pagou nos ultimos"
         - "dividendos nos ultimos"
         - "dividendos nos ultimos 12 meses"

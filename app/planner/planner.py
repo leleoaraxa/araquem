@@ -305,7 +305,6 @@ class Planner:
                 entity_rag_scores[entity_name] = max(current_rag, new_rag)
 
         chosen_intent = None
-        chosen_entity = None
         chosen_score = 0.0
         if fused_scores:
             chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
@@ -339,7 +338,6 @@ class Planner:
         for item in combined_entities:
             item["winner"] = bool(item["name"] == top_entity_name)
 
-        # Só agora que top_entity_name existe, definimos chosen_entity
         if chosen_intent is not None:
             chosen_entity = top_entity_name or intent_entities.get(chosen_intent)
         else:
