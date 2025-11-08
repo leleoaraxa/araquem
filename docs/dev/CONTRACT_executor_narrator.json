@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "executor_payload": {
+    "intent": "metricas",
+    "entity": "fiis_metrics",
+    "question": "qual o dy medio do hglg11",
+    "facts": {
+      "ticker": "HGLG11",
+      "periodo_referencia": "ultimos_12_meses",
+      "medidas": [
+        {
+          "nome": "dy_medio",
+          "valor": 0.094,
+          "unidade": "ratio"
+        },
+        {
+          "nome": "pagamentos",
+          "valor": 12,
+          "unidade": "qtde"
+        }
+      ],
+      "datas": {
+        "inicio": "2024-11-01",
+        "fim": "2025-10-31"
+      },
+      "fonte": "sirios.datawarehouse"
+    },
+    "meta": {
+      "locale": "pt-BR",
+      "timezone": "America/Sao_Paulo",
+      "format": "markdown",
+      "user_flags": []
+    }
+  },
+  "narrator_output": {
+    "text": "string",
+    "score": 0.0,
+    "hints": {
+      "style": "executivo",
+      "bullets": true,
+      "cite_fields": [
+        "dy_medio"
+      ]
+    },
+    "tokens": {
+      "in": 0,
+      "out": 0
+    }
+  },
+  "rules": {
+    "no_hallucination": "Responder exclusivamente com base nos campos de 'facts'.",
+    "no_new_fields": "Nao introduzir campos inexistentes.",
+    "formatting": "Respeitar 'meta.format' e locale para numeros e datas."
+  }
+}

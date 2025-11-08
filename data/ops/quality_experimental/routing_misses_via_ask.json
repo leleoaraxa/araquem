@@ -1,12 +1,44 @@
 [
   {
+    "idx": 23,
+    "question": "custodiante do LVBI11",
+    "expected_intent": "cadastro",
+    "expected_entity": "fiis_cadastro",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.9340811888968759,
+    "normalized": "custodiante do lvbi11",
+    "tokens": [
+      "custodiante",
+      "do",
+      "lvbi11"
+    ],
+    "intent_scores": {
+      "cadastro": 1.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 1.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.15,
+      "gap": 0.08408118889687588,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
     "idx": 107,
     "question": "soma de dividendos do HGLG11",
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 6.055968779368918,
+    "score": 4.355968779368918,
     "normalized": "soma de dividendos do hglg11",
     "tokens": [
       "soma",
@@ -21,14 +53,14 @@
       "dividendos": 2.0,
       "noticias": 0.0,
       "rankings": -1.0,
-      "metricas": 7.0,
+      "metricas": 5.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.355968779368918,
+      "gap": 2.6559687793689175,
       "accepted": true,
       "source": "final"
     }
@@ -151,7 +183,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 0.9396702456565404,
+    "score": 2.63967024565654,
     "normalized": "media de preco do knri11",
     "tokens": [
       "media",
@@ -166,15 +198,15 @@
       "dividendos": -1.0,
       "noticias": 0.0,
       "rankings": -3.0,
-      "metricas": 1.0,
+      "metricas": 3.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 0.9396702456565404,
-      "accepted": false,
+      "gap": 2.63967024565654,
+      "accepted": true,
       "source": "final"
     }
   },
@@ -255,7 +287,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_snapshot",
-    "score": 11.0,
+    "score": 7.0,
     "normalized": "minhas posicoes de fiis",
     "tokens": [
       "minhas",
@@ -269,14 +301,14 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 1.0,
-      "metricas": 11.0,
+      "metricas": 7.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.3,
-      "gap": 10.0,
+      "gap": 6.0,
       "accepted": true,
       "source": "final"
     }
@@ -288,7 +320,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 9.43838931592758,
+    "score": 6.0383893159275805,
     "normalized": "minhas posicoes na b3",
     "tokens": [
       "minhas",
@@ -302,14 +334,14 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 1.0,
-      "metricas": 11.0,
+      "metricas": 7.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 8.58838931592758,
+      "gap": 5.188389315927581,
       "accepted": true,
       "source": "final"
     }
@@ -321,7 +353,7 @@
     "expected_entity": "fiis_financials_snapshot",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 2.650768553172534,
+    "score": 3.500768553172534,
     "normalized": "caixa disponivel do hglg11",
     "tokens": [
       "caixa",
@@ -335,14 +367,14 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 3.0,
+      "metricas": 4.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 2.650768553172534,
+      "gap": 3.500768553172534,
       "accepted": true,
       "source": "final"
     }
