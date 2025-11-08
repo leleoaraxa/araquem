@@ -1,4 +1,3 @@
-# app/api/__init__.py
 from fastapi import FastAPI
 
 from app.api.ask import router as ask_router
@@ -8,9 +7,10 @@ from app.api.ops.analytics import router as ops_analytics_router
 from app.api.ops.cache import router as ops_cache_router
 from app.api.ops.metrics import router as ops_metrics_router
 from app.api.ops.quality import router as ops_quality_router
-from app.common.http import metrics_middleware
 from app.api.ops.rag import router as ops_rag_router
+from app.common.http import metrics_middleware
 
+# Inicialização do runtime de observabilidade (guardrails-friendly)
 from app.observability.runtime import (
     load_config,
     bootstrap,
@@ -22,7 +22,7 @@ from app.observability.runtime import (
 
 
 def get_app() -> FastAPI:
-
+    # Sobe tracing/métricas antes de registrar rotas/middlewares
     cfg = load_config()
     bootstrap(service_name="api", cfg=cfg)
     init_metrics(cfg)
