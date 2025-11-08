@@ -80,6 +80,10 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     "metrics_cache_misses_total": {"type": "counter", "labels": {"entity"}},
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
+    # Narrator
+    "sirios_narrator_render_total": {"type": "counter", "labels": {"outcome"}},
+    "sirios_narrator_shadow_total": {"type": "counter", "labels": {"outcome"}},
+    "sirios_narrator_latency_ms": {"type": "histogram", "labels": set()},
 }
 
 RAG_INDEX_SIZE_TOTAL = Gauge(

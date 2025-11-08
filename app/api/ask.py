@@ -32,11 +32,9 @@ _NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "mistral:instruct")
 try:
     from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
 
-    _NARR: Optional[Narrator] = Narrator(
-        model=_NARRATOR_MODEL,
-        enabled=_NARRATOR_ENABLED,
-        shadow=_NARRATOR_SHADOW,
-    )
+    # depois (deixe o Narrator ler do .env)
+    _NARR: Optional[Narrator] = Narrator(model=_NARRATOR_MODEL)
+
 except Exception:
     # Se o pacote do Narrator ainda não estiver presente, seguimos como hoje.
     _NARR = None

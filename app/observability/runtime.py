@@ -163,6 +163,10 @@ _METRIC_SCHEMAS = {
     "planner_quality_rag_context_total": ("counter", ()),
     "planner_quality_rerank_influence_rate": ("gauge", ()),
     "planner_quality_rag_context_rate": ("gauge", ()),
+    # ---------- Narrator ----------
+    "sirios_narrator_render_total": ("counter", ("outcome",)),
+    "sirios_narrator_shadow_total": ("counter", ("outcome",)),
+    "sirios_narrator_latency_ms": ("histogram", ()),
 }
 
 
@@ -501,4 +505,18 @@ def init_sql_metrics(cfg: dict, registry=None):
         _get_counter("sirios_sql_rows_returned_total", ("entity",))
     if ecfg.get("sql_errors_total", {}).get("enabled", True):
         _get_counter("sirios_sql_errors_total", ("entity", "error_code"))
+    return {"ok": True}
+
+
+def init_narrator_metrics(cfg: dict, registry=None):
+    ncfg = (cfg.get("services", {}).get("narrator", {}) or {}).get("metrics", {})
+    # counters (labels fixos)
+    if ncfg.get("sirios_narrator_render_total", {}).get("enabled", True):
+        _get_counter("sirios_narrator_render_total", ("outcome",))
+    if ncfg.get("sirios_narrator_shadow_total", {}).get("enabled", True):
+        _get_counter("sirios_narrator_shadow_total", ("outcome",))
+    # histogram (usa buckets do YAML se houver)
+    if ncfg.get("sirios_narrator_latency_ms", {}).get("enabled", True):
+        buckets = ncfg.get("sirios_narrator_latency_ms", {}).get("buckets")
+        _get_histogram("sirios_narrator_latency_ms", (), buckets=buckets)
     return {"ok": True}
