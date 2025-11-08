@@ -685,4 +685,5 @@ SELECT
   created_at, updated_at
 FROM fiis_financials;
 
-ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO edge_user;

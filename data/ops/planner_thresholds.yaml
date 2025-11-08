@@ -7,7 +7,7 @@ planner:
     defaults:
       min_score: 1.0
       min_gap: 0.5
-    apply_on: final
+    apply_on: base
     intents:
       cadastro:   { min_score: 1.0, min_gap: 0.2 }
       precos:     { min_score: 1.0, min_gap: 0.2 }
@@ -29,7 +29,7 @@ planner:
       fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
       fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
       client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_snapshot:         { min_score: 1.5, min_gap: 0.2 }
+      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
 
   rag:
     enabled: true
@@ -37,6 +37,6 @@ planner:
     min_score: 0.20
     weight: 0.35
     re_rank:
-      enabled: true
+      enabled: false
       mode: blend
       weight: 0.25
