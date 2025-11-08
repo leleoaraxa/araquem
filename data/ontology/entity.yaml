@@ -238,7 +238,7 @@ intents:
         - alavancagem
         - endividamento
         - caixa
-        - caixa total
+        - "caixa total"
         - enterprise
         - "enterprise value"
         - ev
@@ -271,6 +271,7 @@ intents:
         - posicoes
         - carteira
         - minhas
+        - minha
         - meu
         - documento
         - cpf
@@ -320,11 +321,63 @@ intents:
         - "posicoes cpf"
       exclude: []
     entities:
-      - fiis_financials_snapshot
+      # Ordem importa: entidades mais específicas antes da fotografia agregada.
+      - fiis_metrics
       - fiis_financials_revenue_schedule
       - fiis_financials_risk
       - client_fiis_positions
-      - fiis_metrics
+      - fiis_financials_snapshot
+    anti_tokens:
+      # Sinalizadores negativos por entidade dentro do intent metricas.
+      # Observação de privacidade: menções textuais a "cpf", "documento" ou similares são neutras;
+      # o CPF efetivo vem do payload (entidade private: true).
+      fiis_metrics:
+        - payout
+        - alavancagem
+        - "market cap"
+        - "enterprise value"
+        - ev
+        - "price book"
+        - "preco/patrimonio"
+        - caixa
+        - "caixa total"
+        - passivos
+        - "cap rate"
+      fiis_financials_snapshot:
+        - soma
+        - "soma de"
+        - "soma de dividendos"
+        - "contagem de"
+        - "contagem de pagamentos"
+        - media
+        - "preco medio"
+        - "dy medio"
+        - "ultimos"
+        - "12 meses"
+        - "6 meses"
+        - "quanto pagou"
+        - "dividendos nos ultimos"
+      fiis_financials_revenue_schedule:
+        - payout
+        - alavancagem
+        - "market cap"
+        - ev
+        - "price book"
+        - "preco/patrimonio"
+        - caixa
+      fiis_financials_risk:
+        - payout
+        - "market cap"
+        - ev
+        - "price book"
+        - caixa
+      client_fiis_positions:
+        - payout
+        - "market cap"
+        - ev
+        - "price book"
+        - caixa
+        - "cap rate"
 
   - name: imoveis
     tokens:

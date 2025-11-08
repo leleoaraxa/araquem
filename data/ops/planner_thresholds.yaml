@@ -25,11 +25,11 @@ planner:
       fiis_processos:                   { min_score: 1.0, min_gap: 0.2 }
       fiis_noticias:                    { min_score: 1.0, min_gap: 0.2 }
       fiis_rankings:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
+      fiis_metrics:                     { min_score: 1.0, min_gap: 0.2 }
       fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
       fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
       client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
-      fiis_metrics:                     { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_snapshot:         { min_score: 1.5, min_gap: 0.2 }
 
   rag:
     enabled: true
