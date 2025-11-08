@@ -2,37 +2,17 @@
 FROM ollama/ollama:0.3.14
 SHELL ["/bin/sh","-lc"]
 
-# Lista padrão de modelos a puxar (pode sobrescrever por env no docker-compose)
-# Separe por espaço. Ex.: "nomic-embed-text qwen2.5:3b mistral:instruct"
-ENV OLLAMA_MODELS="nomic-embed-text qwen2.5:3b mistral:instruct"
-
-# Script de entrada:
-# - aguarda o daemon do ollama ficar disponível
-# - faz pull de cada modelo com retry leve
-ENTRYPOINT ["sh","-lc", "\
-set -euo pipefail; \
-echo '[init] aguardando ollama daemon...'; \
-until ollama ps >/dev/null 2>&1; do sleep 1; done; \
-echo '[init] ollama OK'; \
-pull_with_retry() { \
-  m=\"$1\"; \
-  n=0; \
-  until [ $n -ge 3 ]; do \
-    echo \"[pull] $m (tentativa $((n+1))/3)\"; \
-    if ollama pull \"$m\"; then \
-      echo \"[ok] $m\"; \
-      return 0; \
+# Job one-shot: espera o daemon, só faz pull se faltar, e termina.
+ENTRYPOINT ["sh","-lc","\
+  echo '[init] aguardando ollama daemon...'; \
+  until ollama ps >/dev/null 2>&1; do sleep 1; done; \
+  for m in nomic-embed-text 'mistral:instruct'; do \
+    if ollama show \"$m\" >/dev/null 2>&1; then \
+      echo \"[init] modelo já presente: $m\"; \
+    else \
+      echo \"[init] puxando modelo: $m\"; \
+      ollama pull \"$m\"; \
     fi; \
-    n=$((n+1)); \
-    echo \"[warn] falhou pull de $m; retry em 3s\"; \
-    sleep 3; \
   done; \
-  echo \"[erro] não foi possível puxar $m após 3 tentativas\"; \
-  return 1; \
-}; \
-for m in $OLLAMA_MODELS; do \
-  pull_with_retry \"$m\"; \
-done; \
-echo '[done] modelos preparados'; \
-sleep infinity \
+  echo '[init] modelos prontos. Saindo.' \
 "]

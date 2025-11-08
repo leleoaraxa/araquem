@@ -1,3 +1,4 @@
+# responder/__init__.py
 from __future__ import annotations
 
 from functools import lru_cache
@@ -103,7 +104,9 @@ def render_answer(
             row_context: Dict[str, Any] = {}
             for source in (identifiers or {}, row):
                 if isinstance(source, dict):
-                    row_context.update({k: v for k, v in source.items() if v is not None})
+                    row_context.update(
+                        {k: v for k, v in source.items() if v is not None}
+                    )
             template_to_use = row_template
             if _has_missing_fields(row_placeholders, row_context):
                 template_to_use = fallback_template
@@ -121,7 +124,9 @@ def render_answer(
             fallback_context: Dict[str, Any] = {}
             for source in (identifiers or {},):
                 if isinstance(source, dict):
-                    fallback_context.update({k: v for k, v in source.items() if v is not None})
+                    fallback_context.update(
+                        {k: v for k, v in source.items() if v is not None}
+                    )
             if not _has_missing_fields(fallback_placeholders, fallback_context):
                 rendered = _render_from_template(fallback_template, fallback_context)
                 if rendered:

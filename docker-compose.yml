@@ -16,6 +16,7 @@ services:
       - QUALITY_OPS_TOKEN=araquem-secret-bust-2025
       - RAG_INDEX_PATH=data/embeddings/store/embeddings.jsonl
       - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_URL=http://ollama:11434
     volumes:
       - ./:/app
     depends_on:
@@ -24,6 +25,7 @@ services:
       - grafana
       - tempo
       - ollama
+      - ollama-init
       - otel-collector
     networks: [araquem_network, zaratustra_default]
     restart: unless-stopped
@@ -62,10 +64,13 @@ services:
       context: .
       dockerfile: docker/Dockerfile.ollama-init
     container_name: araquem-ollama-init
-    restart: unless-stopped
+    restart: "no"
     depends_on:
       ollama:
         condition: service_healthy
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+      OLLAMA_MODELS: "nomic-embed-text mistral:instruct"
     networks: [araquem_network]
 
   rag-indexer:

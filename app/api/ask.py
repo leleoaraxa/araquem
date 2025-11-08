@@ -3,6 +3,7 @@ import json
 import os
 import time
 from decimal import Decimal
+from typing import Optional, Dict, Any
 
 import psycopg
 from fastapi import APIRouter, Query
@@ -20,6 +21,29 @@ from app.observability.metrics import (
 from app.formatter.rows import render_rows_template
 from app.planner.param_inference import infer_params
 from app.responder import render_answer
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Narrator (camada de apresentação M10) — totalmente opcional e sem regressão
+# ─────────────────────────────────────────────────────────────────────────────
+_NARRATOR_ENABLED = str(os.getenv("NARRATOR_ENABLED", "false")).lower() == "true"
+_NARRATOR_SHADOW = str(os.getenv("NARRATOR_SHADOW", "false")).lower() == "true"
+_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "mistral:instruct")
+
+try:
+    from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
+
+    _NARR: Optional[Narrator] = Narrator(
+        model=_NARRATOR_MODEL,
+        enabled=_NARRATOR_ENABLED,
+        shadow=_NARRATOR_SHADOW,
+    )
+except Exception:
+    # Se o pacote do Narrator ainda não estiver presente, seguimos como hoje.
+    _NARR = None
+    _NARRATOR_ENABLED = False
+    _NARRATOR_SHADOW = False
+
+# ─────────────────────────────────────────────────────────────────────────────
 
 router = APIRouter()
 
@@ -128,9 +152,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     if isinstance(agg_params, dict):
         metric_key = agg_params.get("metric")
         window_norm = (
-            orchestrator._normalize_metrics_window(agg_params)
-            if metric_key
-            else None
+            orchestrator._normalize_metrics_window(agg_params) if metric_key else None
         )
         if metric_key and window_norm:
             window_info = orchestrator._split_window(window_norm)
@@ -155,13 +177,75 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     )
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
-    answer = render_answer(
-        entity,
-        rows,
-        identifiers=identifiers,
-        aggregates=agg_params,
+    # -------------------------------
+    # Camada de apresentação (Narrador)
+    # -------------------------------
+    # Fatos que o Narrador pode usar (sem inventar campos; zero alucinação)
+    facts: Dict[str, Any] = {
+        "result_key": result_key,
+        "rows": rows,
+        "aggregates": agg_params,
+        "identifiers": identifiers,
+    }
+    meta_for_narrator: Dict[str, Any] = {
+        "intent": intent,
+        "entity": entity,
+        # Se você quiser narrativa “por que o Planner escolheu”, descomente:
+        "explain": (plan.get("explain") if explain else None),
+    }
+
+    narrator_info = {
+        "enabled": bool(_NARRATOR_ENABLED),
+        "shadow": bool(_NARRATOR_SHADOW),
+        "model": _NARRATOR_MODEL,
+        "latency_ms": None,
+        "error": None,
+        "used": False,
+        "score": None,
+    }
+
+    # Resposta "legada" (atual) – usada se Narrador estiver off/falhar
+    legacy_answer = render_answer(
+        entity, rows, identifiers=identifiers, aggregates=agg_params
     )
     rendered_response = render_rows_template(entity, rows)
+
+    final_answer = legacy_answer
+
+    if _NARR is not None:
+        # Modo shadow: executa Narrador só para medir/registrar (não altera UX)
+        if _NARRATOR_SHADOW:
+            try:
+                out = _NARR.render(payload.question, facts, meta_for_narrator)
+                narrator_info.update(
+                    latency_ms=out.get("latency_ms"),
+                    score=out.get("score"),
+                    used=True,
+                )
+                counter("sirios_narrator_shadow_total", outcome="ok")
+                if out.get("latency_ms") is not None:
+                    histogram("sirios_narrator_latency_ms", float(out["latency_ms"]))
+            except Exception as e:
+                narrator_info.update(error=str(e))
+                counter("sirios_narrator_shadow_total", outcome="error")
+
+        # Modo enabled: substitui o answer pelo texto do Narrador
+        if _NARRATOR_ENABLED:
+            try:
+                out = _NARR.render(payload.question, facts, meta_for_narrator)
+                final_answer = out.get("text") or legacy_answer
+                narrator_info.update(
+                    latency_ms=out.get("latency_ms"),
+                    score=out.get("score"),
+                    used=True,
+                )
+                counter("sirios_narrator_render_total", outcome="ok")
+                if out.get("latency_ms") is not None:
+                    histogram("sirios_narrator_latency_ms", float(out["latency_ms"]))
+            except Exception as e:
+                narrator_info.update(error=str(e))
+                counter("sirios_narrator_render_total", outcome="error")
+                # fallback: mantém final_answer = legacy_answer
 
     explain_analytics_payload = None
     if explain:
@@ -232,8 +316,10 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 ),
             },
             "aggregates": agg_params,
-            "rendered_response": rendered_response,
+            "narrator": narrator_info,
         },
-        "answer": answer,
+        # Se Narrador estiver habilitado e funcionar, aqui já sai “bonito”.
+        # Caso contrário, mantém o render atual.
+        "answer": final_answer,
     }
     return JSONResponse(json_sanitize(payload_out))
