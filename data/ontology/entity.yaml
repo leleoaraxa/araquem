@@ -69,6 +69,9 @@ intents:
         - numero de cotas emitidas do
         - quantos cotistas tem o
         - url oficial do
+        - fundo exclusivo
+        - e fundo exclusivo
+        - fundo e exclusivo
       exclude:
         - preco do
         - cotacao do
@@ -318,7 +321,6 @@ intents:
         - "minhas posicoes cpf"
         - "minha carteira"
         - "posicoes cpf"
-        # Adições para puxar as sub-entidades corretas:
         - "caixa disponivel"
         - "caixa disponível"
         - "caixa e equivalentes"
@@ -333,6 +335,31 @@ intents:
         - "quantidade em custódia"
         - "minhas posicoes"
         - "minhas posições"
+        - "média de preço"
+        - "preço médio"
+        - "dy médio"
+        - "soma de dividendos"
+        - "nos últimos 12 meses"
+        - "nos ultimos 12 meses"
+        - "no ano"
+        - "volatilidade do"
+        - "sharpe do"
+        - "índice de treynor do"
+        - "indice de treynor do"
+        - "beta do"
+        - "estrutura de recebíveis do"
+        - "estrutura de recebiveis do"
+        - "receita com vencimento em 0–3 meses do"
+        - "receita com vencimento em 0-3 meses do"
+        - "quanto vence em 12 meses do"
+        - "minhas posições"
+        - "minhas posicoes"
+        - "minhas posições de fiis"
+        - "minhas posicoes de fiis"
+        - "minhas posições na b3"
+        - "minhas posicoes na b3"
+        - "quantidade em custódia"
+        - "quantidade em custodia"
       exclude: []
     entities:
       # Específicas primeiro; guarda-chuva por último (vence só com grande folga):
@@ -393,6 +420,33 @@ intents:
         - "27 30"
         - "30 33"
         - "33 36"
+        - volatilidade
+        - sharpe
+        - treynor
+        - "indice de treynor"
+        - "índice de treynor"
+        - beta
+        - receita
+        - recebiveis
+        - "recebíveis"
+        - vencimento
+        - "0 3"
+        - "3 6"
+        - "6 9"
+        - "9 12"
+        - "12 15"
+        - "15 18"
+        - "18 21"
+        - "21 24"
+        - "24 27"
+        - "27 30"
+        - "30 33"
+        - "33 36"
+        - "minhas"
+        - "posicoes"
+        - "posições"
+        - "custodia"
+        - "custódia"
       fiis_financials_revenue_schedule:
         - payout
         - alavancagem
@@ -401,12 +455,65 @@ intents:
         - "price book"
         - "preco/patrimonio"
         - caixa
+        - payout
+        - alavancagem
+        - "market cap"
+        - ev
+        - "price book"
+        - "preco/patrimonio"
+        - caixa
+        - volatilidade
+        - sharpe
+        - treynor
+        - "indice de treynor"
+        - "índice de treynor"
+        - beta
+        - "minhas"
+        - "posicoes"
+        - "posições"
+        - "custodia"
+        - "custódia"
       fiis_financials_risk:
         - payout
         - "market cap"
         - ev
         - "price book"
         - caixa
+        - soma
+        - "preco medio"
+        - "média de preço"
+        - "dy medio"
+        - "soma de dividendos"
+        - receita
+        - recebiveis
+        - "recebíveis"
+        - vencimento
+        - "0 3"
+        - "3 6"
+        - "6 9"
+        - "9 12"
+        - "12 15"
+        - "15 18"
+        - "18 21"
+        - "21 24"
+        - "24 27"
+        - "27 30"
+        - "30 33"
+        - "33 36"
+        - "12 meses"
+        - "minhas"
+        - "posicoes"
+        - "posições"
+        - "custodia"
+        - "custódia"
+        - payout
+        - alavancagem
+        - "market cap"
+        - ev
+        - "price book"
+        - "preco/patrimonio"
+        - caixa
+        - "cap rate"
       client_fiis_positions:
         - payout
         - "market cap"
@@ -414,6 +521,26 @@ intents:
         - "price book"
         - caixa
         - "cap rate"
+        - volatilidade
+        - sharpe
+        - treynor
+        - beta
+        - receita
+        - recebiveis
+        - vencimento
+        - "0 3"
+        - "3 6"
+        - "6 9"
+        - "9 12"
+        - "12 15"
+        - "15 18"
+        - "18 21"
+        - "21 24"
+        - "24 27"
+        - "27 30"
+        - "30 33"
+        - "33 36"
+        - "12 meses"
 
   - name: imoveis
     tokens:

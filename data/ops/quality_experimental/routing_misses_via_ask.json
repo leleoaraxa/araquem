@@ -5,8 +5,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 5.0,
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 5.42661463228153,
     "normalized": "soma de dividendos do hglg11",
     "tokens": [
       "soma",
@@ -21,14 +21,14 @@
       "dividendos": 2.0,
       "noticias": 0.0,
       "rankings": -1.0,
-      "metricas": 5.0,
+      "metricas": 7.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.0,
+      "gap": 3.92661463228153,
       "accepted": true,
       "source": "final"
     }
@@ -39,8 +39,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 4.0,
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 4.678956759565042,
     "normalized": "quanto de dividendos o hglg11 pagou nos ultimos 12 meses ",
     "tokens": [
       "quanto",
@@ -60,14 +60,14 @@
       "dividendos": -2.0,
       "noticias": 0.0,
       "rankings": -1.0,
-      "metricas": 4.0,
+      "metricas": 6.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.0,
+      "gap": 4.678956759565042,
       "accepted": true,
       "source": "final"
     }
@@ -78,8 +78,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 4.0,
+    "got_entity": "fiis_financials_risk",
+    "score": 3.1687790771239372,
     "normalized": "preco medio do hglg11 nos ultimos 6 meses",
     "tokens": [
       "preco",
@@ -104,7 +104,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.0,
+      "gap": 3.1687790771239372,
       "accepted": true,
       "source": "final"
     }
@@ -115,8 +115,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 3.0,
+    "got_entity": "fiis_financials_risk",
+    "score": 3.921169866066512,
     "normalized": "dy medio do hglg11 no ano",
     "tokens": [
       "dy",
@@ -132,14 +132,14 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 0.0,
-      "metricas": 3.0,
+      "metricas": 5.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.0,
+      "gap": 3.921169866066512,
       "accepted": true,
       "source": "final"
     }
@@ -150,8 +150,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 1.0,
+    "got_entity": "fiis_financials_risk",
+    "score": 0.8994504094275674,
     "normalized": "media de preco do knri11",
     "tokens": [
       "media",
@@ -173,8 +173,8 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 1.0,
-      "accepted": true,
+      "gap": 0.8994504094275674,
+      "accepted": false,
       "source": "final"
     }
   },
@@ -184,8 +184,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 1.0,
+    "got_entity": "fiis_financials_risk",
+    "score": 0.9192159448418583,
     "normalized": "qual o dividend yield medio do hgru11",
     "tokens": [
       "qual",
@@ -209,96 +209,26 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 1.0,
-      "accepted": true,
+      "gap": 0.9192159448418583,
+      "accepted": false,
       "source": "final"
     }
   },
   {
-    "idx": 140,
-    "question": "estrutura de recebíveis do VISC11",
+    "idx": 138,
+    "question": "payout e alavancagem do HGLG11",
     "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_revenue_schedule",
+    "expected_entity": "fiis_financials_snapshot",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 3.0,
-    "normalized": "estrutura de recebiveis do visc11",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 3.1670513116369268,
+    "normalized": "payout e alavancagem do hglg11",
     "tokens": [
-      "estrutura",
-      "de",
-      "recebiveis",
-      "do",
-      "visc11"
-    ],
-    "intent_scores": {
-      "cadastro": 0.0,
-      "precos": 0.0,
-      "dividendos": 0.0,
-      "noticias": 0.0,
-      "rankings": 0.0,
-      "metricas": 3.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 3.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 141,
-    "question": "quanto vence em 12 meses do XPML11",
-    "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_revenue_schedule",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 2.0,
-    "normalized": "quanto vence em 12 meses do xpml11",
-    "tokens": [
-      "quanto",
-      "vence",
-      "em",
-      "12",
-      "meses",
-      "do",
-      "xpml11"
-    ],
-    "intent_scores": {
-      "cadastro": 0.0,
-      "precos": 0.0,
-      "dividendos": -2.0,
-      "noticias": 0.0,
-      "rankings": 0.0,
-      "metricas": 2.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 2.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 142,
-    "question": "volatilidade e sharpe do HGRU11",
-    "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_risk",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 4.0,
-    "normalized": "volatilidade e sharpe do hgru11",
-    "tokens": [
-      "volatilidade",
+      "payout",
       "e",
-      "sharpe",
+      "alavancagem",
       "do",
-      "hgru11"
+      "hglg11"
     ],
     "intent_scores": {
       "cadastro": 0.0,
@@ -313,22 +243,89 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.0,
+      "gap": 3.1670513116369268,
       "accepted": true,
       "source": "final"
     }
   },
   {
-    "idx": 143,
-    "question": "beta do HGLG11",
+    "idx": 144,
+    "question": "minhas posições de FIIs",
     "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_risk",
+    "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_snapshot",
-    "score": 3.0,
-    "normalized": "beta do hglg11",
+    "score": 11.0,
+    "normalized": "minhas posicoes de fiis",
     "tokens": [
-      "beta",
+      "minhas",
+      "posicoes",
+      "de",
+      "fiis"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 1.0,
+      "metricas": 11.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.3,
+      "gap": 10.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 145,
+    "question": "minhas posições na B3",
+    "expected_intent": "metricas",
+    "expected_entity": "client_fiis_positions",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 8.397315526545967,
+    "normalized": "minhas posicoes na b3",
+    "tokens": [
+      "minhas",
+      "posicoes",
+      "na",
+      "b3"
+    ],
+    "intent_scores": {
+      "cadastro": 1.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 1.0,
+      "metricas": 11.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.15,
+      "gap": 7.647315526545967,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 146,
+    "question": "Caixa disponível do HGLG11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_snapshot",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 2.4179475886208897,
+    "normalized": "caixa disponivel do hglg11",
+    "tokens": [
+      "caixa",
+      "disponivel",
       "do",
       "hglg11"
     ],
@@ -345,145 +342,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 144,
-    "question": "minhas posições de FIIs",
-    "expected_intent": "metricas",
-    "expected_entity": "client_fiis_positions",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 7.0,
-    "normalized": "minhas posicoes de fiis",
-    "tokens": [
-      "minhas",
-      "posicoes",
-      "de",
-      "fiis"
-    ],
-    "intent_scores": {
-      "cadastro": 0.0,
-      "precos": 0.0,
-      "dividendos": 0.0,
-      "noticias": 0.0,
-      "rankings": 1.0,
-      "metricas": 7.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 6.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 145,
-    "question": "minhas posições na B3",
-    "expected_intent": "metricas",
-    "expected_entity": "client_fiis_positions",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 7.0,
-    "normalized": "minhas posicoes na b3",
-    "tokens": [
-      "minhas",
-      "posicoes",
-      "na",
-      "b3"
-    ],
-    "intent_scores": {
-      "cadastro": 1.0,
-      "precos": 0.0,
-      "dividendos": 0.0,
-      "noticias": 0.0,
-      "rankings": 1.0,
-      "metricas": 7.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 6.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 147,
-    "question": "Índice de Treynor do HGLG11",
-    "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_risk",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 5.0,
-    "normalized": "indice de treynor do hglg11",
-    "tokens": [
-      "indice",
-      "de",
-      "treynor",
-      "do",
-      "hglg11"
-    ],
-    "intent_scores": {
-      "cadastro": 0.0,
-      "precos": 0.0,
-      "dividendos": 0.0,
-      "noticias": 0.0,
-      "rankings": 0.0,
-      "metricas": 5.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 5.0,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 148,
-    "question": "Receita com vencimento em 0–3 meses do HGLG11",
-    "expected_intent": "metricas",
-    "expected_entity": "fiis_financials_revenue_schedule",
-    "got_intent": "metricas",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 1.0,
-    "normalized": "receita com vencimento em 0 3 meses do hglg11",
-    "tokens": [
-      "receita",
-      "com",
-      "vencimento",
-      "em",
-      "0",
-      "3",
-      "meses",
-      "do",
-      "hglg11"
-    ],
-    "intent_scores": {
-      "cadastro": 0.0,
-      "precos": 0.0,
-      "dividendos": 0.0,
-      "noticias": 0.0,
-      "rankings": 0.0,
-      "metricas": 1.0,
-      "imoveis": 0.0,
-      "processos": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 1.0,
+      "gap": 2.4179475886208897,
       "accepted": true,
       "source": "final"
     }

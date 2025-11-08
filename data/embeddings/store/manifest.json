@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-08T16:37:49Z",
+  "generated_at": "2025-11-08T17:30:55Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -34,8 +34,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 7,
-      "sha_all": "a850a0f2512245ffefbe42619fb8899b66f1c6f8577acedea727b0550776305e"
+      "chunks": 9,
+      "sha_all": "d75b491aac7d9f3a540d9288955090bc114a03937cc69db93ce3eebd034ef7f9"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -173,6 +173,32 @@
       "sha_all": "bca6940f91108841654b27f1504132c1294ee16b6f1b01f4cf6a09d8da2c524f"
     },
     {
+      "id": "entity-fiis-financials-risk-hints",
+      "path": "data/entities/fiis_financials_risk/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "financials",
+        "risk",
+        "entity:fiis_financials_risk"
+      ],
+      "chunks": 1,
+      "sha_all": "6b369c32ae5a138a881d1ae996fc063ccc769f0f9cf391fba71cb473b00700a2"
+    },
+    {
+      "id": "entity-fiis-financials-revenue-hints",
+      "path": "data/entities/fiis_financials_revenue_schedule/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "financials",
+        "revenue",
+        "entity:fiis_financials_revenue_schedule"
+      ],
+      "chunks": 1,
+      "sha_all": "6575fa087b64fc0b6169d292adbddd9b5ef96d87228ca6181356a0e003286de5"
+    },
+    {
       "id": "entity-client-fiis-positions",
       "path": "data/entities/client_fiis_positions/entity.yaml",
       "tags": [
@@ -222,7 +248,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "32d43fc72fbc34e478720c29504159eb49f6a0d82b1f09feb7502b9970c1eee7"
+      "sha_all": "93e9752562a03ccbc095f2e438e09b742eaa654b29c9551a1545adb1000b03ec"
     },
     {
       "id": "ops-observability",
@@ -400,5 +426,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762619946
+  "last_refresh_epoch": 1762623132
 }
