@@ -48,6 +48,8 @@ presentation:
 ask:
   intents:
   - metricas
+  # Observação: termos como "cpf" ou "documento" na pergunta são neutros; o valor
+  # efetivo do CPF vem do payload (entidade private: true) e não do texto livre.
   keywords:
   - minhas posicoes
   - minha carteira
