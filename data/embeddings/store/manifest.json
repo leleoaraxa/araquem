@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-08T14:07:18Z",
+  "generated_at": "2025-11-08T16:37:49Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -34,8 +34,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 6,
-      "sha_all": "a657c52bfe92386432e9b3f70ecd2ffee2f73487d56c5c2fc4d8007c12f1b668"
+      "chunks": 7,
+      "sha_all": "a850a0f2512245ffefbe42619fb8899b66f1c6f8577acedea727b0550776305e"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -43,7 +43,8 @@
       "tags": [
         "entities",
         "fiis",
-        "cadastro"
+        "cadastro",
+        "entity:fiis_cadastro"
       ],
       "chunks": 3,
       "sha_all": "1f4d6271215673a0ad5ea428809c51f4180a410d45bfd376c084cabe7e372f1e"
@@ -54,7 +55,8 @@
       "tags": [
         "entities",
         "fiis",
-        "dividendos"
+        "dividendos",
+        "entity:fiis_dividendos"
       ],
       "chunks": 2,
       "sha_all": "c5cc3ec75877266178be3d5102bf06021fb07567ea8e53b98c56b43f621c42b4"
@@ -65,7 +67,8 @@
       "tags": [
         "entities",
         "fiis",
-        "precos"
+        "precos",
+        "entity:fiis_precos"
       ],
       "chunks": 2,
       "sha_all": "c9143fde93afee046192eb42d7843347ca8f2761442516fdea2d2423dc35c7da"
@@ -76,7 +79,8 @@
       "tags": [
         "entities",
         "fiis",
-        "rankings"
+        "rankings",
+        "entity:fiis_rankings"
       ],
       "chunks": 3,
       "sha_all": "1664c7159346d962951ea5ef0b55066ce61d4a05c4612c0ae727d9f8131ceb66"
@@ -87,7 +91,8 @@
       "tags": [
         "entities",
         "fiis",
-        "metricas"
+        "metricas",
+        "entity:fiis_metrics"
       ],
       "chunks": 5,
       "sha_all": "33950b21f47bd4c3ab38d00353b07c72035f1a575700069bed40c7c3e501e804"
@@ -98,7 +103,8 @@
       "tags": [
         "entities",
         "fiis",
-        "imoveis"
+        "imoveis",
+        "entity:fiis_imoveis"
       ],
       "chunks": 2,
       "sha_all": "44ee825f4b092438579f099d4cc0871764cca0fb3e8239eb3f59027c296bddf2"
@@ -109,7 +115,8 @@
       "tags": [
         "entities",
         "fiis",
-        "noticias"
+        "noticias",
+        "entity:fiis_noticias"
       ],
       "chunks": 2,
       "sha_all": "c57c79ab0bd344edec5b98ceb38e5bac2c13b94311cfc088a621bff4fd4bdd8a"
@@ -120,7 +127,8 @@
       "tags": [
         "entities",
         "fiis",
-        "processos"
+        "processos",
+        "entity:fiis_processos"
       ],
       "chunks": 2,
       "sha_all": "c8826f60c4d8bb57864c075b934697f6551b054a86a20905ca7e1ddef9db7d5a"
@@ -132,7 +140,8 @@
         "entities",
         "fiis",
         "financials",
-        "snapshot"
+        "snapshot",
+        "entity:fiis_financials_snapshot"
       ],
       "chunks": 4,
       "sha_all": "0f54c91e504e3c3bcc993e4f312f2198df859acc642a1adff37faa0ab11db35d"
@@ -144,7 +153,8 @@
         "entities",
         "fiis",
         "financials",
-        "revenue"
+        "revenue",
+        "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 3,
       "sha_all": "1cf37bb2ede33573ebfa6649f75a4f9dc45c9daaf984b330236553f7dc5383c7"
@@ -156,7 +166,8 @@
         "entities",
         "fiis",
         "financials",
-        "risk"
+        "risk",
+        "entity:fiis_financials_risk"
       ],
       "chunks": 2,
       "sha_all": "bca6940f91108841654b27f1504132c1294ee16b6f1b01f4cf6a09d8da2c524f"
@@ -167,7 +178,8 @@
       "tags": [
         "entities",
         "private",
-        "positions"
+        "positions",
+        "entity:client_fiis_positions"
       ],
       "chunks": 2,
       "sha_all": "599a4355e20d84d6ee6a314aab8f2b75b8ddfca5c1d2fc3ccdddc3c93ab98ac1"
@@ -210,7 +222,7 @@
         "thresholds"
       ],
       "chunks": 2,
-      "sha_all": "3f2812ded582aa82d2803918934a6666253749a6b0596493258a8f23979668a0"
+      "sha_all": "32d43fc72fbc34e478720c29504159eb49f6a0d82b1f09feb7502b9970c1eee7"
     },
     {
       "id": "ops-observability",
@@ -241,8 +253,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 16,
-      "sha_all": "5cd01bc7b3a1cec2102dc06b95709072dd722d6f380e15e5bd4acb4ba099f141"
+      "chunks": 17,
+      "sha_all": "79750b043f95b79c1c669a0ce6b0f01dfa850a14f0b9ff4f43a8452d3e0ec583"
     },
     {
       "id": "q-projection-cadastro",
@@ -388,5 +400,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762610918
+  "last_refresh_epoch": 1762619946
 }

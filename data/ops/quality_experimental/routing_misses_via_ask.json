@@ -27,7 +27,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 3.0,
       "accepted": true,
       "source": "final"
@@ -66,7 +66,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 4.0,
       "accepted": true,
       "source": "final"
@@ -103,7 +103,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 4.0,
       "accepted": true,
       "source": "final"
@@ -138,7 +138,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 3.0,
       "accepted": true,
       "source": "final"
@@ -172,7 +172,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 1.0,
       "accepted": true,
       "source": "final"
@@ -208,7 +208,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 1.0,
       "accepted": true,
       "source": "final"
@@ -242,7 +242,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 3.0,
       "accepted": true,
       "source": "final"
@@ -278,7 +278,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 2.0,
       "accepted": true,
       "source": "final"
@@ -312,7 +312,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 4.0,
       "accepted": true,
       "source": "final"
@@ -344,7 +344,7 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_gap": 0.15,
       "gap": 3.0,
       "accepted": true,
       "source": "final"
@@ -357,7 +357,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_snapshot",
-    "score": 3.0,
+    "score": 7.0,
     "normalized": "minhas posicoes de fiis",
     "tokens": [
       "minhas",
@@ -371,14 +371,14 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 1.0,
-      "metricas": 4.0,
+      "metricas": 7.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 2.25,
+      "min_gap": 0.15,
+      "gap": 6.0,
       "accepted": true,
       "source": "final"
     }
@@ -390,7 +390,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_snapshot",
-    "score": 4.0,
+    "score": 7.0,
     "normalized": "minhas posicoes na b3",
     "tokens": [
       "minhas",
@@ -404,14 +404,86 @@
       "dividendos": 0.0,
       "noticias": 0.0,
       "rankings": 1.0,
-      "metricas": 4.0,
+      "metricas": 7.0,
       "imoveis": 0.0,
       "processos": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 3.0,
+      "min_gap": 0.15,
+      "gap": 6.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 147,
+    "question": "Índice de Treynor do HGLG11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 5.0,
+    "normalized": "indice de treynor do hglg11",
+    "tokens": [
+      "indice",
+      "de",
+      "treynor",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 5.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.15,
+      "gap": 5.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 148,
+    "question": "Receita com vencimento em 0–3 meses do HGLG11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_revenue_schedule",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 1.0,
+    "normalized": "receita com vencimento em 0 3 meses do hglg11",
+    "tokens": [
+      "receita",
+      "com",
+      "vencimento",
+      "em",
+      "0",
+      "3",
+      "meses",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 1.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.15,
+      "gap": 1.0,
       "accepted": true,
       "source": "final"
     }

@@ -265,47 +265,65 @@ class Planner:
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
-            entity_name = it.entities[0] if it.entities else None
-            intent_entities[it.name] = entity_name
+            # Intents podem ter N entidades; todas devem competir
+            ents = list(it.entities or [])
+            # Se não houver entidades, mantemos None (compat)
+            intent_entities[it.name] = ents[0] if ents else None
 
-            rag_signal = (
-                float(rag_entity_hints.get((entity_name or "").strip(), 0.0))
-                if entity_name
-                else 0.0
-            )
-            intent_rag_signals[it.name] = rag_signal
+            # Para métricas por intent, reportamos o melhor rag_signal entre suas entidades
+            best_rag_signal_for_intent = 0.0
 
-            if rag_fusion_applied:
-                if re_rank_mode == "additive":
-                    final_score = base + fusion_weight * rag_signal
+            for entity_name in ents or [None]:
+                if entity_name is None:
+                    rag_signal = 0.0
                 else:
-                    final_score = (
-                        base * (1.0 - fusion_weight) + rag_signal * fusion_weight
-                    )
-            else:
-                final_score = base
+                    rag_signal = float(rag_entity_hints.get(entity_name.strip(), 0.0))
+                if rag_fusion_applied:
+                    if re_rank_mode == "additive":
+                        final_score = base + fusion_weight * rag_signal
+                    else:
+                        final_score = (
+                            base * (1.0 - fusion_weight) + rag_signal * fusion_weight
+                        )
+                else:
+                    final_score = base
 
-            fused_scores[it.name] = final_score
+                # Intents: guardamos o MAIOR final_score entre suas entidades
+                prev_intent_final = fused_scores.get(it.name, None)
+                if prev_intent_final is None or final_score > prev_intent_final:
+                    fused_scores[it.name] = final_score
+
+                # Entidades: agregamos por entidade
+                if entity_name:
+                    if (
+                        entity_name not in entity_base_scores
+                        or base > entity_base_scores[entity_name]
+                    ):
+                        entity_base_scores[entity_name] = base
+                    if (
+                        entity_name not in entity_combined_scores
+                        or final_score > entity_combined_scores[entity_name]
+                    ):
+                        entity_combined_scores[entity_name] = final_score
+                    entity_rag_scores[entity_name] = max(
+                        entity_rag_scores.get(entity_name, 0.0),
+                        rag_signal if rag_fusion_applied else 0.0,
+                    )
+                    best_rag_signal_for_intent = max(
+                        best_rag_signal_for_intent, rag_signal
+                    )
+
+            # Para telemetria por intent (combined_intents), usamos o melhor combinado das suas entidades
             combined_intents.append(
                 {
                     "name": it.name,
                     "base": base,
-                    "rag": rag_signal if rag_fusion_applied else 0.0,
-                    "combined": final_score,
+                    "rag": (best_rag_signal_for_intent if rag_fusion_applied else 0.0),
+                    "combined": float(fused_scores.get(it.name, base)),
                     "winner": False,
                 }
             )
-
-            if entity_name:
-                prev_base = entity_base_scores.get(entity_name)
-                if prev_base is None or base > prev_base:
-                    entity_base_scores[entity_name] = base
-                prev_combined = entity_combined_scores.get(entity_name)
-                if prev_combined is None or final_score > prev_combined:
-                    entity_combined_scores[entity_name] = final_score
-                current_rag = entity_rag_scores.get(entity_name, 0.0)
-                new_rag = rag_signal if rag_fusion_applied else 0.0
-                entity_rag_scores[entity_name] = max(current_rag, new_rag)
+            intent_rag_signals[it.name] = best_rag_signal_for_intent
 
         chosen_intent = None
         chosen_score = 0.0
