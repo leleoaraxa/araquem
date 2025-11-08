@@ -11,10 +11,28 @@ from app.api.ops.quality import router as ops_quality_router
 from app.common.http import metrics_middleware
 from app.api.ops.rag import router as ops_rag_router
 
+from app.observability.runtime import (
+    load_config,
+    bootstrap,
+    init_metrics,
+    init_cache_metrics,
+    init_planner_metrics,
+    init_sql_metrics,
+)
+
 
 def get_app() -> FastAPI:
+
+    cfg = load_config()
+    bootstrap(service_name="api", cfg=cfg)
+    init_metrics(cfg)
+    init_cache_metrics(cfg)
+    init_planner_metrics(cfg)
+    init_sql_metrics(cfg)
+
     app = FastAPI(title="Araquem API (Dev)")
     app.middleware("http")(metrics_middleware)
+
     app.include_router(health_router)
     app.include_router(debug_router)
     app.include_router(ask_router)

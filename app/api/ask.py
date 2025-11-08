@@ -204,6 +204,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         "error": None,
         "used": False,
         "score": None,
+        "strategy": "fallback",
     }
 
     # Resposta "legada" (atual) – usada se Narrador estiver off/falhar
@@ -223,12 +224,13 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                     latency_ms=out.get("latency_ms"),
                     score=out.get("score"),
                     used=True,
+                    strategy="llm_shadow",
                 )
                 counter("sirios_narrator_shadow_total", outcome="ok")
                 if out.get("latency_ms") is not None:
                     histogram("sirios_narrator_latency_ms", float(out["latency_ms"]))
             except Exception as e:
-                narrator_info.update(error=str(e))
+                narrator_info.update(error=str(e), strategy="fallback_error")
                 counter("sirios_narrator_shadow_total", outcome="error")
 
         # Modo enabled: substitui o answer pelo texto do Narrador
@@ -240,12 +242,13 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                     latency_ms=out.get("latency_ms"),
                     score=out.get("score"),
                     used=True,
+                    strategy="llm",
                 )
                 counter("sirios_narrator_render_total", outcome="ok")
                 if out.get("latency_ms") is not None:
                     histogram("sirios_narrator_latency_ms", float(out["latency_ms"]))
             except Exception as e:
-                narrator_info.update(error=str(e))
+                narrator_info.update(error=str(e), strategy="fallback_error")
                 counter("sirios_narrator_render_total", outcome="error")
                 # fallback: mantém final_answer = legacy_answer
 
