@@ -7,7 +7,7 @@ planner:
     defaults:
       min_score: 1.0
       min_gap: 0.5
-    apply_on: base
+    apply_on: final
     intents:
       cadastro:   { min_score: 1.0, min_gap: 0.2 }
       precos:     { min_score: 1.0, min_gap: 0.2 }
@@ -37,6 +37,6 @@ planner:
     min_score: 0.20
     weight: 0.35
     re_rank:
-      enabled: false
+      enabled: true
       mode: blend
       weight: 0.25

@@ -2,6 +2,7 @@
 import math
 import os
 import logging
+from fastapi import Request
 from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, Body, Header
@@ -29,9 +30,33 @@ class QualitySample(BaseModel):
 def quality_push(
     payload: Dict[str, Any] = Body(...),
     x_ops_token: Optional[str] = Header(default=None),
+    authorization: Optional[str] = Header(default=None),
+    request: Request = None,
 ):
+    # --- Auth: header configurável + Bearer opcional ---
     token_env = os.getenv("QUALITY_OPS_TOKEN", "")
-    if not token_env or (x_ops_token or "") != token_env:
+    if not token_env:
+        return JSONResponse({"error": "forbidden"}, status_code=403)
+
+    # Header configurável (default X-OPS-TOKEN), case-insensitive
+    header_name = (os.getenv("QUALITY_TOKEN_HEADER", "X-OPS-TOKEN") or "").lower()
+    provided_token = None
+    if request is not None:
+        provided_token = request.headers.get(header_name)
+    # Compat com parâmetro FastAPI padrão (x_ops_token) caso o header seja esse
+    provided_token = provided_token or x_ops_token
+
+    # Bearer opcional controlado por env QUALITY_AUTH_BEARER
+    allow_bearer = (os.getenv("QUALITY_AUTH_BEARER", "") or "").lower() in (
+        "1",
+        "true",
+        "yes",
+    )
+    bearer_ok = False
+    if allow_bearer and authorization and authorization.startswith("Bearer "):
+        bearer_ok = authorization.replace("Bearer ", "", 1).strip() == token_env
+
+    if not (provided_token == token_env or bearer_ok):
         return JSONResponse({"error": "forbidden"}, status_code=403)
 
     ptype = (payload.get("type") or "routing").strip().lower()
@@ -324,7 +349,15 @@ def quality_push(
         ok = fail = 0
         for s in samples_raw:
             q = s.get("question") or ""
-            out = orchestrator.route_question(q)
+            # --- Passa params do payload para o executor (ex.: document_number para entidades privadas) ---
+            params = payload.get("params") or {}
+            try:
+                out = orchestrator.route_question(
+                    q, params=params
+                )  # preferível se o orchestrator aceita kwargs
+            except TypeError:
+                # fallback: sem kwargs (mantém compatibilidade); considere ajustar orchestrator para suportar params
+                out = orchestrator.route_question(q)
             results = out.get("results") or {}
             rows = results.get(result_key) or []
             passed = False
@@ -363,6 +396,7 @@ def quality_report():
 
     policy = None
     errors: List[str] = []
+    used_path: Optional[str] = None
     for candidate in [policy_path, fallback_path]:
         if not candidate:
             continue
@@ -370,6 +404,7 @@ def quality_report():
             with open(candidate, "r", encoding="utf-8") as f:
                 policy = yaml.safe_load(f) or {}
                 break
+            used_path = candidate
         except FileNotFoundError:
             error_msg = f"file not found '{candidate}'"
             errors.append(error_msg)
@@ -378,6 +413,10 @@ def quality_report():
             error_msg = f"Error loading '{candidate}': {exc}"
             errors.append(error_msg)
             logging.exception(error_msg)
+
+    if policy is not None:
+        # Log informativo: qual arquivo de policy foi usado
+        logging.info("quality_report: policy loaded from %s", used_path or "<unknown>")
 
     if policy is None:
         return JSONResponse(
@@ -401,8 +440,9 @@ def quality_report():
         'sum(sirios_planner_routed_total{outcome!="unroutable"})'
     )
     routed_all = prom_query_instant("sum(sirios_planner_routed_total)")
+    # Janela maior para reduzir zeros quando a cadência é baixa
     gap_p50 = prom_query_instant(
-        "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[5m])) by (le))"
+        "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[10m])) by (le))"
     )
     proj_ok = prom_query_instant('sum(sirios_planner_projection_total{outcome="ok"})')
     proj_total = prom_query_instant("sum(sirios_planner_projection_total)")

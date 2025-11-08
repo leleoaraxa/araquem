@@ -1,0 +1,419 @@
+[
+  {
+    "idx": 107,
+    "question": "soma de dividendos do HGLG11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 5.0,
+    "normalized": "soma de dividendos do hglg11",
+    "tokens": [
+      "soma",
+      "de",
+      "dividendos",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "cadastro": -1.0,
+      "precos": -1.0,
+      "dividendos": 2.0,
+      "noticias": 0.0,
+      "rankings": -1.0,
+      "metricas": 5.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 3.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 108,
+    "question": "quanto de dividendos o HGLG11 pagou nos últimos 12 meses?",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 4.0,
+    "normalized": "quanto de dividendos o hglg11 pagou nos ultimos 12 meses ",
+    "tokens": [
+      "quanto",
+      "de",
+      "dividendos",
+      "o",
+      "hglg11",
+      "pagou",
+      "nos",
+      "ultimos",
+      "12",
+      "meses"
+    ],
+    "intent_scores": {
+      "cadastro": -1.0,
+      "precos": -1.0,
+      "dividendos": -2.0,
+      "noticias": 0.0,
+      "rankings": -1.0,
+      "metricas": 4.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 4.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 109,
+    "question": "preço médio do HGLG11 nos últimos 6 meses",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 4.0,
+    "normalized": "preco medio do hglg11 nos ultimos 6 meses",
+    "tokens": [
+      "preco",
+      "medio",
+      "do",
+      "hglg11",
+      "nos",
+      "ultimos",
+      "6",
+      "meses"
+    ],
+    "intent_scores": {
+      "cadastro": -1.0,
+      "precos": -1.0,
+      "dividendos": -4.0,
+      "noticias": 0.0,
+      "rankings": -1.0,
+      "metricas": 4.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 4.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 110,
+    "question": "dy médio do HGLG11 no ano",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 3.0,
+    "normalized": "dy medio do hglg11 no ano",
+    "tokens": [
+      "dy",
+      "medio",
+      "do",
+      "hglg11",
+      "no",
+      "ano"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 3.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 3.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 111,
+    "question": "média de preço do KNRI11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 1.0,
+    "normalized": "media de preco do knri11",
+    "tokens": [
+      "media",
+      "de",
+      "preco",
+      "do",
+      "knri11"
+    ],
+    "intent_scores": {
+      "cadastro": -3.0,
+      "precos": 0.0,
+      "dividendos": -1.0,
+      "noticias": 0.0,
+      "rankings": -3.0,
+      "metricas": 1.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 1.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 112,
+    "question": "qual o dividend yield médio do HGRU11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_metrics",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 1.0,
+    "normalized": "qual o dividend yield medio do hgru11",
+    "tokens": [
+      "qual",
+      "o",
+      "dividend",
+      "yield",
+      "medio",
+      "do",
+      "hgru11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 1.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 1.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 140,
+    "question": "estrutura de recebíveis do VISC11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_revenue_schedule",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 3.0,
+    "normalized": "estrutura de recebiveis do visc11",
+    "tokens": [
+      "estrutura",
+      "de",
+      "recebiveis",
+      "do",
+      "visc11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 3.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 3.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 141,
+    "question": "quanto vence em 12 meses do XPML11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_revenue_schedule",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 2.0,
+    "normalized": "quanto vence em 12 meses do xpml11",
+    "tokens": [
+      "quanto",
+      "vence",
+      "em",
+      "12",
+      "meses",
+      "do",
+      "xpml11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": -2.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 2.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 2.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 142,
+    "question": "volatilidade e sharpe do HGRU11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 4.0,
+    "normalized": "volatilidade e sharpe do hgru11",
+    "tokens": [
+      "volatilidade",
+      "e",
+      "sharpe",
+      "do",
+      "hgru11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 4.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 4.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 143,
+    "question": "beta do HGLG11",
+    "expected_intent": "metricas",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 3.0,
+    "normalized": "beta do hglg11",
+    "tokens": [
+      "beta",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 0.0,
+      "metricas": 3.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 3.0,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 144,
+    "question": "minhas posições de FIIs",
+    "expected_intent": "metricas",
+    "expected_entity": "client_fiis_positions",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 3.0,
+    "normalized": "minhas posicoes de fiis",
+    "tokens": [
+      "minhas",
+      "posicoes",
+      "de",
+      "fiis"
+    ],
+    "intent_scores": {
+      "cadastro": 0.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 1.0,
+      "metricas": 4.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 2.25,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 145,
+    "question": "minhas posições na B3",
+    "expected_intent": "metricas",
+    "expected_entity": "client_fiis_positions",
+    "got_intent": "metricas",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 4.0,
+    "normalized": "minhas posicoes na b3",
+    "tokens": [
+      "minhas",
+      "posicoes",
+      "na",
+      "b3"
+    ],
+    "intent_scores": {
+      "cadastro": 1.0,
+      "precos": 0.0,
+      "dividendos": 0.0,
+      "noticias": 0.0,
+      "rankings": 1.0,
+      "metricas": 4.0,
+      "imoveis": 0.0,
+      "processos": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 3.0,
+      "accepted": true,
+      "source": "final"
+    }
+  }
+]
