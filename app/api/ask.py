@@ -173,6 +173,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     rows = (
         results.get(result_key, []) if isinstance(results.get(result_key), list) else []
     )
+    primary = rows[0] if rows else {}
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
     # -------------------------------
@@ -182,8 +183,11 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     facts: Dict[str, Any] = {
         "result_key": result_key,
         "rows": rows,
+        "primary": primary,
         "aggregates": agg_params,
         "identifiers": identifiers,
+        "ticker": (primary or {}).get("ticker") or (identifiers or {}).get("ticker"),
+        "fund": (primary or {}).get("fund"),
     }
     meta_for_narrator: Dict[str, Any] = {
         "intent": intent,

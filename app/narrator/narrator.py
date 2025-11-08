@@ -13,6 +13,7 @@ try:
 except Exception:
     OllamaClient = None
 
+
 def _fmt_number_br(x: Any) -> str:
     try:
         if isinstance(x, (int, float)):
@@ -22,31 +23,50 @@ def _fmt_number_br(x: Any) -> str:
         pass
     return str(x)
 
+
 def _fallback_text(facts: Dict[str, Any], meta: Dict[str, Any]) -> str:
-    tck = (facts or {}).get("ticker") or (facts or {}).get("fund") or ""
-    linhas = [f"**{tck}** — resposta baseada em fatos disponíveis:"]
-    medidas = (facts or {}).get("medidas") or []
-    for m in medidas:
-        nome = m.get("nome")
-        val = m.get("valor")
-        un = m.get("unidade","")
-        if isinstance(val, (int, float)) and un == "ratio":
-            linhas.append(f"- {nome}: **{_fmt_number_br(val*100)}%**")
-        elif isinstance(val, (int, float)):
-            linhas.append(f"- {nome}: **{_fmt_number_br(val)} {un}**".rstrip())
-        else:
-            linhas.append(f"- {nome}: **{val}**".rstrip())
-    faixas = (facts or {}).get("faixas") or []
-    for fx in faixas:
-        nome = fx.get("nome")
-        val = fx.get("valor")
-        un = fx.get("unidade","")
-        if isinstance(val, (int, float)) and un == "ratio":
-            linhas.append(f"- {nome.replace('_','→')}: **{_fmt_number_br(val*100)}%**")
+    # tenta pegar a linha principal
+    primary = (facts or {}).get("primary")
+    if not primary:
+        rows = (facts or {}).get("rows") or []
+        primary = rows[0] if rows else {}
+
+    # ticker no topo
+    tck = (
+        (primary or {}).get("ticker")
+        or (facts or {}).get("ticker")
+        or (facts or {}).get("fund")
+        or ""
+    )
+    header = (
+        f"**{tck}** — resposta baseada em fatos disponíveis:"
+        if tck
+        else "Resposta baseada em fatos disponíveis:"
+    )
+    linhas = [header]
+
+    # mapeamento de campos do seu dataset de processos
+    campos = [
+        ("Processo", primary.get("process_number")),
+        ("Juízo", primary.get("judgment")),
+        ("Instância", primary.get("instance")),
+        ("Início", primary.get("initiation_date")),
+        ("Valor da causa", primary.get("cause_amt")),
+        ("Partes", primary.get("process_parts")),
+        ("Risco de perda", primary.get("loss_risk_pct")),
+        ("Fatos", primary.get("main_facts")),
+        ("Impacto", primary.get("loss_impact_analysis")),
+    ]
+    for nome, val in campos:
+        if val:
+            linhas.append(f"- {nome}: **{val}**")
+
     if len(linhas) == 1:
         linhas.append("(Sem campos detalhados disponíveis para narração.)")
+
     linhas.append("Fonte: SIRIOS.")
     return "\n".join(linhas)
+
 
 class Narrator:
     def __init__(self, model: str | None = None, style: str = "executivo"):
@@ -56,9 +76,13 @@ class Narrator:
         self.shadow = os.getenv("NARRATOR_SHADOW", "false").lower() == "true"
         self.client = OllamaClient() if OllamaClient else None
 
-    def render(self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]) -> Dict[str, Any]:
+    def render(
+        self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]
+    ) -> Dict[str, Any]:
         t0 = time.perf_counter()
-        prompt = build_prompt(question=question, facts=facts, meta=meta, style=self.style)
+        prompt = build_prompt(
+            question=question, facts=facts, meta=meta, style=self.style
+        )
         text = None
         error = None
         tokens_in = len(prompt.split())
@@ -78,7 +102,11 @@ class Narrator:
             text = _fallback_text(facts, meta)
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
-        score = 1.0 if ((facts or {}).get("ticker","") and (facts.get("ticker","") in text)) else 0.9
+        score = (
+            1.0
+            if ((facts or {}).get("ticker", "") and (facts.get("ticker", "") in text))
+            else 0.9
+        )
 
         return {
             "text": text,
@@ -88,5 +116,5 @@ class Narrator:
             "latency_ms": elapsed_ms,
             "error": error,
             "enabled": self.enabled,
-            "shadow": self.shadow
+            "shadow": self.shadow,
         }
