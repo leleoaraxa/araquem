@@ -275,7 +275,6 @@ intents:
         - meu
         - documento
         - cpf
-      exclude: []
     phrases:
       include:
         - "metricas do"
@@ -319,14 +318,29 @@ intents:
         - "minhas posicoes cpf"
         - "minha carteira"
         - "posicoes cpf"
+        # Adições para puxar as sub-entidades corretas:
+        - "caixa disponivel"
+        - "caixa disponível"
+        - "caixa e equivalentes"
+        - "saldo de caixa"
+        - "indice de treynor"
+        - "índice de treynor"
+        - "receita com vencimento em 0-3 meses"
+        - "receita com vencimento em 0–3 meses"
+        - "cronograma de receitas 0-3"
+        - "pipeline de receitas 0-3"
+        - "quantidade em custodia"
+        - "quantidade em custódia"
+        - "minhas posicoes"
+        - "minhas posições"
       exclude: []
     entities:
-      # Ordem importa: entidades mais específicas antes da fotografia agregada.
-      - fiis_metrics
-      - fiis_financials_revenue_schedule
-      - fiis_financials_risk
-      - client_fiis_positions
+      # Específicas primeiro; guarda-chuva por último (vence só com grande folga):
       - fiis_financials_snapshot
+      - fiis_financials_risk
+      - fiis_financials_revenue_schedule
+      - client_fiis_positions
+      - fiis_metrics
     anti_tokens:
       # Sinalizadores negativos por entidade dentro do intent metricas.
       # Observação de privacidade: menções textuais a "cpf", "documento" ou similares são neutras;

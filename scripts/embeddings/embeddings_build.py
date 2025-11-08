@@ -12,6 +12,36 @@ from pathlib import Path
 from typing import Iterable, List, Dict, Any
 from app.rag.ollama_client import OllamaClient
 
+_ENTITY_TAG_PREFIXES = ("entity:", "entity=")
+
+
+def _extract_entity_from_tags(tags: List[str]) -> str | None:
+    """
+    Procura por uma tag declarativa de entidade no formato:
+      - 'entity:<snake_case_name>'   (preferido)
+      - 'entity=<snake_case_name>'   (aceito)
+    Retorna o nome da entidade em snake_case (sem validar lista), ou None.
+    """
+    if not tags:
+        return None
+    for t in tags:
+        if not isinstance(t, str):
+            continue
+        ts = t.strip()
+        if not ts:
+            continue
+        for pref in _ENTITY_TAG_PREFIXES:
+            if ts.lower().startswith(pref):
+                val = ts[len(pref) :].strip()
+                # normaliza para snake_case simples
+                val = val.replace("-", "_").replace(" ", "_")
+                return val
+    return None
+
+
+def _to_kebab(s: str) -> str:
+    return s.replace("_", "-")
+
 
 def _read_text(path: Path) -> str:
     try:
@@ -130,10 +160,21 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
 
             assert len(vectors) == len(chunks)
             for k, (c, v) in enumerate(zip(chunks, vectors)):
+                entity_name = _extract_entity_from_tags(tags)
+                # Preserva o doc_id declarado, mas prefixa quando houver entidade
+                base_doc_id = doc_id
+                if entity_name:
+                    entity_kebab = _to_kebab(entity_name)
+                    prefixed_doc_id = f"entity-{entity_kebab}:{doc_id}"
+                else:
+                    prefixed_doc_id = doc_id
+
                 rec = {
                     "collection": collection,
-                    "doc_id": doc_id,
-                    "chunk_id": f"{doc_id}:{k}",
+                    "doc_id": prefixed_doc_id,
+                    "chunk_id": f"{prefixed_doc_id}:{k}",
+                    "source_id": base_doc_id,
+                    "entity": entity_name,  # útil p/ diagnósticos; não é obrigatório p/ o hints
                     "path": str(p),
                     "tags": tags,
                     "sha": _sha(c),
@@ -155,7 +196,9 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
 
     manifest_path = Path(out_dir) / "manifest.json"
     manifest["last_refresh_epoch"] = int(time.time())
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
     print(f"[manifest] updated {manifest_path}")
     print(f"[done] {total_chunks} chunks → {out_jsonl}")
     return {"chunks": total_chunks, "out": str(out_jsonl)}

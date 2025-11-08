@@ -725,6 +725,22 @@
       "question": "minhas posições na B3",
       "expected_intent": "metricas",
       "expected_entity": "client_fiis_positions"
-    }
+    },
+    {
+      "question": "Caixa disponível do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_snapshot" },
+    {
+      "question": "Índice de Treynor do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_risk" },
+    {
+      "question": "Receita com vencimento em 0–3 meses do HGLG11",
+      "expected_intent": "metricas",
+      "expected_entity": "fiis_financials_revenue_schedule" },
+    {
+      "question": "Quanto tenho de quantidade em custódia",
+      "expected_intent": "metricas",
+      "expected_entity": "client_fiis_positions" }
   ]
 }

@@ -205,6 +205,9 @@ class Planner:
         re_rank_mode = str(re_rank_cfg.get("mode", "blend"))
         re_rank_weight = float(re_rank_cfg.get("weight", 0.25))
         thr_apply_on = str(thresholds_cfg.get("apply_on", "base"))
+        # Compat: 'fused' deve usar o score final (pós-fusão) no gate
+        if thr_apply_on == "fused":
+            thr_apply_on = "final"
 
         rag_entity_hints: Dict[str, float] = {}
         rag_error: Any = None
