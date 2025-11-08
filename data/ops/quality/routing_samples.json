@@ -722,7 +722,7 @@
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "minhas posições cpf 66140994691",
+      "question": "minhas posições na B3",
       "expected_intent": "metricas",
       "expected_entity": "client_fiis_positions"
     }

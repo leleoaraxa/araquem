@@ -4,7 +4,6 @@
 
 - `data/entities/<entidade>/entity.yaml`: contrato completo (identificadores, colunas, aggregations e apresentação).
 - `data/entities/<entidade>/responses/<kind>.md.j2`: template de resposta alinhado a `presentation.kind` (summary, list ou table).
-- `data/entities/<entidade>/view.sql.j2`: referência canônica da view consumida pelo builder (placeholder quando o SQL ainda está em outro repositório).
 - `data/entities/<entidade>/templates.md`: respostas legadas formatadas via `render_answer` (mantidas para compatibilidade).
 
 ## 🧰 Developer Utilities (scripts/)

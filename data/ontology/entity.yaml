@@ -320,11 +320,11 @@ intents:
         - "posicoes cpf"
       exclude: []
     entities:
-      - fiis_metrics
       - fiis_financials_snapshot
       - fiis_financials_revenue_schedule
       - fiis_financials_risk
       - client_fiis_positions
+      - fiis_metrics
 
   - name: imoveis
     tokens:
