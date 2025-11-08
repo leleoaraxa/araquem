@@ -6,7 +6,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 5.42661463228153,
+    "score": 6.055968779368918,
     "normalized": "soma de dividendos do hglg11",
     "tokens": [
       "soma",
@@ -28,7 +28,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.92661463228153,
+      "gap": 4.355968779368918,
       "accepted": true,
       "source": "final"
     }
@@ -40,7 +40,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 4.678956759565042,
+    "score": 5.207374055739026,
     "normalized": "quanto de dividendos o hglg11 pagou nos ultimos 12 meses ",
     "tokens": [
       "quanto",
@@ -67,7 +67,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.678956759565042,
+      "gap": 5.207374055739026,
       "accepted": true,
       "source": "final"
     }
@@ -79,7 +79,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 3.1687790771239372,
+    "score": 3.5012674462743623,
     "normalized": "preco medio do hglg11 nos ultimos 6 meses",
     "tokens": [
       "preco",
@@ -104,7 +104,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.1687790771239372,
+      "gap": 3.5012674462743623,
       "accepted": true,
       "source": "final"
     }
@@ -116,7 +116,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 3.921169866066512,
+    "score": 4.352701919639907,
     "normalized": "dy medio do hglg11 no ano",
     "tokens": [
       "dy",
@@ -139,7 +139,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.921169866066512,
+      "gap": 4.352701919639907,
       "accepted": true,
       "source": "final"
     }
@@ -151,7 +151,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 0.8994504094275674,
+    "score": 0.9396702456565404,
     "normalized": "media de preco do knri11",
     "tokens": [
       "media",
@@ -173,7 +173,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 0.8994504094275674,
+      "gap": 0.9396702456565404,
       "accepted": false,
       "source": "final"
     }
@@ -185,7 +185,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 0.9192159448418583,
+    "score": 0.9515295669051149,
     "normalized": "qual o dividend yield medio do hgru11",
     "tokens": [
       "qual",
@@ -209,7 +209,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 0.9192159448418583,
+      "gap": 0.9515295669051149,
       "accepted": false,
       "source": "final"
     }
@@ -221,7 +221,7 @@
     "expected_entity": "fiis_financials_snapshot",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 3.1670513116369268,
+    "score": 3.500230786982156,
     "normalized": "payout e alavancagem do hglg11",
     "tokens": [
       "payout",
@@ -243,7 +243,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.1670513116369268,
+      "gap": 3.500230786982156,
       "accepted": true,
       "source": "final"
     }
@@ -288,7 +288,7 @@
     "expected_entity": "client_fiis_positions",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 8.397315526545967,
+    "score": 9.43838931592758,
     "normalized": "minhas posicoes na b3",
     "tokens": [
       "minhas",
@@ -309,7 +309,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 7.647315526545967,
+      "gap": 8.58838931592758,
       "accepted": true,
       "source": "final"
     }
@@ -321,7 +321,7 @@
     "expected_entity": "fiis_financials_snapshot",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_revenue_schedule",
-    "score": 2.4179475886208897,
+    "score": 2.650768553172534,
     "normalized": "caixa disponivel do hglg11",
     "tokens": [
       "caixa",
@@ -342,7 +342,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 2.4179475886208897,
+      "gap": 2.650768553172534,
       "accepted": true,
       "source": "final"
     }

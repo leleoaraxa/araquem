@@ -23,7 +23,6 @@ intents:
         - custodiante
         - assembleia
         - site
-        - site oficial
         - nome
         - exibicao
         - b3
@@ -42,6 +41,7 @@ intents:
         - cotistas
         - url
         - oficial
+        - exclusivo
       exclude:
         - preco
         - precos
@@ -120,8 +120,8 @@ intents:
         - minima do
         - variacao diaria
       exclude:
-        - "media de preco"
-        - "preco medio"
+        - media de preco
+        - preco medio
         - ranking de
         - top fiis por
         - dividendo do
@@ -136,7 +136,6 @@ intents:
         - ultima
         - recentes
         - mais
-        - mais recentes
         - provento
         - proventos
         - rendimento
@@ -151,26 +150,26 @@ intents:
         - ranking
     phrases:
       include:
-        - "dividendo do"
-        - "dividendos do"
-        - "ultimo dividendo"
-        - "ultima distribuicao"
-        - "mais recentes dividendos"
-        - "qual o ultimo dividendo do"
-        - "quando foi o ultimo pagamento do"
-        - "proventos do"
-        - "rendimento do"
-        - "pagamento do"
-        - "data com"
-        - "data ex"
-        - "quando paga"
+        - dividendo do
+        - dividendos do
+        - ultimo dividendo
+        - ultima distribuicao
+        - mais recentes dividendos
+        - qual o ultimo dividendo do
+        - quando foi o ultimo pagamento do
+        - proventos do
+        - rendimento do
+        - pagamento do
+        - data com
+        - data ex
+        - quando paga
       exclude:
-        - "soma de"
-        - "quanto de"
-        - "nos ultimos"
-        - "12 meses"
-        - "6 meses"
-        - "24 meses"
+        - soma de
+        - quanto de
+        - nos ultimos
+        - 12 meses
+        - 6 meses
+        - 24 meses
     entities: [fiis_dividendos]
 
   - name: noticias
@@ -236,22 +235,22 @@ intents:
         - media
         - soma
         - dy
-        - "dividend yield"
+        - dividend yield
         - payout
         - alavancagem
         - endividamento
         - caixa
-        - "caixa total"
+        - caixa total
         - enterprise
-        - "enterprise value"
+        - enterprise value
         - ev
         - market
-        - "market cap"
+        - market cap
         - patrimonio
-        - "preco/patrimonio"
-        - "price book"
+        - preco patrimonio
+        - price book
         - cap
-        - "cap rate"
+        - cap rate
         - crescimento
         - receitas
         - recebiveis
@@ -268,7 +267,7 @@ intents:
         - sharpe
         - treynor
         - jensen
-        - "alfa de jensen"
+        - alfa de jensen
         - beta
         - posicao
         - posicoes
@@ -280,247 +279,163 @@ intents:
         - cpf
     phrases:
       include:
-        - "metricas do"
-        - "soma de dividendos"
-        - "soma de dividendos do"
-        - "preco medio"
-        - "qual o dy"
-        - "qual o dy do"
-        - "dy medio do"
-        - "preco medio do"
-        - "ultimos pagamentos"
-        - "ultimas distribuicoes"
-        - "quanto de dividendos"
-        - "dividendos totais do"
-        - "contagem de pagamentos do"
-        - "pagou nos ultimos"
-        - "dividendos nos ultimos"
-        - "dividendos nos ultimos 12 meses"
-        - "payout do"
-        - "alavancagem do"
-        - "endividamento do"
-        - "caixa do"
-        - "market cap do"
-        - "ev do"
-        - "enterprise value do"
-        - "preco/patrimonio do"
-        - "price book do"
-        - "cap rate do"
-        - "crescimento do"
-        - "estrutura de recebiveis do"
-        - "receitas por prazo do"
-        - "quanto vence em 12 meses do"
-        - "indexadores de receita do"
-        - "volatilidade do"
-        - "sharpe do"
-        - "treynor do"
-        - "jensen do"
-        - "alfa de jensen do"
-        - "beta do"
-        - "minhas posicoes"
-        - "minhas posicoes cpf"
-        - "minha carteira"
-        - "posicoes cpf"
-        - "caixa disponivel"
-        - "caixa disponível"
-        - "caixa e equivalentes"
-        - "saldo de caixa"
-        - "indice de treynor"
-        - "índice de treynor"
-        - "receita com vencimento em 0-3 meses"
-        - "receita com vencimento em 0–3 meses"
-        - "cronograma de receitas 0-3"
-        - "pipeline de receitas 0-3"
-        - "quantidade em custodia"
-        - "quantidade em custódia"
-        - "minhas posicoes"
-        - "minhas posições"
-        - "média de preço"
-        - "preço médio"
-        - "dy médio"
-        - "soma de dividendos"
-        - "nos últimos 12 meses"
-        - "nos ultimos 12 meses"
-        - "no ano"
-        - "volatilidade do"
-        - "sharpe do"
-        - "índice de treynor do"
-        - "indice de treynor do"
-        - "beta do"
-        - "estrutura de recebíveis do"
-        - "estrutura de recebiveis do"
-        - "receita com vencimento em 0–3 meses do"
-        - "receita com vencimento em 0-3 meses do"
-        - "quanto vence em 12 meses do"
-        - "minhas posições"
-        - "minhas posicoes"
-        - "minhas posições de fiis"
-        - "minhas posicoes de fiis"
-        - "minhas posições na b3"
-        - "minhas posicoes na b3"
-        - "quantidade em custódia"
-        - "quantidade em custodia"
-      exclude: []
+        # agregadas → fiis_metrics
+        - metricas do
+        - soma de dividendos
+        - soma de dividendos do
+        - preco medio
+        - preco medio do
+        - dy medio do
+        - qual o dy
+        - qual o dy do
+        - ultimos pagamentos
+        - ultimas distribuicoes
+        - quanto de dividendos
+        - dividendos totais do
+        - contagem de pagamentos do
+        - pagou nos ultimos
+        - dividendos nos ultimos
+        - dividendos nos ultimos 12 meses
+        - media de preco
+        - nos ultimos 12 meses
+        - no ano
+
+        # foto financeira (snapshot)
+        - payout do
+        - alavancagem do
+        - endividamento do
+        - caixa do
+        - caixa disponivel
+        - caixa e equivalentes
+        - saldo de caixa
+        - market cap do
+        - ev do
+        - enterprise value do
+        - preco patrimonio do
+        - price book do
+        - cap rate do
+        - crescimento do
+
+        # receita por vencimento (revenue schedule)
+        - estrutura de recebiveis do
+        - receitas por prazo do
+        - quanto vence em 12 meses do
+        - indexadores de receita do
+        - receita com vencimento em 0 3 meses do
+
+        # risco
+        - volatilidade do
+        - sharpe do
+        - treynor do
+        - indice de treynor do
+        - jensen do
+        - alfa de jensen do
+        - beta do
+
+        # posicoes do cliente
+        - minhas posicoes
+        - minhas posicoes cpf
+        - minhas posicoes de fiis
+        - minhas posicoes na b3
+        - minha carteira
+        - posicoes cpf
+        - quantidade em custodia
     entities:
-      # Específicas primeiro; guarda-chuva por último (vence só com grande folga):
+      # ordem importa: especializadas primeiro, guarda-chuva por ultimo
       - fiis_financials_snapshot
       - fiis_financials_risk
       - fiis_financials_revenue_schedule
       - client_fiis_positions
       - fiis_metrics
     anti_tokens:
-      # Sinalizadores negativos por entidade dentro do intent metricas.
-      # Observação de privacidade: menções textuais a "cpf", "documento" ou similares são neutras;
-      # o CPF efetivo vem do payload (entidade private: true).
+      # sinalizadores negativos por entidade (sempre normalizados!)
       fiis_metrics:
         - payout
         - alavancagem
-        - "market cap"
-        - "enterprise value"
+        - market cap
+        - enterprise value
         - ev
-        - "price book"
-        - "preco/patrimonio"
+        - price book
+        - preco patrimonio
         - caixa
-        - "caixa total"
+        - caixa total
         - passivos
-        - "cap rate"
+        - cap rate
+
       fiis_financials_snapshot:
         - soma
-        - "soma de"
-        - "soma de dividendos"
-        - "contagem de"
-        - "contagem de pagamentos"
+        - soma de
+        - soma de dividendos
+        - contagem de
+        - contagem de pagamentos
         - media
-        - "preco medio"
-        - "dy medio"
-        - "ultimos"
-        - "12 meses"
-        - "6 meses"
-        - "quanto pagou"
-        - "dividendos nos ultimos"
+        - preco medio
+        - dy medio
+        - ultimos
+        - 12 meses
+        - 6 meses
+        - quanto pagou
+        - dividendos nos ultimos
         - volatilidade
         - sharpe
         - treynor
-        - "indice de treynor"
-        - "índice de treynor"
+        - indice de treynor
         - beta
         - receita
         - recebiveis
-        - "recebíveis"
         - vencimento
-        - "0 3"
-        - "3 6"
-        - "6 9"
-        - "9 12"
-        - "12 15"
-        - "15 18"
-        - "18 21"
-        - "21 24"
-        - "24 27"
-        - "27 30"
-        - "30 33"
-        - "33 36"
-        - volatilidade
-        - sharpe
-        - treynor
-        - "indice de treynor"
-        - "índice de treynor"
-        - beta
-        - receita
-        - recebiveis
-        - "recebíveis"
-        - vencimento
-        - "0 3"
-        - "3 6"
-        - "6 9"
-        - "9 12"
-        - "12 15"
-        - "15 18"
-        - "18 21"
-        - "21 24"
-        - "24 27"
-        - "27 30"
-        - "30 33"
-        - "33 36"
-        - "minhas"
-        - "posicoes"
-        - "posições"
-        - "custodia"
-        - "custódia"
+        - 0 3
+        - minhas
+        - posicoes
+        - custodia
+
       fiis_financials_revenue_schedule:
         - payout
         - alavancagem
-        - "market cap"
+        - market cap
         - ev
-        - "price book"
-        - "preco/patrimonio"
-        - caixa
-        - payout
-        - alavancagem
-        - "market cap"
-        - ev
-        - "price book"
-        - "preco/patrimonio"
+        - price book
+        - preco patrimonio
         - caixa
         - volatilidade
         - sharpe
         - treynor
-        - "indice de treynor"
-        - "índice de treynor"
+        - indice de treynor
         - beta
-        - "minhas"
-        - "posicoes"
-        - "posições"
-        - "custodia"
-        - "custódia"
+        - minhas
+        - posicoes
+        - custodia
+
       fiis_financials_risk:
-        - payout
-        - "market cap"
-        - ev
-        - "price book"
-        - caixa
         - soma
-        - "preco medio"
-        - "média de preço"
-        - "dy medio"
-        - "soma de dividendos"
+        - preco medio
+        - media de preco
+        - dy medio
+        - soma de dividendos
         - receita
         - recebiveis
-        - "recebíveis"
         - vencimento
-        - "0 3"
-        - "3 6"
-        - "6 9"
-        - "9 12"
-        - "12 15"
-        - "15 18"
-        - "18 21"
-        - "21 24"
-        - "24 27"
-        - "27 30"
-        - "30 33"
-        - "33 36"
-        - "12 meses"
-        - "minhas"
-        - "posicoes"
-        - "posições"
-        - "custodia"
-        - "custódia"
+        - 0 3
+        - 12 meses
+        - minhas
+        - posicoes
+        - custodia
         - payout
         - alavancagem
-        - "market cap"
+        - market cap
         - ev
-        - "price book"
-        - "preco/patrimonio"
+        - price book
+        - preco patrimonio
         - caixa
-        - "cap rate"
+        - cap rate
+
       client_fiis_positions:
         - payout
-        - "market cap"
+        - market cap
         - ev
-        - "price book"
+        - price book
         - caixa
-        - "cap rate"
+        - cap rate
         - volatilidade
         - sharpe
         - treynor
@@ -528,19 +443,8 @@ intents:
         - receita
         - recebiveis
         - vencimento
-        - "0 3"
-        - "3 6"
-        - "6 9"
-        - "9 12"
-        - "12 15"
-        - "15 18"
-        - "18 21"
-        - "21 24"
-        - "24 27"
-        - "27 30"
-        - "30 33"
-        - "33 36"
-        - "12 meses"
+        - 0 3
+        - 12 meses
 
   - name: imoveis
     tokens:
@@ -557,12 +461,12 @@ intents:
       exclude: []
     phrases:
       include:
-        - "imoveis do"
-        - "quais imoveis do"
-        - "lista de propriedades do"
-        - "area total do"
-        - "status dos"
-        - "status do"
+        - imoveis do
+        - quais imoveis do
+        - lista de propriedades do
+        - area total do
+        - status dos
+        - status do
       exclude: []
     entities: [fiis_imoveis]
 
@@ -584,11 +488,11 @@ intents:
       exclude: []
     phrases:
       include:
-        - "processos do"
-        - "status dos processos do"
-        - "andamento dos processos do"
-        - "processos judiciais do"
-        - "acoes judiciais do"
+        - processos do
+        - status dos processos do
+        - andamento dos processos do
+        - processos judiciais do
+        - acoes judiciais do
       exclude: []
     entities: [fiis_processos]
 
