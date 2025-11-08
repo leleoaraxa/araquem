@@ -235,23 +235,32 @@ intents:
         - media
         - soma
         - dy
+        - dy mensal
         - dividend yield
         - payout
         - alavancagem
         - endividamento
         - caixa
         - caixa total
+        - ultimo dividendo
+        - ultimo pagamento
         - enterprise
         - enterprise value
         - ev
         - market
         - market cap
         - patrimonio
+        - patrimonio por cota
         - preco patrimonio
         - price book
         - cap
         - cap rate
         - crescimento
+        - receita por cota
+        - reserva de dividendos
+        - taxa de adm
+        - taxa de performance
+        - passivos totais
         - receitas
         - recebiveis
         - vencimento
@@ -262,6 +271,20 @@ intents:
         - ipca
         - inpc
         - incc
+        - 0 3
+        - 3 6
+        - 6 9
+        - 9 12
+        - 12 15
+        - 15 18
+        - 18 21
+        - 21 24
+        - 24 27
+        - 27 30
+        - 30 33
+        - 33 36
+        - maior 36
+        - indeterminado
         - risco
         - volatilidade
         - sharpe
@@ -271,11 +294,15 @@ intents:
         - beta
         - posicao
         - posicoes
+        - documento
+        - participante
+        - quantidade
+        - disponivel
+        - custodia
         - carteira
         - minhas
         - minha
         - meu
-        - documento
         - cpf
     phrases:
       include:
@@ -286,6 +313,7 @@ intents:
         - preco medio
         - preco medio do
         - dy medio do
+        - qual o dy medio do
         - qual o dy
         - qual o dy do
         - ultimos pagamentos
@@ -296,6 +324,11 @@ intents:
         - pagou nos ultimos
         - dividendos nos ultimos
         - dividendos nos ultimos 12 meses
+        - dividendos ultimos 6 meses
+        - dividendos ultimos 12 meses
+        - media preco ultimos 12 meses
+        - quantos dividendos ultimos 12 meses
+        - pagou quanto ultimos 6 meses
         - media de preco
         - nos ultimos 12 meses
         - no ano
@@ -315,6 +348,23 @@ intents:
         - price book do
         - cap rate do
         - crescimento do
+        - qual o payout do
+        - qual a alavancagem do
+        - qual o market cap do
+        - qual o enterprise value do
+        - qual o preco patrimonio do
+        - qual o cap rate do
+        - qual a taxa de crescimento do
+        - qual o dy mensal do
+        - qual o ultimo dividendo do
+        - quando foi o ultimo pagamento do
+        - qual o patrimonio por cota do
+        - qual a receita por cota do
+        - qual a reserva de dividendos do
+        - qual a taxa de adm do
+        - qual a taxa de performance do
+        - quais os passivos totais do
+        - qual o caixa total do
 
         # receita por vencimento (revenue schedule)
         - estrutura de recebiveis do
@@ -322,6 +372,13 @@ intents:
         - quanto vence em 12 meses do
         - indexadores de receita do
         - receita com vencimento em 0 3 meses do
+        - receita 3 6 meses
+        - receita 9 12 meses
+        - receita acima 36 meses
+        - percentual igpm receita
+        - percentual ipca receita
+        - percentual inpc receita
+        - percentual incc receita
 
         # risco
         - volatilidade do
@@ -331,6 +388,11 @@ intents:
         - jensen do
         - alfa de jensen do
         - beta do
+        - qual a volatilidade do
+        - qual o indice de sharpe do
+        - qual o indice de treynor do
+        - qual o alfa de jensen do
+        - qual o beta do
 
         # posicoes do cliente
         - minhas posicoes
@@ -340,6 +402,11 @@ intents:
         - minha carteira
         - posicoes cpf
         - quantidade em custodia
+        - qual a quantidade em custodia do
+        - qual a quantidade disponivel do
+        - preco fechamento minha posicao
+        - variacao minha posicao
+        - quais sao minhas posicoes do
     entities:
       # ordem importa: especializadas primeiro, guarda-chuva por ultimo
       - fiis_financials_snapshot
@@ -360,7 +427,16 @@ intents:
         - caixa
         - caixa total
         - passivos
+        - passivos totais
         - cap rate
+        - volatilidade
+        - sharpe
+        - treynor
+        - beta
+        - igpm
+        - ipca
+        - inpc
+        - incc
 
       fiis_financials_snapshot:
         - soma
@@ -371,6 +447,7 @@ intents:
         - media
         - preco medio
         - dy medio
+        - dy medio do
         - ultimos
         - 12 meses
         - 6 meses
@@ -385,15 +462,32 @@ intents:
         - recebiveis
         - vencimento
         - 0 3
+        - 3 6
+        - 6 9
+        - 9 12
+        - 12 15
+        - 15 18
+        - 18 21
+        - 21 24
+        - 24 27
+        - 27 30
+        - 30 33
+        - 33 36
+        - maior 36
         - minhas
         - posicoes
         - custodia
+        - igpm
+        - ipca
+        - inpc
+        - incc
 
       fiis_financials_revenue_schedule:
         - payout
         - alavancagem
         - market cap
         - ev
+        - enterprise value
         - price book
         - preco patrimonio
         - caixa
@@ -405,6 +499,10 @@ intents:
         - minhas
         - posicoes
         - custodia
+        - ultimo
+        - ultimo dividendo
+        - ultimo pagamento
+        - market cap do
 
       fiis_financials_risk:
         - soma
@@ -424,15 +522,25 @@ intents:
         - alavancagem
         - market cap
         - ev
+        - enterprise value
         - price book
         - preco patrimonio
         - caixa
         - cap rate
+        - igpm
+        - ipca
+        - inpc
+        - incc
+        - caixa total
+        - passivos
+        - passivos totais
+        - reserva de dividendos
 
       client_fiis_positions:
         - payout
         - market cap
         - ev
+        - enterprise value
         - price book
         - caixa
         - cap rate
@@ -445,6 +553,12 @@ intents:
         - vencimento
         - 0 3
         - 12 meses
+        - igpm
+        - ipca
+        - inpc
+        - incc
+        - dy medio
+        - soma de dividendos
 
   - name: imoveis
     tokens:
