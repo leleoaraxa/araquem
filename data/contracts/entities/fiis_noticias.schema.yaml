@@ -1,0 +1,44 @@
+entity: fiis_noticias
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,          type: string, nullable: false }
+  - { name: source,          type: string, nullable: false, desc: "fonte ou veículo" }
+  - { name: title,           type: string, nullable: false, desc: "título da matéria/notícia" }
+  - { name: tags,            type: string, nullable: false, desc: "palavras-chave associadas à notícia" }
+  - { name: description,     type: string, nullable: false, desc: "resumo curto ou descrição da notícia" }
+  - { name: url,             type: string, nullable: false, desc: "link completo para a notícia" }
+  - { name: image_url,       type: string, nullable: false, desc: "URL de imagem de destaque" }
+  - { name: published_at,    type: datetime, nullable: false, desc: "data/hora de publicação da notícia" }
+  - { name: created_at,         type: datetime,nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,         type: datetime,nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [ticker, published_at]
+
+presentation:
+  columns:
+    ticker:           { as: string } # Código AAAA11
+    source:           { as: string } # InfoMoney
+    title:            { as: string } # O melhor fundo imobiliário do mês de outubro
+    url:              { as: string } # www.exemplo.com/noticia/o-melhor-fundo-imobiliario-do-mes-de-outubro
+    published_at:     { as: datetime } # 27/10/2025 14:30:00
+    tags:             { as: string } # HGLG11, KNRI11, FIIs
+    description:      { as: string } # O fundo HGLG11 foi destaque no mês de outubro devido ao seu desempenho...
+    image_url:       { as: string } # www.exemplo.com/imagens/hglg11-destaque.jpg
+
+  rules: {}
+
+sample_questions:
+  - "Quais são as últimas notícias sobre KNRI11?"
+  - "Me mostre as notícias recentes do HGLG11."
+  - "Tem alguma atualização sobre o VISC11?"
+  - "Quais são as matérias mais recentes do XPML11?"
+  - "Me informe as últimas notícias do XPML11."
+  - "Quais são as novidades sobre o HGLG11?"
+  - "Tem alguma reportagem nova sobre o KNRI11?"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

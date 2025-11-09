@@ -1,0 +1,67 @@
+entity: fiis_financials_revenue_schedule
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,                      type: string,  nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: revenue_due_0_3m_pct,       type: number,  nullable: true,  desc: "receita com vencimento em 0–3 meses." }
+  - { name: revenue_due_3_6m_pct,       type: number,  nullable: true,  desc: "receita com vencimento em 3–6 meses." }
+  - { name: revenue_due_6_9m_pct,       type: number,  nullable: true,  desc: "receita com vencimento em 6–9 meses." }
+  - { name: revenue_due_9_12m_pct,      type: number,  nullable: true,  desc: "receita com vencimento em 9–12 meses." }
+  - { name: revenue_due_12_15m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 12–15 meses." }
+  - { name: revenue_due_15_18m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 15–18 meses." }
+  - { name: revenue_due_18_21m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 18–21 meses." }
+  - { name: revenue_due_21_24m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 21–24 meses." }
+  - { name: revenue_due_24_27m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 24–27 meses." }
+  - { name: revenue_due_27_30m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 27–30 meses." }
+  - { name: revenue_due_30_33m_pct,     type: number,  nullable: true,  desc: "receita com vencimento em 30–33 meses." }
+  - { name: revenue_due_33_36m_pct,    type: number,  nullable: true,  desc: "receita com vencimento em 33–36 meses." }
+  - { name: revenue_due_over_36m_pct,   type: number,  nullable: true,  desc: "receita com vencimento acima de 36 meses." }
+  - { name: revenue_due_undetermined_pct,type: number,  nullable: true,  desc: "receita com vencimento indeterminado." }
+  - { name: revenue_igpm_pct,            type: number,  nullable: true,  desc: "percentual de receitas indexadas ao IGPM." }
+  - { name: revenue_inpc_pct,            type: number,  nullable: true,  desc: "percentual de receitas indexadas ao INPC." }
+  - { name: revenue_ipca_pct,            type: number,  nullable: true,  desc: "percentual de receitas indexadas ao IPCA." }
+  - { name: revenue_incc_pct,            type: number,  nullable: true,  desc: "percentual de receitas indexadas ao INCC." }
+  - { name: created_at,                  type: datetime,nullable: false, desc: "data de criação do registro." }
+  - { name: updated_at,                  type: datetime,nullable: false, desc: "data da última atualização do registro." }
+
+ordering: [ticker]
+
+presentation:
+  columns:
+    ticker: { as: string }                       # código AAAA11
+    revenue_due_0_3m_pct: { as: percent, precision: 2 }        # 12.34%
+    revenue_due_3_6m_pct: { as: percent, precision: 2 }        # 12.34%
+    revenue_due_6_9m_pct: { as: percent, precision: 2 }        # 12.34%
+    revenue_due_9_12m_pct: { as: percent, precision: 2 }       # 12.34%
+    revenue_due_12_15m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_15_18m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_18_21m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_21_24m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_24_27m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_27_30m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_30_33m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_33_36m_pct: { as: percent, precision: 2 }      # 12.34%
+    revenue_due_over_36m_pct: { as: percent, precision: 2 }    # 12.34%
+    revenue_due_undetermined_pct: { as: percent, precision: 2 } # 12.34%
+    revenue_igpm_pct: { as: percent, precision: 2 }            # 12.34%
+    revenue_inpc_pct: { as: percent, precision: 2 }            # 12.34%
+    revenue_ipca_pct: { as: percent, precision: 2 }            # 12.34%
+    revenue_incc_pct: { as: percent, precision: 2 }            # 12.34%
+
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "cronograma de receitas do LRDI11"
+  - "receitas indexadas ao IPCA do HGLG11"
+  - "receitas com vencimento em 6-9 meses do KNRI11"
+  - "receitas com vencimento acima de 36 meses do VISC11"
+  - "receitas com vencimento indeterminado do MXRF11"
+  - "percentual de receitas do RBRF11 indexadas ao IGPM"
+  - "percentual de receitas do BCFF11 indexadas ao INPC"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

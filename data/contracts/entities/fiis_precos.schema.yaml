@@ -1,0 +1,59 @@
+entity: fiis_precos
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,              type: string,  nullable: false }
+  - { name: traded_at,           type: date,    nullable: false, desc: "data de referência" }
+  - { name: close_price,         type: number,  nullable: false, desc: "preço de fechamento" }
+  - { name: adj_close_price,     type: number,  nullable: false, desc: "preço de fechamento ajustado" }
+  - { name: open_price,          type: number,  nullable: false, desc: "preço de abertura" }
+  - { name: max_price,           type: number,  nullable: false, desc: "máxima do dia" }
+  - { name: min_price,           type: number,  nullable: false, desc: "mínima do dia" }
+  - { name: daily_variation_pct, type: number,  nullable: false, desc: "variação percentual do dia vs. anterior" }
+  - { name: created_at,         type: datetime,nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,         type: datetime,nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [ticker, traded_at]
+
+presentation:
+  columns:
+    ticker:                 { as: string }                # código AAAA11
+    close_price:            { as: currency }              # "R$ 98,76"
+    traded_at:              { as: date }                  # "27/10/2025"
+    adj_close_price:        { as: currency }              # "R$ 98,76"
+    open_price:             { as: currency }              # "R$ 97,66"
+    max_price:              { as: currency }              # "R$ 99,01"
+    min_price:              { as: currency }              # "R$ 97,65"
+    daily_variation_pct:    { as: percent, precision: 2 } # "0,99%"
+
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "preço do CXTL11 em 27/10/2025"
+  - "cotação do CXTL11 em 27/10/2025"
+  - "abertura do CXTL11 em 27/10/2025"
+  - "máxima do CXTL11 em 27/10/2025"
+  - "mínima do CXTL11 em 27/10/2025"
+  - "variação diária (%) do CXTL11 em 27/10/2025"
+  - "preço ajustado do CXTL11 em 27/10/2025"
+  - "qual foi o preço de fechamento do CXTL11 em 27/10/2025?"
+  - "qual foi a cotação do CXTL11 em 27/10/2025?"
+  - "qual foi o preço de abertura do CXTL11 em 27/10/2025?"
+  - "qual foi a máxima do CXTL11 em 27/10/2025?"
+  - "qual foi a mínima do CXTL11 em 27/10/2025?"
+  - "qual foi a variação diária (%) do CXTL11 em 27/10/2025"
+  - "qual foi o preço ajustado do CXTL11 em 27/10/2025?"
+  - "me mostre o preço de fechamento do CXTL11 em 27/10/2025"
+  - "me mostre a cotação do CXTL11 em 27/10/2025"
+  - "me mostre o preço de abertura do CXTL11 em 27/10/2025"
+  - "me mostre a máxima do CXTL11 em 27/10/2025"
+  - "me mostre a mínima do CXTL11 em 27/10/2025"
+  - "me mostre a variação diária (%) do CXTL11 em 27/10/2025"
+  - "me mostre o preço ajustado do CXTL11 em 27/10/2025"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: true

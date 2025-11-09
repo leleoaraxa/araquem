@@ -1,0 +1,85 @@
+entity: fiis_financials_snapshot
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,                 type: string,   nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: dy_monthly_pct,         type: number,   nullable: true,  desc: "dividend yield mensal." }
+  - { name: dy_pct,                 type: number,   nullable: true,  desc: "dividend yield em base anualizada." }
+  - { name: sum_anual_dy_amt,       type: number,   nullable: true,  desc: "doma dos proventos distribuídos no ano." }
+  - { name: last_dividend_amt,      type: number,   nullable: true,  desc: "valor do último dividendo pago." }
+  - { name: last_payment_date,      type: date,     nullable: true,  desc: "data do último pagamento de dividendo." }
+  - { name: market_cap_value,       type: number,   nullable: true,  desc: "valor de mercado." }
+  - { name: enterprise_value,       type: number,   nullable: true,  desc: "EV (valor da firma)." }
+  - { name: price_book_ratio,       type: number,   nullable: true,  desc: "relação preço/patrimônio (P/BV)." }
+  - { name: equity_per_share,       type: number,   nullable: true,  desc: "patrimônio líquido por cota." }
+  - { name: revenue_per_share,      type: number,   nullable: true,  desc: "receita por cota." }
+  - { name: dividend_payout_pct,    type: number,   nullable: true,  desc: "percentual de payout de dividendos." }
+  - { name: growth_rate,            type: number,   nullable: true,  desc: "crescimento estimado." }
+  - { name: cap_rate,               type: number,   nullable: true,  desc: "taxa de capitalização." }
+  - { name: leverage_ratio,         type: number,   nullable: true,  desc: "indicador de alavancagem." }
+  - { name: equity_value,           type: number,   nullable: true,  desc: "valor do patrimônio." }
+  - { name: variation_month_ratio,  type: number,   nullable: true,  desc: "variação percentual no mês." }
+  - { name: variation_year_ratio,   type: number,   nullable: true,  desc: "variação percentual no ano." }
+  - { name: equity_month_ratio,     type: number,   nullable: true,  desc: "variação do patrimônio no mês." }
+  - { name: dividend_reserve_amt,     type: number,   nullable: true,  desc: "reserva de dividendos." }
+  - { name: created_at,             type: datetime, nullable: false, desc: "data de criação." }
+  - { name: updated_at,             type: datetime, nullable: false, desc: "data da última atualização." }
+
+ordering: [ticker]
+
+presentation:
+  columns:
+    ticker:                 { as: string }    # código AAAA11
+    dy_monthly_pct:         { as: number }    # 0,85
+    dy_pct:                 { as: number }    # 10,20
+    sum_anual_dy_amt:       { as: number }    # 5.00
+    last_dividend_amt:      { as: number }    # 0.50
+    last_payment_date:      { as: date }      # 2023-12-15
+    market_cap_value:       { as: number }    # R$ 1 bilhão
+    enterprise_value:       { as: number }    # R$ 1.2 bilhão
+    price_book_ratio:       { as: number }    # 1.25%
+    equity_per_share:       { as: number }    # R$ 150.00
+    revenue_per_share:      { as: number }    # 10.00%
+    dividend_payout_pct:    { as: number }    # 80.00%
+    growth_rate:            { as: number }    # 5.00
+    cap_rate:               { as: number }    # 7.50
+    leverage_ratio:         { as: number }    # 0.30
+    equity_value:           { as: number }    # R$ 500 milhões
+    variation_month_ratio:  { as: number }    # 2.50
+    variation_year_ratio:   { as: number }    # 8.00
+    equity_month_ratio:     { as: number }    # 1.50
+    dividend_reserve_amt:     { as: number }    # R$ 2 milhões
+
+  rules: {}
+
+sample_questions:
+  - "qual o dividend yield mensal do HGLG11?"
+  - "me fale sobre o preço/patrimônio do KNRI11"
+  - "qual o valor de mercado do VISC11?"
+  - "qual a taxa de capitalização do MXRF11?"
+  - "qual a alavancagem do HGRU11?"
+  - "quais são as métricas financeiras do KNRI11?"
+  - "qual foi o último dividendo pago pelo HGLG11?"
+  - "qual a soma anual de dividendos do VISC11?"
+  - "qual a variação percentual do patrimônio do MXRF11 no mês?"
+  - "qual a reserva de dividendos do KNRI11?"
+  - "qual a receita por cota do HGRU11?"
+  - "qual o valor do patrimônio do VISC11?"
+  - "qual o crescimento estimado do MXRF11?"
+  - "qual o payout de dividendos do HGLG11?"
+  - "qual a variação percentual no ano do KNRI11?"
+  - "qual o enterprise value do HGRU11?"
+  - "qual o patrimônio líquido por cota do VISC11?"
+  - "qual a data do último pagamento de dividendos do MXRF11?"
+  - "quais são os indicadores financeiros do HGLG11?"
+  - "me fale sobre os indicadores financeiros do HGLG11"
+  - "quais são os dados financeiros do KNRI11?"
+  - "quais são os principais indicadores financeiros do VISC11?"
+  - "me fale sobre os dados financeiros do MXRF11"
+  - "quais são as métricas financeiras do HGRU11?"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: true
