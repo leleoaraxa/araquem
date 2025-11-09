@@ -34,3 +34,16 @@
 
 - LACUNA: Não há documentação de responsáveis por dados sensíveis (ex.: manutenção das views SQL ou compliance de `client_fiis_positions`); coordenar com equipe de dados/governança.
 - LACUNA: Ausência de mapa de owners para dashboards Grafana/alertas Prometheus; identificar time mantenedor para incidentes.
+
+
+<!-- ✅ confirmado: termos de domínio FIIs (ticker, dividendos, cotistas, IFIX, gestão, subsetor, etc.) extraídos corretamente de data/concepts/fiis.md. -->
+
+<!-- ✅ confirmado: mapeamento de responsabilidades por módulo segue estrutura app/, ex.:
+     planner (interpretação e roteamento), builder (SQL declarativo), executor (execução),
+     formatter (saída tabular), narrator (voz da SIRIOS), observability (métricas e tracing). -->
+
+<!-- ✅ confirmado: terminologia alinhada à ontologia; nomes PT-BR e intents idênticos. -->
+
+<!-- 🕳️ LACUNA: incluir “analytics” como módulo analítico emergente (explain.py, metrics.py, repository.py). -->
+
+<!-- 🕳️ LACUNA: registrar ownership futura de MLOps/RAG (responsável pela manutenção dos embeddings e índices). -->

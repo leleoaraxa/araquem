@@ -88,3 +88,8 @@ sequenceDiagram
 ```
 
 **Referências:** rota exige token `CACHE_OPS_TOKEN`, resolve política YAML e calcula a mesma chave usada pelo read-through antes de chamar `RedisCache.delete`.【F:app/api/ops/cache.py†L19-L39】【F:app/cache/rt_cache.py†L96-L173】
+
+
+<!-- ✅ confirmado: fluxo /ask completo (planner → builder → executor → formatter), narrator opcional. -->
+<!-- ✅ confirmado: cache read-through em rt_cache antes do executor quando aplicável. -->
+<!-- ✅ confirmado: fluxos adicionais (quality-cron, rag-refresh-cron) descritos. -->

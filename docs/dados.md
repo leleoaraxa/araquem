@@ -37,3 +37,14 @@
 
 - LACUNA: Schema da tabela `explain_events` não está versionado; documentar colunas e tipos no banco para evitar incompatibilidades.
 - LACUNA: Ausência de descrições para outras views citadas nas entidades (ex.: `fiis_processos`, `fiis_noticias`); solicitar documentação de origem e regras de atualização.
+
+
+<!-- ✅ confirmado: lista de entidades cobre todas as pastas em data/entities/. -->
+
+<!-- ✅ confirmado: campos essenciais (ticker, created_at, updated_at) e chaves coerentes com views.sql. -->
+
+<!-- ✅ confirmado: fontes e destinos de cada entidade (leitores: executor/pg.py, escritores: quality_cron + rag_refresh_cron). -->
+
+<!-- ✅ confirmado: política compute-on-read descrita, coerente com Guardrails Araquem v2.1.1. -->
+
+<!-- 🕳️ LACUNA: mencionar explicitamente explain_events (telemetria do planner) como entidade observável; consta em docs/database/views/tables.sql mas não no texto. -->

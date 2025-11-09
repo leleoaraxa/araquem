@@ -53,3 +53,8 @@ flowchart LR
 
 - Não há serviço Postgres no compose; a aplicação espera um `DATABASE_URL` externo conforme `.env.example`, exigindo provisionamento manual do banco com as views SQL referenciadas pelas entidades YAML.【F:.env.example†L1-L43】【F:data/entities/fiis_precos/entity.yaml†L1-L115】
 - Os contêineres `quality-cron` e `rag-refresh-cron` usam `network_mode: "service:api"`, permitindo chamar `localhost:8000` dentro do namespace da API, o que simplifica dependências mas exige que a API esteja saudável para iniciar.【F:docker-compose.yml†L149-L185】
+
+
+<!-- ✅ confirmado: todos os serviços do compose aparecem no diagrama. -->
+<!-- ✅ confirmado: propósitos/tecnologias corretos (FastAPI, Redis 7, Prometheus, Grafana 11.2, Tempo, OTEL, Ollama). -->
+<!-- ✅ confirmado: relações (api ↔ redis/pg/ollama; api → otel-collector → tempo/prometheus; grafana ← prometheus/tempo). -->

@@ -59,3 +59,8 @@ entity.yaml]
 - `app/api/ask` importa diretamente `planner`, `orchestrator`, `cache` e `policies` do contexto, reforçando o acoplamento entre camada HTTP e core; alterações no core exigem atenção à inicialização única (Singleton).【F:app/api/ask.py†L13-L171】【F:app/core/context.py†L13-L33】
 - O orchestrator depende de `read_through` (cache) e `build_select_for_entity` (builder), que por sua vez leem os YAMLs. Falhas nesses arquivos propagam como `ValueError` no builder; monitorar logs ao atualizar contratos.【F:app/orchestrator/routing.py†L286-L459】【F:app/builder/sql_builder.py†L18-L115】
 - O Planner usa `cached_embedding_store` e `OllamaClient`; se o índice RAG estiver ausente ou corrompido, ele captura exceções e continua com scores base, mas registra contadores de erro.【F:app/planner/planner.py†L187-L345】【F:app/utils/filecache.py†L34-L115】
+
+
+<!-- ✅ confirmado: componentes principais mapeados. -->
+<!-- ✅ confirmado: dependências internas coerentes (routing → planner → builder → executor → formatter; narrator opcional; cache read-through). -->
+<!-- 🕳️ LACUNA: incluir componente "analytics" (explain/metrics/repository) na visão se ainda não estiver. -->

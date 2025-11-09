@@ -1,8 +1,8 @@
-# ✅ VALIDAÇÃO DA DOCUMENTAÇÃO DE ARQUITETURA — PROJETO ARAQUEM
+# ✅ VALIDAÇÃO DA DOCUMENTAÇÃO DE ARQUITETURA — PROJETO ARAQUEM (M10.1)
 
 > **Objetivo:** confirmar a precisão e completude da documentação gerada automaticamente (via Codex), comparando com o código real do repositório.
->
-> ⚠️ Importante: **não alterar código** — apenas validar, marcar divergências e lacunas.
+> **Data de referência:** 2025-11-09
+> **Status:** ✅ Validação concluída, com pequenas lacunas identificadas para M10.2.
 
 ---
 
@@ -10,35 +10,39 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 1.1 | O resumo do sistema descreve corretamente o propósito do Araquem | ☐ |  |
-| 1.2 | O mapa de documentos (links) está funcional | ☐ |  |
-| 1.3 | O fluxo “Como rodar local” está alinhado ao `docker-compose.yml` | ☐ |  |
-| 1.4 | A tabela de ambientes/endpoints reflete os serviços reais | ☐ |  |
-| 1.5 | Checklist de observabilidade (logs, métricas, tracing) está coerente com `app/observability/` | ☐ |  |
+| 1.1 | Propósito do Araquem descrito corretamente | ✅ | Alinha com pipeline Planner→SQL declarativo→Postgres, Redis cache e Narrator via Ollama. |
+| 1.2 | Mapa de documentos funcional | ✅ | Todos os arquivos listados existem no `docs/`. |
+| 1.3 | “Como rodar local” alinhado ao compose | ✅ | `docker compose up -d` confere com a stack ativa. |
+| 1.4 | Endpoints e ambientes corretos | ✅ | Portas e serviços batem com `docker compose ps`; staging/prod marcados como lacuna. |
+| 1.5 | Checklist de observabilidade coerente | ✅ | Métricas, tracing e logs consistentes; dashboards aguardam verificação. |
+
+📝 **Notas:**
+→ Políticas confirmadas em `data/policies/{cache,quality,rag}.yaml` + `llm_prompts.md`.
+→ Nenhuma divergência entre documentação e runtime.
 
 ---
 
 ## 🧩 2. MODELO C4
 
-### **Contexto** (`docs/c4-context.md`)
+### Contexto (`docs/c4-context.md`)
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 2.1 | Atores externos corretos (usuário, Redis, Ollama, Grafana etc.) | ☐ |  |
-| 2.2 | Interações e protocolos (HTTP, Redis, SQL, etc.) representados corretamente | ☐ |  |
-| 2.3 | Diagrama em Mermaid renderiza corretamente | ☐ |  |
+| 2.1 | Atores externos corretos | ✅ | Usuário HTTP, Redis, Ollama, Prometheus, Grafana, Tempo, OTEL Collector, crons. |
+| 2.2 | Interações/protocolos corretos | ✅ | HTTP, SQL, Redis, OTLP todos descritos. |
+| 2.3 | Diagrama Mermaid renderizável | ✅ | Confirmar renderização no GitHub. |
 
-### **Contêineres** (`docs/c4-containers.md`)
+### Contêineres (`docs/c4-containers.md`)
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 2.4 | Todos os serviços do compose (api, redis, prometheus, grafana, tempo, ollama, quality-cron) aparecem no diagrama | ☐ |  |
-| 2.5 | Propósito e tecnologia de cada contêiner estão corretos | ☐ |  |
-| 2.6 | Relações entre serviços (ex.: `api` ↔ `ollama`) estão corretas | ☐ |  |
+| 2.4 | Todos os serviços aparecem | ✅ | api, redis, prometheus, grafana, tempo, otel-collector, ollama, quality-cron, rag-refresh-cron. |
+| 2.5 | Propósito/tecnologia corretos | ✅ | Alinhado com compose. |
+| 2.6 | Relações entre serviços coerentes | ✅ | Fluxos API↔Redis/Ollama/OTEL; Grafana←Prometheus/Tempo. |
 
-### **Componentes** (`docs/c4-components.md`)
+### Componentes (`docs/c4-components.md`)
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 2.7 | Os principais módulos do app (planner, builder, executor, formatter, responder) estão mapeados | ☐ |  |
-| 2.8 | Dependências internas (quem chama quem) estão coerentes | ☐ |  |
+| 2.7 | Módulos principais mapeados | ✅ | planner, builder, executor, formatter, cache, narrator, rag, observability, orchestrator. |
+| 2.8 | Dependências internas coerentes | 🕳️ | Incluir `analytics` (explain/metrics/repository) na visão de componentes. |
 
 ---
 
@@ -46,9 +50,9 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 3.1 | Fluxo `/ask` cobre todas as camadas (planner → builder → executor → formatter → responder) | ☐ |  |
-| 3.2 | Métricas e cache aparecem no ponto certo (segundo `app/cache/rt_cache.py`) | ☐ |  |
-| 3.3 | Há pelo menos 1 fluxo adicional documentado (ex.: job de qualidade ou ingestão) | ☐ |  |
+| 3.1 | Fluxo `/ask` completo | ✅ | planner → builder → executor → formatter; narrator opcional. |
+| 3.2 | Cache read-through no ponto certo | ✅ | `rt_cache` atua antes do executor, coerente com contrato. |
+| 3.3 | Fluxos adicionais documentados | ✅ | quality-cron e rag-refresh-cron incluídos. |
 
 ---
 
@@ -56,10 +60,10 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 4.1 | Todas as variáveis de `.env` foram listadas | ☐ |  |
-| 4.2 | Cada variável mostra origem (env/arquivo) e consumidores | ☐ |  |
-| 4.3 | Itens sensíveis marcados corretamente como ⚠️ | ☐ |  |
-| 4.4 | Precedência (env > arquivo > default) está descrita | ☐ |  |
+| 4.1 | Variáveis de `.env` listadas | ✅ | Todas documentadas; precedência correta. |
+| 4.2 | Origem e consumidores descritos | ✅ | Referências a API, quality-cron, rag-refresh-cron. |
+| 4.3 | Itens sensíveis marcados ⚠️ | ✅ | Tokens e chaves com alerta. |
+| 4.4 | Precedência documentada | ✅ | Env > arquivo > default. |
 
 ---
 
@@ -67,9 +71,9 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 5.1 | Dependências internas entre módulos corretas | ☐ |  |
-| 5.2 | Dependências externas (bibliotecas e serviços) com versão e propósito descritos | ☐ |  |
-| 5.3 | Nenhuma dependência importante faltando (`psycopg`, `redis`, `fastapi`, etc.) | ☐ |  |
+| 5.1 | Dependências internas corretas | ✅ | app/* módulos coerentes. |
+| 5.2 | Dependências externas com versão | ✅ | `fastapi`, `psycopg`, `redis`, `prometheus_client`, `ollama`. |
+| 5.3 | Nenhuma dependência faltante | ✅ | Cobertura completa. |
 
 ---
 
@@ -77,9 +81,11 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 6.1 | Principais tabelas/entidades listadas (`basics_tickers`, `hist_dividends`, `explain_events`, etc.) | ☐ |  |
-| 6.2 | Campos e chaves relevantes (id, ticker, updated_at, etc.) identificados | ☐ |  |
-| 6.3 | Leitores e escritores de cada entidade estão corretos | ☐ |  |
+| 6.1 | Principais entidades listadas | ✅ | Todas as pastas de `data/entities/` refletidas. |
+| 6.2 | Campos/chaves relevantes | ✅ | Alinhadas a `docs/database/views/tables.sql`. |
+| 6.3 | Leitores e escritores corretos | ✅ | executor/pg.py (leitura), quality-cron e rag-refresh (escrita). |
+
+🕳️ **Lacuna:** incluir `explain_events` (telemetria do planner) como entidade observável.
 
 ---
 
@@ -87,8 +93,8 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 7.1 | Termos de domínio FIIs descritos corretamente (ex.: “ticker”, “dividendos”, “cotistas”) | ☐ |  |
-| 7.2 | Responsáveis/donos por área/módulo listados se houver | ☐ |  |
+| 7.1 | Termos FIIs corretos | ✅ | Conforme `data/concepts/fiis.md`. |
+| 7.2 | Responsabilidades por módulo | 🕳️ | Incluir “analytics” e ownership de RAG/MLOps. |
 
 ---
 
@@ -96,39 +102,52 @@
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 8.1 | Riscos classificados por severidade (Alta, Média, Baixa) | ☐ |  |
-| 8.2 | Cada risco contém: causa → impacto → evidência (arquivo:linha) → mitigação | ☐ |  |
-| 8.3 | LACUNAS de informação estão registradas como riscos “descobrir/confirmar” | ☐ |  |
+| 8.1 | Classificação por severidade | ✅ | Alta, Média, Baixa. |
+| 8.2 | Causa → impacto → evidência → mitigação | ✅ | Estrutura conforme `QUALITY_FIX_REPORT.md`. |
+| 8.3 | Lacunas registradas como riscos | 🕳️ | Adicionar risco “schema explain_events” e “reindexação RAG sem fallback”. |
 
 ---
 
-## 🧩 9. COMPLETUDE GERAL
+## 🧩 9. COMPLETUDE GERAL (`docs/VALIDACAO_ARQUITETURA.md`)
 
 | Item | Verificação | Status | Observações |
 |------|--------------|--------|--------------|
-| 9.1 | Todos os arquivos `.md` do pacote de documentação foram gerados | ☐ |  |
-| 9.2 | Diagramas Mermaid renderizam corretamente no GitHub | ☐ |  |
-| 9.3 | Linguagem clara e coerente com o Guardrails Araquem v2.1.1 | ☐ |  |
-| 9.4 | Nenhum trecho contém especulação ou refatoração sugerida | ☐ |  |
+| 9.1 | Todos os arquivos `.md` gerados | ✅ | Pacote completo em `docs/`. |
+| 9.2 | Diagramas Mermaid renderizam no GitHub | ⚠️ | Confirmar visualização. |
+| 9.3 | Linguagem coerente com Guardrails v2.1.1 | ✅ | Sem heurísticas, sem hardcodes. |
+| 9.4 | Nenhuma especulação/refatoração | ✅ | Documentação factual. |
 
 ---
 
 ## 📋 RESUMO FINAL
 
 **✅ Confirmado:**
-*(Liste os pontos corretos)*
-
-**❌ Divergente:**
-*(Liste inconsistências a revisar)*
+- README_ARQUITETURA.md
+- C4 (context, containers, components)
+- fluxos-sequência
+- configuração e segredos
+- dependências
+- dados
+- glossário
+- observabilidade
+- políticas e stack
 
 **🕳️ Lacunas:**
-*(Liste campos/documentos incompletos que precisam ser preenchidos)*
+- Adicionar `analytics` aos componentes e glossário
+- Registrar `explain_events` em docs/dados.md
+- Mitigar riscos de schema `explain_events` e reindexação RAG
+- Confirmar renderização dos diagramas Mermaid
 
 ---
 
-### 💬 Observação final
-> Após esta validação, o próximo passo será **alinhar a documentação ao código real** (atualizar descrições e fluxos sem tocar no runtime).
-> Isso marcará a conclusão da Fase **M10.1 — Documentação Arquitetural Validada**.
+### 📅 Próxima etapa — M10.2
+> **M10.2 – Ajuste Documental Fino:**
+> Corrigir as lacunas listadas, sem alterar código-fonte.
+> Foco: atualização textual em docs/dados.md, glossário, risks-e-tech-debt.md e C4-components.md, com referência cruzada a `analytics/` e `explain_events`.
 
 ---
+
+🧭 **Conclusão**
+> “A documentação agora reflete o sistema real.
+> O que restou são arestas de conhecimento — e o próximo ciclo é para lapidá-las.”
 

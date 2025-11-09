@@ -12,3 +12,17 @@
 | Média | Fallback do Narrator não monitora estado do Ollama (shadow mode default true) | Latências ou erros silenciosos podem não ser percebidos; experiência textual depende de logs manuais | 【F:.env.example†L15-L18】【F:app/api/ask.py†L179-L254】【F:app/narrator/narrator.py†L71-L120】 | Adicionar métricas/alertas para `sirios_narrator_shadow_total` e documentar estratégia de rollout do Narrator. |
 | Baixa | Ausência de owners formais para views SQL e dashboards | Dificulta escalonamento de incidentes e manutenção coordenada | 【F:data/entities/client_fiis_positions/entity.yaml†L1-L77】【F:Makefile†L58-L90】 | Definir responsáveis em documentação externa, vincular CODEOWNERS/ADR para dados e observabilidade. |
 | LACUNA | Não há detalhes sobre SLA de atualização das views (`refresh_at` é apenas anotação) | Planejamento de cache/expiração pode estar desalinhado com ingestão real | 【F:data/policies/cache.yaml†L8-L71】 | Confirmar com equipe de dados e registrar SLA oficial. |
+
+
+<!-- ✅ confirmado: riscos classificados por severidade (Alta, Média, Baixa). -->
+
+<!-- ✅ confirmado: estrutura causa → impacto → evidência (arquivo:linha) → mitigação existente, coerente com dados de QUALITY_FIX_REPORT.md. -->
+
+<!-- ✅ confirmado: riscos de qualidade e cache cobertos (política de TTL, validade de embeddings, consistência de ontologia). -->
+
+<!-- ✅ confirmado: dívidas técnicas rastreadas no audit de hardcodes (docs/misc/notes/hardcode_census_M9.md). -->
+
+<!-- 🕳️ LACUNA: incluir novo risco “desalinhamento entre explain_events e observability runtime”
+     — identificado no M9 como potencial divergência de schema; verificar sincronização entre app/analytics/explain.py e tabelas SQL. -->
+
+<!-- 🕳️ LACUNA: adicionar mitigação para rotinas RAG (reindexação automática), pois ainda dependem de cron e não há fallback documentado. -->

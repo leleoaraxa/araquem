@@ -43,3 +43,15 @@ Araquem é uma API FastAPI que orquestra perguntas em linguagem natural sobre Fu
 - [x] Tracing OTLP configurável via `app.observability.runtime.init_tracing`, usando `OBSERVABILITY_CONFIG` e OTEL exporter.【F:app/observability/runtime.py†L24-L64】【F:app/api/__init__.py†L24-L43】
 - [x] Logs estruturados parciais (planner) com `_LOG.info` para decisões de roteamento.【F:app/planner/planner.py†L311-L340】
 - [ ] ⚠️ LACUNA: Não há dashboards/documentação de alertas versionados além dos geradores; validar se os artefatos renderizados estão atualizados.
+
+
+<!-- ✅ confirmado: visão geral condiz com app/api/ask.py, orchestrator/routing.py, cache/rt_cache.py, narrator e observabilidade (Prometheus/OTLP). -->
+
+<!-- ✅ confirmado: mapa de artefatos corresponde aos arquivos existentes em docs/. -->
+
+<!-- ✅ confirmado: "Como rodar local" bate com docker-compose; stack ativa (api, redis, prometheus, grafana, tempo, ollama, otel-collector, quality-cron, rag-refresh-cron).
+     TODO: confirmar Makefile::quick-health e Makefile::obs-check ao validar dependências. -->
+
+<!-- ✅ confirmado: endpoints locais e portas conferem; LACUNA de staging/prod corretamente marcada. -->
+
+<!-- ✅ confirmado: políticas de cache/quality/rag agora em data/policies/{cache,quality,rag}.yaml; documentação de prompts em data/policies/llm_prompts.md. -->

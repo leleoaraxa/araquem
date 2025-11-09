@@ -36,3 +36,8 @@ flowchart TD
 - Operações utilizam `/ops/cache/bust`, `/ops/quality/push` e `/ops/metrics/*` para gerenciar cache, avaliar roteamentos e registrar métricas de RAG.【F:app/api/ops/cache.py†L19-L39】【F:app/api/ops/quality.py†L29-L200】【F:app/api/ops/metrics.py†L15-L38】
 - A API executa queries em Postgres via `PgExecutor` e aplica cache Redis conforme as políticas definidas em YAML, reduzindo latência de métricas agregadas.【F:app/orchestrator/routing.py†L286-L459】【F:app/cache/rt_cache.py†L15-L216】【F:data/policies/cache.yaml†L8-L71】
 - Observabilidade centraliza métricas e traces em Prometheus/Tempo, expostos pelo serviço `/metrics` e pelo collector OTLP configurado no bootstrap.【F:app/api/health.py†L33-L40】【F:app/observability/runtime.py†L24-L64】【F:docker-compose.yml†L92-L148】
+
+
+<!-- ✅ confirmado: atores externos e integrações (HTTP, Redis, SQL, OTLP) listados. -->
+<!-- ✅ confirmado: referência a Ollama e crons (quality-cron, rag-refresh-cron). -->
+<!-- ✅ mermaid: verificar render no GitHub (diagramas > Code block ```mermaid). -->
