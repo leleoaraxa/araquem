@@ -1,0 +1,53 @@
+locale: pt_BR
+
+separators:
+  decimal: ","
+  thousands: "."
+
+rounding:
+  mode: "half_away"      # half_even | half_away
+  step: 0.01
+
+currency:
+  symbol: "R$"
+  space: true            # "R$ 10,90"
+  negative: "prefix"     # -R$ 10,90
+  precision: 2
+  thousands: true
+  trim_trailing_zeros: false
+
+percent:
+  symbol: "%"
+  space: false           # "0,99%"
+  multiply_by_100: true  # 0.0099 → 0,99%
+  precision: 2
+  min_decimals: 2
+  max_decimals: 2
+  thousands: false
+  trim_trailing_zeros: false
+  small_percent_auto:
+    threshold: 0.001     # <0,1% ganha mais casas
+    max_decimals: 4
+
+number:
+  precision: 2
+  min_decimals: 0
+  max_decimals: 3
+  thousands: true
+  trim_trailing_zeros: true
+  big_int_grouping: true
+
+# Overrides por entidade/coluna (aplicação no M12 pelo formatter)
+overrides:
+  fiis_metrics:
+    total_dividends: { type: currency }                 # "R$ 10,90"
+    avg_dividend:    { type: currency }                 # "R$ 0,25"
+    payout_ratio:    { type: percent, precision: 2 }    # "0,99%"
+    window_months:   { type: integer }                  # "12"
+  fiis_financials_snapshot:
+    vacancy_rate:    { type: percent, precision: 2 }    # "5,31%"
+    net_worth:       { type: currency, precision: 0 }   # "1.298"
+  fiis_precos:
+    price:           { type: currency }                 # "R$ 98,76"
+    change_1d:       { type: percent, precision: 2 }    # "0,86%"
+    change_12m:      { type: percent, precision: 2 }    # "12,34%"

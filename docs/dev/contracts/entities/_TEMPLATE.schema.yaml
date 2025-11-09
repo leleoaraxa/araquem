@@ -1,0 +1,22 @@
+# Contrato lógico de schema para respostas de entidade
+entity: fiis_metrics            # nome canônico da entidade
+kind: view                      # view | table | derived
+version: 1                      # versiona o contrato lógico
+columns:
+  - { name: ticker,         type: string,   nullable: false, desc: "Código AAAA11" }
+  - { name: window_months,  type: integer,  nullable: false, desc: "Janela (meses)" }
+  - { name: total_dividends,type: number,   nullable: true,  desc: "Soma de dividendos na janela" }
+  # …
+ordering:
+  - ticker
+  - window_months
+notes:
+  - "Contrato lógico: valida shape do formatter (nível /ask), não o SQL físico."
+  - "Tipos aceitos: string | number | integer | boolean | date | datetime | object | array"
+sample_questions:
+  - "soma de dividendos do HGLG11 nos últimos 12 meses"
+  - "métricas do HGLG11 em 6 meses"
+tolerance:
+  extra_columns_allowed: false  # falha se vier coluna fora do contrato
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: true

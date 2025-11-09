@@ -1,0 +1,51 @@
+entity: fiis_imoveis
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,              type: string,   nullable: false }
+  - { name: asset_name,          type: string,   nullable: false, desc: "Nome do imóvel ou ativo operacional" }
+  - { name: asset_class,         type: string,   nullable: false, desc: "imóveis para renda acabados, imóveis para renda em construção" }
+  - { name: asset_address,       type: string,   nullable: true,  desc: "endereço ou localização" }
+  - { name: total_area,          type: number,   nullable: true,  desc: "área total do imóvel em metros quadrados" }
+  - { name: units_count,         type: integer,  nullable: true,  desc: "número de unidades/vagas/lojas do ativo" }
+  - { name: vacancy_ratio,       type: number,   nullable: true,  desc: "percentual de vacância do ativo" }
+  - { name: non_compliant_ratio, type: number,   nullable: true,  desc: "percentual de inadimplência associado ao ativo" }
+  - { name: assets_status,       type: string,   nullable: true,  desc: "status operacional do ativo" }
+  - { name: created_at,          type: datetime, nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,          type: datetime, nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [ticker, asset_name]
+
+presentation:
+  columns:
+    ticker: { as: string }                  # código AAAA11
+    asset_name: { as: string }              # Edifício Comercial Alpha
+    asset_address: { as: string }           # Av. Paulista, 1000, São Paulo, SP
+    total_area: { as: number }              # 5.975 m²
+    units_count: { as: integer }            # 12 unidades
+    vacancy_ratio: { as: percentage }       # 8.54%
+    non_compliant_ratio: { as: percentage } # 2.35%
+    assets_status: { as: string }           # Ativo / Inativo
+
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "imoveis do LFTT11"
+  - "lista de propriedades do RBVA11"
+  - "classe dos imoveis do XPIN11"
+  - "endereco dos ativos do ROOF11"
+  - "vacancia dos ativos do BVAR11"
+  - "unidades dos ativos do HGRU11"
+  - "area total dos imoveis do LFTT11"
+  - "status dos imoveis do RBVA11"
+  - "o RBVA11 tem algum imóvel inativo?"
+  - "percentual de vacância do RBVA11"
+  - "percentual de inadimplência do RBVA11"
+  - "quantas unidades o XPIN11 possui?"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false
