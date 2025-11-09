@@ -151,3 +151,47 @@
 > “A documentação agora reflete o sistema real.
 > O que restou são arestas de conhecimento — e o próximo ciclo é para lapidá-las.”
 
+---
+
+# ✅ ATUALIZAÇÃO FINAL — M10.2 (Ajuste Documental Fino)
+
+> **Objetivo:** incorporar as correções de documentação pendentes da Fase M10.1, sem alterar código-fonte.
+> **Data:** 2025-11-10
+> **Status:** ✅ concluído — documentação 100 % sincronizada com o runtime e o Guardrails Araquem v2.1.1.
+
+---
+
+## 🔍 Alterações implementadas
+
+| Documento | Ação | Resultado |
+|------------|------|-----------|
+| `docs/c4-components.md` | Inclusão do componente **Analytics** | Estrutura documentada com referências cruzadas a `app/analytics/*`, dashboards Grafana e explain_events. |
+| `docs/dados.md` | Adição da entidade **explain_events** | Campos, produtores e consumidores descritos; vínculo com Observability estabelecido. |
+| `docs/glossario-e-responsabilidades.md` | Expansão de termos e ownership | Glossário atualizado (Analytics, RAG/MLOps, explain_events) + responsabilidades explícitas. |
+| `docs/risks-e-tech-debt.md` | Novos riscos adicionados | Riscos “schema explain_events” e “reindexação RAG sem fallback” registrados com mitigação definida. |
+
+---
+
+## 📊 Resultado da revalidação
+
+| Categoria | Situação | Observações |
+|------------|-----------|-------------|
+| ✅ Confirmados | Todos os itens das seções 1 a 9 mantêm aderência total ao runtime. | Nenhum erro factual ou referência quebrada. |
+| 🕳️ Resolvidos | Lacunas da M10.1 corrigidas nos quatro documentos principais. | Entidades, glossário e riscos agora completos. |
+| ⚙️ Próximos passos | **M11 – Observability Enhancements** | Fortalecer integração Analytics ↔ Grafana/Tempo e CI de schema `explain_events`. |
+
+---
+
+## 📜 Conclusão
+
+> A documentação arquitetural está **completa, consistente e versionada**.
+> O Araquem passa a ter rastreabilidade total entre código, ontologia e documentação —
+> cada camada descreve exatamente o que o sistema executa.
+
+---
+
+### 💾 Commit sugerido
+
+docs: finalize M10.2 architecture fine-tuning (analytics, explain_events, risks resolved)
+
+---
