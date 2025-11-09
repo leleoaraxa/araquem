@@ -60,7 +60,22 @@ entity.yaml]
 - O orchestrator depende de `read_through` (cache) e `build_select_for_entity` (builder), que por sua vez leem os YAMLs. Falhas nesses arquivos propagam como `ValueError` no builder; monitorar logs ao atualizar contratos.【F:app/orchestrator/routing.py†L286-L459】【F:app/builder/sql_builder.py†L18-L115】
 - O Planner usa `cached_embedding_store` e `OllamaClient`; se o índice RAG estiver ausente ou corrompido, ele captura exceções e continua com scores base, mas registra contadores de erro.【F:app/planner/planner.py†L187-L345】【F:app/utils/filecache.py†L34-L115】
 
+### Analytics
+
+Camada dedicada a **telemetria analítica** e **explicabilidade de execução**.
+
+- **Escopo:** registrar, consultar e correlacionar eventos de execução do pipeline (planner → builder → executor → formatter), suportando análises de qualidade e performance.
+- **Artefatos principais:**
+  - Código: `app/analytics/explain.py`, `app/analytics/metrics.py`, `app/analytics/repository.py`
+  - Dados: **`explain_events`** (tabela de telemetria) – ver `docs/dados.md`
+- **Integrações:**
+  - Observabilidade (Prometheus/Tempo/OTEL) via `app/observability/*`
+  - Dashboards em `grafana/dashboards/*` (ex.: *20_planner_rag_intelligence*)
+  - Qualidade operacional em `data/ops/quality/*` e `scripts/quality/*`
+- **Responsabilidade:** prover insumos para inspeção (Explain) e métricas derivadas, sem interferir no runtime de orquestração.
+
 
 <!-- ✅ confirmado: componentes principais mapeados. -->
 <!-- ✅ confirmado: dependências internas coerentes (routing → planner → builder → executor → formatter; narrator opcional; cache read-through). -->
 <!-- 🕳️ LACUNA: incluir componente "analytics" (explain/metrics/repository) na visão se ainda não estiver. -->
+

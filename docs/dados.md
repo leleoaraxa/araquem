@@ -15,6 +15,22 @@
 | `client_fiis_positions` (`positions`) ⚠️ | `client_fiis_positions` | `document_number`, `position_date`, `ticker`, `qty`, `closing_price` | Entidade privada (`private: true`), exige parâmetro `document_number` e não habilita agregações | 【F:data/entities/client_fiis_positions/entity.yaml†L1-L77】 |
 | `fiis_metrics` (`fii_metrics`) | `fiis_metrics` | Métricas agregadas configuráveis (dividends_sum, dy_avg etc.) | Depende de políticas de cache com exceções `deny_if` para janela `count=1` | 【F:data/entities/fiis_metrics/entity.yaml†L1-L120】【F:data/policies/cache.yaml†L29-L37】 |
 
+
+#### explain_events (telemetria de execução)
+
+- **Finalidade:** armazenar eventos de explicação e diagnóstico do pipeline de perguntas/respostas (ex.: decisão do planner, entidade/intent escolhidas, SQL renderizado, latência, cache policy).
+- **Principais campos:**
+  `id` (chave), `ts`, `request_id`, `question`, `intent`, `entity`, `route_id`,
+  `features` (JSONB), `sql_view`, `sql_hash`, `cache_policy`, `latency_ms`,
+  `gold_expected_entity` (opt), `gold_expected_intent` (opt), `gold_agree` (opt).
+- **Produtores/Consumidores:**
+  - **Produtores:** `app/analytics/explain.py` (pipeline explain)
+  - **Consumidores:** dashboards Grafana (ex.: *20_planner_rag_intelligence*), rotinas de qualidade (`scripts/quality/*`)
+- **Observações:**
+  - não é fonte de verdade de domínio; é **telemetria**.
+  - manter **retention/limpeza** alinhadas às políticas de observabilidade.
+
+
 ## Regras declarativas de dados
 
 - **Agregações temporais**: `data/ops/param_inference.yaml` define inferência por intent (`dividendos`, `precos`, `metricas`) mapeando palavras-chave a `window`, `metric` e limites. O orchestrator combina essas regras com os campos `aggregations` das entidades para montar SQL com janelas coerentes.【F:data/ops/param_inference.yaml†L1-L64】【F:app/orchestrator/routing.py†L288-L318】

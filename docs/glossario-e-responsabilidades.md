@@ -18,6 +18,16 @@
 | **Explain Analytics** | Payload estruturado que resume decisão do planner e métricas de execução, anexado ao response e opcionalmente persistido. | 【F:app/analytics/explain.py†L1-L160】【F:app/api/ask.py†L255-L299】 |
 | **Quality Gate** | Processo automatizado que avalia acurácia do planner e métricas de RAG usando rotas `/ops/quality/push`. | 【F:app/api/ops/quality.py†L29-L200】【F:scripts/quality/quality_push_cron.py†L21-L226】 |
 
+##### Analytics
+Conjunto de componentes responsáveis por **explicabilidade** e **métricas analíticas** do pipeline. Abrange `app/analytics/*` e **dashboards** dedicados.
+
+##### RAG / MLOps
+Rotinas e práticas de **gestão do índice vetorial** e **ciclo de embeddings** (construção, refresh e avaliação). Ver `data/embeddings/*`, `scripts/embeddings/*`, crons `rag-refresh-cron`.
+
+##### explain_events
+**Tabela de telemetria** com eventos de execução do `/ask` (decisões do planner, SQL, latência). Base para Explain e painéis de qualidade.
+
+
 ## Responsabilidades técnicas
 
 | Área / Componente | Responsável primário | Escopo | Evidência |
@@ -29,6 +39,13 @@
 | Narrativa (`app/narrator`) | Squad Experiência | Prompting, fallback e controle de Shadow Mode para respostas naturais. | 【F:app/narrator/narrator.py†L71-L120】【F:app/api/ask.py†L200-L254】 |
 | Observabilidade (`app/observability`, scripts) | Squad Observabilidade | Configuração de métricas, tracing, dashboards e coletores Prometheus/Grafana/Tempo. | 【F:app/observability/runtime.py†L17-L96】【F:data/ops/observability.yaml†L1-L120】【F:Makefile†L58-L90】 |
 | Qualidade & Crons (`scripts/quality`, `docker-compose` crons) | Squad Ops/Qualidade | Executar quality gate, refresh RAG, integrar com tokens e métricas de monitoramento. | 【F:docker-compose.yml†L149-L185】【F:scripts/quality/quality_push_cron.py†L21-L226】 |
+
+**Responsabilidades (Ownership)**
+
+- **Analytics:** manutenção de `app/analytics/*`, consistência de schema de `explain_events`, provisionamento de métricas derivadas.
+- **RAG/MLOps:** operação de `rag-refresh-cron`, qualidade do índice (`scripts/embeddings/*`), auditoria periódica de manifest/embeddings.
+- **Observability:** integridade de métricas (Prometheus), tracing (Tempo/OTEL) e dashboards versionados (`grafana/*`).
+
 
 ## Lacunas
 

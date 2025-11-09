@@ -13,6 +13,20 @@
 | Baixa | Ausência de owners formais para views SQL e dashboards | Dificulta escalonamento de incidentes e manutenção coordenada | 【F:data/entities/client_fiis_positions/entity.yaml†L1-L77】【F:Makefile†L58-L90】 | Definir responsáveis em documentação externa, vincular CODEOWNERS/ADR para dados e observabilidade. |
 | LACUNA | Não há detalhes sobre SLA de atualização das views (`refresh_at` é apenas anotação) | Planejamento de cache/expiração pode estar desalinhado com ingestão real | 【F:data/policies/cache.yaml†L8-L71】 | Confirmar com equipe de dados e registrar SLA oficial. |
 
+**Risco:** Divergência de schema em `explain_events`
+- **Severidade:** Média
+- **Causa:** evolução assíncrona entre `app/analytics/explain.py` e a definição SQL (docs/database/views/tables.sql)
+- **Impacto:** quebras silenciosas em painéis e análises; vazios de telemetria
+- **Evidência:** dependências fortes em dashboards Grafana (*20_planner_rag_intelligence*)
+- **Mitigação:** auditoria de schema na CI + teste de contrato (`tests/explain/*`); checklist em M11 de Observability
+
+**Risco:** Reindexação RAG sem fallback operacional
+- **Severidade:** Alta
+- **Causa:** dependência exclusiva do `rag-refresh-cron` para rebuild/refresh do índice
+- **Impacto:** degradação de recall/precision em consultas sem sinalização clara
+- **Evidência:** pipelines `scripts/embeddings/embeddings_build.py`, `data/embeddings/store/`
+- **Mitigação:** procedimento de **fallback** documentado (índice anterior) + alarme de desvio de qualidade + teste periódico de sanidade (`scripts/embeddings/rag_retrieval_eval.py`)
+
 
 <!-- ✅ confirmado: riscos classificados por severidade (Alta, Média, Baixa). -->
 
