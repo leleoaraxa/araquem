@@ -9,12 +9,20 @@
     "treynor_ratio",
     "jensen_alpha",
     "beta_index",
+    "sortino_ratio",
+    "max_drawdown",
+    "r_squared",
     "created_at",
     "updated_at"
   ],
   "samples": [
     { "question": "volatilidade e sharpe do GFDL11" },
     { "question": "treynor e jensen do STRX11" },
-    { "question": "beta do AZPL11" }
+    { "question": "beta do AZPL11" },
+    { "question": "sortino do HGLG11" },
+    { "question": "drawdown do KNRI11" },
+    { "question": "r2 do VISC11" },
+    { "question": "quais os indicadores financeiros de risco do XPML11" },
+    { "question": "me mostre os indicadores financeiros de risco do HCTR11" }
   ]
 }

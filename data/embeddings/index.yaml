@@ -24,6 +24,10 @@ include:
     path: data/concepts/fiis.md
     tags: [concepts, fiis]
 
+  - id: indicators-catalog
+    path: data/raw/indicators/catalog.md
+    tags: [concepts, indicators, risk, performance, fiis]
+
   # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────
   - id: ontology-entity
     path: data/ontology/entity.yaml
@@ -81,7 +85,6 @@ include:
   - id: entity-fiis-financials-revenue-hints
     path: data/entities/fiis_financials_revenue_schedule/hints.md
     tags: [entities, fiis, financials, revenue, "entity:fiis_financials_revenue_schedule"]
-
 
   - id: entity-client-fiis-positions
     path: data/entities/client_fiis_positions/entity.yaml

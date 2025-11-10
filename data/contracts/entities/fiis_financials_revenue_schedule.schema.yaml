@@ -30,24 +30,24 @@ ordering: [ticker]
 presentation:
   columns:
     ticker: { as: string }                       # código AAAA11
-    revenue_due_0_3m_pct: { as: percent, precision: 2 }        # 12.34%
-    revenue_due_3_6m_pct: { as: percent, precision: 2 }        # 12.34%
-    revenue_due_6_9m_pct: { as: percent, precision: 2 }        # 12.34%
-    revenue_due_9_12m_pct: { as: percent, precision: 2 }       # 12.34%
-    revenue_due_12_15m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_15_18m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_18_21m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_21_24m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_24_27m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_27_30m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_30_33m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_33_36m_pct: { as: percent, precision: 2 }      # 12.34%
-    revenue_due_over_36m_pct: { as: percent, precision: 2 }    # 12.34%
-    revenue_due_undetermined_pct: { as: percent, precision: 2 } # 12.34%
-    revenue_igpm_pct: { as: percent, precision: 2 }            # 12.34%
-    revenue_inpc_pct: { as: percent, precision: 2 }            # 12.34%
-    revenue_ipca_pct: { as: percent, precision: 2 }            # 12.34%
-    revenue_incc_pct: { as: percent, precision: 2 }            # 12.34%
+    revenue_due_0_3m_pct: { as: percent, multiply_by_100: true, precision: 2 }        # 12.34%
+    revenue_due_3_6m_pct: { as: percent, multiply_by_100: true, precision: 2 }        # 12.34%
+    revenue_due_6_9m_pct: { as: percent, multiply_by_100: true, precision: 2 }        # 12.34%
+    revenue_due_9_12m_pct: { as: percent, multiply_by_100: true, precision: 2 }       # 12.34%
+    revenue_due_12_15m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_15_18m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_18_21m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_21_24m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_24_27m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_27_30m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_30_33m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_33_36m_pct: { as: percent, multiply_by_100: true, precision: 2 }      # 12.34%
+    revenue_due_over_36m_pct: { as: percent, multiply_by_100: true, precision: 2 }    # 12.34%
+    revenue_due_undetermined_pct: { as: percent, multiply_by_100: true, precision: 2 } # 12.34%
+    revenue_igpm_pct: { as: percent, multiply_by_100: true, precision: 2 }            # 12.34%
+    revenue_inpc_pct: { as: percent, multiply_by_100: true, precision: 2 }            # 12.34%
+    revenue_ipca_pct: { as: percent, multiply_by_100: true, precision: 2 }            # 12.34%
+    revenue_incc_pct: { as: percent, multiply_by_100: true, precision: 2 }            # 12.34%
 
   rules:
     percent_precision: 2

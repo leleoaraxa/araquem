@@ -681,7 +681,7 @@ ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
 CREATE OR REPLACE VIEW fiis_financials_risk AS
 SELECT
   ticker,
-  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index,
+  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, 0 AS sortino_ratio, 0 AS max_drawdown, 0 AS r_squared, 
   created_at, updated_at
 FROM fiis_financials;
 

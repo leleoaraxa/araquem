@@ -292,6 +292,12 @@ intents:
         - jensen
         - alfa de jensen
         - beta
+        - sortino
+        - drawdown
+        - mdd
+        - r2
+        - r²
+        - coeficiente de determinacao
         - posicao
         - posicoes
         - documento
@@ -393,6 +399,22 @@ intents:
         - qual o indice de treynor do
         - qual o alfa de jensen do
         - qual o beta do
+        - sortino do
+        - indice de sortino do
+        - drawdown do
+        - mdd do
+        - r2 do
+        - r² do
+        - coeficiente de determinacao do
+        - o que e beta
+        - o que e beta indice
+        - o que é beta
+        - o que é beta indice
+        - como calcular o sharpe
+        - definicao de drawdown
+        - o que é sortino
+        - como calcular r2
+        - o que é coeficiente de determinacao
 
         # posicoes do cliente
         - minhas posicoes

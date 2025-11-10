@@ -1,16 +1,19 @@
 entity: fiis_financials_risk
 kind: view
-version: 1
+version: 2
 
 columns:
-  - { name: ticker,            type: string,  nullable: false, desc: "código do FII (AAAA11)." }
-  - { name: volatility_ratio,   type: number,  nullable: true,  desc: "indicador de volatilidade." }
-  - { name: sharpe_ratio,       type: number,  nullable: true,  desc: "índice de Sharpe." }
-  - { name: treynor_ratio,      type: number,  nullable: true,  desc: "índice de Treynor." }
-  - { name: jensen_alpha,       type: number,  nullable: true,  desc: "alfa de jensen." }
-  - { name: beta_index,         type: number,  nullable: true,  desc: "beta índice." }
-  - { name: created_at,         type: datetime,nullable: false, desc: "data de criação." }
-  - { name: updated_at,         type: datetime,nullable: false, desc: "data da última atualização." }
+  - { name: ticker,            type: string,   nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: volatility_ratio,  type: number,   nullable: true,  desc: "indicador de volatilidade (VR)." }
+  - { name: sharpe_ratio,      type: number,   nullable: true,  desc: "índice de Sharpe (SR)." }
+  - { name: treynor_ratio,     type: number,   nullable: true,  desc: "índice de Treynor (TR)." }
+  - { name: jensen_alpha,      type: number,   nullable: true,  desc: "alfa de Jensen (α)." }
+  - { name: beta_index,        type: number,   nullable: true,  desc: "beta índice (β)." }
+  - { name: sortino_ratio,     type: number,   nullable: true,  desc: "índice de Sortino (SoR)." }
+  - { name: max_drawdown,      type: number,   nullable: true,  desc: "máxima queda pico→vale (MDD), reportada em módulo (0.00–1.00)." }
+  - { name: r_squared,         type: number,   nullable: true,  desc: "coeficiente de determinação (R²), 0.00–1.00." }
+  - { name: created_at,        type: datetime, nullable: false, desc: "data de criação." }
+  - { name: updated_at,        type: datetime, nullable: false, desc: "data da última atualização." }
 
 ordering: [ticker]
 
@@ -22,7 +25,9 @@ presentation:
     treynor_ratio:    { as: number }    # 0,5678
     jensen_alpha:     { as: number }    # 0,0456
     beta_index:       { as: number }    # 1,1234
-
+    sortino_ratio:    { as: number }    # 1,9876
+    max_drawdown:     { as: number }    # 0,2560  (25,60%)
+    r_squared:        { as: number }    # 0,7321  (73,21%)
   rules: {}
 
 sample_questions:
@@ -32,8 +37,27 @@ sample_questions:
   - "qual o alfa de jensen do MXRF11?"
   - "qual o índice de treynor do HGRU11?"
   - "quais são as métricas de risco do KNRI11?"
+  - "qual o sortino do HGLG11?"
+  - "qual o drawdown do KNRI11?"
+  - "qual o r2 do VISC11?"
 
 tolerance:
   extra_columns_allowed: false
   missing_columns_allowed: false
   nullable_mismatch_warn_only: true
+
+# 📚 Documentation linkage (safe extension block – ignored by strict loaders)
+x-docs:
+  catalog_path: data/raw/indicators/catalog.md
+  anchors:
+    beta_index:        "#1-beta-índice"
+    sharpe_ratio:      "#2-sharpe-ratio"
+    jensen_alpha:      "#3-alpha-de-jensen"
+    volatility_ratio:  "#4-volatility-ratio"
+    treynor_ratio:     "#5-treynor-ratio"
+    sortino_ratio:     "#6-sortino-ratio"
+    max_drawdown:      "#7-max-drawdown-mdd"
+    r_squared:         "#8-r²-coeficiente-de-determinação"
+  notes:
+    - "Âncoras seguem slug GitHub-style; ajuste se necessário após render."
+    - "Cálculos feitos na origem (Python). Esta view só consome valores prontos."

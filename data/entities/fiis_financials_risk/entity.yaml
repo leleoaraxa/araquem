@@ -2,72 +2,86 @@ id: fiis_financials_risk
 result_key: financials_risk
 sql_view: fiis_financials_risk
 private: false
-description: Métricas de risco do FII (volatilidade, Sharpe, Treynor, Jensen, beta),
-  D-1.
+description: Métricas de risco do FII (volatilidade, Sharpe, Treynor, Jensen, beta, Sortino, Drawdown, R²), D-1.
+
 identifiers:
-- name: ticker
-  description: Ticker do FII normalizado (AAAA11)
+  - name: ticker
+    description: Ticker do FII normalizado (AAAA11)
+
 default_date_field: updated_at
+
 columns:
-- name: ticker
-  alias: Código FII
-  description: Código do fundo na B3 (AAAA11).
-- name: volatility_ratio
-  alias: Volatilidade
-  description: Indicador de volatilidade.
-- name: sharpe_ratio
-  alias: Sharpe
-  description: Índice de Sharpe.
-- name: treynor_ratio
-  alias: Treynor
-  description: Índice de Treynor.
-- name: jensen_alpha
-  alias: Alfa de Jensen
-  description: Alfa de Jensen.
-- name: beta_index
-  alias: Beta
-  description: Beta do fundo.
-- name: created_at
-  alias: Criado em
-  description: Data de criação.
-- name: updated_at
-  alias: Atualizado em
-  description: Data da última atualização.
+  - name: ticker
+    alias: Código FII
+    description: Código do fundo na B3 (AAAA11).
+  - name: volatility_ratio
+    alias: Volatilidade
+    description: Indicador de volatilidade relativa (VR).
+  - name: sharpe_ratio
+    alias: Sharpe
+    description: Índice de Sharpe (SR).
+  - name: treynor_ratio
+    alias: Treynor
+    description: Índice de Treynor (TR).
+  - name: jensen_alpha
+    alias: Alfa de Jensen
+    description: Alfa de Jensen (α).
+  - name: beta_index
+    alias: Beta
+    description: Beta do fundo (β).
+  - name: sortino_ratio
+    alias: Sortino
+    description: Índice de Sortino (SoR).
+  - name: max_drawdown
+    alias: Drawdown Máximo
+    description: Máxima queda pico→vale (MDD), em módulo (0.00–1.00).
+  - name: r_squared
+    alias: R²
+    description: Coeficiente de determinação (0.00–1.00).
+  - name: created_at
+    alias: Criado em
+    description: Data de criação.
+  - name: updated_at
+    alias: Atualizado em
+    description: Data da última atualização.
+
 presentation:
   kind: summary
   fields:
     key: ticker
     value: volatility_ratio
   empty_message: Sem indicadores de risco disponíveis.
+
 ask:
-  intents:
-  - metricas
+  intents: [metricas]
   keywords:
-  - risco
-  - volatilidade
-  - sharpe
-  - treynor
-  - jensen
-  - alfa
-  - beta
-  - volatilidade
-  - desvio-padrão
-  - drawdown
-  - risco ajustado
-  - performance ajustada
-  - risco vs retorno
+    - risco
+    - volatilidade
+    - sharpe
+    - treynor
+    - jensen
+    - alfa
+    - beta
+    - sortino
+    - drawdown
+    - mdd
+    - r2
+    - r²
+    - coeficiente de determinacao
+    - desvio-padrao
+    - risco ajustado
+    - performance ajustada
+    - risco vs retorno
   synonyms:
-    ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
+    ticker: [ativo, papel, fundo, fii]
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+
 order_by_whitelist:
-- updated_at desc
+  - updated_at desc
+
 aggregations:
   enabled: true
   defaults:
@@ -76,9 +90,11 @@ aggregations:
       limit: 10
       order: desc
   windows_allowed:
-  - months:3
-  - months:6
-  - months:12
-  - months:24
-  - count:3
-  - count:6
+    - { months: 3 }
+    - { months: 6 }
+    - { months: 12 }
+    - { months: 24 }
+    - { count: 3 }
+    - { count: 6 }
+    - { count: 12 }
+    - { count: 24 }
