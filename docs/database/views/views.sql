@@ -24,10 +24,13 @@ DROP VIEW IF EXISTS fiis_financials_risk;
 DROP VIEW IF EXISTS fiis_financials_revenue_schedule;
 DROP VIEW IF EXISTS fiis_financials;
 DROP VIEW IF EXISTS client_fiis_positions;
-DROP VIEW IF EXISTS public.view_fiis_financials
-DROP VIEW IF EXISTS public.view_client_fiis_positions
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_info CASCADE;
+-- DROP VIEW IF EXISTS public.view_fiis_financials
+-- DROP VIEW IF EXISTS public.view_client_fiis_positions
 
+-- Opcional: derruba a MV anterior
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_info;
+
+-- Cria a MV com os novos campos
 CREATE MATERIALIZED VIEW view_fiis_info AS
 SELECT
     bt.ticker AS ticker,
@@ -50,13 +53,16 @@ SELECT
     INITCAP(bt.administrator_name) AS admin_name,
     REGEXP_REPLACE(bt.administrator_document, '(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})', '\1.\2.\3/\4-\5') AS admin_cnpj,
     INITCAP(bt.custodian_name) AS custodian_name,
+
     COALESCE(itl.percent_ifil, 0) AS ifil_weight_pct,
     COALESCE(itx.percent_ifix, 0) AS ifix_weight_pct,
+
     ROUND(sd.dividend_yield_m::numeric, 2) AS dy_monthly_pct,
     ROUND(sd.dividend_yield_12m::numeric, 2) AS dy_pct,
     ROUND(COALESCE(sd.dividends_sum_12m::numeric, 0), 2) AS sum_anual_dy_amt,
     ROUND(COALESCE(sd.last_dividend::numeric, 0), 2) AS last_dividend_amt,
     TO_CHAR(TO_DATE(sd.payment_date::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS last_payment_date,
+
     ROUND(cf.market_cap::numeric, 2) AS market_cap_value,
     ROUND(cf.enterprise_value::numeric, 2) AS enterprise_value,
     ROUND(cf.price_to_book_ratio::numeric, 4) AS price_book_ratio,
@@ -70,10 +76,17 @@ SELECT
     ROUND(cf.treynor_ratio::numeric, 4) AS treynor_ratio,
     ROUND(cf.jensen_alpha::numeric, 3) AS jensen_alpha,
     ROUND(cf.beta_index::numeric, 3) AS beta_index,
+
+    -- 🆕 Novos indicadores
+    ROUND(cf.sortino_ratio::numeric, 4) AS sortino_ratio,
+    ROUND(cf.max_drawdown::numeric, 4) AS max_drawdown,
+    ROUND(cf.r_squared::numeric, 4) AS r_squared,
+
     ROUND(cf.leverage::numeric, 4) AS leverage_ratio,
     ROUND(f.equity::numeric, 2) AS equity_value,
     ROUND(f.shares_count::numeric, 0) AS shares_count,
     ROUND(COALESCE(f.effective_variation_year, 0), 4) AS variation_year_ratio,
+
     CASE
         WHEN f.effective_variation_month ~ '^-?\d+(\.\d+)?$'
         THEN ROUND(COALESCE(TO_NUMBER(f.effective_variation_month, '999999999D9999'), 0), 4)
@@ -119,6 +132,7 @@ SELECT
         THEN ROUND(COALESCE(TO_NUMBER(f.total_liabilities, '999999999999D99'), 0), 2)
         ELSE 0
     END AS liabilities_total_amt,
+
     CASE
         WHEN f.percent_total_revenue_due_upto3months ~ '^-?\d+(\.\d+)?$'
         THEN ROUND(COALESCE(TO_NUMBER(f.percent_total_revenue_due_upto3months, '999999999D9999'), 0), 4)
@@ -189,6 +203,7 @@ SELECT
         THEN ROUND(COALESCE(TO_NUMBER(f.percent_total_revenue_due_undetermined, '999999999D9999'), 0), 4)
         ELSE 0
     END AS revenue_due_undetermined_pct,
+
     CASE
         WHEN f.percent_total_revenue_igpm_index ~ '^-?\d+(\.\d+)?$'
         THEN ROUND(COALESCE(TO_NUMBER(f.percent_total_revenue_igpm_index, '999999999D9999'), 0), 4)
@@ -209,6 +224,7 @@ SELECT
         THEN ROUND(COALESCE(TO_NUMBER(f.percent_total_revenue_incc_index, '999999999D9999'), 0), 4)
         ELSE 0
     END AS revenue_incc_pct,
+
     ROUND(r.users_ranking::numeric, 0) AS users_ranking_count,
     ROUND(r.users_ranking_positions_moved::numeric, 0) AS users_rank_movement_count,
     ROUND(r.sirios_ranking::numeric, 0) AS sirios_ranking_count,
@@ -217,15 +233,17 @@ SELECT
     ROUND(r.ifix_ranking_positions_moved::numeric, 0) AS ifix_rank_movement_count,
     ROUND(r.ifil_ranking::numeric, 0) AS ifil_ranking_count,
     ROUND(r.ifil_ranking_positions_moved::numeric, 0) AS ifil_rank_movement_count,
+
     TO_CHAR(TO_DATE(bt.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
     TO_CHAR(TO_DATE(bt.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
+
 FROM basics_tickers bt
-LEFT JOIN ifil_tickers itl ON bt.ticker = itl.ticker
-LEFT JOIN ifix_tickers itx ON bt.ticker = itx.ticker
+LEFT JOIN ifil_tickers itl   ON bt.ticker = itl.ticker
+LEFT JOIN ifix_tickers itx   ON bt.ticker = itx.ticker
 LEFT JOIN dividends_tickers sd ON bt.ticker = sd.ticker
 LEFT JOIN calc_financials_tickers cf ON bt.ticker = cf.ticker
 LEFT JOIN financials_tickers f ON bt.ticker = f.ticker
-LEFT JOIN ranking_fiis r ON bt.ticker = r.ticker
+LEFT JOIN ranking_fiis r      ON bt.ticker = r.ticker
 ORDER BY bt.ticker ASC;
 
 CREATE UNIQUE INDEX idx_fiis_info_ticker ON view_fiis_info(ticker);
@@ -239,6 +257,7 @@ CREATE INDEX IF NOT EXISTS idx_fiis_info_management_type_unaccent ON view_fiis_i
 CREATE INDEX IF NOT EXISTS idx_fiis_info_target_market_unaccent ON view_fiis_info (public.unaccent_ci(target_market));
 
 ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO edge_user;
+
 REFRESH MATERIALIZED VIEW view_fiis_info;
 
 -- =====================================================================
@@ -591,7 +610,8 @@ ALTER VIEW public.fiis_financials OWNER TO edge_user;
 -- =====================================================================
 -- VIEW: client_fiis_positions
 -- =====================================================================
-DROP VIEW client_fiis_positions
+DROP VIEW IF EXISTS client_fiis_positions;
+
 CREATE OR REPLACE VIEW client_fiis_positions AS
 WITH base AS (
   SELECT
@@ -627,7 +647,6 @@ WHERE specification_code = 'Cotas'
   AND product_category_name = 'Renda Variavel';
 
 ALTER VIEW public.client_fiis_positions OWNER TO edge_user;
-
 
 -- =====================================================================
 -- VIEW: fiis_financials_snapshot
@@ -681,9 +700,65 @@ ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
 CREATE OR REPLACE VIEW fiis_financials_risk AS
 SELECT
   ticker,
-  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, 0 AS sortino_ratio, 0 AS max_drawdown, 0 AS r_squared, 
+  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, sortino_ratio, max_drawdown, r_squared, 
   created_at, updated_at
 FROM fiis_financials;
 
+ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
+
+-- =====================================================================
+-- VIEW: rf_daily_series_mat
+-- =====================================================================
+
+DROP MATERIALIZED VIEW IF EXISTS rf_daily_series_mat;
+CREATE MATERIALIZED VIEW rf_daily_series_mat AS
+SELECT
+  date_taxes::date AS ref_date,
+  (cdi_taxes / 100.0) / 252.0 AS rf_daily
+FROM hist_taxes
+WHERE cdi_taxes IS NOT NULL
+ORDER BY ref_date;
+
+CREATE INDEX IF NOT EXISTS idx_rf_daily_series_mat ON rf_daily_series_mat(ref_date);
+
+-- =====================================================================
+-- VIEW: market_index_series
+-- =====================================================================
+
+DROP MATERIALIZED VIEW IF EXISTS market_index_series;
+CREATE MATERIALIZED VIEW market_index_series AS
+SELECT
+  date_taxes::date AS ref_date,
+  'IFIX'::text AS symbol,
+  ifix_taxes::numeric AS index_value
+FROM hist_taxes
+WHERE ifix_taxes IS NOT NULL
+  AND ifix_taxes > 0     -- evita zeros
+UNION ALL
+SELECT
+  date_taxes::date AS ref_date,
+  'IBOV'::text AS symbol,
+  ibovespa_taxes::numeric AS index_value
+FROM hist_taxes
+WHERE ibovespa_taxes IS NOT NULL
+  AND ibovespa_taxes > 0
+ORDER BY symbol, ref_date;
+
+CREATE INDEX IF NOT EXISTS idx_market_index_series ON market_index_series(symbol, ref_date);
+
+
+-- Refresh commands (schedule in your job):
+REFRESH MATERIALIZED VIEW rf_daily_series_mat;
+REFRESH MATERIALIZED VIEW market_index_series;
+
+ALTER MATERIALIZED VIEW public.market_index_series OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO edge_user;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO edge_user;
+
+select * from fiis_financials_risk
+
+-- beta_index, treynor_ratio, jensen_alpha, sortino_ratio, max_drawdown, r_squared
+-- volatility_ratio e sharp_ratio
+
+select * from calc_financials_tickers
