@@ -39,6 +39,12 @@ columns:
 - name: available_quantity
   alias: Quantidade disp.
   description: Quantidade disponível.
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
 presentation:
   kind: table
   fields:

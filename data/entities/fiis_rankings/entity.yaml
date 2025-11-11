@@ -12,30 +12,30 @@ columns:
 - name: ticker
   alias: Código FII
   description: Código do fundo na B3 (AAAA11).
-- name: users_ranking_count
+- name: users_rank_position
   alias: ranking usuários
   description: Número de vezes em que o FII apareceu em rankings de usuários.
-- name: users_rank_movement_count
+- name: users_rank_net_movement
   alias: movimentos no ranking usuários
   description: Quantidade de movimentos (subidas/quedas) registrados em rankings de
     usuários.
-- name: sirios_ranking_count
+- name: sirios_rank_position
   alias: ranking Sírios
   description: Número de aparições do FII em rankings da SIRIOS.
-- name: sirios_rank_movement_count
+- name: sirios_rank_net_movement
   alias: movimentos no ranking Sírios
   description: Quantidade de movimentos (subidas/quedas) registrados em rankings da
     SIRIOS.
-- name: ifix_ranking_count
+- name: ifix_rank_position
   alias: ranking IFIX
   description: Número de aparições em compilações/recortes de ranking do IFIX.
-- name: ifix_rank_movement_count
+- name: ifix_rank_net_movement
   alias: movimentos no ranking IFIX
   description: Movimentos de posição do FII em recortes de ranking do IFIX.
-- name: ifil_ranking_count
+- name: ifil_rank_position
   alias: ranking IFIL
   description: Número de aparições em compilações/recortes de ranking do IFIL.
-- name: ifil_rank_movement_count
+- name: ifil_rank_net_movement
   alias: movimentos no ranking IFIL
   description: Movimentos de posição do FII em recortes de ranking do IFIL.
 - name: created_at
@@ -48,7 +48,7 @@ presentation:
   kind: table
   fields:
     key: ticker
-    value: users_ranking_count
+    value: users_rank_position
   empty_message: Sem rankings disponíveis.
 ask:
   intents:
@@ -72,36 +72,36 @@ ask:
     - papel
     - fundo
     - fii
-    users_ranking_count:
+    users_rank_position:
     - usuarios
     - usuários
     - ranking de usuarios
     - vezes usuarios
-    users_rank_movement_count:
+    users_rank_net_movement:
     - usuarios movimento
     - variacao usuarios
     - movimentos usuarios
-    sirios_ranking_count:
+    sirios_rank_position:
     - sirios ranking
     - ranking da sirios
     - vezes sirios
-    sirios_rank_movement_count:
+    sirios_rank_net_movement:
     - sirios movimento
     - variacao sirios
     - movimentos sirios
-    ifix_ranking_count:
+    ifix_rank_position:
     - ifix ranking
     - vezes ifix
     - aparicoes ifix
-    ifix_rank_movement_count:
+    ifix_rank_net_movement:
     - ifix movimento
     - variacao ifix
     - movimentos ifix
-    ifil_ranking_count:
+    ifil_rank_position:
     - ifil ranking
     - vezes ifil
     - aparicoes ifil
-    ifil_rank_movement_count:
+    ifil_rank_net_movement:
     - ifil movimento
     - variacao ifil
     - movimentos ifil

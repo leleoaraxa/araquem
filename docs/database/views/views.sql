@@ -257,6 +257,8 @@ CREATE INDEX IF NOT EXISTS idx_fiis_info_target_market_unaccent ON view_fiis_inf
 
 ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO sirios_api;
 
 REFRESH MATERIALIZED VIEW view_fiis_info;
 
@@ -518,8 +520,15 @@ ALTER VIEW public.fiis_cadastro OWNER TO edge_user;
 -- VIEW: fiis_rankings
 -- =====================================================================
 CREATE VIEW fiis_rankings AS
-SELECT ticker, users_ranking_count, users_rank_movement_count, sirios_ranking_count, sirios_rank_movement_count, ifix_ranking_count,
-	ifix_rank_movement_count, ifil_ranking_count, ifil_rank_movement_count, created_at, updated_at
+SELECT ticker, users_ranking_count AS users_rank_position, 
+	users_rank_movement_count AS users_rank_net_movement, 
+	sirios_ranking_count AS sirios_rank_position, 
+	sirios_rank_movement_count as sirios_rank_net_movement, 
+	ifix_ranking_count AS ifix_rank_position,
+	ifix_rank_movement_count AS ifix_rank_net_movement, 
+	ifil_ranking_count AS ifil_rank_position, 
+	ifil_rank_movement_count AS ifil_rank_net_movement, 
+	created_at, updated_at
 FROM view_fiis_info;
 
 ALTER VIEW public.fiis_rankings OWNER TO sirios_api;
@@ -654,7 +663,9 @@ SELECT
     equities_quantity AS qty, 
     closing_price, 
     update_value, 
-    available_quantity 
+    available_quantity,
+	reference_date as created_at,
+	reference_date as updated_at
 FROM base
 WHERE rn = 1;
 
@@ -666,7 +677,7 @@ WHERE specification_code = 'Cotas'
   AND product_type_name = 'FII - Fundo de Investimento Imobiliário' 
   AND product_category_name = 'Renda Variavel';
 
-ALTER VIEW public.client_fiis_positions OWNER TO edge_user;
+ALTER VIEW public.client_fiis_positions OWNER TO sirios_api;
 ALTER VIEW public.client_fiis_positions OWNER TO edge_user;
 
 -- =====================================================================
@@ -1120,4 +1131,3 @@ GRANT EXECUTE ON FUNCTION public.get_fiis_universe(integer, numeric) TO edge_use
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO sirios_api;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO edge_user;
-

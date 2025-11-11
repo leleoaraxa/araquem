@@ -134,9 +134,9 @@ git push origin feat(entities):add-fiis-dividendos
 
 ```
 CREATE VIEW fiis_rankings AS
-SELECT ticker, users_ranking_count, users_rank_movement_count, sirios_ranking_count,
-       sirios_rank_movement_count, ifix_ranking_count, ifix_rank_movement_count,
-       ifil_ranking_count, ifil_rank_movement_count, created_at, updated_at
+SELECT ticker, users_rank_position, users_rank_net_movement, sirios_rank_position,
+       sirios_rank_net_movement, ifix_rank_position, ifix_rank_net_movement,
+       ifil_rank_position, ifil_rank_net_movement, created_at, updated_at
 FROM view_fiis_info;
 
 Sirius, gerar a entidade fiis_rankings no padrão Araquem, 1×1, identificador ticker,

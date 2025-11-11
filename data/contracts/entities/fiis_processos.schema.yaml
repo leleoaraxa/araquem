@@ -21,7 +21,7 @@ ordering: [ticker, initiation_date]
 presentation:
   columns:
     ticker:               { as: string }               # código AAAA11
-    main_facts:           { as: string }               # "O fundo XYZ entrou com ação contra a empresa ABC alegando descumprimento contratual..."
+    main_facts:           { as: string }               # "O fundo XYZ entrou com ação contra a empresa ABC alegando descumprimento contratual"
     cause_amt:            { as: currency }              # "R$ 1.234,56"
     initiation_date:      { as: date }                  # "27/10/2025"
     loss_risk_pct:        { as: percent, precision: 2 } # "12,34%"

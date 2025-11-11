@@ -8,7 +8,12 @@
     "ticker",
     "qty",
     "closing_price",
-    "available_quantity"
+    "available_quantity",
+    "update_value",
+    "fii_name",
+    "participant_name",
+    "created_at",
+    "updated_at"
   ],
   "samples": [
     { "question": "minhas posições de FIIs" },

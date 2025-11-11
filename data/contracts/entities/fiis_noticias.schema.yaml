@@ -24,7 +24,7 @@ presentation:
     url:              { as: string } # www.exemplo.com/noticia/o-melhor-fundo-imobiliario-do-mes-de-outubro
     published_at:     { as: datetime } # 27/10/2025 14:30:00
     tags:             { as: string } # HGLG11, KNRI11, FIIs
-    description:      { as: string } # O fundo HGLG11 foi destaque no mês de outubro devido ao seu desempenho...
+    description:      { as: string } # O fundo HGLG11 foi destaque no mês de outubro devido ao seu desempenho
     image_url:       { as: string } # www.exemplo.com/imagens/hglg11-destaque.jpg
 
   rules: {}

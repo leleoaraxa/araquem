@@ -15,19 +15,19 @@ columns:
   - { name: created_at,        type: datetime, nullable: false, desc: "data de criação." }
   - { name: updated_at,        type: datetime, nullable: false, desc: "data da última atualização." }
 
-ordering: [ticker]
+ordering: [ticker, updated_at DESC]
 
 presentation:
   columns:
     ticker:           { as: string }    # código AAAA11
-    volatility_ratio: { as: number }    # 0,1234
+    volatility_ratio: { as: number }    # -0,1234
     sharpe_ratio:     { as: number }    # 1,2345
-    treynor_ratio:    { as: number }    # 0,5678
+    treynor_ratio:    { as: number }    # -0,5678
     jensen_alpha:     { as: number }    # 0,0456
-    beta_index:       { as: number }    # 1,1234
+    beta_index:       { as: number }    # -1,1234
     sortino_ratio:    { as: number }    # 1,9876
-    max_drawdown:     { as: number }    # 0,2560  (25,60%)
-    r_squared:        { as: number }    # 0,7321  (73,21%)
+    max_drawdown:     { as: percent, multiply_by_100: true, precision: 2 }    # (25,60%)
+    r_squared:        { as: number }    # 2,9876
   rules: {}
 
 sample_questions:

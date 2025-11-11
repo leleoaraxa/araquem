@@ -10,7 +10,7 @@ columns:
   - { name: created_at,         type: datetime,nullable: false, desc: "data de criação do registro" }
   - { name: updated_at,         type: datetime,nullable: false, desc: "data da última atualização do registro" }
 
-ordering: [ticker, payment_date ]
+ordering: [ticker, payment_date DESC, traded_until_date DESC ]
 
 presentation:
   columns:

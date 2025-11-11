@@ -1,4 +1,4 @@
-"ticker","users_ranking_count","users_rank_movement_count","sirios_ranking_count","sirios_rank_movement_count","ifix_ranking_count","ifix_rank_movement_count","ifil_ranking_count","ifil_rank_movement_count","created_at","updated_at"
+"ticker","users_rank_position","users_rank_net_movement","sirios_rank_position","sirios_rank_net_movement","ifix_rank_position","ifix_rank_net_movement","ifil_rank_position","ifil_rank_net_movement","created_at","updated_at"
 "MCCI11","0","0","0","0","27","0","27","2","2024-05-22 00:00:00","2025-10-28 00:00:00"
 "MAXR11","0","0","0","0","0","0","0","0","2024-05-22 00:00:00","2025-10-19 00:00:00"
 "MANA11","0","0","0","0","83","0","66","-1","2024-05-22 00:00:00","2025-10-28 00:00:00"

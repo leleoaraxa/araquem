@@ -21,35 +21,45 @@ columns:
   - { name: equity_value,           type: number,   nullable: true,  desc: "valor do patrimônio." }
   - { name: variation_month_ratio,  type: number,   nullable: true,  desc: "variação percentual no mês." }
   - { name: variation_year_ratio,   type: number,   nullable: true,  desc: "variação percentual no ano." }
+  - { name: admin_fee_due_amt,    type: number,   nullable: true,  desc: "taxa de administração devida." }
+  - { name: perf_fee_due_amt,    type: number,   nullable: true,  desc: "taxa de performance devida." }
+  - { name: total_cash_amt,   type: number,   nullable: true,  desc: "total de caixa." }
+  - { name: expected_revenue_amt ,  type: number,   nullable: true,  desc: "receita esperada." }
+  - { name: liabilities_total_amt,  type: number,   nullable: true,  desc: "total de passivos." }
   - { name: equity_month_ratio,     type: number,   nullable: true,  desc: "variação do patrimônio no mês." }
   - { name: dividend_reserve_amt,     type: number,   nullable: true,  desc: "reserva de dividendos." }
   - { name: created_at,             type: datetime, nullable: false, desc: "data de criação." }
   - { name: updated_at,             type: datetime, nullable: false, desc: "data da última atualização." }
 
-ordering: [ticker]
+ordering: [ticker, last_payment_date DESC]
 
 presentation:
   columns:
     ticker:                 { as: string }    # código AAAA11
-    dy_monthly_pct:         { as: number }    # 0,85
-    dy_pct:                 { as: number }    # 10,20
-    sum_anual_dy_amt:       { as: number }    # 5.00
-    last_dividend_amt:      { as: number }    # 0.50
-    last_payment_date:      { as: date }      # 2023-12-15
-    market_cap_value:       { as: number }    # R$ 1 bilhão
-    enterprise_value:       { as: number }    # R$ 1.2 bilhão
-    price_book_ratio:       { as: number }    # 1.25%
-    equity_per_share:       { as: number }    # R$ 150.00
-    revenue_per_share:      { as: number }    # 10.00%
-    dividend_payout_pct:    { as: number }    # 80.00%
-    growth_rate:            { as: number }    # 5.00
-    cap_rate:               { as: number }    # 7.50
-    leverage_ratio:         { as: number }    # 0.30
-    equity_value:           { as: number }    # R$ 500 milhões
-    variation_month_ratio:  { as: number }    # 2.50
-    variation_year_ratio:   { as: number }    # 8.00
-    equity_month_ratio:     { as: number }    # 1.50
-    dividend_reserve_amt:     { as: number }    # R$ 2 milhões
+    dy_monthly_pct:         { as: percent, multiply_by_100: false, precision: 2 }    # 0,85%
+    dy_pct:                 { as: percent, multiply_by_100: false, precision: 2 }    # 10,20%
+    sum_anual_dy_amt:       { as: currency }    # R$ 5,00
+    last_dividend_amt:      { as: currency }    # R$ 0,50
+    last_payment_date:      { as: date }      # 15/12/2024
+    market_cap_value:       { as: currency }    # R$ 1 bilhão
+    enterprise_value:       { as: currency }    # R$ 1.2 bilhão
+    price_book_ratio:       { as: percent, multiply_by_100: false, precision: 4 }    # 1,2579%
+    equity_per_share:       { as: currency }    # R$ 150,00
+    revenue_per_share:      { as: percent, multiply_by_100: false, precision: 3 }    # 10,000%
+    dividend_payout_pct:    { as: percent, multiply_by_100: false, precision: 2 }    # 80,00%
+    growth_rate:            { as: percent, multiply_by_100: false, precision: 3 }    # 5,000%
+    cap_rate:               { as: percent, multiply_by_100: false, precision: 3 }    # 7,500%
+    leverage_ratio:         { as: percent, multiply_by_100: false, precision: 4 }    # 0.30
+    equity_value:           { as: currency }    # R$ 500 milhões
+    variation_month_ratio:  { as: percent, multiply_by_100: false, precision: 4 }    # 2,5000%
+    variation_year_ratio:   { as: percent, multiply_by_100: false, precision: 4 }    # 8,0000%
+    equity_month_ratio:     { as: percent, multiply_by_100: false, precision: 4 }    # 1,5000%
+    dividend_reserve_amt:     { as: currency }    # R$ 2 milhões
+    admin_fee_due_amt:    { as: currency }    # R$ 100 mil
+    perf_fee_due_amt:    { as: currency }    # R$ 50 mil
+    total_cash_amt:   { as: currency }    # R$ 10 milhões
+    expected_revenue_amt :  { as: currency }    # R$ 5 milhões
+    liabilities_total_amt:  { as: currency }    # R$ 200 milhões
 
   rules: {}
 

@@ -10,7 +10,7 @@ columns:
   - { name: period_start,       type: date,    nullable: true,  desc: "data inicial" }
   - { name: period_end,         type: date,    nullable: true,  desc: "data final" }
 
-ordering: [ticker, window_months]
+ordering: [ticker, metric, window_months DESC, period_end DESC]
 
 presentation:
   columns:
