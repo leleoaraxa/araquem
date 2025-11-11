@@ -1,9 +1,11 @@
 # 📈 Financial Indicators Reference (SIRIOS Indicators)
 
 Este documento consolida todos os **indicadores financeiros** calculados e utilizados pela plataforma **SIRIOS**, com seus conceitos, fórmulas, unidades, interpretações e equivalentes em inglês.
-Serve como **fonte de consulta e validação cruzada** dos cálculos implementados em `fiis_metrics` e demais entidades relacionadas.
+Serve como **fonte de consulta e validação cruzada** dos cálculos historicamente implementados no módulo compute-on-read `fiis_metrics` (atualmente desativado) e demais entidades relacionadas.
 
-## 🔗 Rastreamento operacional (`fiis_metrics`)
+> Métricas compute-on-read desativadas temporariamente; projeto opera apenas com 11 D-1.
+
+## 🔗 Rastreamento operacional (legado `fiis_metrics` — desativado)
 
 | Indicador lógico | Métrica (`metric`) | Origem de dados | Observações |
 | ---------------- | ------------------ | --------------- | ----------- |
@@ -87,7 +89,7 @@ E(R_i) = R_f + \beta_i \big(E(R_m) - R_f\big)
 * Usa retornos logarítmicos diários (janela de 252 dias).
 * Índice de referência padrão: IFIX.
 * Em caso de dados insuficientes → retorna `NULL`.
-* Atualização: D-1, compute-on-read.
+* Atualização: D-1 via processo compute-on-read legado (desativado).
 
 ---
 
@@ -159,7 +161,7 @@ sharpe_ratio = (mean(returns_asset) - risk_free_rate) / std(returns_asset)
 
 * Base: retornos diários logarítmicos (janela de 252 dias).
 * Taxa livre de risco padrão: CDI diário.
-* Calculado via compute-on-read no módulo `fiis_metrics`.
+* Cálculo compute-on-read originalmente implementado no módulo legado `fiis_metrics` (desativado).
 * Retorna `NULL` se não houver dados suficientes ou volatilidade zero.
 
 ## 🚀 3. Alpha de Jensen
@@ -217,7 +219,7 @@ alpha = mean(returns_asset) - (risk_free_rate + beta * (mean(returns_market) - r
 * Usa o mesmo período-base do cálculo do Beta (252 dias úteis).
 * Índice de referência padrão: IFIX.
 * Taxa livre de risco: CDI diário.
-* Calculado em conjunto com o Beta no módulo `fiis_metrics`.
+* Dependia do Beta calculado no módulo legado `fiis_metrics` (desativado).
 * Se `Beta` não disponível, retorna `NULL`.
 
 ## 🌪️ 4. Volatility Ratio
@@ -264,7 +266,7 @@ volatility_ratio = std(returns_asset) / std(returns_market)
 
 * Comparar a **instabilidade relativa** de diferentes fundos.
 * Identificar ativos **mais arriscados** em termos de variação de preço.
-* Usar como base para **classificação de perfil de risco** dentro da ontologia de métricas.
+* Usar como base para **classificação de perfil de risco** dentro da ontologia histórica de métricas (desativada).
 
 ---
 
@@ -272,7 +274,7 @@ volatility_ratio = std(returns_asset) / std(returns_market)
 
 * Usa retornos logarítmicos diários (janela de 252 dias).
 * Índice de referência padrão: IFIX.
-* Atualização D-1 via compute-on-read.
+* Atualização D-1 via processo compute-on-read legado (desativado).
 * Retorna `NULL` se desvio-padrão do índice for zero.
 
 
@@ -331,10 +333,10 @@ treynor_ratio = (mean(returns_asset) - risk_free_rate) / beta_asset
 ### 🧾 Notas técnicas (SIRIOS)
 
 * Usa retornos logarítmicos diários (janela de 252 dias).
-* Beta calculado conforme o módulo `fiis_metrics`.
+* Beta calculado conforme o módulo legado `fiis_metrics` (desativado).
 * Taxa livre de risco padrão: CDI diário.
 * Retorna `NULL` se Beta ≤ 0 (não aplicável).
-* Atualização D-1 via compute-on-read.
+* Atualização D-1 via processo compute-on-read legado (desativado).
 
 ## 🧠 6. Sortino Ratio
 

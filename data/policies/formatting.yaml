@@ -154,11 +154,3 @@ placeholders:
     filter: int_br
   - field: ifil_rank_net_movement
     filter: int_br
-  - field: period_start
-    filter: date_br
-  - field: period_end
-    filter: date_br
-  - field: window_months
-    filter: int_br
-  - field: value
-    filter: number_br
