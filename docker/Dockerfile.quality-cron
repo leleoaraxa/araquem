@@ -1,32 +1,41 @@
-FROM quality-runner:latest
-WORKDIR /workspace
-ENV PYTHONUNBUFFERED=1
+# ──────────────────────────────────────────────────────────────
+# Araquem — Quality Cron (Quality Gates / Push / Report)
+# ──────────────────────────────────────────────────────────────
+FROM python:3.12-slim AS quality-cron
 
-# (se quiser manter o bind-mount, pode comentar este COPY)
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    TZ=America/Sao_Paulo
+
+WORKDIR /workspace
+
+# 1) Sistema mínimo + utilitários
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    tzdata \
+    ca-certificates \
+    curl \
+    git \
+    jq \
+ && rm -rf /var/lib/apt/lists/*
+
+# 2) yq (binário oficial Mike Farah)
+ARG YQ_VERSION=4.44.3
+RUN curl -fsSL "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_amd64" \
+    -o /usr/local/bin/yq \
+ && chmod +x /usr/local/bin/yq \
+ && yq --version && jq --version
+
+# 3) Dependências Python
 COPY requirements.txt /workspace/requirements.txt
 RUN pip install --no-cache-dir -r /workspace/requirements.txt
 
-# --- utilitários necessários pelos scripts de qualidade ---
-# Instala yq e jq via download direto dos binários oficiais (sem depender de apt/apk)
-ARG YQ_VERSION=4.44.3
-ARG JQ_VERSION=1.7.1
-RUN python - <<'PY'
-import urllib.request, os, stat, sys
-def dl(url, dest):
-    with urllib.request.urlopen(url) as r, open(dest, 'wb') as f:
-        f.write(r.read())
-    os.chmod(dest, os.stat(dest).st_mode | stat.S_IEXEC)
-base_yq = f"https://github.com/mikefarah/yq/releases/download/v{os.environ.get('YQ_VERSION','4.44.3')}/yq_linux_amd64"
-base_jq = f"https://github.com/jqlang/jq/releases/download/jq-{os.environ.get('JQ_VERSION','1.7.1')}/jq-linux-amd64"
-dl(base_yq, "/usr/local/bin/yq")
-dl(base_jq, "/usr/local/bin/jq")
-PY
-
-# sanity check (falha o build se algo vier corrompido)
-RUN /usr/local/bin/yq --version && /usr/local/bin/jq --version
-
-
+# 4) Código + scripts
 COPY . /workspace
-
+# garante permissão de execução do entrypoint
 COPY --chmod=0755 docker/quality-cron.sh /usr/local/bin/quality-cron.sh
+
+# 5) Defaults úteis (sobrescreva no docker-compose se quiser)
+ENV QUALITY_API_URL=http://api:8000 \
+    QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+
 ENTRYPOINT ["/usr/local/bin/quality-cron.sh"]

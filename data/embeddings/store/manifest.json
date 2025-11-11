@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-11T22:08:05Z",
+  "generated_at": "2025-11-11T23:46:04Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -48,7 +48,7 @@
         "entities"
       ],
       "chunks": 6,
-      "sha_all": "349fcd03f801bfb6da6168f80c7c1335e3a18428534bd686d0b59c13eb899174"
+      "sha_all": "fa002e4cb0d54e5a9199ffe2970b5266d64e8906c09c876381c40b3b7d272923"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -145,7 +145,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 4,
-      "sha_all": "ec61746f1d6fed2b5443f7dd8cc2ec09e1810805826742c5c7384326863eb1f7"
+      "sha_all": "e84a29f2ad3b8e9b8231581bd5163f199fdc15cd412da88f6c0c18b2b30a557a"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -171,7 +171,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 2,
-      "sha_all": "1dda09b74bac84a31575367f487da10454d39ca5d24cba24ebe8d08bb4bc614d"
+      "sha_all": "750f05b994ad7af2e056b450170e5cc34adc4735de1ec3fb18cd3e2099a7e06c"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -209,7 +209,7 @@
         "entity:client_fiis_positions"
       ],
       "chunks": 2,
-      "sha_all": "10ac0f5b7a47087731773278e162ba1d286e046be22a4dee577f375ba5a12627"
+      "sha_all": "6890d5e20ac09e72f016314f759151958f35a55013eb8284f8935de179d902d7"
     },
     {
       "id": "policies-cache",
@@ -249,7 +249,7 @@
         "thresholds"
       ],
       "chunks": 1,
-      "sha_all": "50d56ed45a3f5eb70d1c5f779ba15baedfd4333b56a20da21a6434b7d04cbc1b"
+      "sha_all": "61366e9aa8a48e13e721d5112bf3abd819eda13a20028d7cc423e92f91fc912e"
     },
     {
       "id": "ops-observability",
@@ -369,7 +369,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "7639c3d2026bd075e93f099f66eda5627d3fc79a206f2152328a13765835d38a"
+      "sha_all": "0d57d3bcf88a803bfb744aa16779197458926b4d015b79c64897e9bb4f63898b"
     },
     {
       "id": "q-projection-fin-revenue",
@@ -391,7 +391,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "067272ae02eaa32b48416ce658885fdddb2a65699e691c417e061ffaf3a710e6"
+      "sha_all": "5bb15f5657be5b4e7ab95ca0c13d002cf3a483e5cb1da142b5e6a83359c57ee1"
     },
     {
       "id": "q-projection-client-positions",
@@ -402,7 +402,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "04cbca850b9c4ef711748e5767f4d22684b4578382a2986593c01b7f8294a23f"
+      "sha_all": "c5dc28b4a633a378d34f5217cd6a5ec41235e0760fb0c1ed4445caa5d1b804c5"
     },
     {
       "id": "q-m66-projection",
@@ -416,5 +416,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762898990
+  "last_refresh_epoch": 1762904862
 }

@@ -12,7 +12,6 @@ planner:
       cadastro:   { min_score: 1.0, min_gap: 0.2 }
       precos:     { min_score: 1.0, min_gap: 0.2 }
       dividendos: { min_score: 1.0, min_gap: 0.2 }
-      metricas:   { min_score: 1.0, min_gap: 0.2 }
       imoveis:    { min_score: 1.0, min_gap: 0.2 }
       processos:  { min_score: 1.0, min_gap: 0.2 }
       noticias:   { min_score: 1.0, min_gap: 0.2 }
@@ -25,10 +24,10 @@ planner:
       fiis_processos:                   { min_score: 1.0, min_gap: 0.2 }
       fiis_noticias:                    { min_score: 1.0, min_gap: 0.2 }
       fiis_rankings:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.30 }
-      fiis_financials_risk:             { min_score: 1.0, min_gap: 0.15 }
-      fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.15 }
-      client_fiis_positions:            { min_score: 1.0, min_gap: 0.15 }
+      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
+      client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
 
   rag:
     enabled: true

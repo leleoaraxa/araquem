@@ -2,107 +2,107 @@
   "samples": [
     {
       "question": "preço do MCCI11 hoje",
-      "not_intent": "cadastro"
+      "not_intent": "fiis_cadastro"
     },
     {
       "question": "dividendo do HGLG11",
-      "not_intent": "cadastro"
+      "not_intent": "fiis_cadastro"
     },
     {
       "question": "notícias do KNRI11",
-      "not_intent": "cadastro"
+      "not_intent": "fiis_cadastro"
     },
     {
       "question": "quem é o administrador do HGLG11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "endereço dos imóveis do RBVA11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "processos do SCPF11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "preço do MALL11 agora",
-      "not_intent": "dividendos"
+      "not_intent": "fiis_dividendos"
     },
     {
       "question": "site oficial do MAXR11",
-      "not_intent": "dividendos"
+      "not_intent": "fiis_dividendos"
     },
     {
       "question": "quais imóveis do HGRU11",
-      "not_intent": "dividendos"
+      "not_intent": "fiis_dividendos"
     },
     {
       "question": "preço de hoje do XPML11",
-      "not_intent": "noticias"
+      "not_intent": "fiis_noticias"
     },
     {
       "question": "cnpj do HGRE11",
-      "not_intent": "noticias"
+      "not_intent": "fiis_noticias"
     },
     {
       "question": "dividendo recente do GGRC11",
-      "not_intent": "noticias"
+      "not_intent": "fiis_noticias"
     },
     {
       "question": "preço do RBFF11",
-      "not_intent": "processos"
+      "not_intent": "fiis_processos"
     },
     {
       "question": "cnpj do RBFF11",
-      "not_intent": "processos"
+      "not_intent": "fiis_processos"
     },
     {
       "question": "dividendos do RBFF11",
-      "not_intent": "processos"
+      "not_intent": "fiis_processos"
     },
     {
       "question": "qual o administrador do VISC11",
-      "not_intent": "imoveis"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "dividendos do VISC11",
-      "not_intent": "imoveis"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "notícias do VISC11",
-      "not_intent": "imoveis"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "preço do HGLG11 agora",
-      "not_intent": "metricas"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "últimas notícias do KNRI11",
-      "not_intent": "metricas"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "payout do VISC11",
-      "not_intent": "precos"
+      "not_intent": "fiis_imoveis"
     },
     {
       "question": "alavancagem do HGRU11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "estrutura de recebíveis do VISC11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "beta do HGLG11",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "minhas posições",
-      "not_intent": "precos"
+      "not_intent": "fiis_precos"
     },
     {
       "question": "minhas posições cpf 000",
-      "not_intent": "noticias"
+      "not_intent": "fiis_noticias"
      }
   ]
 }
