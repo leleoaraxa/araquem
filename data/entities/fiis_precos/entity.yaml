@@ -47,7 +47,7 @@ presentation:
   empty_message: Sem preços para exibir.
 ask:
   intents:
-  - precos
+  - fiis_precos
   keywords:
   - preco
   - cotacao

@@ -20,6 +20,8 @@
 - Citar fontes usadas: id/score dos chunks.
 - Respeitar templates/formatos definidos pela entidade quando existirem.
 - Se faltar evidência: “Não encontrei evidências suficientes…”.
+
+> Desambiguação obrigatória: pedidos de dado bruto D-1 (por exemplo, preço, dividendo, posição, cadastro) devem ser roteados para a entidade tabular correspondente. Pedidos analíticos/estatísticos/“no período” devem ser encaminhados ao módulo de projeções `metrics`.
 **Saída (JSON):**
 {
   "answer": "…",

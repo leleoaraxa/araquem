@@ -6,66 +6,82 @@ terms:
     version: 1
 
 policies:
+  client_fiis_positions:
+    ttl_seconds: 900
+    refresh_at: "none"
+    scope: prv
+    key_fields: [document_number, position_date, ticker]
+
   fiis_cadastro:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker]
 
   fiis_precos:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker, traded_at]
 
   fiis_dividendos:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker, payment_date]
 
   fiis_rankings:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
-
-  fiis_metrics:
-    ttl_seconds: 43200
-    refresh_at: "07:00"
-    scope: pub
-    deny_if:
-      - field: "window_type"
-        equals: "count"
-        value: 1
+    key_fields: [ticker]
 
   fiis_imoveis:
     ttl_seconds: 86400
     refresh_at: "07:00"
-    cope: pub
+    scope: pub
+    key_fields: [ticker, asset_name]
 
   fiis_noticias:
     ttl_seconds: 86400
     refresh_at: "07:00"
-    cope: pub
+    scope: pub
+    key_fields: [ticker, published_at]
 
   fiis_processos:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker, process_number]
 
   fiis_financials_snapshot:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker]
 
   fiis_financials_revenue_schedule:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker]
 
   fiis_financials_risk:
     ttl_seconds: 86400
     refresh_at: "07:00"
     scope: pub
+    key_fields: [ticker]
 
-  client_fiis_positions:
-    ttl_seconds: 900
-    refresh_at: "none"
-    scope: prv
+  fiis_metrics:
+    ttl_seconds: 86400
+    refresh_at: "07:00"
+    scope: pub
+    notes: "Projeção compute-on-read; cache por parâmetros de cálculo."
+    key_fields:
+      - ticker
+      - metric
+      - window_months
+      - period_start
+      - period_end
+      - target_rate
+      - index_symbol

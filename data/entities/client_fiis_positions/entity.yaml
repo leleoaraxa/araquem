@@ -53,7 +53,7 @@ presentation:
   empty_message: Sem posições disponíveis.
 ask:
   intents:
-  - metricas
+  - client_fiis_positions
   # Observação: termos como "cpf" ou "documento" na pergunta são neutros; o valor
   # efetivo do CPF vem do payload (entidade private: true) e não do texto livre.
   keywords:

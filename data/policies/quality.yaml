@@ -10,3 +10,74 @@ targets:
   min_routed_rate: 0.98
   max_misses_absolute: 0
   max_misses_ratio: 0.0
+
+datasets:
+  fiis_precos:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker, traded_at, close_price, adj_close_price]
+    accepted_range:
+      daily_variation_pct: { min: -1.0, max: 1.0 }
+
+  fiis_dividendos:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker, payment_date, dividend_amt]
+    accepted_range:
+      dividend_amt: { min: 0.0 }
+
+  fiis_imoveis:
+    not_null: [ticker, asset_name]
+    accepted_range:
+      vacancy_ratio: { min: 0.0, max: 1.0 }
+      non_compliant_ratio: { min: 0.0, max: 1.0 }
+
+  fiis_processos:
+    not_null: [ticker, process_number]
+    accepted_range:
+      loss_risk_pct: { min: 0.0, max: 1.0 }
+
+  fiis_rankings:
+    not_null: [ticker]
+    accepted_range:
+      users_rank_position: { min: 1 }
+      sirios_rank_position: { min: 1 }
+      ifix_rank_position: { min: 1 }
+      ifil_rank_position: { min: 1 }
+
+  fiis_financials_snapshot:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker]
+    accepted_range:
+      dividend_payout_pct: { min: 0.0 }
+      leverage_ratio: { min: 0.0 }
+
+  fiis_financials_revenue_schedule:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker]
+    accepted_range:
+      revenue_due_0_3m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_over_36m_pct: { min: 0.0, max: 1.0 }
+
+  fiis_financials_risk:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker]
+    accepted_range:
+      max_drawdown: { min: 0.0, max: 1.0 }
+      r_squared: { min: 0.0, max: 1.0 }
+
+  fiis_noticias:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker, title, url, published_at]
+
+  fiis_cadastro:
+    not_null: [ticker, fii_cnpj, display_name]
+
+  client_fiis_positions:
+    freshness: { max_age_minutes: 30 }
+    not_null: [document_number, position_date, ticker]
+
+  fiis_metrics:
+    projections:
+      window_months: { min: 1, max: 60 }
+      result_value: { allow_nan: false, allow_inf: false }
+    completeness:
+      required_fields: [ticker, metric, period_start, period_end]

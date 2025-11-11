@@ -53,8 +53,7 @@ presentation:
   empty_message: Nenhum processo encontrado.
 ask:
   intents:
-  - cadastro
-  - processos
+  - fiis_processos
   keywords:
   - processo
   - processos

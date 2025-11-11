@@ -2,6 +2,7 @@
   "type": "projection",
   "entity": "fiis_metrics",
   "result_key": "fii_metrics",
+  "description": "Projeções compute-on-read (SELECT) para métricas parametrizadas (risk.*, dividends.*, prices.*).",
   "must_have_columns": [
     "ticker",
     "metric",

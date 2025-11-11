@@ -1,6 +1,10 @@
 entity: fiis_metrics
-kind: view
-version: 1
+kind: projection
+version: 2
+
+description: >-
+  Contrato lógico das projeções compute-on-read (SELECT) expostas pelo módulo `fiis_metrics`.
+  Define apenas o shape de saída parametrizável — não corresponde a view ou tabela persistida.
 
 columns:
   - { name: ticker,             type: string,  nullable: false, desc: "código do FII AAAA11" }
@@ -41,3 +45,27 @@ tolerance:
   extra_columns_allowed: false
   missing_columns_allowed: false
   nullable_mismatch_warn_only: true
+
+projection_groups:
+  risk:
+    result_key: risk_metrics
+    metrics:
+      - risk.volatility_ratio
+      - risk.sharpe_ratio
+      - risk.sortino_ratio
+      - risk.treynor_ratio
+      - risk.jensen_alpha
+      - risk.beta_index
+      - risk.max_drawdown
+      - risk.r_squared
+  dividends:
+    result_key: dividends_metrics
+    metrics:
+      - dividends.dividends_sum
+      - dividends.dividends_count
+      - dividends.dy_avg
+  prices:
+    result_key: prices_metrics
+    metrics:
+      - prices.price_avg
+      - prices.return_period

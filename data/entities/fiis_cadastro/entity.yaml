@@ -86,7 +86,7 @@ presentation:
   empty_message: Nenhum cadastro encontrado.
 ask:
   intents:
-  - cadastro
+  - fiis_cadastro
   keywords:
   - cadastro
   - cnpj

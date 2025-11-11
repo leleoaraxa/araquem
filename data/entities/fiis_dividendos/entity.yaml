@@ -34,7 +34,7 @@ presentation:
   empty_message: Sem dividendos para exibir.
 ask:
   intents:
-  - dividendos
+  - fiis_dividendos
   keywords:
   - dividendo
   - dividendos
