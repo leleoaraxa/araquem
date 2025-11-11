@@ -1,71 +1,85 @@
 # -*- coding: utf-8 -*-
-"""SIRIOS Narrator — drop-in, sem alterar o pipeline existente.
-Generated: 2025-11-08T18:03:21
-"""
+"""SIRIOS Narrator — camada de expressão determinística."""
 
 from __future__ import annotations
-import os, time, traceback
-from typing import Any, Dict
+
+import logging
+import os
+import time
+from pathlib import Path
+from typing import Any, Dict, Iterable
+
 from app.narrator.prompts import build_prompt
+from app.utils.filecache import load_yaml_cached
 
 try:
     from app.rag.ollama_client import OllamaClient
-except Exception:
-    OllamaClient = None
+except Exception:  # pragma: no cover - dependência opcional
+    OllamaClient = None  # type: ignore
 
 
-def _fmt_number_br(x: Any) -> str:
+LOGGER = logging.getLogger(__name__)
+_ENTITY_ROOT = Path("data/entities")
+
+
+def _load_entity_config(entity: str) -> Dict[str, Any]:
+    if not entity:
+        return {}
+    path = _ENTITY_ROOT / entity / "entity.yaml"
     try:
-        if isinstance(x, (int, float)):
-            s = f"{x:,.2f}"
-            return s.replace(",", "X").replace(".", ",").replace("X", ".")
+        return load_yaml_cached(str(path)) or {}
     except Exception:
-        pass
-    return str(x)
+        return {}
 
 
-def _fallback_text(facts: Dict[str, Any], meta: Dict[str, Any]) -> str:
-    # tenta pegar a linha principal
-    primary = (facts or {}).get("primary")
-    if not primary:
-        rows = (facts or {}).get("rows") or []
-        primary = rows[0] if rows else {}
+def _empty_message(entity: str) -> str | None:
+    cfg = _load_entity_config(entity)
+    presentation = cfg.get("presentation") if isinstance(cfg, dict) else None
+    if isinstance(presentation, dict):
+        message = presentation.get("empty_message")
+        if isinstance(message, str) and message.strip():
+            return message.strip()
+    return None
 
-    # ticker no topo
-    tck = (
-        (primary or {}).get("ticker")
-        or (facts or {}).get("ticker")
-        or (facts or {}).get("fund")
-        or ""
-    )
-    header = (
-        f"**{tck}** — resposta baseada em fatos disponíveis:"
-        if tck
-        else "Resposta baseada em fatos disponíveis:"
-    )
-    linhas = [header]
 
-    # mapeamento de campos do seu dataset de processos
-    campos = [
-        ("Processo", primary.get("process_number")),
-        ("Juízo", primary.get("judgment")),
-        ("Instância", primary.get("instance")),
-        ("Início", primary.get("initiation_date")),
-        ("Valor da causa", primary.get("cause_amt")),
-        ("Partes", primary.get("process_parts")),
-        ("Risco de perda", primary.get("loss_risk_pct")),
-        ("Fatos", primary.get("main_facts")),
-        ("Impacto", primary.get("loss_impact_analysis")),
+def _rows_to_lines(rows: Iterable[Dict[str, Any]]) -> str:
+    lines = []
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        parts = []
+        for key, value in row.items():
+            if key == "meta":
+                continue
+            if value is None:
+                continue
+            text = str(value)
+            if not text:
+                continue
+            parts.append(f"**{key}**: {text}")
+        if parts:
+            lines.append("- " + "; ".join(parts))
+    return "\n".join(lines).strip()
+
+
+def _default_text(entity: str, facts: Dict[str, Any]) -> str:
+    rows = list((facts or {}).get("rows") or [])
+    candidates = [
+        (facts or {}).get("rendered"),
+        (facts or {}).get("rendered_text"),
+        (facts or {}).get("text"),
     ]
-    for nome, val in campos:
-        if val:
-            linhas.append(f"- {nome}: **{val}**")
-
-    if len(linhas) == 1:
-        linhas.append("(Sem campos detalhados disponíveis para narração.)")
-
-    linhas.append("Fonte: SIRIOS.")
-    return "\n".join(linhas)
+    for candidate in candidates:
+        if isinstance(candidate, str) and candidate.strip():
+            return candidate.strip()
+    if rows:
+        rendered = _rows_to_lines(rows)
+        if rendered:
+            return rendered
+    message = _empty_message(entity)
+    if message:
+        return message
+    return "Sem dados disponíveis no momento."
 
 
 class Narrator:
@@ -79,38 +93,79 @@ class Narrator:
     def render(
         self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]
     ) -> Dict[str, Any]:
+        entity = (meta or {}).get("entity") or ""
+        rows = list((facts or {}).get("rows") or [])
+        template_id = (meta or {}).get("template_id") or (facts or {}).get("result_key")
+        LOGGER.info(
+            "narrator_render entity=%s rows_count=%s template_id=%s enabled=%s shadow=%s",
+            entity,
+            len(rows),
+            template_id or "",
+            self.enabled,
+            self.shadow,
+        )
+
+        baseline_text = _default_text(entity, facts or {})
+
+        if not self.enabled:
+            return {
+                "text": baseline_text,
+                "score": 1.0 if baseline_text else 0.0,
+                "hints": {"style": self.style},
+                "tokens": {"in": 0, "out": 0},
+                "latency_ms": 0.0,
+                "error": None,
+                "enabled": self.enabled,
+                "shadow": self.shadow,
+            }
+
+        if self.client is None:
+            return {
+                "text": baseline_text,
+                "score": 1.0 if baseline_text else 0.0,
+                "hints": {"style": self.style},
+                "tokens": {"in": 0, "out": 0},
+                "latency_ms": 0.0,
+                "error": "client_unavailable",
+                "enabled": self.enabled,
+                "shadow": self.shadow,
+            }
+
+        prompt_facts = dict(facts or {})
+        prompt_facts.setdefault("rendered_text", baseline_text)
+        if "fallback_message" not in prompt_facts:
+            fallback_message = _empty_message(entity)
+            if fallback_message:
+                prompt_facts["fallback_message"] = fallback_message
+        prompt_meta = dict(meta or {})
+
         t0 = time.perf_counter()
         prompt = build_prompt(
-            question=question, facts=facts, meta=meta, style=self.style
+            question=question,
+            facts=prompt_facts,
+            meta=prompt_meta,
+            style=self.style,
         )
-        text = None
+        tokens_in = len(prompt.split()) if prompt else 0
+
+        text = baseline_text
         error = None
-        tokens_in = len(prompt.split())
         tokens_out = 0
 
-        if self.client is not None:
-            try:
-                resp = self.client.prompt(prompt, model=self.model)
-                text = (resp or "").strip()
-                tokens_out = len(text.split())
-            except Exception as e:
-                error = f"llm_error: {e}\n{traceback.format_exc()}"
-        else:
-            error = "OllamaClient indisponível; usando fallback."
-
-        if not text:
-            text = _fallback_text(facts, meta)
+        try:
+            response = self.client.prompt(prompt, model=self.model)
+            candidate = (response or "").strip()
+            if candidate:
+                text = candidate
+                tokens_out = len(candidate.split())
+        except Exception as exc:  # pragma: no cover - caminho excepcional
+            error = f"llm_error: {exc}"
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
-        score = (
-            1.0
-            if ((facts or {}).get("ticker", "") and (facts.get("ticker", "") in text))
-            else 0.9
-        )
 
         return {
             "text": text,
-            "score": score,
+            "score": 1.0 if text else 0.0,
             "hints": {"style": self.style},
             "tokens": {"in": tokens_in, "out": tokens_out},
             "latency_ms": elapsed_ms,
