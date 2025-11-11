@@ -6,7 +6,7 @@
     "expected_entity": "fiis_cadastro",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 0.9340811888968759,
+    "score": 0.931307715531746,
     "normalized": "custodiante do lvbi11",
     "tokens": [
       "custodiante",
@@ -26,7 +26,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 0.08408118889687588,
+      "gap": 0.08130771553174598,
       "accepted": false,
       "source": "final"
     }
@@ -110,8 +110,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_risk",
-    "score": 3.5012674462743623,
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 3.4998246594519893,
     "normalized": "preco medio do hglg11 nos ultimos 6 meses",
     "tokens": [
       "preco",
@@ -136,7 +136,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 3.5012674462743623,
+      "gap": 3.4998246594519893,
       "accepted": true,
       "source": "final"
     }
@@ -148,7 +148,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 4.352701919639907,
+    "score": 4.34903968324824,
     "normalized": "dy medio do hglg11 no ano",
     "tokens": [
       "dy",
@@ -171,7 +171,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 4.352701919639907,
+      "gap": 4.34903968324824,
       "accepted": true,
       "source": "final"
     }
@@ -182,8 +182,8 @@
     "expected_intent": "metricas",
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
-    "got_entity": "fiis_financials_risk",
-    "score": 2.63967024565654,
+    "got_entity": "fiis_financials_snapshot",
+    "score": 3.0,
     "normalized": "media de preco do knri11",
     "tokens": [
       "media",
@@ -204,8 +204,8 @@
     },
     "thresholds": {
       "min_score": 1.0,
-      "min_gap": 0.15,
-      "gap": 2.63967024565654,
+      "min_gap": 0.3,
+      "gap": 3.0,
       "accepted": true,
       "source": "final"
     }
@@ -217,7 +217,7 @@
     "expected_entity": "fiis_metrics",
     "got_intent": "metricas",
     "got_entity": "fiis_financials_risk",
-    "score": 0.9515295669051149,
+    "score": 0.9492135398900625,
     "normalized": "qual o dividend yield medio do hgru11",
     "tokens": [
       "qual",
@@ -241,7 +241,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.15,
-      "gap": 0.9515295669051149,
+      "gap": 0.9492135398900625,
       "accepted": false,
       "source": "final"
     }
