@@ -29,7 +29,6 @@ planner:
       fiis_financials_risk:             { min_score: 1.0, min_gap: 0.15 }
       fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.15 }
       client_fiis_positions:            { min_score: 1.0, min_gap: 0.15 }
-      fiis_metrics:                     { min_score: 1.0, min_gap: 0.15 }
 
   rag:
     enabled: true

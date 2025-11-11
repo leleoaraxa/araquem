@@ -17,28 +17,6 @@ humana e profissional, SEM inventar informações. Regras:
 - Evite jargões e redundâncias; frases curtas; voz ativa.
 """
 
-def _fewshot_metricas_fiis_metrics() -> str:
-    return """
-[EXEMPLO 1]
-Pergunta: qual o dy medio do hglg11
-Facts (resumo):
-{
-  "ticker": "HGLG11",
-  "periodo_referencia": "ultimos_12_meses",
-  "medidas": [{"nome":"dy_medio","valor":0.094,"unidade":"ratio"}, {"nome":"pagamentos","valor":12,"unidade":"qtde"}],
-  "datas": {"inicio":"2024-11-01","fim":"2025-10-31"},
-  "fonte": "sirios.datawarehouse"
-}
-Resposta (modelo):
-Nos últimos 12 meses (nov/2024–out/2025), o **HGLG11** apresentou DY médio de **9,4%** (12 pagamentos). Fonte: SIRIOS.
-
-[EXEMPLO 2]
-Pergunta: soma de dividendos do HGLG11
-Facts (resumo):
-{ "ticker": "HGLG11", "medidas":[{"nome":"soma_dividendos","valor": 12.35,"unidade":"BRL"}], "periodo_referencia":"ultimos_12_meses"}
-Resposta (modelo):
-A soma de dividendos do **HGLG11** nos últimos 12 meses foi de **R$ 12,35**. Fonte: SIRIOS.
-"""
 
 def _fewshot_metricas_financials_risk() -> str:
     return """
@@ -57,6 +35,7 @@ Resposta (modelo):
 O **beta** do **HGLG11** no período avaliado foi **0,81**. Fonte: SIRIOS.
 """
 
+
 def _fewshot_metricas_financials_revenue() -> str:
     return """
 [EXEMPLO 1]
@@ -74,16 +53,22 @@ Resposta (modelo):
 No **XPML11**, cerca de **63%** das receitas vencem em até **12 meses**. Fonte: SIRIOS.
 """
 
+
 FEW_SHOTS = {
-    ("metricas","fiis_metrics"): _fewshot_metricas_fiis_metrics,
-    ("metricas","fiis_financials_risk"): _fewshot_metricas_financials_risk,
-    ("metricas","fiis_financials_revenue_schedule"): _fewshot_metricas_financials_revenue,
+    ("metricas", "fiis_financials_risk"): _fewshot_metricas_financials_risk,
+    (
+        "metricas",
+        "fiis_financials_revenue_schedule",
+    ): _fewshot_metricas_financials_revenue,
 }
 
-def build_prompt(question: str, facts: dict, meta: dict, style: str = "executivo") -> str:
+
+def build_prompt(
+    question: str, facts: dict, meta: dict, style: str = "executivo"
+) -> str:
     """Compose the final prompt string for the LLM."""
-    intent = (meta or {}).get("intent","")
-    entity = (meta or {}).get("entity","")
+    intent = (meta or {}).get("intent", "")
+    entity = (meta or {}).get("entity", "")
     key = (intent, entity)
     few = FEW_SHOTS.get(key)
     fewblock = few() if callable(few) else ""

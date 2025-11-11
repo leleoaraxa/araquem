@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-11T17:12:59Z",
+  "generated_at": "2025-11-11T18:34:53Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -47,8 +47,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 7,
-      "sha_all": "c67e09973efc20efe286d4b75f2daa11443f8fc6564042be604a10be1fd31f61"
+      "chunks": 6,
+      "sha_all": "349fcd03f801bfb6da6168f80c7c1335e3a18428534bd686d0b59c13eb899174"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -219,7 +219,7 @@
         "cache"
       ],
       "chunks": 2,
-      "sha_all": "eff890b331c3b37f6d985e9140095f924f175a069204a7d7c0cffb079b748c74"
+      "sha_all": "da23f2ea964dfaf81153a8cdb7060b3a2b442303d6370c219eb79c7bb8f9d259"
     },
     {
       "id": "policies-quality",
@@ -229,7 +229,7 @@
         "quality"
       ],
       "chunks": 2,
-      "sha_all": "eb96928cf7931f79790881cc8fa2dbb50fb07cf6fdc16cc8cbaed4360fa5c2b1"
+      "sha_all": "042a8d3104fc80899a20632f3c244b60d52359d006ce06fcc7af92c118d08954"
     },
     {
       "id": "policies-rag",
@@ -248,8 +248,8 @@
         "quality",
         "thresholds"
       ],
-      "chunks": 2,
-      "sha_all": "93e9752562a03ccbc095f2e438e09b742eaa654b29c9551a1545adb1000b03ec"
+      "chunks": 1,
+      "sha_all": "50d56ed45a3f5eb70d1c5f779ba15baedfd4333b56a20da21a6434b7d04cbc1b"
     },
     {
       "id": "ops-observability",
@@ -280,8 +280,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 17,
-      "sha_all": "79750b043f95b79c1c669a0ce6b0f01dfa850a14f0b9ff4f43a8452d3e0ec583"
+      "chunks": 16,
+      "sha_all": "011bcca9bb626c71eff818620d1dc1ec242635d38683724c88e7b4a05faae031"
     },
     {
       "id": "q-projection-cadastro",
@@ -361,17 +361,6 @@
       "sha_all": "5416118870b439a21136896d7695fef1d3796961fe39c1f4d366653c0df9441d"
     },
     {
-      "id": "q-projection-metrics",
-      "path": "data/ops/quality/projection_fiis_metrics.json",
-      "tags": [
-        "quality",
-        "projection",
-        "metricas"
-      ],
-      "chunks": 1,
-      "sha_all": "69a81256b0cf4e60fe2552b237c48d0b3dee4bf2dd223b7d38003e36403d11d6"
-    },
-    {
       "id": "q-projection-fin-snapshot",
       "path": "data/ops/quality/projection_fiis_financials_snapshot.json",
       "tags": [
@@ -427,5 +416,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762881270
+  "last_refresh_epoch": 1762886194
 }

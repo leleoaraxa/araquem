@@ -76,7 +76,6 @@ def _detect_formatter(column_name: str) -> Optional[Callable[[Any], Any]]:
 
 
 def format_metric_value(metric_key: str, value: Any) -> Any:
-    """Formata valores de métricas fiis_metrics conforme a regra declarada."""
 
     if value is None:
         return value

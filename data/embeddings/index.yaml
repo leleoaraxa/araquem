@@ -146,10 +146,6 @@ include:
     path: data/ops/quality/projection_fiis_processos.json
     tags: [quality, projection, processos]
 
-  - id: q-projection-metrics
-    path: data/ops/quality/projection_fiis_metrics.json
-    tags: [quality, projection, metricas]
-
   - id: q-projection-fin-snapshot
     path: data/ops/quality/projection_fiis_financials_snapshot.json
     tags: [quality, projection, financials]

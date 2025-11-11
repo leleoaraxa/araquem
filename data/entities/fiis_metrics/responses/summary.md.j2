@@ -1,8 +1,0 @@
-{% if rows and rows|length > 0 -%}
-Resumo:
-{%- for r in rows %}
-- {{ r[fields.key] }} = {{ r[fields.value] }}
-{%- endfor %}
-{%- else -%}
-{{ empty_message or "Sem dados." }}
-{%- endif %}

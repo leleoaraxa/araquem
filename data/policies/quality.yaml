@@ -74,10 +74,3 @@ datasets:
   client_fiis_positions:
     freshness: { max_age_minutes: 30 }
     not_null: [document_number, position_date, ticker]
-
-  fiis_metrics:
-    projections:
-      window_months: { min: 1, max: 60 }
-      result_value: { allow_nan: false, allow_inf: false }
-    completeness:
-      required_fields: [ticker, metric, period_start, period_end]

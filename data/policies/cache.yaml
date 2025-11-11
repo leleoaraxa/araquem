@@ -71,17 +71,3 @@ policies:
     refresh_at: "07:00"
     scope: pub
     key_fields: [ticker]
-
-  fiis_metrics:
-    ttl_seconds: 86400
-    refresh_at: "07:00"
-    scope: pub
-    notes: "Projeção compute-on-read; cache por parâmetros de cálculo."
-    key_fields:
-      - ticker
-      - metric
-      - window_months
-      - period_start
-      - period_end
-      - target_rate
-      - index_symbol
