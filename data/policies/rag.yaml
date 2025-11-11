@@ -30,7 +30,6 @@ routing:
     - fiis_financials_snapshot
     - fiis_financials_revenue_schedule
     - fiis_financials_risk
-    - metrics
   allow_intents:
     - fiis_noticias
   notes: "RAG restrito a conteúdos textuais (ex.: notícias e dossiês); dados tabulares seguem via rotas SQL."
