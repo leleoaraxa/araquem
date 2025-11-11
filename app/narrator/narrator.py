@@ -48,12 +48,12 @@ def _rows_to_lines(rows: Iterable[Dict[str, Any]]) -> str:
         if not isinstance(row, dict):
             continue
         parts = []
-        for key, value in row.items():
+        for key, item_val in row.items():
             if key == "meta":
                 continue
-            if value is None:
+            if item_val is None:
                 continue
-            text = str(value)
+            text = str(item_val)
             if not text:
                 continue
             parts.append(f"**{key}**: {text}")
