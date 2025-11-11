@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-10T23:27:45Z",
+  "generated_at": "2025-11-11T17:12:59Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -36,8 +36,8 @@
         "performance",
         "fiis"
       ],
-      "chunks": 13,
-      "sha_all": "75fd4c9861ab09d69a262b9b4f8c4ec7ce91d606d2391742ef7e7e16742adc5c"
+      "chunks": 15,
+      "sha_all": "ef4db03bc595a0effc03c60b83a4442a4165bb03c9fc6d6a9998915a2c8415fa"
     },
     {
       "id": "ontology-entity",
@@ -47,8 +47,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 9,
-      "sha_all": "aad41825c3286ec2ec60bddb31a91b18ffe85faf4ddf5dfd999e9111a42cf3db"
+      "chunks": 7,
+      "sha_all": "c67e09973efc20efe286d4b75f2daa11443f8fc6564042be604a10be1fd31f61"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -60,7 +60,7 @@
         "entity:fiis_cadastro"
       ],
       "chunks": 3,
-      "sha_all": "1f4d6271215673a0ad5ea428809c51f4180a410d45bfd376c084cabe7e372f1e"
+      "sha_all": "645bf902ac2663ed7621105fa939e34ddf08e2e8131653a0be0980fab4e26b8e"
     },
     {
       "id": "entity-fiis-dividendos",
@@ -72,7 +72,7 @@
         "entity:fiis_dividendos"
       ],
       "chunks": 2,
-      "sha_all": "c5cc3ec75877266178be3d5102bf06021fb07567ea8e53b98c56b43f621c42b4"
+      "sha_all": "fe95d872f89656e767845bf19c3c789a32d926b04513d83c6d0ca2ca739f7476"
     },
     {
       "id": "entity-fiis-precos",
@@ -84,7 +84,7 @@
         "entity:fiis_precos"
       ],
       "chunks": 2,
-      "sha_all": "c9143fde93afee046192eb42d7843347ca8f2761442516fdea2d2423dc35c7da"
+      "sha_all": "88801450c12fb3e18467a36829f8055b22e4b8f3f457c0f024b5e96953bdcf37"
     },
     {
       "id": "entity-fiis-rankings",
@@ -96,19 +96,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 3,
-      "sha_all": "1664c7159346d962951ea5ef0b55066ce61d4a05c4612c0ae727d9f8131ceb66"
-    },
-    {
-      "id": "entity-fiis-metrics",
-      "path": "data/entities/fiis_metrics/entity.yaml",
-      "tags": [
-        "entities",
-        "fiis",
-        "metricas",
-        "entity:fiis_metrics"
-      ],
-      "chunks": 5,
-      "sha_all": "33950b21f47bd4c3ab38d00353b07c72035f1a575700069bed40c7c3e501e804"
+      "sha_all": "7fd66e05c4b9509cbde048e3cccca643174c4acdb0c8bf6a833a910a948429a9"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -120,7 +108,7 @@
         "entity:fiis_imoveis"
       ],
       "chunks": 2,
-      "sha_all": "44ee825f4b092438579f099d4cc0871764cca0fb3e8239eb3f59027c296bddf2"
+      "sha_all": "a2a06db9bad8fcba96dbc068bff59e1149533479b9af34ed72c9fe7098b47a19"
     },
     {
       "id": "entity-fiis-noticias",
@@ -132,7 +120,7 @@
         "entity:fiis_noticias"
       ],
       "chunks": 2,
-      "sha_all": "c57c79ab0bd344edec5b98ceb38e5bac2c13b94311cfc088a621bff4fd4bdd8a"
+      "sha_all": "2c151a656b57525b04c711965edf7a0debc6cfdb0dd10c3f34ec69b143b5ed66"
     },
     {
       "id": "entity-fiis-processos",
@@ -144,7 +132,7 @@
         "entity:fiis_processos"
       ],
       "chunks": 2,
-      "sha_all": "c8826f60c4d8bb57864c075b934697f6551b054a86a20905ca7e1ddef9db7d5a"
+      "sha_all": "ec97a25f196012f646b160a63154bb6a76d7210159e15a22eaf0aa6ac78c7db2"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -157,7 +145,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 4,
-      "sha_all": "0f54c91e504e3c3bcc993e4f312f2198df859acc642a1adff37faa0ab11db35d"
+      "sha_all": "ec61746f1d6fed2b5443f7dd8cc2ec09e1810805826742c5c7384326863eb1f7"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -170,7 +158,7 @@
         "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 3,
-      "sha_all": "1cf37bb2ede33573ebfa6649f75a4f9dc45c9daaf984b330236553f7dc5383c7"
+      "sha_all": "74c41b5ecc1fa4d6a90f50179a5612f3cd4d21a92ebddd0056c730be6a9d43cf"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -183,7 +171,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 2,
-      "sha_all": "0db8cb3d7e43879bc6035d9a3483f6a5a2512644c0928f375b3823bceeee726d"
+      "sha_all": "b93587ebc78c3a0e45a0b2fa817f383cb58c47f463645b7cb50aa8fb8083717e"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -221,7 +209,7 @@
         "entity:client_fiis_positions"
       ],
       "chunks": 2,
-      "sha_all": "599a4355e20d84d6ee6a314aab8f2b75b8ddfca5c1d2fc3ccdddc3c93ab98ac1"
+      "sha_all": "10ac0f5b7a47087731773278e162ba1d286e046be22a4dee577f375ba5a12627"
     },
     {
       "id": "policies-cache",
@@ -230,8 +218,8 @@
         "policies",
         "cache"
       ],
-      "chunks": 1,
-      "sha_all": "bc84417d194682132bce82f62738ed3e2a3d5f2a7de9eb0343f2266597299cde"
+      "chunks": 2,
+      "sha_all": "eff890b331c3b37f6d985e9140095f924f175a069204a7d7c0cffb079b748c74"
     },
     {
       "id": "policies-quality",
@@ -240,8 +228,8 @@
         "policies",
         "quality"
       ],
-      "chunks": 1,
-      "sha_all": "7647314a9fd9b214434ccff8c13a08e2abbfa1982f046b542fe8e7169cf38820"
+      "chunks": 2,
+      "sha_all": "eb96928cf7931f79790881cc8fa2dbb50fb07cf6fdc16cc8cbaed4360fa5c2b1"
     },
     {
       "id": "policies-rag",
@@ -251,7 +239,7 @@
         "rag"
       ],
       "chunks": 1,
-      "sha_all": "85d5090d41fc3bf09dc747f20dc38f1f19026f3a36a9bd1f2b63067d1eee6229"
+      "sha_all": "a14f0797b211c69551da4680123b7cdf91a8cb4eb5a49c74662b73c82c62ccd5"
     },
     {
       "id": "ops-planner-thresholds",
@@ -337,7 +325,7 @@
         "rankings"
       ],
       "chunks": 1,
-      "sha_all": "d905ccea8fab798fc42b468cc1a9c353588fee28303112ebc7217f8c832bf3ab"
+      "sha_all": "67297cd7fac24dc64c3249acedeeaa3126033fb571069c418ef2cef872a9a226"
     },
     {
       "id": "q-projection-imoveis",
@@ -381,7 +369,7 @@
         "metricas"
       ],
       "chunks": 1,
-      "sha_all": "4aba7f9651394824169d312eff33d1b9021269a723480624fa8c529390e2092d"
+      "sha_all": "69a81256b0cf4e60fe2552b237c48d0b3dee4bf2dd223b7d38003e36403d11d6"
     },
     {
       "id": "q-projection-fin-snapshot",
@@ -425,7 +413,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "3ad972c63fa29b11d0a8959e4a19f032b1af99cfe7da8e674750d90296539e07"
+      "sha_all": "04cbca850b9c4ef711748e5767f4d22684b4578382a2986593c01b7f8294a23f"
     },
     {
       "id": "q-m66-projection",
@@ -439,5 +427,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762817360
+  "last_refresh_epoch": 1762881270
 }

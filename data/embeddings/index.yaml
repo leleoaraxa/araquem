@@ -50,10 +50,6 @@ include:
     path: data/entities/fiis_rankings/entity.yaml
     tags: [entities, fiis, rankings, "entity:fiis_rankings"]
 
-  - id: entity-fiis-metrics
-    path: data/entities/fiis_metrics/entity.yaml
-    tags: [entities, fiis, metricas, "entity:fiis_metrics"]
-
   - id: entity-fiis-imoveis
     path: data/entities/fiis_imoveis/entity.yaml
     tags: [entities, fiis, imoveis, "entity:fiis_imoveis"]
