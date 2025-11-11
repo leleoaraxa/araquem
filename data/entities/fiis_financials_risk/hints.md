@@ -1,4 +1,4 @@
-Métricas de risco do FII: volatilidade histórica (desvio-padrão), índice de Treynor, índice de Sharpe, alfa de Jensen, beta,
+Indicadores de risco do FII: volatilidade histórica (desvio-padrão), índice de Treynor, índice de Sharpe, alfa de Jensen, beta,
 Sortino, drawdown (MDD) e R².
 
 Exemplos:

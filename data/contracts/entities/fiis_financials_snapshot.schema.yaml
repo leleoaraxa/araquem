@@ -69,7 +69,7 @@ sample_questions:
   - "qual o valor de mercado do VISC11?"
   - "qual a taxa de capitalização do MXRF11?"
   - "qual a alavancagem do HGRU11?"
-  - "quais são as métricas financeiras do KNRI11?"
+  - "quais são os indicadores financeiros do KNRI11?"
   - "qual foi o último dividendo pago pelo HGLG11?"
   - "qual a soma anual de dividendos do VISC11?"
   - "qual a variação percentual do patrimônio do MXRF11 no mês?"
@@ -87,7 +87,7 @@ sample_questions:
   - "quais são os dados financeiros do KNRI11?"
   - "quais são os principais indicadores financeiros do VISC11?"
   - "me fale sobre os dados financeiros do MXRF11"
-  - "quais são as métricas financeiras do HGRU11?"
+  - "quais são os indicadores financeiros do HGRU11?"
 
 tolerance:
   extra_columns_allowed: false
