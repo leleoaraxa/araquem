@@ -48,7 +48,7 @@ presentation:
   empty_message: Nenhuma notícia encontrada.
 ask:
   intents:
-  - noticias
+  - fiis_noticias
   keywords:
   - noticia
   - notícias

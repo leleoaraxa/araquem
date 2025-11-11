@@ -80,7 +80,7 @@ presentation:
   empty_message: Sem cronograma de receitas disponível.
 ask:
   intents:
-  - metricas
+  - fiis_financials_revenue_schedule
   keywords:
   - receitas
   - recebiveis

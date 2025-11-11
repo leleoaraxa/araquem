@@ -17,3 +17,20 @@ profiles:
     min_score: 0.15
     weight: { bm25: 0.50, semantic: 0.50 }
     tie_break: semantic
+
+routing:
+  deny_intents:
+    - client_fiis_positions
+    - fiis_cadastro
+    - fiis_precos
+    - fiis_dividendos
+    - fiis_rankings
+    - fiis_imoveis
+    - fiis_processos
+    - fiis_financials_snapshot
+    - fiis_financials_revenue_schedule
+    - fiis_financials_risk
+    - metrics
+  allow_intents:
+    - fiis_noticias
+  notes: "RAG restrito a conteúdos textuais (ex.: notícias e dossiês); dados tabulares seguem via rotas SQL."

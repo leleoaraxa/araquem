@@ -98,7 +98,7 @@ presentation:
   empty_message: Sem indicadores financeiros disponíveis.
 ask:
   intents:
-  - metricas
+  - fiis_financials_snapshot
   keywords:
   - payout
   - alavancagem

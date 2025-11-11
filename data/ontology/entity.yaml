@@ -11,7 +11,47 @@ weights:
   phrase: 2.0
 
 intents:
-  - name: cadastro
+  - name: client_fiis_positions
+    tokens:
+      include:
+        - posicao
+        - posicoes
+        - carteira
+        - minhas
+        - minha
+        - meu
+        - custodia
+        - documento
+        - cpf
+        - cnpj
+        - participante
+        - disponivel
+        - quantidade
+        - preco fechamento
+        - variacao
+      exclude:
+        - nos
+        - ultimos
+        - media
+        - soma
+        - sharpe
+        - payout
+    phrases:
+      include:
+        - minhas posicoes
+        - minha carteira
+        - posicoes do meu cpf
+        - posicoes do documento
+        - quantidade em custodia
+        - quantidade disponivel
+        - atualizar posicao
+      exclude:
+        - nos ultimos
+        - media de
+        - soma de
+    entities: [client_fiis_positions]
+
+  - name: fiis_cadastro
     tokens:
       include:
         - cadastro
@@ -20,6 +60,7 @@ intents:
         - administradora
         - gestor
         - gestora
+        - custodia
         - custodiante
         - assembleia
         - site
@@ -40,22 +81,21 @@ intents:
         - cotas
         - cotistas
         - url
-        - oficial
         - exclusivo
+        - oficial
       exclude:
         - preco
         - precos
         - cotacao
         - dividendo
         - ranking
-        - top
+        - media
     phrases:
       include:
         - cnpj do
         - administrador do
         - site do
         - nome de pregao do
-        - nome de pregao b3 do
         - nome de exibicao do
         - classificacao do
         - setor do
@@ -70,25 +110,19 @@ intents:
         - quantos cotistas tem o
         - url oficial do
         - fundo exclusivo
-        - e fundo exclusivo
-        - fundo e exclusivo
       exclude:
         - preco do
         - cotacao do
         - dividendo do
-        - ranking de
-        - propriedades do
-        - quais imoveis do
-        - processos do
-        - status dos processos do
     entities: [fiis_cadastro]
 
-  - name: precos
+  - name: fiis_precos
     tokens:
       include:
         - preco
         - precos
         - cotacao
+        - cotacoes
         - hoje
         - ontem
         - abertura
@@ -101,18 +135,16 @@ intents:
         - diaria
         - pregao
       exclude:
-        - cadastro
-        - dividendo
-        - ranking
-        - top
-        - melhores
-        - piores
         - media
+        - soma
+        - nos
+        - ultimos
+        - ranking
     phrases:
       include:
         - preco do
         - preco atual
-        - preco pregao
+        - preco do dia
         - cotacao do
         - abertura do
         - fechamento do
@@ -120,22 +152,17 @@ intents:
         - minima do
         - variacao diaria
       exclude:
-        - media de preco
         - preco medio
-        - ranking de
-        - top fiis por
-        - dividendo do
+        - media de preco
+        - nos ultimos
+        - retorno no periodo
     entities: [fiis_precos]
 
-  - name: dividendos
+  - name: fiis_dividendos
     tokens:
       include:
         - dividendo
         - dividendos
-        - ultimo
-        - ultima
-        - recentes
-        - mais
         - provento
         - proventos
         - rendimento
@@ -143,36 +170,222 @@ intents:
         - pagamento
         - paga
         - pagou
+        - ultimo
+        - ultima
+        - data com
+        - data ex
       exclude:
-        - cadastro
-        - preco
-        - cotacao
-        - ranking
+        - soma
+        - media
+        - nos
+        - ultimos
     phrases:
       include:
         - dividendo do
         - dividendos do
-        - ultimo dividendo
-        - ultima distribuicao
-        - mais recentes dividendos
-        - qual o ultimo dividendo do
-        - quando foi o ultimo pagamento do
         - proventos do
         - rendimento do
         - pagamento do
-        - data com
-        - data ex
-        - quando paga
+        - ultimo dividendo do
+        - quando foi o ultimo pagamento do
+        - data com do
       exclude:
-        - soma de
-        - quanto de
+        - soma de dividendos
+        - quanto de dividendos
         - nos ultimos
-        - 12 meses
-        - 6 meses
-        - 24 meses
     entities: [fiis_dividendos]
 
-  - name: noticias
+  - name: fiis_financials_snapshot
+    tokens:
+      include:
+        - snapshot
+        - indicadores
+        - payout
+        - alavancagem
+        - leverage
+        - ev
+        - enterprise
+        - enterprise value
+        - market cap
+        - patrimonio
+        - patrimonio por cota
+        - price book
+        - preco patrimonio
+        - caixa
+        - caixa total
+        - passivos
+        - passivos totais
+        - cap rate
+        - crescimento
+        - receita por cota
+        - reserva de dividendos
+        - taxa de adm
+        - taxa de administracao
+        - taxa de performance
+        - ultimo dividendo
+        - ultimo pagamento
+        - dy mensal
+      exclude:
+        - soma
+        - media
+        - nos
+        - ultimos
+        - sharpe
+        - sortino
+        - treynor
+    phrases:
+      include:
+        - payout do
+        - alavancagem do
+        - market cap do
+        - enterprise value do
+        - price book do
+        - caixa do
+        - caixa disponivel do
+        - passivos totais do
+        - cap rate do
+        - reserva de dividendos do
+        - taxa de adm do
+        - taxa de performance do
+      exclude:
+        - nos ultimos
+        - soma de
+        - media de
+    entities: [fiis_financials_snapshot]
+
+  - name: fiis_financials_revenue_schedule
+    tokens:
+      include:
+        - receita
+        - receitas
+        - recebiveis
+        - vencimento
+        - vencimentos
+        - prazo
+        - prazos
+        - buckets
+        - indexador
+        - indexadores
+        - igpm
+        - ipca
+        - inpc
+        - incc
+        - 0 3m
+        - 3 6m
+        - 6 12m
+        - 9 12m
+        - 12 15m
+        - 15 18m
+        - 18 21m
+        - 21 24m
+        - 24 27m
+        - 27 30m
+        - 30 33m
+        - 33 36m
+        - maior 36m
+        - acima 36m
+        - indeterminado
+      exclude:
+        - soma
+        - media
+        - nos ultimos
+    phrases:
+      include:
+        - estrutura de recebiveis do
+        - receitas por prazo do
+        - quanto vence em
+        - vencimento em
+        - indexadores de receita do
+        - receitas 0 3m do
+        - receitas 3 6m do
+        - receitas 6 12m do
+        - receitas acima 36m do
+      exclude:
+        - soma de dividendos
+        - media de preco
+    entities: [fiis_financials_revenue_schedule]
+
+  - name: fiis_financials_risk
+    tokens:
+      include:
+        - risco
+        - volatilidade
+        - sharpe
+        - sortino
+        - treynor
+        - jensen
+        - alfa
+        - beta
+        - drawdown
+        - mdd
+        - r2
+        - r²
+        - coeficiente de determinacao
+        - vr
+        - indice de risco
+        - atual
+        - hoje
+        - d1
+        - d-1
+      exclude:
+        - nos
+        - ultimos
+        - periodo
+        - retorna
+        - soma
+    phrases:
+      include:
+        - indicador de risco do
+        - risco atual do
+        - volatilidade do
+        - sharpe do
+        - sortino do
+        - treynor do
+        - jensen do
+        - alfa de jensen do
+        - beta do
+        - drawdown do
+        - r2 do
+        - coeficiente de determinacao do
+      exclude:
+        - nos ultimos
+        - no periodo
+    entities: [fiis_financials_risk]
+
+  - name: fiis_imoveis
+    tokens:
+      include:
+        - imovel
+        - imoveis
+        - propriedade
+        - propriedades
+        - ativo
+        - ativos
+        - portfolio
+        - vacancia
+        - ocupacao
+        - unidades
+        - metragem
+        - endereco
+        - localizacao
+        - status
+      exclude:
+        - ranking
+        - dividendo
+        - preco
+    phrases:
+      include:
+        - imoveis do
+        - quais imoveis do
+        - lista de propriedades do
+        - area total do
+        - vacancia do
+        - status do
+        - status dos imoveis do
+      exclude: []
+    entities: [fiis_imoveis]
+
+  - name: fiis_noticias
     tokens:
       include:
         - noticia
@@ -186,427 +399,13 @@ intents:
     phrases:
       include:
         - noticias do
-        - ultimas do
-        - novidades do
         - ultimas noticias do
+        - novidades do
         - as noticias do
       exclude: []
     entities: [fiis_noticias]
 
-  - name: rankings
-    tokens:
-      include:
-        - ranking
-        - posicao
-        - posicoes
-        - top
-        - aparicoes
-        - movimentos
-        - ifix
-        - ifil
-        - usuarios
-        - sirios
-        - vezes
-      exclude:
-        - cadastro
-        - preco
-        - cotacao
-        - dividendo
-    phrases:
-      include:
-        - ranking do
-        - posicao do
-        - aparicoes do
-        - movimentos do
-        - ranking de
-        - top fiis por
-        - melhores fiis por
-      exclude:
-        - preco do
-        - cotacao do
-        - dividendo do
-    entities: [fiis_rankings]
-
-  - name: metricas
-    tokens:
-      include:
-        - metricas
-        - metrica
-        - media
-        - soma
-        - dy
-        - dy mensal
-        - dividend yield
-        - payout
-        - alavancagem
-        - endividamento
-        - caixa
-        - caixa total
-        - ultimo dividendo
-        - ultimo pagamento
-        - enterprise
-        - enterprise value
-        - ev
-        - market
-        - market cap
-        - patrimonio
-        - patrimonio por cota
-        - preco patrimonio
-        - price book
-        - cap
-        - cap rate
-        - crescimento
-        - receita por cota
-        - reserva de dividendos
-        - taxa de adm
-        - taxa de performance
-        - passivos totais
-        - receitas
-        - recebiveis
-        - vencimento
-        - prazos
-        - buckets
-        - indexador
-        - igpm
-        - ipca
-        - inpc
-        - incc
-        - 0 3
-        - 3 6
-        - 6 9
-        - 9 12
-        - 12 15
-        - 15 18
-        - 18 21
-        - 21 24
-        - 24 27
-        - 27 30
-        - 30 33
-        - 33 36
-        - maior 36
-        - indeterminado
-        - risco
-        - volatilidade
-        - sharpe
-        - treynor
-        - jensen
-        - alfa de jensen
-        - beta
-        - sortino
-        - drawdown
-        - mdd
-        - r2
-        - r²
-        - coeficiente de determinacao
-        - posicao
-        - posicoes
-        - documento
-        - participante
-        - quantidade
-        - disponivel
-        - custodia
-        - carteira
-        - minhas
-        - minha
-        - meu
-        - cpf
-    phrases:
-      include:
-        # agregadas → fiis_metrics
-        - metricas do
-        - soma de dividendos
-        - soma de dividendos do
-        - preco medio
-        - preco medio do
-        - dy medio do
-        - qual o dy medio do
-        - qual o dy
-        - qual o dy do
-        - ultimos pagamentos
-        - ultimas distribuicoes
-        - quanto de dividendos
-        - dividendos totais do
-        - contagem de pagamentos do
-        - pagou nos ultimos
-        - dividendos nos ultimos
-        - dividendos nos ultimos 12 meses
-        - dividendos ultimos 6 meses
-        - dividendos ultimos 12 meses
-        - media preco ultimos 12 meses
-        - quantos dividendos ultimos 12 meses
-        - pagou quanto ultimos 6 meses
-        - media de preco
-        - nos ultimos 12 meses
-        - no ano
-
-        # foto financeira (snapshot)
-        - payout do
-        - alavancagem do
-        - endividamento do
-        - caixa do
-        - caixa disponivel
-        - caixa e equivalentes
-        - saldo de caixa
-        - market cap do
-        - ev do
-        - enterprise value do
-        - preco patrimonio do
-        - price book do
-        - cap rate do
-        - crescimento do
-        - qual o payout do
-        - qual a alavancagem do
-        - qual o market cap do
-        - qual o enterprise value do
-        - qual o preco patrimonio do
-        - qual o cap rate do
-        - qual a taxa de crescimento do
-        - qual o dy mensal do
-        - qual o ultimo dividendo do
-        - quando foi o ultimo pagamento do
-        - qual o patrimonio por cota do
-        - qual a receita por cota do
-        - qual a reserva de dividendos do
-        - qual a taxa de adm do
-        - qual a taxa de performance do
-        - quais os passivos totais do
-        - qual o caixa total do
-
-        # receita por vencimento (revenue schedule)
-        - estrutura de recebiveis do
-        - receitas por prazo do
-        - quanto vence em 12 meses do
-        - indexadores de receita do
-        - receita com vencimento em 0 3 meses do
-        - receita 3 6 meses
-        - receita 9 12 meses
-        - receita acima 36 meses
-        - percentual igpm receita
-        - percentual ipca receita
-        - percentual inpc receita
-        - percentual incc receita
-
-        # risco
-        - volatilidade do
-        - sharpe do
-        - treynor do
-        - indice de treynor do
-        - jensen do
-        - alfa de jensen do
-        - beta do
-        - qual a volatilidade do
-        - qual o indice de sharpe do
-        - qual o indice de treynor do
-        - qual o alfa de jensen do
-        - qual o beta do
-        - sortino do
-        - indice de sortino do
-        - drawdown do
-        - mdd do
-        - r2 do
-        - r² do
-        - coeficiente de determinacao do
-        - o que e beta
-        - o que e beta indice
-        - o que é beta
-        - o que é beta indice
-        - como calcular o sharpe
-        - definicao de drawdown
-        - o que é sortino
-        - como calcular r2
-        - o que é coeficiente de determinacao
-
-        # posicoes do cliente
-        - minhas posicoes
-        - minhas posicoes cpf
-        - minhas posicoes de fiis
-        - minhas posicoes na b3
-        - minha carteira
-        - posicoes cpf
-        - quantidade em custodia
-        - qual a quantidade em custodia do
-        - qual a quantidade disponivel do
-        - preco fechamento minha posicao
-        - variacao minha posicao
-        - quais sao minhas posicoes do
-    entities:
-      # ordem importa: especializadas primeiro, guarda-chuva por ultimo
-      - fiis_financials_snapshot
-      - fiis_financials_risk
-      - fiis_financials_revenue_schedule
-      - client_fiis_positions
-      - fiis_metrics
-    anti_tokens:
-      # sinalizadores negativos por entidade (sempre normalizados!)
-      fiis_metrics:
-        - payout
-        - alavancagem
-        - market cap
-        - enterprise value
-        - ev
-        - price book
-        - preco patrimonio
-        - caixa
-        - caixa total
-        - passivos
-        - passivos totais
-        - cap rate
-        - volatilidade
-        - sharpe
-        - treynor
-        - beta
-        - igpm
-        - ipca
-        - inpc
-        - incc
-
-      fiis_financials_snapshot:
-        - soma
-        - soma de
-        - soma de dividendos
-        - contagem de
-        - contagem de pagamentos
-        - media
-        - preco medio
-        - dy medio
-        - dy medio do
-        - ultimos
-        - 12 meses
-        - 6 meses
-        - quanto pagou
-        - dividendos nos ultimos
-        - volatilidade
-        - sharpe
-        - treynor
-        - indice de treynor
-        - beta
-        - receita
-        - recebiveis
-        - vencimento
-        - 0 3
-        - 3 6
-        - 6 9
-        - 9 12
-        - 12 15
-        - 15 18
-        - 18 21
-        - 21 24
-        - 24 27
-        - 27 30
-        - 30 33
-        - 33 36
-        - maior 36
-        - minhas
-        - posicoes
-        - custodia
-        - igpm
-        - ipca
-        - inpc
-        - incc
-
-      fiis_financials_revenue_schedule:
-        - payout
-        - alavancagem
-        - market cap
-        - ev
-        - enterprise value
-        - price book
-        - preco patrimonio
-        - caixa
-        - volatilidade
-        - sharpe
-        - treynor
-        - indice de treynor
-        - beta
-        - minhas
-        - posicoes
-        - custodia
-        - ultimo
-        - ultimo dividendo
-        - ultimo pagamento
-        - market cap do
-
-      fiis_financials_risk:
-        - soma
-        - preco medio
-        - media de preco
-        - dy medio
-        - soma de dividendos
-        - receita
-        - recebiveis
-        - vencimento
-        - 0 3
-        - 12 meses
-        - minhas
-        - posicoes
-        - custodia
-        - payout
-        - alavancagem
-        - market cap
-        - ev
-        - enterprise value
-        - price book
-        - preco patrimonio
-        - caixa
-        - cap rate
-        - igpm
-        - ipca
-        - inpc
-        - incc
-        - caixa total
-        - passivos
-        - passivos totais
-        - reserva de dividendos
-
-      client_fiis_positions:
-        - payout
-        - market cap
-        - ev
-        - enterprise value
-        - price book
-        - caixa
-        - cap rate
-        - volatilidade
-        - sharpe
-        - treynor
-        - beta
-        - receita
-        - recebiveis
-        - vencimento
-        - 0 3
-        - 12 meses
-        - igpm
-        - ipca
-        - inpc
-        - incc
-        - dy medio
-        - soma de dividendos
-
-  - name: imoveis
-    tokens:
-      include:
-        - imovel
-        - imoveis
-        - propriedade
-        - propriedades
-        - ativos
-        - portfolio
-        - vacancia
-        - ocupacao
-        - unidades
-      exclude: []
-    phrases:
-      include:
-        - imoveis do
-        - quais imoveis do
-        - lista de propriedades do
-        - area total do
-        - status dos
-        - status do
-      exclude: []
-    entities: [fiis_imoveis]
-
-  - name: processos
+  - name: fiis_processos
     tokens:
       include:
         - processo
@@ -632,5 +431,81 @@ intents:
       exclude: []
     entities: [fiis_processos]
 
+  - name: fiis_rankings
+    tokens:
+      include:
+        - ranking
+        - posicao
+        - posicoes
+        - top
+        - aparicoes
+        - movimentos
+        - ifix
+        - ifil
+        - usuarios
+        - sirios
+        - vezes
+      exclude:
+        - preco
+        - dividendo
+        - media
+    phrases:
+      include:
+        - ranking do
+        - posicao do
+        - aparicoes do
+        - movimentos do
+        - top fiis por
+      exclude:
+        - preco do
+        - dividendo do
+    entities: [fiis_rankings]
+
+  - name: metrics
+    min_gap: 0.35
+    tokens:
+      include:
+        - metricas
+        - metrica
+        - projeção
+        - projecao
+        - periodo
+        - periodo customizado
+        - no periodo
+        - nos ultimos
+        - ultimos
+        - soma
+        - media
+        - retorno
+        - retorno no periodo
+      exclude:
+        - cadastro
+        - noticia
+        - ranking
+        - posicao
+        - carteira
+    phrases:
+      include:
+        - metricas do
+        - metricas no periodo
+        - sharpe nos ultimos
+        - sortino nos ultimos
+        - beta no periodo
+        - mdd no periodo
+        - volatilidade no periodo
+        - soma de dividendos do
+        - soma de dividendos nos ultimos
+        - quantos pagamentos de dividendos
+        - dy medio nos ultimos
+        - preco medio nos ultimos
+        - retorno no periodo do
+      exclude:
+        - dados cadastrais
+        - ultimo dividendo do
+        - preco do dia
+    entities: [fiis_metrics]
+    weights:
+      phrases: 2.5
+
 anti_tokens:
-  noticias: [noticia, noticias, materia, reportagem, manchete]
+  fiis_noticias: [noticia, noticias, materia, reportagem, manchete]

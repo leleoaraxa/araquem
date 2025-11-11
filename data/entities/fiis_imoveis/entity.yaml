@@ -51,8 +51,7 @@ presentation:
   empty_message: Nenhum imóvel encontrado.
 ask:
   intents:
-  - cadastro
-  - imoveis
+  - fiis_imoveis
   keywords:
   - imovel
   - imóveis

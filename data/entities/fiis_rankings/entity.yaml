@@ -52,7 +52,7 @@ presentation:
   empty_message: Sem rankings disponíveis.
 ask:
   intents:
-  - rankings
+  - fiis_rankings
   keywords:
   - ranking
   - posicao

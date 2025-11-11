@@ -3,6 +3,24 @@
 Este documento consolida todos os **indicadores financeiros** calculados e utilizados pela plataforma **SIRIOS**, com seus conceitos, fórmulas, unidades, interpretações e equivalentes em inglês.
 Serve como **fonte de consulta e validação cruzada** dos cálculos implementados em `fiis_metrics` e demais entidades relacionadas.
 
+## 🔗 Rastreamento operacional (`fiis_metrics`)
+
+| Indicador lógico | Métrica (`metric`) | Origem de dados | Observações |
+| ---------------- | ------------------ | --------------- | ----------- |
+| Beta Índice | `risk.beta_index` | Séries de preços do FII (`fiis_precos`) + benchmark IFIX | Projeção ajusta janela e índice.
+| Sharpe Ratio | `risk.sharpe_ratio` | Preços do FII (`fiis_precos`) + taxa livre (`CDI`) | Considera retorno excedente diário.
+| Sortino Ratio | `risk.sortino_ratio` | Preços do FII (`fiis_precos`) + `CDI` | Penaliza apenas downside volatility.
+| Treynor Ratio | `risk.treynor_ratio` | Preços do FII (`fiis_precos`) + IFIX + `CDI` | Usa beta projetado para ajuste de risco sistemático.
+| Alpha de Jensen | `risk.jensen_alpha` | Preços do FII (`fiis_precos`) + IFIX + `CDI` | Calculado sobre a janela parametrizada.
+| Volatility Ratio | `risk.volatility_ratio` | Preços do FII (`fiis_precos`) + IFIX | Compara volatilidade do fundo vs. índice.
+| Max Drawdown (MDD) | `risk.max_drawdown` | Preços do FII (`fiis_precos`) | Avalia pior perda no período solicitado.
+| R² | `risk.r_squared` | Preços do FII (`fiis_precos`) + IFIX | Coeficiente de determinação do ajuste linear.
+| Soma de dividendos | `dividends.dividends_sum` | Pagamentos (`fiis_dividendos`) | Agrega valores do período/janela.
+| Contagem de dividendos | `dividends.dividends_count` | Pagamentos (`fiis_dividendos`) | Número de eventos na janela.
+| DY médio | `dividends.dy_avg` | Dividendos (`fiis_dividendos`) + preços (`fiis_precos`) | Calcula yield médio ponderado.
+| Preço médio | `prices.price_avg` | Preços do FII (`fiis_precos`) | Média de fechamento ajustada pelo período.
+| Retorno no período | `prices.return_period` | Preços do FII (`fiis_precos`) + `CDI` (para comparação opcional) | Percentual acumulado solicitado.
+
 **Sumário**
 - [1. Beta Índice](#-1-beta-índice)
 - [2. Sharpe Ratio](#-2-sharpe-ratio)
