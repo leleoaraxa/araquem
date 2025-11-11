@@ -1,85 +1,84 @@
 # -*- coding: utf-8 -*-
-"""Prompt scaffolds for the SIRIOS Narrator.
-Generated: 2025-11-08T18:03:21
-This module is self-contained and safe to add to the repo without touching existing code.
-"""
+"""Prompt scaffolds for the SIRIOS Narrator."""
 
 from __future__ import annotations
+
 import json
+from typing import Dict
 
-SYSTEM_PROMPT = """Você é o Narrator da SIRIOS. Sua função é transformar **fatos** em uma resposta clara,
-humana e profissional, SEM inventar informações. Regras:
-- Use exclusivamente os dados de `facts` (JSON fornecido abaixo).
-- Nunca crie campos novos. Se faltar algo essencial, informe a limitação de forma elegante.
-- Responda em pt-BR, com tom executivo: direto, cordial, objetivo.
-- Formatação padrão: Markdown.
-- Números e datas no padrão pt-BR.
-- Evite jargões e redundâncias; frases curtas; voz ativa.
+SYSTEM_PROMPT = """Você é o Narrator da SIRIOS. Converta fatos já consolidados em uma resposta clara,
+objetiva e fiel. Regras:
+- Use somente os dados fornecidos em `facts`.
+- Preserve o sentido dos valores e textos; não invente campos nem conclusões.
+- Se `facts.fallback_message` existir, utilize-a quando não houver conteúdo a narrar.
+- Responda em pt-BR, com tom executivo e formatação Markdown simples.
+- Priorize frases curtas, voz ativa e clareza.
 """
 
 
-def _fewshot_metricas_financials_risk() -> str:
-    return """
-[EXEMPLO 1]
-Pergunta: volatilidade e sharpe do HGRU11
-Facts (resumo):
-{"ticker":"HGRU11","medidas":[{"nome":"volatilidade","valor": 0.176,"unidade":"ratio"},{"nome":"sharpe","valor":0.62,"unidade":"ratio"}]}
-Resposta (modelo):
-Para o **HGRU11**, a volatilidade no período analisado foi **17,6%**, com Sharpe **0,62**. Fonte: SIRIOS.
-
-[EXEMPLO 2]
-Pergunta: beta do HGLG11
-Facts (resumo):
-{"ticker":"HGLG11","medidas":[{"nome":"beta","valor":0.81,"unidade":"ratio"}]}
-Resposta (modelo):
-O **beta** do **HGLG11** no período avaliado foi **0,81**. Fonte: SIRIOS.
-"""
-
-
-def _fewshot_metricas_financials_revenue() -> str:
-    return """
-[EXEMPLO 1]
-Pergunta: receita com vencimento em 0–3 meses do HGLG11
-Facts (resumo):
-{"ticker":"HGLG11","faixas":[{"nome":"0_3","valor":0.28,"unidade":"ratio"}]}
-Resposta (modelo):
-Para o **HGLG11**, a parcela de receita com vencimento em **0–3 meses** é **28%**. Fonte: SIRIOS.
-
-[EXEMPLO 2]
-Pergunta: quanto vence em 12 meses do XPML11
-Facts (resumo):
-{"ticker":"XPML11","faixas":[{"nome":"0_12","valor":0.63,"unidade":"ratio"}]}
-Resposta (modelo):
-No **XPML11**, cerca de **63%** das receitas vencem em até **12 meses**. Fonte: SIRIOS.
-"""
-
-
-FEW_SHOTS = {
-    ("metricas", "fiis_financials_risk"): _fewshot_metricas_financials_risk,
-    (
-        "metricas",
-        "fiis_financials_revenue_schedule",
-    ): _fewshot_metricas_financials_revenue,
+PROMPT_TEMPLATES: Dict[str, str] = {
+    "summary": """Elabore um parágrafo resumindo os fatos principais. Caso exista `facts.rendered_text`, use-o como base e apenas lapide o tom.""",
+    "list": """Produza uma resposta em Markdown no formato de lista, mantendo os itens apresentados em `facts.rows` na mesma ordem.""",
+    "table": """Descreva os dados tabulares de forma textual sucinta, respeitando a estrutura de colunas informada em `facts.columns` quando presente.""",
 }
+
+
+FEW_SHOTS: Dict[str, str] = {
+    "list": """[EXEMPLO]
+Pergunta: imóveis do fundo XPTO11
+Facts:
+{"rows": [{"nome": "Shopping Leste", "cidade": "São Paulo"}]}
+Resposta esperada:
+- **Shopping Leste** — São Paulo.
+""",
+    "summary": """[EXEMPLO]
+Pergunta: resumo cadastral do ABCD11
+Facts:
+{"rendered_text": "O fundo ABCD11 é administrado pela Gestora Alfa."}
+Resposta esperada:
+O fundo **ABCD11** é administrado pela Gestora Alfa.
+""",
+}
+
+
+def _pick_template(meta: dict, facts: dict) -> str:
+    presentation = (facts or {}).get("presentation_kind") or (meta or {}).get(
+        "presentation_kind"
+    )
+    if isinstance(presentation, str):
+        normalized = presentation.strip().lower()
+        if normalized in PROMPT_TEMPLATES:
+            return normalized
+    if (facts or {}).get("rows"):
+        return "list"
+    return "summary"
 
 
 def build_prompt(
     question: str, facts: dict, meta: dict, style: str = "executivo"
 ) -> str:
     """Compose the final prompt string for the LLM."""
+
     intent = (meta or {}).get("intent", "")
     entity = (meta or {}).get("entity", "")
-    key = (intent, entity)
-    few = FEW_SHOTS.get(key)
-    fewblock = few() if callable(few) else ""
-    facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
+    template_key = _pick_template(meta, facts)
+    base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
+    fewshot = FEW_SHOTS.get(template_key, "")
 
+    facts_payload = dict(facts or {})
+    if "fallback_message" not in facts_payload and isinstance(entity, str):
+        fallback = (meta or {}).get("fallback_message")
+        if isinstance(fallback, str):
+            facts_payload["fallback_message"] = fallback
+
+    facts_json = json.dumps(facts_payload, ensure_ascii=False, indent=2)
     if len(facts_json) > 50000:
         facts_json = facts_json[:49000] + "\n... (truncado)\n"
 
     return f"""{SYSTEM_PROMPT}
 
 [ESTILO]: {style}
+[APRESENTACAO]: {template_key}
 [INTENT]: {intent}
 [ENTITY]: {entity}
 
@@ -88,9 +87,11 @@ def build_prompt(
 [FACTS]:
 {facts_json}
 
-[FEW-SHOTS]
-{fewblock}
+Instruções adicionais:
+{base_instruction}
 
-Tarefa: produza uma resposta **concisa e clara** em Markdown usando EXCLUSIVAMENTE os facts acima.
-Caso algum campo essencial não esteja presente, informe a limitação de modo elegante e não invente números.
+Few-shot de referência (opcional):
+{fewshot}
+
+Entregue apenas o texto final para o usuário.
 """
