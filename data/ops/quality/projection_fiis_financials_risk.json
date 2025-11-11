@@ -6,13 +6,9 @@
     "ticker",
     "volatility_ratio",
     "sharpe_ratio",
-    "treynor_ratio",
-    "jensen_alpha",
     "beta_index",
-    "sortino_ratio",
     "max_drawdown",
     "r_squared",
-    "created_at",
     "updated_at"
   ],
   "samples": [

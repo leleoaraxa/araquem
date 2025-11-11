@@ -1,8 +1,8 @@
 {% if rows and rows|length > 0 -%}
 Resumo:
 {%- for r in rows %}
-- {{ r[fields.key] }} = {{ r[fields.value] }}
+- {{ r.ticker }}: Vol {{ r.volatility_ratio|number_br }}, Sharpe {{ r.sharpe_ratio|number_br }}, Sortino {{ r.sortino_ratio|number_br }}, Treynor {{ r.treynor_ratio|number_br }}, Jensen {{ r.jensen_alpha|number_br }}, Beta {{ r.beta_index|number_br }}, MDD {{ r.max_drawdown|percent_br }}, R² {{ r.r_squared|number_br }}
 {%- endfor %}
 {%- else -%}
-{{ empty_message or "Sem dados." }}
+{{ empty_message or "Sem indicadores de risco disponíveis." }}
 {%- endif %}

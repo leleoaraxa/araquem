@@ -1,8 +1,9 @@
 {% if rows and rows|length > 0 -%}
-Lista ({{ rows|length }}):
-{%- for r in rows %}
-- {{ r[fields.key] }} — {{ r[fields.value] }}
-{%- endfor %}
+{# Mostra até 10 itens mais recentes, com a mesma linha editorial do templates.md #}
+{%- set limit = 10 -%}
+{%- for r in rows[:limit] -%}
+- {{ r.published_at|datetime_br }}: {{ r.title }} — {{ r.source }} ({{ r.url }})
+{%- endfor -%}
 {%- else -%}
-{{ empty_message or "Nenhum registro encontrado." }}
+{{ empty_message or "Nenhuma notícia encontrada." }}
 {%- endif %}

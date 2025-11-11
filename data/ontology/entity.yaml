@@ -21,34 +21,20 @@ intents:
         - minha
         - meu
         - custodia
-        - documento
-        - cpf
-        - cnpj
-        - participante
         - disponivel
         - quantidade
-        - preco fechamento
-        - variacao
       exclude:
-        - nos
-        - ultimos
-        - media
-        - soma
-        - sharpe
-        - payout
+        - cpf
+        - cnpj
+        - documento
     phrases:
       include:
         - minhas posicoes
         - minha carteira
-        - posicoes do meu cpf
-        - posicoes do documento
+        - posicoes da minha carteira
         - quantidade em custodia
         - quantidade disponivel
-        - atualizar posicao
-      exclude:
-        - nos ultimos
-        - media de
-        - soma de
+      exclude: []
     entities: [client_fiis_positions]
 
   - name: fiis_cadastro

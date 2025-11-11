@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-11T18:34:53Z",
+  "generated_at": "2025-11-11T22:08:05Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -37,7 +37,7 @@
         "fiis"
       ],
       "chunks": 15,
-      "sha_all": "ef4db03bc595a0effc03c60b83a4442a4165bb03c9fc6d6a9998915a2c8415fa"
+      "sha_all": "1e0b74d155e413fcde2ddf018f4bc2f64275a71544bd78da1a84dd04f6975b04"
     },
     {
       "id": "ontology-entity",
@@ -120,7 +120,7 @@
         "entity:fiis_noticias"
       ],
       "chunks": 2,
-      "sha_all": "2c151a656b57525b04c711965edf7a0debc6cfdb0dd10c3f34ec69b143b5ed66"
+      "sha_all": "fcf391df92d36e0f08bf63a333566c320bdd102162d9774f11fb8cf8eea8a257"
     },
     {
       "id": "entity-fiis-processos",
@@ -171,7 +171,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 2,
-      "sha_all": "b93587ebc78c3a0e45a0b2fa817f383cb58c47f463645b7cb50aa8fb8083717e"
+      "sha_all": "1dda09b74bac84a31575367f487da10454d39ca5d24cba24ebe8d08bb4bc614d"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -184,7 +184,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 1,
-      "sha_all": "3a055a8a316d38327810bfb8db92e835b817d2bfdca23e114cdb8c4869c14b0a"
+      "sha_all": "d1097fdb70d4f5284bb51a90522e6b5cbb253999263b35e643d522b03096d899"
     },
     {
       "id": "entity-fiis-financials-revenue-hints",
@@ -239,7 +239,7 @@
         "rag"
       ],
       "chunks": 1,
-      "sha_all": "a14f0797b211c69551da4680123b7cdf91a8cb4eb5a49c74662b73c82c62ccd5"
+      "sha_all": "78ba8423406d7922e2da9ff5b4145d066bfbcf935976a0a46f3b2d2e603d22e9"
     },
     {
       "id": "ops-planner-thresholds",
@@ -280,8 +280,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 16,
-      "sha_all": "011bcca9bb626c71eff818620d1dc1ec242635d38683724c88e7b4a05faae031"
+      "chunks": 17,
+      "sha_all": "64507fc8cb5c8fb536efc9d22fcd8de0ac764b580af37077fcfb44fe724c9301"
     },
     {
       "id": "q-projection-cadastro",
@@ -347,7 +347,7 @@
         "noticias"
       ],
       "chunks": 1,
-      "sha_all": "27c0f7290e0263f8480e819290ad0481a6b9022b2a494906242a39773434e5a7"
+      "sha_all": "d45fc64982154272c9b5328f8d34692740eaf640330eaad5393a64fb87c08c5d"
     },
     {
       "id": "q-projection-processos",
@@ -416,5 +416,5 @@
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
     }
   ],
-  "last_refresh_epoch": 1762886194
+  "last_refresh_epoch": 1762898990
 }

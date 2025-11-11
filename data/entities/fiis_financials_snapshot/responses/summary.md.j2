@@ -1,8 +1,8 @@
 {% if rows and rows|length > 0 -%}
 Resumo:
 {%- for r in rows %}
-- {{ r[fields.key] }} = {{ r[fields.value] }}
+- {{ r.ticker }}: payout {{ r.dividend_payout_pct|percent_br }}, alavancagem {{ r.leverage_ratio|number_br }}, EV {{ r.enterprise_value|currency_br }}, MarketCap {{ r.market_cap_value|currency_br }}, caixa {{ r.total_cash_amt|currency_br }}, passivos {{ r.liabilities_total_amt|currency_br }}
 {%- endfor %}
 {%- else -%}
-{{ empty_message or "Sem dados." }}
+{{ empty_message or "Sem indicadores financeiros disponíveis." }}
 {%- endif %}

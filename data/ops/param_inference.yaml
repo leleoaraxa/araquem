@@ -18,14 +18,6 @@ intents:
           count: 1
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
-      avg:
-        include: [media, média, medio, médio, em media, em média]
-        window_defaults:
-          - months: 6
-      sum:
-        include: [soma, total, somatorio, somatória, acumulado]
-        window_defaults:
-          - months: 12
     window_keywords:
       months:
         3: [trimestre, 3 meses, tres meses]
@@ -49,10 +41,6 @@ intents:
           count: 1
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
-      avg:
-        include: [media, média, medio, médio, em media, em média, preco medio, preço médio]
-        window_defaults:
-          - months: 6
     window_keywords:
       months:
         3: [trimestre, 3 meses, tres meses]
@@ -65,29 +53,8 @@ intents:
         12: [12 ultimos, doze ultimos]
         24: [24 ultimos, vinte e quatro ultimos]
 
-  metricas:
-    default_agg: metrics
-    default_window:
-      months: 12
-    default_metric: dividends_sum
-    metric_keywords:
-      dividends_sum:
-        include: [soma de dividendos, soma dividendos, soma proventos]
-      dividends_count:
-        include: [quantidade de dividendos, contagem de dividendos]
-      price_avg:
-        include: [preço médio, preco medio, média de preço, media de preco]
-      dy_avg:
-        include: [dy, dividend yield, dividendo yield, yield, dy médio, dy medio]
-    window_keywords:
-      months:
-        3: [trimestre, 3 meses, tres meses, 3m]
-        6: [semestre, 6 meses, seis meses, 6m]
-        12: [ano, anual, 12 meses, 12m, doze meses, ultimo ano, últimos 12 meses, no ano, ytd]
-        24: [2 anos, dois anos, 24 meses, 24m]
-      count:
-        3: [ultimos 3 pagamentos, últimos 3 pagamentos, tres ultimos pagamentos, últimos 3 proventos, ultimas 3 distribuicoes, últimas 3 distribuições]
-        6: [ultimos 6 pagamentos, últimos 6 pagamentos, seis ultimos pagamentos, ultimas 6 distribuicoes, últimas 6 distribuições]
-        12: [ultimos 12 pagamentos, últimos 12 pagamentos, doze ultimos pagamentos, ultimas 12 distribuicoes, últimas 12 distribuições]
-        24: [ultimos 24 pagamentos, últimos 24 pagamentos, vinte e quatro ultimos pagamentos, ultimas 24 distribuicoes, últimas 24 distribuições]
-    ytd_keywords: [ytd, year to date, ano atual, no ano, desde o inicio do ano]
+  client_fiis_positions:
+    inference: false           # não inferir por texto
+    required: [document_number]
+    bindings:
+      document_number: context.client_id   # mapear do contexto seguro -> parâmetro SQL

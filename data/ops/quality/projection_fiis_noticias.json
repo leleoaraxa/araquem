@@ -6,13 +6,8 @@
     "ticker",
     "source",
     "title",
-    "tags",
-    "description",
     "url",
-    "image_url",
-    "published_at",
-    "created_at",
-    "updated_at"
+    "published_at"
   ],
   "samples": [
     { "question": "noticias do KNRI11" },

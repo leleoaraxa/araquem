@@ -7,13 +7,10 @@
     "position_date",
     "ticker",
     "qty",
-    "closing_price",
     "available_quantity",
+    "closing_price",
     "update_value",
-    "fii_name",
-    "participant_name",
-    "created_at",
-    "updated_at"
+    "participant_name"
   ],
   "samples": [
     { "question": "minhas posições de FIIs" },

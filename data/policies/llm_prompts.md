@@ -17,6 +17,8 @@
 ## RAG-Answer (resposta com contexto)
 **Objetivo:** responder em PT-BR curto usando **apenas** o contexto fornecido.
 **Regras:**
+- **Privacidade/PII**: Para entidades `private: true` (ex.: `client_fiis_positions`), **ignore qualquer PII no texto do usuário**. Os parâmetros sensíveis (ex.: `document_number`) **devem vir apenas do payload seguro**. **Nunca** ecoe números de documentos na resposta.
+- **Logs/telemetria:** Não registre PII em logs, traces ou mensagens de erro. Oculte/mascare qualquer identificador sensível.
 - Citar fontes usadas: id/score dos chunks.
 - Respeitar templates/formatos definidos pela entidade quando existirem.
 - Se faltar evidência: “Não encontrei evidências suficientes…”.
@@ -29,4 +31,4 @@
 }
 
 ## Fail-safe (fora do domínio / sem contexto)
-Responder: “Não sei com segurança. Exemplos: 'cnpj do MCCI11', 'preço do MXRF11 hoje'.”
+Responder: “Não sei com segurança. **Exemplos de perguntas válidas**: 'cnpj do MCCI11', 'preço do MXRF11 hoje'.”

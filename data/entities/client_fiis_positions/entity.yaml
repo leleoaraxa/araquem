@@ -3,14 +3,17 @@ result_key: positions
 sql_view: client_fiis_positions
 private: true
 description: Posições do cliente em FIIs (PRIVADA; exige parâmetro document_number).
+
 identifiers:
-- name: document_number
-  description: Documento do cliente (CPF/CNPJ)
-- name: position_date
-  description: Data da posição
-- name: ticker
-  description: Ticker do FII (AAAA11)
+  - name: document_number
+    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro (nunca pelo texto do usuário)
+  - name: position_date
+    description: Data da posição
+  - name: ticker
+    description: Ticker do FII (AAAA11)
+
 default_date_field: position_date
+
 columns:
 - name: document_number
   alias: Documento
@@ -51,33 +54,31 @@ presentation:
     key: ticker
     value: qty
   empty_message: Sem posições disponíveis.
+
 ask:
   intents:
-  - client_fiis_positions
-  # Observação: termos como "cpf" ou "documento" na pergunta são neutros; o valor
-  # efetivo do CPF vem do payload (entidade private: true) e não do texto livre.
+    - client_fiis_positions
+  # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
-  - minhas posicoes
-  - minha carteira
-  - posicao
-  - quantidade
-  - custodia
-  - carteira de fii
-  - carteira de fundos imobiliarios
+    - minhas posicoes
+    - minha carteira
+    - posicao
+    - quantidade
+    - custodia
+    - carteira de fii
+    - carteira de fundos imobiliarios
   synonyms:
-    ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
+    ticker: [ativo, papel, fundo, fii]
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+
 params:
-  required:
-  - document_number
+  required: [document_number]
+
 order_by_whitelist:
-- position_date desc
+  - position_date desc
+  - ticker asc
 aggregations:
   enabled: false

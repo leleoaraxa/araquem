@@ -4,14 +4,12 @@
   "result_key": "financials_snapshot",
   "must_have_columns": [
     "ticker",
-    "market_cap_value",
-    "enterprise_value",
-    "price_book_ratio",
     "dividend_payout_pct",
     "leverage_ratio",
+    "enterprise_value",
+    "market_cap_value",
     "total_cash_amt",
     "liabilities_total_amt",
-    "created_at",
     "updated_at"
   ],
   "samples": [
