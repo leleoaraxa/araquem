@@ -785,349 +785,62 @@ CREATE INDEX IF NOT EXISTS idx_market_index_series ON market_index_series(symbol
 REFRESH MATERIALIZED VIEW rf_daily_series_mat;
 REFRESH MATERIALIZED VIEW market_index_series;
 
-
 ALTER MATERIALIZED VIEW public.market_index_series OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.market_index_series OWNER TO edge_user;
 ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO edge_user;
 
 -- =====================================================================
--- FUNCTION: get_fiis_returns
+-- VIEW: financials_tickers_typed
 -- =====================================================================
--- Gera retornos diários por ticker para uma janela móvel
--- Usa compute-on-read (nada hardcoded)
-DROP FUNCTION IF EXISTS public.get_fiis_returns(integer, text, text[], numeric);
 
-CREATE OR REPLACE FUNCTION public.get_fiis_returns(
-  p_window_days integer,
-  p_ret_kind text DEFAULT 'log',   -- 'log' | 'simple'
-  p_tickers text[] DEFAULT NULL,   -- opcional: limitar a alguns tickers
-  p_min_obs_ratio numeric DEFAULT 0.80  -- cobertura mínima de dias na janela
-)
-RETURNS TABLE (dt date, ticker text, ret numeric)
-LANGUAGE sql STABLE AS
-$$
-WITH px AS (
+CREATE OR REPLACE VIEW financials_tickers_typed AS
+WITH raw AS (
   SELECT
-    price_ref_date AS dt,
-    UPPER(ticker) AS ticker,
-    adj_close_price::numeric AS px
-  FROM price_tickers
-  WHERE price_ref_date >= (CURRENT_DATE - (p_window_days || ' days')::interval)
-    AND (p_tickers IS NULL OR UPPER(ticker) = ANY(p_tickers))
+    f.ticker,
+    NULLIF(TRIM(f.equity::text), '')                    AS equity_raw,
+    NULLIF(TRIM(f.total_liabilities::text), '')         AS total_liabilities_raw,
+    NULLIF(TRIM(f.total_cash::text), '')                AS total_cash_raw,
+    NULLIF(TRIM(f.dividend_to_distribute::text), '')    AS dividend_to_distribute_raw,
+    NULLIF(TRIM(f.expected_revenue::text), '')            AS expected_revenue_raw,
+    COALESCE(f.shares_count, 0)::numeric                AS shares_count
+  FROM financials_tickers f
 ),
-rets AS (
+norm AS (
   SELECT
-    p.dt,
-    p.ticker,
-    CASE
-      WHEN p_ret_kind = 'log'
-        THEN ln(p.px / lag(p.px) OVER (PARTITION BY p.ticker ORDER BY p.dt))
-      ELSE (p.px / lag(p.px) OVER (PARTITION BY p.ticker ORDER BY p.dt)) - 1
-    END AS ret
-  FROM px p
-),
-coverage AS (
-  SELECT ticker,
-         COUNT(*)::numeric AS n_ok
-  FROM rets
-  WHERE ret IS NOT NULL
-  GROUP BY 1
-),
-window_days AS (
-  SELECT COUNT(DISTINCT dt)::numeric AS n_days FROM px
-)
-SELECT r.dt, r.ticker, r.ret
-FROM rets r
-JOIN coverage c USING (ticker)
-CROSS JOIN window_days w
-WHERE r.ret IS NOT NULL
-  AND c.n_ok / NULLIF(w.n_days,0) >= p_min_obs_ratio
-ORDER BY r.dt, r.ticker;
-$$;
-
-
--- =====================================================================
--- FUNCTION: get_fiis_stats
--- =====================================================================
--- Estatísticas por ticker na janela (μ, σ, Sharpe anualizado etc.)
-DROP FUNCTION IF EXISTS public.get_fiis_stats(integer, text, numeric, text[], numeric);
-	
-CREATE OR REPLACE FUNCTION public.get_fiis_stats(
-  p_window_days integer,
-  p_ret_kind text DEFAULT 'log',
-  p_rf_annual numeric DEFAULT 0.0,
-  p_tickers text[] DEFAULT NULL,
-  p_min_obs_ratio numeric DEFAULT 0.80
-)
-RETURNS TABLE (
-  ref_date date,
-  ticker text,
-  ret_daily numeric,
-  vol_daily numeric,
-  ret_annual numeric,
-  vol_annual numeric,
-  sharpe_annual numeric
-)
-LANGUAGE sql STABLE AS
-$$
-WITH r AS (
-  SELECT * FROM public.get_fiis_returns(p_window_days, p_ret_kind, p_tickers, p_min_obs_ratio)
-),
-max_dt AS (
-  SELECT MAX(dt)::date AS ref_date FROM r
-),
-agg AS (
-  SELECT
-    ticker,
-    AVG(ret)::numeric AS ret_daily,
-    STDDEV_SAMP(ret)::numeric AS vol_daily
-  FROM r
-  GROUP BY 1
-),
-annual AS (
-  SELECT
-    a.ticker,
-    a.ret_daily,
-    a.vol_daily,
-    (a.ret_daily * 252)::numeric AS ret_annual,
-    (a.vol_daily * sqrt(252))::numeric AS vol_annual
-  FROM agg a
+    r.ticker,
+    /* troca vírgula por ponto e remove tudo que não é dígito, ponto ou sinal */
+    COALESCE(REGEXP_REPLACE(REPLACE(r.equity_raw, ',', '.'),                    '[^0-9\.\-]+', '', 'g'), '') AS equity_txt,
+    COALESCE(REGEXP_REPLACE(REPLACE(r.total_liabilities_raw, ',', '.'),         '[^0-9\.\-]+', '', 'g'), '') AS total_liabilities_txt,
+    COALESCE(REGEXP_REPLACE(REPLACE(r.total_cash_raw, ',', '.'),                '[^0-9\.\-]+', '', 'g'), '') AS total_cash_txt,
+    COALESCE(REGEXP_REPLACE(REPLACE(r.dividend_to_distribute_raw, ',', '.'),    '[^0-9\.\-]+', '', 'g'), '') AS dividend_to_distribute_txt,
+    COALESCE(REGEXP_REPLACE(REPLACE(r.expected_revenue_raw, ',', '.'),          '[^0-9\.\-]+', '', 'g'), '') AS expected_revenue_txt,
+    r.shares_count
+  FROM raw r
 )
 SELECT
-  m.ref_date,
-  t.ticker,
-  t.ret_daily,
-  t.vol_daily,
-  t.ret_annual,
-  t.vol_annual,
-  CASE WHEN t.vol_annual > 0 THEN (t.ret_annual - p_rf_annual) / t.vol_annual END AS sharpe_annual
-FROM annual t CROSS JOIN max_dt m
-ORDER BY t.ticker;
-$$;
+  n.ticker,
 
+  CASE WHEN n.equity_txt ~ '^-?\d+(\.\d+)?$'
+       THEN n.equity_txt::numeric ELSE NULL END                 AS equity,
 
--- =====================================================================
--- FUNCTION: audit_markowitz_pairs
--- Verifica se há FIIs acima do envelope por pares (aprox. da fronteira).
--- Se algum ativo estiver acima do envelope + tolerância, é anomalia.
--- =====================================================================
-CREATE OR REPLACE FUNCTION public.audit_markowitz_pairs(
-  p_window_days integer DEFAULT 252,
-  p_ret_kind text DEFAULT 'log',
-  p_tickers text[] DEFAULT NULL,
-  p_min_obs_ratio numeric DEFAULT 0.80,
-  p_step numeric DEFAULT 0.02,
-  p_bin numeric DEFAULT 0.0025,
-  p_eps numeric DEFAULT 1e-6
-)
-RETURNS TABLE (
-  ref_date date,
-  ticker text,
-  vol_asset numeric,
-  ret_asset numeric,
-  vol_bin numeric,
-  ret_envelope numeric,
-  delta numeric
-)
-LANGUAGE sql STABLE AS
-$$
-WITH
--- 1) Estatísticas por ativo (μ, σ anuais) + ref_date
-s AS (
-  SELECT *
-  FROM public.get_fiis_stats(p_window_days, p_ret_kind, 0.0, p_tickers, p_min_obs_ratio)
-),
--- 2) Retornos diários (para covariâncias)
-r AS (
-  SELECT * FROM public.get_fiis_returns(p_window_days, p_ret_kind, p_tickers, p_min_obs_ratio)
-),
--- 3) Médias diárias por ativo
-mean_d AS (
-  SELECT ticker, AVG(ret)::numeric AS mu_d
-  FROM r
-  GROUP BY 1
-),
--- 4) Produto médio diário por par (para covariância)
-pair_avg AS (
-  SELECT a.ticker AS ti, b.ticker AS tj,
-         AVG(a.ret * b.ret)::numeric AS avg_prod
-  FROM r a
-  JOIN r b ON a.dt = b.dt AND a.ticker <= b.ticker
-  GROUP BY 1,2
-),
--- 5) Covariância diária por par: cov_d = E[XY] - E[X]E[Y]
-cov_d AS (
-  SELECT p.ti, p.tj,
-         (p.avg_prod - m1.mu_d * m2.mu_d)::numeric AS cov_d
-  FROM pair_avg p
-  JOIN mean_d m1 ON m1.ticker = p.ti
-  JOIN mean_d m2 ON m2.ticker = p.tj
-),
--- 6) Versões anuais
-cov_a AS (
-  SELECT ti, tj,
-         (cov_d * 252.0)::numeric AS cov_annual
-  FROM cov_d
-),
-var_a AS (
-  SELECT ticker, (vol_annual * vol_annual)::numeric AS var_annual
-  FROM s
-),
-mu_a AS (
-  SELECT ticker, ret_annual::numeric AS mu_annual
-  FROM s
-),
--- 7) Lista ordenada de tickers
-tickers AS (
-  SELECT DISTINCT ticker FROM s ORDER BY 1
-),
--- 8) Pares ti < tj
-pairs AS (
-  SELECT t1.ticker AS ti, t2.ticker AS tj
-  FROM tickers t1
-  JOIN tickers t2 ON t1.ticker < t2.ticker
-),
--- 9) Grade de pesos w ∈ [0,1] com passo p_step
-steps AS (
-  SELECT generate_series(0, round(1.0/p_step)::int) AS k
-),
-weights AS (
-  SELECT (k::numeric / NULLIF(round(1.0/p_step)::int,0))::numeric AS w FROM steps
-),
--- 10) Carteiras por par (fórmula de variância a partir de var e cov)
-pair_port AS (
-  SELECT
-    p.ti, p.tj, w.w,
-    -- mu_p = w*mu_i + (1-w)*mu_j
-    (w.w * mi.mu_annual + (1 - w.w) * mj.mu_annual)::numeric AS ret_annual,
-    -- var_p = w^2 Var_i + (1-w)^2 Var_j + 2 w (1-w) Cov_ij
-    (
-      (w.w*w.w) * vi.var_annual +
-      ((1 - w.w)*(1 - w.w)) * vj.var_annual +
-      2*w.w*(1 - w.w) * c.cov_annual
-    )::numeric AS var_annual
-  FROM pairs p
-  JOIN mu_a mi ON mi.ticker = p.ti
-  JOIN mu_a mj ON mj.ticker = p.tj
-  JOIN var_a vi ON vi.ticker = p.ti
-  JOIN var_a vj ON vj.ticker = p.tj
-  JOIN cov_a c  ON ( (c.ti = p.ti AND c.tj = p.tj) OR (c.ti = p.tj AND c.tj = p.ti) )
-  JOIN weights w ON TRUE
-),
--- 11) Envelope por bins de volatilidade (máx retorno por bin)
-envelope AS (
-  SELECT
-    round(sqrt(var_annual)::numeric / p_bin) * p_bin AS vol_bin,
-    MAX(ret_annual) AS ret_env
-  FROM pair_port
-  WHERE var_annual >= 0
-  GROUP BY 1
-),
--- 12) Activos vs envelope (delta)
-assets_vs_env AS (
-  SELECT
-    s.ref_date,
-    s.ticker,
-    s.vol_annual AS vol_asset,
-    s.ret_annual AS ret_asset,
-    round(s.vol_annual / p_bin) * p_bin AS vol_bin,
-    e.ret_env AS ret_envelope,
-    (s.ret_annual - e.ret_env) AS delta
-  FROM s
-  LEFT JOIN envelope e ON e.vol_bin = round(s.vol_annual / p_bin) * p_bin
-)
-SELECT ref_date, ticker, vol_asset, ret_asset, vol_bin, ret_envelope, delta
-FROM assets_vs_env
-WHERE ret_envelope IS NOT NULL
-  AND (ret_asset > ret_envelope + p_eps)
-ORDER BY delta DESC, ticker;
-$$;
+  CASE WHEN n.total_liabilities_txt ~ '^-?\d+(\.\d+)?$'
+       THEN n.total_liabilities_txt::numeric ELSE NULL END      AS total_liabilities,
 
--- =====================================================================
--- FUNCTION: audit_markowitz_summary
--- Retorna um resumo com contagens e parâmetros usados.
--- =====================================================================
-CREATE OR REPLACE FUNCTION public.audit_markowitz_summary(
-  p_window_days integer DEFAULT 252,
-  p_ret_kind text DEFAULT 'log',
-  p_tickers text[] DEFAULT NULL,
-  p_min_obs_ratio numeric DEFAULT 0.80,
-  p_step numeric DEFAULT 0.02,
-  p_bin numeric DEFAULT 0.0025,
-  p_eps numeric DEFAULT 1e-6
-)
-RETURNS TABLE (
-  ref_date date,
-  window_days int,
-  ret_kind text,
-  tickers_count int,
-  pairs_count bigint,
-  step numeric,
-  bin_width numeric,
-  eps numeric,
-  anomalies_count int
-)
-LANGUAGE sql STABLE AS
-$$
-WITH s AS (
-  SELECT * FROM public.get_fiis_stats(p_window_days, p_ret_kind, 0.0, p_tickers, p_min_obs_ratio)
-),
-t AS ( SELECT COUNT(*)::int AS n FROM s ),
-pairs AS ( SELECT (n*(n-1)/2)::bigint AS np FROM t ),
-anom AS (
-  SELECT COUNT(*)::int AS na
-  FROM public.audit_markowitz_pairs(p_window_days, p_ret_kind, p_tickers, p_min_obs_ratio, p_step, p_bin, p_eps)
-)
-SELECT
-  (SELECT MAX(ref_date) FROM s) AS ref_date,
-  p_window_days AS window_days,
-  p_ret_kind   AS ret_kind,
-  (SELECT n FROM t) AS tickers_count,
-  (SELECT np FROM pairs) AS pairs_count,
-  p_step AS step,
-  p_bin  AS bin_width,
-  p_eps  AS eps,
-  (SELECT na FROM anom) AS anomalies_count;
-$$;
+  CASE WHEN n.total_cash_txt ~ '^-?\d+(\.\d+)?$'
+       THEN n.total_cash_txt::numeric ELSE NULL END             AS total_cash,
 
-CREATE OR REPLACE FUNCTION public.get_fiis_universe(
-  p_window_days integer DEFAULT 252,
-  p_min_obs_ratio numeric DEFAULT 0.80
-) RETURNS text[] LANGUAGE sql STABLE AS $$
-SELECT ARRAY_AGG(ticker ORDER BY ticker)
-FROM public.get_fiis_stats(p_window_days, 'log', 0.0, NULL, p_min_obs_ratio);
-$$;
+  CASE WHEN n.dividend_to_distribute_txt ~ '^-?\d+(\.\d+)?$'
+       THEN n.dividend_to_distribute_txt::numeric ELSE NULL END AS dividend_to_distribute,
 
+  CASE WHEN n.expected_revenue_txt ~ '^-?\d+(\.\d+)?$'
+       THEN n.expected_revenue_txt::numeric ELSE NULL END       AS expected_revenue,
 
--- SELECT * FROM public.get_fiis_returns(252, 'log', NULL, 0.80);
--- SELECT * FROM public.get_fiis_returns(252, 'log', ARRAY['HGLG11','MXRF11', 'XPML11', 'XPLG11'], 0.80);
--- FIIs com liquidez mínima, cobertura ≥ 0.8, sem suspensos
--- SELECT * FROM public.get_fiis_returns(252,'log', public.get_fiis_universe(252,0.80), 0.80);
--- SELECT * FROM public.get_fiis_stats(252, 'log', 0.0, NULL, 0.80);
--- SELECT * FROM public.get_fiis_stats(252, 'log', 0.0, ARRAY['HGLG11','MXRF11', 'XPML11', 'XPLG11'], 0.80);
+  n.shares_count
+FROM norm n;
 
--- Anomalias (se houver, retornará linhas)
--- Interpretação:
---   Sem linhas → ok (ninguém acima do envelope: consistente).
---   Com linhas → há ativos acima do envelope (dados inconsistentes, escalas divergentes, janela mista, anualização vs diária, etc.). Revisar pipeline.
--- SELECT * FROM public.audit_markowitz_pairs(252, 'log', NULL, 0.80);
-
--- Exemplo restringindo universo
--- SELECT * FROM public.audit_markowitz_pairs(252, 'log', ARRAY['HGLG11','MXRF11','XPML11','XPLG11'], 0.80);
-
--- SELECT * FROM public.audit_markowitz_summary();
-
--- GRANT EXECUTE ON FUNCTION public.get_fiis_returns(integer, text, text[], numeric) TO sirios_app;
--- GRANT EXECUTE ON FUNCTION public.get_fiis_stats(integer, text, numeric, text[], numeric) TO sirios_app;
--- GRANT EXECUTE ON FUNCTION public.audit_markowitz_pairs(integer, text, text[], numeric, numeric, numeric, numeric) TO sirios_app;
--- GRANT EXECUTE ON FUNCTION public.audit_markowitz_summary(integer, text, text[], numeric, numeric, numeric, numeric) TO sirios_app;
--- GRANT EXECUTE ON FUNCTION public.get_fiis_universe(integer, numeric) TO sirios_app;
-GRANT EXECUTE ON FUNCTION public.get_fiis_returns(integer, text, text[], numeric) TO edge_user;
-GRANT EXECUTE ON FUNCTION public.get_fiis_stats(integer, text, numeric, text[], numeric) TO edge_user;
-GRANT EXECUTE ON FUNCTION public.audit_markowitz_pairs(integer, text, text[], numeric, numeric, numeric, numeric) TO edge_user;
-GRANT EXECUTE ON FUNCTION public.audit_markowitz_summary(integer, text, text[], numeric, numeric, numeric, numeric) TO edge_user;
-GRANT EXECUTE ON FUNCTION public.get_fiis_universe(integer, numeric) TO edge_user;
+-- ALTER VIEW public.financials_tickers_typed OWNER TO sirios_app;
+ALTER VIEW public.financials_tickers_typed OWNER TO edge_user;
 
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO sirios_api;
 ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO edge_user;
