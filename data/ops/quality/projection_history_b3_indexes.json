@@ -1,0 +1,26 @@
+{
+  "type": "projection",
+  "entity": "history_b3_indexes",
+  "result_key": "history_b3_indexes",
+  "must_have_columns": [
+    "index_date",
+    "ibov_points_count",
+    "ibov_var_pct",
+    "ifix_points_count",
+    "ifix_var_pct",
+    "ifil_points_count",
+    "ifil_var_pct",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "ibovespa hoje (D-1)" },
+    { "question": "pontos do ifix de ontem" },
+    { "question": "quanto variou o ifil no dia" },
+    { "question": "variação diária do ibov" },
+    { "question": "ifix ontem" },
+    { "question": "último fechamento do ibovespa" },
+    { "question": "pontuação do ifil (D-1)" },
+    { "question": "índices da b3 de ontem" }
+  ]
+}

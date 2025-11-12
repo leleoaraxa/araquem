@@ -1,0 +1,26 @@
+{
+  "type": "projection",
+  "entity": "history_currency_rates",
+  "result_key": "history_currency_rates",
+  "must_have_columns": [
+    "rate_date",
+    "usd_buy_amt",
+    "usd_sell_amt",
+    "usd_var_pct",
+    "eur_buy_amt",
+    "eur_sell_amt",
+    "eur_var_pct",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "cotação do dólar (D-1)" },
+    { "question": "dólar comercial de ontem" },
+    { "question": "euro hoje (D-1)" },
+    { "question": "variação diária do usd" },
+    { "question": "quanto fechou o euro ontem" },
+    { "question": "taxa de câmbio atualizada (D-1)" },
+    { "question": "valor do dólar ontem" },
+    { "question": "valores de compra e venda do euro" }
+  ]
+}
