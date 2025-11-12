@@ -8,7 +8,7 @@ tokenization:
 
 weights:
   token: 1.1
-  phrase: 3.2
+  phrase: 3.3
 
 intents:
   - name: client_fiis_positions
@@ -139,6 +139,7 @@ intents:
         - selic
         - ipca
         - inpc
+        - comercial
     phrases:
       include:
         - preco do
@@ -357,6 +358,9 @@ intents:
         - selic
         - ipca
         - inpc
+        - ultimas
+        - ultimo
+        - historico
     phrases:
       include:
         - indicador de risco do
@@ -473,6 +477,12 @@ intents:
         - preco
         - dividendo
         - media
+        - variacao
+        - variacao diaria
+        - pontos
+        - fechamento
+        - hoje
+        - ontem
     phrases:
       include:
         - ranking do
@@ -497,6 +507,7 @@ intents:
         - pontos
         - fechamento
         - variacao
+        - variacao do dia
         - variacao diaria
         - hoje
         - d1
@@ -514,6 +525,7 @@ intents:
         - inpc
     phrases:
       include:
+        - variacao do indice b3
         - pontos do ibov
         - variacao do ibov
         - pontos do ifix
@@ -524,6 +536,9 @@ intents:
         - variacao diaria do ibov
         - quanto variou o ifil no dia
         - variacao do ibov hoje
+        - quanto variou o ibov hoje
+        - quanto variou o ifix no dia
+        - quanto variou o ifil no dia
       exclude: []
     entities: [history_b3_indexes]
 
@@ -556,8 +571,13 @@ intents:
         - selic
         - ipca
         - inpc
+        - nome
+        - exibicao
+        - abertura
+        - fechamento
     phrases:
       include:
+        - variacao da moeda no dia
         - cotacao do dolar
         - cotacao do euro
         - dolar comercial
@@ -617,8 +637,14 @@ intents:
         - dólar
         - eur
         - euro
+        - recebiveis
+        - vencimento
+        - vencimentos
+        - buckets
+        - prazos
     phrases:
       include:
+        - indicador de mercado d 1
         - ipca de ontem
         - selic de ontem
         - taxa do igpm
