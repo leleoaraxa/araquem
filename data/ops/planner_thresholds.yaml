@@ -9,13 +9,17 @@ planner:
       min_gap: 0.5
     apply_on: fused
     intents:
-      cadastro:   { min_score: 1.0, min_gap: 0.2 }
-      precos:     { min_score: 1.0, min_gap: 0.2 }
-      dividendos: { min_score: 1.0, min_gap: 0.2 }
-      imoveis:    { min_score: 1.0, min_gap: 0.2 }
-      processos:  { min_score: 1.0, min_gap: 0.2 }
-      noticias:   { min_score: 1.0, min_gap: 0.2 }
-      rankings:   { min_score: 1.0, min_gap: 0.2 }
+      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.2 }
+      fiis_precos:                      { min_score: 1.0, min_gap: 0.2 }
+      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.2 }
+      fiis_imoveis:                     { min_score: 1.0, min_gap: 0.2 }
+      fiis_processos:                   { min_score: 1.0, min_gap: 0.2 }
+      fiis_noticias:                    { min_score: 1.0, min_gap: 0.2 }
+      fiis_rankings:                    { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
+      fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
+      client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
     entities:
       fiis_cadastro:                    { min_score: 1.0, min_gap: 0.2 }
       fiis_precos:                      { min_score: 1.0, min_gap: 0.2 }

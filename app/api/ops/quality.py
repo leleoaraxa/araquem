@@ -26,6 +26,50 @@ class QualitySample(BaseModel):
     expected_entity: Optional[str] = None
 
 
+def _to_float(x) -> float:
+    if isinstance(x, (int, float)):
+        return float(x)
+    if isinstance(x, dict):
+        try:
+            val = (x.get("data", {}).get("result") or [{}])[0].get("value")
+            if isinstance(val, list) and len(val) == 2:
+                return float(val[1])
+        except Exception:
+            pass
+        return 0.0
+    try:
+        return float(str(x))
+    except Exception:
+        return 0.0
+
+
+def _ratio(num, den) -> float:
+    n, d = _to_float(num), _to_float(den)
+    return (n / d) if d > 0 else 0.0
+
+
+def _sanitize(v: float) -> float:
+    if not isinstance(v, (int, float)):
+        return 0.0
+    if math.isnan(v) or math.isinf(v):
+        return 0.0
+    return round(float(v), 6)
+
+
+def _first_nonzero_expr(exprs: List[str]) -> float:
+    """Executa, em ordem, e retorna o primeiro valor > 0 (ou o último valor obtido)."""
+    last = 0.0
+    for e in exprs:
+        try:
+            val = _to_float(prom_query_instant(e))
+            last = val
+            if val > 0.0:
+                return val
+        except Exception:
+            continue
+    return last
+
+
 @router.post("/ops/quality/push")
 def quality_push(
     payload: Dict[str, Any] = Body(...),
@@ -43,7 +87,6 @@ def quality_push(
     provided_token = None
     if request is not None:
         provided_token = request.headers.get(header_name)
-    # Compat com parâmetro FastAPI padrão (x_ops_token) caso o header seja esse
     provided_token = provided_token or x_ops_token
 
     # Bearer opcional controlado por env QUALITY_AUTH_BEARER
@@ -349,14 +392,10 @@ def quality_push(
         ok = fail = 0
         for s in samples_raw:
             q = s.get("question") or ""
-            # --- Passa params do payload para o executor (ex.: document_number para entidades privadas) ---
             params = payload.get("params") or {}
             try:
-                out = orchestrator.route_question(
-                    q, params=params
-                )  # preferível se o orchestrator aceita kwargs
+                out = orchestrator.route_question(q, params=params)
             except TypeError:
-                # fallback: sem kwargs (mantém compatibilidade); considere ajustar orchestrator para suportar params
                 out = orchestrator.route_question(q)
             results = out.get("results") or {}
             rows = results.get(result_key) or []
@@ -388,9 +427,10 @@ def quality_report():
     fallback_path = os.getenv(
         "PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml"
     )
+
     try:
         import yaml
-    except Exception as e:
+    except Exception:
         logging.exception("Failed to import yaml module in quality_report")
         return JSONResponse({"error": "failed to load quality policy"}, status_code=500)
 
@@ -403,8 +443,8 @@ def quality_report():
         try:
             with open(candidate, "r", encoding="utf-8") as f:
                 policy = yaml.safe_load(f) or {}
-                break
-            used_path = candidate
+            used_path = candidate  # <- corrigido (antes ficava depois do break)
+            break
         except FileNotFoundError:
             error_msg = f"file not found '{candidate}'"
             errors.append(error_msg)
@@ -414,66 +454,67 @@ def quality_report():
             errors.append(error_msg)
             logging.exception(error_msg)
 
-    if policy is not None:
-        # Log informativo: qual arquivo de policy foi usado
-        logging.info("quality_report: policy loaded from %s", used_path or "<unknown>")
-
     if policy is None:
         return JSONResponse(
             {"error": f"failed to load quality policy: {'; '.join(errors)}"},
             status_code=500,
         )
 
+    logging.info("quality_report: policy loaded from %s", used_path or "<unknown>")
+
     targets = policy.get("targets") or {}
     if not targets:
         targets = (policy.get("quality_gates") or {}).get("thresholds") or {}
 
-    min_top1_acc = float(targets.get("min_top1_accuracy", 0.0))
-    min_routed_rt = float(targets.get("min_routed_rate", 0.0))
-    min_top2_gap = float(targets.get("min_top2_gap", 0.0))
-    max_miss_abs = float(targets.get("max_misses_absolute", 0.0))
-    max_miss_ratio = float(targets.get("max_misses_ratio", 1.0))
+    # Permite override por ENV (útil p/ testes rápidos)
+    def _env_or_target(env_key: str, target_key: str, default: float) -> float:
+        v = os.getenv(env_key)
+        if v is not None:
+            try:
+                return float(v)
+            except Exception:
+                pass
+        return float(targets.get(target_key, default))
 
+    min_top1_acc = _env_or_target("QUALITY_MIN_TOP1_ACC", "min_top1_accuracy", 0.0)
+    min_routed_rt = _env_or_target("QUALITY_MIN_ROUTED_RATE", "min_routed_rate", 0.0)
+    min_top2_gap = _env_or_target("QUALITY_MIN_TOP2_GAP", "min_top2_gap", 0.0)
+    max_miss_abs = _env_or_target("QUALITY_MAX_MISSES_ABS", "max_misses_absolute", 0.0)
+    max_miss_ratio = _env_or_target("QUALITY_MAX_MISSES_RATIO", "max_misses_ratio", 1.0)
+
+    # Métricas brutas
     top1_hit = prom_query_instant('sum(sirios_planner_top1_match_total{result="hit"})')
     top1_total = prom_query_instant("sum(sirios_planner_top1_match_total)")
     routed_ok = prom_query_instant(
         'sum(sirios_planner_routed_total{outcome!="unroutable"})'
     )
     routed_all = prom_query_instant("sum(sirios_planner_routed_total)")
-    # Janela maior para reduzir zeros quando a cadência é baixa
-    gap_p50 = prom_query_instant(
-        "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[10m])) by (le))"
-    )
     proj_ok = prom_query_instant('sum(sirios_planner_projection_total{outcome="ok"})')
     proj_total = prom_query_instant("sum(sirios_planner_projection_total)")
     miss_abs = prom_query_instant('sum(sirios_planner_top1_match_total{result="miss"})')
 
-    def _to_float(x) -> float:
-        if isinstance(x, (int, float)):
-            return float(x)
-        if isinstance(x, dict):
-            try:
-                val = (x.get("data", {}).get("result") or [{}])[0].get("value")
-                if isinstance(val, list) and len(val) == 2:
-                    return float(val[1])
-            except Exception:
-                pass
-            return 0.0
-        try:
-            return float(str(x))
-        except Exception:
-            return 0.0
+    # Gap P50 — tentar múltiplas janelas e fallback para increase()
+    windows_csv = os.getenv("QUALITY_GAP_WINDOWS", "10m,1h,6h,24h")
+    windows = [w.strip() for w in windows_csv.split(",") if w.strip()]
+    exprs = []
+    for w in windows:
+        exprs.append(
+            f"histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+        )
+    # fallback com increase (útil quando o rate é ~0 num curto período)
+    for w in windows:
+        exprs.append(
+            f"histogram_quantile(0.50, sum(increase(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+        )
 
-    def _ratio(num, den) -> float:
-        n, d = _to_float(num), _to_float(den)
-        return (n / d) if d > 0 else 0.0
+    gap_p50_v = _first_nonzero_expr(exprs)
 
+    # Derivados
     top1_acc = _ratio(top1_hit, top1_total)
     routed_rt = _ratio(routed_ok, routed_all)
     proj_pass = _ratio(proj_ok, proj_total)
     miss_abs_v = _to_float(miss_abs)
     miss_ratio = _ratio(miss_abs, top1_total)
-    gap_p50_v = _to_float(gap_p50)
 
     violations: List[str] = []
     if top1_acc < min_top1_acc:
@@ -489,13 +530,6 @@ def quality_report():
 
     status = "pass" if not violations else "fail"
 
-    def _sanitize(v: float) -> float:
-        if not isinstance(v, (int, float)):
-            return 0.0
-        if math.isnan(v) or math.isinf(v):
-            return 0.0
-        return round(float(v), 6)
-
     metrics = {
         "top1_accuracy": _sanitize(top1_acc),
         "routed_rate": _sanitize(routed_rt),
@@ -508,6 +542,12 @@ def quality_report():
     return {
         "status": status,
         "metrics": metrics,
-        "thresholds": targets,
+        "thresholds": {
+            "min_top1_accuracy": min_top1_acc,
+            "min_top2_gap": min_top2_gap,
+            "min_routed_rate": min_routed_rt,
+            "max_misses_absolute": max_miss_abs,
+            "max_misses_ratio": max_miss_ratio,
+        },
         "violations": violations,
     }
