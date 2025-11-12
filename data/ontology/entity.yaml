@@ -8,7 +8,7 @@ tokenization:
 
 weights:
   token: 1.1
-  phrase: 3.0
+  phrase: 3.2
 
 intents:
   - name: client_fiis_positions
@@ -288,6 +288,27 @@ intents:
         - soma
         - media
         - nos ultimos
+        - hoje
+        - d1
+        - d-1
+        - atual
+        - atualizada
+        - ultima
+        - atualizacao
+        - valor
+        - janeiro
+        - fevereiro
+        - marco
+        - março
+        - abril
+        - maio
+        - junho
+        - julho
+        - agosto
+        - setembro
+        - outubro
+        - novembro
+        - dezembro
     phrases:
       include:
         - estrutura de recebiveis do
@@ -573,6 +594,19 @@ intents:
         - d1
         - d-1
         - ontem
+        - janeiro
+        - fevereiro
+        - marco
+        - março
+        - abril
+        - maio
+        - junho
+        - julho
+        - agosto
+        - setembro
+        - outubro
+        - novembro
+        - dezembro
       exclude:
         - ibov
         - ibovespa
@@ -596,6 +630,8 @@ intents:
         - ultima atualizacao do ipca
         - valor do cdi hoje d 1
         - selic meta atualizada
+        - ipca de outubro
+        - ipca outubro
       exclude: []
     entities: [history_market_indicators]
 
