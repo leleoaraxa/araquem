@@ -243,7 +243,8 @@ LEFT JOIN dividends_tickers sd ON bt.ticker = sd.ticker
 LEFT JOIN calc_financials_tickers cf ON bt.ticker = cf.ticker
 LEFT JOIN financials_tickers f ON bt.ticker = f.ticker
 LEFT JOIN ranking_fiis r      ON bt.ticker = r.ticker
-ORDER BY bt.ticker ASC;
+ORDER BY bt.ticker ASC
+WITH DATA;
 
 CREATE UNIQUE INDEX idx_fiis_info_ticker ON view_fiis_info(ticker);
 CREATE INDEX idx_fiis_info_fii_cnpj ON view_fiis_info(fii_cnpj);
@@ -260,7 +261,23 @@ ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO edge_user;
 ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO edge_user;
 ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO sirios_api;
 
-REFRESH MATERIALIZED VIEW view_fiis_info;
+ALTER TABLE public.basics_tickers OWNER TO sirios_api;
+ALTER TABLE public.basics_tickers OWNER TO edge_user;
+ALTER TABLE public.ifil_tickers OWNER TO sirios_api;
+ALTER TABLE public.ifil_tickers OWNER TO edge_user;
+ALTER TABLE public.ifix_tickers OWNER TO sirios_api;
+ALTER TABLE public.ifix_tickers OWNER TO edge_user;
+ALTER TABLE public.dividends_tickers OWNER TO sirios_api;
+ALTER TABLE public.dividends_tickers OWNER TO edge_user;
+ALTER TABLE public.calc_financials_tickers OWNER TO sirios_api;
+ALTER TABLE public.calc_financials_tickers OWNER TO edge_user;
+ALTER TABLE public.financials_tickers OWNER TO sirios_api;
+ALTER TABLE public.financials_tickers OWNER TO edge_user;
+ALTER TABLE public.ranking_fiis OWNER TO sirios_api;
+ALTER TABLE public.ranking_fiis OWNER TO edge_user;
+
+
+REFRESH MATERIALIZED VIEW public.view_fiis_info;
 
 -- =====================================================================
 -- VIEW: view_fiis_history_dividends
@@ -289,6 +306,8 @@ CREATE UNIQUE INDEX idx_fiis_hist_dividends
 
 ALTER MATERIALIZED VIEW public.view_fiis_history_dividends OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.view_fiis_history_dividends OWNER TO edge_user;
+ALTER TABLE public.hist_dividends OWNER TO sirios_api;
+ALTER TABLE public.hist_dividends OWNER TO edge_user;
 
 REFRESH MATERIALIZED VIEW view_fiis_history_dividends;
 
@@ -340,6 +359,8 @@ CREATE UNIQUE INDEX idx_fiis_assets
 
 ALTER MATERIALIZED VIEW public.view_fiis_history_assets OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.view_fiis_history_assets OWNER TO edge_user;
+ALTER TABLE public.assets_tickers OWNER TO sirios_api;
+ALTER TABLE public.assets_tickers OWNER TO edge_user;
 
 REFRESH MATERIALIZED VIEW view_fiis_history_assets;
 
@@ -377,6 +398,9 @@ CREATE UNIQUE INDEX idx_fiis_judicial
 
 ALTER MATERIALIZED VIEW public.view_fiis_history_judicial OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.view_fiis_history_judicial OWNER TO edge_user;
+ALTER TABLE public.process_tickers OWNER TO sirios_api;
+ALTER TABLE public.process_tickers OWNER TO edge_user;
+
 
 REFRESH MATERIALIZED VIEW view_fiis_history_judicial;
 
@@ -407,6 +431,10 @@ CREATE UNIQUE INDEX idx_fiis_history_prices
 
 ALTER MATERIALIZED VIEW public.view_fiis_history_prices OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.view_fiis_history_prices OWNER TO edge_user;
+ALTER TABLE public.price_tickers OWNER TO sirios_api;
+ALTER TABLE public.price_tickers OWNER TO edge_user;
+ALTER TABLE public.view_fiis_history_prices OWNER TO sirios_api;
+ALTER TABLE public.view_fiis_history_prices OWNER TO edge_user;
 
 REFRESH MATERIALIZED VIEW view_fiis_history_prices;
 
@@ -445,11 +473,11 @@ ALTER MATERIALIZED VIEW public.view_fiis_history_news OWNER TO edge_user;
 REFRESH MATERIALIZED VIEW view_fiis_history_news;
 
 -- =====================================================================
--- VIEW: view_market_indicators
+-- VIEW: history_market_indicators
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_market_indicators CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS history_market_indicators;
 
-CREATE MATERIALIZED VIEW view_market_indicators AS
+CREATE MATERIALIZED VIEW history_market_indicators AS
 SELECT
 	TO_CHAR(TO_DATE(hi.date_indicators::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS indicator_date,
     UPPER(hi.slug_indicators)   AS indicator_name,
@@ -460,17 +488,19 @@ FROM public.hist_indicators hi
 ORDER BY hi.date_indicators DESC, hi.slug_indicators ASC;
 
 
-CREATE UNIQUE INDEX idx_market_indicators
-    ON view_market_indicators(indicator_date, indicator_name);
+CREATE UNIQUE INDEX idx_history_market_indicators
+    ON history_market_indicators(indicator_date, indicator_name);
 
 
-ALTER MATERIALIZED VIEW public.view_market_indicators OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_market_indicators OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.history_market_indicators OWNER TO sirios_api;
+ALTER MATERIALIZED VIEW public.history_market_indicators OWNER TO edge_user;
+ALTER TABLE public.hist_indicators OWNER TO sirios_api;
+ALTER TABLE public.hist_indicators OWNER TO edge_user;
 
-REFRESH MATERIALIZED VIEW view_market_indicators;
+REFRESH MATERIALIZED VIEW history_market_indicators;
 
 -- =====================================================================
--- VIEW: view_history_indexes
+-- VIEW: history_b3_indexes
 -- =====================================================================
 DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
 
@@ -494,6 +524,8 @@ CREATE UNIQUE INDEX idx_history_b3_indexes
 
 ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO sirios_api;
 ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO edge_user;
+ALTER TABLE public.hist_taxes OWNER TO sirios_api;
+ALTER TABLE public.hist_taxes OWNER TO edge_user;
 
 REFRESH MATERIALIZED VIEW history_b3_indexes;
 
@@ -518,7 +550,7 @@ ORDER BY ht.date_taxes DESC;
 
 
 CREATE UNIQUE INDEX idx_history_currency_rates
-    ON history_currency_rates(index_date);
+    ON history_currency_rates(rate_date);
 
 
 ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO sirios_api;
@@ -863,6 +895,3 @@ FROM norm n;
 
 -- ALTER VIEW public.financials_tickers_typed OWNER TO sirios_app;
 ALTER VIEW public.financials_tickers_typed OWNER TO edge_user;
-
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO sirios_api;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO edge_user;

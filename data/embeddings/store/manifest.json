@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-12T18:33:19Z",
+  "generated_at": "2025-11-12T18:50:44Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -280,8 +280,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 17,
-      "sha_all": "64507fc8cb5c8fb536efc9d22fcd8de0ac764b580af37077fcfb44fe724c9301"
+      "chunks": 20,
+      "sha_all": "2b3ad3e49697bd66d98091e6e8606b43b0d35fac08aedd108c5ff9c341e5d314"
     },
     {
       "id": "q-projection-cadastro",
@@ -426,7 +426,7 @@
         "entity:history_b3_indexes"
       ],
       "chunks": 2,
-      "sha_all": "3da08f18aa93196d5211a57f9e85534ac6d41b0273ec654fe84b93dfe5c1a9d2"
+      "sha_all": "658758ff9629ff1cb8e52aa6b551fdb86eea12cbd6f9bb716699db245c97bdc1"
     },
     {
       "id": "entity-history-currency-rates",
@@ -438,8 +438,8 @@
         "entity:history_currency_rates"
       ],
       "chunks": 2,
-      "sha_all": "a07e97ba668f9c24c2d5f8a86ff10cac18c64f76e7bd0454499f2ed4d89456da"
+      "sha_all": "9bc259cdf5bdcc32c4fefff848e5d1cabc679e5622d7bcdd9788b54a0465fd86"
     }
   ],
-  "last_refresh_epoch": 1762972485
+  "last_refresh_epoch": 1762973539
 }

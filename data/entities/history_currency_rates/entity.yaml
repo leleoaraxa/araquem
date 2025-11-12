@@ -1,6 +1,6 @@
 id: history_currency_rates
 result_key: history_currency_rates
-sql_view: view_history_currency_rates
+sql_view: history_currency_rates
 private: false
 description: Taxas de câmbio (USD/EUR em BRL) em base D-1.
 d_minus: 1

@@ -505,5 +505,33 @@ intents:
       exclude: []
     entities: [history_currency_rates]
 
+  - name: history_market_indicators
+    tokens:
+      include:
+        - ipca
+        - cdi
+        - selic
+        - igpm
+        - incc
+        - inpc
+        - taxa
+        - juros
+        - inflação
+        - indicador
+        - indicadores
+        - d1
+        - d-1
+        - ontem
+      exclude: []
+    phrases:
+      include:
+        - ipca de ontem
+        - selic de ontem
+        - taxa do igpm
+        - indicadores econômicos
+        - taxa de juros
+      exclude: []
+    entities: [history_market_indicators]
+
 anti_tokens:
   fiis_noticias: [noticia, noticias, materia, reportagem, manchete]

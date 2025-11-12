@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 -%}
+Indicadores ({{ rows|length }}):
+{%- for r in rows %}
+- {{ r.indicator_date }} — {{ r.indicator_name }}: {{ r.indicator_amt|number_br }}
+{%- endfor %}
+{%- else -%}
+{{ empty_message or "Nenhum indicador encontrado." }}
+{%- endif %}

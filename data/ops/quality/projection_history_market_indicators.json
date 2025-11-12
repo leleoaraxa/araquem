@@ -1,0 +1,24 @@
+{
+  "type": "projection",
+  "entity": "history_market_indicators",
+  "result_key": "history_market_indicators",
+  "must_have_columns": [
+    "indicator_date",
+    "indicator_name",
+    "indicator_amt",
+    "created_at",
+    "updated_at"
+  ],
+  "samples": [
+    { "question": "ipca de outubro (D-1)" },
+    { "question": "selic de ontem" },
+    { "question": "cdi atual" },
+    { "question": "taxa do igpm de ontem" },
+    { "question": "incc de ontem" },
+    { "question": "inpc atual" },
+    { "question": "última atualização do ipca" },
+    { "question": "valor do cdi hoje (D-1)" },
+    { "question": "indicadores macroeconômicos de ontem" },
+    { "question": "selic meta atualizada" }
+  ]
+}

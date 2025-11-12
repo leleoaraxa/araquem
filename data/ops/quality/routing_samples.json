@@ -699,18 +699,172 @@
     {
       "question": "Caixa disponível do HGLG11",
       "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot" },
+      "expected_entity": "fiis_financials_snapshot"
+    },
     {
       "question": "Índice de Treynor do HGLG11",
       "expected_intent": "fiis_financials_risk",
-      "expected_entity": "fiis_financials_risk" },
+      "expected_entity": "fiis_financials_risk"
+    },
     {
       "question": "Receita com vencimento em 0–3 meses do HGLG11",
       "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule" },
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
     {
       "question": "Quanto tenho de quantidade em custódia",
       "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions" }
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "ibovespa hoje (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "pontos do ibov de ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "variação diária do ibov",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "ifix ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "pontos do ifix de ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "variação do ifix hoje (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "pontos do ifil de ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "quanto variou o ifil no dia",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "índices da b3 de ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "fechamento de ontem do ibovespa",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "cotação do dólar (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "dólar comercial de ontem",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "euro hoje (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "variação diária do usd",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "quanto fechou o euro ontem",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "dólar compra e venda de ontem",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "euro compra e venda de ontem",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "usd hoje (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "eur hoje (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "cotação do euro comercial (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "ipca de outubro (D-1)",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "selic de ontem",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "cdi atual",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "taxa do igpm de ontem",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "incc de ontem",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "inpc atual",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "última atualização do ipca",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "valor do cdi hoje (D-1)",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "indicadores macroeconômicos",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "selic meta atualizada",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    }
   ]
 }

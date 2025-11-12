@@ -1,0 +1,69 @@
+id: history_market_indicators
+result_key: history_market_indicators
+sql_view: history_market_indicators
+private: false
+description: Indicadores macroeconômicos do mercado (IPCA, CDI, SELIC, IGPM etc.), em base D-1.
+d_minus: 1
+
+default_date_field: indicator_date
+
+columns:
+- name: indicator_date
+  alias: Data (D-1)
+  description: Data/hora da observação do indicador (sem tempo real).
+- name: indicator_name
+  alias: Indicador
+  description: Nome ou sigla do indicador (ex. IPCA, CDI, SELIC, IGPM).
+- name: indicator_amt
+  alias: Valor
+  description: Valor numérico do indicador (taxa, índice ou pontos).
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
+
+presentation:
+  kind: list
+  fields:
+    key: indicator_name
+    value: indicator_amt
+  empty_message: Nenhum indicador encontrado.
+
+ask:
+  intents:
+  - history_market_indicators
+  keywords:
+  - ipca
+  - cdi
+  - selic
+  - igpm
+  - incc
+  - inpc
+  - indicadores
+  - taxa
+  - juros
+  - inflação
+  synonyms:
+    indicator_name:
+    - indicador
+    - taxa
+    - índice
+  weights:
+    identifiers: 1.0
+    keywords: 1.5
+    synonyms: 0.5
+
+order_by_whitelist:
+- indicator_date desc
+- indicator_name asc
+- indicator_amt desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc

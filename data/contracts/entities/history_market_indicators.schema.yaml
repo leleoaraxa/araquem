@@ -1,0 +1,32 @@
+entity: history_market_indicators
+kind: view
+version: 1
+
+columns:
+  - { name: indicator_date, type: datetime, nullable: false, desc: "data/hora da observação do indicador (D-1)" }
+  - { name: indicator_name, type: string,   nullable: false, desc: "nome ou código do indicador (ex.: IPCA, CDI, SELIC, IGPM)" }
+  - { name: indicator_amt,  type: number,   nullable: true,  desc: "valor numérico do indicador (taxa, índice ou ponto)" }
+  - { name: created_at,     type: datetime, nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,     type: datetime, nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [indicator_date desc, indicator_name asc]
+
+presentation:
+  columns:
+    indicator_date: { as: datetime }     # 2025-11-10 00:00:00
+    indicator_name: { as: string }       # IPCA
+    indicator_amt:  { as: percentage, multiply_by_100: false, precision: 2 }       # 0,42%
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "ipca de outubro (D-1)"
+  - "selic de ontem"
+  - "cdi atual"
+  - "taxa do igpm de ontem"
+  - "indicadores macroeconômicos de ontem"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

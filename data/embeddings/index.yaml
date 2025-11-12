@@ -173,3 +173,7 @@ include:
   - id: entity-history-currency-rates
     path: data/entities/history_currency_rates/entity.yaml
     tags: [entities, fx, currency, "entity:history_currency_rates"]
+
+  - id: entity-history-market-indicators
+    path: data/entities/history_market_indicators/entity.yaml
+    tags: [entities, market, macro, indicators, "entity:history_market_indicators"]
