@@ -1,30 +1,153 @@
 [
   {
-    "idx": 116,
-    "question": "últimas do XPLG11",
-    "expected_intent": "fiis_noticias",
-    "expected_entity": "fiis_noticias",
-    "got_intent": "fiis_dividendos",
-    "got_entity": "fiis_dividendos",
-    "score": 0.85,
-    "normalized": "ultimas do xplg11",
+    "idx": 146,
+    "question": "variação diária do ibov",
+    "expected_intent": "history_b3_indexes",
+    "expected_entity": "history_b3_indexes",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 3.4,
+    "normalized": "variacao diaria do ibov",
     "tokens": [
-      "ultimas",
+      "variacao",
+      "diaria",
       "do",
-      "xplg11"
+      "ibov"
     ],
     "intent_scores": {
       "client_fiis_positions": 0.0,
       "fiis_cadastro": 0.0,
-      "fiis_precos": 0.0,
-      "fiis_dividendos": 1.0,
+      "fiis_precos": 4.0,
+      "fiis_dividendos": 0.0,
       "fiis_financials_snapshot": 0.0,
       "fiis_financials_revenue_schedule": 0.0,
       "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
-      "fiis_noticias": 1.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 1.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 2.0,
+      "history_currency_rates": 1.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 1.6094375650008745,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 151,
+    "question": "quanto variou o ifil no dia",
+    "expected_intent": "history_b3_indexes",
+    "expected_entity": "history_b3_indexes",
+    "got_intent": "fiis_rankings",
+    "got_entity": "fiis_rankings",
+    "score": 0.9432462879356274,
+    "normalized": "quanto variou o ifil no dia",
+    "tokens": [
+      "quanto",
+      "variou",
+      "o",
+      "ifil",
+      "no",
+      "dia"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 1.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
       "fiis_processos": 0.0,
-      "fiis_rankings": 0.0
+      "fiis_rankings": 1.0,
+      "history_b3_indexes": 1.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.09324628793562739,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 157,
+    "question": "variação diária do usd",
+    "expected_intent": "history_currency_rates",
+    "expected_entity": "history_currency_rates",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 3.4,
+    "normalized": "variacao diaria do usd",
+    "tokens": [
+      "variacao",
+      "diaria",
+      "do",
+      "usd"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 4.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 1.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 1.0,
+      "history_currency_rates": 2.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 1.5996765042134138,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 162,
+    "question": "eur hoje (D-1)",
+    "expected_intent": "history_currency_rates",
+    "expected_entity": "history_currency_rates",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 0.85,
+    "normalized": "eur hoje  d 1 ",
+    "tokens": [
+      "eur",
+      "hoje",
+      "d",
+      "1"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 1.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 1.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 1.0,
+      "history_market_indicators": 0.0
     },
     "thresholds": {
       "min_score": 1.0,
@@ -35,18 +158,133 @@
     }
   },
   {
-    "idx": 127,
-    "question": "últimas do XPLG11",
-    "expected_intent": "fiis_noticias",
-    "expected_entity": "fiis_noticias",
-    "got_intent": "fiis_dividendos",
-    "got_entity": "fiis_dividendos",
-    "score": 0.85,
-    "normalized": "ultimas do xplg11",
+    "idx": 164,
+    "question": "ipca de outubro (D-1)",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_revenue_schedule",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 0.9431493739916629,
+    "normalized": "ipca de outubro  d 1 ",
     "tokens": [
-      "ultimas",
+      "ipca",
+      "de",
+      "outubro",
+      "d",
+      "1"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 1.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0931493739916629,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 166,
+    "question": "cdi atual",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.85,
+    "normalized": "cdi atual",
+    "tokens": [
+      "cdi",
+      "atual"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 1.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 169,
+    "question": "inpc atual",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_revenue_schedule",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 0.9287089689141459,
+    "normalized": "inpc atual",
+    "tokens": [
+      "inpc",
+      "atual"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 1.0,
+      "fiis_financials_risk": 1.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0077512235490549974,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 170,
+    "question": "última atualização do ipca",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_revenue_schedule",
+    "got_entity": "fiis_financials_revenue_schedule",
+    "score": 0.9519313623210099,
+    "normalized": "ultima atualizacao do ipca",
+    "tokens": [
+      "ultima",
+      "atualizacao",
       "do",
-      "xplg11"
+      "ipca"
     ],
     "intent_scores": {
       "client_fiis_positions": 0.0,
@@ -54,17 +292,99 @@
       "fiis_precos": 0.0,
       "fiis_dividendos": 1.0,
       "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 0.0,
-      "fiis_financials_risk": 0.0,
+      "fiis_financials_revenue_schedule": 1.0,
+      "fiis_financials_risk": 1.0,
       "fiis_imoveis": 0.0,
       "fiis_noticias": 1.0,
-      "fiis_processos": 0.0,
-      "fiis_rankings": 0.0
+      "fiis_processos": 1.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
-      "gap": 0.0,
+      "gap": 0.10193136232100997,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 171,
+    "question": "valor do cdi hoje (D-1)",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.9428581737519817,
+    "normalized": "valor do cdi hoje  d 1 ",
+    "tokens": [
+      "valor",
+      "do",
+      "cdi",
+      "hoje",
+      "d",
+      "1"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 1.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 1.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.09285817375198169,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 173,
+    "question": "selic meta atualizada",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.9364508002803457,
+    "normalized": "selic meta atualizada",
+    "tokens": [
+      "selic",
+      "meta",
+      "atualizada"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 1.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.08645080028034569,
       "accepted": false,
       "source": "final"
     }

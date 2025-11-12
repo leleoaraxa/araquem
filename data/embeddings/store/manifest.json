@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-12T18:50:44Z",
+  "generated_at": "2025-11-12T19:51:31Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -48,7 +48,7 @@
         "entities"
       ],
       "chunks": 7,
-      "sha_all": "556fd0ef2a3714837b63018db54c0a41760e9fd8ffce897de1bbbeb709f78e63"
+      "sha_all": "8cafa6bf2fd42449e0ccc50b41f824000e782e86e6d8f5b70a691102b681e758"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -280,8 +280,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 20,
-      "sha_all": "2b3ad3e49697bd66d98091e6e8606b43b0d35fac08aedd108c5ff9c341e5d314"
+      "chunks": 21,
+      "sha_all": "61ce6f5f7b56466f1598081308cc877e66cf2dc19626dbda702e6717b4ff12ed"
     },
     {
       "id": "q-projection-cadastro",
@@ -439,7 +439,20 @@
       ],
       "chunks": 2,
       "sha_all": "9bc259cdf5bdcc32c4fefff848e5d1cabc679e5622d7bcdd9788b54a0465fd86"
+    },
+    {
+      "id": "entity-history-market-indicators",
+      "path": "data/entities/history_market_indicators/entity.yaml",
+      "tags": [
+        "entities",
+        "market",
+        "macro",
+        "indicators",
+        "entity:history_market_indicators"
+      ],
+      "chunks": 2,
+      "sha_all": "f79c037470c49488dabd3084119d8d986a1fb9b9693c3e7324951a7e46143cce"
     }
   ],
-  "last_refresh_epoch": 1762973539
+  "last_refresh_epoch": 1762977183
 }
