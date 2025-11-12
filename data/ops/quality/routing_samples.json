@@ -865,6 +865,56 @@
       "question": "selic meta atualizada",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "variação diária do ibov",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "quanto variou o IFIL no dia",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "variação diária do USD",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "EUR hoje (D-1)",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "IPCA de outubro (D-1)",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "CDI atual",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "INPC atual",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "última atualização do IPCA",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "valor do CDI hoje (D-1)",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "SELIC meta atualizada",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
     }
   ]
 }
