@@ -7,8 +7,8 @@ tokenization:
   split: "\\b"
 
 weights:
-  token: 1.0
-  phrase: 2.0
+  token: 1.1
+  phrase: 3.0
 
 intents:
   - name: client_fiis_positions
@@ -126,6 +126,19 @@ intents:
         - nos
         - ultimos
         - ranking
+        - ibov
+        - ibovespa
+        - ifix
+        - ifil
+        - usd
+        - dolar
+        - dólar
+        - eur
+        - euro
+        - cdi
+        - selic
+        - ipca
+        - inpc
     phrases:
       include:
         - preco do
@@ -319,6 +332,10 @@ intents:
         - periodo
         - retorna
         - soma
+        - cdi
+        - selic
+        - ipca
+        - inpc
     phrases:
       include:
         - indicador de risco do
@@ -459,10 +476,21 @@ intents:
         - pontos
         - fechamento
         - variacao
+        - variacao diaria
+        - hoje
         - d1
         - d-1
         - ontem
-      exclude: []
+      exclude:
+        - usd
+        - dolar
+        - dólar
+        - eur
+        - euro
+        - cdi
+        - selic
+        - ipca
+        - inpc
     phrases:
       include:
         - pontos do ibov
@@ -472,6 +500,9 @@ intents:
         - pontos do ifil
         - variacao do ifil
         - ibovespa hoje d-1
+        - variacao diaria do ibov
+        - quanto variou o ifil no dia
+        - variacao do ibov hoje
       exclude: []
     entities: [history_b3_indexes]
 
@@ -490,10 +521,20 @@ intents:
         - compra
         - venda
         - variacao
+        - variacao diaria
+        - hoje
         - d1
         - d-1
         - ontem
-      exclude: []
+      exclude:
+        - ibov
+        - ibovespa
+        - ifix
+        - ifil
+        - cdi
+        - selic
+        - ipca
+        - inpc
     phrases:
       include:
         - cotacao do dolar
@@ -502,6 +543,9 @@ intents:
         - euro comercial
         - variacao do usd
         - variacao do eur
+        - variacao diaria do usd
+        - eur hoje d 1
+        - cotacao do usd hoje
       exclude: []
     entities: [history_currency_rates]
 
@@ -519,10 +563,26 @@ intents:
         - inflação
         - indicador
         - indicadores
+        - meta
+        - atual
+        - atualizada
+        - ultima
+        - atualizacao
+        - valor
+        - hoje
         - d1
         - d-1
         - ontem
-      exclude: []
+      exclude:
+        - ibov
+        - ibovespa
+        - ifix
+        - ifil
+        - usd
+        - dolar
+        - dólar
+        - eur
+        - euro
     phrases:
       include:
         - ipca de ontem
@@ -530,6 +590,12 @@ intents:
         - taxa do igpm
         - indicadores econômicos
         - taxa de juros
+        - ipca de outubro d 1
+        - cdi atual
+        - inpc atual
+        - ultima atualizacao do ipca
+        - valor do cdi hoje d 1
+        - selic meta atualizada
       exclude: []
     entities: [history_market_indicators]
 
