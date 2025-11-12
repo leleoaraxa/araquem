@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-12T18:17:53Z",
+  "generated_at": "2025-11-12T18:33:19Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -47,8 +47,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 6,
-      "sha_all": "fa002e4cb0d54e5a9199ffe2970b5266d64e8906c09c876381c40b3b7d272923"
+      "chunks": 7,
+      "sha_all": "556fd0ef2a3714837b63018db54c0a41760e9fd8ffce897de1bbbeb709f78e63"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -414,7 +414,32 @@
       ],
       "chunks": 1,
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
+    },
+    {
+      "id": "entity-history-b3-indexes",
+      "path": "data/entities/history_b3_indexes/entity.yaml",
+      "tags": [
+        "entities",
+        "market",
+        "indexes",
+        "b3",
+        "entity:history_b3_indexes"
+      ],
+      "chunks": 2,
+      "sha_all": "3da08f18aa93196d5211a57f9e85534ac6d41b0273ec654fe84b93dfe5c1a9d2"
+    },
+    {
+      "id": "entity-history-currency-rates",
+      "path": "data/entities/history_currency_rates/entity.yaml",
+      "tags": [
+        "entities",
+        "fx",
+        "currency",
+        "entity:history_currency_rates"
+      ],
+      "chunks": 2,
+      "sha_all": "a07e97ba668f9c24c2d5f8a86ff10cac18c64f76e7bd0454499f2ed4d89456da"
     }
   ],
-  "last_refresh_epoch": 1762971563
+  "last_refresh_epoch": 1762972485
 }
