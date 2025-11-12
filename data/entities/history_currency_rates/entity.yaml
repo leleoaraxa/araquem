@@ -1,0 +1,82 @@
+id: history_currency_rates
+result_key: history_currency_rates
+sql_view: view_history_currency_rates
+private: false
+description: Taxas de câmbio (USD/EUR em BRL) em base D-1.
+d_minus: 1
+
+default_date_field: rate_date
+
+columns:
+- name: rate_date
+  alias: Data (D-1)
+  description: Data/hora da observação (sem tempo real).
+- name: usd_buy_amt
+  alias: USD compra (R$)
+  description: Dólar (compra) em BRL.
+- name: usd_sell_amt
+  alias: USD venda (R$)
+  description: Dólar (venda) em BRL.
+- name: usd_var_pct
+  alias: USD (Δ%)
+  description: Variação percentual diária do USD.
+- name: eur_buy_amt
+  alias: EUR compra (R$)
+  description: Euro (compra) em BRL.
+- name: eur_sell_amt
+  alias: EUR venda (R$)
+  description: Euro (venda) em BRL.
+- name: eur_var_pct
+  alias: EUR (Δ%)
+  description: Variação percentual diária do EUR.
+- name: created_at
+  alias: Criado em
+  description: Data de criação do registro.
+- name: updated_at
+  alias: Atualizado em
+  description: Data da última atualização do registro.
+
+presentation:
+  kind: list
+  fields:
+    key: rate_date
+    value: usd_sell_amt
+  empty_message: Nenhum dado de câmbio encontrado.
+
+ask:
+  intents:
+  - history_currency_rates
+  keywords:
+  - dolar
+  - dólar
+  - usd
+  - euro
+  - eur
+  - cambio
+  - câmbio
+  - cotacao
+  - cotação
+  - compra
+  - venda
+  - variacao
+  synonyms:
+    rate_date:
+    - data
+    - dia
+  weights:
+    identifiers: 1.0
+    keywords: 1.5
+    synonyms: 0.5
+
+order_by_whitelist:
+- rate_date desc
+- usd_sell_amt desc
+- eur_sell_amt desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc

@@ -165,3 +165,11 @@ include:
   - id: q-m66-projection
     path: data/ops/quality_experimental/m66_projection.json
     tags: [quality, projection, m66]
+
+  - id: entity-history-b3-indexes
+    path: data/entities/history_b3_indexes/entity.yaml
+    tags: [entities, market, indexes, b3, "entity:history_b3_indexes"]
+
+  - id: entity-history-currency-rates
+    path: data/entities/history_currency_rates/entity.yaml
+    tags: [entities, fx, currency, "entity:history_currency_rates"]

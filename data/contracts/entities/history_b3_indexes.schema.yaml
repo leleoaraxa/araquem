@@ -1,0 +1,40 @@
+entity: history_b3_indexes
+kind: view
+version: 1
+
+columns:
+  - { name: index_date,        type: datetime, nullable: false, desc: "data/hora da observação (D-1)" }
+  - { name: ibov_points_count, type: number,   nullable: true,  desc: "pontos do IBOV (arred. 0 casas)" }
+  - { name: ibov_var_pct,      type: number,   nullable: true,  desc: "variação percentual diária do IBOV" }
+  - { name: ifix_points_count, type: number,   nullable: true,  desc: "pontos do IFIX (arred. 0 casas)" }
+  - { name: ifix_var_pct,      type: number,   nullable: true,  desc: "variação percentual diária do IFIX" }
+  - { name: ifil_points_count, type: number,   nullable: true,  desc: "pontos do IFIL (arred. 0 casas)" }
+  - { name: ifil_var_pct,      type: number,   nullable: true,  desc: "variação percentual diária do IFIL" }
+  - { name: created_at,        type: datetime, nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,        type: datetime, nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [index_date desc]
+
+presentation:
+  columns:
+    index_date:        { as: date }     # 11/11/2025
+    ibov_points_count: { as: number }       # 128.450
+    ibov_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # 0,85%
+    ifix_points_count: { as: number }       # 3.250
+    ifix_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # -0,12%
+    ifil_points_count: { as: number }       # 1.980
+    ifil_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # 0,25%
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "ibovespa hoje (D-1)"
+  - "pontos do ifix de ontem"
+  - "quanto variou o ifil no dia"
+  - "variação diária do ibov"
+  - "histórico recente do ifix (D-1)"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

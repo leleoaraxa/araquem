@@ -1,0 +1,8 @@
+{% if rows and rows|length > 0 -%}
+Histórico ({{ rows|length }}):
+{%- for r in rows %}
+- {{ r.index_date }} — IBOV {{ r.ibov_points_count|number_br }} pts ({{ r.ibov_var_pct|percent_br }}), IFIX {{ r.ifix_points_count|number_br }} pts ({{ r.ifix_var_pct|percent_br }}), IFIL {{ r.ifil_points_count|number_br }} pts ({{ r.ifil_var_pct|percent_br }})
+{%- endfor %}
+{%- else -%}
+{{ empty_message or "Nenhum registro encontrado." }}
+{%- endif %}

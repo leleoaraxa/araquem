@@ -472,37 +472,59 @@ REFRESH MATERIALIZED VIEW view_market_indicators;
 -- =====================================================================
 -- VIEW: view_history_indexes
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_history_indexes CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
 
-CREATE MATERIALIZED VIEW view_history_indexes AS
+CREATE MATERIALIZED VIEW history_b3_indexes AS
 SELECT
-	TO_CHAR(TO_DATE(ht.date_taxes::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS index_date,
-    ROUND(ht.ibovespa_taxes::numeric, 0) 	 AS ibov_points_count,
-    ROUND(ht.ibovespa_variation::numeric, 2) AS ibov_var_pct,
-	ROUND(ht.ifix_taxes::numeric, 0) 		 AS ifix_points_count,
-    ROUND(ht.ifix_variation::numeric, 2)    AS ifix_var_pct,
-	ROUND(ht.ifil_taxes::numeric, 0) 		 AS ifil_points_count,
-    ROUND(ht.ifil_variation::numeric, 2)    AS ifil_var_pct,
-    ROUND(ht.usd_buy::numeric, 2)           AS usd_buy_amt,
-    ROUND(ht.usd_sell::numeric, 2)          AS usd_sell_amt,
-    ROUND(ht.usd_variation::numeric, 2)     AS usd_var_pct,
-    ROUND(ht.eur_buy::numeric, 2)           AS eur_buy_amt,
-    ROUND(ht.eur_sell::numeric, 2)          AS eur_sell_amt,
-    ROUND(ht.eur_variation::numeric, 2)     AS eur_var_pct,
-	TO_CHAR(TO_DATE(ht.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
+    TO_CHAR(TO_DATE(ht.date_taxes::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS index_date,
+    ROUND(ht.ibovespa_taxes::numeric, 0)       AS ibov_points_count,
+    ROUND(ht.ibovespa_variation::numeric, 2)   AS ibov_var_pct,
+    ROUND(ht.ifix_taxes::numeric, 0)           AS ifix_points_count,
+    ROUND(ht.ifix_variation::numeric, 2)       AS ifix_var_pct,
+    ROUND(ht.ifil_taxes::numeric, 0)           AS ifil_points_count,
+    ROUND(ht.ifil_variation::numeric, 2)       AS ifil_var_pct,
+    TO_CHAR(TO_DATE(ht.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
     TO_CHAR(TO_DATE(ht.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
 FROM public.hist_taxes ht
 ORDER BY ht.date_taxes DESC;
 
-CREATE UNIQUE INDEX idx_history_indexes
-    ON view_history_indexes(index_date);
+CREATE UNIQUE INDEX idx_history_b3_indexes
+    ON history_b3_indexes(index_date);
 
 
-ALTER MATERIALIZED VIEW public.view_history_indexes OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_history_indexes OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO sirios_api;
+ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO edge_user;
 
-REFRESH MATERIALIZED VIEW view_history_indexes;
+REFRESH MATERIALIZED VIEW history_b3_indexes;
 
+-- =====================================================================
+-- VIEW: history_currency_rates
+-- =====================================================================
+DROP MATERIALIZED VIEW IF EXISTS history_currency_rates;
+
+CREATE MATERIALIZED VIEW history_currency_rates AS
+SELECT
+    TO_CHAR(TO_DATE(ht.date_taxes::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS rate_date,
+    ROUND(ht.usd_buy::numeric, 2)     AS usd_buy_amt,
+    ROUND(ht.usd_sell::numeric, 2)    AS usd_sell_amt,
+    ROUND(ht.usd_variation::numeric, 2) AS usd_var_pct,
+    ROUND(ht.eur_buy::numeric, 2)     AS eur_buy_amt,
+    ROUND(ht.eur_sell::numeric, 2)    AS eur_sell_amt,
+    ROUND(ht.eur_variation::numeric, 2) AS eur_var_pct,
+    TO_CHAR(TO_DATE(ht.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
+    TO_CHAR(TO_DATE(ht.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
+FROM public.hist_taxes ht
+ORDER BY ht.date_taxes DESC;
+
+
+CREATE UNIQUE INDEX idx_history_currency_rates
+    ON history_currency_rates(index_date);
+
+
+ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO sirios_api;
+ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO edge_user;
+
+REFRESH MATERIALIZED VIEW history_currency_rates;
 
 -- =====================================================================
 -- VIEW: fiis_cadastro
@@ -520,14 +542,14 @@ ALTER VIEW public.fiis_cadastro OWNER TO edge_user;
 -- VIEW: fiis_rankings
 -- =====================================================================
 CREATE VIEW fiis_rankings AS
-SELECT ticker, users_ranking_count AS users_rank_position, 
-	users_rank_movement_count AS users_rank_net_movement, 
-	sirios_ranking_count AS sirios_rank_position, 
-	sirios_rank_movement_count as sirios_rank_net_movement, 
+SELECT ticker, users_ranking_count AS users_rank_position,
+	users_rank_movement_count AS users_rank_net_movement,
+	sirios_ranking_count AS sirios_rank_position,
+	sirios_rank_movement_count as sirios_rank_net_movement,
 	ifix_ranking_count AS ifix_rank_position,
-	ifix_rank_movement_count AS ifix_rank_net_movement, 
-	ifil_ranking_count AS ifil_rank_position, 
-	ifil_rank_movement_count AS ifil_rank_net_movement, 
+	ifix_rank_movement_count AS ifix_rank_net_movement,
+	ifil_ranking_count AS ifil_rank_position,
+	ifil_rank_movement_count AS ifil_rank_net_movement,
 	created_at, updated_at
 FROM view_fiis_info;
 
@@ -539,7 +561,7 @@ ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 -- VIEW: fiis_precos
 -- =====================================================================
 CREATE VIEW fiis_precos AS
-SELECT ticker, price_date as traded_at, close_price, adj_close_price, 
+SELECT ticker, price_date as traded_at, close_price, adj_close_price,
 open_price, max_price, min_price, daily_range_pct as daily_variation_pct, created_at, updated_at
 FROM view_fiis_history_prices;
 
@@ -654,15 +676,15 @@ WITH base AS (
     AND ep.product_type_name = 'FII - Fundo de Investimento Imobiliário'
     AND ep.product_category_name = 'Renda Variavel'
 )
-SELECT 
-    document_number, 
-    reference_date AS position_date, 
-    ticker_symbol AS ticker, 
-    corporation_name AS fii_name, 
-    participant_name, 
-    equities_quantity AS qty, 
-    closing_price, 
-    update_value, 
+SELECT
+    document_number,
+    reference_date AS position_date,
+    ticker_symbol AS ticker,
+    corporation_name AS fii_name,
+    participant_name,
+    equities_quantity AS qty,
+    closing_price,
+    update_value,
     available_quantity,
 	reference_date as created_at,
 	reference_date as updated_at
@@ -671,10 +693,10 @@ WHERE rn = 1;
 
 DROP INDEX idx_client_position_filter;
 
-CREATE INDEX IF NOT EXISTS idx_client_position_filter 
+CREATE INDEX IF NOT EXISTS idx_client_position_filter
 ON equities_positions (document_number, specification_code, product_type_name, product_category_name, reference_date)
-WHERE specification_code = 'Cotas' 
-  AND product_type_name = 'FII - Fundo de Investimento Imobiliário' 
+WHERE specification_code = 'Cotas'
+  AND product_type_name = 'FII - Fundo de Investimento Imobiliário'
   AND product_category_name = 'Renda Variavel';
 
 ALTER VIEW public.client_fiis_positions OWNER TO sirios_api;
@@ -734,7 +756,7 @@ ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
 CREATE OR REPLACE VIEW fiis_financials_risk AS
 SELECT
   ticker,
-  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, sortino_ratio, max_drawdown, r_squared, 
+  volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, sortino_ratio, max_drawdown, r_squared,
   created_at, updated_at
 FROM fiis_financials;
 

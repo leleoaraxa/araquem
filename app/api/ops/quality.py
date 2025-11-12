@@ -3,7 +3,7 @@ import math
 import os
 import logging
 from fastapi import Request
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from fastapi import APIRouter, Body, Header
 from fastapi.responses import JSONResponse
@@ -68,6 +68,81 @@ def _first_nonzero_expr(exprs: List[str]) -> float:
         except Exception:
             continue
     return last
+
+
+def _samples_for_window(w: str) -> float:
+    """
+    Número de amostras observadas no histograma para a janela w.
+    Usa increase(count) como proxy de volume.
+    """
+    expr = f"sum(increase(sirios_planner_top2_gap_histogram_count[{w}]))"
+    try:
+        return _to_float(prom_query_instant(expr))
+    except Exception:
+        return 0.0
+
+
+def _prom_gap_p50_choose_window(
+    windows: List[str], min_samples: float
+) -> Tuple[float, bool, str, float]:
+    """
+    Seleciona p50 considerando presença e volume:
+      1) Percorre janelas (menor→maior); ignora as com samples < min_samples.
+      2) Entre as elegíveis, retorna a primeira cujo p50 > 0 (rate()→increase()).
+      3) Se nenhuma elegível tiver p50>0, usa a MAIOR janela com samples >= min_samples (fallback).
+      4) Se nenhuma janela tiver samples suficientes, calcula um 'last_val' informativo e marca had_samples=False.
+
+    Retorna (valor_p50, had_samples, expr_usada, samples_da_janela_escolhida).
+    """
+    chosen_val, chosen_expr, chosen_samples = float("nan"), "", 0.0
+    any_enough = False
+
+    # 1) tenta janelas com volume suficiente
+    for w in windows:
+        s = _samples_for_window(w)
+        if s >= min_samples:
+            any_enough = True
+            # rate() primeiro
+            expr_rate = f"histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+            try:
+                v = _to_float(prom_query_instant(expr_rate))
+                if v > 0.0:
+                    return (v, True, expr_rate, s)
+                # guarda como possível fallback
+                chosen_val, chosen_expr, chosen_samples = v, expr_rate, s
+            except Exception:
+                pass
+            # increase() como alternativa
+            expr_inc = f"histogram_quantile(0.50, sum(increase(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+            try:
+                v = _to_float(prom_query_instant(expr_inc))
+                if v > 0.0:
+                    return (v, True, expr_inc, s)
+                if math.isnan(chosen_val):
+                    chosen_val, chosen_expr, chosen_samples = v, expr_inc, s
+            except Exception:
+                pass
+
+    # 2) Sem p50>0 mas com volume em alguma janela: retorna o melhor fallback
+    if any_enough and not math.isnan(chosen_val):
+        return (chosen_val, True, chosen_expr, chosen_samples)
+
+    # 3) Sem volume suficiente: calcula algo informativo (had_samples=False)
+    last_val, last_expr = float("nan"), ""
+    for w in windows:
+        expr_rate = f"histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+        try:
+            last_val = _to_float(prom_query_instant(expr_rate))
+            last_expr = expr_rate
+        except Exception:
+            pass
+        expr_inc = f"histogram_quantile(0.50, sum(increase(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
+        try:
+            last_val = _to_float(prom_query_instant(expr_inc))
+            last_expr = expr_inc
+        except Exception:
+            pass
+    return (last_val, False, last_expr, 0.0)
 
 
 @router.post("/ops/quality/push")
@@ -493,21 +568,13 @@ def quality_report():
     proj_total = prom_query_instant("sum(sirios_planner_projection_total)")
     miss_abs = prom_query_instant('sum(sirios_planner_top1_match_total{result="miss"})')
 
-    # Gap P50 — tentar múltiplas janelas e fallback para increase()
+    # Gap P50 — escolha de janela com amostras mínimas e fallback controlado
     windows_csv = os.getenv("QUALITY_GAP_WINDOWS", "10m,1h,6h,24h")
     windows = [w.strip() for w in windows_csv.split(",") if w.strip()]
-    exprs = []
-    for w in windows:
-        exprs.append(
-            f"histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
-        )
-    # fallback com increase (útil quando o rate é ~0 num curto período)
-    for w in windows:
-        exprs.append(
-            f"histogram_quantile(0.50, sum(increase(sirios_planner_top2_gap_histogram_bucket[{w}])) by (le))"
-        )
-
-    gap_p50_v = _first_nonzero_expr(exprs)
+    min_samples = _to_float(os.getenv("QUALITY_GAP_MIN_SAMPLES", "10"))
+    gap_p50_raw, gap_has_data, gap_expr, gap_samples = _prom_gap_p50_choose_window(
+        windows, min_samples
+    )
 
     # Derivados
     top1_acc = _ratio(top1_hit, top1_total)
@@ -521,8 +588,11 @@ def quality_report():
         violations.append(f"top1_accuracy {top1_acc:.3f} < min {min_top1_acc:.3f}")
     if routed_rt < min_routed_rt:
         violations.append(f"routed_rate {routed_rt:.3f} < min {min_routed_rt:.3f}")
-    if gap_p50_v < min_top2_gap:
-        violations.append(f"top2_gap_p50 {gap_p50_v:.3f} < min {min_top2_gap:.3f}")
+    if gap_has_data and gap_samples >= min_samples:
+        if gap_p50_raw < min_top2_gap:
+            violations.append(
+                f"top2_gap_p50 {gap_p50_raw:.3f} < min {min_top2_gap:.3f}"
+            )
     if miss_abs_v > max_miss_abs:
         violations.append(f"misses_abs {miss_abs_v:.0f} > max {max_miss_abs:.0f}")
     if miss_ratio > max_miss_ratio:
@@ -533,7 +603,7 @@ def quality_report():
     metrics = {
         "top1_accuracy": _sanitize(top1_acc),
         "routed_rate": _sanitize(routed_rt),
-        "top2_gap_p50": _sanitize(gap_p50_v),
+        "top2_gap_p50": _sanitize(gap_p50_raw),
         "projection_pass": _sanitize(proj_pass),
         "misses_abs": _sanitize(miss_abs_v),
         "misses_ratio": _sanitize(miss_ratio),
@@ -550,4 +620,13 @@ def quality_report():
             "max_misses_ratio": max_miss_ratio,
         },
         "violations": violations,
+        "meta": {
+            "no_data": {"top2_gap_p50": (not gap_has_data)},
+            "debug": {
+                "gap_expr": gap_expr,
+                "gap_samples": gap_samples,
+                "gap_min_samples": min_samples,
+                "gap_windows": windows,
+            },
+        },
     }

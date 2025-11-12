@@ -447,5 +447,63 @@ intents:
         - dividendo do
     entities: [fiis_rankings]
 
+  - name: history_b3_indexes
+    tokens:
+      include:
+        - ibovespa
+        - ibov
+        - ifix
+        - ifil
+        - indice
+        - índices
+        - pontos
+        - fechamento
+        - variacao
+        - d1
+        - d-1
+        - ontem
+      exclude: []
+    phrases:
+      include:
+        - pontos do ibov
+        - variacao do ibov
+        - pontos do ifix
+        - variacao do ifix
+        - pontos do ifil
+        - variacao do ifil
+        - ibovespa hoje d-1
+      exclude: []
+    entities: [history_b3_indexes]
+
+  - name: history_currency_rates
+    tokens:
+      include:
+        - dolar
+        - dólar
+        - usd
+        - euro
+        - eur
+        - cambio
+        - câmbio
+        - cotacao
+        - cotação
+        - compra
+        - venda
+        - variacao
+        - d1
+        - d-1
+        - ontem
+      exclude: []
+    phrases:
+      include:
+        - cotacao do dolar
+        - cotacao do euro
+        - dolar comercial
+        - euro comercial
+        - variacao do usd
+        - variacao do eur
+      exclude: []
+    entities: [history_currency_rates]
+
 anti_tokens:
   fiis_noticias: [noticia, noticias, materia, reportagem, manchete]

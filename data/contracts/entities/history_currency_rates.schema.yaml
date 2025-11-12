@@ -1,0 +1,40 @@
+entity: history_currency_rates
+kind: view
+version: 1
+
+columns:
+  - { name: rate_date,   type: datetime, nullable: false, desc: "data/hora da observação (D-1)" }
+  - { name: usd_buy_amt, type: number,   nullable: true,  desc: "dólar (compra) em BRL" }
+  - { name: usd_sell_amt,type: number,   nullable: true,  desc: "dólar (venda) em BRL" }
+  - { name: usd_var_pct, type: number,   nullable: true,  desc: "variação percentual diária do USD" }
+  - { name: eur_buy_amt, type: number,   nullable: true,  desc: "euro (compra) em BRL" }
+  - { name: eur_sell_amt,type: number,   nullable: true,  desc: "euro (venda) em BRL" }
+  - { name: eur_var_pct, type: number,   nullable: true,  desc: "variação percentual diária do EUR" }
+  - { name: created_at,  type: datetime, nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,  type: datetime, nullable: false, desc: "data da última atualização do registro" }
+
+ordering: [rate_date desc]
+
+presentation:
+  columns:
+    rate_date:    { as: date }     # 11/11/2025
+    usd_buy_amt:  { as: number }       # 5,63
+    usd_sell_amt: { as: number }       # 5,65
+    usd_var_pct:  { as: percentage, multiply_by_100: false, precision: 2 }   # 0,42%
+    eur_buy_amt:  { as: number }       # 6,02
+    eur_sell_amt: { as: number }       # 6,05
+    eur_var_pct:  { as: percentage, multiply_by_100: false, precision: 2 }   # -0,10%
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "cotação do dólar (D-1)"
+  - "dólar comercial de ontem"
+  - "euro hoje (D-1)"
+  - "variação diária do usd"
+  - "quanto fechou o euro ontem"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false
