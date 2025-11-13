@@ -1,6 +1,6 @@
 # app/narrator/narrator.py
 # -*- coding: utf-8 -*-
-"""SIRIOS Narrator — camada de expressão determinística."""
+"""SIRIOS Narrator — camada de expressão determinística + LLM opcional (policy-driven)."""
 
 from __future__ import annotations
 
@@ -21,6 +21,7 @@ except Exception:  # pragma: no cover - dependência opcional
 
 LOGGER = logging.getLogger(__name__)
 _ENTITY_ROOT = Path("data/entities")
+_NARRATOR_POLICY_PATH = Path("data/policies/narrator.yaml")
 
 
 def _load_entity_config(entity: str) -> Dict[str, Any]:
@@ -83,23 +84,87 @@ def _default_text(entity: str, facts: Dict[str, Any]) -> str:
     return "Sem dados disponíveis no momento."
 
 
+def _load_narrator_policy() -> Dict[str, Any]:
+    """
+    Carrega política declarativa do Narrator a partir de data/policies/narrator.yaml.
+
+    Estrutura esperada:
+
+    narrator:
+      llm_enabled: false
+      shadow: false
+      model: mistral:instruct
+      style: executivo
+      max_llm_rows: 0
+      max_prompt_tokens: 4000
+      max_output_tokens: 700
+    """
+    try:
+        data = load_yaml_cached(str(_NARRATOR_POLICY_PATH)) or {}
+        policy = data.get("narrator") if isinstance(data, dict) else None
+        return policy or {}
+    except Exception:
+        return {}
+
+
 class Narrator:
     def __init__(self, model: str | None = None, style: str = "executivo"):
-        self.model = model or os.getenv("NARRATOR_MODEL", "mistral:instruct")
-        self.style = style
-        self.enabled = os.getenv("NARRATOR_ENABLED", "false").lower() == "true"
-        self.shadow = os.getenv("NARRATOR_SHADOW", "false").lower() == "true"
+        # Política declarativa (fonte de verdade)
+        self.policy: Dict[str, Any] = _load_narrator_policy()
+
+        # Modelo / estilo: prioridade → arg explícito > YAML > env > default
+        self.model = (
+            model
+            or self.policy.get("model")
+            or os.getenv("NARRATOR_MODEL")
+            or "mistral:instruct"
+        )
+        self.style = style or self.policy.get("style") or "executivo"
+
+        # Flags: **apenas YAML** define habilitação e shadow;
+        # env é ignorado para evitar heurísticas escondidas.
+        self.enabled = bool(self.policy.get("llm_enabled", False))
+        self.shadow = bool(self.policy.get("shadow", False))
+
+        # Limite de linhas para uso de LLM (0 = nunca usar LLM)
+        max_rows = self.policy.get("max_llm_rows", 0)
+        try:
+            self.max_llm_rows = int(max_rows)
+        except (TypeError, ValueError):
+            self.max_llm_rows = 0
+
+        # (Reservado) limites de tokens — ainda não usados no prompt builder,
+        # mas já carregados da política para futuro hardening.
+        self.max_prompt_tokens = int(self.policy.get("max_prompt_tokens", 0) or 0)
+        self.max_output_tokens = int(self.policy.get("max_output_tokens", 0) or 0)
+
         self.client = OllamaClient() if OllamaClient else None
 
-        # Novo: limite de linhas para chamar LLM (padrão 20)
-        try:
-            self.max_llm_rows = int(os.getenv("NARRATOR_MAX_ROWS", "20"))
-        except ValueError:
-            self.max_llm_rows = 20
+    # ---------------------------------------------------------------------
+    # Decisão de uso de LLM — 100% baseada em policy (sem heurísticas fixas)
+    # ---------------------------------------------------------------------
+    def _should_use_llm(self, facts: Dict[str, Any]) -> bool:
+        """
+        Regras:
+          - se Narrator estiver desabilitado na policy → nunca usa LLM;
+          - se max_llm_rows == 0 → nunca usa LLM;
+          - se len(rows) > max_llm_rows → não usa LLM;
+        """
+        if not self.enabled:
+            return False
 
-        # Novo: intents/entidades para as quais nunca chamaremos LLM
-        self.skip_llm_for_intents = {"client_fiis_positions"}
-        self.skip_llm_for_entities = {"client_fiis_positions"}
+        rows = list((facts or {}).get("rows") or [])
+        rows_count = len(rows)
+
+        if self.max_llm_rows <= 0:
+            return False
+
+        if rows_count > self.max_llm_rows:
+            return False
+
+        return True
+
+    # ---------------------------------------------------------------------
 
     def render(
         self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]
@@ -110,13 +175,15 @@ class Narrator:
         template_id = (meta or {}).get("template_id") or (facts or {}).get("result_key")
 
         LOGGER.info(
-            "narrator_render entity=%s intent=%s rows_count=%s template_id=%s enabled=%s shadow=%s",
+            "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "
+            "enabled=%s shadow=%s model=%s",
             entity,
             intent,
             len(rows),
             template_id or "",
             self.enabled,
             self.shadow,
+            self.model,
         )
 
         baseline_text = _default_text(entity, facts or {})
@@ -151,20 +218,15 @@ class Narrator:
                 error="client_unavailable",
             )
 
-        rows_count = len(rows)
-
-        # NOVO 1: nunca chamar LLM para certas intents/entidades
-        if intent in self.skip_llm_for_intents or entity in self.skip_llm_for_entities:
+        # Decisão policy-driven: usar ou não usar LLM
+        if not self._should_use_llm(facts):
+            rows_count = len(rows)
             return _make_response(
                 baseline_text,
-                error="llm_skipped: intent/entity in skip list",
-            )
-
-        # NOVO 2: não chamar LLM quando há linhas demais (proteger tempo e custo)
-        if rows_count > self.max_llm_rows:
-            return _make_response(
-                baseline_text,
-                error=f"llm_skipped: rows_count={rows_count} > max_llm_rows={self.max_llm_rows}",
+                error=(
+                    f"llm_skipped: rows_count={rows_count} "
+                    f"max_llm_rows={self.max_llm_rows}"
+                ),
             )
 
         # A partir daqui, LLM está habilitado e será chamado
@@ -190,7 +252,7 @@ class Narrator:
         tokens_out = 0
 
         try:
-            # Importante: usamos generate(), não prompt(), para alinhar com OllamaClient
+            # Usamos generate(), alinhado com OllamaClient
             response = self.client.generate(prompt, model=self.model, stream=False)
             candidate = (response or "").strip()
             if candidate:
