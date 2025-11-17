@@ -10,7 +10,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Iterable
 
-from app.narrator.prompts import build_prompt
+from app.narrator.prompts import build_prompt, render_narrative
 from app.utils.filecache import load_yaml_cached
 
 try:
@@ -169,6 +169,7 @@ class Narrator:
     def render(
         self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]
     ) -> Dict[str, Any]:
+        t0_global = time.perf_counter()
         entity = (meta or {}).get("entity") or ""
         intent = (meta or {}).get("intent") or ""
         rows = list((facts or {}).get("rows") or [])
@@ -186,22 +187,29 @@ class Narrator:
             self.model,
         )
 
-        baseline_text = _default_text(entity, facts or {})
+        deterministic_text = render_narrative(meta or {}, facts or {}, self.policy)
+        baseline_text = deterministic_text or _default_text(entity, facts or {})
 
         def _make_response(
             text: str,
             *,
             tokens_in: int = 0,
-            tokens_out: int = 0,
-            latency_ms: float = 0.0,
+            tokens_out: int | None = None,
+            latency_ms: float | None = None,
             error: str | None = None,
         ) -> Dict[str, Any]:
+            computed_tokens_out = tokens_out if tokens_out is not None else len(text.split())
+            elapsed_ms = (
+                latency_ms
+                if latency_ms is not None
+                else (time.perf_counter() - t0_global) * 1000.0
+            )
             return {
                 "text": text,
                 "score": 1.0 if text else 0.0,
                 "hints": {"style": self.style},
-                "tokens": {"in": tokens_in, "out": tokens_out},
-                "latency_ms": latency_ms,
+                "tokens": {"in": tokens_in, "out": computed_tokens_out},
+                "latency_ms": elapsed_ms,
                 "error": error,
                 "enabled": self.enabled,
                 "shadow": self.shadow,
