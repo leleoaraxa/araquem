@@ -19,6 +19,8 @@ profiles:
     tie_break: semantic
 
 routing:
+  # Utilize apenas nomes de intent canônicos do Planner/ontologia
+  # (ex.: fiis_noticias, fiis_precos, fiis_dividendos).
   deny_intents:
     - client_fiis_positions
     - fiis_cadastro

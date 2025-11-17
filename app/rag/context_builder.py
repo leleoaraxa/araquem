@@ -4,6 +4,10 @@
 
 Responsável por montar contexto textual estruturado para o Narrator
 e para camadas de explicabilidade, usando políticas em data/policies/rag.yaml.
+
+As listas de intents usadas nas políticas (allow/deny) devem sempre
+seguir os nomes canônicos emitidos pelo Planner/ontologia (por exemplo,
+``fiis_noticias`` em vez de abreviações como ``noticias``).
 """
 
 from __future__ import annotations
