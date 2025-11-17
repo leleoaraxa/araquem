@@ -12,6 +12,7 @@ from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
+from app.rag.context_builder import build_context, load_rag_policy
 from app.responder import render_answer
 
 
@@ -153,6 +154,16 @@ def present(
     - Decidir qual texto final será retornado
     - Devolver PresentResult com answer, legacy_answer, template, narrator_meta, facts
     """
+    rag_policy = load_rag_policy()
+    intent = plan["chosen"]["intent"]
+    entity = plan["chosen"]["entity"]
+    rag_context = build_context(
+        question=question,
+        intent=intent,
+        entity=entity,
+        policy=rag_policy,
+    )
+
     facts, result_key, rows = build_facts(
         question=question,
         plan=plan,
@@ -245,6 +256,8 @@ def present(
                 narrator_info.update(error=str(e), strategy="fallback_error")
                 counter("sirios_narrator_render_total", outcome="error")
                 # fallback: mantém final_answer = legacy_answer
+
+    narrator_info["rag"] = rag_context
 
     return PresentResult(
         answer=final_answer,
