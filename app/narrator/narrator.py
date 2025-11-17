@@ -188,14 +188,17 @@ class Narrator:
             self.model,
         )
 
+        # 1) renderizador especializado
         deterministic_text = render_narrative(meta or {}, facts or {}, self.policy)
 
+        # 2) formatter genérico
         if not deterministic_text:
             try:
                 deterministic_text = build_narrator_text({"facts": facts or {}})
             except Exception:
                 deterministic_text = ""
 
+        # 3) fallback padrão
         baseline_text = deterministic_text or _default_text(entity, facts or {})
 
         def _make_response(
@@ -206,7 +209,9 @@ class Narrator:
             latency_ms: float | None = None,
             error: str | None = None,
         ) -> Dict[str, Any]:
-            computed_tokens_out = tokens_out if tokens_out is not None else len(text.split())
+            computed_tokens_out = (
+                tokens_out if tokens_out is not None else len(text.split())
+            )
             elapsed_ms = (
                 latency_ms
                 if latency_ms is not None
