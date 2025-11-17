@@ -1,17 +1,7 @@
-CREATE EXTENSION IF NOT EXISTS unaccent;
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-
-CREATE OR REPLACE FUNCTION public.unaccent_ci(text)
-RETURNS text
-LANGUAGE sql
-IMMUTABLE
-AS $$
-  SELECT public.unaccent('public.unaccent', lower($1))
-$$;
-
 -- =====================================================================
--- VIEW: view_fiis_info
+-- DROP VIEW
 -- =====================================================================
+DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_cadastro;
 DROP VIEW IF EXISTS fiis_dividendos;
 DROP VIEW IF EXISTS fiis_precos;
@@ -24,12 +14,50 @@ DROP VIEW IF EXISTS fiis_financials_risk;
 DROP VIEW IF EXISTS fiis_financials_revenue_schedule;
 DROP VIEW IF EXISTS fiis_financials;
 DROP VIEW IF EXISTS client_fiis_positions;
-
-
--- Opcional: derruba a MV anterior
+DROP VIEW IF EXISTS financials_tickers_typed;
+DROP VIEW IF EXISTS view_markowitz_sirios_portfolios_latest;
+DROP VIEW IF EXISTS view_markowitz_sirios_portfolios;
+DROP VIEW IF EXISTS view_markowitz_frontier_best_sharpe;
+DROP VIEW IF EXISTS view_markowitz_universe_stats;
+DROP VIEW IF EXISTS view_markowitz_frontier_plot;
+-- =====================================================================
+-- DROP MATERIALIZED VIEW
+-- =====================================================================
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info;
-
--- Cria a MV com os novos campos
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_dividends;
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_assets;
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_judicial;
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_prices;
+DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_news;
+DROP MATERIALIZED VIEW IF EXISTS history_market_indicators;
+DROP MATERIALIZED VIEW IF EXISTS view_history_indexes;
+DROP MATERIALIZED VIEW IF EXISTS view_market_indicators;
+DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
+DROP MATERIALIZED VIEW IF EXISTS history_currency_rates;
+DROP MATERIALIZED VIEW IF EXISTS rf_daily_series_mat;
+DROP MATERIALIZED VIEW IF EXISTS market_index_series;
+-- =====================================================================
+-- DROP INDEX
+-- =====================================================================
+DROP INDEX idx_client_position_filter;
+-- =====================================================================
+-- EXTENSION: unaccent / pg_stat_statements
+-- =====================================================================
+CREATE EXTENSION IF NOT EXISTS unaccent;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+-- =====================================================================
+-- FUNCTION: unaccent_ci
+-- =====================================================================
+CREATE OR REPLACE FUNCTION unaccent_ci(text)
+RETURNS text
+LANGUAGE sql
+IMMUTABLE
+AS $$
+  SELECT unaccent('unaccent', lower($1))
+$$;
+-- =====================================================================
+-- VIEW: view_fiis_info
+-- =====================================================================
 CREATE MATERIALIZED VIEW view_fiis_info AS
 SELECT
     bt.ticker AS ticker,
@@ -245,45 +273,59 @@ LEFT JOIN financials_tickers f ON bt.ticker = f.ticker
 LEFT JOIN ranking_fiis r      ON bt.ticker = r.ticker
 ORDER BY bt.ticker ASC
 WITH DATA;
-
-CREATE UNIQUE INDEX idx_fiis_info_ticker ON view_fiis_info(ticker);
-CREATE INDEX idx_fiis_info_fii_cnpj ON view_fiis_info(fii_cnpj);
-CREATE INDEX idx_fiis_info_isin ON view_fiis_info(isin);
-CREATE INDEX idx_fiis_info_admin_cnpj ON view_fiis_info(admin_cnpj);
-CREATE INDEX IF NOT EXISTS idx_fiis_info_sector_unaccent ON view_fiis_info (public.unaccent_ci(sector));
-CREATE INDEX IF NOT EXISTS idx_fiis_info_sub_sector_unaccent ON view_fiis_info (public.unaccent_ci(sub_sector));
-CREATE INDEX IF NOT EXISTS idx_fiis_info_classification_unaccent ON view_fiis_info (public.unaccent_ci(classification));
-CREATE INDEX IF NOT EXISTS idx_fiis_info_management_type_unaccent ON view_fiis_info (public.unaccent_ci(management_type));
-CREATE INDEX IF NOT EXISTS idx_fiis_info_target_market_unaccent ON view_fiis_info (public.unaccent_ci(target_market));
-
-ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO edge_user;
-ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO edge_user;
-ALTER MATERIALIZED VIEW public.fii_market_performance OWNER TO sirios_api;
-
-ALTER TABLE public.basics_tickers OWNER TO sirios_api;
-ALTER TABLE public.basics_tickers OWNER TO edge_user;
-ALTER TABLE public.ifil_tickers OWNER TO sirios_api;
-ALTER TABLE public.ifil_tickers OWNER TO edge_user;
-ALTER TABLE public.ifix_tickers OWNER TO sirios_api;
-ALTER TABLE public.ifix_tickers OWNER TO edge_user;
-ALTER TABLE public.dividends_tickers OWNER TO sirios_api;
-ALTER TABLE public.dividends_tickers OWNER TO edge_user;
-ALTER TABLE public.calc_financials_tickers OWNER TO sirios_api;
-ALTER TABLE public.calc_financials_tickers OWNER TO edge_user;
-ALTER TABLE public.financials_tickers OWNER TO sirios_api;
-ALTER TABLE public.financials_tickers OWNER TO edge_user;
-ALTER TABLE public.ranking_fiis OWNER TO sirios_api;
-ALTER TABLE public.ranking_fiis OWNER TO edge_user;
-
-
-REFRESH MATERIALIZED VIEW public.view_fiis_info;
-
+-- =====================================================================
+-- INDEX VIEW: view_fiis_info
+-- =====================================================================
+CREATE UNIQUE INDEX IF NOT EXISTS idx_fiis_info_ticker ON view_fiis_info(ticker);
+-- =====================================================================
+-- VIEW: view_history_indexes
+-- =====================================================================
+CREATE MATERIALIZED VIEW IF NOT EXISTS view_history_indexes
+TABLESPACE pg_default
+AS
+ SELECT to_char(to_date(date_taxes::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS index_date,
+    round(ibovespa_taxes::numeric, 0) AS ibov_points_count,
+    round(ibovespa_variation::numeric, 2) AS ibov_var_pct,
+    round(ifix_taxes::numeric, 0) AS ifix_points_count,
+    round(ifix_variation::numeric, 2) AS ifix_var_pct,
+    round(ifil_taxes::numeric, 0) AS ifil_points_count,
+    round(ifil_variation::numeric, 2) AS ifil_var_pct,
+    round(usd_buy::numeric, 2) AS usd_buy_amt,
+    round(usd_sell::numeric, 2) AS usd_sell_amt,
+    round(usd_variation::numeric, 2) AS usd_var_pct,
+    round(eur_buy::numeric, 2) AS eur_buy_amt,
+    round(eur_sell::numeric, 2) AS eur_sell_amt,
+    round(eur_variation::numeric, 2) AS eur_var_pct,
+    to_char(to_date(created_at::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS created_at,
+    to_char(to_date(updated_at::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS updated_at
+   FROM hist_taxes ht
+  ORDER BY date_taxes DESC
+WITH DATA;
+-- =====================================================================
+-- INDEX VIEW: view_history_indexes
+-- =====================================================================
+CREATE UNIQUE INDEX idx_history_indexes ON view_history_indexes USING btree     (index_date COLLATE pg_catalog."default") TABLESPACE pg_default;
+-- =====================================================================
+-- VIEW: view_market_indicators
+-- =====================================================================
+CREATE MATERIALIZED VIEW IF NOT EXISTS view_market_indicators
+TABLESPACE pg_default
+AS
+ SELECT to_char(to_date(date_indicators::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS indicator_date,
+    upper(slug_indicators::text) AS indicator_name,
+    value_indicators AS indicator_amt,
+    to_char(to_date(created_at::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS created_at,
+    to_char(to_date(updated_at::text, 'YYYY-MM-DD'::text)::timestamp with time zone, 'YYYY-MM-DD HH24:MI:SS'::text) AS updated_at
+   FROM hist_indicators hi
+  ORDER BY date_indicators DESC, slug_indicators
+WITH DATA;
+-- =====================================================================
+-- INDEX VIEW: view_market_indicators
+-- =====================================================================
+CREATE UNIQUE INDEX idx_market_indicators ON view_market_indicators USING btree (indicator_date COLLATE pg_catalog."default", indicator_name COLLATE pg_catalog."default") TABLESPACE pg_default;
 -- =====================================================================
 -- VIEW: view_fiis_history_dividends
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_dividends CASCADE;
-
 CREATE MATERIALIZED VIEW view_fiis_history_dividends AS
 SELECT
     bt.ticker AS ticker,
@@ -299,23 +341,13 @@ SELECT
 FROM basics_tickers bt
 JOIN hist_dividends hd ON bt.ticker = hd.ticker
 ORDER BY bt.ticker ASC, hd.traded_until DESC, hd.payment_date DESC;
-
-CREATE UNIQUE INDEX idx_fiis_hist_dividends
-    ON view_fiis_history_dividends(ticker, traded_until_date, payment_date);
-
-
-ALTER MATERIALIZED VIEW public.view_fiis_history_dividends OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_history_dividends OWNER TO edge_user;
-ALTER TABLE public.hist_dividends OWNER TO sirios_api;
-ALTER TABLE public.hist_dividends OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW view_fiis_history_dividends;
-
+-- =====================================================================
+-- INDEX VIEW: view_fiis_history_dividends
+-- =====================================================================
+CREATE UNIQUE INDEX idx_fiis_hist_dividends ON view_fiis_history_dividends(ticker, traded_until_date, payment_date);
 -- =====================================================================
 -- VIEW: view_fiis_history_assets
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_assets CASCADE;
-
 CREATE MATERIALIZED VIEW view_fiis_history_assets AS
 SELECT
     bt.ticker AS ticker,
@@ -352,24 +384,13 @@ SELECT
 FROM basics_tickers bt
 JOIN assets_tickers at ON bt.ticker = at.ticker
 ORDER BY bt.ticker ASC;
-
-CREATE UNIQUE INDEX idx_fiis_assets
-    ON view_fiis_history_assets(ticker, asset_class, asset_name, asset_address, assets_status);
-
-
-ALTER MATERIALIZED VIEW public.view_fiis_history_assets OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_history_assets OWNER TO edge_user;
-ALTER TABLE public.assets_tickers OWNER TO sirios_api;
-ALTER TABLE public.assets_tickers OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW view_fiis_history_assets;
-
-
+-- =====================================================================
+-- INDEX VIEW: view_fiis_history_assets
+-- =====================================================================
+CREATE UNIQUE INDEX idx_fiis_assets ON view_fiis_history_assets(ticker, asset_class, asset_name, asset_address, assets_status);
 -- =====================================================================
 -- VIEW: view_fiis_history_judicial
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_judicial CASCADE;
-
 CREATE MATERIALIZED VIEW view_fiis_history_judicial AS
 SELECT
     bt.ticker          AS ticker,
@@ -391,24 +412,13 @@ SELECT
 FROM basics_tickers bt
 JOIN process_tickers pt ON bt.ticker = pt.ticker
 ORDER BY bt.ticker ASC;
-
-CREATE UNIQUE INDEX idx_fiis_judicial
-    ON view_fiis_history_judicial(ticker, process_number);
-
-
-ALTER MATERIALIZED VIEW public.view_fiis_history_judicial OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_history_judicial OWNER TO edge_user;
-ALTER TABLE public.process_tickers OWNER TO sirios_api;
-ALTER TABLE public.process_tickers OWNER TO edge_user;
-
-
-REFRESH MATERIALIZED VIEW view_fiis_history_judicial;
-
+-- =====================================================================
+-- INDEX VIEW: view_fiis_history_judicial
+-- =====================================================================
+CREATE UNIQUE INDEX idx_fiis_judicial ON view_fiis_history_judicial(ticker, process_number);
 -- =====================================================================
 -- VIEW: view_fiis_history_prices
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_prices CASCADE;
-
 CREATE MATERIALIZED VIEW view_fiis_history_prices AS
 SELECT
     bt.ticker          AS ticker,
@@ -424,25 +434,13 @@ SELECT
 FROM basics_tickers bt
 JOIN price_tickers p ON bt.ticker = p.ticker
 ORDER BY bt.ticker ASC, p.price_ref_date DESC;
-
-CREATE UNIQUE INDEX idx_fiis_history_prices
-    ON view_fiis_history_prices(ticker, price_date);
-
-
-ALTER MATERIALIZED VIEW public.view_fiis_history_prices OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_history_prices OWNER TO edge_user;
-ALTER TABLE public.price_tickers OWNER TO sirios_api;
-ALTER TABLE public.price_tickers OWNER TO edge_user;
-ALTER TABLE public.view_fiis_history_prices OWNER TO sirios_api;
-ALTER TABLE public.view_fiis_history_prices OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW view_fiis_history_prices;
-
+-- =====================================================================
+-- INDEX VIEW: view_fiis_history_prices
+-- =====================================================================
+CREATE UNIQUE INDEX idx_fiis_history_prices ON view_fiis_history_prices(ticker, price_date);
 -- =====================================================================
 -- VIEW: view_fiis_history_news
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_news CASCADE;
-
 CREATE MATERIALIZED VIEW view_fiis_history_news AS
 SELECT
     bt.ticker           AS ticker,
@@ -460,23 +458,14 @@ JOIN market_news mn
   ON (mn.news_title ILIKE '%' || bt.ticker || '%' OR
       mn.news_description ILIKE '%' || bt.ticker || '%')
 ORDER BY bt.ticker;
-
-CREATE UNIQUE INDEX idx_fiis_history_news
-    ON view_fiis_history_news(ticker, url);
-CREATE INDEX IF NOT EXISTS idx_news_ticker_date
-ON view_fiis_history_news (ticker, published_at DESC);
-
-
-ALTER MATERIALIZED VIEW public.view_fiis_history_news OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.view_fiis_history_news OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW view_fiis_history_news;
-
+-- =====================================================================
+-- VIEW: view_fiis_history_news
+-- =====================================================================
+CREATE UNIQUE INDEX idx_fiis_history_news ON view_fiis_history_news(ticker, url);
+CREATE INDEX IF NOT EXISTS idx_news_ticker_date ON view_fiis_history_news (ticker, published_at DESC);
 -- =====================================================================
 -- VIEW: history_market_indicators
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS history_market_indicators;
-
 CREATE MATERIALIZED VIEW history_market_indicators AS
 SELECT
 	TO_CHAR(TO_DATE(hi.date_indicators::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS indicator_date,
@@ -484,26 +473,15 @@ SELECT
     hi.value_indicators  AS indicator_amt,
 	TO_CHAR(TO_DATE(hi.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
     TO_CHAR(TO_DATE(hi.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
-FROM public.hist_indicators hi
+FROM hist_indicators hi
 ORDER BY hi.date_indicators DESC, hi.slug_indicators ASC;
-
-
-CREATE UNIQUE INDEX idx_history_market_indicators
-    ON history_market_indicators(indicator_date, indicator_name);
-
-
-ALTER MATERIALIZED VIEW public.history_market_indicators OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.history_market_indicators OWNER TO edge_user;
-ALTER TABLE public.hist_indicators OWNER TO sirios_api;
-ALTER TABLE public.hist_indicators OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW history_market_indicators;
-
+-- =====================================================================
+-- INDEX VIEW: history_market_indicators
+-- =====================================================================
+CREATE UNIQUE INDEX idx_history_market_indicators ON history_market_indicators(indicator_date, indicator_name);
 -- =====================================================================
 -- VIEW: history_b3_indexes
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
-
 CREATE MATERIALIZED VIEW history_b3_indexes AS
 SELECT
     TO_CHAR(TO_DATE(ht.date_taxes::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS index_date,
@@ -515,25 +493,15 @@ SELECT
     ROUND(ht.ifil_variation::numeric, 2)       AS ifil_var_pct,
     TO_CHAR(TO_DATE(ht.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
     TO_CHAR(TO_DATE(ht.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
-FROM public.hist_taxes ht
+FROM hist_taxes ht
 ORDER BY ht.date_taxes DESC;
-
-CREATE UNIQUE INDEX idx_history_b3_indexes
-    ON history_b3_indexes(index_date);
-
-
-ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO edge_user;
-ALTER TABLE public.hist_taxes OWNER TO sirios_api;
-ALTER TABLE public.hist_taxes OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW history_b3_indexes;
-
+-- =====================================================================
+-- INDEX VIEW: history_b3_indexes
+-- =====================================================================
+CREATE UNIQUE INDEX idx_history_b3_indexes ON history_b3_indexes(index_date);
 -- =====================================================================
 -- VIEW: history_currency_rates
 -- =====================================================================
-DROP MATERIALIZED VIEW IF EXISTS history_currency_rates;
-
 CREATE MATERIALIZED VIEW history_currency_rates AS
 SELECT
     TO_CHAR(TO_DATE(ht.date_taxes::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS rate_date,
@@ -545,35 +513,24 @@ SELECT
     ROUND(ht.eur_variation::numeric, 2) AS eur_var_pct,
     TO_CHAR(TO_DATE(ht.created_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS created_at,
     TO_CHAR(TO_DATE(ht.updated_at::text, 'YYYY-MM-DD'), 'YYYY-MM-DD HH24:MI:SS') AS updated_at
-FROM public.hist_taxes ht
+FROM hist_taxes ht
 ORDER BY ht.date_taxes DESC;
-
-
-CREATE UNIQUE INDEX idx_history_currency_rates
-    ON history_currency_rates(rate_date);
-
-
-ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO edge_user;
-
-REFRESH MATERIALIZED VIEW history_currency_rates;
-
+-- =====================================================================
+-- INDEX VIEW: history_currency_rates
+-- =====================================================================
+CREATE UNIQUE INDEX idx_history_currency_rates ON history_currency_rates(rate_date);
 -- =====================================================================
 -- VIEW: fiis_cadastro
 -- =====================================================================
-CREATE VIEW fiis_cadastro AS
+CREATE OR REPLACE VIEW fiis_cadastro AS
 SELECT ticker, fii_cnpj, ticker_full_name as display_name, b3_name, classification, sector, sub_sector, management_type,
 	target_market, is_exclusive, isin, ipo_date, website_url, admin_name, admin_cnpj, custodian_name,
 	ifil_weight_pct, ifix_weight_pct, shares_count, shareholders_count, created_at, updated_at
 FROM view_fiis_info;
-
-ALTER VIEW public.fiis_cadastro OWNER TO sirios_api;
-ALTER VIEW public.fiis_cadastro OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_rankings
 -- =====================================================================
-CREATE VIEW fiis_rankings AS
+CREATE OR REPLACE VIEW fiis_rankings AS
 SELECT ticker, users_ranking_count AS users_rank_position,
 	users_rank_movement_count AS users_rank_net_movement,
 	sirios_ranking_count AS sirios_rank_position,
@@ -584,36 +541,23 @@ SELECT ticker, users_ranking_count AS users_rank_position,
 	ifil_rank_movement_count AS ifil_rank_net_movement,
 	created_at, updated_at
 FROM view_fiis_info;
-
-ALTER VIEW public.fiis_rankings OWNER TO sirios_api;
-ALTER VIEW public.fiis_rankings OWNER TO edge_user;
-
-
 -- =====================================================================
 -- VIEW: fiis_precos
 -- =====================================================================
-CREATE VIEW fiis_precos AS
+CREATE OR REPLACE VIEW fiis_precos AS
 SELECT ticker, price_date as traded_at, close_price, adj_close_price,
 open_price, max_price, min_price, daily_range_pct as daily_variation_pct, created_at, updated_at
 FROM view_fiis_history_prices;
-
-ALTER VIEW public.fiis_precos OWNER TO sirios_api;
-ALTER VIEW public.fiis_precos OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_dividendos
 -- =====================================================================
-CREATE VIEW fiis_dividendos AS
+CREATE OR REPLACE VIEW fiis_dividendos AS
 SELECT ticker, traded_until_date, payment_date, dividend_amt, created_at, updated_at
 FROM view_fiis_history_dividends;
-
-ALTER VIEW public.fiis_dividendos OWNER TO sirios_api;
-ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_imoveis
 -- =====================================================================
-CREATE VIEW fiis_imoveis AS
+CREATE OR REPLACE VIEW fiis_imoveis AS
 SELECT
     ticker,
     asset_name,
@@ -627,14 +571,10 @@ SELECT
     created_at,
     updated_at
 FROM view_fiis_history_assets;
-
-ALTER VIEW public.fiis_imoveis OWNER TO sirios_api;
-ALTER VIEW public.fiis_imoveis OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_processos
 -- =====================================================================
-CREATE VIEW fiis_processos AS
+CREATE OR REPLACE VIEW fiis_processos AS
 SELECT
     ticker,
     process_number,
@@ -649,15 +589,10 @@ SELECT
     created_at,
     updated_at
 FROM view_fiis_history_judicial;
-
-
-ALTER VIEW public.fiis_processos OWNER TO sirios_api;
-ALTER VIEW public.fiis_processos OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_noticias
 -- =====================================================================
-CREATE VIEW fiis_noticias AS
+CREATE OR REPLACE VIEW fiis_noticias AS
 SELECT
     ticker,
     source,
@@ -670,14 +605,10 @@ SELECT
 	created_at,
     updated_at
 FROM view_fiis_history_news;
-
-ALTER VIEW public.fiis_noticias OWNER TO sirios_api;
-ALTER VIEW public.fiis_noticias OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_financials
 -- =====================================================================
-CREATE VIEW fiis_financials AS
+CREATE OR REPLACE VIEW fiis_financials AS
 SELECT ticker, dy_monthly_pct, dy_pct, sum_anual_dy_amt, last_dividend_amt, last_payment_date, market_cap_value,
 	enterprise_value, price_book_ratio, equity_per_share, revenue_per_share, dividend_payout_pct, growth_rate,
 	cap_rate, volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, sortino_ratio, max_drawdown, r_squared, leverage_ratio, equity_value,
@@ -688,10 +619,6 @@ SELECT ticker, dy_monthly_pct, dy_pct, sum_anual_dy_amt, last_dividend_amt, last
 	revenue_due_undetermined_pct, revenue_igpm_pct, revenue_inpc_pct, revenue_ipca_pct, revenue_incc_pct, created_at,
 	updated_at
 FROM view_fiis_info;
-
-ALTER VIEW public.fiis_financials OWNER TO sirios_api;
-ALTER VIEW public.fiis_financials OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: client_fiis_positions
 -- =====================================================================
@@ -722,18 +649,14 @@ SELECT
 	reference_date as updated_at
 FROM base
 WHERE rn = 1;
-
-DROP INDEX idx_client_position_filter;
-
+-- =====================================================================
+-- INDEX VIEW: client_fiis_positions
+-- =====================================================================
 CREATE INDEX IF NOT EXISTS idx_client_position_filter
 ON equities_positions (document_number, specification_code, product_type_name, product_category_name, reference_date)
 WHERE specification_code = 'Cotas'
   AND product_type_name = 'FII - Fundo de Investimento Imobiliário'
   AND product_category_name = 'Renda Variavel';
-
-ALTER VIEW public.client_fiis_positions OWNER TO sirios_api;
-ALTER VIEW public.client_fiis_positions OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_financials_snapshot
 -- =====================================================================
@@ -751,10 +674,6 @@ SELECT
   total_cash_amt, expected_revenue_amt, liabilities_total_amt,
   created_at, updated_at
 FROM fiis_financials;
-
-ALTER VIEW public.fiis_financials_snapshot OWNER TO sirios_api;
-ALTER VIEW public.fiis_financials_snapshot OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_financials_revenue_schedule
 -- =====================================================================
@@ -778,10 +697,6 @@ SELECT
   revenue_igpm_pct, revenue_inpc_pct, revenue_ipca_pct, revenue_incc_pct,
   created_at, updated_at
 FROM fiis_financials;
-
-ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO sirios_api;
-ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: fiis_financials_risk
 -- =====================================================================
@@ -791,15 +706,9 @@ SELECT
   volatility_ratio, sharpe_ratio, treynor_ratio, jensen_alpha, beta_index, sortino_ratio, max_drawdown, r_squared,
   created_at, updated_at
 FROM fiis_financials;
-
-ALTER VIEW public.fiis_financials_risk OWNER TO sirios_api;
-ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: rf_daily_series_mat
 -- =====================================================================
-
-DROP MATERIALIZED VIEW IF EXISTS rf_daily_series_mat;
 CREATE MATERIALIZED VIEW rf_daily_series_mat AS
 SELECT
   date_taxes::date AS ref_date,
@@ -807,14 +716,13 @@ SELECT
 FROM hist_taxes
 WHERE cdi_taxes IS NOT NULL
 ORDER BY ref_date;
-
+-- =====================================================================
+-- INDEX VIEW: rf_daily_series_mat
+-- =====================================================================
 CREATE INDEX IF NOT EXISTS idx_rf_daily_series_mat ON rf_daily_series_mat(ref_date);
-
 -- =====================================================================
 -- VIEW: market_index_series
 -- =====================================================================
-
-DROP MATERIALIZED VIEW IF EXISTS market_index_series;
 CREATE MATERIALIZED VIEW market_index_series AS
 SELECT
   date_taxes::date AS ref_date,
@@ -832,22 +740,13 @@ FROM hist_taxes
 WHERE ibovespa_taxes IS NOT NULL
   AND ibovespa_taxes > 0
 ORDER BY symbol, ref_date;
-
+-- =====================================================================
+-- INDEX VIEW: market_index_series
+-- =====================================================================
 CREATE INDEX IF NOT EXISTS idx_market_index_series ON market_index_series(symbol, ref_date);
-
--- Refresh commands (schedule in your job):
-REFRESH MATERIALIZED VIEW rf_daily_series_mat;
-REFRESH MATERIALIZED VIEW market_index_series;
-
-ALTER MATERIALIZED VIEW public.market_index_series OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO sirios_api;
-ALTER MATERIALIZED VIEW public.market_index_series OWNER TO edge_user;
-ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO edge_user;
-
 -- =====================================================================
 -- VIEW: financials_tickers_typed
 -- =====================================================================
-
 CREATE OR REPLACE VIEW financials_tickers_typed AS
 WITH raw AS (
   SELECT
@@ -874,24 +773,323 @@ norm AS (
 )
 SELECT
   n.ticker,
-
   CASE WHEN n.equity_txt ~ '^-?\d+(\.\d+)?$'
        THEN n.equity_txt::numeric ELSE NULL END                 AS equity,
-
   CASE WHEN n.total_liabilities_txt ~ '^-?\d+(\.\d+)?$'
        THEN n.total_liabilities_txt::numeric ELSE NULL END      AS total_liabilities,
-
   CASE WHEN n.total_cash_txt ~ '^-?\d+(\.\d+)?$'
        THEN n.total_cash_txt::numeric ELSE NULL END             AS total_cash,
-
   CASE WHEN n.dividend_to_distribute_txt ~ '^-?\d+(\.\d+)?$'
        THEN n.dividend_to_distribute_txt::numeric ELSE NULL END AS dividend_to_distribute,
-
   CASE WHEN n.expected_revenue_txt ~ '^-?\d+(\.\d+)?$'
        THEN n.expected_revenue_txt::numeric ELSE NULL END       AS expected_revenue,
-
   n.shares_count
 FROM norm n;
+-- =========================================
+-- VIEW: fiis_markowitz_universe
+-- 1) Universo elegível (view)
+-- =========================================
+CREATE OR REPLACE VIEW fiis_markowitz_universe AS
+SELECT
+    cad.ticker,
+    cad.ipo_date,
+    cad.b3_name,
+    cad.classification,
+    cad.sector,
+    cad.sub_sector,
+    cad.target_market,
+    cad.shares_count,
+    cad.shareholders_count,
+    cad.ifil_weight_pct,
+    cad.ifix_weight_pct,
+    cad.created_at,
+    cad.updated_at
+FROM fiis_cadastro cad
+WHERE cad.ipo_date::date <= (CURRENT_DATE - INTERVAL '5 years');
+-- =========================================
+-- TABLE: fiis_markowitz_monthly_returns
+-- 2) Retornos mensais total return (preço + dividendos)
+-- =========================================
+CREATE TABLE IF NOT EXISTS fiis_markowitz_monthly_returns (
+    ticker        TEXT      NOT NULL,
+    ref_month     DATE      NOT NULL,  -- sempre dia 1 do mês
+    price_start   NUMERIC   NOT NULL,
+    price_end     NUMERIC   NOT NULL,
+    dividends_sum NUMERIC   NOT NULL,
+    total_return  NUMERIC   NOT NULL,  -- (P_end + D_sum) / P_start - 1
+    created_at    TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at    TIMESTAMP NOT NULL DEFAULT now(),
+    CONSTRAINT pk_fiis_markowitz_monthly_returns PRIMARY KEY (ticker, ref_month)
+);
+-- =========================================
+-- TABLE: fiis_markowitz_stats
+-- 3) Estatísticas por FII (µ, σ) na janela
+-- =========================================
+CREATE TABLE IF NOT EXISTS fiis_markowitz_stats (
+    ticker                 TEXT      NOT NULL,
+    as_of                  DATE      NOT NULL, -- último mês usado
+    obs_months             INTEGER   NOT NULL, -- nº de meses no cálculo
+    mean_return_monthly    NUMERIC   NOT NULL,
+    stddev_return_monthly  NUMERIC   NOT NULL,
+    mean_return_annual     NUMERIC   NOT NULL,
+    stddev_return_annual   NUMERIC   NOT NULL,
+    created_at             TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at             TIMESTAMP NOT NULL DEFAULT now(),
+    CONSTRAINT pk_fiis_markowitz_stats PRIMARY KEY (ticker, as_of)
+);
+-- =========================================
+-- TABLE: fiis_markowitz_covariance
+-- 4) Matriz de covariância (forma long)
+-- =========================================
+CREATE TABLE IF NOT EXISTS fiis_markowitz_covariance (
+    as_of        DATE      NOT NULL,
+    ticker_i     TEXT      NOT NULL,
+    ticker_j     TEXT      NOT NULL,
+    cov_monthly  NUMERIC   NOT NULL,
+    corr         NUMERIC,
+    created_at   TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at   TIMESTAMP NOT NULL DEFAULT now(),
+    CONSTRAINT pk_fiis_markowitz_covariance PRIMARY KEY (as_of, ticker_i, ticker_j)
+);
+-- =========================================
+-- TABLE: fiis_markowitz_frontier
+-- 5) Fronteira eficiente oficial (curva global)
+-- =========================================
+CREATE TABLE IF NOT EXISTS fiis_markowitz_frontier (
+    as_of             DATE      NOT NULL,  -- mesma data das stats/cov
+    point_id          INTEGER   NOT NULL,  -- ordem na curva
+    exp_return_annual NUMERIC   NOT NULL,  -- µ_p
+    risk_annual       NUMERIC   NOT NULL,  -- σ_p
+    sharpe_ratio      NUMERIC,
+    weights_json      JSONB,
+    created_at        TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at        TIMESTAMP NOT NULL DEFAULT now(),
+    CONSTRAINT pk_fiis_markowitz_frontier PRIMARY KEY (as_of, point_id)
+);
+-- =========================================
+-- VIEW: view_markowitz_frontier_plot
+-- 6) Grafico Fronteira eficiente oficial (curva global)
+-- =========================================
+CREATE OR REPLACE VIEW view_markowitz_frontier_plot AS
+SELECT
+    as_of,
+    point_id,
+    exp_return_annual,
+    risk_annual,
+    sharpe_ratio
+FROM fiis_markowitz_frontier;
+-- =========================================
+-- VIEW: view_markowitz_universe_stats
+-- 7) Universo com µ e σ (por ticker)
+-- =========================================
+CREATE OR REPLACE VIEW view_markowitz_universe_stats AS
+SELECT
+    s.as_of,
+    s.ticker,
+    s.mean_return_annual,
+    s.stddev_return_annual,
+    s.obs_months
+FROM fiis_markowitz_stats s;
+-- =========================================
+-- VIEW: view_markowitz_frontier_best_sharpe
+-- 8) Best sharpe
+-- =========================================
+CREATE OR REPLACE VIEW view_markowitz_frontier_best_sharpe AS
+SELECT f.*
+FROM fiis_markowitz_frontier f
+JOIN (
+    SELECT as_of,
+           MAX(sharpe_ratio) AS max_sharpe
+    FROM fiis_markowitz_frontier
+    GROUP BY as_of
+) s
+  ON f.as_of = s.as_of
+ AND f.sharpe_ratio = s.max_sharpe;
+-- =========================================
+-- VIEW: view_markowitz_sirios_portfolios
+-- 9) Portifolio Sirios
+-- =========================================
+CREATE OR REPLACE VIEW view_markowitz_sirios_portfolios AS
+SELECT
+    as_of,
+    portfolio_id,
+    n_assets,
+    objective,
+    exp_return_annual,
+    risk_annual,
+    sharpe_ratio,
+    weights_json
+FROM fiis_markowitz_sirios_portfolios;
+-- =========================================
+-- VIEW: view_markowitz_sirios_portfolios_latest
+-- 10) Última data (as_of) de fronteira
+-- =========================================
+CREATE OR REPLACE VIEW view_markowitz_sirios_portfolios_latest AS
+SELECT *
+FROM view_markowitz_sirios_portfolios
+WHERE as_of = (
+    SELECT MAX(as_of) FROM fiis_markowitz_sirios_portfolios
+);
+-- =====================================================================
+-- FUNCTION fn_markowitz_eval_portfolio
+-- =====================================================================
+CREATE OR REPLACE FUNCTION fn_markowitz_eval_portfolio(
+    p_as_of    date,
+    p_weights  jsonb
+)
+RETURNS TABLE (
+    as_of              date,
+    n_assets           integer,
+    exp_return_annual  numeric,
+    risk_annual        numeric,
+    sharpe_ratio       numeric,
+    rf_annual          numeric,
+    weights_normalized jsonb
+)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    v_n_assets          integer;
+    v_mu_annual         numeric;
+    v_var_annual        numeric;
+    v_sigma_annual      numeric;
+    v_rf_annual         numeric;
+    v_sharpe            numeric;
+    v_weights_normalized jsonb;
+BEGIN
+    -- se não vier peso nenhum, não retorna nada
+    IF p_weights IS NULL OR jsonb_typeof(p_weights) <> 'object' THEN
+        RETURN;
+    END IF;
 
--- ALTER VIEW public.financials_tickers_typed OWNER TO sirios_app;
-ALTER VIEW public.financials_tickers_typed OWNER TO edge_user;
+    WITH
+    -- 1) pesos brutos vindos do JSON
+    raw_w AS (
+        SELECT
+            UPPER(key)                         AS ticker,
+            (value::text)::numeric             AS weight_raw
+        FROM jsonb_each(p_weights)
+        WHERE (value::text)::numeric IS NOT NULL
+    ),
+    -- 2) normalização para somar 1
+    norm AS (
+        SELECT
+            ticker,
+            weight_raw,
+            weight_raw / NULLIF(SUM(weight_raw) OVER (), 0) AS weight
+        FROM raw_w
+    ),
+    -- 3) junta com stats (retorno anual por ticker e as_of)
+    stats AS (
+        SELECT
+            n.ticker,
+            n.weight,
+            s.mean_return_annual
+        FROM norm n
+        JOIN fiis_markowitz_stats s
+          ON s.ticker = n.ticker
+         AND s.as_of  = p_as_of
+    ),
+    mu_calc AS (
+        SELECT
+            COUNT(*)                         AS n_assets,
+            SUM(weight * mean_return_annual) AS exp_return_annual
+        FROM stats
+    ),
+    -- 4) monta pares (i,j) de tickers com pesos
+    var_pairs AS (
+        SELECT
+            si.ticker AS ti,
+            sj.ticker AS tj,
+            si.weight AS wi,
+            sj.weight AS wj
+        FROM stats si
+        CROSS JOIN stats sj
+    ),
+    -- 5) junta com matriz de covariância e anualiza (cov_monthly * 12)
+    var_calc AS (
+        SELECT
+            SUM(v.wi * v.wj * c.cov_monthly * 12) AS var_annual
+        FROM var_pairs v
+        JOIN fiis_markowitz_covariance c
+          ON c.as_of    = p_as_of
+         AND c.ticker_i = v.ti
+         AND c.ticker_j = v.tj
+    ),
+    -- 6) risk-free anual a partir dos últimos 252 dias úteis até p_as_of
+    rf AS (
+        SELECT
+            COALESCE(
+                ((1 + AVG(rf_daily))^252 - 1),
+                0
+            ) AS rf_annual
+        FROM (
+            SELECT rf_daily
+            FROM rf_daily_series_mat
+            WHERE ref_date <= p_as_of
+            ORDER BY ref_date DESC
+            LIMIT 252
+        ) x
+    ),
+    -- 7) JSON de pesos normalizados que efetivamente entraram no cálculo
+    w_json AS (
+        SELECT jsonb_object_agg(ticker, weight) AS weights_json
+        FROM stats
+    )
+    SELECT
+        mu_calc.n_assets,
+        mu_calc.exp_return_annual,
+        var_calc.var_annual,
+        rf.rf_annual,
+        w_json.weights_json
+    INTO
+        v_n_assets,
+        v_mu_annual,
+        v_var_annual,
+        v_rf_annual,
+        v_weights_normalized
+    FROM mu_calc, var_calc, rf, w_json;
+
+    -- se não tiver ativo válido / estatística, não retorna nada
+    IF v_n_assets IS NULL OR v_n_assets = 0 OR v_var_annual IS NULL THEN
+        RETURN;
+    END IF;
+
+    v_sigma_annual := sqrt(v_var_annual);
+
+    IF v_sigma_annual IS NULL OR v_sigma_annual <= 0 THEN
+        v_sharpe := NULL;
+    ELSE
+        v_sharpe := (v_mu_annual - v_rf_annual) / v_sigma_annual;
+    END IF;
+
+    as_of              := p_as_of;
+    n_assets           := v_n_assets;
+    exp_return_annual  := v_mu_annual;
+    risk_annual        := v_sigma_annual;
+    sharpe_ratio       := v_sharpe;
+    rf_annual          := v_rf_annual;
+    weights_normalized := v_weights_normalized;
+
+    RETURN NEXT;
+END;
+$$;
+-- =====================================================================
+-- REFRESHS MATERIALIZED VIEW
+-- =====================================================================
+REFRESH MATERIALIZED VIEW view_fiis_info;
+REFRESH MATERIALIZED VIEW view_fiis_history_dividends;
+REFRESH MATERIALIZED VIEW view_fiis_history_assets;
+REFRESH MATERIALIZED VIEW view_fiis_history_judicial;
+REFRESH MATERIALIZED VIEW view_fiis_history_prices;
+REFRESH MATERIALIZED VIEW view_fiis_history_news;
+REFRESH MATERIALIZED VIEW history_market_indicators;
+REFRESH MATERIALIZED VIEW view_history_indexes;
+REFRESH MATERIALIZED VIEW view_market_indicators;
+REFRESH MATERIALIZED VIEW history_b3_indexes;
+REFRESH MATERIALIZED VIEW history_currency_rates;
+REFRESH MATERIALIZED VIEW rf_daily_series_mat;
+REFRESH MATERIALIZED VIEW market_index_series;
+-- =====================================================================
+-- END
+-- =====================================================================
