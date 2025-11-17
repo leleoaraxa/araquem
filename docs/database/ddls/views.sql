@@ -1090,6 +1090,4 @@ REFRESH MATERIALIZED VIEW history_b3_indexes;
 REFRESH MATERIALIZED VIEW history_currency_rates;
 REFRESH MATERIALIZED VIEW rf_daily_series_mat;
 REFRESH MATERIALIZED VIEW market_index_series;
--- =====================================================================
--- END
--- =====================================================================
+-- ============================================================ --

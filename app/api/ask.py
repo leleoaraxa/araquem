@@ -219,6 +219,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         try:
             with psycopg.connect(os.getenv("DATABASE_URL")) as conn:
                 with conn.cursor() as cur:
+                    # 1) Log de roteamento / explain
                     cur.execute(
                         """
                         INSERT INTO explain_events (
@@ -239,6 +240,35 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                             "",
                             "default",
                             elapsed_ms,
+                        ),
+                    )
+                    # 2) Log do Narrator (resposta final)
+                    narrator_meta = presenter_result.narrator_meta or {}
+                    narrator_style = narrator_meta.get("style") or "executivo"
+                    narrator_version = narrator_meta.get("version") or os.getenv(
+                        "NARRATOR_VERSION", "20251117-narrator-v1"
+                    )
+                    answer_text = presenter_result.answer or ""
+
+                    cur.execute(
+                        """
+                        INSERT INTO narrator_events (
+                            request_id,
+                            answer_text,
+                            answer_len,
+                            answer_hash,
+                            narrator_version,
+                            narrator_style
+                        )
+                        VALUES (%s, %s, %s, md5(%s), %s, %s)
+                        """,
+                        (
+                            request_id,
+                            answer_text,
+                            len(answer_text),
+                            answer_text,
+                            narrator_version,
+                            narrator_style,
                         ),
                     )
                     conn.commit()
