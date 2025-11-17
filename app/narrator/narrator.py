@@ -10,6 +10,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, Iterable
 
+from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import build_prompt, render_narrative
 from app.utils.filecache import load_yaml_cached
 
@@ -188,6 +189,13 @@ class Narrator:
         )
 
         deterministic_text = render_narrative(meta or {}, facts or {}, self.policy)
+
+        if not deterministic_text:
+            try:
+                deterministic_text = build_narrator_text({"facts": facts or {}})
+            except Exception:
+                deterministic_text = ""
+
         baseline_text = deterministic_text or _default_text(entity, facts or {})
 
         def _make_response(
