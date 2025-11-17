@@ -1090,4 +1090,11 @@ REFRESH MATERIALIZED VIEW history_b3_indexes;
 REFRESH MATERIALIZED VIEW history_currency_rates;
 REFRESH MATERIALIZED VIEW rf_daily_series_mat;
 REFRESH MATERIALIZED VIEW market_index_series;
--- ============================================================ --
+-- ============================================================== --
+-- select * from explain_events
+-- select * from narrator_events
+SELECT e.ts, e.question, e.intent, e.entity, left(n.answer_text, 400) AS preview
+FROM explain_events e
+JOIN narrator_events n USING (request_id)
+WHERE e.ts >= now() - interval '24 hours'
+ORDER BY e.ts DESC;
