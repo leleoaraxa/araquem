@@ -4,9 +4,11 @@ set -euo pipefail
 # Script de debug do RAG no Araquem.
 # Uso:
 #   scripts/rag_debug.sh "pergunta em linguagem natural"
+#   scripts/rag_debug.sh "pergunta em linguagem natural" --no-rag
 #
 # Exemplo:
 #   scripts/rag_debug.sh "explique o risco do HGLG11"
+#   scripts/rag_debug.sh "explique o risco do HGLG11" --no-rag
 #
 # Depende:
 #   - serviço API do Araquem rodando (compose.dev)
@@ -15,29 +17,53 @@ set -euo pipefail
 QUESTION="${1:-}"
 
 if [ -z "$QUESTION" ]; then
-  echo "Uso: $0 \"pergunta em linguagem natural\"" >&2
+  echo "Uso: $0 \"pergunta em linguagem natural\" [--no-rag]" >&2
   exit 1
+fi
+
+# Segundo argumento opcional: --no-rag → disable_rag=true
+SECOND_ARG="${2:-}"
+if [ "$SECOND_ARG" = "--no-rag" ] || [ "$SECOND_ARG" = "--disable-rag" ]; then
+  DISABLE_RAG=true
+else
+  DISABLE_RAG=false
 fi
 
 ARAQUEM_URL="${ARAQUEM_URL:-http://localhost:8000}"
 
 PAYLOAD=$(jq -n \
   --arg q "$QUESTION" \
-  '{question: $q, conversation_id: "rag-debug", nickname: "rag-debug", client_id: "ops"}'
+  --argjson disable_rag "$DISABLE_RAG" \
+  '{
+    question: $q,
+    conversation_id: "rag-debug",
+    nickname: "rag-debug",
+    client_id: "ops",
+    disable_rag: $disable_rag
+  }'
 )
 
-echo ">> Enviando pergunta para ${ARAQUEM_URL}/ask"
+echo ">> Enviando pergunta para ${ARAQUEM_URL}/ops/rag_debug"
 echo ">> Pergunta: \"$QUESTION\""
+echo ">> disable_rag: ${DISABLE_RAG}"
 echo
 
 RAW_RESPONSE=$(curl -sS -X POST \
   -H "Content-Type: application/json" \
   -d "$PAYLOAD" \
-  "${ARAQUEM_URL}/ask")
+  "${ARAQUEM_URL}/ops/rag_debug")
 
 # Guarda resposta bruta em arquivo de apoio
 mkdir -p /tmp/araquem
-echo "$RAW_RESPONSE" > /tmp/araquem/rag_debug_last.json
+if [ "$DISABLE_RAG" = true ]; then
+  OUTFILE="/tmp/araquem/rag_debug_last_no_rag.json"
+else
+  OUTFILE="/tmp/araquem/rag_debug_last_with_rag.json"
+fi
+echo "$RAW_RESPONSE" > "$OUTFILE"
+
+echo ">> Resposta salva em: $OUTFILE"
+echo
 
 echo "================= STATUS ================="
 echo "$RAW_RESPONSE" | jq '.status'
@@ -55,7 +81,9 @@ echo "================= PRIMEIROS FACTS ========"
 echo "$RAW_RESPONSE" | jq '.results | to_entries[0] // {} | {view: .key, rows_sample: (.value[0:3])}'
 
 echo
-echo "================= TEXTO FINAL (se houver narrator) =="
-# Se você tiver um wrapper que já chama o Narrator, adapte aqui.
-# Caso contrário, isso mostra só o resultado tabular.
-echo "$RAW_RESPONSE" | jq '.meta.narrator // "narrator não integrado neste endpoint"'
+echo "================= TEXTO FINAL (answer) == "
+echo "$RAW_RESPONSE" | jq '.answer // "sem answer (narrator desabilitado ou erro)"'
+
+echo
+echo "================= META.NARRATOR ========="
+echo "$RAW_RESPONSE" | jq '.meta.narrator // "meta.narrator ausente"'
