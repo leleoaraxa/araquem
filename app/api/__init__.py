@@ -7,6 +7,7 @@ from app.api.ops.analytics import router as ops_analytics_router
 from app.api.ops.cache import router as ops_cache_router
 from app.api.ops.metrics import router as ops_metrics_router
 from app.api.ops.quality import router as ops_quality_router
+from app.api.ops.rag_debug import router as ops_rag_debug_router
 from app.api.ops.rag import router as ops_rag_router
 from app.common.http import metrics_middleware
 
@@ -40,5 +41,6 @@ def get_app() -> FastAPI:
     app.include_router(ops_analytics_router)
     app.include_router(ops_metrics_router)
     app.include_router(ops_quality_router)
+    app.include_router(ops_rag_debug_router)
     app.include_router(ops_rag_router)
     return app

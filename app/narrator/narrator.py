@@ -180,8 +180,13 @@ class Narrator:
         # Regra:
         #   - se meta.rag não existir ou não for dict → rag_ctx = None
         #   - se meta.rag existir e for dict → repassado como está p/ build_prompt
+        #   - se meta.rag_debug_disable=True → força rag_ctx=None (modo debug)
         rag_raw = (meta or {}).get("rag")
         rag_ctx = rag_raw if isinstance(rag_raw, dict) else None
+
+        rag_debug_disable = bool((meta or {}).get("rag_debug_disable"))
+        if rag_debug_disable:
+            rag_ctx = None
 
         if rag_ctx is not None:
             rag_enabled = bool(rag_ctx.get("enabled"))
