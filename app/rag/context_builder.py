@@ -5,9 +5,10 @@
 Responsável por montar contexto textual estruturado para o Narrator
 e para camadas de explicabilidade, usando políticas em data/policies/rag.yaml.
 
-As listas de intents usadas nas políticas (allow/deny) devem sempre
-seguir os nomes canônicos emitidos pelo Planner/ontologia (por exemplo,
-``fiis_noticias`` em vez de abreviações como ``noticias``).
+A seção ``routing`` em data/policies/rag.yaml deve sempre usar os nomes
+canônicos de intent emitidos pelo Planner (por exemplo, ``fiis_noticias``
+em vez de abreviações como ``noticias``), e é avaliada antes das regras de
+``entities``/``default``/``profiles``.
 """
 
 from __future__ import annotations
@@ -73,9 +74,7 @@ def is_rag_enabled(intent: str, entity: str, *, policy: Optional[Dict[str, Any]]
     if isinstance(entities_cfg, dict):
         if entity in entities_cfg:
             return True
-        if not entities_cfg and rag_policy.get("default"):
-            return True
-        # se há entidades declaradas e nenhuma corresponde, cai na default abaixo
+        # se a entidade não estiver em entities_cfg, cai na default/profiles abaixo
     default_cfg = rag_policy.get("default") if isinstance(rag_policy, dict) else None
     profiles_cfg = rag_policy.get("profiles") if isinstance(rag_policy, dict) else None
 
@@ -225,6 +224,7 @@ def build_context(
 
     snapshot_policy = {
         "max_chunks": max_chunks_val,
+        "collections": collections,
     }
     if min_score_val is not None:
         snapshot_policy["min_score"] = min_score_val
