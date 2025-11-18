@@ -1,0 +1,191 @@
+version: 1
+domain: fiis
+
+intents:
+
+  fiis_cadastro:
+    description: "Identidade e dados cadastrais de um FII."
+    domain_block: D1
+    entities:
+      - fiis_cadastro
+    ui_pages:
+      - fii_detail
+      - fii_catalog
+      - market_overview
+    examples:
+      - "qual o cnpj do HGLG11?"
+      - "quem é o administrador do MXRF11?"
+      - "qual a classificação do KNRI11?"
+      - "peso do VISC11 no IFIX"
+
+  fiis_precos:
+    description: "Histórico diário de preços da cota do FII."
+    domain_block: D4
+    entities:
+      - fiis_precos
+    ui_pages:
+      - fii_detail
+      - calculators.asset_simulator
+      - calculators.asset_comparator
+      - market_overview
+    examples:
+      - "quanto fechou o HGLG11 ontem?"
+      - "como se comportou o MXRF11 no último mês?"
+      - "qual a variação de hoje do KNRI11?"
+
+  fiis_dividendos:
+    description: "Histórico de dividendos pagos por FII."
+    domain_block: D3
+    entities:
+      - fiis_dividendos
+    ui_pages:
+      - fii_detail
+      - calculators.financial_freedom
+      - calculators.asset_simulator
+      - my_area
+    examples:
+      - "qual foi o último dividendo do MXRF11?"
+      - "quanto pagou o VISC11 nos últimos 12 meses?"
+      - "quando foi a data com do HGRU11?"
+
+  fiis_financials_snapshot:
+    description: "Indicadores financeiros e de valuation D-1."
+    domain_block: D5
+    entities:
+      - fiis_financials_snapshot
+    ui_pages:
+      - fii_detail
+      - calculators.financial_freedom
+      - simulators.asset_return
+      - my_area
+    examples:
+      - "qual o dividend yield do KNRI11?"
+      - "qual o market cap do HGLG11?"
+      - "como está a alavancagem do HGRU11?"
+
+  fiis_financials_risk:
+    description: "Indicadores quantitativos de risco e retorno ajustado."
+    domain_block: D6
+    entities:
+      - fiis_financials_risk
+    ui_pages:
+      - fii_detail
+      - calculators.asset_comparator
+      - calculators.financial_freedom
+    examples:
+      - "qual o Sharpe do MXRF11?"
+      - "quão volátil está o KNRI11?"
+      - "beta do HGLG11 em relação ao IFIX"
+
+  fiis_financials_revenue_schedule:
+    description: "Estrutura de recebíveis e exposição a indexadores."
+    domain_block: D7
+    entities:
+      - fiis_financials_revenue_schedule
+    ui_pages:
+      - fii_detail
+    examples:
+      - "quanto das receitas vence em até 6 meses do HGLG11?"
+      - "qual percentual da receita do KNRI11 é indexado ao IPCA?"
+
+  fiis_imoveis:
+    description: "Lista de imóveis/ativos do portfólio do FII."
+    domain_block: D8
+    entities:
+      - fiis_imoveis
+    ui_pages:
+      - fii_detail
+    examples:
+      - "quais imóveis compõem o portfólio do VISC11?"
+      - "qual a vacância dos ativos do KNRI11?"
+      - "onde ficam os imóveis do HGLG11?"
+
+  fiis_processos:
+    description: "Processos judiciais associados ao FII."
+    domain_block: D9
+    entities:
+      - fiis_processos
+    ui_pages:
+      - fii_detail
+    examples:
+      - "o MXRF11 tem processos judiciais?"
+      - "qual o risco de perda do processo do HGLG11?"
+      - "qual o valor da causa do processo do RBRF11?"
+
+  fiis_noticias:
+    description: "Notícias recentes relacionadas a FIIs."
+    domain_block: D9
+    entities:
+      - fiis_noticias
+    ui_pages:
+      - news
+      - fii_detail
+    examples:
+      - "quais as últimas notícias do HGLG11?"
+      - "o que saiu hoje sobre IFIX?"
+      - "tem notícia nova sobre fundos de papel?"
+
+  fiis_rankings:
+    description: "Rankings e popularidade de FIIs."
+    domain_block: D10
+    entities:
+      - fiis_rankings
+    ui_pages:
+      - market_overview
+      - rankings_dashboard
+      - fii_detail
+    examples:
+      - "quais FIIs mais apareceram no IFIX hoje?"
+      - "qual a posição do VISC11 no ranking de buscas?"
+      - "quais fundos estão subindo esta semana?"
+
+  history_b3_indexes:
+    description: "Histórico de IBOV, IFIX, IFIL."
+    domain_block: D11
+    entities:
+      - history_b3_indexes
+    ui_pages:
+      - market_overview
+      - calculators.asset_comparator
+      - fii_detail
+    examples:
+      - "como fechou o IFIX ontem?"
+      - "qual foi a variação do IBOV?"
+      - "como está o IFIL hoje?"
+
+  history_currency_rates:
+    description: "Cotações D-1 de moedas: USD e EUR."
+    domain_block: D11
+    entities:
+      - history_currency_rates
+    ui_pages:
+      - market_overview
+    examples:
+      - "quanto está o dólar hoje?"
+      - "cotação do euro venda?"
+      - "qual a variação do dólar ontem?"
+
+  history_market_indicators:
+    description: "Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM...)."
+    domain_block: D11
+    entities:
+      - history_market_indicators
+    ui_pages:
+      - market_overview
+      - calculators.financial_freedom
+    examples:
+      - "qual foi o CDI de ontem?"
+      - "quanto está a SELIC?"
+      - "valor do IPCA-15 do mês"
+
+  client_fiis_positions:
+    description: "Carteira de FIIs do investidor (camada privada)."
+    domain_block: D12
+    entities:
+      - client_fiis_positions
+    ui_pages:
+      - my_area
+    examples:
+      - "quais são minhas posições em FIIs?"
+      - "quantas cotas tenho de MXRF11?"
+      - "qual o valor total da minha carteira de FIIs?"
