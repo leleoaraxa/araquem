@@ -79,12 +79,15 @@ def rag_policy_with_entities(rag_policy_base: Dict[str, Any]) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-def test_is_rag_enabled_returns_false_when_no_policy() -> None:
-    """Sem policy carregada -> RAG desabilitado."""
-    assert (
-        context_builder.is_rag_enabled("fiis_noticias", "fiis_noticias", policy={})
-        is False
-    )
+def test_is_rag_enabled_returns_false_when_no_policy(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Sem policy carregada (load_rag_policy retorna {})-> RAG desabilitado."""
+
+    # Garante que load_rag_policy vai devolver {} dentro de is_rag_enabled
+    monkeypatch.setattr(context_builder, "load_rag_policy", lambda: {})
+
+    assert context_builder.is_rag_enabled("fiis_noticias", "fiis_noticias") is False
 
 
 def test_is_rag_enabled_denies_intents_in_deny_list(
