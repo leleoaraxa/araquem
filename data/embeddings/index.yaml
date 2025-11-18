@@ -21,8 +21,20 @@ include:
     tags: [concepts, catalog, fiis]
 
   - id: concepts-fiis
-    path: data/concepts/fiis.md
+    path: data/concepts/concepts-fiis.yaml
     tags: [concepts, fiis]
+
+  - id: concepts-risk
+    path: data/concepts/concepts-risk.yaml
+    tags: [concepts, risk, fiis]
+
+  - id: concepts-macro
+    path: data/concepts/concepts-macro.yaml
+    tags: [concepts, macro, market, fiis]
+
+  - id: concepts-carteira
+    path: data/concepts/concepts-carteira.yaml
+    tags: [concepts, carteira, private, fiis]
 
   - id: indicators-catalog
     path: data/raw/indicators/catalog.md
@@ -86,7 +98,7 @@ include:
     path: data/entities/client_fiis_positions/entity.yaml
     tags: [entities, private, positions, "entity:client_fiis_positions"]
 
-# ── Policies (paths corrigidos) ──────────────────────────────────────────────
+  # ── Policies (paths corrigidos) ────────────────────────────────────────────
   - id: policies-cache
     path: data/policies/cache.yaml
     tags: [policies, cache]

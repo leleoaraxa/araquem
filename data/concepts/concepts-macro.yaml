@@ -1,0 +1,108 @@
+# data/concepts/concepts-macro.yaml
+domain: macro
+owner: research
+
+concepts:
+  - name: "Índices de mercado da B3"
+    aliases:
+      - "IBOV"
+      - "IFIX"
+      - "IFIL"
+      - "índices de referência"
+    description: >
+      Índices como IBOV, IFIX e IFIL representam carteiras teóricas de ativos
+      negociados na B3 e são usados como referência para avaliar o desempenho de
+      FIIs e carteiras. No contexto da SIRIOS, esses índices ajudam a comparar
+      retorno e risco dos fundos em relação ao mercado.
+    related_entities:
+      - history_b3_indexes
+      - fiis_financials_risk
+      - fiis_financials_snapshot
+    typical_uses:
+      - "calcular beta e alfa de FIIs"
+      - "comparar retornos de fundos com o IFIX"
+      - "avaliar se a carteira acompanha ou não o mercado"
+    typical_questions:
+      - "quanto fechou o IFIX ontem?"
+      - "esse FII rendeu mais que o IFIX nos últimos 12 meses?"
+
+  - name: "Taxas de juros e indicadores de renda fixa"
+    aliases:
+      - "CDI"
+      - "SELIC"
+      - "taxa livre de risco"
+    description: >
+      CDI e SELIC são utilizados como proxies de ativo livre de risco e linha de
+      base para comparar o retorno de FIIs e carteiras. Também servem como
+      referência para cálculo de Sharpe, Treynor e outras métricas de risco.
+    related_entities:
+      - history_market_indicators
+      - fiis_financials_risk
+      - fiis_financials_snapshot
+    typical_uses:
+      - "comparar dividend yield com CDI/SELIC"
+      - "ajustar retorno pelo ativo livre de risco nas métricas de Sharpe/Treynor"
+    typical_questions:
+      - "qual foi o CDI no último mês?"
+      - "vale a pena esse FII em relação ao CDI atual?"
+
+  - name: "Inflação e indexadores"
+    aliases:
+      - "IPCA"
+      - "IGPM"
+      - "INPC"
+      - "índices de inflação"
+    description: >
+      Índices de inflação como IPCA, IGPM, INPC e IPCA-15 impactam diretamente
+      contratos de aluguel, recebíveis imobiliários e indexação de receitas dos
+      FIIs. Na SIRIOS, esses indicadores são usados para analisar a proteção do
+      fluxo de caixa contra a inflação e a exposição de cada fundo a diferentes
+      indexadores.
+    related_entities:
+      - history_market_indicators
+      - fiis_financials_revenue_schedule
+    typical_uses:
+      - "avaliar quais FIIs estão mais expostos ao IPCA ou IGPM"
+      - "comparar crescimento real de renda versus inflação"
+    typical_questions:
+      - "qual está sendo o IPCA acumulado?"
+      - "qual percentual da receita do fundo está indexado ao IPCA?"
+
+  - name: "Moedas e exposição cambial"
+    aliases:
+      - "dólar"
+      - "euro"
+      - "câmbio"
+    description: >
+      As cotações de dólar e euro em relação ao real importam para fundos que
+      possuem ativos dolarizados, contratos atrelados ao câmbio ou exposição
+      indireta a moedas estrangeiras. A SIRIOS utiliza essas séries para dar
+      contexto a movimentos de preço e risco em fundos sensíveis ao câmbio.
+    related_entities:
+      - history_currency_rates
+      - history_market_indicators
+    typical_uses:
+      - "explicar movimentos de FIIs com contratos dolarizados"
+      - "avaliar sensibilidade da carteira a choques cambiais"
+    typical_questions:
+      - "como fechou o dólar ontem?"
+      - "esse fundo é muito exposto ao câmbio?"
+
+  - name: "Contexto macro e tomada de decisão em FIIs"
+    aliases:
+      - "cenário macro"
+      - "macro e FIIs"
+    description: >
+      O contexto macroeconômico influencia diretamente FIIs por meio de taxa de
+      juros, inflação, atividade econômica e câmbio. Na SIRIOS, o papel da
+      camada macro é dar referência, não fazer previsão: mostrar se um FII ou
+      carteira está entregando retorno compatível com CDI, SELIC e inflação.
+    related_entities:
+      - history_b3_indexes
+      - history_market_indicators
+      - history_currency_rates
+      - fiis_financials_snapshot
+      - fiis_financials_risk
+    typical_questions:
+      - "como os FIIs se comportaram nesse cenário de juros altos?"
+      - "meus dividendos estão ganhando da inflação?"

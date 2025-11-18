@@ -1,17 +1,51 @@
+# data/concepts/catalog.yaml
 concepts:
+  # Domínio central de FIIs
   - file: data/concepts/concepts-fiis.yaml
     domain: fiis
     owner: research
     sections:
-      - identidade_classificacao
-      - precos
-      - dividendos
-      - financials_snapshot
-      - risco
-      - revenue_schedule
-      - imoveis
-      - noticias
-      - processos
-      - rankings
-      - macro
-      - carteira
+      - "Identidade do Fundo e Classificação"
+      - "Preço e Renda: Cotas e Dividendos"
+      - "Indicadores Financeiros e Valuation"
+      - "Risco Quantitativo e Fronteira da Eficiência"
+      - "Recebíveis e Indexadores de Receita"
+      - "Imóveis e Portfólio Físico"
+      - "Notícias, Processos e Eventos"
+      - "Rankings e Popularidade"
+      - "Contexto de Mercado e Macroeconomia"
+      - "Carteira de FIIs do Investidor"
+
+  # Camada específica de risco quantitativo
+  - file: data/concepts/concepts-risk.yaml
+    domain: risk
+    owner: research
+    sections:
+      - "Visão SIRIOS de risco em FIIs"
+      - "Volatilidade histórica"
+      - "Sharpe, Treynor e Sortino"
+      - "Alfa de Jensen, Beta e R²"
+      - "Máximo Drawdown (MDD)"
+      - "Fronteira eficiente e carteiras"
+
+  # Camada macroeconômica e de mercado
+  - file: data/concepts/concepts-macro.yaml
+    domain: macro
+    owner: research
+    sections:
+      - "Índices de mercado da B3 (IBOV, IFIX, IFIL)"
+      - "Taxas de juros e referências de renda fixa (CDI, SELIC)"
+      - "Inflação e indexadores (IPCA, IGPM, INPC etc.)"
+      - "Moedas e exposição cambial (dólar, euro)"
+      - "Contexto macro e tomada de decisão em FIIs"
+
+  # Camada de carteira do investidor
+  - file: data/concepts/concepts-carteira.yaml
+    domain: carteira
+    owner: research
+    sections:
+      - "Carteira de FIIs do investidor"
+      - "Concentração e diversificação"
+      - "Risco e retorno da carteira"
+      - "Projeções de renda e objetivos financeiros"
+      - "Princípios de privacidade e segurança de dados"
