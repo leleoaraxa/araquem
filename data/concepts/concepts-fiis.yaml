@@ -1,0 +1,150 @@
+version: 1
+domain: fiis
+owner: research
+
+sections:
+
+  identidade_classificacao:
+    title: "Identidade e Classificação"
+    concepts:
+      - ticker: "Código oficial do fundo, ex.: HGLG11."
+      - cnpj: "Registro legal do FII e do administrador."
+      - nomes: "Nome de pregão e nome de exibição usados na B3."
+      - setor_tipo: "Classificação por setor, subsetor e tipo (tijolo, papel, híbrido, desenvolvimento)."
+      - gestao: "Gestão ativa ou passiva."
+      - publico_alvo: "Investidores em geral, qualificados etc."
+      - isin: "Código internacional de negociação."
+      - ipo: "Data de início das negociações."
+      - governanca: "Administrador, gestor, custodiante e site oficial."
+      - participacao_indices: "Participação e pesos no IFIX/IFIL."
+
+  precos:
+    title: "Preço e Cotação"
+    concepts:
+      - preco_fechamento: "Preço de fechamento ajustado da cota."
+      - ohlc: "Abertura, máxima e mínima do dia."
+      - variacao: "Variação diária em percentual e valor."
+      - serie_historica: "Evolução da cota ao longo do tempo."
+
+  dividendos:
+    title: "Dividendos e Renda"
+    concepts:
+      - dividendo: "Valor distribuído por cota."
+      - data_pagamento: "Data do recebimento."
+      - data_com: "Determina quem tem direito ao dividendo."
+      - acumulados: "Somatórios de 3, 6 e 12 meses."
+      - dy: "Dividend Yield: dividendo anualizado sobre preço."
+
+  financials_snapshot:
+    title: "Indicadores Financeiros e Valuation"
+    concepts:
+      renda:
+        - dy: "Dividend Yield mensal e anual."
+        - soma_12m: "Total de proventos em 12 meses."
+        - payout: "Percentual de lucro distribuído."
+      valuation:
+        - market_cap: "Valor de mercado."
+        - enterprise_value: "Valor econômico considerando dívidas."
+        - vpa: "Valor patrimonial por cota."
+        - pvp: "Preço dividido pelo valor patrimonial."
+        - cap_rate: "Renda anual sobre valor da cota."
+      estrutura_financeira:
+        - caixa: "Disponibilidades do fundo."
+        - passivos: "Dívidas e obrigações."
+        - alavancagem: "Indicadores de endividamento."
+        - reservas: "Reservas de dividendos."
+      crescimento:
+        - crescimento_dividendos: "Crescimento dos dividendos em 12/24/36 meses."
+        - crescimento_receita: "Crescimento de receita ou patrimônio."
+
+  risco:
+    title: "Risco Quantitativo"
+    concepts:
+      - volatilidade: "Oscilação dos preços no tempo."
+      - sharpe: "Retorno acima do CDI dividido pela volatilidade."
+      - sortino: "Sharpe que penaliza apenas quedas."
+      - treynor: "Retorno excedente dividido pelo beta."
+      - jensen_alpha: "Retorno acima do esperado pelo CAPM."
+      - beta: "Sensibilidade em relação ao IFIX."
+      - r2: "Grau de explicação pelo índice de referência."
+      - max_drawdown: "Maior queda acumulada."
+
+  revenue_schedule:
+    title: "Recebíveis e Indexadores"
+    concepts:
+      buckets:
+        - curto_prazo: "Receitas até 3 meses."
+        - medio_prazo: "Receitas até 12 meses."
+        - longo_prazo: "Receitas acima de 36 meses."
+        - indeterminado: "Receitas sem prazo definido."
+      indexadores:
+        - ipca: "Receitas indexadas ao IPCA."
+        - igpm: "Receitas indexadas ao IGPM."
+        - inpc: "Receitas indexadas ao INPC."
+        - incc: "Receitas indexadas ao INCC."
+
+  imoveis:
+    title: "Imóveis e Portfólio Físico"
+    concepts:
+      - nome_ativo: "Nome do imóvel/ativo."
+      - classe: "Tipo (logístico, corporativo, shopping etc.)."
+      - localizacao: "Cidade e estado."
+      - area_total: "Área total ocupada."
+      - unidades: "Número de unidades."
+      - vacancia: "Vacância física e financeira."
+      - inadimplencia: "Atrasos no pagamento."
+      - status: "Ocupado, em obras, vendido etc."
+
+  noticias:
+    title: "Notícias de FIIs"
+    concepts:
+      - fonte: "Origem da notícia."
+      - tags: "Classificação do tema."
+      - resumo: "Descrição curta do conteúdo."
+      - tickers_mencionados: "FIIs impactados."
+      - data_publicacao: "Data da notícia."
+
+  processos:
+    title: "Processos Judiciais"
+    concepts:
+      - numero_processo: "Identificador judicial."
+      - instancia: "Grau do processo."
+      - julgamento: "Fase atual."
+      - valor_causa: "Montante envolvido."
+      - risco_perda: "Classificação do risco."
+      - fatos_principais: "Resumo objetivo do caso."
+      - impacto_potencial: "Possível efeito no fundo."
+
+  rankings:
+    title: "Rankings e Popularidade"
+    concepts:
+      - aparicoes: "Contagem de aparições em rankings."
+      - movimentos: "Subidas e quedas nas listas."
+      - rankings_ifix_ifil: "Posicionamento em IFIX/IFIL."
+
+  macro:
+    title: "Contexto de Mercado e Macroeconomia"
+    concepts:
+      indices_b3:
+        - ibov: "Pontos e variação do Ibovespa."
+        - ifix: "Pontos e variação do IFIX."
+        - ifil: "Pontos e variação do IFIL."
+      moedas:
+        - dolar: "Compra, venda e variação."
+        - euro: "Compra, venda e variação."
+      macroindicadores:
+        - cdi: "Taxa DI."
+        - selic: "Taxa básica de juros."
+        - ipca: "Inflação medida pelo IPCA."
+        - igpm: "Inflação medida pelo IGPM."
+        - inpc: "Inflação medida pelo INPC."
+
+  carteira:
+    title: "Carteira do Investidor"
+    concepts:
+      - identificador_cliente: "CPF/CNPJ do investidor."
+      - data_posicao: "Data da posição."
+      - quantidade: "Quantidade em custódia e disponível."
+      - preco_avaliacao: "Preço usado no cálculo da carteira."
+      - valor_posicao: "Valor total da posição."
+      - corretora: "Participante responsável."

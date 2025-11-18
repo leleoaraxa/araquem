@@ -1,27 +1,17 @@
 concepts:
-  - file: data/concepts/fiis.md
+  - file: data/concepts/concepts-fiis.yaml
     domain: fiis
     owner: research
     sections:
-      - "5.1 Dividend Yield (DY)"
-      - "5.2 Rendimento Mensal e Anual"
-      - "5.3 P/VP (Preço sobre Valor Patrimonial)"
-      - "5.4 Patrimônio e Valor de Mercado"
-      - "5.5 Vacância Física e Financeira"
-      - "5.6 Cap Rate (Taxa de Capitalização)"
-      - "5.7 Taxa de Administração e Performance"
-      - "5.8 Crescimento de Receita (Growth Rate)"
-      - "5.9 Volatilidade, Sharpe e Risco"
-      - "5.10.1 Índice de Sharpe"
-      - "5.10.2 Índice de Treynor"
-      - "5.10.3 Alfa de Jensen"
-      - "5.11 Benchmark: IFIX e outros índices"
-      - "5.12 Estrutura Patrimonial"
-      - "5.13 Endividamento e Alavancagem"
-      - "5.14 Administração e Custódia"
-      - "5.15 Composição de Portfólio"
-      - "5.16 Setor e Tipo de Gestão"
-      - "5.17 Histórico de Cotações e Liquidez"
-      - "5.18 Notícias e Eventos Relevantes"
-      - "5.19 Indicadores Macroeconômicos"
-      - "5.20 Governança e Curadoria"
+      - identidade_classificacao
+      - precos
+      - dividendos
+      - financials_snapshot
+      - risco
+      - revenue_schedule
+      - imoveis
+      - noticias
+      - processos
+      - rankings
+      - macro
+      - carteira
