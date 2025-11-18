@@ -142,6 +142,7 @@ def present(
     aggregates: Dict[str, Any],
     narrator: Optional[Narrator],
     narrator_flags: Dict[str, Any],
+    narrator_meta: Optional[Dict[str, Any]] = None,
     explain: bool = False,
 ) -> PresentResult:
     """
@@ -207,6 +208,9 @@ def present(
             "explain": (plan.get("explain") if explain else None),
             "result_key": result_key,
         }
+
+        if narrator_meta:
+            meta_for_narrator.update(narrator_meta)
 
         # Modo shadow: mede Narrator mas não altera o answer
         if shadow:
