@@ -1,0 +1,100 @@
+[
+  {
+    "id": "rag-fiis-noticias-001",
+    "description": "Notícias recentes de um FII específico",
+    "question": "quais as últimas notícias do HGLG11?",
+    "expected_intent": "fiis_noticias",
+    "expected_entity": "fiis_noticias",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-fiis-noticias-002",
+    "description": "Notícias ligadas ao IFIX, ainda dentro do domínio FIIs",
+    "question": "o que saiu hoje sobre IFIX?",
+    "expected_intent": "fiis_noticias",
+    "expected_entity": "fiis_noticias",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-fiis-noticias-003",
+    "description": "Fundos de papel, ainda recortados como FIIs",
+    "question": "tem notícia nova sobre fundos de papel?",
+    "expected_intent": "fiis_noticias",
+    "expected_entity": "fiis_noticias",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-risk-001",
+    "description": "Explicação de risco usando métricas quantitativas",
+    "question": "explique o risco do HGLG11 considerando Sharpe, Treynor e drawdown",
+    "expected_intent": "fiis_financials_risk",
+    "expected_entity": "fiis_financials_risk",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["concepts-risk"],
+    "expect_collections_not_contains": ["fiis_noticias"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-macro-001",
+    "description": "Contexto de IPCA para comparar com dividendos",
+    "question": "qual é o papel do IPCA na análise de fundos imobiliários hoje?",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["concepts-macro"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-macro-002",
+    "description": "Contexto de CDI vs FIIs",
+    "question": "por que faz sentido comparar o dividend yield dos FIIs com o CDI?",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["concepts-macro"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-macro-003",
+    "description": "Relação entre IFIX e risco dos FIIs",
+    "question": "como o IFIX é usado como referência de risco para FIIs?",
+    "expected_intent": "history_b3_indexes",
+    "expected_entity": "history_b3_indexes",
+    "expect_rag_enabled": true,
+    "expect_collections_contains": ["concepts-macro"],
+    "expect_min_chunks": 1
+  },
+  {
+    "id": "rag-negative-001",
+    "description": "Pergunta puramente numérica de preço — NÃO deve acionar RAG",
+    "question": "quanto fechou o HGLG11 ontem?",
+    "expected_intent": "fiis_precos",
+    "expected_entity": "fiis_precos",
+    "expect_rag_enabled": false,
+    "expect_min_chunks": 0
+  },
+  {
+    "id": "rag-negative-002",
+    "description": "Pergunta puramente de dividendos — NÃO deve acionar RAG",
+    "question": "qual foi o último dividendo do MXRF11?",
+    "expected_intent": "fiis_dividendos",
+    "expected_entity": "fiis_dividendos",
+    "expect_rag_enabled": false,
+    "expect_min_chunks": 0
+  },
+  {
+    "id": "rag-negative-003",
+    "description": "Pergunta de carteira do cliente — camada privada, sem RAG",
+    "question": "quantas cotas eu tenho de MXRF11?",
+    "expected_intent": "client_fiis_positions",
+    "expected_entity": "client_fiis_positions",
+    "expect_rag_enabled": false,
+    "expect_min_chunks": 0
+  }
+]

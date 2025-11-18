@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-18T11:47:45Z",
+  "generated_at": "2025-11-18T18:49:37Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -13,18 +13,53 @@
         "catalog",
         "fiis"
       ],
-      "chunks": 1,
-      "sha_all": "f32e24538528c9cc5554512f8809735f3e95caaeb54022014847ddddf24f7bac"
+      "chunks": 2,
+      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
     },
     {
       "id": "concepts-fiis",
-      "path": "data/concepts/fiis.md",
+      "path": "data/concepts/concepts-fiis.yaml",
       "tags": [
         "concepts",
         "fiis"
       ],
-      "chunks": 9,
-      "sha_all": "c8964d7322f4736494d58e8bbd7f5be7cc507ec5a6fd90183d05b665af54083f"
+      "chunks": 5,
+      "sha_all": "ba0b467c4a38ca0fc13fde61071f44c76eef49ddba638d16db41794ecd0084aa"
+    },
+    {
+      "id": "concepts-risk",
+      "path": "data/concepts/concepts-risk.yaml",
+      "tags": [
+        "concepts",
+        "risk",
+        "fiis"
+      ],
+      "chunks": 6,
+      "sha_all": "43681ff6c8f36d7472475add3e4e824e491166effadca473075c6d1cb21b4e3f"
+    },
+    {
+      "id": "concepts-macro",
+      "path": "data/concepts/concepts-macro.yaml",
+      "tags": [
+        "concepts",
+        "macro",
+        "market",
+        "fiis"
+      ],
+      "chunks": 4,
+      "sha_all": "4d9d5c1d2eba52314db6e9aeab5395c46420321af975c8083d438976331729c5"
+    },
+    {
+      "id": "concepts-carteira",
+      "path": "data/concepts/concepts-carteira.yaml",
+      "tags": [
+        "concepts",
+        "carteira",
+        "private",
+        "fiis"
+      ],
+      "chunks": 4,
+      "sha_all": "ce2bdc0422de25d17ac932dc0a87cab450aa5a311cd4dabec2afdb18a3812078"
     },
     {
       "id": "indicators-catalog",
@@ -454,5 +489,5 @@
       "sha_all": "f79c037470c49488dabd3084119d8d986a1fb9b9693c3e7324951a7e46143cce"
     }
   ],
-  "last_refresh_epoch": 1763466565
+  "last_refresh_epoch": 1763491891
 }

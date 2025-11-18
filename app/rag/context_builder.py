@@ -9,6 +9,12 @@ A seção ``routing`` em data/policies/rag.yaml deve sempre usar os nomes
 canônicos de intent emitidos pelo Planner (por exemplo, ``fiis_noticias``
 em vez de abreviações como ``noticias``), e é avaliada antes das regras de
 ``entities``/``default``/``profiles``.
+
+# O context_builder assume que:
+# - routing.allow_intents define quem pode usar RAG
+# - rag.entities define perfil + listas de collections
+# - default é seguro e minimalista
+
 """
 
 from __future__ import annotations
@@ -49,7 +55,9 @@ def _rag_section(policy: Dict[str, Any]) -> Dict[str, Any]:
     return policy
 
 
-def is_rag_enabled(intent: str, entity: str, *, policy: Optional[Dict[str, Any]] = None) -> bool:
+def is_rag_enabled(
+    intent: str, entity: str, *, policy: Optional[Dict[str, Any]] = None
+) -> bool:
     """Retorna True se RAG estiver habilitado para o par (intent, entity),
     de acordo com a política de RAG.
 
@@ -61,8 +69,12 @@ def is_rag_enabled(intent: str, entity: str, *, policy: Optional[Dict[str, Any]]
         return False
 
     routing = policy.get("routing") if isinstance(policy, dict) else None
-    deny_intents = set(routing.get("deny_intents") or []) if isinstance(routing, dict) else set()
-    allow_intents = set(routing.get("allow_intents") or []) if isinstance(routing, dict) else set()
+    deny_intents = (
+        set(routing.get("deny_intents") or []) if isinstance(routing, dict) else set()
+    )
+    allow_intents = (
+        set(routing.get("allow_intents") or []) if isinstance(routing, dict) else set()
+    )
 
     if intent and intent in deny_intents:
         return False
@@ -116,7 +128,11 @@ def _resolve_policy(entity: str, policy: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(rag_policy, dict):
         return {}
 
-    entities_cfg = rag_policy.get("entities") if isinstance(rag_policy.get("entities"), dict) else {}
+    entities_cfg = (
+        rag_policy.get("entities")
+        if isinstance(rag_policy.get("entities"), dict)
+        else {}
+    )
     if entity in entities_cfg:
         entity_cfg = entities_cfg.get(entity) or {}
     else:
@@ -196,7 +212,9 @@ def build_context(
         if max_tokens_policy is None:
             max_tokens_policy = resolved_policy.get("max_context_chars")
         try:
-            max_tokens = int(max_tokens_policy) if max_tokens_policy is not None else None
+            max_tokens = (
+                int(max_tokens_policy) if max_tokens_policy is not None else None
+            )
         except (TypeError, ValueError):
             max_tokens = None
 
@@ -204,10 +222,15 @@ def build_context(
         store: EmbeddingStore = cached_embedding_store(_RAG_INDEX_PATH)
         embedder = OllamaClient()
         vectors = embedder.embed([question])
-        qvec: List[float] = vectors[0] if vectors and isinstance(vectors[0], list) else []
+        qvec: List[float] = (
+            vectors[0] if vectors and isinstance(vectors[0], list) else []
+        )
         if not qvec:
             raise RuntimeError("embedding-vector-empty")
-        results = store.search_by_vector(qvec, k=max_chunks_val, min_score=min_score_val) or []
+        results = (
+            store.search_by_vector(qvec, k=max_chunks_val, min_score=min_score_val)
+            or []
+        )
     except Exception as exc:  # pragma: no cover - robust fallback
         LOGGER.warning("RAG search failed: %s", exc)
         return {

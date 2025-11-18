@@ -2,46 +2,105 @@ terms:
   - name: "rag"
     kind: "policy"
     scope: "rag"
-    version: 1
+    version: 2
 
-version: 1
+version: 2
+
+# ------------------------------------------------------------------------------
+# 1) Perfis padrão para ranking híbrido (BM25 + semantic)
+# ------------------------------------------------------------------------------
 profiles:
   default:
-    k: 5
+    k: 6
     min_score: 0.20
     weight: { bm25: 0.70, semantic: 0.30 }
     tie_break: semantic
     max_context_chars: 12000
-  ambiguous:
-    k: 8
-    min_score: 0.15
+
+  macro:
+    k: 4
+    min_score: 0.10
     weight: { bm25: 0.50, semantic: 0.50 }
     tie_break: semantic
 
-entities:
-  fiis_noticias:
-    # Configuração explícita para RAG de notícias de FIIs.
-    # Mantém os mesmos parâmetros do profile default, mas
-    # permite especializar no futuro (k, min_score, collections, etc.).
-    k: 5
-    min_score: 0.20
-    collections:
-      - fiis_noticias
+  risk:
+    k: 6
+    min_score: 0.15
+    weight: { bm25: 0.60, semantic: 0.40 }
 
+# ------------------------------------------------------------------------------
+# 2) Roteamento por INTENT (super importante)
+# Somente intents permitidas vão ativar RAG.
+# ------------------------------------------------------------------------------
 routing:
-  # Utilize apenas nomes de intent canônicos do Planner/ontologia
-  # (ex.: fiis_noticias, fiis_precos, fiis_dividendos).
   deny_intents:
     - client_fiis_positions
     - fiis_cadastro
     - fiis_precos
     - fiis_dividendos
-    - fiis_rankings
     - fiis_imoveis
+    - fiis_rankings
     - fiis_processos
     - fiis_financials_snapshot
     - fiis_financials_revenue_schedule
-    - fiis_financials_risk
+
   allow_intents:
     - fiis_noticias
-  notes: "RAG restrito a conteúdos textuais (ex.: notícias e dossiês); dados tabulares seguem via rotas SQL."
+    - fiis_financials_risk
+    - history_market_indicators
+    - history_b3_indexes
+    - history_currency_rates
+
+  notes: >
+    RAG é ativado somente para domínios textuais: notícias de FIIs,
+    risco quantitativo (explicações), macroeconomia, índices B3 e moedas.
+    Dados numéricos continuam puramente SQL.
+
+# ------------------------------------------------------------------------------
+# 3) Política por entidade
+# Evita misturar domínios e garante coerência semântica.
+# ------------------------------------------------------------------------------
+rag:
+  entities:
+
+    fiis_noticias:
+      profile: default
+      collections:
+        - fiis_noticias
+        - concepts-fiis
+        - concepts-risk
+      max_chunks: 6
+      min_score: 0.20
+
+    fiis_financials_risk:
+      profile: risk
+      collections:
+        - concepts-risk
+        - concepts-fiis
+      max_chunks: 5
+
+    history_market_indicators:
+      profile: macro
+      collections:
+        - concepts-macro
+      max_chunks: 4
+
+    history_b3_indexes:
+      profile: macro
+      collections:
+        - concepts-macro
+      max_chunks: 4
+
+    history_currency_rates:
+      profile: macro
+      collections:
+        - concepts-macro
+      max_chunks: 4
+
+  default:
+    # fallback seguro
+    profile: default
+    max_chunks: 3
+    collections:
+      - concepts-fiis
+    min_score: 0.25
