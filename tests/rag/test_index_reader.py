@@ -22,7 +22,7 @@ def reset_emb_cache() -> None:
 
 @pytest.fixture
 def embeddings_jsonl(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, reset_emb_cache: None
+    embeddings_path: Path, monkeypatch: pytest.MonkeyPatch, reset_emb_cache: None
 ) -> Path:
     """Cria um arquivo JSONL de embeddings simples para testes."""
 
@@ -31,7 +31,7 @@ def embeddings_jsonl(
         index_reader, "get_manifest_hash", lambda manifest_path: "dummy-hash"
     )
 
-    path = tmp_path / "embeddings.jsonl"
+    path = embeddings_path / "embeddings.jsonl"
 
     rows: List[Dict[str, Any]] = [
         {
@@ -67,10 +67,10 @@ def embeddings_jsonl(
 
 
 def test_embedding_store_raises_if_file_not_found(
-    tmp_path: Path, reset_emb_cache: None
+    embeddings_path: Path, reset_emb_cache: None
 ) -> None:
     """Se o arquivo JSONL não existir, a classe deve levantar FileNotFoundError."""
-    missing = tmp_path / "nao_existe.jsonl"
+    missing = embeddings_path / "nao_existe.jsonl"
     with pytest.raises(FileNotFoundError):
         index_reader.EmbeddingStore(str(missing))
 
