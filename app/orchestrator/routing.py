@@ -23,6 +23,7 @@ from app.observability.instrumentation import (
 from app.analytics.explain import explain as _explain_analytics
 from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
 from app.utils.filecache import load_yaml_cached
+from app.rag.context_builder import build_context as build_rag_context
 
 if TYPE_CHECKING:
     from app.cache.rt_cache import CachePolicies, RedisCache
@@ -441,20 +442,47 @@ class Orchestrator:
         final_rows = rows_formatted or []
         results = {result_key: final_rows}
 
+        meta: Dict[str, Any] = {
+            "planner": plan,
+            "explain": exp if explain else None,
+            "explain_analytics": explain_analytics_payload if explain else None,
+            "result_key": result_key,
+            "planner_intent": intent,
+            "planner_entity": entity,
+            "planner_score": score,
+            "rows_total": len(final_rows),
+            "elapsed_ms": elapsed_ms,
+            "gate": gate,
+            "aggregates": (agg_params or {}),
+        }
+
+        # ------------------- M12: contexto de RAG -------------------
+        # Sempre tentamos construir o contexto de RAG com base em
+        # question/intent/entity. O próprio build_rag_context aplica
+        # as políticas de roteamento (rag.yaml) e só acionará
+        # embeddings quando estiver habilitado.
+        try:
+            rag_ctx = build_rag_context(
+                question=question,
+                intent=str(intent or ""),
+                entity=str(entity or ""),
+            )
+        except Exception:
+            # Caminho extremamente excepcional; mantemos contrato mínimo.
+            rag_ctx = {
+                "enabled": False,
+                "question": question,
+                "intent": intent,
+                "entity": entity,
+                "chunks": [],
+                "total_chunks": 0,
+                "error": "rag_context_builder_failed",
+            }
+
+        meta["rag"] = rag_ctx
+
         return {
             "status": {"reason": "ok", "message": "ok"},
             "results": results,
-            "meta": {
-                "planner": plan,
-                "explain": exp if explain else None,
-                "explain_analytics": explain_analytics_payload if explain else None,
-                "result_key": result_key,
-                "planner_intent": intent,
-                "planner_entity": entity,
-                "planner_score": score,
-                "rows_total": len(final_rows),
-                "elapsed_ms": elapsed_ms,
-                "gate": gate,
-                "aggregates": (agg_params or {}),
-            },
+            "meta": meta,
         }

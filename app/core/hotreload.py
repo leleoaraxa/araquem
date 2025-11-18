@@ -1,3 +1,4 @@
+# app/core/hotreload.py
 """Utilities for hot reloading support."""
 from __future__ import annotations
 
