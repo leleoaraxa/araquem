@@ -37,6 +37,13 @@ def rag_policy_base() -> Dict[str, Any]:
                 "tie_break": "semantic",
             },
         },
+        "entities": {
+            "fiis_noticias": {
+                "k": 5,
+                "min_score": 0.20,
+                "collections": ["fiis_noticias"],
+            }
+        },
         "routing": {
             "deny_intents": [
                 "client_fiis_positions",
@@ -277,8 +284,8 @@ def test_build_context_enabled_for_fiis_noticias(
     assert pytest.approx(policy_snapshot["min_score"], rel=1e-6) == 0.20
     # max_tokens deriva de max_context_chars (12000), se parseado com sucesso
     assert policy_snapshot.get("max_tokens") in (None, 12000)
-    # collections deve estar presente (pelo patch mais recente)
-    assert "collections" in policy_snapshot
+    # collections deve refletir a config da entity fiis_noticias
+    assert policy_snapshot["collections"] == ["fiis_noticias"]
 
     # Garante que o embedder foi chamado com a pergunta
     assert dummy_embedder.last_texts == ["quais são as últimas notícias do HGLG11?"]

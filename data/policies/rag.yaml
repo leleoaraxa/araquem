@@ -18,6 +18,18 @@ profiles:
     weight: { bm25: 0.50, semantic: 0.50 }
     tie_break: semantic
 
+entities:
+  fiis_noticias:
+    # Configuração explícita para RAG de notícias de FIIs.
+    # Mantém os mesmos parâmetros do profile default, mas
+    # permite especializar no futuro (k, min_score, collections, etc.).
+    k: 5
+    min_score: 0.20
+    collections:
+      - fiis_noticias
+
+
+
 routing:
   # Utilize apenas nomes de intent canônicos do Planner/ontologia
   # (ex.: fiis_noticias, fiis_precos, fiis_dividendos).
