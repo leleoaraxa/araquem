@@ -1,3 +1,4 @@
+# app/narrator/prompts.py
 # -*- coding: utf-8 -*-
 """Prompt scaffolds and deterministic renderers for the SIRIOS Narrator."""
 
@@ -9,11 +10,12 @@ from typing import Any, Dict, List
 
 SYSTEM_PROMPT = """Você é o Narrator da SIRIOS. Converta fatos já consolidados em uma resposta clara,
 objetiva e fiel. Regras:
-- Use somente os dados fornecidos em `facts`.
+- Use somente os dados fornecidos em `facts` e, quando presente, em `rag_context`.
 - Preserve o sentido dos valores e textos; não invente campos nem conclusões.
 - Se `facts.fallback_message` existir, utilize-a quando não houver conteúdo a narrar.
 - Responda em pt-BR, com tom executivo e formatação Markdown simples.
 - Priorize frases curtas, voz ativa e clareza.
+- Quando houver `rag_context`, trate-o como material de apoio textual (trechos de documentos), sem extrapolar ou criar afirmações não suportadas pelos trechos.
 """
 
 
@@ -61,10 +63,7 @@ def _parse_number(value: Any) -> float | None:
         return None
 
     cleaned = (
-        text.replace("R$", "")
-        .replace("%", "")
-        .replace(" ", "")
-        .replace("\u00a0", "")
+        text.replace("R$", "").replace("%", "").replace(" ", "").replace("\u00a0", "")
     )
 
     if "," in cleaned and "." in cleaned:
@@ -89,7 +88,9 @@ def _format_currency(value: Any) -> str:
     return f"R$ {formatted}"
 
 
-def _format_percent(value: Any, *, decimals: int = 2, assume_fraction: bool = False) -> str:
+def _format_percent(
+    value: Any, *, decimals: int = 2, assume_fraction: bool = False
+) -> str:
     num = _parse_number(value)
     if num is None:
         return str(value)
@@ -148,6 +149,72 @@ def _extract_city_state(address: str) -> str:
     return ""
 
 
+def _prepare_rag_payload(rag: dict | None) -> dict | None:
+    """
+    Normaliza o contexto de RAG para o prompt do Narrator.
+
+    Espera um dict no formato produzido por app/rag/context_builder.build_context:
+      - enabled: bool
+      - chunks: List[Dict[str, Any]] (cada um com 'text', 'score', 'doc_id', 'tags', etc.)
+      - policy: Dict[str, Any] (incluindo max_chunks, collections, ...)
+
+    Retorna um payload enxuto com:
+      {
+        "enabled": true,
+        "source": { "intent": ..., "entity": ..., "collections": [...] },
+        "snippets": [
+          { "doc_id": "...", "score": 0.87, "snippet": "trecho truncado...", "tags": [...] },
+          ...
+        ]
+      }
+    """
+    if not isinstance(rag, dict):
+        return None
+    if not rag.get("enabled"):
+        return None
+
+    chunks = rag.get("chunks") or []
+    if not isinstance(chunks, list) or not chunks:
+        return None
+
+    policy = rag.get("policy") or {}
+    max_items = 5
+    try:
+        max_items = int(policy.get("max_chunks", max_items))
+    except Exception:
+        pass
+
+    snippets: List[Dict[str, Any]] = []
+    for ch in chunks[:max_items]:
+        if not isinstance(ch, dict):
+            continue
+        text = ch.get("text") or ""
+        snippet = _truncate(text, 600)
+        if not snippet:
+            continue
+        snippets.append(
+            {
+                "doc_id": ch.get("doc_id"),
+                "score": ch.get("score"),
+                "snippet": snippet,
+                "tags": ch.get("tags"),
+            }
+        )
+
+    if not snippets:
+        return None
+
+    return {
+        "enabled": True,
+        "source": {
+            "intent": rag.get("intent"),
+            "entity": rag.get("entity"),
+            "collections": (policy.get("collections") or rag.get("used_collections")),
+        },
+        "snippets": snippets,
+    }
+
+
 def _pick_template(meta: dict, facts: dict) -> str:
     presentation = (facts or {}).get("presentation_kind") or (meta or {}).get(
         "presentation_kind"
@@ -162,7 +229,11 @@ def _pick_template(meta: dict, facts: dict) -> str:
 
 
 def build_prompt(
-    question: str, facts: dict, meta: dict, style: str = "executivo"
+    question: str,
+    facts: dict,
+    meta: dict,
+    style: str = "executivo",
+    rag: dict | None = None,
 ) -> str:
     """Compose the final prompt string for the LLM."""
 
@@ -182,6 +253,14 @@ def build_prompt(
     if len(facts_json) > 50000:
         facts_json = facts_json[:49000] + "\n... (truncado)\n"
 
+    rag_payload = _prepare_rag_payload(rag)
+    if rag_payload is not None:
+        rag_json = json.dumps(rag_payload, ensure_ascii=False, indent=2)
+        if len(rag_json) > 20000:
+            rag_json = rag_json[:19000] + "\n... (truncado)\n"
+    else:
+        rag_json = "(nenhum contexto adicional relevante foi encontrado.)"
+
     return f"""{SYSTEM_PROMPT}
 
 [ESTILO]: {style}
@@ -193,6 +272,9 @@ def build_prompt(
 
 [FACTS]:
 {facts_json}
+
+[RAG_CONTEXT]:
+{rag_json}
 
 Instruções adicionais:
 {base_instruction}
@@ -255,7 +337,9 @@ def _render_fiis_processos(meta: dict, facts: dict) -> str:
     high_value_count = 0
     for idx, row in enumerate(rows, start=1):
         risk = row.get("loss_risk_pct") or "—"
-        if isinstance(risk, str) and risk.strip().lower().startswith("prov"):  # provável
+        if isinstance(risk, str) and risk.strip().lower().startswith(
+            "prov"
+        ):  # provável
             probable_count += 1
         cause_amt_num = _parse_number(row.get("cause_amt"))
         if cause_amt_num and cause_amt_num >= 1e8:
@@ -330,12 +414,12 @@ def _render_fiis_financials_revenue_schedule(meta: dict, facts: dict) -> str:
     )
 
     long_term_share = _parse_number(primary.get("revenue_due_over_36m_pct")) or 0.0
-    concentration_short = any(
-        (_parse_number(val) or 0) > 30 for _, val in buckets[:2]
-    )
+    concentration_short = any((_parse_number(val) or 0) > 30 for _, val in buckets[:2])
     comments = []
     if long_term_share > 50:
-        comments.append("Mais da metade da receita é de longo prazo (além de 36 meses).")
+        comments.append(
+            "Mais da metade da receita é de longo prazo (além de 36 meses)."
+        )
     if concentration_short:
         comments.append("Há concentração relevante de vencimentos no curto prazo.")
 
@@ -355,7 +439,9 @@ def _render_fiis_financials_risk(meta: dict, facts: dict) -> str:
 
     ticker = primary.get("ticker") or ""
     treynor = _format_percent(primary.get("treynor_ratio") or 0)
-    intro = f"O **Índice de Treynor do {ticker}** está em aproximadamente **{treynor}**."
+    intro = (
+        f"O **Índice de Treynor do {ticker}** está em aproximadamente **{treynor}**."
+    )
 
     bullets = [
         f"- Volatilidade histórica: {_format_percent(primary.get('volatility_ratio') or 0)}",
@@ -376,9 +462,7 @@ def _render_fiis_financials_risk(meta: dict, facts: dict) -> str:
             "no período analisado, o fundo não foi eficiente em transformar risco em retorno extra."
         )
     elif treynor_num > 0 and sharpe_num > 0:
-        comment = (
-            "Os indicadores positivos sugerem boa relação retorno/risco no período analisado."
-        )
+        comment = "Os indicadores positivos sugerem boa relação retorno/risco no período analisado."
     else:
         comment = "Os indicadores apresentam sinais mistos de relação retorno/risco."
 
@@ -402,7 +486,9 @@ def _render_fiis_financials_snapshot(meta: dict, facts: dict) -> str:
     equity_ratio_text = ""
     if equity_value > 0:
         equity_pct = cash_value / equity_value * 100
-        equity_ratio_text = f" (~{_format_percent(equity_pct, decimals=1)} do patrimônio líquido)"
+        equity_ratio_text = (
+            f" (~{_format_percent(equity_pct, decimals=1)} do patrimônio líquido)"
+        )
 
     bullets = [
         f"- Market Cap: {_format_currency(primary.get('market_cap_value'))}",
@@ -490,7 +576,9 @@ def _fallback_render(entity: str, facts: dict) -> str:
     return "\n".join([header, body]).strip()
 
 
-def render_narrative(meta: Dict[str, Any], facts: Dict[str, Any], policy: Dict[str, Any]) -> str:
+def render_narrative(
+    meta: Dict[str, Any], facts: Dict[str, Any], policy: Dict[str, Any]
+) -> str:
     entity = (meta or {}).get("entity") or ""
     result_key = (facts or {}).get("result_key") or ""
 

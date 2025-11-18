@@ -176,9 +176,23 @@ class Narrator:
         rows = list((facts or {}).get("rows") or [])
         template_id = (meta or {}).get("template_id") or (facts or {}).get("result_key")
 
+        # Contexto de RAG (opcional, injetado pelo Orchestrator em meta['rag'])
+        # Regra:
+        #   - se meta.rag não existir ou não for dict → rag_ctx = None
+        #   - se meta.rag existir e for dict → repassado como está p/ build_prompt
+        rag_raw = (meta or {}).get("rag")
+        rag_ctx = rag_raw if isinstance(rag_raw, dict) else None
+
+        if rag_ctx is not None:
+            rag_enabled = bool(rag_ctx.get("enabled"))
+            rag_chunks_count = len(rag_ctx.get("chunks") or [])
+        else:
+            rag_enabled = False
+            rag_chunks_count = 0
+
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "
-            "enabled=%s shadow=%s model=%s",
+            "enabled=%s shadow=%s model=%s rag_enabled=%s chunks=%s",
             entity,
             intent,
             len(rows),
@@ -186,6 +200,8 @@ class Narrator:
             self.enabled,
             self.shadow,
             self.model,
+            rag_enabled,
+            rag_chunks_count,
         )
 
         # 1) renderizador especializado
@@ -265,6 +281,9 @@ class Narrator:
             facts=prompt_facts,
             meta=prompt_meta,
             style=self.style,
+            # Passa o contexto de RAG bruto (ou None). O próprio build_prompt
+            # se encarrega de normalizar/truncar quando rag for um dict válido.
+            rag=rag_ctx,
         )
         tokens_in = len(prompt.split()) if prompt else 0
 

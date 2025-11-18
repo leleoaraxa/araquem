@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
+from contextlib import contextmanager
 from typing import Any, Dict, List
 
 import pytest
@@ -39,15 +40,32 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
     """Quando o planner escolhe fiis_noticias, o Orchestrator deve
     chamar build_rag_context e anexar meta.rag.
     """
+
+    # 1) Neutraliza thresholds: sem gates bloqueando o fluxo
+    monkeypatch.setattr(routing, "_load_thresholds", lambda path: {})
+
+    # 2) Neutraliza métricas/observability (counters/histograms)
+    monkeypatch.setattr(routing, "counter", lambda *a, **k: None)
+    monkeypatch.setattr(routing, "histogram", lambda *a, **k: None)
+
+    # 3) Neutraliza tracing (span OTEL)
+    @contextmanager
+    def dummy_trace(*args: Any, **kwargs: Any):
+        class DummySpan:
+            pass
+
+        span = DummySpan()
+        yield span
+
+    monkeypatch.setattr(routing, "start_trace", dummy_trace)
+    monkeypatch.setattr(routing, "set_trace_attribute", lambda *a, **k: None)
+    monkeypatch.setattr(routing, "get_trace_id", lambda span: None)
+
     planner = FakePlanner()
     executor = FakeExecutor()
     orch = routing.Orchestrator(planner=planner, executor=executor)
 
-    # Neutraliza métricas/observability (não queremos depender de bootstrap)
-    monkeypatch.setattr(routing, "counter", lambda *a, **k: None)
-    monkeypatch.setattr(routing, "histogram", lambda *a, **k: None)
-
-    # Evita bater no builder real / DB
+    # 4) Evita bater no builder real / DB
     def fake_build_select_for_entity(
         entity: str,
         identifiers: Dict[str, Any],
@@ -63,6 +81,7 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
     )
     monkeypatch.setattr(routing, "format_rows", lambda rows, cols: [])
 
+    # 5) Captura chamada ao builder de RAG
     captured: Dict[str, Any] = {}
 
     def fake_build_rag_context(
@@ -87,12 +106,13 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
     # Patch do alias importado no routing.py (build_rag_context)
     monkeypatch.setattr(routing, "build_rag_context", fake_build_rag_context)
 
+    # 6) Executa o fluxo
     out = orch.route_question("quais são as últimas notícias do HGLG11?", explain=False)
 
     meta = out.get("meta") or {}
     rag = meta.get("rag")
 
-    # Verifica que meta.rag existe e segue o contrato mínimo
+    # 7) Verifica que meta.rag existe e segue o contrato mínimo
     assert isinstance(rag, dict)
     assert rag.get("enabled") is True
     assert rag.get("intent") == "fiis_noticias"
