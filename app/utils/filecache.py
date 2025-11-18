@@ -39,17 +39,17 @@ def load_yaml_cached(path: str) -> Dict[str, Any]:
         except Exception:
             return {}
     try:
-        p_path = Path(path).resolve()
+        primary_path = Path(path).resolve()
     except Exception:
-        p_path = Path(path).absolute()
-    p = str(p_path)
+        primary_path = Path(path).absolute()
+    p = str(primary_path)
     m = _stat_mtime(p)
     with _lock:
         entry = _get(p)
         if entry and entry.get("mtime") == m and entry.get("data") is not None:
             return entry["data"]
         try:
-            data = yaml.safe_load(p_path.read_text(encoding="utf-8")) or {}
+            data = yaml.safe_load(primary_path.read_text(encoding="utf-8")) or {}
         except Exception:
             data = {}
         _set(p, m, data)
@@ -68,10 +68,10 @@ def load_jsonl_cached(path: str) -> list[Dict[str, Any]]:
         except Exception:
             return []
     try:
-        p_path = Path(path).resolve()
+        primary_path = Path(path).resolve()
     except Exception:
-        p_path = Path(path).absolute()
-    p = str(p_path)
+        primary_path = Path(path).absolute()
+    p = str(primary_path)
     m = _stat_mtime(p)
     with _lock:
         entry = _get(p)
@@ -79,7 +79,7 @@ def load_jsonl_cached(path: str) -> list[Dict[str, Any]]:
             return entry["data"]
         rows: list[Dict[str, Any]] = []
         try:
-            for line in p_path.read_text(encoding="utf-8").splitlines():
+            for line in primary_path.read_text(encoding="utf-8").splitlines():
                 if line.strip():
                     rows.append(json.loads(line))
         except Exception:
@@ -102,10 +102,10 @@ def cached_embedding_store(path: str) -> EmbeddingStore:
     if _DISABLE:
         return EmbeddingStore(path)
     try:
-        p_path = Path(path).resolve()
+        primary_path = Path(path).resolve()
     except Exception:
-        p_path = Path(path).absolute()
-    p = str(p_path)
+        primary_path = Path(path).absolute()
+    p = str(primary_path)
     m = _stat_mtime(p)
     with _es_lock:
         entry = _es_cache.get(p)
