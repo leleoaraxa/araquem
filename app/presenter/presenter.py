@@ -4,7 +4,7 @@ from __future__ import annotations
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.formatter.rows import render_rows_template
 from app.narrator.narrator import Narrator
@@ -52,6 +52,7 @@ class FactsPayload(BaseModel):
     # Atalhos convenientes
     ticker: Optional[str] = None
     fund: Optional[str] = None
+    requested_metrics: List[str] = Field(default_factory=list)
 
 
 class PresentResult(BaseModel):
@@ -113,6 +114,19 @@ def build_facts(
     identifiers = dict(identifiers or {})
     aggregates = dict(aggregates or {})
 
+    results_meta = results.get("_meta") if isinstance(results, dict) else None
+    requested_metrics_raw = None
+    if isinstance(results_meta, dict):
+        requested_metrics_raw = results_meta.get("requested_metrics")
+    if requested_metrics_raw is None and isinstance(results, dict):
+        requested_metrics_raw = results.get("_requested_metrics")
+
+    requested_metrics: List[str]
+    if isinstance(requested_metrics_raw, list):
+        requested_metrics = [str(item) for item in requested_metrics_raw if isinstance(item, str)]
+    else:
+        requested_metrics = []
+
     ticker = (primary or {}).get("ticker") or identifiers.get("ticker")
     fund = (primary or {}).get("fund")
 
@@ -128,6 +142,7 @@ def build_facts(
         identifiers=identifiers,
         ticker=ticker,
         fund=fund,
+        requested_metrics=requested_metrics,
     )
 
     return facts, result_key, rows

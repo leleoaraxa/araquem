@@ -9,7 +9,7 @@ import os
 import re
 import time
 from pathlib import Path
-from typing import Any, Dict, Iterable
+from typing import Any, Dict, Iterable, Optional
 
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import build_prompt, render_narrative
@@ -48,15 +48,43 @@ def _empty_message(entity: str) -> str | None:
     return None
 
 
-def _rows_to_lines(rows: Iterable[Dict[str, Any]]) -> str:
-    lines = []
+def _rows_to_lines(
+    rows: Iterable[Dict[str, Any]],
+    requested_metrics: Optional[Iterable[str]] = None,
+) -> str:
+    lines: list[str] = []
+    requested: list[str] = []
+    if requested_metrics:
+        requested = [
+            str(metric)
+            for metric in requested_metrics
+            if isinstance(metric, str) and metric.strip()
+        ]
+        # garante ordem determinística e remove duplicatas
+        seen_req: Dict[str, None] = {}
+        for metric in requested:
+            if metric not in seen_req:
+                seen_req[metric] = None
+        requested = list(seen_req.keys())
+
     for row in rows:
         if not isinstance(row, dict):
             continue
-        parts = []
-        for key, item_val in row.items():
+        parts: list[str] = []
+        keys_order: list[str]
+        if requested:
+            keys_order = []
+            if "ticker" in row:
+                keys_order.append("ticker")
+            keys_order.extend([key for key in requested if key != "ticker" and key in row])
+        else:
+            keys_order = [k for k in row.keys() if k != "meta"]
+        for key in keys_order:
             if key == "meta":
                 continue
+            if key not in row:
+                continue
+            item_val = row.get(key)
             if item_val is None:
                 continue
             text = str(item_val)
@@ -70,6 +98,7 @@ def _rows_to_lines(rows: Iterable[Dict[str, Any]]) -> str:
 
 def _default_text(entity: str, facts: Dict[str, Any]) -> str:
     rows = list((facts or {}).get("rows") or [])
+    requested_metrics = (facts or {}).get("requested_metrics")
     candidates = [
         (facts or {}).get("rendered"),
         (facts or {}).get("rendered_text"),
@@ -79,7 +108,7 @@ def _default_text(entity: str, facts: Dict[str, Any]) -> str:
         if isinstance(candidate, str) and candidate.strip():
             return candidate.strip()
     if rows:
-        rendered = _rows_to_lines(rows)
+        rendered = _rows_to_lines(rows, requested_metrics=requested_metrics)
         if rendered:
             return rendered
     message = _empty_message(entity)
@@ -361,7 +390,10 @@ class Narrator:
             and rag_best_text
             and (effective_facts.get("rows") or [])
         ):
-            rows_block = _rows_to_lines(effective_facts.get("rows") or [])
+            rows_block = _rows_to_lines(
+                effective_facts.get("rows") or [],
+                requested_metrics=effective_facts.get("requested_metrics"),
+            )
             if rows_block:
                 deterministic_text = (
                     f"{rag_best_text}\n\n**Dados mais recentes:**\n{rows_block}"

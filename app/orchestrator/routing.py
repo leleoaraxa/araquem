@@ -3,6 +3,8 @@
 import os
 import re
 import time
+import unicodedata
+from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import uuid4
 
@@ -30,6 +32,69 @@ if TYPE_CHECKING:
 
 # Normalização de ticker na camada de ENTRADA (contrato Araquem)
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
+_PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
+_ENTITY_ROOT = Path("data/entities")
+
+
+def _strip_accents(text: str) -> str:
+    return "".join(
+        c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
+    )
+
+
+def _normalize_for_metrics(text: str) -> str:
+    lowered = (text or "").lower()
+    no_accents = _strip_accents(lowered)
+    no_punct = _PUNCT_RE.sub(" ", no_accents)
+    return re.sub(r"\s+", " ", no_punct).strip()
+
+
+def _load_entity_config(entity: Optional[str]) -> Dict[str, Any]:
+    if not entity:
+        return {}
+    path = _ENTITY_ROOT / str(entity) / "entity.yaml"
+    try:
+        data = load_yaml_cached(str(path)) or {}
+    except Exception:
+        data = {}
+    return data if isinstance(data, dict) else {}
+
+
+def extract_requested_metrics(question: str, entity_conf: Dict[str, Any]) -> List[str]:
+    """Retorna métricas solicitadas com base em ask.metrics_synonyms."""
+
+    ask_conf = entity_conf.get("ask") if isinstance(entity_conf, dict) else None
+    metrics_synonyms = (
+        ask_conf.get("metrics_synonyms") if isinstance(ask_conf, dict) else None
+    )
+    if not isinstance(metrics_synonyms, dict):
+        return []
+
+    normalized_question = _normalize_for_metrics(question)
+    if not normalized_question:
+        return []
+
+    requested: List[str] = []
+    seen = set()
+    for metric_name, synonyms in metrics_synonyms.items():
+        if not isinstance(metric_name, str) or not metric_name:
+            continue
+        candidates: List[str]
+        if isinstance(synonyms, (list, tuple, set)):
+            candidates = [str(s) for s in synonyms if isinstance(s, str)]
+        elif isinstance(synonyms, str):
+            candidates = [synonyms]
+        else:
+            continue
+        for synonym in candidates:
+            synonym_norm = _normalize_for_metrics(synonym)
+            if not synonym_norm:
+                continue
+            if synonym_norm in normalized_question and metric_name not in seen:
+                requested.append(metric_name)
+                seen.add(metric_name)
+                break
+    return requested
 
 
 def _extract_ticker_identifiers(question: str) -> List[str]:
@@ -296,6 +361,7 @@ class Orchestrator:
             }
 
         identifiers = self.extract_identifiers(question)
+        entity_conf = _load_entity_config(str(entity) if entity else None)
 
         # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
         # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
@@ -451,7 +517,9 @@ class Orchestrator:
             )
 
         final_rows = rows_formatted or []
+        requested_metrics = extract_requested_metrics(question, entity_conf)
         results = {result_key: final_rows}
+        results["_meta"] = {"requested_metrics": requested_metrics}
 
         meta: Dict[str, Any] = {
             "planner": plan,
@@ -465,6 +533,7 @@ class Orchestrator:
             "elapsed_ms": elapsed_ms,
             "gate": gate,
             "aggregates": (agg_params or {}),
+            "requested_metrics": requested_metrics,
         }
 
         # ------------------- M12: contexto de RAG -------------------
