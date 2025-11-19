@@ -79,13 +79,13 @@ placeholders:
   - field: revenue_igpm_pct
     filter: percent_br
   - field: volatility_ratio
-    filter: number_br
+    filter: percent_br
   - field: sharpe_ratio
-    filter: number_br
+    filter: percent_br
   - field: sortino_ratio
-    filter: number_br
+    filter: percent_br
   - field: treynor_ratio
-    filter: number_br
+    filter: percent_br
   - field: jensen_alpha
     filter: number_br
   - field: beta_index
@@ -93,7 +93,7 @@ placeholders:
   - field: max_drawdown
     filter: percent_br
   - field: r_squared
-    filter: number_br
+    filter: percent_br
   - field: dividend_payout_pct
     filter: percent_br
   - field: leverage_ratio

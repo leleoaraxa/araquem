@@ -13,6 +13,14 @@ from app.rag import index_reader
 
 
 @pytest.fixture
+def embeddings_path(tmp_path: Path) -> Path:
+    """Diretório temporário onde os arquivos de teste serão gravados."""
+    path = tmp_path / "embeddings"
+    path.mkdir()
+    return path
+
+
+@pytest.fixture
 def reset_emb_cache() -> None:
     """Reseta o cache global entre os testes para evitar interferência."""
     index_reader._EMB_CACHE["key"] = None
