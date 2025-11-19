@@ -3,6 +3,10 @@ result_key: dividendos_fii
 sql_view: fiis_dividendos
 private: false
 description: Histórico de proventos (dividendos) por FII
+
+options:
+  supports_multi_ticker: true
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)

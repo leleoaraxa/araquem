@@ -4,6 +4,10 @@ sql_view: fiis_precos
 private: false
 description: Série diária de preços por FII (fechamento, abertura, variação, máxima
   e mínima)
+
+options:
+  supports_multi_ticker: true
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)

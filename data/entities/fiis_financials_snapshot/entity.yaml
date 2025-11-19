@@ -4,6 +4,9 @@ sql_view: fiis_financials_snapshot
 private: false
 description: Snapshot D-1 de indicadores financeiros por FII (valores, razões, caixa e endividamento).
 
+options:
+  supports_multi_ticker: true
+
 identifiers:
   - name: ticker
     description: Ticker do FII normalizado (AAAA11)

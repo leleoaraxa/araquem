@@ -4,6 +4,10 @@ sql_view: fiis_rankings
 private: false
 description: Contagens históricas de aparições e movimentos em rankings (usuários,
   Sírios, IFIX e IFIL) por FII — snapshot 1×1 por ticker.
+
+options:
+  supports_multi_ticker: true
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)

@@ -4,6 +4,10 @@ sql_view: fiis_financials_revenue_schedule
 private: false
 description: Estrutura temporal de recebíveis e indexadores de receita por FII (percentuais
   sobre a receita).
+
+options:
+  supports_multi_ticker: true
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)

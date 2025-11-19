@@ -3,7 +3,12 @@ result_key: imoveis_fii
 sql_view: fiis_imoveis
 private: false
 description: Imóveis e propriedades de FIIs (dados operacionais 1×N)
+
+options:
+  supports_multi_ticker: true
+
 d_minus: 1
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)

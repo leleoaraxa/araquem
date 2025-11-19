@@ -30,3 +30,23 @@ narrator:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+
+    fiis_noticias:
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_market_indicators:
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_b3_indexes:
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_currency_rates:
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true

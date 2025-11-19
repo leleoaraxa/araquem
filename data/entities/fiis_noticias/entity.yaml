@@ -3,6 +3,10 @@ result_key: noticias_fii
 sql_view: fiis_noticias
 private: false
 description: Notícias e matérias relevantes sobre FIIs (fonte externa consolidada D-1)
+
+options:
+  supports_multi_ticker: true
+
 d_minus: 1
 
 identifiers:

@@ -4,6 +4,10 @@ sql_view: fiis_cadastro
 private: false
 description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificação e
   atributos básicos)
+
+options:
+  supports_multi_ticker: true
+
 identifiers:
 - name: ticker
   description: Ticker do FII normalizado (AAAA11)
