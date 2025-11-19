@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import pytest
 
@@ -36,6 +36,37 @@ def _fake_concept_policy_with_rag() -> Dict[str, Any]:
         }
     )
     return policy
+
+
+def _sample_risk_rows() -> List[Dict[str, Any]]:
+    return [
+        {
+            "ticker": "HGLG11",
+            "volatility_ratio": "1,44%",
+            "sharpe_ratio": "-1,08%",
+            "treynor_ratio": "-0,13%",
+            "jensen_alpha": "0.000",
+            "beta_index": "0.403",
+            "sortino_ratio": "-10,21%",
+            "max_drawdown": "0.1132",
+            "r_squared": "0.0781",
+            "created_at": "2024-05-22 00:00:00",
+            "updated_at": "2025-11-19 00:00:00",
+        },
+        {
+            "ticker": "XPLG11",
+            "volatility_ratio": "0,98%",
+            "sharpe_ratio": "0,55%",
+            "treynor_ratio": "0,11%",
+            "jensen_alpha": "0.100",
+            "beta_index": "0.290",
+            "sortino_ratio": "-2,00%",
+            "max_drawdown": "0.0500",
+            "r_squared": "0.1200",
+            "created_at": "2024-05-22 00:00:00",
+            "updated_at": "2025-11-19 00:00:00",
+        },
+    ]
 
 
 def test_concept_mode_without_ticker(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -241,3 +272,72 @@ def test_concept_plus_data_merges_rag_and_rows(
     assert rag_chunk_text in out["text"]
     assert "Dados mais recentes" in out["text"]
     assert "**ticker**" in out["text"]
+
+
+def test_requested_metrics_limit_rows_block(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        narrator_mod, "_load_narrator_policy", _fake_concept_policy_with_rag
+    )
+    narrator = Narrator(model="dummy-model", style="executivo")
+
+    monkeypatch.setattr(narrator_mod, "render_narrative", lambda *_: "")
+
+    rag_chunk_text = "Sharpe e Beta avaliam risco e retorno ajustado."
+    facts = {
+        "rows": _sample_risk_rows(),
+        "requested_metrics": ["sharpe_ratio", "beta_index"],
+    }
+    meta = {
+        "entity": "fiis_financials_risk",
+        "intent": "fiis_financials_risk",
+        "rag": {
+            "enabled": True,
+            "chunks": [
+                {"text": rag_chunk_text, "score": 0.95},
+            ],
+        },
+    }
+
+    out = narrator.render(
+        question="compare sharpe e beta de HGLG11 e XPLG11",
+        facts=facts,
+        meta=meta,
+    )
+
+    text = out["text"]
+    assert "**sharpe_ratio**" in text
+    assert "**beta_index**" in text
+    assert "**sortino_ratio**" not in text
+    assert "**volatility_ratio**" not in text
+
+
+def test_requested_metrics_absent_lists_all(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        narrator_mod, "_load_narrator_policy", _fake_concept_policy_with_rag
+    )
+    narrator = Narrator(model="dummy-model", style="executivo")
+
+    monkeypatch.setattr(narrator_mod, "render_narrative", lambda *_: "")
+
+    rag_chunk_text = "Sharpe e Beta avaliam risco e retorno ajustado."
+    facts = {"rows": _sample_risk_rows()}
+    meta = {
+        "entity": "fiis_financials_risk",
+        "intent": "fiis_financials_risk",
+        "rag": {
+            "enabled": True,
+            "chunks": [
+                {"text": rag_chunk_text, "score": 0.95},
+            ],
+        },
+    }
+
+    out = narrator.render(
+        question="compare sharpe e beta de HGLG11 e XPLG11",
+        facts=facts,
+        meta=meta,
+    )
+
+    text = out["text"]
+    assert "**sortino_ratio**" in text
+    assert "**max_drawdown**" in text

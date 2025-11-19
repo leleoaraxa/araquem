@@ -113,3 +113,38 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+  metrics_synonyms:
+    users_rank_position:
+      - ranking usuarios
+      - ranking de usuarios
+      - posicao no ranking de usuarios
+      - aparicoes em ranking de usuarios
+    users_rank_net_movement:
+      - movimentos ranking usuarios
+      - movimentacao no ranking de usuarios
+      - variacao no ranking de usuarios
+    sirios_rank_position:
+      - ranking sirios
+      - ranking da sirios
+      - posicao no ranking sirios
+      - aparicoes em ranking sirios
+    sirios_rank_net_movement:
+      - movimentos ranking sirios
+      - movimentacao no ranking da sirios
+      - variacao no ranking da sirios
+    ifix_rank_position:
+      - ranking ifix
+      - posicao no ifix
+      - aparicoes no ifix
+    ifix_rank_net_movement:
+      - movimentos ranking ifix
+      - movimentacao no ranking ifix
+      - variacao no ranking ifix
+    ifil_rank_position:
+      - ranking ifil
+      - posicao no ifil
+      - aparicoes no ifil
+    ifil_rank_net_movement:
+      - movimentos ranking ifil
+      - movimentacao no ranking ifil
+      - variacao no ranking ifil

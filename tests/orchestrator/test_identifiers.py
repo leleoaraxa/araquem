@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock
 
-from app.orchestrator.routing import Orchestrator
+from app.orchestrator.routing import Orchestrator, extract_requested_metrics
 
 
 def _make_orchestrator() -> Orchestrator:
@@ -34,3 +34,59 @@ def test_extract_identifiers_without_ticker() -> None:
 
     assert identifiers["ticker"] is None
     assert "tickers" not in identifiers
+
+
+def test_extract_requested_metrics_multiple_matches() -> None:
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "sharpe_ratio": ["sharpe", "indice de sharpe"],
+                "beta_index": ["beta", "beta em relacao ao ifix"],
+                "treynor_ratio": ["treynor", "indice de treynor"],
+            }
+        }
+    }
+
+    out = extract_requested_metrics(
+        "compare Sharpe e Beta de HGLG11 e MXRF11", entity_conf
+    )
+
+    assert out == ["sharpe_ratio", "beta_index"]
+
+
+def test_extract_requested_metrics_single_match() -> None:
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "sharpe_ratio": ["sharpe", "indice de sharpe"],
+                "beta_index": ["beta", "beta em relacao ao ifix"],
+                "treynor_ratio": ["treynor", "indice de treynor"],
+            }
+        }
+    }
+
+    out = extract_requested_metrics("Indice de Treynor do HGLG11", entity_conf)
+
+    assert out == ["treynor_ratio"]
+
+
+def test_extract_requested_metrics_beta_only() -> None:
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "sharpe_ratio": ["sharpe", "indice de sharpe"],
+                "beta_index": ["beta", "beta em relacao ao ifix"],
+                "treynor_ratio": ["treynor", "indice de treynor"],
+            }
+        }
+    }
+
+    out = extract_requested_metrics("beta do HGLG11", entity_conf)
+
+    assert out == ["beta_index"]
+
+
+def test_extract_requested_metrics_no_config() -> None:
+    out = extract_requested_metrics("beta do HGLG11", {"ask": {}})
+
+    assert out == []
