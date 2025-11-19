@@ -84,6 +84,7 @@ def build_facts(
     question: str,
     plan: Dict[str, Any],
     orchestrator_results: Dict[str, Any],
+    meta: Optional[Dict[str, Any]] = None,
     identifiers: Dict[str, Any],
     aggregates: Dict[str, Any],
 ) -> Tuple[FactsPayload, Optional[str], List[Dict[str, Any]]]:
@@ -114,12 +115,8 @@ def build_facts(
     identifiers = dict(identifiers or {})
     aggregates = dict(aggregates or {})
 
-    results_meta = results.get("_meta") if isinstance(results, dict) else None
-    requested_metrics_raw = None
-    if isinstance(results_meta, dict):
-        requested_metrics_raw = results_meta.get("requested_metrics")
-    if requested_metrics_raw is None and isinstance(results, dict):
-        requested_metrics_raw = results.get("_requested_metrics")
+    meta_dict = meta if isinstance(meta, dict) else {}
+    requested_metrics_raw = meta_dict.get("requested_metrics")
 
     requested_metrics: List[str]
     if isinstance(requested_metrics_raw, list):
@@ -153,6 +150,7 @@ def present(
     question: str,
     plan: Dict[str, Any],
     orchestrator_results: Dict[str, Any],
+    meta: Optional[Dict[str, Any]] = None,
     identifiers: Dict[str, Any],
     aggregates: Dict[str, Any],
     narrator: Optional[Narrator],
@@ -184,6 +182,7 @@ def present(
         question=question,
         plan=plan,
         orchestrator_results=orchestrator_results,
+        meta=meta,
         identifiers=identifiers,
         aggregates=aggregates,
     )
