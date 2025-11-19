@@ -4,6 +4,9 @@ sql_view: fiis_financials_risk
 private: false
 description: Indicadores de risco do FII (volatilidade, Sharpe, Treynor, Jensen, beta, Sortino, Drawdown, R²), D-1.
 
+options:
+  supports_multi_ticker: true
+
 identifiers:
   - name: ticker
     description: Ticker do FII normalizado (AAAA11)

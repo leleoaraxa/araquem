@@ -28,3 +28,5 @@ narrator:
   entities:
     fiis_financials_risk:
       prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true

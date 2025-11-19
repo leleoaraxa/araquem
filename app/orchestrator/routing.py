@@ -3,7 +3,7 @@
 import os
 import re
 import time
-from typing import TYPE_CHECKING, Any, Dict, Optional
+from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import uuid4
 
 from app.cache.rt_cache import make_cache_key
@@ -32,11 +32,18 @@ if TYPE_CHECKING:
 TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
 
-def _extract_ticker_identifier(question: str) -> Optional[str]:
-    """Extrai ticker normalizado a partir da pergunta."""
-    # TODO: tornar declarativo em data/ontology
-    match = TICKER_RE.search((question or "").upper())
-    return match.group(1) if match else None
+def _extract_ticker_identifiers(question: str) -> List[str]:
+    """Extrai todos os tickers normalizados a partir da pergunta."""
+    normalized = (question or "").upper()
+    tickers: List[str] = []
+    seen = set()
+    for match in TICKER_RE.finditer(normalized):
+        ticker = match.group(1)
+        if ticker in seen:
+            continue
+        seen.add(ticker)
+        tickers.append(ticker)
+    return tickers
 
 
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
@@ -72,7 +79,11 @@ class Orchestrator:
         self._cache_policies = policies
 
     def extract_identifiers(self, question: str) -> Dict[str, Any]:
-        return {"ticker": _extract_ticker_identifier(question)}
+        tickers = _extract_ticker_identifiers(question)
+        identifiers: Dict[str, Any] = {"ticker": tickers[0] if tickers else None}
+        if tickers:
+            identifiers["tickers"] = tickers
+        return identifiers
 
     def _normalize_metrics_window(
         self, agg_params: Optional[Dict[str, Any]]
