@@ -90,3 +90,50 @@ def test_extract_requested_metrics_no_config() -> None:
     out = extract_requested_metrics("beta do HGLG11", {"ask": {}})
 
     assert out == []
+
+
+def test_extract_requested_metrics_multi_metric_order():
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "sharpe_ratio": ["sharpe", "indice de sharpe"],
+                "beta_index": ["beta", "beta em relacao ao ifix"],
+            }
+        }
+    }
+
+    question = "compare Sharpe e Beta de HGLG11 e MXRF11"
+    out = extract_requested_metrics(question, entity_conf)
+
+    # ordem deve seguir a declaração em metrics_synonyms
+    assert out == ["sharpe_ratio", "beta_index"]
+
+
+def test_extract_requested_metrics_no_metrics_returns_empty_list():
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "sharpe_ratio": ["sharpe"],
+            }
+        }
+    }
+
+    question = "mostre dados gerais do HGLG11"
+    out = extract_requested_metrics(question, entity_conf)
+
+    assert out == []
+
+
+def test_extract_requested_metrics_partial_match_beta():
+    entity_conf = {
+        "ask": {
+            "metrics_synonyms": {
+                "beta_index": ["beta", "beta em relacao ao ifix"],
+            }
+        }
+    }
+
+    question = "beta do HGLG11"
+    out = extract_requested_metrics(question, entity_conf)
+
+    assert out == ["beta_index"]

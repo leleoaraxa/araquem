@@ -7,7 +7,7 @@ from typing import Any, Dict, List
 import pytest
 
 import app.narrator.narrator as narrator_mod
-from app.narrator.narrator import Narrator
+from app.narrator.narrator import Narrator, _rows_to_lines
 
 
 def _fake_concept_policy() -> Dict[str, Any]:
@@ -341,3 +341,61 @@ def test_requested_metrics_absent_lists_all(monkeypatch: pytest.MonkeyPatch) -> 
     text = out["text"]
     assert "**sortino_ratio**" in text
     assert "**max_drawdown**" in text
+
+
+def test_rows_to_lines_filters_by_requested_metrics():
+    rows = [
+        {
+            "ticker": "HGLG11",
+            "volatility_ratio": "1,44%",
+            "sharpe_ratio": "-1,08%",
+            "treynor_ratio": "-0,13%",
+            "beta_index": "0.403",
+            "sortino_ratio": "-10,21%",
+            "max_drawdown": "0.1132",
+            "r_squared": "0.0781",
+        }
+    ]
+
+    text = _rows_to_lines(
+        rows,
+        requested_metrics=["sharpe_ratio", "beta_index"],
+    )
+
+    # deve sempre incluir o ticker
+    assert "ticker" in text
+    assert "HGLG11" in text
+
+    # deve incluir apenas as métricas pedidas
+    assert "sharpe_ratio" in text
+    assert "beta_index" in text
+
+    # não deve citar outras métricas numéricas
+    assert "volatility_ratio" not in text
+    assert "treynor_ratio" not in text
+    assert "sortino_ratio" not in text
+    assert "max_drawdown" not in text
+    assert "r_squared" not in text
+
+
+def test_rows_to_lines_uses_all_metrics_when_requested_metrics_empty():
+    rows = [
+        {
+            "ticker": "XPLG11",
+            "volatility_ratio": "1,76%",
+            "sharpe_ratio": "-59,78%",
+            "treynor_ratio": "-0,10%",
+            "beta_index": "0.357",
+        }
+    ]
+
+    # lista vazia (ou None) deve reproduzir o comportamento antigo:
+    # percorre todas as colunas, exceto 'meta'
+    text = _rows_to_lines(rows, requested_metrics=[])
+
+    assert "ticker" in text
+    assert "XPLG11" in text
+    assert "volatility_ratio" in text
+    assert "sharpe_ratio" in text
+    assert "treynor_ratio" in text
+    assert "beta_index" in text
