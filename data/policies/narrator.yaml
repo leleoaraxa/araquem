@@ -12,3 +12,21 @@ narrator:
   max_llm_rows: 0           # 0 = nunca chama o LLM
   max_prompt_tokens: 4000
   max_output_tokens: 700
+
+  # Políticas específicas por entidade (opcional)
+  #
+  # Objetivo: evitar respostas "por fundo" quando a pergunta é
+  # claramente conceitual, como:
+  #   - "o que é índice de Treynor?"
+  #   - "explique o que é beta em FIIs"
+  #
+  # Para fiis_financials_risk:
+  #   - Se houver 0 ou vários tickers nos rows -> modo CONCEITO
+  #   - Se houver exatamente 1 ticker             -> modo POR FUNDO
+  #
+  # A lógica é neutra: não olha para o texto da pergunta nem
+  # inventa heurística de ticker; decide apenas em cima dos
+  # próprios rows retornados pelo builder.
+  entities:
+    fiis_financials_risk:
+      prefer_concept_when_no_ticker: true

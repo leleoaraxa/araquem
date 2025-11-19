@@ -5,33 +5,43 @@ window: "rolling"
 planner:
   thresholds:
     defaults:
-      min_score: 1.0
-      min_gap: 0.5
+      # Padrão um pouco mais brando — usado só onde não há override
+      min_score: 0.8
+      min_gap: 0.10
+
+    # Planner já está usando o gap "fused" (consolidado)
     apply_on: fused
+
     intents:
-      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_precos:                      { min_score: 1.0, min_gap: 0.2 }
-      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.2 }
-      fiis_imoveis:                     { min_score: 1.0, min_gap: 0.2 }
-      fiis_processos:                   { min_score: 1.0, min_gap: 0.2 }
-      fiis_noticias:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_rankings:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
-      client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
+      # Rotas objetivas (alta precisão)
+      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.20 }
+      fiis_precos:                      { min_score: 1.0, min_gap: 0.20 }
+      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.20 }
+      fiis_rankings:                    { min_score: 1.0, min_gap: 0.20 }
+      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.20 }
+
+      # Rotas com linguagem mais solta / overlap natural
+      fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
+      fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
+      fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
+      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.05 }
+      fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
+      client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
+
     entities:
-      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_precos:                      { min_score: 1.0, min_gap: 0.2 }
-      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.2 }
-      fiis_imoveis:                     { min_score: 1.0, min_gap: 0.2 }
-      fiis_processos:                   { min_score: 1.0, min_gap: 0.2 }
-      fiis_noticias:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_rankings:                    { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_risk:             { min_score: 1.0, min_gap: 0.2 }
-      fiis_financials_revenue_schedule: { min_score: 1.0, min_gap: 0.2 }
-      client_fiis_positions:            { min_score: 1.0, min_gap: 0.2 }
+      # Mesma lógica, espelhada em entities (entity > intent > defaults)
+      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.20 }
+      fiis_precos:                      { min_score: 1.0, min_gap: 0.20 }
+      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.20 }
+      fiis_rankings:                    { min_score: 1.0, min_gap: 0.20 }
+      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.20 }
+
+      fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
+      fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
+      fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
+      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.05 }
+      fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
+      client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
 
   rag:
     enabled: true

@@ -113,6 +113,14 @@ class Narrator:
         # Política declarativa (fonte de verdade)
         self.policy: Dict[str, Any] = _load_narrator_policy()
 
+        # Política específica por entidade (opcional)
+        entities_cfg = (
+            self.policy.get("entities") if isinstance(self.policy, dict) else {}
+        )
+        self.entities_policy: Dict[str, Any] = (
+            entities_cfg if isinstance(entities_cfg, dict) else {}
+        )
+
         # Modelo / estilo: prioridade → arg explícito > YAML > env > default
         self.model = (
             model
@@ -176,6 +184,37 @@ class Narrator:
         rows = list((facts or {}).get("rows") or [])
         template_id = (meta or {}).get("template_id") or (facts or {}).get("result_key")
 
+        # Política específica da entidade (se houver)
+        entity_policy = (
+            self.entities_policy.get(entity, {})
+            if hasattr(self, "entities_policy")
+            else {}
+        )
+        prefer_concept_when_no_ticker = bool(
+            entity_policy.get("prefer_concept_when_no_ticker", False)
+        )
+
+        # Decisão de modo:
+        # - concept_mode=True  -> resposta conceitual (ignora rows)
+        # - concept_mode=False -> resposta baseada em rows (por fundo)
+        concept_mode = False
+        if prefer_concept_when_no_ticker:
+            tickers = set()
+            for row in rows:
+                if isinstance(row, dict):
+                    ticker_val = row.get("ticker")
+                    if isinstance(ticker_val, str) and ticker_val.strip():
+                        tickers.add(ticker_val.strip())
+            # 0 tickers ou vários tickers -> tratar como conceito
+            if len(tickers) != 1:
+                concept_mode = True
+
+        # Fatos efetivos usados pelo Narrator (podem ser filtrados em modo conceito)
+        effective_facts: Dict[str, Any] = dict(facts or {})
+        if concept_mode:
+            # Evita que perguntas conceituais virem "Índice de Treynor do LPLP11 = 0,00%"
+            effective_facts["rows"] = []
+
         # Contexto de RAG (opcional, injetado pelo Orchestrator em meta['rag'])
         # Regra:
         #   - se meta.rag não existir ou não for dict → rag_ctx = None
@@ -200,7 +239,7 @@ class Narrator:
             "enabled=%s shadow=%s model=%s rag_enabled=%s chunks=%s",
             entity,
             intent,
-            len(rows),
+            len(effective_facts.get("rows") or []),
             template_id or "",
             self.enabled,
             self.shadow,
@@ -210,17 +249,21 @@ class Narrator:
         )
 
         # 1) renderizador especializado
-        deterministic_text = render_narrative(meta or {}, facts or {}, self.policy)
+        deterministic_text = render_narrative(meta or {}, effective_facts, self.policy)
 
         # 2) formatter genérico
         if not deterministic_text:
             try:
-                deterministic_text = build_narrator_text({"facts": facts or {}})
+                deterministic_text = build_narrator_text(
+                    {"facts": effective_facts or {}}
+                )
             except Exception:
                 deterministic_text = ""
 
         # 3) fallback padrão
-        baseline_text = deterministic_text or _default_text(entity, facts or {})
+        baseline_text = deterministic_text or _default_text(
+            entity, effective_facts or {}
+        )
 
         def _make_response(
             text: str,
@@ -241,7 +284,10 @@ class Narrator:
             return {
                 "text": text,
                 "score": 1.0 if text else 0.0,
-                "hints": {"style": self.style},
+                "hints": {
+                    "style": self.style,
+                    "mode": "concept" if concept_mode else "default",
+                },
                 "tokens": {"in": tokens_in, "out": computed_tokens_out},
                 "latency_ms": elapsed_ms,
                 "error": error,
@@ -261,8 +307,8 @@ class Narrator:
             )
 
         # Decisão policy-driven: usar ou não usar LLM
-        if not self._should_use_llm(facts):
-            rows_count = len(rows)
+        if not self._should_use_llm(effective_facts):
+            rows_count = len(effective_facts.get("rows") or [])
             return _make_response(
                 baseline_text,
                 error=(
@@ -272,13 +318,16 @@ class Narrator:
             )
 
         # A partir daqui, LLM está habilitado e será chamado
-        prompt_facts = dict(facts or {})
+        prompt_facts = dict(effective_facts or {})
         prompt_facts.setdefault("rendered_text", baseline_text)
         if "fallback_message" not in prompt_facts:
             fallback_message = _empty_message(entity)
             if fallback_message:
                 prompt_facts["fallback_message"] = fallback_message
         prompt_meta = dict(meta or {})
+        if concept_mode:
+            # Sinaliza explicitamente o modo para o prompt builder / debugging
+            prompt_meta.setdefault("narrator_mode", "concept")
 
         t0 = time.perf_counter()
         prompt = build_prompt(

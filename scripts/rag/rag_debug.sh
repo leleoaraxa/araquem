@@ -13,6 +13,7 @@ set -euo pipefail
 # Depende:
 #   - serviço API do Araquem rodando (compose.dev)
 #   - curl + jq instalados no container/host
+#   - variável QUALITY_OPS_TOKEN (opcional; default só pra dev)
 
 QUESTION="${1:-}"
 
@@ -31,6 +32,9 @@ fi
 
 ARAQUEM_URL="${ARAQUEM_URL:-http://localhost:8000}"
 
+# Mesmo default do backend (apenas para DEV)
+TOKEN="${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}"
+
 PAYLOAD=$(jq -n \
   --arg q "$QUESTION" \
   --argjson disable_rag "$DISABLE_RAG" \
@@ -46,10 +50,12 @@ PAYLOAD=$(jq -n \
 echo ">> Enviando pergunta para ${ARAQUEM_URL}/ops/rag_debug"
 echo ">> Pergunta: \"$QUESTION\""
 echo ">> disable_rag: ${DISABLE_RAG}"
+echo ">> X-Ops-Token: $( [ -n "$TOKEN" ] && echo 'definido' || echo 'NÃO DEFINIDO' )"
 echo
 
 RAW_RESPONSE=$(curl -sS -X POST \
   -H "Content-Type: application/json" \
+  -H "X-Ops-Token: ${TOKEN}" \
   -d "$PAYLOAD" \
   "${ARAQUEM_URL}/ops/rag_debug")
 

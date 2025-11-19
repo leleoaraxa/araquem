@@ -78,6 +78,12 @@ rag:
         - concepts-risk
         - concepts-fiis
       max_chunks: 5
+      # Notas:
+      # - Esta entidade atende tanto perguntas numéricas (por FII)
+      #   quanto perguntas conceituais sobre indicadores de risco
+      #   (Treynor, Beta, Sharpe, etc.).
+      # - A decisão entre "modo conceito" vs "modo por fundo" é
+      #   feita na camada do Narrator, com base em policy própria.
 
     history_market_indicators:
       profile: macro
