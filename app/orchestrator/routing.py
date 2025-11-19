@@ -519,7 +519,6 @@ class Orchestrator:
         final_rows = rows_formatted or []
         requested_metrics = extract_requested_metrics(question, entity_conf)
         results = {result_key: final_rows}
-        results["_meta"] = {"requested_metrics": requested_metrics}
 
         meta: Dict[str, Any] = {
             "planner": plan,

@@ -138,8 +138,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         agg_params = {}
 
     def _fetch():
-        out = orchestrator.route_question(payload.question)
-        return out["results"]
+        return orchestrator.route_question(payload.question)
 
     policy = policies.get(entity) if policies else None
     strategy = str((policy or {}).get("strategy") or "read_through").lower()
@@ -174,8 +173,20 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         cache_outcome = "miss"
     counter("sirios_cache_ops_total", op="get", outcome=cache_outcome)
 
-    results = rt.get("value") or {}
-    result_key = next(iter(results.keys()), None)
+    orchestration_raw = rt.get("value")
+    if isinstance(orchestration_raw, dict) and "results" in orchestration_raw:
+        orchestration = orchestration_raw
+    else:
+        legacy_results = orchestration_raw if isinstance(orchestration_raw, dict) else {}
+        orchestration = {
+            "status": {"reason": "ok", "message": "ok"},
+            "results": legacy_results,
+            "meta": {},
+        }
+
+    results = orchestration.get("results") or {}
+    meta = orchestration.get("meta") or {}
+    result_key = meta.get("result_key") or next(iter(results.keys()), None)
     rows = (
         results.get(result_key, []) if isinstance(results.get(result_key), list) else []
     )
@@ -188,6 +199,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         question=payload.question,
         plan=plan,
         orchestrator_results=results,
+        meta=meta,
         identifiers=identifiers,
         aggregates=agg_params if isinstance(agg_params, dict) else {},
         narrator=_NARR,
@@ -300,6 +312,7 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             "aggregates": agg_params,
             # agora vem do Presenter (que encapsula Narrator + Responder)
             "narrator": presenter_result.narrator_meta,
+            "requested_metrics": meta.get("requested_metrics"),
         },
         "answer": presenter_result.answer,
     }
