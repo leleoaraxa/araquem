@@ -207,6 +207,7 @@ def present(
             # se explain=True, podemos expor o porquê da rota
             "explain": (plan.get("explain") if explain else None),
             "result_key": result_key,
+            "rag": rag_context,
         }
 
         if narrator_meta:

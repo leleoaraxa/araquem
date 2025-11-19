@@ -114,6 +114,43 @@ def _collect_filter_texts(payload: Any) -> Iterable[str]:
     return texts
 
 
+def _best_rag_chunk_text(
+    rag_ctx: Dict[str, Any] | None, *, max_chars: int = 900
+) -> str:
+    if not isinstance(rag_ctx, dict):
+        return ""
+    chunks = rag_ctx.get("chunks")
+    if not isinstance(chunks, list):
+        return ""
+    best_text = ""
+    best_score = float("-inf")
+    for chunk in chunks:
+        if not isinstance(chunk, dict):
+            continue
+        raw_text = chunk.get("text")
+        if not isinstance(raw_text, str):
+            continue
+        text = raw_text.strip()
+        if not text:
+            continue
+        score_raw = chunk.get("score", 0.0)
+        try:
+            score = float(score_raw)
+        except (TypeError, ValueError):
+            score = 0.0
+        if score > best_score:
+            best_score = score
+            best_text = text
+    if not best_text:
+        return ""
+    if max_chars > 0 and len(best_text) > max_chars:
+        truncated = best_text[:max_chars].rsplit(" ", 1)[0].strip()
+        if not truncated:
+            truncated = best_text[:max_chars].strip()
+        best_text = truncated + "..."
+    return best_text
+
+
 def _extract_tickers_from_question_and_filters(
     question: str,
     meta: Dict[str, Any] | None,
@@ -250,6 +287,12 @@ class Narrator:
         prefer_concept_when_no_ticker = bool(
             entity_policy.get("prefer_concept_when_no_ticker", False)
         )
+        rag_fallback_when_no_rows = bool(
+            entity_policy.get("rag_fallback_when_no_rows", False)
+        )
+        concept_with_data_when_rag = bool(
+            entity_policy.get("concept_with_data_when_rag", False)
+        )
 
         # Decisão de modo:
         # - concept_mode=True  -> resposta conceitual (ignora rows)
@@ -292,6 +335,7 @@ class Narrator:
         else:
             rag_enabled = False
             rag_chunks_count = 0
+        rag_best_text = _best_rag_chunk_text(rag_ctx)
 
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "
@@ -309,6 +353,25 @@ class Narrator:
 
         # 1) renderizador especializado
         deterministic_text = render_narrative(render_meta, effective_facts, self.policy)
+
+        if concept_mode and rag_best_text:
+            deterministic_text = rag_best_text
+        elif (
+            concept_with_data_when_rag
+            and rag_best_text
+            and (effective_facts.get("rows") or [])
+        ):
+            rows_block = _rows_to_lines(effective_facts.get("rows") or [])
+            if rows_block:
+                deterministic_text = (
+                    f"{rag_best_text}\n\n**Dados mais recentes:**\n{rows_block}"
+                )
+        elif (
+            rag_fallback_when_no_rows
+            and not (effective_facts.get("rows") or [])
+            and rag_best_text
+        ):
+            deterministic_text = rag_best_text
 
         # 2) formatter genérico
         if not deterministic_text:

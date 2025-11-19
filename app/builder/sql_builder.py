@@ -396,8 +396,33 @@ def build_select_for_entity(
         for spec in identifier_specs
         if isinstance(spec, dict) and spec.get("name")
     ]
+    options_cfg = cfg.get("options") or {}
+    supports_multi_ticker = bool(options_cfg.get("supports_multi_ticker"))
+    multi_ticker_values: List[str] = []
+    if supports_multi_ticker:
+        raw_multi = identifiers.get("tickers")
+        if isinstance(raw_multi, (list, tuple, set)):
+            for value in raw_multi:
+                if not isinstance(value, str):
+                    continue
+                normalized = value.strip().upper()
+                if not normalized:
+                    continue
+                if normalized in multi_ticker_values:
+                    continue
+                multi_ticker_values.append(normalized)
+
     for name in identifier_names:
         value = identifiers.get(name)
+        if name == "ticker" and multi_ticker_values:
+            params["ticker"] = multi_ticker_values[0]
+            if len(multi_ticker_values) == 1:
+                params[name] = multi_ticker_values[0]
+                where_terms.append(f"{name} = %({name})s")
+            else:
+                params["tickers"] = multi_ticker_values
+                where_terms.append(f"{name} = ANY(%(tickers)s)")
+            continue
         if value is None or value == "":
             continue
         if name == "ticker" and isinstance(value, str):

@@ -23,6 +23,21 @@ def _fake_concept_policy() -> Dict[str, Any]:
     }
 
 
+def _fake_concept_policy_with_rag() -> Dict[str, Any]:
+    policy = _fake_concept_policy()
+    entity_cfg = policy.setdefault("entities", {}).setdefault(
+        "fiis_financials_risk", {}
+    )
+    entity_cfg.update(
+        {
+            "prefer_concept_when_no_ticker": True,
+            "rag_fallback_when_no_rows": True,
+            "concept_with_data_when_rag": True,
+        }
+    )
+    return policy
+
+
 def test_concept_mode_without_ticker(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(narrator_mod, "_load_narrator_policy", _fake_concept_policy)
     narrator = Narrator(model="dummy-model", style="executivo")
@@ -153,3 +168,76 @@ def test_entity_mode_detects_ticker_in_filters(monkeypatch: pytest.MonkeyPatch) 
     assert captured["facts"].get("rows") == facts["rows"]
     assert out["text"] == "filtro detectado"
     assert out["hints"]["mode"] == "default"
+
+
+def test_concept_mode_uses_rag_chunk(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(
+        narrator_mod, "_load_narrator_policy", _fake_concept_policy_with_rag
+    )
+    narrator = Narrator(model="dummy-model", style="executivo")
+
+    monkeypatch.setattr(narrator_mod, "render_narrative", lambda *_: "")
+
+    rag_chunk_text = "Beta em FIIs mede a sensibilidade do fundo ao mercado."
+    facts = {
+        "rows": [{"ticker": "LPLP11"}],
+        "primary": {"ticker": "LPLP11"},
+    }
+    meta = {
+        "entity": "fiis_financials_risk",
+        "intent": "fiis_financials_risk",
+        "rag": {
+            "enabled": True,
+            "chunks": [
+                {"text": rag_chunk_text, "score": 0.9},
+            ],
+        },
+    }
+
+    out = narrator.render(
+        question="explique o que é beta em fiis",
+        facts=facts,
+        meta=meta,
+    )
+
+    assert rag_chunk_text in out["text"]
+    assert out["hints"]["mode"] == "concept"
+
+
+def test_concept_plus_data_merges_rag_and_rows(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(
+        narrator_mod, "_load_narrator_policy", _fake_concept_policy_with_rag
+    )
+    narrator = Narrator(model="dummy-model", style="executivo")
+
+    monkeypatch.setattr(narrator_mod, "render_narrative", lambda *_: "")
+
+    rag_chunk_text = "Sharpe e Beta avaliam risco e retorno ajustado."
+    facts = {
+        "rows": [
+            {"ticker": "HGLG11", "sharpe_ratio": 0.8, "beta_index": 0.9},
+            {"ticker": "MXRF11", "sharpe_ratio": 0.5, "beta_index": 0.6},
+        ]
+    }
+    meta = {
+        "entity": "fiis_financials_risk",
+        "intent": "fiis_financials_risk",
+        "rag": {
+            "enabled": True,
+            "chunks": [
+                {"text": rag_chunk_text, "score": 0.95},
+            ],
+        },
+    }
+
+    out = narrator.render(
+        question="compare sharpe e beta de HGLG11 e MXRF11",
+        facts=facts,
+        meta=meta,
+    )
+
+    assert rag_chunk_text in out["text"]
+    assert "Dados mais recentes" in out["text"]
+    assert "**ticker**" in out["text"]
