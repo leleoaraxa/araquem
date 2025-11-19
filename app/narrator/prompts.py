@@ -430,6 +430,9 @@ def _render_fiis_financials_revenue_schedule(meta: dict, facts: dict) -> str:
 
 
 def _render_fiis_financials_risk(meta: dict, facts: dict) -> str:
+    if (meta or {}).get("narrator_mode") == "concept":
+        return ""
+
     primary = (facts or {}).get("primary") or {}
     if not isinstance(primary, dict) or not primary:
         rows = [r for r in (facts or {}).get("rows", []) if isinstance(r, dict)]

@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any, Dict, Iterable
@@ -23,6 +24,8 @@ except Exception:  # pragma: no cover - dependência opcional
 LOGGER = logging.getLogger(__name__)
 _ENTITY_ROOT = Path("data/entities")
 _NARRATOR_POLICY_PATH = Path("data/policies/narrator.yaml")
+_TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
+_FILTER_FIELD_NAMES = ("filters", "filter")
 
 
 def _load_entity_config(entity: str) -> Dict[str, Any]:
@@ -83,6 +86,58 @@ def _default_text(entity: str, facts: Dict[str, Any]) -> str:
     if message:
         return message
     return "Sem dados disponíveis no momento."
+
+
+def _iter_filter_payloads(source: Dict[str, Any] | None) -> Iterable[Any]:
+    if not isinstance(source, dict):
+        return []
+    payloads = []
+    for field in _FILTER_FIELD_NAMES:
+        if field in source:
+            payloads.append(source[field])
+    nested_meta = source.get("meta")
+    if isinstance(nested_meta, dict):
+        payloads.extend(_iter_filter_payloads(nested_meta))
+    return payloads
+
+
+def _collect_filter_texts(payload: Any) -> Iterable[str]:
+    texts: list[str] = []
+    if isinstance(payload, str):
+        texts.append(payload)
+    elif isinstance(payload, dict):
+        for value in payload.values():
+            texts.extend(_collect_filter_texts(value))
+    elif isinstance(payload, (list, tuple, set)):
+        for item in payload:
+            texts.extend(_collect_filter_texts(item))
+    return texts
+
+
+def _extract_tickers_from_question_and_filters(
+    question: str,
+    meta: Dict[str, Any] | None,
+    facts: Dict[str, Any] | None,
+) -> set[str]:
+    tickers: set[str] = set()
+
+    def _apply_regex(text: str | None) -> None:
+        if not isinstance(text, str):
+            return
+        for match in _TICKER_RE.findall(text):
+            tickers.add(match.upper())
+
+    _apply_regex(question)
+
+    for payload in _iter_filter_payloads(meta):
+        for text in _collect_filter_texts(payload):
+            _apply_regex(text)
+
+    for payload in _iter_filter_payloads(facts):
+        for text in _collect_filter_texts(payload):
+            _apply_regex(text)
+
+    return tickers
 
 
 def _load_narrator_policy() -> Dict[str, Any]:
@@ -179,10 +234,12 @@ class Narrator:
         self, question: str, facts: Dict[str, Any], meta: Dict[str, Any]
     ) -> Dict[str, Any]:
         t0_global = time.perf_counter()
-        entity = (meta or {}).get("entity") or ""
-        intent = (meta or {}).get("intent") or ""
-        rows = list((facts or {}).get("rows") or [])
-        template_id = (meta or {}).get("template_id") or (facts or {}).get("result_key")
+        raw_meta = meta or {}
+        raw_facts = facts or {}
+        entity = raw_meta.get("entity") or ""
+        intent = raw_meta.get("intent") or ""
+        template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
+        render_meta: Dict[str, Any] = dict(raw_meta)
 
         # Política específica da entidade (se houver)
         entity_policy = (
@@ -198,32 +255,34 @@ class Narrator:
         # - concept_mode=True  -> resposta conceitual (ignora rows)
         # - concept_mode=False -> resposta baseada em rows (por fundo)
         concept_mode = False
+        effective_facts: Dict[str, Any] = dict(raw_facts)
         if prefer_concept_when_no_ticker:
-            tickers = set()
-            for row in rows:
-                if isinstance(row, dict):
-                    ticker_val = row.get("ticker")
-                    if isinstance(ticker_val, str) and ticker_val.strip():
-                        tickers.add(ticker_val.strip())
-            # 0 tickers ou vários tickers -> tratar como conceito
-            if len(tickers) != 1:
+            detected_tickers = _extract_tickers_from_question_and_filters(
+                question=question,
+                meta=render_meta,
+                facts=effective_facts,
+            )
+            if not detected_tickers:
                 concept_mode = True
 
-        # Fatos efetivos usados pelo Narrator (podem ser filtrados em modo conceito)
-        effective_facts: Dict[str, Any] = dict(facts or {})
         if concept_mode:
+            render_meta["narrator_mode"] = "concept"
             # Evita que perguntas conceituais virem "Índice de Treynor do LPLP11 = 0,00%"
             effective_facts["rows"] = []
+            if "rows_sample" in effective_facts:
+                effective_facts["rows_sample"] = []
+            if "primary" in effective_facts:
+                effective_facts["primary"] = {}
 
         # Contexto de RAG (opcional, injetado pelo Orchestrator em meta['rag'])
         # Regra:
         #   - se meta.rag não existir ou não for dict → rag_ctx = None
         #   - se meta.rag existir e for dict → repassado como está p/ build_prompt
         #   - se meta.rag_debug_disable=True → força rag_ctx=None (modo debug)
-        rag_raw = (meta or {}).get("rag")
+        rag_raw = render_meta.get("rag")
         rag_ctx = rag_raw if isinstance(rag_raw, dict) else None
 
-        rag_debug_disable = bool((meta or {}).get("rag_debug_disable"))
+        rag_debug_disable = bool(render_meta.get("rag_debug_disable"))
         if rag_debug_disable:
             rag_ctx = None
 
@@ -249,7 +308,7 @@ class Narrator:
         )
 
         # 1) renderizador especializado
-        deterministic_text = render_narrative(meta or {}, effective_facts, self.policy)
+        deterministic_text = render_narrative(render_meta, effective_facts, self.policy)
 
         # 2) formatter genérico
         if not deterministic_text:
@@ -262,7 +321,7 @@ class Narrator:
 
         # 3) fallback padrão
         baseline_text = deterministic_text or _default_text(
-            entity, effective_facts or {}
+            entity, effective_facts
         )
 
         def _make_response(
@@ -324,7 +383,7 @@ class Narrator:
             fallback_message = _empty_message(entity)
             if fallback_message:
                 prompt_facts["fallback_message"] = fallback_message
-        prompt_meta = dict(meta or {})
+        prompt_meta = dict(render_meta)
         if concept_mode:
             # Sinaliza explicitamente o modo para o prompt builder / debugging
             prompt_meta.setdefault("narrator_mode", "concept")
