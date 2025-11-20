@@ -10,6 +10,7 @@ import re
 import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
+from decimal import Decimal
 
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import build_prompt, render_narrative
@@ -26,6 +27,27 @@ _ENTITY_ROOT = Path("data/entities")
 _NARRATOR_POLICY_PATH = Path("data/policies/narrator.yaml")
 _TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
 _FILTER_FIELD_NAMES = ("filters", "filter")
+
+
+def _json_sanitise(obj: Any) -> Any:
+    """
+    Normaliza estruturas para algo seguro para JSON / prompts:
+    - Decimal -> float
+    - dict/list/tuple/set -> recursivo
+    Mantém o restante inalterado.
+    """
+    if isinstance(obj, Decimal):
+        # Se preferir preservar formatação, pode trocar para str(obj)
+        return float(obj)
+
+    if isinstance(obj, dict):
+        return {k: _json_sanitise(v) for k, v in obj.items()}
+
+    if isinstance(obj, (list, tuple, set)):
+        t = type(obj)
+        return t(_json_sanitise(v) for v in obj)
+
+    return obj
 
 
 def _load_entity_config(entity: str) -> Dict[str, Any]:
@@ -478,10 +500,16 @@ class Narrator:
             fallback_message = _empty_message(entity)
             if fallback_message:
                 prompt_facts["fallback_message"] = fallback_message
+
         prompt_meta = dict(render_meta)
         if concept_mode:
             # Sinaliza explicitamente o modo para o prompt builder / debugging
             prompt_meta.setdefault("narrator_mode", "concept")
+
+        # 🔧 Normaliza tudo para tipos JSON-safe (principalmente Decimal)
+        prompt_facts = _json_sanitise(prompt_facts)
+        prompt_meta = _json_sanitise(prompt_meta)
+        rag_ctx_sanitised = _json_sanitise(rag_ctx) if rag_ctx is not None else None
 
         t0 = time.perf_counter()
         prompt = build_prompt(
@@ -489,10 +517,10 @@ class Narrator:
             facts=prompt_facts,
             meta=prompt_meta,
             style=self.style,
-            # Passa o contexto de RAG bruto (ou None). O próprio build_prompt
-            # se encarrega de normalizar/truncar quando rag for um dict válido.
-            rag=rag_ctx,
+            # Passa o contexto de RAG já saneado
+            rag=rag_ctx_sanitised,
         )
+
         tokens_in = len(prompt.split()) if prompt else 0
 
         text = baseline_text

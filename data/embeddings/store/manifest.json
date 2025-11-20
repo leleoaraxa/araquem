@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-19T17:12:03Z",
+  "generated_at": "2025-11-20T14:29:20Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -206,7 +206,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 3,
-      "sha_all": "49fdbc78fe0129cd37a76d64587898bff691ec941cb28997ae295a2d6de40fd4"
+      "sha_all": "441375f20a579950578f24e6211f599d4c6f21b42211577c8b02106d3d88b32f"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -489,5 +489,5 @@
       "sha_all": "f79c037470c49488dabd3084119d8d986a1fb9b9693c3e7324951a7e46143cce"
     }
   ],
-  "last_refresh_epoch": 1763572444
+  "last_refresh_epoch": 1763649074
 }
