@@ -120,7 +120,9 @@ def build_facts(
 
     requested_metrics: List[str]
     if isinstance(requested_metrics_raw, list):
-        requested_metrics = [str(item) for item in requested_metrics_raw if isinstance(item, str)]
+        requested_metrics = [
+            str(item) for item in requested_metrics_raw if isinstance(item, str)
+        ]
     else:
         requested_metrics = []
 

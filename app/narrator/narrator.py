@@ -76,7 +76,9 @@ def _rows_to_lines(
             keys_order = []
             if "ticker" in row:
                 keys_order.append("ticker")
-            keys_order.extend([key for key in requested if key != "ticker" and key in row])
+            keys_order.extend(
+                [key for key in requested if key != "ticker" and key in row]
+            )
         else:
             keys_order = [k for k in row.keys() if k != "meta"]
         for key in keys_order:
@@ -415,9 +417,7 @@ class Narrator:
                 deterministic_text = ""
 
         # 3) fallback padrão
-        baseline_text = deterministic_text or _default_text(
-            entity, effective_facts
-        )
+        baseline_text = deterministic_text or _default_text(entity, effective_facts)
 
         def _make_response(
             text: str,
@@ -503,13 +503,41 @@ class Narrator:
             # Usamos generate(), alinhado com OllamaClient
             response = self.client.generate(prompt, model=self.model, stream=False)
             candidate = (response or "").strip()
+            LOGGER.info(
+                "NARRATOR_LLM_RAW_RESPONSE entity=%s intent=%s model=%s "
+                "tokens_in=%s candidate_len=%s",
+                entity,
+                intent,
+                self.model,
+                tokens_in,
+                len(candidate),
+            )
             if candidate:
                 text = candidate
                 tokens_out = len(candidate.split())
         except Exception as exc:  # pragma: no cover - caminho excepcional
             error = f"llm_error: {exc}"
+            LOGGER.error(
+                "NARRATOR_LLM_ERROR entity=%s intent=%s model=%s error=%s",
+                entity,
+                intent,
+                self.model,
+                exc,
+            )
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
+
+        LOGGER.info(
+            "NARRATOR_FINAL_TEXT entity=%s intent=%s model=%s "
+            "used_llm=%s latency_ms=%.2f error=%s text_preview=%s",
+            entity,
+            intent,
+            self.model,
+            bool(tokens_out),
+            elapsed_ms,
+            error,
+            (text[:120] + "..." if isinstance(text, str) and len(text) > 120 else text),
+        )
 
         return _make_response(
             text,
