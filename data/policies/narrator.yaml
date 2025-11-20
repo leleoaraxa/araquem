@@ -30,6 +30,9 @@ narrator:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      llm_enabled: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
 
     fiis_noticias:
       prefer_concept_when_no_ticker: true

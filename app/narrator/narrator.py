@@ -253,6 +253,20 @@ def _load_narrator_policy() -> Dict[str, Any]:
         return {}
 
 
+def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:
+    """Combina política global do Narrator com overrides específicos por entidade."""
+
+    base_policy = dict(policy or {})
+    entities_cfg = base_policy.pop("entities", {})
+    entity_policy = {}
+    if isinstance(entities_cfg, dict):
+        entity_policy_raw = entities_cfg.get(entity or "")
+        entity_policy = entity_policy_raw if isinstance(entity_policy_raw, dict) else {}
+
+    base_policy.update(entity_policy)
+    return base_policy
+
+
 class Narrator:
     def __init__(self, model: str | None = None, style: str = "executivo"):
         # Política declarativa (fonte de verdade)
@@ -297,23 +311,30 @@ class Narrator:
     # ---------------------------------------------------------------------
     # Decisão de uso de LLM — 100% baseada em policy (sem heurísticas fixas)
     # ---------------------------------------------------------------------
-    def _should_use_llm(self, facts: Dict[str, Any]) -> bool:
+    def _should_use_llm(self, facts: Dict[str, Any], effective_policy: Dict[str, Any]) -> bool:
         """
         Regras:
           - se Narrator estiver desabilitado na policy → nunca usa LLM;
           - se max_llm_rows == 0 → nunca usa LLM;
           - se len(rows) > max_llm_rows → não usa LLM;
         """
-        if not self.enabled:
+        enabled = bool((effective_policy or {}).get("llm_enabled", False))
+        if not enabled:
             return False
 
         rows = list((facts or {}).get("rows") or [])
         rows_count = len(rows)
 
-        if self.max_llm_rows <= 0:
+        max_rows = (effective_policy or {}).get("max_llm_rows", 0)
+        try:
+            max_llm_rows = int(max_rows)
+        except (TypeError, ValueError):
+            max_llm_rows = 0
+
+        if max_llm_rows <= 0:
             return False
 
-        if rows_count > self.max_llm_rows:
+        if rows_count > max_llm_rows:
             return False
 
         return True
@@ -330,6 +351,17 @@ class Narrator:
         intent = raw_meta.get("intent") or ""
         template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
         render_meta: Dict[str, Any] = dict(raw_meta)
+
+        effective_policy = _get_effective_policy(entity, self.policy)
+        effective_enabled = bool(
+            effective_policy.get("llm_enabled", self.enabled)
+        )
+        effective_shadow = bool(effective_policy.get("shadow", self.shadow))
+        max_rows_policy = effective_policy.get("max_llm_rows", self.max_llm_rows)
+        try:
+            effective_max_llm_rows = int(max_rows_policy)
+        except (TypeError, ValueError):
+            effective_max_llm_rows = 0
 
         # Política específica da entidade (se houver)
         entity_policy = (
@@ -397,8 +429,8 @@ class Narrator:
             intent,
             len(effective_facts.get("rows") or []),
             template_id or "",
-            self.enabled,
-            self.shadow,
+            effective_enabled,
+            effective_shadow,
             self.model,
             rag_enabled,
             rag_chunks_count,
@@ -448,6 +480,8 @@ class Narrator:
             tokens_out: int | None = None,
             latency_ms: float | None = None,
             error: str | None = None,
+            enabled: bool | None = None,
+            shadow: bool | None = None,
         ) -> Dict[str, Any]:
             computed_tokens_out = (
                 tokens_out if tokens_out is not None else len(text.split())
@@ -463,34 +497,44 @@ class Narrator:
                 "hints": {
                     "style": self.style,
                     "mode": "concept" if concept_mode else "default",
+                    "strategy": "llm" if computed_tokens_out else "deterministic",
                 },
                 "tokens": {"in": tokens_in, "out": computed_tokens_out},
                 "latency_ms": elapsed_ms,
                 "error": error,
-                "enabled": self.enabled,
-                "shadow": self.shadow,
+                "enabled": self.enabled if enabled is None else enabled,
+                "shadow": self.shadow if shadow is None else shadow,
             }
 
         # Caso global: Narrator desabilitado → só baseline
-        if not self.enabled:
-            return _make_response(baseline_text)
+        if not effective_enabled:
+            return _make_response(
+                baseline_text,
+                enabled=effective_enabled,
+                shadow=effective_shadow,
+                error="llm_disabled_by_policy",
+            )
 
         # Cliente LLM indisponível → só baseline, com erro explícito
         if self.client is None:
             return _make_response(
                 baseline_text,
                 error="client_unavailable",
+                enabled=effective_enabled,
+                shadow=effective_shadow,
             )
 
         # Decisão policy-driven: usar ou não usar LLM
-        if not self._should_use_llm(effective_facts):
+        if not self._should_use_llm(effective_facts, effective_policy):
             rows_count = len(effective_facts.get("rows") or [])
             return _make_response(
                 baseline_text,
                 error=(
                     f"llm_skipped: rows_count={rows_count} "
-                    f"max_llm_rows={self.max_llm_rows}"
+                    f"max_llm_rows={effective_max_llm_rows}"
                 ),
+                enabled=effective_enabled,
+                shadow=effective_shadow,
             )
 
         # A partir daqui, LLM está habilitado e será chamado
@@ -510,6 +554,8 @@ class Narrator:
         prompt_facts = _json_sanitise(prompt_facts)
         prompt_meta = _json_sanitise(prompt_meta)
         rag_ctx_sanitised = _json_sanitise(rag_ctx) if rag_ctx is not None else None
+        use_rag_in_prompt = effective_policy.get("use_rag_in_prompt", True)
+        rag_payload_for_prompt = rag_ctx_sanitised if use_rag_in_prompt else None
 
         t0 = time.perf_counter()
         prompt = build_prompt(
@@ -518,7 +564,7 @@ class Narrator:
             meta=prompt_meta,
             style=self.style,
             # Passa o contexto de RAG já saneado
-            rag=rag_ctx_sanitised,
+            rag=rag_payload_for_prompt,
         )
 
         tokens_in = len(prompt.split()) if prompt else 0
@@ -573,4 +619,6 @@ class Narrator:
             tokens_out=tokens_out,
             latency_ms=elapsed_ms,
             error=error,
+            enabled=effective_enabled,
+            shadow=effective_shadow,
         )
