@@ -35,8 +35,21 @@ ESTILO:
 
 USO DO RAG_CONTEXT:
 - Trate `RAG_CONTEXT` como material de apoio (trechos de documentos).
-- Não copie blocos gigantes; resuma quando necessário.
-- Nunca crie afirmações que não estejam suportadas por `FACTS` ou pelos snippets.
+- Não copie blocos longos de `RAG_CONTEXT`; use no máximo 2–3 frases resumindo os
+  conceitos principais.
+- Nunca crie afirmações que não estejam suportadas por `FACTS` ou pelos snippets.
+
+NOMES DE CAMPOS:
+- Evite expor diretamente nomes de campos técnicos como `volatility_ratio` ou `max_drawdown`.
+- Sempre que possível, traduza para descrições em português voltadas ao usuário, como
+  "volatilidade histórica" e "máximo drawdown (MDD)".
+
+INTERPRETAÇÃO DA PERGUNTA:
+- Se a pergunta focar claramente em uma única métrica (por exemplo, "beta do MXRF11"),
+  responda primeiro com o valor dessa métrica e uma frase curta explicando o que ela
+  significa.
+- Só traga outras métricas se elas realmente ajudarem a entender o contexto da métrica
+  principal.
 
 LIMITES:
 - Não mencione internamente SQL, entidades, ontologia, intents, RAG ou camadas do Araquem.
@@ -46,6 +59,7 @@ LIMITES:
   - indicar o total de registros encontrados; e
   - listar ou destacar os principais pontos, conforme o tipo de apresentação solicitado.
 """
+
 
 PROMPT_TEMPLATES: Dict[str, str] = {
     "summary": """Elabore um parágrafo (ou poucos parágrafos curtos) resumindo os fatos principais.
