@@ -1,4 +1,4 @@
-DROP FUNCTION IF EXISTS calc_fiis_average_price(text, text, date)
+DROP FUNCTION IF EXISTS calc_fiis_average_price(text, text, date);
 
 CREATE OR REPLACE FUNCTION calc_fiis_average_price(
     document_number_in  text,
@@ -141,7 +141,7 @@ BEGIN
 END;
 $$;
 
-DROP FUNCTION IF EXISTS calc_fiis_portfolio(text)
+DROP FUNCTION IF EXISTS calc_fiis_portfolio(text);
 
 CREATE OR REPLACE FUNCTION calc_fiis_portfolio(document_number_in text)
 RETURNS TABLE (
@@ -226,15 +226,15 @@ AS $$
 $$;
 
 
-DROP FUNCTION IF EXISTS calc_fiis_performance_vs_benchmark(text, text)
+DROP FUNCTION IF EXISTS calc_fiis_performance_vs_benchmark(text, text);
 
 CREATE OR REPLACE FUNCTION calc_fiis_performance_vs_benchmark(
     document_number_in text,
     benchmark_in text  -- 'IFIX', 'IFIL', 'IBOV', 'CDI'
 )
 RETURNS TABLE (
-    reference_date           date,
-    portfolio_value          numeric,
+    date_reference           date,
+    portfolio_amount         numeric,
     portfolio_return_pct     numeric,
     benchmark_value          numeric,
     benchmark_return_pct     numeric
@@ -249,7 +249,7 @@ BEGIN
         RETURN QUERY
         WITH portfolio AS (
             SELECT
-                reference_date,
+                reference_date AS ref_date,
                 SUM(update_value) AS portfolio_value
             FROM equities_positions
             WHERE document_number       = document_number_in
@@ -260,13 +260,13 @@ BEGIN
         ),
         bounds AS (
             SELECT
-                MIN(reference_date) AS min_date,
-                MAX(reference_date) AS max_date
+                MIN(ref_date) AS min_date,
+                MAX(ref_date) AS max_date
             FROM portfolio
         ),
         dividends AS (
             SELECT
-                reference_date,
+                reference_date AS ref_date,
                 SUM(operation_value) AS div_value
             FROM movement
             WHERE document_number       = document_number_in
@@ -278,34 +278,34 @@ BEGIN
         ),
         port_enriched AS (
             SELECT
-                p.reference_date,
+                p.ref_date,
                 p.portfolio_value,
                 COALESCE(d.div_value, 0) AS div_value
             FROM portfolio p
-            LEFT JOIN dividends d USING (reference_date)
+            LEFT JOIN dividends d USING (ref_date)
         ),
         port_with_cum AS (
             SELECT
-                reference_date,
+                ref_date,
                 portfolio_value,
-                SUM(div_value) OVER (ORDER BY reference_date) AS cum_div,
-                FIRST_VALUE(portfolio_value) OVER (ORDER BY reference_date) AS first_value
+                SUM(div_value) OVER (ORDER BY ref_date) AS cum_div,
+                FIRST_VALUE(portfolio_value) OVER (ORDER BY ref_date) AS first_value
             FROM port_enriched
         ),
         port_return AS (
             SELECT
-                reference_date,
+                ref_date,
                 portfolio_value,
                 (portfolio_value + cum_div) / NULLIF(first_value, 0) - 1 AS portfolio_return
             FROM port_with_cum
         ),
         cdi_raw AS (
             SELECT
-                h.indicator_date AS indicator_date,
-                h.indicator_amt  AS daily_rate
+                h.indicator_date::date AS indicator_date,
+                h.indicator_amt        AS daily_rate
             FROM history_market_indicators h
             JOIN bounds b
-              ON h.indicator_date BETWEEN b.min_date AND b.max_date
+              ON h.indicator_date::date BETWEEN b.min_date AND b.max_date
             WHERE h.indicator_name = 'CDI'
         ),
         cdi_cum AS (
@@ -326,23 +326,23 @@ BEGIN
         ),
         joined AS (
             SELECT
-                p.reference_date,
+                p.ref_date,
                 p.portfolio_value,
                 p.portfolio_return,
-                c.cdi_index AS benchmark_value,
+                c.cdi_index  AS benchmark_value,
                 c.cdi_return AS benchmark_return
             FROM port_return p
             LEFT JOIN cdi_norm c
-              ON c.indicator_date = p.reference_date
+              ON c.indicator_date = p.ref_date
         )
         SELECT
-            j.reference_date,
-            j.portfolio_value,
+            j.ref_date::date                   AS date_reference,
+            j.portfolio_value                  AS portfolio_amount,
             ROUND(j.portfolio_return * 100, 2) AS portfolio_return_pct,
             j.benchmark_value,
             ROUND(j.benchmark_return * 100, 2) AS benchmark_return_pct
         FROM joined j
-        ORDER BY j.reference_date;
+        ORDER BY j.ref_date;
 
     --------------------------------------------------------------------
     -- BRANCH IFIX / IFIL / IBOV
@@ -351,7 +351,7 @@ BEGIN
         RETURN QUERY
         WITH portfolio AS (
             SELECT
-                reference_date,
+                reference_date AS ref_date,
                 SUM(update_value) AS portfolio_value
             FROM equities_positions
             WHERE document_number       = document_number_in
@@ -362,13 +362,13 @@ BEGIN
         ),
         bounds AS (
             SELECT
-                MIN(reference_date) AS min_date,
-                MAX(reference_date) AS max_date
+                MIN(ref_date) AS min_date,
+                MAX(ref_date) AS max_date
             FROM portfolio
         ),
         dividends AS (
             SELECT
-                reference_date,
+                reference_date AS ref_date,
                 SUM(operation_value) AS div_value
             FROM movement
             WHERE document_number       = document_number_in
@@ -380,30 +380,30 @@ BEGIN
         ),
         port_enriched AS (
             SELECT
-                p.reference_date,
+                p.ref_date,
                 p.portfolio_value,
                 COALESCE(d.div_value, 0) AS div_value
             FROM portfolio p
-            LEFT JOIN dividends d USING (reference_date)
+            LEFT JOIN dividends d USING (ref_date)
         ),
         port_with_cum AS (
             SELECT
-                reference_date,
+                ref_date,
                 portfolio_value,
-                SUM(div_value) OVER (ORDER BY reference_date) AS cum_div,
-                FIRST_VALUE(portfolio_value) OVER (ORDER BY reference_date) AS first_value
+                SUM(div_value) OVER (ORDER BY ref_date) AS cum_div,
+                FIRST_VALUE(portfolio_value) OVER (ORDER BY ref_date) AS first_value
             FROM port_enriched
         ),
         port_return AS (
             SELECT
-                reference_date,
+                ref_date,
                 portfolio_value,
                 (portfolio_value + cum_div) / NULLIF(first_value, 0) - 1 AS portfolio_return
             FROM port_with_cum
         ),
         idx_raw AS (
             SELECT
-                h.index_date,
+                h.index_date::date AS index_date,
                 CASE upper(benchmark_in)
                     WHEN 'IFIX' THEN h.ifix_points_count
                     WHEN 'IFIL' THEN h.ifil_points_count
@@ -411,7 +411,7 @@ BEGIN
                 END AS idx_points
             FROM history_b3_indexes h
             JOIN bounds b
-              ON h.index_date BETWEEN b.min_date AND b.max_date
+              ON h.index_date::date BETWEEN b.min_date AND b.max_date
         ),
         idx_filtered AS (
             SELECT
@@ -430,33 +430,60 @@ BEGIN
         ),
         joined AS (
             SELECT
-                p.reference_date,
+                p.ref_date,
                 p.portfolio_value,
                 p.portfolio_return,
                 i.idx_points AS benchmark_value,
                 i.idx_return AS benchmark_return
             FROM port_return p
             LEFT JOIN idx_norm i
-              ON i.index_date = p.reference_date
+              ON i.index_date = p.ref_date
         )
         SELECT
-            j.reference_date,
-            j.portfolio_value,
+            j.ref_date::date                   AS date_reference,
+            j.portfolio_value                  AS portfolio_amount,
             ROUND(j.portfolio_return * 100, 2) AS portfolio_return_pct,
             j.benchmark_value,
             ROUND(j.benchmark_return * 100, 2) AS benchmark_return_pct
         FROM joined j
-        ORDER BY j.reference_date;
+        ORDER BY j.ref_date;
     END IF;
 END;
 $$;
 
-SELECT * FROM calc_fiis_performance_vs_benchmark('66140994691', 'IFIX');
-SELECT * FROM calc_fiis_performance_vs_benchmark('66140994691', 'CDI');
-SELECT reference_date, portfolio_value, portfolio_return_pct, benchmark_value, benchmark_return_pct FROM calc_fiis_performance_vs_benchmark('66140994691', 'CDI'); -- 'IFIX', 'IFIL', 'IBOV', 'CDI'
-
-
-select * from movement where document_number = '66140994691' order by 3 desc -- Movimentação realizada na conta (Extrato)
-select * from equities_positions where document_number = '66140994691'  order by 3 desc -- Posição da carteira do cliente
-select * from provisioned_events where document_number = '66140994691' order by 3 desc -- Provisionamento futuro
-select * from assets_trading where document_number = '66140994691' -- Negociação de Ativos
+DROP FUNCTION IF EXISTS calc_fiis_dividends_evolution(text);
+	
+CREATE OR REPLACE FUNCTION calc_fiis_dividends_evolution(
+    document_number_in text
+)
+RETURNS TABLE (
+    year_reference    integer,
+    month_number      integer,
+    month_name        text,
+    total_dividends   numeric
+)
+LANGUAGE sql
+AS $$
+    WITH base AS (
+        SELECT
+            reference_date,
+            date_part('year',  reference_date)::int  AS year_reference,
+            date_part('month', reference_date)::int  AS month_number,
+            operation_value
+        FROM movement
+        WHERE document_number       = document_number_in
+          AND product_category_name = 'Renda Variavel'
+          AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
+          AND movement_type         = 'Rendimento'
+          AND operation_type        = 'Credito'
+    )
+    SELECT
+        year_reference,
+        month_number,
+        -- Nome do mês (respeita o locale do PostgreSQL, normalmente PT-BR)
+        to_char(make_date(year_reference, month_number, 1), 'TMMonth') AS month_name,
+        SUM(operation_value) AS total_dividends
+    FROM base
+    GROUP BY year_reference, month_number
+    ORDER BY year_reference, month_number;
+$$;
