@@ -30,9 +30,12 @@ narrator:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
-      llm_enabled: false
-      max_llm_rows: 0
-      use_rag_in_prompt: false
+      # Para risco quantitativo, manter fluxo 100% determinístico:
+      # - renderer especializado + dados D-1
+      # - RAG apenas para logging/diagnóstico (não entra no prompt)
+      llm_enabled: false        # desliga LLM para esta entidade
+      max_llm_rows: 0           # 0 = nunca chama o LLM
+      use_rag_in_prompt: false  # ainda monta meta.rag, mas não injeta no SYSTEM_PROMPT
 
     fiis_noticias:
       prefer_concept_when_no_ticker: true

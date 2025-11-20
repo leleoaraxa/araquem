@@ -311,7 +311,9 @@ class Narrator:
     # ---------------------------------------------------------------------
     # Decisão de uso de LLM — 100% baseada em policy (sem heurísticas fixas)
     # ---------------------------------------------------------------------
-    def _should_use_llm(self, facts: Dict[str, Any], effective_policy: Dict[str, Any]) -> bool:
+    def _should_use_llm(
+        self, facts: Dict[str, Any], effective_policy: Dict[str, Any]
+    ) -> bool:
         """
         Regras:
           - se Narrator estiver desabilitado na policy → nunca usa LLM;
@@ -352,6 +354,7 @@ class Narrator:
         template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
         render_meta: Dict[str, Any] = dict(raw_meta)
 
+        # Política efetiva (global + overrides da entidade)
         effective_policy = _get_effective_policy(entity, self.policy)
         effective_enabled = bool(
             effective_policy.get("llm_enabled", self.enabled)
@@ -362,6 +365,9 @@ class Narrator:
             effective_max_llm_rows = int(max_rows_policy)
         except (TypeError, ValueError):
             effective_max_llm_rows = 0
+
+        # Estratégia default: assume determinístico até provar o contrário
+        strategy = "deterministic"
 
         # Política específica da entidade (se houver)
         entity_policy = (
@@ -480,6 +486,7 @@ class Narrator:
             tokens_out: int | None = None,
             latency_ms: float | None = None,
             error: str | None = None,
+            strategy: str | None = None,
             enabled: bool | None = None,
             shadow: bool | None = None,
         ) -> Dict[str, Any]:
@@ -491,14 +498,22 @@ class Narrator:
                 if latency_ms is not None
                 else (time.perf_counter() - t0_global) * 1000.0
             )
+            final_strategy = strategy
+            if not final_strategy:
+                # Heurística conservadora:
+                # - se não chamamos LLM → determinístico
+                # - se chamamos e houve texto do LLM → "llm" (ajustado no call site)
+                final_strategy = "llm" if computed_tokens_out and not error else "deterministic"
+
             return {
                 "text": text,
                 "score": 1.0 if text else 0.0,
                 "hints": {
                     "style": self.style,
                     "mode": "concept" if concept_mode else "default",
-                    "strategy": "llm" if computed_tokens_out else "deterministic",
+                    "strategy": final_strategy,
                 },
+                "strategy": final_strategy,
                 "tokens": {"in": tokens_in, "out": computed_tokens_out},
                 "latency_ms": elapsed_ms,
                 "error": error,
@@ -510,6 +525,7 @@ class Narrator:
         if not effective_enabled:
             return _make_response(
                 baseline_text,
+                strategy="deterministic",
                 enabled=effective_enabled,
                 shadow=effective_shadow,
                 error="llm_disabled_by_policy",
@@ -520,6 +536,7 @@ class Narrator:
             return _make_response(
                 baseline_text,
                 error="client_unavailable",
+                strategy="deterministic",
                 enabled=effective_enabled,
                 shadow=effective_shadow,
             )
@@ -533,6 +550,7 @@ class Narrator:
                     f"llm_skipped: rows_count={rows_count} "
                     f"max_llm_rows={effective_max_llm_rows}"
                 ),
+                strategy="deterministic",
                 enabled=effective_enabled,
                 shadow=effective_shadow,
             )
@@ -619,6 +637,7 @@ class Narrator:
             tokens_out=tokens_out,
             latency_ms=elapsed_ms,
             error=error,
+            strategy="llm" if tokens_out and not error else "deterministic",
             enabled=effective_enabled,
             shadow=effective_shadow,
         )
