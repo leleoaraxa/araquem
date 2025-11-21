@@ -13,7 +13,6 @@ DROP VIEW IF EXISTS fiis_financials_snapshot;
 DROP VIEW IF EXISTS fiis_financials_risk;
 DROP VIEW IF EXISTS fiis_financials_revenue_schedule;
 DROP VIEW IF EXISTS fiis_financials;
-DROP VIEW IF EXISTS client_fiis_positions;
 DROP VIEW IF EXISTS financials_tickers_typed;
 DROP VIEW IF EXISTS view_markowitz_sirios_portfolios_latest;
 DROP VIEW IF EXISTS view_markowitz_sirios_portfolios;
@@ -23,6 +22,7 @@ DROP VIEW IF EXISTS view_markowitz_frontier_plot;
 -- =====================================================================
 -- DROP MATERIALIZED VIEW
 -- =====================================================================
+DROP MATERIALIZED VIEW IF EXISTS client_fiis_positions;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_info;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_dividends;
 DROP MATERIALIZED VIEW IF EXISTS view_fiis_history_assets;
@@ -620,7 +620,7 @@ SELECT ticker, dy_monthly_pct, dy_pct, sum_anual_dy_amt, last_dividend_amt, last
 	updated_at
 FROM view_fiis_info;
 -- =====================================================================
--- VIEW: client_fiis_positions
+-- VIEW MATERIALIZED: client_fiis_positions
 -- =====================================================================
 CREATE MATERIALIZED VIEW client_fiis_positions AS
 WITH docs AS (

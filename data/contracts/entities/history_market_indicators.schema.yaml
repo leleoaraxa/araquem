@@ -15,7 +15,7 @@ presentation:
   columns:
     indicator_date: { as: datetime }     # 2025-11-10 00:00:00
     indicator_name: { as: string }       # IPCA
-    indicator_amt:  { as: percentage, multiply_by_100: false, precision: 2 }       # 0,42%
+    indicator_amt:  { as: percent, multiply_by_100: false, precision: 2 }       # 0,42%
   rules:
     percent_precision: 2
 

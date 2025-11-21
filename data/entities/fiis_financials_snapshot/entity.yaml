@@ -129,6 +129,9 @@ ask:
     market_cap_value: [market cap, valor de mercado]
     price_book_ratio: [preco/patrimonio, p/bv]
     total_cash_amt: [caixa, caixa total]
+    growth_rate: [crescimento estimado, expectativa de crescimento]
+    variation_month_ratio: [variacao no mes, desempenho mensal]
+    variation_year_ratio: [variacao no ano, desempenho anual]
   weights:
     identifiers: 2.0
     keywords: 1.0

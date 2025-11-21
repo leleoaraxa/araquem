@@ -6,7 +6,7 @@ columns:
   - { name: ticker,                 type: string,   nullable: false, desc: "código do FII (AAAA11)." }
   - { name: dy_monthly_pct,         type: number,   nullable: true,  desc: "dividend yield mensal." }
   - { name: dy_pct,                 type: number,   nullable: true,  desc: "dividend yield em base anualizada." }
-  - { name: sum_anual_dy_amt,       type: number,   nullable: true,  desc: "doma dos proventos distribuídos no ano." }
+  - { name: sum_anual_dy_amt,       type: number,   nullable: true,  desc: "soma dos proventos distribuídos no ano." }
   - { name: last_dividend_amt,      type: number,   nullable: true,  desc: "valor do último dividendo pago." }
   - { name: last_payment_date,      type: date,     nullable: true,  desc: "data do último pagamento de dividendo." }
   - { name: market_cap_value,       type: number,   nullable: true,  desc: "valor de mercado." }

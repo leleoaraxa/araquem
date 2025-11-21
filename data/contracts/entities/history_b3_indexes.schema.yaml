@@ -19,11 +19,11 @@ presentation:
   columns:
     index_date:        { as: date }     # 11/11/2025
     ibov_points_count: { as: number }       # 128.450
-    ibov_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # 0,85%
+    ibov_var_pct:      { as: percent, multiply_by_100: false, precision: 2 }   # 0,85%
     ifix_points_count: { as: number }       # 3.250
-    ifix_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # -0,12%
+    ifix_var_pct:      { as: percent, multiply_by_100: false, precision: 2 }   # -0,12%
     ifil_points_count: { as: number }       # 1.980
-    ifil_var_pct:      { as: percentage, multiply_by_100: false, precision: 2 }   # 0,25%
+    ifil_var_pct:      { as: percent, multiply_by_100: false, precision: 2 }   # 0,25%
   rules:
     percent_precision: 2
 

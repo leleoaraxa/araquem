@@ -24,8 +24,8 @@ presentation:
     asset_address: { as: string }           # Av. Paulista, 1000, São Paulo, SP
     total_area: { as: number }              # 5.975 m²
     units_count: { as: integer }            # 12 unidades
-    vacancy_ratio: { as: percentage }       # 8.54%
-    non_compliant_ratio: { as: percentage } # 2.35%
+    vacancy_ratio: { as: percent }       # 8.54%
+    non_compliant_ratio: { as: percent } # 2.35%
     assets_status: { as: string }           # Ativo / Inativo
 
   rules:

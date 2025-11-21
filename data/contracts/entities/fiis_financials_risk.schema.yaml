@@ -27,7 +27,7 @@ presentation:
     beta_index:       { as: number }    # -1,1234
     sortino_ratio:    { as: number }    # 1,9876
     max_drawdown:     { as: percent, multiply_by_100: true, precision: 2 }    # (25,60%)
-    r_squared:        { as: number }    # 2,9876
+    r_squared:        { as: number }    # 0.00–1.00
   rules: {}
 
 sample_questions:
