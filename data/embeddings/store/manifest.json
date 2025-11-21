@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-21T18:36:29Z",
+  "generated_at": "2025-11-21T21:03:47Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -167,7 +167,7 @@
         "entity:fiis_processos"
       ],
       "chunks": 2,
-      "sha_all": "1fdd76870d06cc045533e2b315ad6ee5d8f42a82a33a3dc5832311a13c265c8e"
+      "sha_all": "a2144eb1a2f6d0601c20995cbd849dbf2abdc3d0565cf4614de3ccc4827f74c0"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -180,7 +180,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 4,
-      "sha_all": "cfa44d7ee75accfd46cb0fe7e50265d41a66a0dc2b1c3716b349165d83915b24"
+      "sha_all": "ddc99cba79ae7d5e54df1b53a119ccee7077c583686c4c2569c7d09e33b87cd9"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -243,8 +243,8 @@
         "positions",
         "entity:client_fiis_positions"
       ],
-      "chunks": 2,
-      "sha_all": "6890d5e20ac09e72f016314f759151958f35a55013eb8284f8935de179d902d7"
+      "chunks": 4,
+      "sha_all": "3e9312a739ae54356d310655986748ab6a41a9ef5afc269fbe857c6b49b02029"
     },
     {
       "id": "policies-cache",
@@ -489,5 +489,5 @@
       "sha_all": "f79c037470c49488dabd3084119d8d986a1fb9b9693c3e7324951a7e46143cce"
     }
   ],
-  "last_refresh_epoch": 1763750301
+  "last_refresh_epoch": 1763759136
 }

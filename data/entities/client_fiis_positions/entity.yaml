@@ -68,17 +68,106 @@ presentation:
 ask:
   intents:
     - client_fiis_positions
+
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
     - minhas posicoes
     - minha carteira
     - posicao
-    - quantidade
-    - custodia
+    - minhas posiçoes
+    - minhas posições
+    - carteira
     - carteira de fii
+    - carteira de fiis
     - carteira de fundos imobiliarios
+    - carteira de fundos imobiliários
+    - quantidade
+    - qtd
+    - custodia
+    - custódia
+    - preco medio
+    - preço medio
+    - preço médio
+    - rentabilidade
+    - rentabilidade da posicao
+    - rentabilidade da posição
+    - ganho
+    - ganho percentual
+    - ganho em %
+    - lucro
+    - lucro em %
+    - peso na carteira
+    - percentual na carteira
+    - porcentagem na carteira
+    - participacao
+    - participação
+
+  phrase_includes:
+    - "minhas posicoes"
+    - "minhas posições"
+    - "minha carteira de fiis"
+    - "minha carteira de fundos imobiliarios"
+    - "preco medio do"
+    - "preço medio do"
+    - "preço médio do"
+    - "rentabilidade do"
+    - "rentabilidade da posicao do"
+    - "rentabilidade da posição do"
+    - "peso do"
+    - "percentual do"
+    - "porcentagem do"
+    - "participacao do"
+    - "participação do"
+
   synonyms:
-    ticker: [ativo, papel, fundo, fii]
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    qty:
+      - quantidade
+      - qtde
+      - qtd
+      - numero de cotas
+      - número de cotas
+      - cotas
+    closing_price:
+      - preco
+      - preço
+      - preco de fechamento
+      - preço de fechamento
+      - cotacao
+      - cotação
+      - cotacao de fechamento
+      - cotação de fechamento
+    average_price:
+      - preco medio
+      - preço medio
+      - preço médio
+      - pm
+      - preço médio de compra
+      - preco medio de compra
+      - preco medio da posicao
+      - preço médio da posição
+    profitability_percentage:
+      - rentabilidade
+      - rentabilidade da posicao
+      - rentabilidade da posição
+      - ganho percentual
+      - ganho em
+      - lucro em
+      - retorno em
+      - retorno percentual
+      - resultado em
+    percentage:
+      - peso
+      - peso na carteira
+      - percentual na carteira
+      - porcentagem na carteira
+      - participacao na carteira
+      - participação na carteira
+
   weights:
     identifiers: 2.0
     keywords: 1.0
@@ -86,6 +175,7 @@ ask:
 
 params:
   required: [document_number]
+
 
 order_by_whitelist:
   - position_date desc
