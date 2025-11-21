@@ -42,6 +42,15 @@ columns:
 - name: available_quantity
   alias: Quantidade disp.
   description: Quantidade disponível.
+- name: average_price
+  alias: Preco medio
+  description: Preço médio
+- name: profitability_percentage
+  alias: Rentabilidade
+  description: Rentabilidade
+- name: percentage
+  alias: Percentual carteira
+  description: Percentual na carteira
 - name: created_at
   alias: Criado em
   description: Data de criação do registro.
