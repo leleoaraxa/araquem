@@ -1,58 +1,21 @@
-terms:
-  - name: "narrator"
-    kind: "policy"
-    scope: "narrator"
-    version: 1
+version: 1
 
-narrator:
-  llm_enabled: true         # você controla manualmente
-  shadow: true             # roda ou não sem afetar UX
+default:
+  llm_enabled: false
+  shadow: false
+  max_llm_rows: 0
+  use_rag_in_prompt: false
   model: mistral:instruct
-  style: executivo
-  max_llm_rows: 10           # 0 = nunca chama o LLM
-  max_prompt_tokens: 4000
-  max_output_tokens: 700
 
-  # Políticas específicas por entidade (opcional)
-  #
-  # Objetivo: evitar respostas "por fundo" quando a pergunta é
-  # claramente conceitual, como:
-  #   - "o que é índice de Treynor?"
-  #   - "explique o que é beta em FIIs"
-  #
-  # Para entidades com prefer_concept_when_no_ticker=true:
-  #   - Narrator procura tickers no formato AAAA11 na pergunta original
-  #     e/ou nos filtros explícitos (meta/facts.filters).
-  #   - Sem ticker → modo CONCEITO (limpa rows/primary e sinaliza meta.narrator_mode).
-  #   - Com pelo menos 1 ticker → modo POR FUNDO (usa rows normalmente).
-  entities:
-    fiis_financials_risk:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      # Para risco quantitativo, manter fluxo 100% determinístico:
-      # - renderer especializado + dados D-1
-      # - RAG apenas para logging/diagnóstico (não entra no prompt)
-      llm_enabled: false        # desliga LLM para esta entidade
-      max_llm_rows: 0           # 0 = nunca chama o LLM
-      use_rag_in_prompt: false  # ainda monta meta.rag, mas não injeta no SYSTEM_PROMPT
+entities:
+  fiis_financials_risk:
+    llm_enabled: false
+    shadow: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
 
-    fiis_noticias:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-
-    history_market_indicators:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-
-    history_b3_indexes:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-
-    history_currency_rates:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
+  fiis_noticias:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 5
+    use_rag_in_prompt: true

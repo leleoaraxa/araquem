@@ -247,8 +247,10 @@ def _load_narrator_policy() -> Dict[str, Any]:
     """
     try:
         data = load_yaml_cached(str(_NARRATOR_POLICY_PATH)) or {}
-        policy = data.get("narrator") if isinstance(data, dict) else None
-        return policy or {}
+        if isinstance(data, dict):
+            policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else None
+            return policy if policy is not None else data
+        return {}
     except Exception:
         return {}
 
@@ -256,21 +258,45 @@ def _load_narrator_policy() -> Dict[str, Any]:
 def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:
     """Combina política global do Narrator com overrides específicos por entidade."""
 
-    base_policy = dict(policy or {})
-    entities_cfg = base_policy.pop("entities", {})
-    entity_policy = {}
+    policy_dict = policy or {}
+    default_policy = {}
+    if isinstance(policy_dict, dict):
+        default_policy = policy_dict.get("default") if isinstance(policy_dict.get("default"), dict) else {}
+
+    effective_policy = {
+        "llm_enabled": False,
+        "shadow": False,
+        "max_llm_rows": 0,
+        "use_rag_in_prompt": False,
+        "model": "mistral:instruct",
+    }
+
+    base_overrides = {
+        k: v
+        for k, v in policy_dict.items()
+        if k not in {"default", "entities", "terms", "version"}
+    }
+
+    if isinstance(default_policy, dict):
+        effective_policy.update(default_policy)
+
+    effective_policy.update(base_overrides)
+
+    entities_cfg = policy_dict.get("entities") if isinstance(policy_dict, dict) else {}
     if isinstance(entities_cfg, dict):
         entity_policy_raw = entities_cfg.get(entity or "")
-        entity_policy = entity_policy_raw if isinstance(entity_policy_raw, dict) else {}
+        if isinstance(entity_policy_raw, dict):
+            effective_policy.update(entity_policy_raw)
 
-    base_policy.update(entity_policy)
-    return base_policy
+    return effective_policy
 
 
 class Narrator:
     def __init__(self, model: str | None = None, style: str = "executivo"):
         # Política declarativa (fonte de verdade)
         self.policy: Dict[str, Any] = _load_narrator_policy()
+
+        default_policy = _get_effective_policy(None, self.policy)
 
         # Política específica por entidade (opcional)
         entities_cfg = (
@@ -283,6 +309,7 @@ class Narrator:
         # Modelo / estilo: prioridade → arg explícito > YAML > env > default
         self.model = (
             model
+            or default_policy.get("model")
             or self.policy.get("model")
             or os.getenv("NARRATOR_MODEL")
             or "mistral:instruct"
@@ -291,11 +318,11 @@ class Narrator:
 
         # Flags: **apenas YAML** define habilitação e shadow;
         # env é ignorado para evitar heurísticas escondidas.
-        self.enabled = bool(self.policy.get("llm_enabled", False))
-        self.shadow = bool(self.policy.get("shadow", False))
+        self.enabled = bool(default_policy.get("llm_enabled", False))
+        self.shadow = bool(default_policy.get("shadow", False))
 
         # Limite de linhas para uso de LLM (0 = nunca usar LLM)
-        max_rows = self.policy.get("max_llm_rows", 0)
+        max_rows = default_policy.get("max_llm_rows", 0)
         try:
             self.max_llm_rows = int(max_rows)
         except (TypeError, ValueError):
@@ -364,15 +391,31 @@ class Narrator:
         except (TypeError, ValueError):
             effective_max_llm_rows = 0
 
-        # Estratégia default: assume determinístico até provar o contrário
-        strategy = "deterministic"
+        use_rag_in_prompt = bool(effective_policy.get("use_rag_in_prompt", False))
+        effective_model = effective_policy.get("model") or self.model
+
+        narrator_meta: Dict[str, Any] = {
+            "enabled": effective_enabled,
+            "shadow": effective_shadow,
+            "model": effective_model,
+            "latency_ms": None,
+            "error": None,
+            "used": False,
+            "strategy": "deterministic",
+            "effective_policy": _json_sanitise(
+                {
+                    "llm_enabled": effective_enabled,
+                    "shadow": effective_shadow,
+                    "max_llm_rows": effective_max_llm_rows,
+                    "use_rag_in_prompt": use_rag_in_prompt,
+                    "model": effective_model,
+                }
+            ),
+            "rag": None,
+        }
 
         # Política específica da entidade (se houver)
-        entity_policy = (
-            self.entities_policy.get(entity, {})
-            if hasattr(self, "entities_policy")
-            else {}
-        )
+        entity_policy = effective_policy
         prefer_concept_when_no_ticker = bool(
             entity_policy.get("prefer_concept_when_no_ticker", False)
         )
@@ -382,9 +425,6 @@ class Narrator:
         concept_with_data_when_rag = bool(
             entity_policy.get("concept_with_data_when_rag", False)
         )
-        # Se a entidade marcar use_rag_in_prompt: false,
-        # também bloqueamos o uso de RAG no texto determinístico.
-        use_rag_in_prompt = bool(entity_policy.get("use_rag_in_prompt", True))
 
         # Decisão de modo:
         # - concept_mode=True  -> resposta conceitual (ignora rows)
@@ -429,11 +469,14 @@ class Narrator:
             rag_chunks_count = 0
         rag_best_text = _best_rag_chunk_text(rag_ctx)
 
-        # Se a entidade pediu para não usar RAG no prompt,
-        # também zeramos o uso de RAG na narrativa determinística.
+        narrator_meta["rag"] = _json_sanitise(rag_ctx)
+
+        rag_ctx_for_prompt = rag_ctx
         if not use_rag_in_prompt:
-            rag_ctx = None
+            rag_ctx_for_prompt = None
             rag_best_text = ""
+            if narrator_meta["strategy"] == "deterministic":
+                narrator_meta["strategy"] = "rag_forbidden_by_policy"
 
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "
@@ -444,7 +487,7 @@ class Narrator:
             template_id or "",
             effective_enabled,
             effective_shadow,
-            self.model,
+            effective_model,
             rag_enabled,
             rag_chunks_count,
         )
@@ -485,32 +528,33 @@ class Narrator:
 
         # 3) fallback padrão
         baseline_text = deterministic_text or _default_text(entity, effective_facts)
+        rows_count = len(effective_facts.get("rows") or [])
 
-        def _make_response(
+        def _finalize_response(
             text: str,
             *,
             tokens_in: int = 0,
             tokens_out: int | None = None,
             latency_ms: float | None = None,
             error: str | None = None,
-            strategy: str | None = None,
-            enabled: bool | None = None,
-            shadow: bool | None = None,
+            strategy_override: str | None = None,
         ) -> Dict[str, Any]:
-            computed_tokens_out = (
-                tokens_out if tokens_out is not None else len(text.split())
+            computed_tokens_out = tokens_out if tokens_out is not None else len(
+                (text or "").split()
             )
             elapsed_ms = (
                 latency_ms
                 if latency_ms is not None
                 else (time.perf_counter() - t0_global) * 1000.0
             )
-            final_strategy = strategy
-            if not final_strategy:
-                # Heurística conservadora:
-                # - se não chamamos LLM → determinístico
-                # - se chamamos e houve texto do LLM → "llm" (ajustado no call site)
-                final_strategy = "llm" if computed_tokens_out and not error else "deterministic"
+
+            narrator_meta["latency_ms"] = elapsed_ms
+            if error is not None:
+                narrator_meta["error"] = error
+            if strategy_override:
+                narrator_meta["strategy"] = strategy_override
+
+            final_strategy = narrator_meta.get("strategy") or "deterministic"
 
             return {
                 "text": text,
@@ -524,45 +568,39 @@ class Narrator:
                 "tokens": {"in": tokens_in, "out": computed_tokens_out},
                 "latency_ms": elapsed_ms,
                 "error": error,
-                "enabled": self.enabled if enabled is None else enabled,
-                "shadow": self.shadow if shadow is None else shadow,
+                "enabled": narrator_meta.get("enabled", False),
+                "shadow": narrator_meta.get("shadow", False),
+                "meta": {"narrator": narrator_meta},
             }
 
-        # Caso global: Narrator desabilitado → só baseline
         if not effective_enabled:
-            return _make_response(
+            return _finalize_response(
                 baseline_text,
-                strategy="deterministic",
-                enabled=effective_enabled,
-                shadow=effective_shadow,
                 error="llm_disabled_by_policy",
+                strategy_override="llm_disabled_by_policy",
             )
 
-        # Cliente LLM indisponível → só baseline, com erro explícito
+        if effective_max_llm_rows <= 0:
+            return _finalize_response(
+                baseline_text,
+                error="llm_disabled_by_policy",
+                strategy_override="llm_disabled_by_policy",
+            )
+
+        if rows_count > effective_max_llm_rows:
+            return _finalize_response(
+                baseline_text,
+                error="llm_skipped_max_rows",
+                strategy_override="llm_skipped_max_rows",
+            )
+
         if self.client is None:
-            return _make_response(
+            return _finalize_response(
                 baseline_text,
                 error="client_unavailable",
-                strategy="deterministic",
-                enabled=effective_enabled,
-                shadow=effective_shadow,
+                strategy_override="llm_failed",
             )
 
-        # Decisão policy-driven: usar ou não usar LLM
-        if not self._should_use_llm(effective_facts, effective_policy):
-            rows_count = len(effective_facts.get("rows") or [])
-            return _make_response(
-                baseline_text,
-                error=(
-                    f"llm_skipped: rows_count={rows_count} "
-                    f"max_llm_rows={effective_max_llm_rows}"
-                ),
-                strategy="deterministic",
-                enabled=effective_enabled,
-                shadow=effective_shadow,
-            )
-
-        # A partir daqui, LLM está habilitado e será chamado
         prompt_facts = dict(effective_facts or {})
         prompt_facts.setdefault("rendered_text", baseline_text)
         if "fallback_message" not in prompt_facts:
@@ -572,25 +610,32 @@ class Narrator:
 
         prompt_meta = dict(render_meta)
         if concept_mode:
-            # Sinaliza explicitamente o modo para o prompt builder / debugging
             prompt_meta.setdefault("narrator_mode", "concept")
 
-        # 🔧 Normaliza tudo para tipos JSON-safe (principalmente Decimal)
         prompt_facts = _json_sanitise(prompt_facts)
         prompt_meta = _json_sanitise(prompt_meta)
-        rag_ctx_sanitised = _json_sanitise(rag_ctx) if rag_ctx is not None else None
-        use_rag_in_prompt = effective_policy.get("use_rag_in_prompt", True)
-        rag_payload_for_prompt = rag_ctx_sanitised if use_rag_in_prompt else None
+        rag_ctx_sanitised = (
+            _json_sanitise(rag_ctx_for_prompt) if rag_ctx_for_prompt is not None else None
+        )
 
         t0 = time.perf_counter()
-        prompt = build_prompt(
-            question=question,
-            facts=prompt_facts,
-            meta=prompt_meta,
-            style=self.style,
-            # Passa o contexto de RAG já saneado
-            rag=rag_payload_for_prompt,
-        )
+        try:
+            prompt = build_prompt(
+                question=question,
+                facts=prompt_facts,
+                meta=prompt_meta,
+                style=self.style,
+                rag=rag_ctx_sanitised,
+                effective_policy=effective_policy,
+            )
+        except TypeError:
+            prompt = build_prompt(
+                question=question,
+                facts=prompt_facts,
+                meta=prompt_meta,
+                style=self.style,
+                rag=rag_ctx_sanitised,
+            )
 
         tokens_in = len(prompt.split()) if prompt else 0
 
@@ -598,16 +643,17 @@ class Narrator:
         error: str | None = None
         tokens_out = 0
 
+        narrator_meta["used"] = True
+
         try:
-            # Usamos generate(), alinhado com OllamaClient
-            response = self.client.generate(prompt, model=self.model, stream=False)
+            response = self.client.generate(prompt, model=effective_model, stream=False)
             candidate = (response or "").strip()
             LOGGER.info(
                 "NARRATOR_LLM_RAW_RESPONSE entity=%s intent=%s model=%s "
                 "tokens_in=%s candidate_len=%s",
                 entity,
                 intent,
-                self.model,
+                effective_model,
                 tokens_in,
                 len(candidate),
             )
@@ -620,31 +666,50 @@ class Narrator:
                 "NARRATOR_LLM_ERROR entity=%s intent=%s model=%s error=%s",
                 entity,
                 intent,
-                self.model,
+                effective_model,
                 exc,
             )
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
+        narrator_meta["latency_ms"] = elapsed_ms
 
         LOGGER.info(
             "NARRATOR_FINAL_TEXT entity=%s intent=%s model=%s "
             "used_llm=%s latency_ms=%.2f error=%s text_preview=%s",
             entity,
             intent,
-            self.model,
+            effective_model,
             bool(tokens_out),
             elapsed_ms,
             error,
             (text[:120] + "..." if isinstance(text, str) and len(text) > 120 else text),
         )
 
-        return _make_response(
+        if error:
+            return _finalize_response(
+                baseline_text,
+                tokens_in=tokens_in,
+                tokens_out=tokens_out,
+                latency_ms=elapsed_ms,
+                error=error,
+                strategy_override="llm_failed",
+            )
+
+        if effective_shadow:
+            narrator_meta["strategy"] = "llm_shadow"
+            return _finalize_response(
+                baseline_text,
+                tokens_in=tokens_in,
+                tokens_out=tokens_out,
+                latency_ms=elapsed_ms,
+                strategy_override="llm_shadow",
+            )
+
+        narrator_meta["strategy"] = "llm"
+        return _finalize_response(
             text,
             tokens_in=tokens_in,
             tokens_out=tokens_out,
             latency_ms=elapsed_ms,
-            error=error,
-            strategy="llm" if tokens_out and not error else "deterministic",
-            enabled=effective_enabled,
-            shadow=effective_shadow,
+            strategy_override="llm",
         )

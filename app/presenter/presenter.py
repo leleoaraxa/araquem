@@ -210,15 +210,10 @@ def present(
     )
     rendered_template = render_rows_template(facts.entity, rows)
 
-    # Estado inicial do narrador (equivalente ao narrator_info atual)
-    enabled = bool(narrator_flags.get("enabled"))
-    shadow = bool(narrator_flags.get("shadow"))
-    model = str(narrator_flags.get("model") or "")
-
     narrator_info: Dict[str, Any] = {
-        "enabled": enabled,
-        "shadow": shadow,
-        "model": model,
+        "enabled": bool(narrator_flags.get("enabled")),
+        "shadow": bool(narrator_flags.get("shadow")),
+        "model": str(narrator_flags.get("model") or ""),
         "latency_ms": None,
         "error": None,
         "used": False,
@@ -241,56 +236,45 @@ def present(
         if narrator_meta:
             meta_for_narrator.update(narrator_meta)
 
-        # Modo shadow: mede Narrator mas não altera o answer
-        if shadow:
-            try:
-                t0 = time.perf_counter()
-                out = narrator.render(question, facts.dict(), meta_for_narrator)
-                dt_ms = (time.perf_counter() - t0) * 1000.0
+        try:
+            t0 = time.perf_counter()
+            out = narrator.render(question, facts.dict(), meta_for_narrator)
+            dt_ms = (time.perf_counter() - t0) * 1000.0
 
-                latency = out.get("latency_ms", dt_ms)
-                score = out.get("score")
-
+            narrator_out_meta = out.get("meta", {}).get("narrator")
+            if isinstance(narrator_out_meta, dict):
+                narrator_info = narrator_out_meta
+                narrator_info.setdefault("latency_ms", dt_ms)
+            else:
                 narrator_info.update(
-                    latency_ms=latency,
-                    score=score,
-                    used=True,
-                    strategy="llm_shadow",
+                    latency_ms=out.get("latency_ms", dt_ms),
+                    score=out.get("score"),
+                    used=out.get("used", False),
+                    error=out.get("error"),
+                    strategy=out.get("strategy", narrator_info.get("strategy")),
                 )
+
+            strategy = narrator_info.get("strategy") or "deterministic"
+            text = out.get("text") or legacy_answer
+            if strategy == "llm_shadow":
+                final_answer = legacy_answer
                 counter("sirios_narrator_shadow_total", outcome="ok")
-                if latency is not None:
-                    histogram("sirios_narrator_latency_ms", float(latency))
-            except Exception as e:  # noqa: BLE001
-                narrator_info.update(error=str(e), strategy="fallback_error")
-                counter("sirios_narrator_shadow_total", outcome="error")
-
-        # Modo enabled: substitui o answer pelo texto do Narrator
-        if enabled:
-            try:
-                t0 = time.perf_counter()
-                out = narrator.render(question, facts.dict(), meta_for_narrator)
-                dt_ms = (time.perf_counter() - t0) * 1000.0
-
-                text = out.get("text") or legacy_answer
-                latency = out.get("latency_ms", dt_ms)
-                score = out.get("score")
-
+            else:
                 final_answer = text
-                narrator_info.update(
-                    latency_ms=latency,
-                    score=score,
-                    used=True,
-                    strategy="llm",
+                counter(
+                    "sirios_narrator_render_total",
+                    outcome="ok" if strategy == "llm" else "skip",
                 )
-                counter("sirios_narrator_render_total", outcome="ok")
-                if latency is not None:
-                    histogram("sirios_narrator_latency_ms", float(latency))
-            except Exception as e:  # noqa: BLE001
-                narrator_info.update(error=str(e), strategy="fallback_error")
-                counter("sirios_narrator_render_total", outcome="error")
-                # fallback: mantém final_answer = legacy_answer
 
-    narrator_info["rag"] = narrator_rag_context
+            latency = narrator_info.get("latency_ms") or dt_ms
+            if latency is not None:
+                histogram("sirios_narrator_latency_ms", float(latency))
+        except Exception as e:  # noqa: BLE001
+            narrator_info.update(error=str(e), strategy="fallback_error")
+            counter("sirios_narrator_render_total", outcome="error")
+            # fallback: mantém final_answer = legacy_answer
+
+    narrator_info.setdefault("rag", narrator_rag_context)
 
     return PresentResult(
         answer=final_answer,
