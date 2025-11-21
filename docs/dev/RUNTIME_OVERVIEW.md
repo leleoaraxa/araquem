@@ -45,7 +45,7 @@
 
 5) **Presenter** — `app/presenter/presenter.py` (`present`)
    - Recebe `plan`, `results` e `meta` do orchestrator, além de `identifiers` e `aggregates` calculados no endpoint.
-   - Constrói `facts` (`build_facts`) com `result_key`, `rows`, `primary`, `identifiers`, `aggregates`, `requested_metrics`, `ticker`/`fund` e score do planner.
+   - Constrói `facts` (`build_facts`) com contrato explícito: `question`, `intent`, `entity`, `score` (=`meta['planner_score']`), `result_key`, `rows`, `primary`, `aggregates`, `identifiers`, `requested_metrics`, `ticker`/`fund` (atalhos) e `planner_score` (espelho de `score`).
    - Gera baseline determinístico via `render_answer` + `render_rows_template`.
    - Monta um `narrator_rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) **apenas para consumo interno do Narrator**; `meta['rag']` continua sendo o valor recebido do Orchestrator.
    - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag` (interno).

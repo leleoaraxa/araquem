@@ -17,42 +17,43 @@ from app.responder import render_answer
 
 
 class FactsPayload(BaseModel):
-    """
-    Pacote canônico de fatos estruturados que alimenta
-    Narrator, Responder e qualquer canal de apresentação.
+    """Pacote canônico de fatos estruturados usado pelo Presenter.
 
-    Ele é derivado de:
-    - planner.explain(question)  → plan
-    - orchestrator.route_question(question) → results
-    - orchestrator.extract_identifiers(question) → identifiers
-    - infer_params(...) → aggregates
+    Campos mínimos e suas origens:
+    - question: pergunta original recebida pelo endpoint.
+    - intent: `plan['chosen']['intent']` (Planner).
+    - entity: `plan['chosen']['entity']` (Planner).
+    - score: `meta['planner_score']` (ou `plan['chosen']['score']` como fallback).
+    - result_key: `meta['result_key']` quando disponível; senão, a primeira chave de `results`.
+    - rows: `results[result_key]` (formatação do Orchestrator).
+    - primary: primeira linha de `rows` (ou `{}` quando vazio).
+    - aggregates: parâmetros inferidos (`infer_params`).
+    - identifiers: identificadores extraídos pelo orchestrator.
+    - requested_metrics: métricas solicitadas (`meta['requested_metrics']`).
+
+    Campos auxiliares:
+    - planner_score: espelho de `score` para compatibilidade retroativa.
+    - ticker/fund: atalhos convenientes extraídos de `primary` ou `identifiers`.
     """
 
-    # Pergunta original do usuário
     question: str
-
-    # Decisão do planner
     intent: str
     entity: str
+    score: float
     planner_score: float
 
-    # Chave de resultado da entidade (ex.: "dividends", "prices")
     result_key: Optional[str]
 
-    # Dados tabulares normalizados
     rows: List[Dict[str, Any]]
     primary: Dict[str, Any]
 
-    # Agregados inferidos (infer_params)
     aggregates: Dict[str, Any]
-
-    # Filtros/identificadores extraídos da pergunta
     identifiers: Dict[str, Any]
 
-    # Atalhos convenientes
+    requested_metrics: List[str] = Field(default_factory=list)
+
     ticker: Optional[str] = None
     fund: Optional[str] = None
-    requested_metrics: List[str] = Field(default_factory=list)
 
 
 class PresentResult(BaseModel):
@@ -93,31 +94,41 @@ def build_facts(
     Planner + Orchestrator + Param Inference.
 
     Retorna:
-      - facts: FactsPayload completo
-      - result_key: chave de resultados (ex.: "dividends")
-      - rows: lista de linhas usada por formatter/responder
+    - facts: FactsPayload completo
+    - result_key: chave de resultados (ex.: "dividends")
+    - rows: lista de linhas usada por formatter/responder
     """
     chosen = plan.get("chosen") or {}
     intent = str(chosen.get("intent") or "")
     entity = str(chosen.get("entity") or "")
-    try:
-        planner_score = float(chosen.get("score") or 0.0)
-    except (TypeError, ValueError):
-        planner_score = 0.0
+
+    def _coerce_float(value: Any) -> Optional[float]:
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    meta_dict = meta if isinstance(meta, dict) else {}
+    score_from_meta = _coerce_float(meta_dict.get("planner_score"))
+    score_from_plan = _coerce_float(chosen.get("score"))
+    score = score_from_meta if score_from_meta is not None else (score_from_plan or 0.0)
 
     results = orchestrator_results or {}
-    result_key: Optional[str] = next(iter(results.keys()), None)
+    meta_result_key = meta_dict.get("result_key") if isinstance(meta_dict, dict) else None
+    result_key: Optional[str]
+    if isinstance(meta_result_key, str) and meta_result_key in results:
+        result_key = meta_result_key
+    else:
+        result_key = next(iter(results.keys()), meta_result_key if isinstance(meta_result_key, str) else None)
 
     rows_raw = results.get(result_key)
     rows: List[Dict[str, Any]] = rows_raw if isinstance(rows_raw, list) else []
     primary: Dict[str, Any] = rows[0] if rows else {}
 
-    identifiers = dict(identifiers or {})
-    aggregates = dict(aggregates or {})
+    identifiers_clean = dict(identifiers or {})
+    aggregates_clean = dict(aggregates or {})
 
-    meta_dict = meta if isinstance(meta, dict) else {}
     requested_metrics_raw = meta_dict.get("requested_metrics")
-
     requested_metrics: List[str]
     if isinstance(requested_metrics_raw, list):
         requested_metrics = [
@@ -126,22 +137,23 @@ def build_facts(
     else:
         requested_metrics = []
 
-    ticker = (primary or {}).get("ticker") or identifiers.get("ticker")
-    fund = (primary or {}).get("fund")
+    ticker = (primary or {}).get("ticker") or identifiers_clean.get("ticker")
+    fund = (primary or {}).get("fund") or identifiers_clean.get("fund")
 
     facts = FactsPayload(
         question=question,
         intent=intent,
         entity=entity,
-        planner_score=planner_score,
+        score=score,
+        planner_score=score,
         result_key=result_key,
         rows=rows,
         primary=primary,
-        aggregates=aggregates,
-        identifiers=identifiers,
+        aggregates=aggregates_clean,
+        identifiers=identifiers_clean,
+        requested_metrics=requested_metrics,
         ticker=ticker,
         fund=fund,
-        requested_metrics=requested_metrics,
     )
 
     return facts, result_key, rows
