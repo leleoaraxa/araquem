@@ -356,9 +356,7 @@ class Narrator:
 
         # Política efetiva (global + overrides da entidade)
         effective_policy = _get_effective_policy(entity, self.policy)
-        effective_enabled = bool(
-            effective_policy.get("llm_enabled", self.enabled)
-        )
+        effective_enabled = bool(effective_policy.get("llm_enabled", self.enabled))
         effective_shadow = bool(effective_policy.get("shadow", self.shadow))
         max_rows_policy = effective_policy.get("max_llm_rows", self.max_llm_rows)
         try:
@@ -384,6 +382,9 @@ class Narrator:
         concept_with_data_when_rag = bool(
             entity_policy.get("concept_with_data_when_rag", False)
         )
+        # Se a entidade marcar use_rag_in_prompt: false,
+        # também bloqueamos o uso de RAG no texto determinístico.
+        use_rag_in_prompt = bool(entity_policy.get("use_rag_in_prompt", True))
 
         # Decisão de modo:
         # - concept_mode=True  -> resposta conceitual (ignora rows)
@@ -427,6 +428,12 @@ class Narrator:
             rag_enabled = False
             rag_chunks_count = 0
         rag_best_text = _best_rag_chunk_text(rag_ctx)
+
+        # Se a entidade pediu para não usar RAG no prompt,
+        # também zeramos o uso de RAG na narrativa determinística.
+        if not use_rag_in_prompt:
+            rag_ctx = None
+            rag_best_text = ""
 
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "

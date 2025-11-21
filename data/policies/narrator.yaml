@@ -6,10 +6,10 @@ terms:
 
 narrator:
   llm_enabled: true         # você controla manualmente
-  shadow: false             # roda ou não sem afetar UX
+  shadow: true             # roda ou não sem afetar UX
   model: mistral:instruct
   style: executivo
-  max_llm_rows: 50           # 0 = nunca chama o LLM
+  max_llm_rows: 10           # 0 = nunca chama o LLM
   max_prompt_tokens: 4000
   max_output_tokens: 700
 
