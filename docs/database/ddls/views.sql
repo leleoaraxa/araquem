@@ -622,7 +622,7 @@ FROM view_fiis_info;
 -- =====================================================================
 -- VIEW: client_fiis_positions
 -- =====================================================================
-CREATE OR REPLACE VIEW client_fiis_positions AS
+CREATE MATERIALIZED VIEW client_fiis_positions AS
 WITH docs AS (
     SELECT DISTINCT document_number
     FROM equities_positions
@@ -643,15 +643,16 @@ SELECT
     f.reference_date      AS created_at,
     f.reference_date      AS updated_at
 FROM docs d
-CROSS JOIN LATERAL fc_fiis_portfolio(d.document_number) AS f;
+CROSS JOIN LATERAL fc_fiis_portfolio(d.document_number) AS f
+WITH NO DATA;
 -- =====================================================================
 -- INDEX VIEW: client_fiis_positions
 -- =====================================================================
-CREATE INDEX IF NOT EXISTS idx_client_position_filter
-ON equities_positions (document_number, specification_code, product_type_name, product_category_name, reference_date)
-WHERE specification_code = 'Cotas'
-  AND product_type_name = 'FII - Fundo de Investimento Imobiliário'
-  AND product_category_name = 'Renda Variavel';
+CREATE UNIQUE INDEX CONCURRENTLY idx_client_fiis_positions_uq
+    ON client_fiis_positions (document_number, ticker, participant_name, position_date);
+
+CREATE INDEX CONCURRENTLY idx_client_fiis_positions_doc_ticker
+    ON client_fiis_positions (document_number, ticker);
 -- =====================================================================
 -- VIEW: fiis_financials_snapshot
 -- =====================================================================
