@@ -5,8 +5,8 @@ terms:
     version: 1
 
 default:
-  llm_enabled: false
-  shadow: false
+  llm_enabled: true
+  shadow: true
   max_llm_rows: 0
   use_rag_in_prompt: false
   model: mistral:instruct
@@ -15,7 +15,7 @@ entities:
     fiis_financials_risk:
       llm_enabled: false
       shadow: false
-      max_llm_rows: 0
+      max_llm_rows: 10
       use_rag_in_prompt: false
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
@@ -24,7 +24,7 @@ entities:
     fiis_noticias:
       llm_enabled: true
       shadow: false
-      max_llm_rows: 5
+      max_llm_rows: 25
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
@@ -33,7 +33,7 @@ entities:
     history_market_indicators:
       llm_enabled: true
       shadow: false
-      max_llm_rows: 5
+      max_llm_rows: 10
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
