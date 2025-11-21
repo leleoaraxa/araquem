@@ -6,10 +6,10 @@ terms:
 
 narrator:
   llm_enabled: true         # você controla manualmente
-  shadow: false             # roda ou não sem afetar UX
+  shadow: true             # roda ou não sem afetar UX
   model: mistral:instruct
   style: executivo
-  max_llm_rows: 50           # 0 = nunca chama o LLM
+  max_llm_rows: 10           # 0 = nunca chama o LLM
   max_prompt_tokens: 4000
   max_output_tokens: 700
 
@@ -27,15 +27,13 @@ narrator:
   #   - Com pelo menos 1 ticker → modo POR FUNDO (usa rows normalmente).
   entities:
     fiis_financials_risk:
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      # Para risco quantitativo, manter fluxo 100% determinístico:
-      # - renderer especializado + dados D-1
-      # - RAG apenas para logging/diagnóstico (não entra no prompt)
-      llm_enabled: false        # desliga LLM para esta entidade
-      max_llm_rows: 0           # 0 = nunca chama o LLM
-      use_rag_in_prompt: false  # ainda monta meta.rag, mas não injeta no SYSTEM_PROMPT
+      llm_enabled: false           # DESLIGA LLM para essa entidade
+      shadow: true                 # roda só para métricas / eventos, se quiser
+      max_llm_rows: 0              # 0 = nunca usa LLM
+      prefer_concept_when_no_ticker: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      use_rag_in_prompt: false     # vamos usar também para bloquear RAG no texto
 
     fiis_noticias:
       prefer_concept_when_no_ticker: true
