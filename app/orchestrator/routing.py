@@ -546,7 +546,17 @@ class Orchestrator:
                 entity=str(entity or ""),
             )
         except Exception as exc:
-            meta["rag"] = {"enabled": False, "error": str(exc)}
+            meta["rag"] = {
+                "enabled": False,
+                "question": question,
+                "intent": intent,
+                "entity": entity,
+                "used_collections": [],
+                "chunks": [],
+                "total_chunks": 0,
+                "policy": None,
+                "error": str(exc),
+            }
 
         return {
             "status": {"reason": "ok", "message": "ok"},

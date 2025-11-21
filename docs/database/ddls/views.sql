@@ -623,32 +623,27 @@ FROM view_fiis_info;
 -- VIEW: client_fiis_positions
 -- =====================================================================
 CREATE OR REPLACE VIEW client_fiis_positions AS
-WITH base AS (
-  SELECT
-    ep.*,
-    ROW_NUMBER() OVER (
-      PARTITION BY ep.document_number, ep.ticker_symbol, ep.participant_name
-      ORDER BY ep.reference_date DESC
-    ) AS rn
-  FROM equities_positions ep
-  WHERE ep.specification_code = 'Cotas'
-    AND ep.product_type_name = 'FII - Fundo de Investimento Imobiliário'
-    AND ep.product_category_name = 'Renda Variavel'
+WITH docs AS (
+    SELECT DISTINCT document_number
+    FROM equities_positions
 )
 SELECT
-    document_number,
-    reference_date AS position_date,
-    ticker_symbol AS ticker,
-    corporation_name AS fii_name,
-    participant_name,
-    equities_quantity AS qty,
-    closing_price,
-    update_value,
-    available_quantity,
-	reference_date as created_at,
-	reference_date as updated_at
-FROM base
-WHERE rn = 1;
+    f.document_number,
+    f.reference_date      AS position_date,
+    f.ticker_symbol       AS ticker,
+    f.corporation_name    AS fii_name,
+    f.participant_name,
+    f.equities_quantity   AS qty,
+    f.closing_price,
+    f.update_value,
+    f.available_quantity,
+    f.average_price,
+    f.profitability_percentage,
+    f.percentage,
+    f.reference_date      AS created_at,
+    f.reference_date      AS updated_at
+FROM docs d
+CROSS JOIN LATERAL fc_fiis_portfolio(d.document_number) AS f;
 -- =====================================================================
 -- INDEX VIEW: client_fiis_positions
 -- =====================================================================
