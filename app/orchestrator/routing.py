@@ -536,29 +536,17 @@ class Orchestrator:
         }
 
         # ------------------- M12: contexto de RAG -------------------
-        # Sempre tentamos construir o contexto de RAG com base em
-        # question/intent/entity. O próprio build_rag_context aplica
-        # as políticas de roteamento (rag.yaml) e só acionará
-        # embeddings quando estiver habilitado.
+        # O contexto canônico de RAG é sempre produzido aqui no
+        # orchestrator. O build_rag_context aplica as políticas
+        # (rag.yaml) e só aciona embeddings quando habilitado.
         try:
-            rag_ctx = build_rag_context(
+            meta["rag"] = build_rag_context(
                 question=question,
                 intent=str(intent or ""),
                 entity=str(entity or ""),
             )
-        except Exception:
-            # Caminho extremamente excepcional; mantemos contrato mínimo.
-            rag_ctx = {
-                "enabled": False,
-                "question": question,
-                "intent": intent,
-                "entity": entity,
-                "chunks": [],
-                "total_chunks": 0,
-                "error": "rag_context_builder_failed",
-            }
-
-        meta["rag"] = rag_ctx
+        except Exception as exc:
+            meta["rag"] = {"enabled": False, "error": str(exc)}
 
         return {
             "status": {"reason": "ok", "message": "ok"},

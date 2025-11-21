@@ -14,13 +14,13 @@ O **Context Builder** é responsável por:
 2. **Gerar embeddings da pergunta** usando o `OllamaClient`.
 3. **Consultar o EmbeddingStore** para recuperar os chunks relevantes.
 4. **Normalizar** os chunks (texto + metadados).
-5. Entregar um dicionário determinístico para o Narrator, contendo:
+5. Entregar um dicionário determinístico para o Orchestrator (`meta['rag']`) e para o Narrator (via `narrator_rag_context` no Presenter), contendo:
 
    * pergunta, intent, entity
    * coleções utilizadas
    * chunks retornados
    * snapshot da policy aplicada
-   * status habilitado/desabilitado
+   * status habilitado/desabilitado e erro (quando existir)
 
 O módulo **nunca chama LLM**. É 100% determinístico e testável.
 
@@ -76,7 +76,7 @@ O primeiro gate sempre é o **routing**, localizado em `rag.yaml`:
 ```yaml
 routing:
   deny_intents: [...]
-  allow_intents: [fiis_noticias]
+  allow_intents: [fiis_noticias, fiis_financials_risk, history_market_indicators, history_b3_indexes, history_currency_rates]
 ```
 
 ### ✔ Verdades importantes
@@ -87,18 +87,19 @@ routing:
 
 ### Exemplo do projeto:
 
-* Apenas `fiis_noticias` é permitido.
-* Tudo que é tabular (preços, cadastro, dividendos, rankings, processos, financials…) entra em `deny_intents`.
+* Intents textuais habilitadas: `fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
+* Intents tabulares (preços, cadastro, dividendos, rankings, processos, snapshots) entram em `deny_intents` e não usam RAG.
 
-Resultado:
+Resultado (recorte):
 
-| Intent                  | RAG habilitado? |
-| ----------------------- | --------------- |
-| `fiis_noticias`         | ✅ Sim           |
-| `fiis_cadastro`         | ❌ Não (deny)    |
-| `fiis_rankings`         | ❌ Não (deny)    |
-| `fiis_dividendos`       | ❌ Não (deny)    |
-| `client_fiis_positions` | ❌ Não (deny)    |
+| Intent                      | RAG habilitado? |
+| --------------------------- | --------------- |
+| `fiis_noticias`             | ✅ Sim           |
+| `fiis_financials_risk`      | ✅ Sim           |
+| `history_market_indicators` | ✅ Sim           |
+| `fiis_cadastro`             | ❌ Não (deny)    |
+| `fiis_rankings`             | ❌ Não (deny)    |
+| `client_fiis_positions`     | ❌ Não (deny)    |
 
 ---
 
@@ -107,20 +108,32 @@ Resultado:
 Se a intent passou pelo routing, o Context Builder aplica as regras:
 
 1. `rag.entities` (se entity estiver mapeada)
-2. `rag.default` (não usado no projeto atual)
-3. `rag.profiles` (fallback principal)
+2. `rag.default` (fallback seguro)
+3. `rag.profiles` (para herdar parâmetros por perfil)
 
-No projeto Araquem, usamos:
+No projeto Araquem, usamos perfis e entidades explícitas:
 
 ```yaml
 profiles:
+  default: { k: 6, min_score: 0.20, max_context_chars: 12000 }
+  macro:   { k: 4, min_score: 0.10 }
+  risk:    { k: 6, min_score: 0.15 }
+
+rag:
+  entities:
+    fiis_noticias:         { profile: default, collections: [fiis_noticias, concepts-fiis, concepts-risk], max_chunks: 6 }
+    fiis_financials_risk:  { profile: risk,    collections: [concepts-risk, concepts-fiis], max_chunks: 5 }
+    history_market_indicators: { profile: macro, collections: [concepts-macro], max_chunks: 4 }
+    history_b3_indexes:    { profile: macro, collections: [concepts-macro], max_chunks: 4 }
+    history_currency_rates:{ profile: macro, collections: [concepts-macro], max_chunks: 4 }
   default:
-    k: 5
-    min_score: 0.20
-    max_context_chars: 12000
+    profile: default
+    max_chunks: 3
+    collections: [concepts-fiis]
+    min_score: 0.25
 ```
 
-Como não há `entities` nem `default`, **todo RAG permitido usa `profiles.default`**.
+Se a entidade não estiver mapeada em `rag.entities`, o builder usa `rag.default` como fallback seguro.
 
 ---
 
@@ -167,7 +180,8 @@ Formato retornado:
     "min_score": 0.20,
     "max_tokens": 12000,
     "collections": [...]
-  }
+  },
+  "error": null
 }
 ```
 
@@ -177,7 +191,8 @@ Formato retornado:
 {
   "enabled": false,
   "chunks": [],
-  "total_chunks": 0
+  "total_chunks": 0,
+  "error": null
 }
 ```
 
@@ -191,7 +206,7 @@ O módulo foi projetado segundo o **Guardrails Araquem v2.1.1**:
 * Nenhum hardcode.
 * Política externa (YAML) é **única fonte de verdade**.
 * Embedding vazio ou erro na store → retorna RAG disabled com warning, nunca explode.
-* Narrator só recebe chunks se houver política explícita.
+* Narrator só recebe chunks se houver política explícita. O contexto canônico (`meta['rag']`) é gerado pelo Orchestrator; o Presenter pode gerar um `narrator_rag_context` separado apenas para uso interno do Narrator.
 
 ---
 
@@ -218,11 +233,10 @@ Isso garante que:
 
 # 10. Evoluções previstas (M12 → M13)
 
-1. Suporte a entidades específicas no RAG (`rag.entities`).
-2. Suporte a perfis múltiplos (`profile: default | ambiguous`).
-3. Suporte real a `collections` para filtrar o store.
-4. Truncamento de chunks usando `max_context_chars`.
-5. Métricas de explain baseadas no peso BM25 x Semantics.
+1. Truncamento de chunks usando `max_context_chars` / `max_tokens`.
+2. Métricas de explain baseadas no peso BM25 x Semantics.
+3. Telemetria detalhada para latência de embedding e cache.
+4. Ferramentas de observabilidade para `/ops/rag_debug` compartilharem o mesmo snapshot do Orchestrator.
 
 Essas evoluções seguem o Guardrails Araquem e serão abordadas em milestones seguintes.
 
@@ -245,5 +259,7 @@ ctx = build_context(
     entity=meta.entity,
 )
 ```
+
+O Orchestrator publica esse contexto em `meta['rag']` e o Presenter apenas o reusa; quando necessário para o Narrator, o Presenter monta um `narrator_rag_context` separado sem modificar o payload canônico.
 
 ---

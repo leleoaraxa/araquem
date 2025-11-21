@@ -176,6 +176,7 @@ def build_context(
       - 'chunks': List[Dict[str, Any]]  # cada chunk com texto + metadados
       - 'total_chunks': int
       - 'policy': Dict[str, Any]  # snapshot mínimo da policy aplicada (opcional)
+      - 'error': Optional[str]
     """
 
     applied_policy = policy or load_rag_policy()
@@ -188,6 +189,7 @@ def build_context(
             "used_collections": [],
             "chunks": [],
             "total_chunks": 0,
+            "error": None,
         }
 
     resolved_policy = _resolve_policy(entity, applied_policy)
@@ -241,6 +243,7 @@ def build_context(
             "used_collections": collections,
             "chunks": [],
             "total_chunks": 0,
+            "error": str(exc),
         }
 
     chunks = [_normalize_chunk(item) for item in results]
@@ -263,4 +266,5 @@ def build_context(
         "chunks": chunks,
         "total_chunks": len(chunks),
         "policy": snapshot_policy,
+        "error": None,
     }
