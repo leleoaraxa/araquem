@@ -2,160 +2,115 @@
 
 ## 1. Payload `/ask`
 - **Definição:** `AskPayload` em `app/api/ask.py` (Pydantic).
-- **Campos obrigatórios:**
-  - `question: str`
-  - `conversation_id: str`
-  - `nickname: str`
-  - `client_id: str`
-- **Validação:** Pydantic garante tipos básicos; sanitização adicional ocorre via `json_sanitize` antes de responder.
+- **Campos obrigatórios:** `question`, `conversation_id`, `nickname`, `client_id`.
+- **Validação:** Pydantic + sanitização final via `json_sanitize` antes de responder.
 
-## 2. Estrutura da resposta `/ask`
+## 2. Estrutura canônica do payload de resposta do `/ask`
 - **Formato base:** dict com chaves `status`, `results`, `meta`, `answer`.
-- **`status`:** `{ "reason": str, "message": str }`. Razões conhecidas: `ok`, `unroutable`, `gated`.
-- **`results`:** dict `{ result_key: List[Dict[str, Any]] }`. `result_key` vem de `data/entities/<entity>/entity.yaml`.
-- **`meta`:**
-  - `planner`: saída completa do planner (ver abaixo).
-  - `result_key`, `planner_intent`, `planner_entity`, `planner_score`.
-  - `rows_total`: número de linhas após formatter.
-  - `elapsed_ms`: latência total desde início do endpoint.
-  - `aggregates`: dict com parâmetros inferidos (`agg`, `window`, `limit`, `order`).
-  - `cache`: `{ "hit": bool, "key": str|None, "ttl": int|None }` (quando `read_through` executa) ou `{ "hit": bool, "key": key|None, "ttl": ttl|Any }` vindo do orchestrator.
-  - `narrator`: `{ "enabled": bool, "shadow": bool, "model": str, "latency_ms": float|None, "used": bool, "strategy": str, "error": str|None, "score": float|None }`.
-  - `explain`: apenas quando `?explain=true`; replica `plan['explain']`.
-  - `explain_analytics`: payload retornado por `app.analytics.explain.explain` quando explain ativo.
-- **`answer`:** string renderizada (Narrator se ativo; caso contrário `render_answer`).
+- **`status`:** `{ "reason": str, "message": str }` com motivos conhecidos `ok`, `unroutable`, `gated`.
+- **`results`:** `{ result_key: List[Dict[str, Any]] }` onde `result_key` vem do `entity.yaml` usado pelo builder.
+- **`answer`:** texto final decidido pela camada Presenter (`present`). Usa Narrator quando habilitado; caso contrário mantém o baseline determinístico (`render_answer`).
+- **`meta` (origens principais):**
+  - `planner` (planner.explain em `app/api/ask.py` e `route_question`).
+  - `result_key`, `planner_intent`, `planner_entity`, `planner_score`, `rows_total`, `elapsed_ms` (endpoint).
+  - `gate` (thresholds aplicados) e `aggregates` (inferência de parâmetros) vindos de `route_question` (`app/orchestrator/routing.py`).
+  - `requested_metrics` derivado de `ask.metrics_synonyms` do `entity.yaml` dentro do orchestrator.
+  - `cache` (hit/miss, key, ttl) construído no endpoint a partir de `read_through` ou da política explícita.
+  - `rag` (contexto de RAG) montado pelo orchestrator via `rag.context_builder.build_context`.
+  - `narrator` (estado e telemetria) produzido pela camada Presenter (`app/presenter/presenter.py`).
+  - `explain` (quando `?explain=true`) = `plan['explain']`.
+  - `explain_analytics` (quando `?explain=true`) produzido por `app.analytics.explain.explain` tanto no orchestrator quanto no endpoint.
 
-## 3. Planner (`Planner.explain`)
-- **Entrada:** `question: str`.
-- **Saída:** dict com chaves principais:
-  - `chosen`: `{ "intent": str|None, "entity": str|None, "score": float|None }`.
-  - `explain`: `{ "decision_path": List[Dict], "scoring": { ... }, "combined_intents": [...], "combined_entities": [...], "thresholds_applied": {...} }`.
-  - `rag`: quando habilitado, inclui `used`, `results`, `entity_hints`.
-  - `config`: thresholds aplicados (`planner.thresholds`), flags de RAG.
-- **Validação:** sem Pydantic; estrutura construída manualmente e consumida diretamente pelo endpoint e orchestrator.
+## 3. Fluxo `/ask` end-to-end (caminho da pergunta até a resposta)
 
-## 4. Inferência de parâmetros (`infer_params`)
-- **Entrada:** pergunta, intent, entity opcional, caminhos YAML.
-- **Saída:** dict com subset de chaves `agg`, `window`, `limit`, `order`. Pode retornar valores `None` quando regra não aplica.
-- **Uso:**
-  - Em `app/api.ask` para compor `facts['aggregates']` do Narrator e para métricas (`cache_identifiers`).
-  - Em `Orchestrator` para guiar o builder e formação de chave de cache.
+1) **Entrada HTTP** — `app/api/ask.py` (`ask`)
+   - Gera `request_id`, chama `planner.explain(question)` e registra métricas (`sirios_planner_*`).
+   - Em caso de ausência de entidade, responde `unroutable` já com `meta.planner` e `explain` (quando solicitado).
 
-## 5. Orchestrator (`route_question`)
-- **Entrada:** `question: str`, `explain: bool`.
-- **Saída:**
-  ```python
-  {
-      "status": {"reason": "ok|unroutable|gated", "message": str},
-      "results": {result_key: List[Dict[str, Any]]},
-      "meta": {
-          "planner": plan,
-          "result_key": str|None,
-          "planner_intent": str|None,
-          "planner_entity": str|None,
-          "planner_score": float|None,
-          "rows_total": int,
-          "elapsed_ms": int,
-          "gate": {"blocked": bool, "reason": str|None, "min_score": float, "min_gap": float, "top2_gap": float},
-          "aggregates": Dict[str, Any],
-          "explain": plan["explain"]|None,
-          "explain_analytics": Dict|None,
-      },
-  }
-  ```
-- **Cache interno para métricas:** quando `metrics_cache_hit=True`, injeta `meta['cache_context']` implícito via `metrics_cache_key`, `ttl`.
+2) **Planner** — `app/planner/planner.py` (`Planner.explain`)
+   - Normaliza pergunta, pontua intents/entities com ontologia (`data/ontology/entity.yaml`) e thresholds (`data/ops/planner_thresholds.yaml`).
+   - Retorna `plan = {"chosen": {intent, entity, score}, "explain": {...}}` com `decision_path`, `scoring`, `thresholds_applied` e blocos de RAG/hints quando configurados.
 
-## 6. Builder (`build_select_for_entity`)
-- **Entrada:** `entity: str`, `identifiers: Dict[str, Any]`, `agg_params: Dict[str, Any]`.
-- **Saída:** tuple `(sql: str, params: Dict[str, Any], result_key: str, return_columns: List[str])`.
-- **Dependências declarativas:**
-  - `entity.yaml` deve conter `result_key`, `sql_view`, `columns`, `identifiers`, `presentation`, `aggregations`.
-  - Quando `agg_params['agg'] == 'metrics'`, espera-se bloco `metrics` com `query`, `columns`, `placeholders`.
+3) **Param inference** — `app/planner/param_inference.py` (`infer_params`)
+   - Rodado no endpoint e no orchestrator. Usa `param_inference.yaml` + `entity.yaml` para inferir `agg`, `window`, `limit`, `order`, `metric` e normalizar janela temporal.
 
-## 7. Executor (`PgExecutor.query`)
-- **Entrada:** SQL e params.
-- **Saída:** `List[Dict[str, Any]]` com colunas definidas pelo SELECT. Cada row pode conter sub-dict `meta` (ex: métricas) utilizado pelo formatter.
-- **Erros:** exceções `psycopg.Error` propagadas para orchestrator.
+4) **Orchestrator** — `app/orchestrator/routing.py` (`route_question`)
+   - Reexecuta `Planner.explain` (para gate interno) e aplica thresholds YAML (`min_score`, `min_gap`) em `gate`.
+   - Extrai identificadores (`extract_identifiers`) com regex de ticker, resolve `requested_metrics` via `ask.metrics_synonyms`.
+   - Prepara contexto de cache de métricas (`_prepare_metrics_cache_context`) e tenta hit Redis (`metrics_cache_hit`).
+   - Em miss: monta SQL com `builder.build_select_for_entity`, executa `PgExecutor.query`, formata linhas com `formatter.format_rows` e grava cache se elegível.
+   - Constrói `meta` parcial: `planner`, `result_key`, `planner_intent`, `planner_entity`, `planner_score`, `rows_total`, `elapsed_ms`, `gate`, `aggregates`, `requested_metrics`, `explain`/`explain_analytics` quando solicitado.
+   - Sempre preenche `meta['rag']` usando `rag.context_builder.build_context` (ou fallback com erro se falhar) e retorna `{status, results, meta}`.
 
-## 8. Formatter
-- **`format_rows(rows, columns)`** → `List[Dict[str, Any]]` mantendo somente colunas declaradas.
-- **`render_rows_template(entity, rows)`** → `str` (Markdown) ou `""` se template inexistente.
-- **Dependência:** `entity.yaml` → `presentation.kind`, `presentation.fields.key/value`, template Jinja2 em `responses/`.
+5) **Presenter** — `app/presenter/presenter.py` (`present`)
+   - Recebe `plan`, `results` e `meta` do orchestrator, além de `identifiers` e `aggregates` calculados no endpoint.
+   - Constrói `facts` (`build_facts`) com `result_key`, `rows`, `primary`, `identifiers`, `aggregates`, `requested_metrics`, `ticker`/`fund` e score do planner.
+   - Gera baseline determinístico via `render_answer` + `render_rows_template`.
+   - Recalcula um `rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) para consumo do Narrator.
+   - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag`.
+   - Decide `answer` final (`Narrator` quando `enabled`, caso contrário baseline) e devolve `PresentResult` para o endpoint.
 
-## 9. Cache (`read_through`)
-- **Entrada:** cache Redis, políticas, entity, identificadores, função fetch.
-- **Saída:** `{ "cached": bool, "value": Any, "key": str|None, "ttl": int|None }`.
-- **Guardrails:** ignora políticas ausentes; evita cache quando `fetch_fn` retorna payload considerado vazio (`_is_empty_payload`).
+6) **Resposta HTTP** — `app/api/ask.py`
+   - Monta payload final com `status`, `results` (direto do orchestrator), `meta` (endpoint + presenter) e `answer` (Presenter).
+   - Em `?explain=true`, gera `explain_analytics` e insere registros em `explain_events` e `narrator_events` no Postgres (best-effort).
+   - Sanitiza JSON e responde via `JSONResponse`.
 
-## 10. Narrator
-- **`Narrator.render(question, facts, meta)`** → dict:
-  ```python
-  {
-      "text": str,
-      "score": float,
-      "hints": {"style": str},
-      "tokens": {"in": int, "out": int},
-      "latency_ms": float,
-      "error": str|None,
-      "enabled": bool,
-      "shadow": bool,
-  }
-  ```
-- **Entrada `facts`:**
-  - `rows`, `primary`, `result_key`, `aggregates`, `identifiers`, `ticker`, `fund` (derivado de rows/identifiers).
-  - `meta`: `intent`, `entity`, `explain` opcional.
-- **Fallback:** se Narrator indisponível/desabilitado, retorna baseline `text` com score 1.0 (se houver texto) e `error` indicando motivo.
+## 4. Campos de `meta` e origem
+- **`meta.planner`** — retorno bruto de `Planner.explain` (endpoint e orchestrator).
+- **`meta.gate`** — thresholds aplicados em `route_question` (`min_score`, `min_gap`, `top2_gap`, `blocked`, `reason`).
+- **`meta.result_key` / `meta.rows_total` / `meta.aggregates` / `meta.requested_metrics`** — montados no orchestrator após formatter e inferência (`extract_requested_metrics`).
+- **`meta.cache`** — endpoint (`read_through` ou fallback manual) com `{hit, key, ttl}` a partir do resultado do cache/política.
+- **`meta.explain`** — opcional (`plan['explain']`) propagado pelo endpoint e pelo orchestrator quando `explain=True`.
+- **`meta.explain_analytics`** — produzido por `app.analytics.explain.explain` tanto no orchestrator quanto no endpoint (latência, cache_hit, route_source, route_id).
+- **`meta.rag`** — contexto de RAG construído em `route_question` via `rag.context_builder.build_context` (aplica `data/policies/rag.yaml`, collections, chunks, flags `enabled`/`error`).
+- **`meta.narrator`** — preenchido pelo Presenter/Narrator (`present` + `Narrator.render`): `{enabled, shadow, model, latency_ms, error, used, strategy, score, rag}`.
+- **`meta.requested_metrics`** — lista inferida pelo orchestrator (ask.metrics_synonyms) replicada no endpoint.
+- **`meta.elapsed_ms`** — latência end-to-end do endpoint (`ask`).
 
-## 11. Explain Analytics (`app.analytics.explain.explain`)
-- **Entrada:**
-  - `request_id: str`
-  - `planner_output: Dict`
-  - `metrics: Dict` (latência, cache_hit, route_source)
-- **Saída:**
-  ```python
-  {
-      "request_id": str,
-      "timestamp": ISO8601,
-      "summary": str,
-      "details": {
-          "intent": str|None,
-          "entity": str|None,
-          "view": str|None,
-          "route_id": str,
-          "cache_hit": bool|None,
-          "latency_ms": float|None,
-          "route_source": str|None,
-          "notes": str|None,
-      }
-  }
-  ```
-- **Persistência:** endpoint `/ask` opcionalmente insere linha em `explain_events` com `request_id`, `question`, `intent`, `entity`, `route_id`, `features` JSON.
+## 5. Componentes do pipeline
+- **Planner (`app/planner/planner.py`)** — decide intent/entity e expõe `plan['explain']` com `decision_path`, `scoring`, `thresholds_applied`, `rag`/`hints` quando habilitados.
+- **Param inference (`app/planner/param_inference.py`)** — usa `param_inference.yaml` + `entity.yaml` para campos `agg`, `window`, `limit`, `order`, `metric`, `window_months`/`period_start`/`period_end`.
+- **Orchestrator (`app/orchestrator/routing.py`)** — aplica gate, cache de métricas, chama builder/executor/formatter, injeta `meta.rag`, `requested_metrics`, `explain_analytics`.
+- **Builder (`app/builder/sql_builder.py`)** — monta `(sql, params, result_key, return_columns)` com base em `entity.yaml` (`columns`, `sql_view`, `aggregations`, `metrics`).
+- **Executor (`app/executor/pg.py`)** — executa SQL com `psycopg`, emite métricas `sirios_sql_*` e retorna `List[Dict]`.
+- **Formatter (`app/formatter/rows.py`)** — `format_rows` mantém colunas declaradas e aplica formatadores; `render_rows_template` gera Markdown a partir de `responses/*.md.j2` conforme `presentation` do YAML.
+- **Presenter (`app/presenter/presenter.py`)** — consolida facts, baseline (`render_answer` + template), constrói `narrator_meta` e seleciona `answer` final.
+- **Narrator (`app/narrator/narrator.py`, `app/narrator/prompts.py`)** — renderer opcional; aplica policy de narrador (env + entidade) e retorna texto/telemetria, incluindo shadow mode.
+- **RAG (`app/rag/context_builder.py`)** — monta contexto determinístico com `enabled`, `used_collections`, `chunks`, `total_chunks`, `policy` mínima.
+- **Explain Analytics (`app/analytics/explain.py`)** — gera snapshot `{summary, details{intent, entity, view, route_id, cache_hit, latency_ms, route_source}}` para uso interno e persistência best-effort em `explain_events`.
 
-## 12. Rotas operacionais relevantes
-- `/ops/cache/bust`: body `{ "entity": str, "identifiers": Dict[str, Any] }`; exige header `X-Ops-Token`.
-- `/ops/analytics/explain`: GET/POST aceita filtros (`window`, `intent`, `entity`, `route_id`, `cache_hit`) e retorna resumo ou lista de eventos.
-- `/metrics`: resposta Prometheus plain text (`render_prometheus_latest`).
+## 6. Diagrama sequencial (texto)
+```
+Usuário → /ask (ask.py) → planner.explain
+/ask → orchestrator.route_question → {gate, cache?, builder → executor → formatter, rag_context}
+Orchestrator → /ask: {status, results, meta}
+/ask → presenter.present → {facts, baseline, narrator_meta, answer}
+Presenter → Narrator (opcional, shadow/enable)
+/ask → usuário: {status, results, meta{planner, gate, aggregates, rag, narrator, cache, explain*}, answer}
+```
 
-## 13. Elementos persistidos em Redis/Postgres
-- **Redis:** chave `araquem:{build_id}:{scope}:{entity}:{hash(identifiers)}` armazenando `{ "result_key": str, "rows": List[Dict] }`.
-- **Postgres:** tabela `explain_events` com colunas (`request_id`, `question`, `intent`, `entity`, `route_id`, `features` JSONB, `sql_view`, `sql_hash`, `cache_policy`, `latency_ms`). Inserida no endpoint quando `explain=True`.
-
+## 7. Contratos e acoplamentos
+- `result_key` vem do `entity.yaml` e é usado por orchestrator, presenter e Narrator; também compõe o cache de métricas.
+- `rows` seguem as colunas de `entity.yaml`/`return_columns`; formatter remove qualquer coluna fora do contrato.
+- `facts` do Presenter dependem de `plan['chosen']`, `aggregates`, `identifiers`, `requested_metrics` e do resultado formatado.
+- `rag_context` é determinístico; Narrator pode optar por usar ou ignorar conforme policy (`use_rag_in_prompt`).
+- `meta.narrator` é sempre preenchido (mesmo sem Narrator ativo) para garantir auditabilidade.
 
 # Araquem — Fluxo de Execução End-to-End
 
 ## Visão Geral
 ```
 Cliente → FastAPI /ask → Planner.explain → Orchestrator.route_question →
-  ├─ (cache read_through | policies)
+  ├─ (cache de métricas | políticas)
   ├─ Builder.build_select_for_entity → PgExecutor.query
   ├─ Formatter.format_rows + render_rows_template
-  └─ Responder.render_answer / Narrator.render → JSONResponse
+  └─ Presenter.present (Responder + Narrator) → JSONResponse
 ```
 
 O pipeline acima representa o fluxo real observado nos módulos `app/api/ask.py`,
-`app/orchestrator/routing.py`, `app/builder/sql_builder.py`, `app/executor/pg.py`
-e `app/formatter/rows.py`. Cada etapa opera sobre contratos determinísticos
-impostos por YAML e estruturas Pydantic.
+`app/orchestrator/routing.py`, `app/builder/sql_builder.py`, `app/executor/pg.py`,
+`app/formatter/rows.py`, `app/presenter/presenter.py` e `app/narrator/*`.
+Cada etapa opera sobre contratos determinísticos impostos por YAML, ontologia e Pydantic.
 
 ## Sequência detalhada (estilo UML textual)
 ```
@@ -164,8 +119,8 @@ Planner --> AskEndpoint: plan{chosen.intent, chosen.entity, explain}
 AskEndpoint -> Orchestrator: route_question(question)
 Orchestrator -> Planner: explain(question)
 Planner --> Orchestrator: plan
-Orchestrator -> CachePolicies: get(entity)
-Orchestrator -> RedisCache: get_json(key?) [se política permitir]
+Orchestrator -> CachePolicies: build cache context (metrics)
+Orchestrator -> RedisCache: get_json(key?)
 RedisCache --> Orchestrator: cached payload | None
 Orchestrator -> Builder: build_select_for_entity(entity, identifiers, agg_params)
 Builder --> Orchestrator: (sql, params, result_key, return_columns)
@@ -174,135 +129,12 @@ PgExecutor --> Orchestrator: rows_raw[List[Dict]]
 Orchestrator -> Formatter: format_rows(rows_raw, return_columns)
 Formatter --> Orchestrator: rows_formatted
 Orchestrator -> RedisCache: set_json(key, rows_formatted) [quando elegível]
-Orchestrator --> AskEndpoint: {
-  status, results{result_key: rows_formatted}, meta{planner,...}
-}
-AskEndpoint -> Responder: render_answer(entity, rows, identifiers, aggregates)
-Responder --> AskEndpoint: legacy_answer
-AskEndpoint -> Formatter: render_rows_template(entity, rows)
-Formatter --> AskEndpoint: rendered_response
-AskEndpoint -> Narrator?: render(question, facts, meta) [shadow/enable]
-Narrator --> AskEndpoint: narrator_info{ text?, latency_ms, score }
-AskEndpoint --> Client: JSONResponse{
-  status, results, meta{..., narrator}, answer
-}
+Orchestrator --> AskEndpoint: {status, results{result_key: rows_formatted}, meta{planner,..., rag}}
+AskEndpoint -> Presenter: present(plan, results, meta, identifiers, aggregates)
+Presenter -> Responder: render_answer(...)
+Presenter -> Formatter: render_rows_template(...)
+Presenter -> Narrator?: render(question, facts, meta_for_narrator)
+Narrator --> Presenter: narrator_info{text?, latency_ms, score, strategy}
+Presenter --> AskEndpoint: PresentResult{answer, narrator_meta, facts}
+AskEndpoint --> Client: JSONResponse{status, results, meta{..., narrator}, answer}
 ```
-
-## Detalhamento por estágio
-
-### 1. Entrada HTTP `/ask`
-- **Payload:** `AskPayload(question, conversation_id, nickname, client_id)` via Pydantic.
-- **Instrumentação:** gera `request_id`, registra métricas `sirios_planner_*`, `sirios_cache_ops_total`, `sirios_narrator_*`.
-- **Decisões imediatas:** verifica `plan['chosen']`; se não houver entidade, responde `unroutable` com `planner` e `explain` na meta.
-
-### 2. Planner (`Planner.explain`)
-- **Entradas:** pergunta normalizada, ontologia YAML, thresholds de `data/ops/planner_thresholds.yaml`, sinais RAG (quando habilitado).
-- **Saídas:**
-  - `chosen.intent`, `chosen.entity`, `chosen.score`.
-  - `explain` detalhado contendo `decision_path`, `scoring`, integração RAG, gaps base/final.
-- **Consumo posterior:**
-  - `app/api.ask` usa `intent`/`entity` para inferência de parâmetros e roteamento Narrator.
-  - `Orchestrator` reavalia gates e compõe meta.
-
-### 3. Inferência de parâmetros (`infer_params`)
-- **Onde ocorre:** em `app/api.ask` (para camada Narrator/meta) e dentro de `Orchestrator` antes do builder.
-- **Entradas:** texto da pergunta, `intent`, `entity`, `entity.yaml`, `param_inference.yaml`.
-- **Saídas:** dict com chaves como `agg`, `window`, `limit`, `order`. Também usado para construir identificadores de cache.
-
-### 4. Orchestrator (`route_question`)
-- **Passos:**
-  1. Reexecuta `planner.explain` para ter contexto interno e `gate` thresholds.
-  2. Extrai identificadores (atualmente `ticker` via regex).
-  3. Calcula `agg_params` com `infer_params`.
-  4. Avalia política de cache (`CachePolicies`) para métricas e prepara chave determinística `make_cache_key`.
-  5. Consulta cache (`RedisCache.get_json`). Se hit válido, reutiliza `rows` e `result_key`.
-  6. Quando miss, chama builder + executor + formatter, e grava cache (`set_json`) se política permitir.
-  7. Monta `results = {result_key: rows_formatted}` e `meta` consolidado (planner, gate, aggregates, elapsed_ms, explain optional).
-  8. Gera payload explain analytics (`app.analytics.explain.explain`) se `explain=True`.
-
-### 5. SQL Builder (`build_select_for_entity`)
-- **Contratos:** lê `data/entities/<entity>/entity.yaml` para obter `result_key`, `columns`, `sql_view`, restrições de identificadores e blocos de agregação.
-- **Saída:** SQL parametrizado e lista de colunas em ordem. Suporta modos `list`, `avg`, `sum`, `metrics`, `latest`, aplicando filtros de período/janela.
-- **Acoplamentos:** exige que `entity.yaml` contenha `default_date_field` quando há filtros temporais.
-
-### 6. Executor (`PgExecutor.query`)
-- **Entrada:** SQL formatado e dict de parâmetros (com `entity` adicionado para métricas).
-- **Processamento:** abre conexão `psycopg`, executa query com `dict_row`, coleta métricas `sirios_sql_*`, utiliza OTEL spans.
-- **Saída:** lista de dicts com colunas definidas pelo builder.
-
-### 7. Formatter (`format_rows`, `render_rows_template`)
-- **Format Rows:** seleciona apenas colunas declaradas, aplica formatadores por sufixo (`_pct`, `_amt`, `_at`), trata métricas (`format_metric_value`).
-- **Render Rows Template:** carrega `presentation` do `entity.yaml` e renderiza `responses/<kind>.md.j2` via Jinja2. Retorno string Markdown para UI atual.
-
-### 8. Responder/Narrator
-- **Responder:** lê `templates.md` (entidade ou legado) e cria texto fallback. Usa placeholders e fallback hierárquico.
-- **Narrator:** opcional; recebe `facts` (rows, primary, aggregates, identifiers) e `meta` (intent, entity, explain?). Retorna texto e telemetria.
-- **Decisão de resposta:**
-  - `final_answer` = narrador quando `_NARRATOR_ENABLED` verdadeiro, caso contrário `legacy_answer`.
-  - `meta['narrator']` sempre preenchido com estado de execução (enabled, shadow, latency, strategy).
-
-### 9. Resposta HTTP
-- **Estrutura:**
-  ```json
-  {
-    "status": {"reason": "ok", "message": "ok"},
-    "results": {"<result_key>": [ ... rows ... ]},
-    "meta": {
-      "planner": plan,
-      "result_key": str,
-      "planner_intent": str|None,
-      "planner_entity": str|None,
-      "planner_score": float|None,
-      "rows_total": int,
-      "elapsed_ms": int,
-      "aggregates": agg_params,
-      "explain": {...}?,
-      "explain_analytics": {...}?,
-      "cache": {"hit": bool, "key": str|None, "ttl": int|None},
-      "narrator": {...}
-    },
-    "answer": str
-  }
-  ```
-
-## Mensagens trocadas e objetos intermediários
-
-| Origem → Destino | Objeto | Descrição |
-| --- | --- | --- |
-| Cliente → `/ask` | JSON `{question, conversation_id, nickname, client_id}` | Contrato Pydantic `AskPayload`. |
-| Planner → API/Orchestrator | Dict `plan` | Inclui `chosen`, `explain`, `combined_intents/entities`. |
-| Param inference → Orchestrator/API | Dict `agg_params` | Campos `agg`, `window`, `limit`, `order` usados no builder e cache key. |
-| Orchestrator → Builder | `entity`, `identifiers`, `agg_params` | Base para montar SQL. |
-| Builder → Orchestrator | `(sql, params, result_key, return_columns)` | Contrato rígido para executor/formatter. |
-| Executor → Orchestrator | `rows_raw: List[Dict]` | Linhas Postgres com colunas + `meta`. |
-| Formatter → Orchestrator | `rows_formatted: List[Dict]` | Linhas já normalizadas e strings amigáveis. |
-| Orchestrator → Cache | `{"result_key": str, "rows": List[Dict]}` | Payload serializado em Redis. |
-| Responder → API | `legacy_answer: str` | Texto baseado em templates legados. |
-| Narrator → API | `{"text": str, "latency_ms": float, ...}` | Resultado LLM controlado. |
-
-## Contratos implícitos relevantes
-- `plan['chosen']['entity']` deve existir para seguir pipeline; ausência gera resposta `unroutable`.
-- `result_key` proveniente do YAML é usado em `results` e no cache; qualquer alteração quebra `render_rows_template` e templates legados.
-- `rows` devem manter dicionário com chaves correspondentes aos nomes declarados em `columns` do YAML.
-- Narrator exige `facts['rows']` list e `meta['entity']`; caso contrário retorna fallback via `_default_text`.
-
-## Decisão de roteamento por entidade
-- Planner calcula scores baseados em tokens e frases (pesos `token`/`phrase`), aplica hints RAG opcionais, depois thresholds YAML (`min_score`, `min_gap`).
-- Orchestrator reforça `gate`: se `score` < `min_score` ou `top2_gap` < `min_gap`, responde `gated` com `status.reason = 'gated'`.
-
-## Montagem de SQL pelo executor
-- Builder insere filtros de identificadores (`ticker`, etc.) com `%(name)s` para proteção contra injection.
-- Janelas (`window_months`, `period_start/end`, `count:N`) convertem-se em cláusulas `BETWEEN` ou `LIMIT`/`ORDER BY`.
-- Agregações `avg`/`sum` usam `GROUP BY` derivado do YAML e colunas literais com cast apropriado.
-
-## Estruturação de `results`/`meta`
-- `results`: dict de listas; chave = `result_key` da entidade.
-- `meta`: soma de informações do planner, thresholds, cache, aggregates, explain analytics, narrador.
-- Formatter adicional `render_rows_template` gera string para UI atual (armazenada separadamente em `rendered_response`, hoje não enviada para cliente).
-
-## Pontos de acoplamento crítico
-1. **Planner ↔ YAML da ontologia:** mudanças em `data/ontology/entity.yaml` alteram tokens e entidades; qualquer inconsistência quebra roteamento e thresholds.
-2. **Builder ↔ entity.yaml:** campos `columns`, `sql_view`, `identifiers`, `presentation` são usados por builder, formatter, responder e narrador.
-3. **Cache policies ↔ Orchestrator:** YAML determina chaves e TTL; erro impede reaproveitamento de métricas e influencia `meta.cache`.
-4. **Narrator ↔ Formatter/Responder:** narrator utiliza `rows` formatadas e `legacy_answer` como fallback; mudanças em `render_rows_template` alteram baseline textual.
-5. **Explain analytics ↔ Banco:** inserção em `explain_events` depende de tabela existente; falhas registradas apenas em métricas, mas dados se perdem.

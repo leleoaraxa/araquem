@@ -6,18 +6,18 @@ Estabilizar e simplificar o fluxo completo do endpoint **`/ask`** no Araquem, ga
 
 * Todo o caminho **pergunta → resposta** esteja:
 
-  * 100% alinhado ao **Guardrails Araquem v2.1.1**;
-  * livre de heurísticas ocultas e hardcodes;
+  * 100% alinhado ao **Guardrails Araquem v2.1.1** e ao runtime descrito em `RUNTIME_OVERVIEW.md`;
+  * livre de heurísticas ocultas e hardcodes (fora de YAML/ontologia/políticas reais);
   * orientado por **YAML + ontologia + contratos + views reais**.
 * O comportamento do sistema seja:
 
-  * previsível;
-  * observável;
-  * fácil de depurar e evoluir (M12/M13 e próximos marcos).
+  * previsível e auditável (telemetria coerente em `meta` e explain analytics);
+  * observável (Prometheus/Tempo) com spans e métricas consistentes;
+  * fácil de depurar e evoluir em etapas pequenas (patches Codex sequenciais).
 
 **Escopo deste plano**
 
-Cobrir **somente** o fluxo **online** do `/ask`:
+Cobrir **somente** o fluxo **online** do `/ask` (sem alterar comportamento fora do pipeline canônico descrito em `docs/dev/RUNTIME_OVERVIEW.md`):
 
 * `app/api/ask.py`
 * `app/core/context.py`, `app/core/hotreload.py`
@@ -53,21 +53,21 @@ Cobrir **somente** o fluxo **online** do `/ask`:
 
 ### 2.1. Linha do tempo conceitual
 
-Fluxo lógico atual (2025-11-20, baseado nos lotes analisados):
+Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentação congelada em `RUNTIME_OVERVIEW.md`):
 
 1. **HTTP → `/ask`**
 
    * `app/api/ask.py`
    * Recebe `AskPayload` (`question`, `conversation_id`, `nickname`, `client_id`).
-   * Aplica contexto global (via `core/context`) e métricas (via `common/http` / observability).
-   * Chama `planner.explain(...)`.
+   * Aplica contexto global (via `core/context`), registra métricas (`sirios_planner_*`, `sirios_cache_ops_total`).
+   * Chama `planner.explain(...)` e, em caso de `entity` ausente, responde `unroutable` com `meta.planner`.
 
 2. **Planner**
 
    * `app/planner/planner.py`
    * Normaliza pergunta, tokeniza, pontua intents, aplica thresholds (`data/ops/planner_thresholds.yaml`).
-   * Integra sinais de RAG (`rag_fusion`) com base na ontologia e hints.
-   * Define `plan.chosen.intent`, `plan.chosen.entity`, `plan.chosen.accepted`.
+   * Integra sinais de RAG/hints quando habilitado (`plan['rag']`).
+   * Define `plan.chosen.intent`, `plan.chosen.entity`, `plan.chosen.score` e `plan.explain` (decision_path, thresholds_applied).
 
 3. **Orchestrator + Builder + Executor + Formatter**
 
@@ -75,47 +75,29 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados):
    * `app/builder/sql_builder.py`
    * `app/executor/pg.py`
    * `app/formatter/rows.py`
-   * Valida gate (score, gap, thresholds).
-   * Extrai identificadores (tickers, datas, etc.).
-   * Constrói SQL para a entidade (`build_select_for_entity`).
-   * Executa no Postgres (`PgExecutor.query`).
-   * Formata linhas para `results[result_key]` (lista de dicts).
-   * Monta parte de `meta` (planner, rows_total, aggregates, etc.).
-   * Constrói **um contexto de RAG** via `build_rag_context` e já preenche `meta['rag']`.
+   * Reaplica planner e gate (score, gap, thresholds YAML), extrai identificadores (`ticker`, `tickers`).
+   * Chama `infer_params` (compute-on-read) e resolve `requested_metrics` via `ask.metrics_synonyms` do `entity.yaml`.
+   * Prepara cache de métricas (`_prepare_metrics_cache_context`), tenta Redis, ou monta SQL (`build_select_for_entity`), executa (`PgExecutor.query`) e formata (`format_rows`).
+   * Monta `results` e `meta` (planner, gate, aggregates, requested_metrics, rows_total, elapsed_ms, explain/explain_analytics quando `explain=True`).
+   * Constrói **o contexto de RAG canônico** via `rag.context_builder.build_context` e preenche `meta['rag']` (com fallback seguro em caso de erro).
 
 4. **Presenter / Facts**
 
    * `app/presenter/presenter.py`
-   * Constrói `facts` a partir de:
-
-     * `plan.chosen`
-     * `results`
-     * `identifiers` (tickers, filtros)
-     * `aggregates`
-   * Define `result_key`, `primary`, `rows`, `requested_metrics`, `ticker`/`fund`, etc.
+   * Constrói `facts` (`build_facts`) a partir de `plan.chosen`, `results`, `identifiers`, `aggregates` e `requested_metrics`.
+   * Define `result_key`, `primary`, `rows`, `ticker`/`fund`, `planner_score` e baseline determinístico (Responder + template).
 
 5. **Narrator**
 
    * `app/narrator/narrator.py`
    * `app/narrator/prompts.py`
-   * Aplica política global + por entidade (`data/policies/narrator.yaml`).
-   * Decide:
-
-     * **modo conceitual** vs **modo por fundo** (Ticker presente/não presente + flags da entidade).
-     * **determinístico** (renderer + templates) vs **LLM** (Ollama/Mistral), com baseline sempre calculado.
-   * Usa `facts` e `meta` (incluindo `meta['rag']`) para:
-
-     * gerar texto determinístico;
-     * opcionalmente montar prompt e chamar LLM (`OllamaClient.generate`).
+   * Aplica política global + por entidade (`data/policies/narrator.yaml`) e flags de env (enabled/shadow/model).
+   * Decide baseline vs LLM, com shadow opcional, sempre com baseline calculado.
+   * Usa `facts`, `meta_for_narrator` (intent, entity, explain, result_key, rag_context) para gerar texto determinístico ou LLM (`Narrator.render`).
 
 6. **Resposta final**
 
-   * `app/api/ask.py` monta o JSON:
-
-     * `status`
-     * `results` (dados estruturados)
-     * `meta` (planner, orchestrator, rag, narrator, cache, analytics)
-     * `answer` (texto final do Narrator ou baseline).
+   * `app/api/ask.py` monta o JSON final com `status`, `results`, `meta` (planner, gate, aggregates, requested_metrics, rag, narrator, cache, analytics) e `answer` (Narrator ou baseline).
 
 ### 2.2. Camadas principais (resumo)
 
