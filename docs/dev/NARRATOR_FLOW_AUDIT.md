@@ -181,3 +181,4 @@ fiis_imoveis | `_render_fiis_imoveis` | Detalha imóveis com localidade e vacân
 - O tamanho do prompt pode crescer devido à combinação de FACTS em JSON, RAG_CONTEXT e few-shots, podendo afetar limites de tokens monitorados pela policy.
 - Há sobreposição entre instruções do SYSTEM_PROMPT e conteúdos conceituais das coleções de RAG, exigindo cuidado para evitar repetições na resposta.
 - Fluxo duplo de construção de RAG (Orchestrator e Presenter) aumenta complexidade de depuração em cenários de shadow/disable.
+
