@@ -21,13 +21,13 @@ columns:
   - { name: equity_value,           type: number,   nullable: true,  desc: "valor do patrimônio." }
   - { name: variation_month_ratio,  type: number,   nullable: true,  desc: "variação percentual no mês." }
   - { name: variation_year_ratio,   type: number,   nullable: true,  desc: "variação percentual no ano." }
-  - { name: admin_fee_due_amt,    type: number,   nullable: true,  desc: "taxa de administração devida." }
-  - { name: perf_fee_due_amt,    type: number,   nullable: true,  desc: "taxa de performance devida." }
-  - { name: total_cash_amt,   type: number,   nullable: true,  desc: "total de caixa." }
-  - { name: expected_revenue_amt ,  type: number,   nullable: true,  desc: "receita esperada." }
-  - { name: liabilities_total_amt,  type: number,   nullable: true,  desc: "total de passivos." }
-  - { name: equity_month_ratio,     type: number,   nullable: true,  desc: "variação do patrimônio no mês." }
-  - { name: dividend_reserve_amt,     type: number,   nullable: true,  desc: "reserva de dividendos." }
+  - { name: admin_fee_due_amt,     type: number,   nullable: true,  desc: "taxa de administração devida." }
+  - { name: perf_fee_due_amt,      type: number,   nullable: true,  desc: "taxa de performance devida." }
+  - { name: total_cash_amt,        type: number,   nullable: true,  desc: "total de caixa." }
+  - { name: expected_revenue_amt,  type: number,   nullable: true,  desc: "receita esperada." }
+  - { name: liabilities_total_amt, type: number,   nullable: true,  desc: "total de passivos." }
+  - { name: equity_month_ratio,    type: number,   nullable: true,  desc: "variação do patrimônio no mês." }
+  - { name: dividend_reserve_amt,  type: number,   nullable: true,  desc: "reserva de dividendos." }
   - { name: created_at,             type: datetime, nullable: false, desc: "data de criação." }
   - { name: updated_at,             type: datetime, nullable: false, desc: "data da última atualização." }
 
@@ -58,7 +58,7 @@ presentation:
     admin_fee_due_amt:    { as: currency }    # R$ 100 mil
     perf_fee_due_amt:    { as: currency }    # R$ 50 mil
     total_cash_amt:   { as: currency }    # R$ 10 milhões
-    expected_revenue_amt :  { as: currency }    # R$ 5 milhões
+    expected_revenue_amt:  { as: currency }    # R$ 5 milhões
     liabilities_total_amt:  { as: currency }    # R$ 200 milhões
 
   rules: {}

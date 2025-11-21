@@ -37,7 +37,7 @@ presentation:
     classification: { as: string }      # TIJOLO
     sector: { as: string }              # Logística
     sub_sector: { as: string }          # Galpões Logísticos
-    website: { as: string }             # www.logrec.com.br
+    website_url: { as: string }         # www.logrec.com.br
     management_type: { as: string }     # Gestão Ativa
     target_market: { as: string }       # Investidores em geral
     is_exclusive: { as: boolean }       # false
