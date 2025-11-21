@@ -510,9 +510,7 @@ class Narrator:
                 # Heurística conservadora:
                 # - se não chamamos LLM → determinístico
                 # - se chamamos e houve texto do LLM → "llm" (ajustado no call site)
-                final_strategy = (
-                    "llm" if computed_tokens_out and not error else "deterministic"
-                )
+                final_strategy = "llm" if computed_tokens_out and not error else "deterministic"
 
             return {
                 "text": text,
