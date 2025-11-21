@@ -1,3 +1,4 @@
+
 # **NARRATOR_FLOW_RISK_SINGLE_PATH.md**
 
 ### **(Fluxo completo — pergunta real → resposta final — entidade `fiis_financials_risk`)**
@@ -30,31 +31,27 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
 ### Responsabilidade
 
 1. Recebe o JSON da requisição com:
+
    * `question`
    * `conversation_id`
    * `nickname`
    * `client_id`
-
 2. Passa a pergunta ao Planner:
 
    ```python
    plan = planner.explain(payload.question, explain=explain_flag)
-```
-
+   ```
 3. Executa:
 
    ```python
    orchestrator.route_question(plan)
    ```
-
 4. Constrói `facts` via Presenter (`build_facts`).
-
 5. Chama o Narrator:
 
    ```python
    narrator_result = narrator.render(question, facts.dict(), meta_for_narrator)
    ```
-
 6. Monta e devolve o JSON final.
 
 ---
@@ -92,29 +89,23 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
 ### Responsabilidades
 
 1. Valida score/gap.
-
 2. Resolve parâmetros inferidos.
-
 3. Extrai ticker(s):
 
    ```python
    extract_identifiers(...)
    ```
-
 4. Monta SQL:
 
    ```python
    build_select_for_entity('fiis_financials_risk')
    ```
-
 5. Executa consulta:
 
    ```python
    PgExecutor.query(sql)
    ```
-
 6. Aplica `format_rows`.
-
 7. Define:
 
    * `results[result_key]`
@@ -122,7 +113,6 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
    * `meta.entity`
    * `meta.intent`
    * `meta.requested_metrics` (empty aqui)
-
 8. Constrói contexto de RAG:
 
    ```python
@@ -132,7 +122,7 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
 
 ### Resultado SQL
 
-`results['financials_risk'] = [ { ... métricas do HGLG11 ... } ]`
+`results['financials_risk'] = [ {... métricas do HGLG11 ... } ]`
 
 ---
 
@@ -149,15 +139,15 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
 {
   "result_key": "financials_risk",
   "primary": {
-    "ticker": "HGLG11",
-    "volatility_ratio": "1,44%",
-    "sharpe_ratio": "-1,07%",
-    "treynor_ratio": "-0,13%",
-    "jensen_alpha": "0.000",
-    "beta_index": "0.403",
-    "sortino_ratio": "-10,19%",
-    "max_drawdown": "0.1132",
-    "r_squared": "0.0781"
+      "ticker": "HGLG11",
+      "volatility_ratio": "1,44%",
+      "sharpe_ratio": "-1,07%",
+      "treynor_ratio": "-0,13%",
+      "jensen_alpha": "0.000",
+      "beta_index": "0.403",
+      "sortino_ratio": "-10,19%",
+      "max_drawdown": "0.1132",
+      "r_squared": "0.0781"
   },
   "rows": [ { ... igual ao primary ... } ],
   "requested_metrics": [],
@@ -176,13 +166,13 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
 
 ### Decisão interna
 
-1. Executa renderer determinístico:
+1. **Executa renderer determinístico**, chamando:
 
    ```python
    render_narrative(meta, facts, policy)
    ```
 
-   → dispara:
+   → Isto aciona:
 
    ```python
    _render_fiis_financials_risk(...)
@@ -200,17 +190,21 @@ A seguir está o **pipeline real**, exatamente na ordem em que o código executa
    * `max_llm_rows > 0`
    * `len(facts.rows) <= max_llm_rows`
 
-3. Caso LLM seja permitido:
+3. Se verdadeiro:
 
    * Prepara baseline.
-   * Chama `build_prompt(...)`
+   * Chama:
+
+     ```python
+     build_prompt(...)
+     ```
    * Envia para:
 
      ```python
      self.client.generate(prompt, model=self.model)
      ```
 
-4. Resultado final é um dict:
+4. Resultado final do Narrator:
 
    ```json
    {
@@ -232,20 +226,36 @@ Funções:
 * `_prepare_rag_payload(rag)`
 * `build_prompt(...)`
 
-### Estrutura do prompt final
+### O que entra no prompt final
 
 1. `SYSTEM_PROMPT`
 2. `[ESTILO]`
-3. `[INTENT]` / `[ENTITY]`
+3. `[INTENT]`, `[ENTITY]`
 4. `[PERGUNTA]`
 5. `[FACTS]` (JSON)
-6. `[RAG_CONTEXT]` (≤ 5 snippets truncados)
+6. `[RAG_CONTEXT]`
+   → contém até **5 snippets** truncados de texto conceitual
 7. Template (summary/list/table)
 8. Few-shot
 
-### Problema observado
+### Observação importante
 
-Mesmo proibido de copiar RAG, o LLM reproduziu exatamente os snippets.
+Mesmo proibido de copiar texto de RAG, o modelo ignorou essa regra e gerou resposta contendo o snippet.
+
+---
+
+## **2.7. Saída final da API**
+
+O `ask.py` devolve:
+
+```json
+{
+  "status": { ... },
+  "results": { "financials_risk": [ ... ] },
+  "meta": { ... planner ... orchestrator ... rag_context ... narrator ... },
+  "answer": "<texto final do Narrator>"
+}
+```
 
 ---
 
@@ -262,12 +272,12 @@ sequenceDiagram
     participant Narrator
     participant LLM as Ollama/Mistral
 
-    User ->> API: "explique as métricas de risco do HGLG11"
-    API ->> Planner: normalize/tokenize/score
+    User ->> API: pergunta "explique as métricas de risco do HGLG11"
+    API ->> Planner: normalize → tokenize → score → choose intent/entity
     Planner -->> API: intent=fiis_financials_risk
     API ->> Orchestrator: route_question(plan)
     Orchestrator ->> Executor: build_select → query
-    Executor -->> Orchestrator: rows
+    Executor -->> Orchestrator: rows (HGLG11)
     Orchestrator ->> Orchestrator: build_rag_context()
     Orchestrator -->> API: results + meta
     API ->> Presenter: build_facts()
@@ -276,10 +286,10 @@ sequenceDiagram
     Narrator ->> Narrator: render_narrative()
     alt LLM enabled & allowed
         Narrator ->> Prompts: build_prompt()
-        Narrator ->> LLM: generate()
-        LLM -->> Narrator: text
+        Narrator ->> LLM: generate(prompt)
+        LLM -->> Narrator: texto final
     else
-        Narrator -->> API: baseline (determinístico)
+        Narrator -->> API: baseline
     end
     API -->> User: answer + meta
 ```
@@ -288,65 +298,21 @@ sequenceDiagram
 
 # **4. Pontos críticos observados no caso `fiis_financials_risk`**
 
-* RAG é construído em **duas camadas** (orchestrator + presenter).
-* RAG contém **texto conceitual rico**, altamente propenso a ser copiado pelo modelo.
-* SYSTEM_PROMPT contém instruções contraditórias (proibir cópia vs oferecer material rico).
-* `fiis_financials_risk` já possui renderer determinístico, mas o LLM o ignora.
-
----
-
-# **4.1. Observação estrutural crítica — RAG duplicado**
-
-Existe uma duplicação importante no fluxo atual:
-
-## **1) RAG criado no Orchestrator**
-
-Arquivo:
-
-```
-app/orchestrator/routing.py
-```
-
-Trecho:
-
-```python
-meta['rag'] = build_rag_context(...)
-```
-
-→ Este é o contexto RAG do “momento de roteamento”.
-
-## **2) RAG recriado no Presenter**
-
-Arquivo:
-
-```
-app/presenter/presenter.py
-```
-
-Trecho:
-
-```python
-rag_policy = load_rag_policy()
-rag_context = build_context(question, intent, entity, rag_policy)
-```
-
-→ Este segundo contexto ignora completamente o primeiro.
-
----
-
-## **Impacto**
-
-* Dois contextos RAG independentes coexistem.
-* Narrator usa **apenas** o reconstruído no Presenter.
-* Planner/Orchestrator e Presenter/Narrator passam a operar com realidades diferentes.
-* Causa inconsistência, respostas imprevisíveis e dificuldade enorme de debug.
+* RAG é construído em **duas camadas** (orchestrator + presenter), aumentando complexidade.
+* RAG fornece **texto conceitual longo**, sendo copiado literalmente pelo modelo.
+* SYSTEM_PROMPT + snippets introduzem **contradições** (“não copie RAG” vs texto rico disponível).
+* `fiis_financials_risk` já possui um renderer determinístico *forte*, mas o LLM ainda entra e “atropela” o renderer.
 
 ---
 
 # **5. Este documento serve para**
 
 ✔ Auditoria do fluxo real
-✔ Identificação de redundâncias
-✔ Base para futura refatoração
-✔ Entendimento completo do caminho da pergunta
-✔ Suporte ao desenho do novo SYSTEM_PROMPT e política do Narrator/RAG
+✔ Criar base para refino cirúrgico
+✔ Identificar redundâncias
+✔ Identificar pontos onde o LLM está se comportando fora da intenção da política
+✔ Eliminarmos marretas desnecessárias antes da refatoração
+
+---
+
+# **Fim do arquivo**
