@@ -42,12 +42,22 @@ columns:
 - name: available_quantity
   alias: Quantidade disp.
   description: Quantidade disponível.
+- name: average_price
+  alias: Preço médio
+  description: Preço médio da posição.
+- name: profitability_percentage
+  alias: Rentabilidade (%)
+  description: Rentabilidade da posição em percentual.
+- name: percentage
+  alias: Peso na carteira (%)
+  description: Percentual da posição em relação à carteira total.
 - name: created_at
   alias: Criado em
   description: Data de criação do registro.
 - name: updated_at
   alias: Atualizado em
   description: Data da última atualização do registro.
+
 presentation:
   kind: table
   fields:
@@ -80,5 +90,6 @@ params:
 order_by_whitelist:
   - position_date desc
   - ticker asc
+
 aggregations:
   enabled: false

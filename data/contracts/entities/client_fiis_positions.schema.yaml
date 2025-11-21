@@ -3,30 +3,36 @@ kind: view
 version: 1
 
 columns:
-  - { name: document_number,     type: string,   nullable: false, desc: "documento do cliente (CPF/CNPJ)" }
-  - { name: position_date,       type: date,     nullable: false, desc: "data da posição" }
-  - { name: ticker,              type: string,   nullable: false, desc: "código do FII (AAAA11)" }
-  - { name: fii_name,            type: string,   nullable: true,  desc: "nome do fundo" }
-  - { name: participant_name,    type: string,   nullable: true,  desc: "corretora/participante" }
-  - { name: qty,                 type: integer,  nullable: true,  desc: "quantidade em custódia" }
-  - { name: closing_price,       type: number,  nullable: true,  desc: "preço de fechamento do dia" }
-  - { name: update_value,        type: number,  nullable: true,  desc: "variação de valor" }
-  - { name: available_quantity,  type: integer,  nullable: true,  desc: "quantidade disponível" }
-  - { name: created_at,          type: timestamp, nullable: false, desc: "data de criação do registro" }
-  - { name: updated_at,          type: timestamp, nullable: false, desc: "data da última atualização do registro" }
+  - { name: document_number,        type: string,   nullable: false, desc: "documento do cliente (CPF/CNPJ)" }
+  - { name: position_date,          type: date,     nullable: false, desc: "data da posição" }
+  - { name: ticker,                 type: string,   nullable: false, desc: "código do FII (AAAA11)" }
+  - { name: fii_name,               type: string,   nullable: true,  desc: "nome do fundo" }
+  - { name: participant_name,       type: string,   nullable: true,  desc: "corretora/participante" }
+  - { name: qty,                    type: integer,  nullable: true,  desc: "quantidade em custódia" }
+  - { name: closing_price,          type: number,   nullable: true,  desc: "preço de fechamento do dia" }
+  - { name: update_value,           type: number,   nullable: true,  desc: "variação de valor" }
+  - { name: available_quantity,     type: integer,  nullable: true,  desc: "quantidade disponível" }
+  - { name: average_price,          type: number,   nullable: true,  desc: "preço médio da posição" }
+  - { name: profitability_percentage, type: number, nullable: true,  desc: "rentabilidade da posição em percentual" }
+  - { name: percentage,             type: number,   nullable: true,  desc: "percentual da posição na carteira" }
+  - { name: created_at,             type: timestamp, nullable: false, desc: "data de criação do registro" }
+  - { name: updated_at,             type: timestamp, nullable: false, desc: "data da última atualização do registro" }
 
-ordering: [document_number, position_date, ticker ]
+ordering: [document_number, position_date, ticker]
 
 presentation:
   columns:
-    ticker:             { as: string }     # código AAAA11
-    position_date:      { as: date }       # "25/10/2025"
-    fii_name:           { as: string }     # nome do fundo
-    participant_name:   { as: string }     # corretora/participante
-    qty:                { as: integer }    # quantidade em custódia
-    closing_price:      { as: currency }   # "R$ 123,45"
-    update_value:       { as: currency }   # "R$ 12,34"
-    available_quantity: { as: integer }    # quantidade disponível
+    ticker:                  { as: string }     # código AAAA11
+    position_date:           { as: date }       # "25/10/2025"
+    fii_name:                { as: string }     # nome do fundo
+    participant_name:        { as: string }     # corretora/participante
+    qty:                     { as: integer }    # quantidade em custódia
+    closing_price:           { as: currency }   # "R$ 123,45"
+    update_value:            { as: currency }   # "R$ 12,34"
+    available_quantity:      { as: integer }    # quantidade disponível
+    average_price:           { as: currency }   # preço médio
+    profitability_percentage: { as: percent, multiply_by_100: false, precision: 2 } # "10,50%"
+    percentage:              { as: percent, multiply_by_100: false, precision: 2 } # "7,25%"
 
   rules: {}
 
