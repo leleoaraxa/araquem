@@ -1,4 +1,8 @@
-version: 1
+terms:
+  - name: "narrator"
+    kind: "policy"
+    scope: "narrator"
+    version: 1
 
 default:
   llm_enabled: false
@@ -8,14 +12,47 @@ default:
   model: mistral:instruct
 
 entities:
-  fiis_financials_risk:
-    llm_enabled: false
-    shadow: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
+    fiis_financials_risk:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
 
-  fiis_noticias:
-    llm_enabled: true
-    shadow: false
-    max_llm_rows: 5
-    use_rag_in_prompt: true
+    fiis_noticias:
+      llm_enabled: true
+      shadow: false
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_market_indicators:
+      llm_enabled: true
+      shadow: false
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_b3_indexes:
+      llm_enabled: true
+      shadow: false
+      max_llm_rows: 10
+      use_rag_in_prompt: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    history_currency_rates:
+      llm_enabled: true
+      shadow: false
+      max_llm_rows: 10
+      use_rag_in_prompt: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
