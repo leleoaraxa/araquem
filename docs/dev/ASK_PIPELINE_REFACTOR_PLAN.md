@@ -91,7 +91,9 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentaçã
 
    * `app/narrator/narrator.py`
    * `app/narrator/prompts.py`
-   * Aplica política global + por entidade (`data/policies/narrator.yaml`) e flags de env (enabled/shadow/model).
+   * Aplica política global + por entidade (`data/policies/narrator.yaml`):
+     * `llm_enabled` e `shadow` **sempre** vêm do YAML (sem override por env);
+     * `model` (e opcionalmente `style`) podem ser sobrescritos por env (`NARRATOR_MODEL`) quando não definidos na policy.
    * Decide baseline vs LLM, com shadow opcional, sempre com baseline calculado.
    * Usa `facts`, `meta_for_narrator` (intent, entity, explain, result_key, rag_context) para gerar texto determinístico ou LLM (`Narrator.render`).
 

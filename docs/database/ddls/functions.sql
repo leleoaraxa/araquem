@@ -452,7 +452,7 @@ END;
 $$;
 
 DROP FUNCTION IF EXISTS calc_fiis_dividends_evolution(text);
-	
+
 CREATE OR REPLACE FUNCTION calc_fiis_dividends_evolution(
     document_number_in text
 )
@@ -486,4 +486,103 @@ AS $$
     FROM base
     GROUP BY year_reference, month_number
     ORDER BY year_reference, month_number;
+$$;
+
+DROP FUNCTION IF EXISTS fc_fiis_portfolio(text);
+
+CREATE OR REPLACE FUNCTION fc_fiis_portfolio(document_number_in text)
+RETURNS TABLE (
+	document_number             text,
+    reference_date              date,
+	ticker_symbol               text,
+	corporation_name            text,
+	participant_name            text,
+    equities_quantity           numeric,
+    closing_price               numeric,
+    update_value                numeric,
+	available_quantity          numeric,
+	average_price               numeric,
+    profitability_percentage    numeric,
+    percentage                  numeric
+)
+LANGUAGE sql
+AS $$
+    WITH pos AS (
+        SELECT
+            document_number,
+            reference_date,
+			TRIM(ticker_symbol) AS ticker_symbol,
+			corporation_name AS fii_name,
+			participant_name AS stock_broker,
+            equities_quantity,
+            closing_price,
+            update_value,
+			available_quantity
+        FROM equities_positions
+        WHERE document_number       = document_number_in
+          AND product_category_name = 'Renda Variavel'
+          AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
+          AND specification_code    = 'Cotas'
+    ),
+
+    -- 1) última data GLOBAL da carteira
+    last_date AS (
+        SELECT MAX(reference_date) AS max_date
+        FROM pos
+    ),
+
+    -- 2) carteira REAL atual = somente registros dessa última data
+    current_pos AS (
+        SELECT p.*
+        FROM pos p
+        JOIN last_date ld ON p.reference_date = ld.max_date
+    ),
+
+    -- 3) junta carteira atual + preço médio contábil ajustado (trades + movement)
+    merged AS (
+        SELECT
+			c.document_number,
+			c.reference_date,
+            c.ticker_symbol,
+			c.fii_name,
+			c.stock_broker,
+            c.equities_quantity,
+            c.closing_price,
+			c.update_value,
+			c.available_quantity,
+            calc_fiis_average_price(
+                document_number_in,
+                c.ticker_symbol,
+                c.reference_date
+            ) AS avg_price
+        FROM current_pos c
+    )
+
+    -- 4) SELECT final: PM arredondado, rentabilidade e % da carteira por VALOR
+    SELECT
+		document_number,
+		reference_date,
+        ticker_symbol,
+		fii_name,
+		stock_broker,
+        equities_quantity,
+        closing_price,
+        update_value,
+		available_quantity,
+		ROUND(avg_price, 2) AS average_price,
+        ROUND(
+            CASE
+                WHEN avg_price IS NULL OR avg_price = 0
+                    THEN NULL
+                ELSE (closing_price - avg_price) / avg_price * 100
+            END,
+            2
+        ) AS profitability_percentage,
+        ROUND(
+            update_value * 100.0
+            / NULLIF(SUM(update_value) OVER (), 0),
+            2
+        ) AS percentage
+    FROM merged
+    ORDER BY ticker_symbol, reference_date;
 $$;

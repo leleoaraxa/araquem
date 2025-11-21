@@ -17,7 +17,8 @@
   - `requested_metrics` derivado de `ask.metrics_synonyms` do `entity.yaml` dentro do orchestrator.
   - `cache` (hit/miss, key, ttl) construído no endpoint a partir de `read_through` ou da política explícita.
   - `rag` (contexto de RAG) montado pelo orchestrator via `rag.context_builder.build_context`.
-  - `narrator` (estado e telemetria) produzido pela camada Presenter (`app/presenter/presenter.py`).
+  - `narrator` (estado e telemetria) produzido pelo **Narrator** (`Narrator.render`) e
+    propagado pelo Presenter (`app/presenter/presenter.py`) para `meta['narrator']`.
   - `explain` (quando `?explain=true`) = `plan['explain']`.
   - `explain_analytics` (quando `?explain=true`) produzido por `app.analytics.explain.explain` tanto no orchestrator quanto no endpoint.
 
@@ -46,7 +47,9 @@
    - Recebe `plan`, `results` e `meta` do orchestrator, além de `identifiers` e `aggregates` calculados no endpoint.
    - Constrói `facts` (`build_facts`) com `result_key`, `rows`, `primary`, `identifiers`, `aggregates`, `requested_metrics`, `ticker`/`fund` e score do planner.
    - Gera baseline determinístico via `render_answer` + `render_rows_template`.
-   - Recalcula um `rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) para consumo do Narrator.
+   - Recalcula um `rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`)
+     **apenas para consumo interno do Narrator** (não sobrescreve `meta['rag']` vindo do orchestrator);
+     este contexto adicional é acoplado em `meta_for_narrator` / `narrator_meta.rag`.
    - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag`.
    - Decide `answer` final (`Narrator` quando `enabled`, caso contrário baseline) e devolve `PresentResult` para o endpoint.
 
