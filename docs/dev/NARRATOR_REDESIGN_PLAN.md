@@ -297,7 +297,18 @@ Este documento não contém código — apenas arquitetura.
 
 ---
 
-# **8. Resultado final esperado**
+# **8. Harmonização do Narrator (Etapa 4)**
+
+- **Effective policy única**: merge de `default` + `entities` em `data/policies/narrator.yaml`, com os campos `llm_enabled`, `shadow`, `max_llm_rows`, `use_rag_in_prompt` e `model` expostos em `meta['narrator']['effective_policy']`.
+- **Árvore de decisão explícita**:
+  - `llm_enabled=False` → determinístico (`strategy=llm_disabled_by_policy`).
+  - `rows > max_llm_rows` → determinístico (`strategy=llm_skipped_max_rows`).
+  - `shadow=True` → roda LLM mas mantém baseline (`strategy=llm_shadow`).
+  - `use_rag_in_prompt=False` → RAG removido do prompt (`strategy=rag_forbidden_by_policy` quando aplicável).
+- **Telemetria padronizada**: `meta['narrator']` sempre inclui `{enabled, shadow, model, latency_ms, error, used, strategy, effective_policy, rag}`.
+- **Prompt higienizado**: `prompts.build_prompt` ignora RAG quando a política proíbe.
+
+# **9. Resultado final esperado**
 
 Depois do redesign:
 

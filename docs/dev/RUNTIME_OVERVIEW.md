@@ -47,9 +47,9 @@
    - Recebe `plan`, `results` e `meta` do orchestrator, além de `identifiers` e `aggregates` calculados no endpoint.
    - Constrói `facts` (`build_facts`) com contrato explícito: `question`, `intent`, `entity`, `score` (=`meta['planner_score']`), `result_key`, `rows`, `primary`, `aggregates`, `identifiers`, `requested_metrics`, `ticker`/`fund` (atalhos) e `planner_score` (espelho de `score`).
    - Gera baseline determinístico via `render_answer` + `render_rows_template`.
-   - Monta um `narrator_rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) **apenas para consumo interno do Narrator**; `meta['rag']` continua sendo o valor recebido do Orchestrator.
-   - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag` (interno).
-   - Decide `answer` final (`Narrator` quando `enabled`, caso contrário baseline) e devolve `PresentResult` para o endpoint.
+  - Monta um `narrator_rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) **apenas para consumo interno do Narrator**; `meta['rag']` continua sendo o valor recebido do Orchestrator.
+  - Aciona Narrator (quando presente) para gerar texto LLM/shadow de forma 100% policy-driven (`llm_enabled`, `shadow`, `max_llm_rows`, `use_rag_in_prompt`, `model`), e preenche `narrator_meta` com telemetria completa (`enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `effective_policy`, `rag`).
+  - Decide `answer` final conforme `strategy` retornada (`llm`, `llm_shadow`, `llm_disabled_by_policy`, `llm_skipped_max_rows`, `llm_failed`, `rag_forbidden_by_policy`, `deterministic`).
 
 6) **Resposta HTTP** — `app/api/ask.py`
    - Monta payload final com `status`, `results` (direto do orchestrator), `meta` (endpoint + presenter) e `answer` (Presenter).
@@ -64,7 +64,7 @@
 - **`meta.explain`** — opcional (`plan['explain']`) propagado pelo endpoint e pelo orchestrator quando `explain=True`.
 - **`meta.explain_analytics`** — produzido por `app.analytics.explain.explain` tanto no orchestrator quanto no endpoint (latência, cache_hit, route_source, route_id).
 - **`meta.rag`** — contexto de RAG construído em `route_question` via `rag.context_builder.build_context` (aplica `data/policies/rag.yaml`, collections, chunks, flags `enabled`/`error`).
-- **`meta.narrator`** — preenchido pelo Presenter/Narrator (`present` + `Narrator.render`): `{enabled, shadow, model, latency_ms, error, used, strategy, score, rag}`.
+- **`meta.narrator`** — preenchido pelo Presenter/Narrator (`present` + `Narrator.render`): `{enabled, shadow, model, latency_ms, error, used, strategy, effective_policy, rag}`.
 - **`meta.requested_metrics`** — lista inferida pelo orchestrator (ask.metrics_synonyms) replicada no endpoint.
 - **`meta.elapsed_ms`** — latência end-to-end do endpoint (`ask`).
 

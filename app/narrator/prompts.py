@@ -319,6 +319,7 @@ def build_prompt(
     meta: dict,
     style: str = "executivo",
     rag: dict | None = None,
+    effective_policy: dict | None = None,
 ) -> str:
     """Compose the final prompt string for the LLM."""
 
@@ -337,6 +338,11 @@ def build_prompt(
     facts_json = json.dumps(facts_payload, ensure_ascii=False, indent=2)
     if len(facts_json) > 50000:
         facts_json = facts_json[:49000] + "\n... (truncado)\n"
+
+    if isinstance(effective_policy, dict) and not effective_policy.get(
+        "use_rag_in_prompt", False
+    ):
+        rag = None
 
     rag_payload = _prepare_rag_payload(rag)
     if rag_payload is not None:
