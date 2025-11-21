@@ -11,6 +11,7 @@ columns:
   - { name: qty,                 type: integer,  nullable: true,  desc: "quantidade em custódia" }
   - { name: closing_price,       type: number,  nullable: true,  desc: "preço de fechamento do dia" }
   - { name: update_value,        type: number,  nullable: true,  desc: "variação de valor" }
+  - { name: available_quantity,  type: integer,  nullable: true,  desc: "quantidade disponível" }
   - { name: created_at,          type: timestamp, nullable: false, desc: "data de criação do registro" }
   - { name: updated_at,          type: timestamp, nullable: false, desc: "data da última atualização do registro" }
 
