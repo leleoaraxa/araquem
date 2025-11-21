@@ -320,4 +320,15 @@ Em resumo, o Codex deve:
    * referências inválidas em templates.
 5. Não tocar em lógica de negócios, apenas **estrutura e naming**.
 
-```
+---
+
+## 8. Diagnóstico e ações executadas (Etapa 5)
+
+- **Fontes de verdade consultadas**: `data/entities/client_fiis_positions/entity.yaml`, `data/contracts/entities/client_fiis_positions.schema.yaml`, amostra runtime `tmp/sample_positions.json` e ontologia `data/ontology/entity.yaml`.
+- **Inconsistência encontrada**: o contrato `client_fiis_positions.schema.yaml` não declarava `available_quantity` presente no runtime; o `entity.yaml` trazia campos inexistentes (`average_price`, `profitability_percentage`, `percentage`).
+- **Correções aplicadas**:
+  - Contrato atualizado para incluir `available_quantity` com tipo numérico opcional.
+  - `entity.yaml` limpo para refletir exclusivamente as colunas reais (`document_number`, `position_date`, `ticker`, `fii_name`, `participant_name`, `qty`, `closing_price`, `update_value`, `available_quantity`, `created_at`, `updated_at`).
+  - Templates de resposta conferidos; nenhum ajuste necessário porque já utilizam `fields.key/value` alinhados.
+- **Entidades revisadas nesta etapa**: `client_fiis_positions`.
+- **Guardrails v2.1.1**: todas as mudanças foram estritamente estruturais, sem criação de campos novos sem evidência, sem alterações de SQL ou código Python, mantendo `result_key` e colunas sincronizados com o runtime.
