@@ -16,7 +16,7 @@
   - `gate` (thresholds aplicados) e `aggregates` (inferência de parâmetros) vindos de `route_question` (`app/orchestrator/routing.py`).
   - `requested_metrics` derivado de `ask.metrics_synonyms` do `entity.yaml` dentro do orchestrator.
   - `cache` (hit/miss, key, ttl) construído no endpoint a partir de `read_through` ou da política explícita.
-  - `rag` (contexto de RAG) montado pelo orchestrator via `rag.context_builder.build_context`.
+  - `rag` (contexto de RAG) montado pelo orchestrator via `rag.context_builder.build_context` e nunca sobrescrito no Presenter.
   - `narrator` (estado e telemetria) produzido pelo **Narrator** (`Narrator.render`) e
     propagado pelo Presenter (`app/presenter/presenter.py`) para `meta['narrator']`.
   - `explain` (quando `?explain=true`) = `plan['explain']`.
@@ -41,16 +41,14 @@
    - Prepara contexto de cache de métricas (`_prepare_metrics_cache_context`) e tenta hit Redis (`metrics_cache_hit`).
    - Em miss: monta SQL com `builder.build_select_for_entity`, executa `PgExecutor.query`, formata linhas com `formatter.format_rows` e grava cache se elegível.
    - Constrói `meta` parcial: `planner`, `result_key`, `planner_intent`, `planner_entity`, `planner_score`, `rows_total`, `elapsed_ms`, `gate`, `aggregates`, `requested_metrics`, `explain`/`explain_analytics` quando solicitado.
-   - Sempre preenche `meta['rag']` usando `rag.context_builder.build_context` (ou fallback com erro se falhar) e retorna `{status, results, meta}`.
+   - Sempre preenche o contexto canônico `meta['rag']` usando `rag.context_builder.build_context` (ou fallback com erro capturado) e retorna `{status, results, meta}`.
 
 5) **Presenter** — `app/presenter/presenter.py` (`present`)
    - Recebe `plan`, `results` e `meta` do orchestrator, além de `identifiers` e `aggregates` calculados no endpoint.
    - Constrói `facts` (`build_facts`) com `result_key`, `rows`, `primary`, `identifiers`, `aggregates`, `requested_metrics`, `ticker`/`fund` e score do planner.
    - Gera baseline determinístico via `render_answer` + `render_rows_template`.
-   - Recalcula um `rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`)
-     **apenas para consumo interno do Narrator** (não sobrescreve `meta['rag']` vindo do orchestrator);
-     este contexto adicional é acoplado em `meta_for_narrator` / `narrator_meta.rag`.
-   - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag`.
+   - Monta um `narrator_rag_context` usando `rag.context_builder.build_context` com a política carregada (`load_rag_policy`) **apenas para consumo interno do Narrator**; `meta['rag']` continua sendo o valor recebido do Orchestrator.
+   - Aciona Narrator (quando presente e habilitado) para gerar texto LLM ou shadow; preenche `narrator_meta` com `enabled`, `shadow`, `model`, `latency_ms`, `error`, `used`, `strategy`, `score`, além de `rag` (interno).
    - Decide `answer` final (`Narrator` quando `enabled`, caso contrário baseline) e devolve `PresentResult` para o endpoint.
 
 6) **Resposta HTTP** — `app/api/ask.py`

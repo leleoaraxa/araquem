@@ -173,7 +173,7 @@ def present(
     rag_policy = load_rag_policy()
     intent = plan["chosen"]["intent"]
     entity = plan["chosen"]["entity"]
-    rag_context = build_context(
+    narrator_rag_context = build_context(
         question=question,
         intent=intent,
         entity=entity,
@@ -223,7 +223,7 @@ def present(
             # se explain=True, podemos expor o porquê da rota
             "explain": (plan.get("explain") if explain else None),
             "result_key": result_key,
-            "rag": rag_context,
+            "rag": narrator_rag_context,
         }
 
         if narrator_meta:
@@ -278,7 +278,7 @@ def present(
                 counter("sirios_narrator_render_total", outcome="error")
                 # fallback: mantém final_answer = legacy_answer
 
-    narrator_info["rag"] = rag_context
+    narrator_info["rag"] = narrator_rag_context
 
     return PresentResult(
         answer=final_answer,
