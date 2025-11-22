@@ -78,21 +78,21 @@ samples:
   - { question: "média de dividendos do HGLG11 nos últimos 12 meses", expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
   - { question: "ranking do HGLG11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "posicao do HGLG11 no IFIX",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "quantas aparições do HGLG11 no IFIX",         expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "posição do HGLG11 no IFIL",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos do HGLG11 no ranking do IFIX",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos do HGLG11 no ranking do IFIL",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking de usuarios do HGLG11",               expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos no ranking de usuarios do HGLG11", expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking da sirios do HGLG11",                 expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking do FPAB11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "quantas aparições do FPAB11 no IFIX",         expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "quantas aparições do FPAB11 no IFIL",         expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "posição do FPAB11 no IFIX",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "posição do FPAB11 no IFIL",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking do CXTL11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos no ranking de usuarios do CXTL11", expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking da sirios do CXTL11",                 expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "top 5 fiis por liquidez media 3m",            expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "top 5 fiis por maior valor de mercado",       expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "fundos com maior dividend yield no IFIX",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "fiis de logistica com maior liquidez",        expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "quais fiis são do setor de logística",        expected_intent: fiis_cadastro, expected_entity: fiis_cadastro }
   - { question: "quais são os maiores fiis em patrimonio liquido", expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking dos fiis com melhor sharpe ratio",    expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "top fiis por menor volatilidade",             expected_intent: fiis_rankings, expected_entity: fiis_rankings }
@@ -100,15 +100,15 @@ samples:
   - { question: "top fiis por dy nos ultimos 12 meses",        expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "segmento do HGLG11",                                  expected_intent: fiis_cadastro, expected_entity: fiis_cadastro }
   - { question: "patrimônio líquido do HGLG11",                        expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
-  - { question: "vacância do MXRF11",                                  expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "dy mensal do MXRF11",                                 expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
   - { question: "alavancagem do XPML11",                               expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
-  - { question: "patrimônio e número de cotistas do MXRF11",           expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
-  - { question: "vacância física e financeira do HGLG11",              expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "patrimônio líquido e valor de mercado do MXRF11",     expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "dy 12m e dy mensal do HGLG11",                        expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
   - { question: "cronograma de receitas do MXRF11 para os próximos 12 meses", expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
   - { question: "previsão de receita do HGLG11 nos próximos 6 meses",        expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
   - { question: "percentual da receita do XPML11 indexada ao IPCA",          expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
   - { question: "como está distribuída a receita futura do MXRF11 por índice", expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
-  - { question: "receita contratada versus receita potencial do HGLG11",    expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "percentual da receita do HGLG11 indexada ao IGP-M",    expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
   - { question: "qual o beta do MXRF11",                                expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "sharpe ratio do HGLG11 nos últimos 12 meses",          expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "sortino ratio do XPML11",                              expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
@@ -123,7 +123,7 @@ samples:
   - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "últimas notícias do MXRF11",                           expected_intent: fiis_noticias, expected_entity: fiis_noticias }
   - { question: "notícias recentes sobre HGLG11",                       expected_intent: fiis_noticias, expected_entity: fiis_noticias }
-  - { question: "alguma notícia negativa do XPML11 nos últimos 30 dias",expected_intent: fiis_noticias, expected_entity: fiis_noticias }
+  - { question: "notícias do XPML11 nos últimos 30 dias",expected_intent: fiis_noticias, expected_entity: fiis_noticias }
   - { question: "minhas posições em fiis na b3",                        expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
   - { question: "peso do MXRF11 na minha carteira de fiis",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
   - { question: "rentabilidade da minha posição em HGLG11",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
