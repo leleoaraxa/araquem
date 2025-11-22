@@ -109,27 +109,38 @@ ask:
   - lista
   - aparicoes
   - movimentos
-  - ifix
-  - ifil
   - usuarios
   - sirios
   - liquidez
+  - liquidez media
+  - maior liquidez
   - volume
   - dy
   - dividend yield
   - dividendo
   - patrimonio
   - patrimonio liquido
+  - maiores fiis em patrimonio
+  - maiores fiis em patrimonio liquido
   - equity
   - sharpe
   - sortino
   - volatilidade
+  - risco
+  - menor risco
   - drawdown
+  - menor drawdown
   - mdd
   - setor
   - logistica
   - papel
   - tijolo
+  phrase_includes:
+  - top fiis por liquidez
+  - fiis de logistica com maior liquidez
+  - fiis de logística com maior liquidez
+  - maiores fiis em patrimonio liquido
+  - maiores fiis em patrimônio líquido
   synonyms:
     ticker:
     - ativo
@@ -271,3 +282,6 @@ ask:
     rank_low_drawdown:
       - ranking menor drawdown
       - ranking mdd
+sample_questions:
+- fiis de logistica com maior liquidez
+- quais são os maiores fiis em patrimonio liquido

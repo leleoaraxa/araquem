@@ -64,10 +64,9 @@ ask:
     - minima
     - variacao
     - diaria
+    - pregao
     - hoje
-    - historico
-    - serie
-    - preco medio
+    - variacao diaria
 
   phrase_includes:
     - "preco do"
@@ -79,6 +78,10 @@ ask:
     - "quanto ta o"
     - "quanto esta o"
     - "qual meu preco medio do"
+    - "variacao diaria do"
+    - "variacao diaria do nos ultimos"
+    - "variacao diaria do ticker"
+    - "variacao do ticker nos ultimos"
 
   synonyms:
     ticker:
@@ -117,6 +120,9 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+
+sample_questions:
+- variação diária do XPML11 nos últimos 5 pregões
 
 order_by_whitelist:
 - traded_at desc

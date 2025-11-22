@@ -377,6 +377,16 @@
       "expected_entity": "fiis_dividendos"
     },
     {
+      "question": "quanto o MXRF11 distribuiu em 07/2024",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "média de dividendos do HGLG11 nos últimos 12 meses",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
       "question": "ranking do HGLG11",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -478,13 +488,18 @@
     },
     {
       "question": "fiis com menor drawdown",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
     },
     {
       "question": "top fiis por dy nos ultimos 12 meses",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "segmento do HGLG11",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "patrimônio líquido do HGLG11",
@@ -580,6 +595,11 @@
       "question": "lista de imóveis do XPML11",
       "expected_intent": "fiis_imoveis",
       "expected_entity": "fiis_imoveis"
+    },
+    {
+      "question": "variação diária do XPML11 nos últimos 5 pregões",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
     },
     {
       "question": "o MXRF11 tem processos relevantes",

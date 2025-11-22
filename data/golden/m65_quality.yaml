@@ -74,6 +74,8 @@ samples:
   - { question: "dividendos do HGLG11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
   - { question: "proventos do HGLG11",   expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
   - { question: "rendimento do HGLG11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
+  - { question: "quanto o MXRF11 distribuiu em 07/2024", expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
+  - { question: "média de dividendos do HGLG11 nos últimos 12 meses", expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
   - { question: "ranking do HGLG11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "posicao do HGLG11 no IFIX",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "quantas aparições do HGLG11 no IFIX",         expected_intent: fiis_rankings, expected_entity: fiis_rankings }
@@ -95,8 +97,9 @@ samples:
   - { question: "quais são os maiores fiis em patrimonio liquido", expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking dos fiis com melhor sharpe ratio",    expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "top fiis por menor volatilidade",             expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "fiis com menor drawdown",                     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "fiis com menor drawdown",                     expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "top fiis por dy nos ultimos 12 meses",        expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "segmento do HGLG11",                                  expected_intent: fiis_cadastro, expected_entity: fiis_cadastro }
   - { question: "patrimônio líquido do HGLG11",                        expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
   - { question: "vacância do MXRF11",                                  expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
   - { question: "alavancagem do XPML11",                               expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
@@ -115,6 +118,7 @@ samples:
   - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
   - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
   - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
+  - { question: "variação diária do XPML11 nos últimos 5 pregões",      expected_intent: fiis_precos, expected_entity: fiis_precos }
   - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }
