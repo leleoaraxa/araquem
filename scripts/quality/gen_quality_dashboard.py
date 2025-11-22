@@ -133,7 +133,7 @@ def main():
     # PromQL (mesmos usados no /ops/quality/report)
     q_top1_acc = 'sum(sirios_planner_top1_match_total{result="hit"}) / clamp_min(sum(sirios_planner_top1_match_total), 1)'
     q_routed_rt = 'sum(sirios_planner_routed_total{outcome!="unroutable"}) / clamp_min(sum(sirios_planner_routed_total), 1)'
-    q_gap_p50 = "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[5m])) by (le))"
+    q_gap_p50 = "histogram_quantile(0.50, sum(rate(sirios_planner_top2_gap_histogram_bucket[24h])) by (le))"
     q_miss_abs = 'sum(sirios_planner_top1_match_total{result="miss"})'
     q_miss_ratio = (
         f"({q_miss_abs}) / clamp_min(sum(sirios_planner_top1_match_total), 1)"
