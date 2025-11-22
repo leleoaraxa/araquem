@@ -463,36 +463,80 @@ intents:
     tokens:
       include:
         - ranking
+        - rank
         - posicao
         - posicoes
         - top
+        - melhores
+        - maiores
+        - menores
+        - piores
+        - lista
         - aparicoes
         - movimentos
         - ifix
         - ifil
         - usuarios
         - sirios
-        - vezes
+        - liquidez
+        - liquidez media
+        - volume
+        - dy
+        - dividend yield
+        - rendimento
+        - dividendo
+        - patrimonio
+        - patrimonio liquido
+        - equity
+        - sharpe
+        - sortino
+        - volatilidade
+        - risco
+        - drawdown
+        - mdd
+        - logistica
+        - papel
+        - tijolo
       exclude:
         - preco
-        - dividendo
-        - media
-        - variacao
+        - dividendo do
+        - media do
         - variacao diaria
         - pontos
         - fechamento
         - hoje
         - ontem
+        - vacancia
+        - beta
+        - noticia
+        - noticia do
+        - r\u00a2
     phrases:
       include:
         - ranking do
+        - ranking dos fiis
+        - ranking de fiis
         - posicao do
         - aparicoes do
         - movimentos do
         - top fiis por
+        - top 5 fiis por
+        - top 10 fiis por
+        - maiores fiis em
+        - melhores fiis em
+        - fiis com maior
+        - fiis com menor
+        - ranking dos fiis com melhor
+        - ranking dos fiis com menor
       exclude:
         - preco do
         - dividendo do
+        - vacancia do
+        - rendimento do
+        - rendimento do fii
+        - cotacao do
+        - preco hoje
+        - preco ontem
     entities: [fiis_rankings]
 
   - name: history_b3_indexes

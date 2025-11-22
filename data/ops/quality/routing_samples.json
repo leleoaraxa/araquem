@@ -492,6 +492,46 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "top 5 fiis por liquidez media 3m",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "fundos com maior dividend yield no IFIX",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "fiis de logistica com maior liquidez",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais são os maiores fiis em patrimonio liquido",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "ranking dos fiis com melhor sharpe ratio",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "top fiis por menor volatilidade",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "fiis com menor drawdown",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "top fiis por dy nos ultimos 12 meses",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "qual é o CNPJ do HCTR11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
@@ -1093,8 +1133,8 @@
     },
     {
       "question": "ranking dos fiis com melhor sharpe ratio",
-      "expected_intent": "fiis_financials_risk",
-      "expected_entity": "fiis_financials_risk"
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
     },
     {
       "question": "qual meu preço médio do HGLG11 na minha carteira",

@@ -1,8 +1,8 @@
 {% if rows and rows|length > 0 -%}
-| {{ fields.key }} | {{ fields.value }} |
-|---|---|
+| {{ fields.key }}{% for col in fields.columns %} | {{ col }}{% endfor %} |
+|---{% for col in fields.columns %}|---{% endfor %}|
 {%- for r in rows %}
-| {{ r[fields.key] }} | {{ r[fields.value] }} |
+| {{ r[fields.key] }}{%- for col in fields.columns %} | {{ r[col] if col in r else '' }}{%- endfor %} |
 {%- endfor %}
 {%- else -%}
 {{ empty_message or "Sem registros para exibir." }}
