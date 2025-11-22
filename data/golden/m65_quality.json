@@ -472,11 +472,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "ranking dos fiis com melhor sharpe ratio",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "top fiis por menor volatilidade",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"

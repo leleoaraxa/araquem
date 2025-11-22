@@ -1122,9 +1122,6 @@ SELECT
   i.updated_at
 FROM view_fiis_info i
 LEFT JOIN fiis_rankings_quant q USING (ticker);
-
-
-
 -- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
