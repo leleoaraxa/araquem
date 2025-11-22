@@ -115,7 +115,7 @@ ask:
     - enterprise value
     - market cap
     - patrimonio
-    - preco/patrimonio
+    - preco patrimonio
     - price book
     - cap rate
     - crescimento
@@ -127,7 +127,7 @@ ask:
     leverage_ratio: [alavancagem, endividamento]
     enterprise_value: [ev, enterprise]
     market_cap_value: [market cap, valor de mercado]
-    price_book_ratio: [preco/patrimonio, p/bv]
+    price_book_ratio: [preco patrimonio, p bv]
     total_cash_amt: [caixa, caixa total]
     growth_rate: [crescimento estimado, expectativa de crescimento]
     variation_month_ratio: [variacao no mes, desempenho mensal]

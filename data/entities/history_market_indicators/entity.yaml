@@ -44,12 +44,12 @@ ask:
   - indicadores
   - taxa
   - juros
-  - inflação
+  - inflacao
   synonyms:
     indicator_name:
     - indicador
     - taxa
-    - índice
+    - indice
   weights:
     identifiers: 1.0
     keywords: 1.5

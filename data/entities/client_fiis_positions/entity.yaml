@@ -74,61 +74,51 @@ ask:
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
     - minhas posicoes
-    - minhas posições
-    - minhas posiçoes
     - minha carteira
     - carteira
     - carteira de fii
     - carteira de fiis
     - carteira de fundos imobiliarios
-    - carteira de fundos imobiliários
     - posicao
-    - posição
     - quantidade
     - qtd
     - custodia
-    - custódia
     - rentabilidade
     - rentabilidade da posicao
-    - rentabilidade da posição
     - ganho
     - ganho percentual
-    - ganho em %
+    - ganho em
     - lucro
-    - lucro em %
+    - lucro em
     - peso na carteira
     - percentual na carteira
     - porcentagem na carteira
     - participacao
-    - participação
     - corretora
     - participante
     - custodiado
 
   phrase_includes:
     - "minhas posicoes"
-    - "minhas posições"
     - "minha carteira de fiis"
     - "minha carteira de fundos imobiliarios"
-    - "minha carteira de fundos imobiliários"
-    - "minhas posições em fiis"
-    - "minhas posições em fundos imobiliarios"
+    - "minhas posicoes em fiis"
+    - "minhas posicoes em fundos imobiliarios"
     - "quantidade de fiis na minha custodia"
-    - "quantidade de fiis na minha custódia"
     - "peso do fii na minha carteira"
     - "peso desse fii na minha carteira"
     - "peso desse fundo na minha carteira"
-    - "rentabilidade da minha posição em"
-    - "rentabilidade da posição em"
+    - "rentabilidade da minha posicao em"
+    - "rentabilidade da posicao em"
     - "qual a corretora do"
-    - "em qual corretora está o"
-    - "onde estão minhas cotas do"
+    - "em qual corretora esta o"
+    - "onde estao minhas cotas do"
     - "onde o"
-    - "em qual corretora está esse fundo"
-    - "qual é o fii com maior peso na minha carteira"
-    - "qual é o fii mais rentável da minha carteira"
-    - "quais fiis da minha carteira estão dando lucro"
-    - "distribuição da minha carteira de fiis"
+    - "em qual corretora esta esse fundo"
+    - "qual e o fii com maior peso na minha carteira"
+    - "qual e o fii mais rentavel da minha carteira"
+    - "quais fiis da minha carteira estao dando lucro"
+    - "distribuicao da minha carteira de fiis"
 
   synonyms:
     ticker:
@@ -141,30 +131,20 @@ ask:
       - qtde
       - qtd
       - numero de cotas
-      - número de cotas
       - cotas
     closing_price:
       - preco
-      - preço
       - preco de fechamento
-      - preço de fechamento
       - cotacao
-      - cotação
       - cotacao de fechamento
-      - cotação de fechamento
     average_price:
       - preco medio
-      - preço medio
-      - preço médio
       - pm
-      - preço médio de compra
       - preco medio de compra
       - preco medio da posicao
-      - preço médio da posição
     profitability_percentage:
       - rentabilidade
       - rentabilidade da posicao
-      - rentabilidade da posição
       - ganho percentual
       - ganho em
       - lucro em
@@ -177,7 +157,6 @@ ask:
       - percentual na carteira
       - porcentagem na carteira
       - participacao na carteira
-      - participação na carteira
 
   weights:
     identifiers: 2.0

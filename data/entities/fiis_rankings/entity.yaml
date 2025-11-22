@@ -60,10 +60,9 @@ ask:
   keywords:
   - ranking
   - posicao
-  - posições
+  - posicoes
   - top
   - aparicoes
-  - aparições
   - movimentos
   - ifix
   - ifil
@@ -78,7 +77,6 @@ ask:
     - fii
     users_rank_position:
     - usuarios
-    - usuários
     - ranking de usuarios
     - vezes usuarios
     users_rank_net_movement:
