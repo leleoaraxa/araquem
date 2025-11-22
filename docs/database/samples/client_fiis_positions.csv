@@ -1,0 +1,5 @@
+"document_number","position_date","ticker","fii_name","participant_name","qty","closing_price","update_value","available_quantity","average_price","profitability_percentage","percentage","created_at","updated_at"
+"66140994691","2025-10-21","CPTS11","CAPITANIA SECURITIES II FDO INV IMOB - RESP LTDA. ","BB BANCO DE INVESTIMENTO S/A","800","7.57","6056","800",NULL,NULL,"16.65","2025-10-21","2025-10-21"
+"66140994691","2025-10-21","PVBI11","FII VBI PRIME PROPERTIES RESP LIM                 ","BB BANCO DE INVESTIMENTO S/A","200","76.71","15342","200",NULL,NULL,"42.18","2025-10-21","2025-10-21"
+"66140994691","2025-10-21","VISC11","VINCI SHOPPING CENTERS FII RESP LIM               ","BB BANCO DE INVESTIMENTO S/A","100","107.91","10791","100",NULL,NULL,"29.67","2025-10-21","2025-10-21"
+"66140994691","2025-10-21","XPML11","XP MALLS FDO INV IMOB FII RESP LIM                ","BB BANCO DE INVESTIMENTO S/A","40","104.54","4181.6","40",NULL,NULL,"11.50","2025-10-21","2025-10-21"

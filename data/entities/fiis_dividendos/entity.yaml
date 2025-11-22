@@ -60,11 +60,21 @@ ask:
   - últimos 12 meses
   - yield
   - dy
+  - dividend yield
+  - ultimo dy
+  - dy mensal
+  - ultimo dy mensal
+  - pagou em
+  - dividendo pago
   phrase_includes:
   - quanto o distribuiu
   - quanto o distribuiu em
   - media de dividendos do
   - média de dividendos do
+  - dividendo pago em
+  - ultimo dy do
+  - ultimo dy mensal do
+  - dy mensal do
   synonyms:
     ticker:
     - ativo
