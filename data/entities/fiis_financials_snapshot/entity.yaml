@@ -162,3 +162,8 @@ aggregations:
     list:
       limit: 10
       order: desc
+
+responses:
+  default:
+    kind: summary
+    template: responses/summary.md.j2

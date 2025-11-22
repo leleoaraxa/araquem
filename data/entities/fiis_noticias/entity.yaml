@@ -55,3 +55,8 @@ aggregations:
     list:
       limit: 10
       order: desc
+
+responses:
+  default:
+    kind: list
+    template: responses/list.md.j2
