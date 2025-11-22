@@ -89,3 +89,42 @@ samples:
   - { question: "ranking do CXTL11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos no ranking de usuarios do CXTL11", expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking da sirios do CXTL11",                 expected_intent: fiis_rankings, expected_entity: fiis_rankings }
+  - { question: "patrimônio líquido do HGLG11",                        expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "vacância do MXRF11",                                  expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "alavancagem do XPML11",                               expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "patrimônio e número de cotistas do MXRF11",           expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "vacância física e financeira do HGLG11",              expected_intent: fiis_financials_snapshot, expected_entity: fiis_financials_snapshot }
+  - { question: "cronograma de receitas do MXRF11 para os próximos 12 meses", expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "previsão de receita do HGLG11 nos próximos 6 meses",        expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "percentual da receita do XPML11 indexada ao IPCA",          expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "como está distribuída a receita futura do MXRF11 por índice", expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "receita contratada versus receita potencial do HGLG11",    expected_intent: fiis_financials_revenue_schedule, expected_entity: fiis_financials_revenue_schedule }
+  - { question: "qual o beta do MXRF11",                                expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "sharpe ratio do HGLG11 nos últimos 12 meses",          expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "sortino ratio do XPML11",                              expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "max drawdown do MXRF11",                               expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "r² do HGLG11 em relação ao IFIX",                      expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "ranking dos fiis com melhor sharpe ratio",             expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
+  - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
+  - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
+  - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
+  - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }
+  - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }
+  - { question: "últimas notícias do MXRF11",                           expected_intent: fiis_noticias, expected_entity: fiis_noticias }
+  - { question: "notícias recentes sobre HGLG11",                       expected_intent: fiis_noticias, expected_entity: fiis_noticias }
+  - { question: "alguma notícia negativa do XPML11 nos últimos 30 dias",expected_intent: fiis_noticias, expected_entity: fiis_noticias }
+  - { question: "minhas posições em fiis na b3",                        expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
+  - { question: "peso do MXRF11 na minha carteira de fiis",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
+  - { question: "rentabilidade da minha posição em HGLG11",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
+  - { question: "qual meu preço médio do HGLG11 na minha carteira",     expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
+  - { question: "quais fiis da minha carteira estão dando prejuízo",    expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
+  - { question: "histórico do IFIX nos últimos 6 meses",                expected_intent: history_b3_indexes, expected_entity: history_b3_indexes }
+  - { question: "variação do IFIX nos últimos 12 meses",                expected_intent: history_b3_indexes, expected_entity: history_b3_indexes }
+  - { question: "como o IFIX se comportou em 2024",                     expected_intent: history_b3_indexes, expected_entity: history_b3_indexes }
+  - { question: "histórico do dólar nos últimos 30 dias",               expected_intent: history_currency_rates, expected_entity: history_currency_rates }
+  - { question: "variação do dólar nos últimos 12 meses",               expected_intent: history_currency_rates, expected_entity: history_currency_rates }
+  - { question: "cotação média do euro no último mês",                  expected_intent: history_currency_rates, expected_entity: history_currency_rates }
+  - { question: "histórico do IPCA nos últimos 24 meses",               expected_intent: history_market_indicators, expected_entity: history_market_indicators }
+  - { question: "acúmulo de CDI em 12 meses",                           expected_intent: history_market_indicators, expected_entity: history_market_indicators }
+  - { question: "trajetória da Selic desde 2020",                       expected_intent: history_market_indicators, expected_entity: history_market_indicators }
