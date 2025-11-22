@@ -47,19 +47,17 @@ ask:
   intents:
   - history_b3_indexes
   keywords:
-  - ibovespa
-  - ibov
-  - ifix
-  - ifil
-  - indice
-  - indices
-  - índice
-  - histórico
-  - historico
-  - pontos
-  - fechamento
-  - variacao
-  - variacao diaria
+    - ibovespa
+    - ibov
+    - ifix
+    - ifil
+    - indice
+    - indices
+    - historico
+    - pontos
+    - fechamento
+    - variacao
+    - variacao diaria
   phrase_includes:
   - variacao diaria do ifix
   - variacao diaria do ifil

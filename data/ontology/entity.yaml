@@ -50,8 +50,6 @@ intents:
         - cnpj
         - administrador
         - administradora
-        - gestor
-        - gestora
         - custodia
         - custodiante
         - assembleia
@@ -86,10 +84,7 @@ intents:
         - media
         - patrimonio
         - patrimonio liquido
-        - patrimônio
-        - patrimônio líquido
         - numero de cotistas
-        - número de cotistas
     phrases:
       include:
         - cnpj do
@@ -147,7 +142,6 @@ intents:
         - ifil
         - usd
         - dolar
-        - dólar
         - eur
         - euro
         - cdi
@@ -188,19 +182,14 @@ intents:
         - pagamento
         - paga
         - pagou
-        - ultimo
-        - ultima
         - data com
         - data ex
         - distribuiu
         - distribuiu em
         - quanto distribuiu
         - media de dividendos
-        - média de dividendos
         - media de rendimentos
-        - média de rendimentos
         - ultimos 12 meses
-        - últimos 12 meses
       exclude:
         - soma
         - media
@@ -211,13 +200,10 @@ intents:
         - proventos do
         - rendimento do
         - pagamento do
-        - ultimo dividendo do
-        - quando foi o ultimo pagamento do
         - data com do
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
-        - média de dividendos do
       exclude:
         - soma de dividendos
         - quanto de dividendos
@@ -240,14 +226,6 @@ intents:
         - patrimonio por cota
         - price book
         - preco patrimonio
-        - numero de cotistas
-        - cotistas
-        - vacancia
-        - vacância
-        - vacancia fisica
-        - vacância física
-        - vacancia financeira
-        - vacância financeira
         - caixa
         - caixa total
         - passivos
@@ -259,9 +237,6 @@ intents:
         - taxa de adm
         - taxa de administracao
         - taxa de performance
-        - ultimo dividendo
-        - ultimo pagamento
-        - dy mensal
       exclude:
         - soma
         - media
@@ -284,9 +259,6 @@ intents:
         - reserva de dividendos do
         - taxa de adm do
         - taxa de performance do
-        - patrimonio e numero de cotistas do
-        - vacancia do
-        - vacancia fisica e financeira do
       exclude:
         - nos ultimos
         - soma de
@@ -340,7 +312,6 @@ intents:
         - janeiro
         - fevereiro
         - marco
-        - março
         - abril
         - maio
         - junho
@@ -385,9 +356,6 @@ intents:
         - vr
         - indice de risco
         - sharpe ratio
-        - ranking por sharpe
-        - melhor sharpe
-        - fiis com menor drawdown
       exclude:
         - soma
         - cdi
@@ -409,9 +377,6 @@ intents:
         - drawdown do
         - r2 do
         - coeficiente de determinacao do
-        - ranking por sharpe do
-        - melhor sharpe do
-        - fiis com menor drawdown
       exclude:
     entities: [fiis_financials_risk]
 
@@ -515,15 +480,8 @@ intents:
         - menores
         - piores
         - lista
-        - aparicoes
-        - movimentos
         - usuarios
         - sirios
-        - liquidez
-        - liquidez media
-        - maior liquidez
-        - liquidez média
-        - volume
         - dy
         - dividend yield
         - rendimento
@@ -541,9 +499,6 @@ intents:
         - drawdown
         - menor drawdown
         - mdd
-        - logistica
-        - papel
-        - tijolo
       exclude:
         - preco
         - dividendo do
@@ -571,18 +526,12 @@ intents:
         - ranking dos fiis
         - ranking de fiis
         - posicao do
-        - aparicoes do
-        - movimentos do
         - top fiis por
         - top 5 fiis por
         - top 10 fiis por
         - maiores fiis em
         - melhores fiis em
-        - top fiis por liquidez
-        - fiis de logistica com maior liquidez
-        - fiis de logística com maior liquidez
         - maiores fiis em patrimonio liquido
-        - maiores fiis em patrimônio líquido
         - fiis com maior
         - fiis com menor
         - ranking dos fiis com melhor
@@ -606,7 +555,7 @@ intents:
         - ifix
         - ifil
         - indice
-        - índices
+        - indices
         - pontos
         - fechamento
         - variacao
@@ -656,14 +605,11 @@ intents:
     tokens:
       include:
         - dolar
-        - dólar
         - usd
         - euro
         - eur
         - cambio
-        - câmbio
         - cotacao
-        - cotação
         - compra
         - venda
         - variacao
@@ -711,7 +657,7 @@ intents:
         - inpc
         - taxa
         - juros
-        - inflação
+        - inflacao
         - indicador
         - indicadores
         - meta

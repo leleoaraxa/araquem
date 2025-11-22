@@ -122,7 +122,6 @@ ask:
       - receita 0 a 3 meses
       - receita em 0-3 meses
       - vencimento em ate 3 meses
-      - vencimento em até 3 meses
     revenue_due_3_6m_pct:
       - receita 3 a 6 meses
       - receita em 3-6 meses
@@ -171,7 +170,6 @@ ask:
       - receita acima de 36 meses
       - receita longo prazo
       - vencimento apos 36 meses
-      - vencimento após 36 meses
     revenue_due_undetermined_pct:
       - receita indeterminada
       - vencimento indeterminado

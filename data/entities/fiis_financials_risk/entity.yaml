@@ -67,18 +67,14 @@ ask:
     - beta
     - sortino
     - drawdown
-    - fiis com menor drawdown
     - mdd
     - r2
-    - r²
     - coeficiente de determinacao
     - desvio padrao
     - risco ajustado
     - performance ajustada
     - risco vs retorno
     - sharpe ratio
-    - ranking por sharpe
-    - melhor sharpe
   phrase_includes:
     - "indice de treynor"
     - "treynor do"
@@ -93,9 +89,6 @@ ask:
     - "alpha de jensen"
     - "r2"
     - "coeficiente de determinacao"
-    - "ranking por sharpe"
-    - "melhor sharpe"
-    - "fiis com menor drawdown"
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:
@@ -144,11 +137,10 @@ ask:
       - r2
       - r dois
       - coeficiente de determinacao
-      - coeficiente de determinação
 
-sample_questions:
-- fiis com menor drawdown
-- sharpe ratio do HGLG11 nos últimos 12 meses
+  sample_questions:
+    - sharpe ratio do HGLG11 nos últimos 12 meses
+    - qual o beta do MXRF11
 
 order_by_whitelist:
   - updated_at desc

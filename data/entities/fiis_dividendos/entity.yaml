@@ -40,66 +40,51 @@ ask:
   intents:
   - fiis_dividendos
   keywords:
-  - dividendo
-  - dividendos
-  - provento
-  - proventos
-  - rendimento
-  - rendimentos
-  - pagamento
-  - paga
-  - pagou
-  - distribuiu
-  - distribuiu em
-  - quanto distribuiu
-  - media de dividendos
-  - média de dividendos
-  - media de rendimentos
-  - média de rendimentos
-  - ultimos 12 meses
-  - últimos 12 meses
-  - yield
-  - dy
-  - dividend yield
-  - ultimo dy
-  - dy mensal
-  - ultimo dy mensal
-  - pagou em
-  - dividendo pago
-  phrase_includes:
-  - quanto o distribuiu
-  - quanto o distribuiu em
-  - media de dividendos do
-  - média de dividendos do
-  - dividendo pago em
-  - ultimo dy do
-  - ultimo dy mensal do
-  - dy mensal do
-  synonyms:
-    ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
-    dividend_amt:
     - dividendo
+    - dividendos
     - provento
+    - proventos
     - rendimento
-    - yield
-    - dy
-    - valor
-    payment_date:
+    - rendimentos
     - pagamento
-    - data de pagamento
     - paga
     - pagou
+    - distribuiu
+    - distribuiu em
+    - quanto distribuiu
+    - media de dividendos
+    - media de rendimentos
+    - ultimos 12 meses
+    - pagou em
+    - dividendo pago
+  phrase_includes:
+    - quanto o distribuiu
+    - quanto o distribuiu em
+    - media de dividendos do
+    - dividendo pago em
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    dividend_amt:
+      - dividendo
+      - provento
+      - rendimento
+      - valor
+    payment_date:
+      - pagamento
+      - data de pagamento
+      - paga
+      - pagou
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-sample_questions:
-- quanto o MXRF11 distribuiu em 07/2024
-- média de dividendos do HGLG11 nos últimos 12 meses
+  sample_questions:
+    - quanto o MXRF11 distribuiu em 07/2024
+    - media de dividendos do HGLG11 nos ultimos 12 meses
 order_by_whitelist:
 - payment_date desc
 aggregations:
