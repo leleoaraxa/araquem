@@ -147,3 +147,8 @@ aggregations:
   - count:12
   - count:24
   - count:1
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

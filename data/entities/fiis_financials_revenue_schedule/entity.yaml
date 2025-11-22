@@ -192,3 +192,8 @@ aggregations:
   - months:24
   - count:3
   - count:6
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

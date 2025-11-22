@@ -285,3 +285,8 @@ ask:
 sample_questions:
 - fiis de logistica com maior liquidez
 - quais são os maiores fiis em patrimonio liquido
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

@@ -119,3 +119,8 @@ ask:
 sample_questions:
 - segmento do HGLG11
 order_by_whitelist: []
+
+responses:
+  default:
+    kind: list
+    template: responses/list.md.j2

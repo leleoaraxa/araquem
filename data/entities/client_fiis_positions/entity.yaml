@@ -170,3 +170,8 @@ order_by_whitelist:
 
 aggregations:
   enabled: false
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2
