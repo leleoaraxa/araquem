@@ -509,25 +509,50 @@ def quality_report():
         logging.exception("Failed to import yaml module in quality_report")
         return JSONResponse({"error": "failed to load quality policy"}, status_code=500)
 
-    policy = None
+    policy: Optional[Dict[str, Any]] = None
     errors: List[str] = []
     used_path: Optional[str] = None
-    for candidate in [policy_path, fallback_path]:
-        if not candidate:
-            continue
+
+    def _load_candidate(path: str) -> Optional[Dict[str, Any]]:
+        nonlocal errors
+        if not path:
+            return None
         try:
-            with open(candidate, "r", encoding="utf-8") as f:
-                policy = yaml.safe_load(f) or {}
-            used_path = candidate  # <- corrigido (antes ficava depois do break)
-            break
+            with open(path, "r", encoding="utf-8") as f:
+                return yaml.safe_load(f) or {}
         except FileNotFoundError:
-            error_msg = f"file not found '{candidate}'"
+            error_msg = f"file not found '{path}'"
             errors.append(error_msg)
             logging.error(error_msg)
         except Exception as exc:
-            error_msg = f"Error loading '{candidate}': {exc}"
+            error_msg = f"Error loading '{path}': {exc}"
             errors.append(error_msg)
             logging.exception(error_msg)
+        return None
+
+    def _extract_targets(policy_dict: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+        if not policy_dict:
+            return {}
+        return policy_dict.get("targets") or (policy_dict.get("quality_gates") or {}).get(
+            "thresholds", {}
+        )
+
+    policy = _load_candidate(policy_path)
+    if policy is not None:
+        used_path = policy_path
+    else:
+        policy = _load_candidate(fallback_path)
+        if policy is not None:
+            used_path = fallback_path
+
+    targets = _extract_targets(policy)
+    if not targets and used_path != fallback_path:
+        fallback_policy = _load_candidate(fallback_path)
+        fallback_targets = _extract_targets(fallback_policy)
+        if fallback_targets:
+            policy = fallback_policy
+            targets = fallback_targets
+            used_path = fallback_path
 
     if policy is None:
         return JSONResponse(
@@ -536,10 +561,6 @@ def quality_report():
         )
 
     logging.info("quality_report: policy loaded from %s", used_path or "<unknown>")
-
-    targets = policy.get("targets") or {}
-    if not targets:
-        targets = (policy.get("quality_gates") or {}).get("thresholds") or {}
 
     # Permite override por ENV (útil p/ testes rápidos)
     def _env_or_target(env_key: str, target_key: str, default: float) -> float:

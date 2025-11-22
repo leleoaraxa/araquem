@@ -1,21 +1,34 @@
+version: 20251122
+window: "rolling"
+
 terms:
   - name: "quality"
     kind: "policy"
     scope: "quality"
     version: 1
 
-# ATENÇÃO:
-# Estes thresholds V2 são provisórios até M7 (RAG + Quality V3 + top2_gap fix).
-# Depois que o intent_top2_gap estiver confiável, revisitar:
-# - min_top1_accuracy: voltar para 0.95+
-# - min_top2_gap: subir para 0.20–0.25
-# - misses_abs / misses_ratio: reduzir para ambiente de produção.
+# ATENÇÃO (V2 provisório):
+# - Estes thresholds serão revisitados no marco M7 (RAG + Quality V3 + top2_gap fix).
+# - Assim que o intent_top2_gap estiver maduro, a expectativa é voltar para algo como:
+#     min_top1_accuracy: 0.95+
+#     min_top2_gap: 0.20–0.25
+#     max_misses_absolute / max_misses_ratio: mais apertados para produção
+# - O bloco `targets` é a fonte canônica; mantemos `quality_gates.thresholds`
+#   espelhado para compatibilidade com leituras antigas.
 targets:
-  min_top1_accuracy: 0.93     # temporário
-  min_top2_gap: 0.00          # <<< desliga o gate de gap por enquanto
+  min_top1_accuracy: 0.93     # temporário até o top2_gap fix / FIIs M7
+  min_top2_gap: 0.00          # <<< desliga o gate de gap enquanto o fix não chega
   min_routed_rate: 0.98
   max_misses_absolute: 30     # tolerância provisória
   max_misses_ratio: 0.10
+
+quality_gates:
+  thresholds:  # compat: manter alinhado com `targets` enquanto transição V2
+    min_top1_accuracy: 0.93
+    min_top2_gap: 0.00
+    min_routed_rate: 0.98
+    max_misses_absolute: 30
+    max_misses_ratio: 0.10
 
 datasets:
   fiis_precos:
