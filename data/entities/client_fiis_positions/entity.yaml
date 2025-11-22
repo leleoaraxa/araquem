@@ -110,7 +110,6 @@ ask:
     - "qual a corretora do"
     - "em qual corretora esta o"
     - "onde estao minhas cotas do"
-    - "onde o"
     - "em qual corretora esta esse fundo"
     - "qual e o fii com maior peso na minha carteira"
     - "qual e o fii mais rentavel da minha carteira"
@@ -154,6 +153,11 @@ ask:
       - percentual na carteira
       - porcentagem na carteira
       - participacao na carteira
+
+  sample_questions:
+    - quais fiis da minha carteira estao dando lucro
+    - qual o peso do HGLG11 na minha carteira
+    - em qual corretora estao minhas cotas do MXRF11
 
   weights:
     identifiers: 2.0

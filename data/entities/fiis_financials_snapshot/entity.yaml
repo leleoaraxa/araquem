@@ -118,19 +118,17 @@ ask:
     - patrimonio liquido
     - preco patrimonio
     - price book
-    - numero de cotistas
-    - cotistas
-    - vacancia
-    - vacancia fisica
-    - vacancia financeira
     - cap rate
     - crescimento
     - leverage
     - dividas
   phrase_includes:
-    - patrimonio e numero de cotistas do
-    - vacancia do
-    - vacancia fisica e financeira do
+    - market cap do
+    - enterprise value do
+    - price book do
+    - caixa do
+    - passivos totais do
+    - cap rate do
   synonyms:
     ticker: [ativo, papel, fundo, fii]
     dividend_payout_pct: [payout, distribuicao]
@@ -147,10 +145,10 @@ ask:
     keywords: 1.0
     synonyms: 0.5
 
-sample_questions:
-- qual a vacância do MXRF11
-- patrimônio e número de cotistas do MXRF11
-- vacância física e financeira do HGLG11
+  sample_questions:
+    - qual o market cap do MXRF11
+    - quanto foi o ultimo dividendo do HGLG11
+    - qual o payout do MCCI11
 
 order_by_whitelist:
   - updated_at desc

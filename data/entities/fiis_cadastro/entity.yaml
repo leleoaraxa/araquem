@@ -90,34 +90,53 @@ presentation:
   empty_message: Nenhum cadastro encontrado.
 ask:
   intents:
-  - fiis_cadastro
+    - fiis_cadastro
   keywords:
-  - cadastro
-  - cnpj
-  - administrador
-  - administradora
-  - site
-  - custodiante
-  - assembleia
-  - segmento
-  - segmentos
+    - cadastro
+    - cnpj
+    - administrador
+    - administradora
+    - site
+    - custodiante
+    - segmento
+    - setores
+    - setor
+    - subsetor
+    - gestao
+    - publico alvo
+    - isin
+    - ipo
+    - nome de exibicao
+    - nome de pregao
+    - peso ifix
+    - peso ifil
+    - cotas emitidas
+    - fundo exclusivo
   phrase_includes:
-  - segmento do
+    - segmento do
+    - nome de pregao do
+    - cnpj do
+    - administrador do
+    - custodiante do
+    - codigo isin do
+    - data do ipo do
   synonyms:
     ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
+      - ativo
+      - papel
+      - fundo
+      - fii
     administrador:
-    - admin
-    - administradora
+      - admin
+      - administradora
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-sample_questions:
-- segmento do HGLG11
+  sample_questions:
+    - segmento do HGLG11
+    - qual o cnpj do MXRF11
+    - quem e o custodiante do XPML11
 order_by_whitelist: []
 
 responses:

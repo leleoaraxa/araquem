@@ -95,124 +95,103 @@ presentation:
   empty_message: Sem rankings disponíveis.
 ask:
   intents:
-  - fiis_rankings
+    - fiis_rankings
   keywords:
-  - ranking
-  - rank
-  - posicao
-  - posicoes
-  - top
-  - melhores
-  - maiores
-  - menores
-  - piores
-  - lista
-  - aparicoes
-  - movimentos
-  - usuarios
-  - sirios
-  - liquidez
-  - liquidez media
-  - maior liquidez
-  - volume
-  - dy
-  - dividend yield
-  - dividendo
-  - patrimonio
-  - patrimonio liquido
-  - maiores fiis em patrimonio
-  - maiores fiis em patrimonio liquido
-  - equity
-  - sharpe
-  - sortino
-  - volatilidade
-  - risco
-  - menor risco
-  - drawdown
-  - menor drawdown
-  - mdd
-  - setor
-  - logistica
-  - papel
-  - tijolo
-  phrase_includes:
-  - top fiis por liquidez
-  - fiis de logistica com maior liquidez
-  - fiis de logística com maior liquidez
-  - maiores fiis em patrimonio liquido
-  - maiores fiis em patrimônio líquido
-  synonyms:
-    ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
-    users_rank_position:
+    - ranking
+    - rank
+    - posicao
+    - posicoes
+    - top
+    - melhores
+    - maiores
+    - menores
+    - piores
+    - lista
     - usuarios
-    - ranking de usuarios
-    - vezes usuarios
-    users_rank_net_movement:
-    - usuarios movimento
-    - variacao usuarios
-    - movimentos usuarios
-    sirios_rank_position:
-    - sirios ranking
-    - ranking da sirios
-    - vezes sirios
-    sirios_rank_net_movement:
-    - sirios movimento
-    - variacao sirios
-    - movimentos sirios
-    ifix_rank_position:
-    - ifix ranking
-    - vezes ifix
-    - aparicoes ifix
-    ifix_rank_net_movement:
-    - ifix movimento
-    - variacao ifix
-    - movimentos ifix
-    ifil_rank_position:
-    - ifil ranking
-    - vezes ifil
-    - aparicoes ifil
-    ifil_rank_net_movement:
-    - ifil movimento
-    - variacao ifil
-    - movimentos ifil
-    rank_dy_12m:
-    - dy 12m
-    - dividend yield 12 meses
-    - rendimento 12 meses
-    - dy ultimo ano
-    rank_dy_monthly:
-    - dy mensal
-    - dividend yield mensal
-    - rendimento mensal
-    rank_dividends_12m:
-    - dividendos 12 meses
-    - proventos 12 meses
-    - proventos acumulados
-    rank_market_cap:
-    - valor de mercado
-    - market cap
-    rank_equity:
-    - patrimonio liquido
+    - sirios
+    - dy
+    - dividend yield
+    - dividendo
     - patrimonio
+    - patrimonio liquido
+    - maiores fiis em patrimonio
+    - maiores fiis em patrimonio liquido
     - equity
-    rank_sharpe:
     - sharpe
-    - sharpe ratio
-    rank_sortino:
     - sortino
-    - sortino ratio
-    rank_low_volatility:
-    - menor volatilidade
-    - baixa volatilidade
     - volatilidade
-    rank_low_drawdown:
+    - risco
+    - menor risco
+    - drawdown
     - menor drawdown
     - mdd
-    - drawdown
+  phrase_includes:
+    - maiores fiis em patrimonio liquido
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    users_rank_position:
+      - usuarios
+      - ranking de usuarios
+    users_rank_net_movement:
+      - usuarios movimento
+      - variacao usuarios
+      - movimentos usuarios
+    sirios_rank_position:
+      - sirios ranking
+      - ranking da sirios
+    sirios_rank_net_movement:
+      - sirios movimento
+      - variacao sirios
+      - movimentos sirios
+    ifix_rank_position:
+      - ifix ranking
+    ifix_rank_net_movement:
+      - ifix movimento
+      - variacao ifix
+      - movimentos ifix
+    ifil_rank_position:
+      - ifil ranking
+    ifil_rank_net_movement:
+      - ifil movimento
+      - variacao ifil
+      - movimentos ifil
+    rank_dy_12m:
+      - dy 12m
+      - dividend yield 12 meses
+      - rendimento 12 meses
+      - dy ultimo ano
+    rank_dy_monthly:
+      - dy mensal
+      - dividend yield mensal
+      - rendimento mensal
+    rank_dividends_12m:
+      - dividendos 12 meses
+      - proventos 12 meses
+      - proventos acumulados
+    rank_market_cap:
+      - valor de mercado
+      - market cap
+    rank_equity:
+      - patrimonio liquido
+      - patrimonio
+      - equity
+    rank_sharpe:
+      - sharpe
+      - sharpe ratio
+    rank_sortino:
+      - sortino
+      - sortino ratio
+    rank_low_volatility:
+      - menor volatilidade
+      - baixa volatilidade
+    rank_low_drawdown:
+      - menor drawdown
+      - mdd
+      - drawdown
   weights:
     identifiers: 2.0
     keywords: 1.0
@@ -222,7 +201,6 @@ ask:
       - ranking usuarios
       - ranking de usuarios
       - posicao no ranking de usuarios
-      - aparicoes em ranking de usuarios
     users_rank_net_movement:
       - movimentos ranking usuarios
       - movimentacao no ranking de usuarios
@@ -231,7 +209,6 @@ ask:
       - ranking sirios
       - ranking da sirios
       - posicao no ranking sirios
-      - aparicoes em ranking sirios
     sirios_rank_net_movement:
       - movimentos ranking sirios
       - movimentacao no ranking da sirios
@@ -239,7 +216,6 @@ ask:
     ifix_rank_position:
       - ranking ifix
       - posicao no ifix
-      - aparicoes no ifix
     ifix_rank_net_movement:
       - movimentos ranking ifix
       - movimentacao no ranking ifix
@@ -247,7 +223,6 @@ ask:
     ifil_rank_position:
       - ranking ifil
       - posicao no ifil
-      - aparicoes no ifil
     ifil_rank_net_movement:
       - movimentos ranking ifil
       - movimentacao no ranking ifil
@@ -282,9 +257,8 @@ ask:
     rank_low_drawdown:
       - ranking menor drawdown
       - ranking mdd
-sample_questions:
-- fiis de logistica com maior liquidez
-- quais são os maiores fiis em patrimonio liquido
+  sample_questions:
+    - quais são os maiores fiis em patrimonio liquido
 
 responses:
   default:
