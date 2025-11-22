@@ -3,31 +3,49 @@ kind: view
 version: 1
 
 columns:
-  - { name: ticker,                          type: string,  nullable: false, desc: "código do FII (AAAA11)" }
-  - { name: users_rank_position,             type: integer, nullable: true,  desc: "posição do FII no ranking de usuários." }
-  - { name: users_rank_net_movement,       type: integer, nullable: true,  desc: "Quantidade de movimentos (subidas/quedas) registrados em rankings de usuários." }
-  - { name: sirios_rank_position,            type: integer, nullable: true,  desc: "posição do FII no ranking da SIRIOS." }
-  - { name: sirios_rank_net_movement,      type: integer, nullable: true,  desc: "Quantidade de movimentos (subidas/quedas) registrados em rankings da SIRIOS." }
-  - { name: ifix_rank_position,              type: integer, nullable: true,  desc: "posição do FII no ranking do IFIX." }
-  - { name: ifix_rank_net_movement,        type: integer, nullable: true,  desc: "Movimentos de posição do FII em recortes de ranking do IFIX." }
-  - { name: ifil_rank_position,              type: integer, nullable: true,  desc: "posição do FII no ranking do IFIL." }
-  - { name: ifil_rank_net_movement,        type: integer, nullable: true,  desc: "Movimentos de posição do FII em recortes de ranking do IFIL." }
-  - { name: created_at,                      type: datetime,nullable: false, desc: "Data de criação do registro." }
-  - { name: updated_at,                      type: datetime,nullable: false, desc: "Data da última atualização do registro." }
+  - { name: ticker,                   type: string,   nullable: false, desc: "código do FII (AAAA11)" }
+  - { name: users_rank_position,      type: integer,  nullable: true,  desc: "posição do FII no ranking de usuários." }
+  - { name: users_rank_net_movement,  type: integer,  nullable: true,  desc: "quantidade de movimentos (subidas/quedas) registrados em rankings de usuários." }
+  - { name: sirios_rank_position,     type: integer,  nullable: true,  desc: "posição do FII no ranking da SIRIOS." }
+  - { name: sirios_rank_net_movement, type: integer,  nullable: true,  desc: "quantidade de movimentos (subidas/quedas) registrados em rankings da SIRIOS." }
+  - { name: ifix_rank_position,       type: integer,  nullable: true,  desc: "posição do FII no ranking do IFIX." }
+  - { name: ifix_rank_net_movement,   type: integer,  nullable: true,  desc: "movimentos de posição do FII em recortes de ranking do IFIX." }
+  - { name: ifil_rank_position,       type: integer,  nullable: true,  desc: "posição do FII no ranking do IFIL." }
+  - { name: ifil_rank_net_movement,   type: integer,  nullable: true,  desc: "movimentos de posição do FII em recortes de ranking do IFIL." }
+  - { name: rank_dy_12m,              type: integer,  nullable: true,  desc: "posição do FII no ranking por dividend yield 12 meses." }
+  - { name: rank_dy_monthly,          type: integer,  nullable: true,  desc: "posição do FII no ranking por dividend yield mensal." }
+  - { name: rank_dividends_12m,       type: integer,  nullable: true,  desc: "posição do FII no ranking por dividendos pagos em 12 meses." }
+  - { name: rank_market_cap,          type: integer,  nullable: true,  desc: "posição do FII no ranking por valor de mercado." }
+  - { name: rank_equity,              type: integer,  nullable: true,  desc: "posição do FII no ranking por patrimônio líquido." }
+  - { name: rank_sharpe,              type: integer,  nullable: true,  desc: "posição do FII no ranking por Sharpe ratio." }
+  - { name: rank_sortino,             type: integer,  nullable: true,  desc: "posição do FII no ranking por Sortino ratio." }
+  - { name: rank_low_volatility,      type: integer,  nullable: true,  desc: "posição do FII no ranking de menor volatilidade." }
+  - { name: rank_low_drawdown,        type: integer,  nullable: true,  desc: "posição do FII no ranking de menor drawdown." }
+  - { name: created_at,               type: datetime, nullable: false, desc: "Data de criação do registro." }
+  - { name: updated_at,               type: datetime, nullable: false, desc: "Data da última atualização do registro." }
 
 ordering: [ticker]
 
 presentation:
   columns:
-    ticker:                      { as: string }     # código AAAA11
-    users_rank_position:         { as: integer }    # 10
-    users_rank_net_movement:   { as: integer }    # 5
-    sirios_rank_position:        { as: integer }    # 8
-    sirios_rank_net_movement:          { as: integer }    # 12
-    ifix_rank_position:    { as: integer }    # 4
-    ifix_rank_net_movement:          { as: integer }    # 7
-    ifil_rank_position:    { as: integer }    # 2
-    ifil_rank_net_movement:    { as: integer }    # 2
+    ticker:                { as: string }
+    users_rank_position:   { as: integer }
+    users_rank_net_movement: { as: integer }
+    sirios_rank_position:  { as: integer }
+    sirios_rank_net_movement: { as: integer }
+    ifix_rank_position:    { as: integer }
+    ifix_rank_net_movement: { as: integer }
+    ifil_rank_position:    { as: integer }
+    ifil_rank_net_movement: { as: integer }
+    rank_dy_12m:           { as: integer }
+    rank_dy_monthly:       { as: integer }
+    rank_dividends_12m:    { as: integer }
+    rank_market_cap:       { as: integer }
+    rank_equity:           { as: integer }
+    rank_sharpe:           { as: integer }
+    rank_sortino:          { as: integer }
+    rank_low_volatility:   { as: integer }
+    rank_low_drawdown:     { as: integer }
 
   rules: {}
 
@@ -40,6 +58,11 @@ sample_questions:
   - "quantos movimentos de posição o HGLG11 teve no ranking da SIRIOS?"
   - "qual a posição do KNRI11 no ranking do IFIX?"
   - "quantas vezes o KNRI11 apareceu no ranking do IFIL?"
+  - "top 5 fiis por liquidez"
+  - "fundos com maior dividend yield no IFIX"
+  - "quais são os maiores fiis em patrimônio líquido"
+  - "ranking dos fiis com melhor sharpe ratio"
+  - "top fiis por menor volatilidade"
 
 tolerance:
   extra_columns_allowed: false

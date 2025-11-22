@@ -2,8 +2,9 @@ id: fiis_rankings
 result_key: rankings_fii
 sql_view: fiis_rankings
 private: false
-description: Contagens históricas de aparições e movimentos em rankings (usuários,
-  Sírios, IFIX e IFIL) por FII — snapshot 1×1 por ticker.
+description: Rankings de FIIs (top/maiores/melhores/menores) por métricas como liquidez,
+  dividend yield, patrimônio líquido, Sharpe, volatilidade, drawdown e presença em
+  índices (usuários, Sírios, IFIX e IFIL).
 
 options:
   supports_multi_ticker: true
@@ -17,31 +18,56 @@ columns:
   alias: Código FII
   description: Código do fundo na B3 (AAAA11).
 - name: users_rank_position
-  alias: ranking usuários
-  description: Número de vezes em que o FII apareceu em rankings de usuários.
+  alias: Ranking usuários
+  description: Posição do FII no ranking de usuários (menor é melhor).
 - name: users_rank_net_movement
-  alias: movimentos no ranking usuários
-  description: Quantidade de movimentos (subidas/quedas) registrados em rankings de
-    usuários.
+  alias: Movimentos ranking usuários
+  description: Movimentos (subidas/quedas) registrados em rankings de usuários.
 - name: sirios_rank_position
-  alias: ranking Sírios
-  description: Número de aparições do FII em rankings da SIRIOS.
+  alias: Ranking Sírios
+  description: Posição do FII no ranking Sírios (menor é melhor).
 - name: sirios_rank_net_movement
-  alias: movimentos no ranking Sírios
-  description: Quantidade de movimentos (subidas/quedas) registrados em rankings da
-    SIRIOS.
+  alias: Movimentos ranking Sírios
+  description: Movimentos (subidas/quedas) registrados em rankings da SIRIOS.
 - name: ifix_rank_position
-  alias: ranking IFIX
-  description: Número de aparições em compilações/recortes de ranking do IFIX.
+  alias: Ranking IFIX
+  description: Posição do FII em recortes de ranking do IFIX (menor é melhor).
 - name: ifix_rank_net_movement
-  alias: movimentos no ranking IFIX
+  alias: Movimentos ranking IFIX
   description: Movimentos de posição do FII em recortes de ranking do IFIX.
 - name: ifil_rank_position
-  alias: ranking IFIL
-  description: Número de aparições em compilações/recortes de ranking do IFIL.
+  alias: Ranking IFIL
+  description: Posição do FII em recortes de ranking do IFIL (menor é melhor).
 - name: ifil_rank_net_movement
-  alias: movimentos no ranking IFIL
+  alias: Movimentos ranking IFIL
   description: Movimentos de posição do FII em recortes de ranking do IFIL.
+- name: rank_dy_12m
+  alias: Ranking DY 12m
+  description: Posição do FII quando ordenado por dividend yield acumulado em 12 meses.
+- name: rank_dy_monthly
+  alias: Ranking DY mensal
+  description: Posição do FII quando ordenado por dividend yield mensal.
+- name: rank_dividends_12m
+  alias: Ranking dividendos 12m
+  description: Posição do FII quando ordenado pelo total de dividendos pagos em 12 meses.
+- name: rank_market_cap
+  alias: Ranking valor de mercado
+  description: Posição do FII quando ordenado por valor de mercado.
+- name: rank_equity
+  alias: Ranking patrimônio líquido
+  description: Posição do FII quando ordenado por patrimônio líquido.
+- name: rank_sharpe
+  alias: Ranking Sharpe
+  description: Posição do FII quando ordenado pelo Sharpe ratio.
+- name: rank_sortino
+  alias: Ranking Sortino
+  description: Posição do FII quando ordenado pelo Sortino ratio.
+- name: rank_low_volatility
+  alias: Ranking menor volatilidade
+  description: Posição do FII quando ordenado por menor volatilidade histórica.
+- name: rank_low_drawdown
+  alias: Ranking menor drawdown
+  description: Posição do FII quando ordenado por menor drawdown histórico.
 - name: created_at
   alias: Criado em
   description: Data de criação do registro.
@@ -52,23 +78,58 @@ presentation:
   kind: table
   fields:
     key: ticker
-    value: users_rank_position
+    columns:
+    - users_rank_position
+    - sirios_rank_position
+    - ifix_rank_position
+    - ifil_rank_position
+    - rank_dy_12m
+    - rank_dy_monthly
+    - rank_dividends_12m
+    - rank_market_cap
+    - rank_equity
+    - rank_sharpe
+    - rank_sortino
+    - rank_low_volatility
+    - rank_low_drawdown
   empty_message: Sem rankings disponíveis.
 ask:
   intents:
   - fiis_rankings
   keywords:
   - ranking
+  - rank
   - posicao
   - posicoes
   - top
+  - melhores
+  - maiores
+  - menores
+  - piores
+  - lista
   - aparicoes
   - movimentos
   - ifix
   - ifil
   - usuarios
   - sirios
-  - vezes
+  - liquidez
+  - volume
+  - dy
+  - dividend yield
+  - dividendo
+  - patrimonio
+  - patrimonio liquido
+  - equity
+  - sharpe
+  - sortino
+  - volatilidade
+  - drawdown
+  - mdd
+  - setor
+  - logistica
+  - papel
+  - tijolo
   synonyms:
     ticker:
     - ativo
@@ -107,6 +168,40 @@ ask:
     - ifil movimento
     - variacao ifil
     - movimentos ifil
+    rank_dy_12m:
+    - dy 12m
+    - dividend yield 12 meses
+    - rendimento 12 meses
+    - dy ultimo ano
+    rank_dy_monthly:
+    - dy mensal
+    - dividend yield mensal
+    - rendimento mensal
+    rank_dividends_12m:
+    - dividendos 12 meses
+    - proventos 12 meses
+    - proventos acumulados
+    rank_market_cap:
+    - valor de mercado
+    - market cap
+    rank_equity:
+    - patrimonio liquido
+    - patrimonio
+    - equity
+    rank_sharpe:
+    - sharpe
+    - sharpe ratio
+    rank_sortino:
+    - sortino
+    - sortino ratio
+    rank_low_volatility:
+    - menor volatilidade
+    - baixa volatilidade
+    - volatilidade
+    rank_low_drawdown:
+    - menor drawdown
+    - mdd
+    - drawdown
   weights:
     identifiers: 2.0
     keywords: 1.0
@@ -146,3 +241,33 @@ ask:
       - movimentos ranking ifil
       - movimentacao no ranking ifil
       - variacao no ranking ifil
+    rank_dy_12m:
+      - ranking dy 12m
+      - ranking dividend yield 12m
+      - ranking rendimento 12m
+    rank_dy_monthly:
+      - ranking dy mensal
+      - ranking dividend yield mensal
+      - ranking rendimento mensal
+    rank_dividends_12m:
+      - ranking dividendos 12m
+      - ranking proventos 12m
+    rank_market_cap:
+      - ranking valor de mercado
+      - ranking market cap
+    rank_equity:
+      - ranking patrimonio liquido
+      - ranking patrimonio
+      - ranking equity
+    rank_sharpe:
+      - ranking sharpe
+      - ranking sharpe ratio
+    rank_sortino:
+      - ranking sortino
+      - ranking sortino ratio
+    rank_low_volatility:
+      - ranking menor volatilidade
+      - ranking baixa volatilidade
+    rank_low_drawdown:
+      - ranking menor drawdown
+      - ranking mdd
