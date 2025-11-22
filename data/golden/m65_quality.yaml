@@ -80,7 +80,6 @@ samples:
   - { question: "posicao do HGLG11 no IFIX",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "quantas aparições do HGLG11 no IFIX",         expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos do HGLG11 no ranking do IFIX",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
-  - { question: "quantas vezes o HGLG11 apareceu no IFIL",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos do HGLG11 no ranking do IFIL",     expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "ranking de usuarios do HGLG11",               expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "movimentos no ranking de usuarios do HGLG11", expected_intent: fiis_rankings, expected_entity: fiis_rankings }

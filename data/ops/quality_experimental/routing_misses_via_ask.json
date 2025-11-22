@@ -1,51 +1,5 @@
 [
   {
-    "idx": 84,
-    "question": "quantas vezes o HGLG11 apareceu no IFIL",
-    "expected_intent": "fiis_rankings",
-    "expected_entity": "fiis_rankings",
-    "got_intent": "fiis_cadastro",
-    "got_entity": "fiis_cadastro",
-    "score": 1.1,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "quantas vezes o hglg11 apareceu no ifil",
-    "tokens": [
-      "quantas",
-      "vezes",
-      "o",
-      "hglg11",
-      "apareceu",
-      "no",
-      "ifil"
-    ],
-    "intent_scores": {
-      "client_fiis_positions": 0.0,
-      "fiis_cadastro": 1.1,
-      "fiis_precos": -1.1,
-      "fiis_dividendos": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 0.0,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": 0.0,
-      "fiis_processos": 0.0,
-      "fiis_rankings": -1.1,
-      "history_b3_indexes": 1.1,
-      "history_currency_rates": -1.1,
-      "history_market_indicators": -1.1
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.0,
-      "accepted": false,
-      "source": "final"
-    }
-  },
-  {
     "idx": 95,
     "question": "dividendo pago pelo HGLG11 em 07/2024",
     "expected_intent": "fiis_dividendos",

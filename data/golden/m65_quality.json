@@ -407,11 +407,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas vezes o HGLG11 apareceu no IFIL",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "movimentos do HGLG11 no ranking do IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"

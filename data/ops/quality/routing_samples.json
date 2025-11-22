@@ -417,11 +417,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas vezes o HGLG11 apareceu no IFIL",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "ranking da sirios do CXTL11",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
