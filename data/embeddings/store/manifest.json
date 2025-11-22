@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-22T12:26:07Z",
+  "generated_at": "2025-11-22T13:22:38Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -304,8 +304,8 @@
         "golden",
         "quality"
       ],
-      "chunks": 9,
-      "sha_all": "ced7859a55386211f96f43ab60cb8d8de8fe7700cd2d0cc8b8b02f67d8ae484a"
+      "chunks": 14,
+      "sha_all": "42b4d713086c5934b6e3a995736028d7e6b631ab96199f287eba8907fc805731"
     },
     {
       "id": "golden-m68-collisions",
@@ -316,7 +316,7 @@
         "collisions"
       ],
       "chunks": 1,
-      "sha_all": "0224c1b1665d92de155193011300dcc55fa887d2d1797f24ac4a6f9c09fb3386"
+      "sha_all": "da79bd2f5057cb2809c0b52572c289365b812e25dfc5d84577381f7a28a5bb17"
     },
     {
       "id": "q-routing-samples",
@@ -326,8 +326,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 22,
-      "sha_all": "0c3d76d585e0bd9169fcb5fbea8f43bb06ca24f90062ac3617d0ff6a6d6af49e"
+      "chunks": 29,
+      "sha_all": "57725e264fa675596d68fa7f27f24cdfc17ce3343d194a6592895419eef8d71f"
     },
     {
       "id": "q-projection-cadastro",
@@ -500,5 +500,5 @@
       "sha_all": "acad56c670145e01b4dbbff46509381e1eb852fc8384a9053e87a800c3bc8ed1"
     }
   ],
-  "last_refresh_epoch": 1763814478
+  "last_refresh_epoch": 1763817884
 }

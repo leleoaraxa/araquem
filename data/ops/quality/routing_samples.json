@@ -287,92 +287,92 @@
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "abertura do CXTL11 em 2025-10-27",
+      "question": "abertura do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "abertura do FPAB11 em 2025-10-27",
+      "question": "abertura do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "abertura do HGLG11 em 2025-10-27",
+      "question": "abertura do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "cotação do CXTL11 em 2025-10-27",
+      "question": "cotação do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "cotação do FPAB11 em 2025-10-27",
+      "question": "cotação do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "cotação do HGLG11 em 2025-10-27",
+      "question": "cotação do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "máxima do CXTL11 em 2025-10-27",
+      "question": "máxima do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "máxima do FPAB11 em 2025-10-27",
+      "question": "máxima do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "máxima do HGLG11 em 2025-10-27",
+      "question": "máxima do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "mínima do CXTL11 em 2025-10-27",
+      "question": "mínima do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "mínima do FPAB11 em 2025-10-27",
+      "question": "mínima do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "mínima do HGLG11 em 2025-10-27",
+      "question": "mínima do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "preço do CXTL11 em 2025-10-27",
+      "question": "preço do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "preço do FPAB11 em 2025-10-27",
+      "question": "preço do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "preço do HGLG11 em 2025-10-27",
+      "question": "preço do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "variação diária (%) do CXTL11 em 2025-10-27",
+      "question": "percentual de variação diária do CXTL11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "variação diária (%) do FPAB11 em 2025-10-27",
+      "question": "percentual de variação diária do FPAB11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "variação diária (%) do HGLG11 em 2025-10-27",
+      "question": "percentual de variação diária do HGLG11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
@@ -452,89 +452,84 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "qual é o CNPJ do MCCI11 (cadastral)",
+      "question": "qual é o CNPJ do MCCI11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "site oficial do HGLG11 (cadastral)",
+      "question": "site oficial do HGLG11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "cotação de fechamento do HGLG11 ontem (preços)",
+      "question": "cotação de fechamento do HGLG11 ontem",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "preço do MCCI11 hoje (preços)",
+      "question": "preço do MCCI11 hoje",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "dividendo pago pelo HGLG11 em 2024-07 (dividendos)",
+      "question": "dividendo pago pelo HGLG11 em 07/2024",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "último DY mensal do MCCI11 (dividendos)",
+      "question": "último DY mensal do MCCI11",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "top 10 FIIs por dividend yield 12m (rankings)",
+      "question": "top 10 FIIs por dividend yield 12m",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "maiores liquidezes do IFIX (rankings)",
+      "question": "maiores liquidezes do IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "qual é o CNPJ do HCTR11 (cadastro)",
+      "question": "qual é o CNPJ do HCTR11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "site de RI oficial do VISC11 (cadastro)",
+      "question": "site de RI oficial do VISC11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "valor de fechamento do VISC11 ontem (preços)",
+      "question": "valor de fechamento do VISC11 ontem",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "preço por cota do MXRF11 hoje (preços)",
+      "question": "preço por cota do MXRF11 hoje",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "dividendo anunciado pelo HCTR11 em 2024-08 (dividendos)",
+      "question": "dividendo anunciado pelo HCTR11 em 2024-08",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "quanto o MXRF11 distribuiu em 2024-07 (dividendos)",
+      "question": "quanto o MXRF11 distribuiu em 07/2024",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "top 5 FIIs por liquidez média 3m (rankings)",
+      "question": "top 5 FIIs por liquidez média 3m",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "fundos com maior dividend yield no IFIX (rankings)",
+      "question": "fundos com maior dividend yield no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "imóveis do HGLG11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
     },
     {
       "question": "quais propriedades do KNRI11",
@@ -717,7 +712,7 @@
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "ibovespa hoje (D-1)",
+      "question": "ibovespa hoje",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
@@ -742,7 +737,7 @@
       "expected_entity": "history_b3_indexes"
     },
     {
-      "question": "variação do ifix hoje (D-1)",
+      "question": "variação do ifix hoje",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
@@ -767,7 +762,7 @@
       "expected_entity": "history_b3_indexes"
     },
     {
-      "question": "cotação do dólar (D-1)",
+      "question": "cotação do dólar",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
@@ -777,7 +772,7 @@
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "euro hoje (D-1)",
+      "question": "euro hoje",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
@@ -802,22 +797,22 @@
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "usd hoje (D-1)",
+      "question": "usd hoje",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "eur hoje (D-1)",
+      "question": "eur hoje",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "cotação do euro comercial (D-1)",
+      "question": "cotação do euro comercial",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "ipca de outubro (D-1)",
+      "question": "ipca de outubro",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -852,7 +847,7 @@
       "expected_entity": "history_market_indicators"
     },
     {
-      "question": "valor do cdi hoje (D-1)",
+      "question": "valor do cdi hoje",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -882,12 +877,12 @@
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "EUR hoje (D-1)",
+      "question": "EUR hoje",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "IPCA de outubro (D-1)",
+      "question": "IPCA de outubro",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -907,7 +902,7 @@
       "expected_entity": "history_market_indicators"
     },
     {
-      "question": "valor do CDI hoje (D-1)",
+      "question": "valor do CDI hoje",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -952,7 +947,7 @@
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "máxima e mínima do MXRF11 em 2025-10-27",
+      "question": "máxima e mínima do MXRF11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
