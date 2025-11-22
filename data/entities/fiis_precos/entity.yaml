@@ -56,49 +56,28 @@ ask:
 
   keywords:
     - preco
-    - preço
     - cotacao
-    - cotação
     - abertura
     - fechar
     - fechamento
     - maxima
-    - máxima
     - minima
-    - mínima
     - variacao
-    - variação
     - diaria
-    - diária
     - hoje
     - historico
-    - histórico
     - serie
-    - série
     - preco medio
-    - preço medio
-    - preço médio
 
   phrase_includes:
     - "preco do"
-    - "preço do"
     - "cotacao do"
-    - "cotação do"
     - "preco historico do"
-    - "preço historico do"
-    - "preço histórico do"
     - "preco medio do"
-    - "preço medio do"
-    - "preço médio do"
     - "qual o preco do"
-    - "qual o preço do"
     - "qual a cotacao do"
-    - "qual a cotação do"
     - "quanto ta o"
-    - "quanto tá o"
     - "quanto esta o"
-    - "quanto está o"
-    - "qual meu preço médio do"
     - "qual meu preco medio do"
 
   synonyms:
@@ -109,13 +88,11 @@ ask:
       - fii
     traded_at:
       - negociacao
-      - negociação
-      - pregão
+      - pregao
     close_price:
       - fechamento
       - fechar
       - preco de fechamento
-      - preço de fechamento
     adj_close_price:
       - ajustado
       - fechamento ajustado
@@ -123,22 +100,16 @@ ask:
       - abertura
       - abrir
       - preco de abertura
-      - preço de abertura
     max_price:
       - maxima
-      - máxima
       - maxima do dia
-      - máxima do dia
     min_price:
       - minima
-      - mínima
       - minima do dia
-      - mínima do dia
     daily_variation_pct:
       - variacao
-      - variação
-      - variação diária
-      - oscilação
+      - variacao diaria
+      - oscilacao
       - alta do dia
       - queda do dia
 

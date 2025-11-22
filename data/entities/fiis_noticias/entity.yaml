@@ -36,7 +36,7 @@ presentation:
 
 ask:
   intents: [fiis_noticias]
-  keywords: [noticia, notícias, materia, reportagem, atualização, últimas, novidades]
+  keywords: [noticia, noticias, materia, reportagem, atualizacao, ultimas, novidades]
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:
