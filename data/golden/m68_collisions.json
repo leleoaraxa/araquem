@@ -1,0 +1,19 @@
+{
+  "version": "m68_collisions",
+  "timestamp": "2025-11-22T12:25:08.787829+00:00",
+  "top2_gap_threshold": 0.05,
+  "summary": {
+    "total_samples": 183,
+    "routed": 0,
+    "collision_count": 0,
+    "collision_rate": 0.0,
+    "top1_accuracy": 0.0,
+    "top2_gap_stats": {
+      "p50": null,
+      "min": null,
+      "max": null
+    }
+  },
+  "pair_collisions": [],
+  "worst_collisions": []
+}

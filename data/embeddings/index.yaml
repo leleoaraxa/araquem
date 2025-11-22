@@ -125,6 +125,10 @@ include:
     path: data/golden/m65_quality.yaml
     tags: [golden, quality]
 
+  - id: golden-m68-collisions
+    path: data/golden/m68_collisions.json
+    tags: [golden, quality, collisions]
+
   # ── Samples de qualidade (routing + projeções) ─────────────────────────────
   - id: q-routing-samples
     path: data/ops/quality/routing_samples.json
