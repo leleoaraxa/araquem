@@ -397,7 +397,7 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do HGLG11 no IFIX",
+      "question": "posição do HGLG11 no IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -432,12 +432,12 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do FPAB11 no IFIX",
+      "question": "posição do FPAB11 no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do FPAB11 no IFIL",
+      "question": "posição do FPAB11 no IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -457,7 +457,7 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "top 5 fiis por liquidez media 3m",
+      "question": "top 5 fiis por maior valor de mercado",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -467,9 +467,9 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "fiis de logistica com maior liquidez",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "question": "quais fiis são do setor de logística",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "quais são os maiores fiis em patrimonio liquido",
@@ -502,7 +502,7 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "vacância do MXRF11",
+      "question": "dy mensal do MXRF11",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -512,12 +512,12 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "patrimônio e número de cotistas do MXRF11",
+      "question": "patrimônio líquido e valor de mercado do MXRF11",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "vacância física e financeira do HGLG11",
+      "question": "dy 12m e dy mensal do HGLG11",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -542,7 +542,7 @@
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "receita contratada versus receita potencial do HGLG11",
+      "question": "percentual da receita do HGLG11 indexada ao IGP-M",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
@@ -622,7 +622,7 @@
       "expected_entity": "fiis_noticias"
     },
     {
-      "question": "alguma notícia negativa do XPML11 nos últimos 30 dias",
+      "question": "notícias do XPML11 nos últimos 30 dias",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
     },
