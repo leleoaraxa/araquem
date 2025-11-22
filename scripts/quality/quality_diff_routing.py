@@ -15,6 +15,7 @@ NICK = os.getenv("QUALITY_NICK", "ops")
 CLIENT = os.getenv("QUALITY_CLIENT", "ops")
 SRC = Path("data/ops/quality/routing_samples.json")
 OUT = Path("data/ops/quality_experimental/routing_misses_via_ask.json")
+DISABLE_RAG = bool(int(os.getenv("QUALITY_DISABLE_RAG", "0")))
 
 
 def pick(d, *paths, default=None):
@@ -39,9 +40,32 @@ def ask(q: str):
         "conversation_id": CID,
         "nickname": NICK,
         "client_id": CLIENT,
+        "disable_rag": DISABLE_RAG,
     }
-    r = httpx.post(f"{API}/ask", json=payload, timeout=60.0)
-    r.raise_for_status()
+    try:
+        r = httpx.post(f"{API}/ask", json=payload, timeout=300.0)
+        r.raise_for_status()
+    except httpx.ReadTimeout:
+        # Marca como timeout e continua
+        return (
+            None,
+            None,
+            0.0,
+            {
+                "status": {"reason": "timeout", "message": "ReadTimeout"},
+                "meta": {},
+            },
+        )
+    except Exception as exc:
+        return (
+            None,
+            None,
+            0.0,
+            {
+                "status": {"reason": "error", "message": repr(exc)},
+                "meta": {},
+            },
+        )
     j = r.json()
 
     # tenta extrair pelos caminhos mostrados nos seus exemplos
@@ -75,7 +99,7 @@ def main():
                     "got_intent": intent,
                     "got_entity": entity,
                     "score": score,
-                    # pegue um resumo curto do explain para inspeção rápida:
+                    "status": resp.get("status", {}),
                     "normalized": pick(
                         resp, ("meta", "planner", "normalized"), default=None
                     ),

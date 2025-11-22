@@ -1,80 +1,778 @@
 [
   {
-    "idx": 164,
-    "question": "ipca de outubro (D-1)",
-    "expected_intent": "history_market_indicators",
-    "expected_entity": "history_market_indicators",
-    "got_intent": "fiis_financials_revenue_schedule",
-    "got_entity": "fiis_financials_revenue_schedule",
-    "score": 1.028149373991663,
-    "normalized": "ipca de outubro  d 1 ",
+    "idx": 104,
+    "question": "quanto o MXRF11 distribuiu em 07/2024",
+    "expected_intent": "fiis_dividendos",
+    "expected_entity": "fiis_dividendos",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.10157070146144986,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "quanto o mxrf11 distribuiu em 07 2024",
     "tokens": [
-      "ipca",
-      "de",
-      "outubro",
-      "d",
-      "1"
+      "quanto",
+      "o",
+      "mxrf11",
+      "distribuiu",
+      "em",
+      "07",
+      "2024"
     ],
     "intent_scores": {
       "client_fiis_positions": 0.0,
       "fiis_cadastro": 0.0,
-      "fiis_precos": -1.1,
+      "fiis_precos": 0.0,
       "fiis_dividendos": 0.0,
       "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 1.1,
-      "fiis_financials_risk": -1.1,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
       "fiis_noticias": 0.0,
       "fiis_processos": 0.0,
       "fiis_rankings": 0.0,
-      "history_b3_indexes": -1.1,
-      "history_currency_rates": -1.1,
-      "history_market_indicators": 1.1
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
     },
     "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.0931493739916629,
+      "min_score": 0.8,
+      "min_gap": 0.05,
+      "gap": 0.0004300374125446871,
       "accepted": false,
       "source": "final"
     }
   },
   {
-    "idx": 178,
-    "question": "IPCA de outubro (D-1)",
-    "expected_intent": "history_market_indicators",
-    "expected_entity": "history_market_indicators",
-    "got_intent": "fiis_financials_revenue_schedule",
-    "got_entity": "fiis_financials_revenue_schedule",
-    "score": 1.028149373991663,
-    "normalized": "ipca de outubro  d 1 ",
+    "idx": 105,
+    "question": "top 5 FIIs por liquidez média 3m",
+    "expected_intent": "fiis_rankings",
+    "expected_entity": "fiis_rankings",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.0897392818616517,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "top 5 fiis por liquidez media 3m",
     "tokens": [
-      "ipca",
-      "de",
-      "outubro",
-      "d",
-      "1"
+      "top",
+      "5",
+      "fiis",
+      "por",
+      "liquidez",
+      "media",
+      "3m"
     ],
     "intent_scores": {
       "client_fiis_positions": 0.0,
-      "fiis_cadastro": 0.0,
+      "fiis_cadastro": -1.1,
       "fiis_precos": -1.1,
-      "fiis_dividendos": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 1.1,
-      "fiis_financials_risk": -1.1,
+      "fiis_dividendos": -1.1,
+      "fiis_financials_snapshot": -1.1,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
       "fiis_noticias": 0.0,
       "fiis_processos": 0.0,
       "fiis_rankings": 0.0,
-      "history_b3_indexes": -1.1,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.05,
+      "gap": 0.0897392818616517,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 106,
+    "question": "fundos com maior dividend yield no IFIX",
+    "expected_intent": "fiis_rankings",
+    "expected_entity": "fiis_rankings",
+    "got_intent": "fiis_cadastro",
+    "got_entity": "fiis_cadastro",
+    "score": 0.935,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "fundos com maior dividend yield no ifix",
+    "tokens": [
+      "fundos",
+      "com",
+      "maior",
+      "dividend",
+      "yield",
+      "no",
+      "ifix"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 1.1,
+      "fiis_precos": -1.1,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 1.1,
+      "history_b3_indexes": 1.1,
       "history_currency_rates": -1.1,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 183,
+    "question": "segmento do HGLG11",
+    "expected_intent": "fiis_cadastro",
+    "expected_entity": "fiis_cadastro",
+    "got_intent": "fiis_financials_risk",
+    "got_entity": "fiis_financials_risk",
+    "score": 0.09313879978425403,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "segmento do hglg11",
+    "tokens": [
+      "segmento",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.05,
+      "gap": 0.09313879978425403,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 187,
+    "question": "média de dividendos do HGLG11 nos últimos 12 meses",
+    "expected_intent": "fiis_dividendos",
+    "expected_entity": "fiis_dividendos",
+    "got_intent": "client_fiis_positions",
+    "got_entity": "client_fiis_positions",
+    "score": 0.0,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "media de dividendos do hglg11 nos ultimos 12 meses",
+    "tokens": [
+      "media",
+      "de",
+      "dividendos",
+      "do",
+      "hglg11",
+      "nos",
+      "ultimos",
+      "12",
+      "meses"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": -2.2,
+      "fiis_precos": -6.6,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": -9.9,
+      "fiis_financials_revenue_schedule": -2.2,
+      "fiis_financials_risk": -6.6,
+      "fiis_imoveis": -1.1,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": -2.2,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 191,
+    "question": "variação diária do XPML11 nos últimos 5 pregões",
+    "expected_intent": "fiis_precos",
+    "expected_entity": "fiis_precos",
+    "got_intent": "history_b3_indexes",
+    "got_entity": "history_b3_indexes",
+    "score": 1.87,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "variacao diaria do xpml11 nos ultimos 5 pregoes",
+    "tokens": [
+      "variacao",
+      "diaria",
+      "do",
+      "xpml11",
+      "nos",
+      "ultimos",
+      "5",
+      "pregoes"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": -4.4,
+      "fiis_financials_snapshot": -5.5,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": -6.6,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 1.1,
+      "fiis_rankings": -2.2,
+      "history_b3_indexes": 2.2,
+      "history_currency_rates": 2.2,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 193,
+    "question": "fiis de logística com maior liquidez",
+    "expected_intent": "fiis_rankings",
+    "expected_entity": "fiis_rankings",
+    "got_intent": "history_market_indicators",
+    "got_entity": "history_market_indicators",
+    "score": 0.935,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "fiis de logistica com maior liquidez",
+    "tokens": [
+      "fiis",
+      "de",
+      "logistica",
+      "com",
+      "maior",
+      "liquidez"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 1.1
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.8394116035473965,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 194,
+    "question": "quais são os maiores fiis em patrimônio líquido",
+    "expected_intent": "fiis_rankings",
+    "expected_entity": "fiis_rankings",
+    "got_intent": "fiis_financials_snapshot",
+    "got_entity": "fiis_financials_snapshot",
+    "score": 0.935,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "quais sao os maiores fiis em patrimonio liquido",
+    "tokens": [
+      "quais",
+      "sao",
+      "os",
+      "maiores",
+      "fiis",
+      "em",
+      "patrimonio",
+      "liquido"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 1.1,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
       "history_market_indicators": 1.1
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
-      "gap": 0.0931493739916629,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 195,
+    "question": "quantos imóveis o HGLG11 possui na carteira",
+    "expected_intent": "fiis_imoveis",
+    "expected_entity": "fiis_imoveis",
+    "got_intent": "client_fiis_positions",
+    "got_entity": "client_fiis_positions",
+    "score": 0.935,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "quantos imoveis o hglg11 possui na carteira",
+    "tokens": [
+      "quantos",
+      "imoveis",
+      "o",
+      "hglg11",
+      "possui",
+      "na",
+      "carteira"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 1.1,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 1.1,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 196,
+    "question": "onde ficam os galpões do XPLG11",
+    "expected_intent": "fiis_imoveis",
+    "expected_entity": "fiis_imoveis",
+    "got_intent": "client_fiis_positions",
+    "got_entity": "client_fiis_positions",
+    "score": 0.0,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "onde ficam os galpoes do xplg11",
+    "tokens": [
+      "onde",
+      "ficam",
+      "os",
+      "galpoes",
+      "do",
+      "xplg11"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 205,
+    "question": "qual a vacância do MXRF11",
+    "expected_intent": "fiis_financials_snapshot",
+    "expected_entity": "fiis_financials_snapshot",
+    "got_intent": "fiis_imoveis",
+    "got_entity": "fiis_imoveis",
+    "score": 3.74,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "qual a vacancia do mxrf11",
+    "tokens": [
+      "qual",
+      "a",
+      "vacancia",
+      "do",
+      "mxrf11"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 4.4,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 3.643343112097252,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 207,
+    "question": "patrimônio e número de cotistas do MXRF11",
+    "expected_intent": "fiis_financials_snapshot",
+    "expected_entity": "fiis_financials_snapshot",
+    "got_intent": "fiis_cadastro",
+    "got_entity": "fiis_cadastro",
+    "score": 0.935,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "patrimonio e numero de cotistas do mxrf11",
+    "tokens": [
+      "patrimonio",
+      "e",
+      "numero",
+      "de",
+      "cotistas",
+      "do",
+      "mxrf11"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 1.1,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 1.1,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 208,
+    "question": "vacância física e financeira do HGLG11",
+    "expected_intent": "fiis_financials_snapshot",
+    "expected_entity": "fiis_financials_snapshot",
+    "got_intent": "fiis_imoveis",
+    "got_entity": "fiis_imoveis",
+    "score": 1.1,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "vacancia fisica e financeira do hglg11",
+    "tokens": [
+      "vacancia",
+      "fisica",
+      "e",
+      "financeira",
+      "do",
+      "hglg11"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 0.0,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 1.1,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 1.1,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 215,
+    "question": "sharpe ratio do HGLG11 nos últimos 12 meses",
+    "expected_intent": "fiis_financials_risk",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "client_fiis_positions",
+    "got_entity": "client_fiis_positions",
+    "score": 0.0,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "sharpe ratio do hglg11 nos ultimos 12 meses",
+    "tokens": [
+      "sharpe",
+      "ratio",
+      "do",
+      "hglg11",
+      "nos",
+      "ultimos",
+      "12",
+      "meses"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": -5.5,
+      "fiis_dividendos": -4.4,
+      "fiis_financials_snapshot": -6.6,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": -5.5,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 0.8,
+      "min_gap": 0.1,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 219,
+    "question": "ranking dos fiis com melhor sharpe ratio",
+    "expected_intent": "fiis_financials_risk",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "fiis_rankings",
+    "got_entity": "fiis_rankings",
+    "score": 3.844167171102264,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "ranking dos fiis com melhor sharpe ratio",
+    "tokens": [
+      "ranking",
+      "dos",
+      "fiis",
+      "com",
+      "melhor",
+      "sharpe",
+      "ratio"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": -1.1,
+      "fiis_precos": -1.1,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": -1.1,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 1.1,
+      "fiis_imoveis": -1.1,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 4.4,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 2.7903074202530576,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 226,
+    "question": "histórico do IFIX nos últimos 6 meses",
+    "expected_intent": "history_b3_indexes",
+    "expected_entity": "history_b3_indexes",
+    "got_intent": "fiis_rankings",
+    "got_entity": "fiis_rankings",
+    "score": 1.035983251065797,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "historico do ifix nos ultimos 6 meses",
+    "tokens": [
+      "historico",
+      "do",
+      "ifix",
+      "nos",
+      "ultimos",
+      "6",
+      "meses"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 1.1,
+      "fiis_precos": -6.6,
+      "fiis_dividendos": -4.4,
+      "fiis_financials_snapshot": -5.5,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": -7.7,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 1.1,
+      "history_b3_indexes": 1.1,
+      "history_currency_rates": -1.1,
+      "history_market_indicators": -1.1
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.10098325106579686,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 228,
+    "question": "como o IFIX se comportou em 2024",
+    "expected_intent": "history_b3_indexes",
+    "expected_entity": "history_b3_indexes",
+    "got_intent": "fiis_rankings",
+    "got_entity": "fiis_rankings",
+    "score": 1.0370933504958375,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "como o ifix se comportou em 2024",
+    "tokens": [
+      "como",
+      "o",
+      "ifix",
+      "se",
+      "comportou",
+      "em",
+      "2024"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 1.1,
+      "fiis_precos": -1.1,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 1.1,
+      "history_b3_indexes": 1.1,
+      "history_currency_rates": -1.1,
+      "history_market_indicators": -1.1
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.10209335049583745,
       "accepted": false,
       "source": "final"
     }

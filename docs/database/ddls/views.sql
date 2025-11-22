@@ -36,6 +36,7 @@ DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
 DROP MATERIALIZED VIEW IF EXISTS history_currency_rates;
 DROP MATERIALIZED VIEW IF EXISTS rf_daily_series_mat;
 DROP MATERIALIZED VIEW IF EXISTS market_index_series;
+DROP MATERIALIZED VIEW IF EXISTS fiis_rankings_quant ;
 -- =====================================================================
 -- DROP INDEX
 -- =====================================================================
@@ -526,20 +527,6 @@ CREATE OR REPLACE VIEW fiis_cadastro AS
 SELECT ticker, fii_cnpj, ticker_full_name as display_name, b3_name, classification, sector, sub_sector, management_type,
 	target_market, is_exclusive, isin, ipo_date, website_url, admin_name, admin_cnpj, custodian_name,
 	ifil_weight_pct, ifix_weight_pct, shares_count, shareholders_count, created_at, updated_at
-FROM view_fiis_info;
--- =====================================================================
--- VIEW: fiis_rankings
--- =====================================================================
-CREATE OR REPLACE VIEW fiis_rankings AS
-SELECT ticker, users_ranking_count AS users_rank_position,
-	users_rank_movement_count AS users_rank_net_movement,
-	sirios_ranking_count AS sirios_rank_position,
-	sirios_rank_movement_count as sirios_rank_net_movement,
-	ifix_ranking_count AS ifix_rank_position,
-	ifix_rank_movement_count AS ifix_rank_net_movement,
-	ifil_ranking_count AS ifil_rank_position,
-	ifil_rank_movement_count AS ifil_rank_net_movement,
-	created_at, updated_at
 FROM view_fiis_info;
 -- =====================================================================
 -- VIEW: fiis_precos
@@ -1070,6 +1057,74 @@ BEGIN
     RETURN NEXT;
 END;
 $$;
+-- =========================================
+-- VIEW: fiis_rankings_quant
+-- =========================================
+CREATE MATERIALIZED VIEW fiis_rankings_quant AS
+WITH base AS (
+  SELECT
+    ticker,
+    dy_monthly_pct,
+    dy_pct,
+    sum_anual_dy_amt,
+    market_cap_value,
+    equity_value,
+    sharpe_ratio,
+    sortino_ratio,
+    volatility_ratio,
+    max_drawdown
+  FROM fiis_financials -- ou direto de view_fiis_info, se preferir
+)
+SELECT
+  ticker,
+
+  -- Dividendos
+  ROW_NUMBER() OVER (ORDER BY dy_pct DESC NULLS LAST)         AS rank_dy_12m,
+  ROW_NUMBER() OVER (ORDER BY dy_monthly_pct DESC NULLS LAST) AS rank_dy_monthly,
+  ROW_NUMBER() OVER (ORDER BY sum_anual_dy_amt DESC NULLS LAST) AS rank_dividends_12m,
+
+  -- Tamanho / PL
+  ROW_NUMBER() OVER (ORDER BY market_cap_value DESC NULLS LAST) AS rank_market_cap,
+  ROW_NUMBER() OVER (ORDER BY equity_value DESC NULLS LAST)     AS rank_equity,
+
+  -- Risco / retorno
+  ROW_NUMBER() OVER (ORDER BY sharpe_ratio DESC NULLS LAST)   AS rank_sharpe,
+  ROW_NUMBER() OVER (ORDER BY sortino_ratio DESC NULLS LAST)  AS rank_sortino,
+  ROW_NUMBER() OVER (ORDER BY volatility_ratio ASC NULLS LAST) AS rank_low_volatility,
+  ROW_NUMBER() OVER (ORDER BY max_drawdown ASC NULLS LAST)     AS rank_low_drawdown
+
+FROM base;
+
+-- =====================================================================
+-- VIEW: fiis_rankings
+-- =====================================================================
+CREATE OR REPLACE VIEW fiis_rankings AS
+SELECT
+  i.ticker,
+  i.users_ranking_count        AS users_rank_position,
+  i.users_rank_movement_count  AS users_rank_net_movement,
+  i.sirios_ranking_count       AS sirios_rank_position,
+  i.sirios_rank_movement_count AS sirios_rank_net_movement,
+  i.ifix_ranking_count         AS ifix_rank_position,
+  i.ifix_rank_movement_count   AS ifix_rank_net_movement,
+  i.ifil_ranking_count         AS ifil_rank_position,
+  i.ifil_rank_movement_count   AS ifil_rank_net_movement,
+  q.rank_dy_12m,
+  q.rank_dy_monthly,
+  q.rank_dividends_12m,
+  q.rank_market_cap,
+  q.rank_equity,
+  q.rank_sharpe,
+  q.rank_sortino,
+  q.rank_low_volatility,
+  q.rank_low_drawdown,
+  i.created_at,
+  i.updated_at
+FROM view_fiis_info i
+LEFT JOIN fiis_rankings_quant q USING (ticker);
+
+
+
 -- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
@@ -1086,4 +1141,6 @@ REFRESH MATERIALIZED VIEW history_b3_indexes;
 REFRESH MATERIALIZED VIEW history_currency_rates;
 REFRESH MATERIALIZED VIEW rf_daily_series_mat;
 REFRESH MATERIALIZED VIEW market_index_series;
+REFRESH MATERIALIZED VIEW fiis_rankings_quant;
+REFRESH MATERIALIZED VIEW client_fiis_positions;
 -- ============================================================== --
