@@ -6,15 +6,22 @@
     "document_number",
     "position_date",
     "ticker",
+    "fii_name",
     "qty",
     "available_quantity",
     "closing_price",
     "update_value",
+    "average_price",
+    "profitability_percentage",
+    "percentage",
     "participant_name"
   ],
   "samples": [
     { "question": "minhas posições de FIIs" },
-    { "question": "quantidade e preço dos meus fiis" }
+    { "question": "quantidade e preço dos meus fiis" },
+    { "question": "preço médio e rentabilidade dos meus fiis" },
+    { "question": "peso de cada fii na minha carteira" },
+    { "question": "em qual corretora estão meus fiis" }
   ],
   "params": { "document_number": "66140994691" }
 }

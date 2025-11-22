@@ -21,18 +21,19 @@ columns:
 ordering: [document_number, position_date, ticker]
 
 presentation:
+  # Importante (LGPD): não expor document_number em nenhuma visualização padrão.
   columns:
-    ticker:                  { as: string }     # código AAAA11
-    position_date:           { as: date }       # "25/10/2025"
-    fii_name:                { as: string }     # nome do fundo
-    participant_name:        { as: string }     # corretora/participante
-    qty:                     { as: integer }    # quantidade em custódia
-    closing_price:           { as: currency }   # "R$ 123,45"
-    update_value:            { as: currency }   # "R$ 12,34"
-    available_quantity:      { as: integer }    # quantidade disponível
-    average_price:           { as: currency }   # preço médio
+    ticker:                   { as: string }     # código AAAA11
+    position_date:            { as: date }       # "25/10/2025"
+    fii_name:                 { as: string }     # nome do fundo
+    participant_name:         { as: string }     # corretora/participante
+    qty:                      { as: integer }    # quantidade em custódia
+    closing_price:            { as: currency }   # "R$ 123,45"
+    update_value:             { as: currency }   # "R$ 12,34"
+    available_quantity:       { as: integer }    # quantidade disponível
+    average_price:            { as: currency }   # preço médio
     profitability_percentage: { as: percent, multiply_by_100: false, precision: 2 } # "10,50%"
-    percentage:              { as: percent, multiply_by_100: false, precision: 2 } # "7,25%"
+    percentage:               { as: percent, multiply_by_100: false, precision: 2 } # "7,25%"
 
   rules: {}
 
@@ -43,6 +44,12 @@ sample_questions:
   - "minhas posições em fundos imobiliários"
   - "minha carteira de fundos imobiliários"
   - "quantidade de fundos imobiliários na minha custódia"
+  - "qual é o preço médio do HGLG11?"
+  - "qual a rentabilidade do MXRF11 na minha carteira?"
+  - "qual o peso do XPML11 na minha carteira?"
+  - "em qual corretora está o HGLG11?"
+  - "qual é o FII com maior peso na minha carteira?"
+  - "qual é o FII mais rentável da minha carteira?"
 
 tolerance:
   extra_columns_allowed: false

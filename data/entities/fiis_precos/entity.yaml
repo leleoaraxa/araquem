@@ -49,51 +49,104 @@ presentation:
     key: traded_at
     value: close_price
   empty_message: Sem preços para exibir.
+
 ask:
   intents:
-  - fiis_precos
+    - fiis_precos
+
   keywords:
-  - preco
-  - cotacao
-  - abertura
-  - fechar
-  - fechamento
-  - maxima
-  - minima
-  - variacao
-  - diaria
-  - hoje
-  synonyms:
-    ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
-    traded_at:
-    - negociacao
-    close_price:
-    - fechamento
-    - fechar
-    adj_close_price:
-    - ajustado
-    open_price:
+    - preco
+    - preço
+    - cotacao
+    - cotação
     - abertura
-    - abrir
-    max_price:
+    - fechar
+    - fechamento
     - maxima
     - máxima
-    min_price:
     - minima
     - mínima
-    daily_variation_pct:
     - variacao
     - variação
-    - variação diária
-    - oscilação
+    - diaria
+    - diária
+    - hoje
+    - historico
+    - histórico
+    - serie
+    - série
+    - preco medio
+    - preço medio
+    - preço médio
+
+  phrase_includes:
+    - "preco do"
+    - "preço do"
+    - "cotacao do"
+    - "cotação do"
+    - "preco historico do"
+    - "preço historico do"
+    - "preço histórico do"
+    - "preco medio do"
+    - "preço medio do"
+    - "preço médio do"
+    - "qual o preco do"
+    - "qual o preço do"
+    - "qual a cotacao do"
+    - "qual a cotação do"
+    - "quanto ta o"
+    - "quanto tá o"
+    - "quanto esta o"
+    - "quanto está o"
+    - "qual meu preço médio do"
+    - "qual meu preco medio do"
+
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    traded_at:
+      - negociacao
+      - negociação
+      - pregão
+    close_price:
+      - fechamento
+      - fechar
+      - preco de fechamento
+      - preço de fechamento
+    adj_close_price:
+      - ajustado
+      - fechamento ajustado
+    open_price:
+      - abertura
+      - abrir
+      - preco de abertura
+      - preço de abertura
+    max_price:
+      - maxima
+      - máxima
+      - maxima do dia
+      - máxima do dia
+    min_price:
+      - minima
+      - mínima
+      - minima do dia
+      - mínima do dia
+    daily_variation_pct:
+      - variacao
+      - variação
+      - variação diária
+      - oscilação
+      - alta do dia
+      - queda do dia
+
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+
 order_by_whitelist:
 - traded_at desc
 aggregations:

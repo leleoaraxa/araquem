@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-21T21:06:10Z",
+  "generated_at": "2025-11-22T11:25:32Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -118,8 +118,8 @@
         "precos",
         "entity:fiis_precos"
       ],
-      "chunks": 2,
-      "sha_all": "b08f8032b4f2bdd0032e094b9f41ba5567b853d34d4a2b5160374967ca0795f1"
+      "chunks": 3,
+      "sha_all": "3632f0055bed7261741039c0b3b3865a3002d46a37a63bf2349d09e03413fa45"
     },
     {
       "id": "entity-fiis-rankings",
@@ -243,8 +243,8 @@
         "positions",
         "entity:client_fiis_positions"
       ],
-      "chunks": 4,
-      "sha_all": "3e9312a739ae54356d310655986748ab6a41a9ef5afc269fbe857c6b49b02029"
+      "chunks": 5,
+      "sha_all": "a18d31499856b6d763fbf857f2188db87dd9a4aa7b18c997d69ebe22bc17f48e"
     },
     {
       "id": "policies-cache",
@@ -437,7 +437,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "c5dc28b4a633a378d34f5217cd6a5ec41235e0760fb0c1ed4445caa5d1b804c5"
+      "sha_all": "eea70b02626c969d6a6785e9b6765a1147408e44840f098e444a670ee88731e0"
     },
     {
       "id": "q-m66-projection",
@@ -489,5 +489,5 @@
       "sha_all": "f79c037470c49488dabd3084119d8d986a1fb9b9693c3e7324951a7e46143cce"
     }
   ],
-  "last_refresh_epoch": 1763759287
+  "last_refresh_epoch": 1763810841
 }

@@ -2,61 +2,63 @@ id: client_fiis_positions
 result_key: positions
 sql_view: client_fiis_positions
 private: true
-description: Posições do cliente em FIIs (PRIVADA; exige parâmetro document_number).
+description: >
+  Posições do cliente em FIIs (PRIVADA; exige parâmetro document_number obtido de contexto seguro,
+  nunca do texto livre do usuário).
 
 identifiers:
   - name: document_number
-    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro (nunca pelo texto do usuário)
+    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro (nunca pelo texto do usuário).
   - name: position_date
-    description: Data da posição
+    description: Data da posição (data de referência do retrato da carteira).
   - name: ticker
-    description: Ticker do FII (AAAA11)
+    description: Ticker do FII (AAAA11).
 
 default_date_field: position_date
 
 columns:
-- name: document_number
-  alias: Documento
-  description: CPF/CNPJ do cliente (PII).
-- name: position_date
-  alias: Data da posição
-  description: Data de referência.
-- name: ticker
-  alias: Código FII
-  description: Código do fundo na B3 (AAAA11).
-- name: fii_name
-  alias: Nome do FII
-  description: Nome do fundo.
-- name: participant_name
-  alias: Participante
-  description: Corretora/participante.
-- name: qty
-  alias: Quantidade
-  description: Quantidade em custódia.
-- name: closing_price
-  alias: Preço fechamento
-  description: Preço de fechamento do dia.
-- name: update_value
-  alias: Variação (R$)
-  description: Variação de valor.
-- name: available_quantity
-  alias: Quantidade disp.
-  description: Quantidade disponível.
-- name: average_price
-  alias: Preço médio
-  description: Preço médio da posição.
-- name: profitability_percentage
-  alias: Rentabilidade (%)
-  description: Rentabilidade da posição em percentual.
-- name: percentage
-  alias: Peso na carteira (%)
-  description: Percentual da posição em relação à carteira total.
-- name: created_at
-  alias: Criado em
-  description: Data de criação do registro.
-- name: updated_at
-  alias: Atualizado em
-  description: Data da última atualização do registro.
+  - name: document_number
+    alias: Documento
+    description: CPF/CNPJ do cliente (PII).
+  - name: position_date
+    alias: Data da posição
+    description: Data de referência da posição em FIIs.
+  - name: ticker
+    alias: Código FII
+    description: Código do fundo na B3 (AAAA11).
+  - name: fii_name
+    alias: Nome do FII
+    description: Nome do fundo imobiliário.
+  - name: participant_name
+    alias: Participante
+    description: Corretora/participante responsável pela custódia.
+  - name: qty
+    alias: Quantidade
+    description: Quantidade em custódia na data da posição.
+  - name: closing_price
+    alias: Preço fechamento
+    description: Preço de fechamento do dia para o FII.
+  - name: update_value
+    alias: Variação (R$)
+    description: Variação de valor da posição em reais no período de referência.
+  - name: available_quantity
+    alias: Quantidade disp.
+    description: Quantidade de cotas disponíveis (não bloqueadas).
+  - name: average_price
+    alias: Preço médio
+    description: Preço médio da posição em FIIs.
+  - name: profitability_percentage
+    alias: Rentabilidade (%)
+    description: Rentabilidade da posição em percentual.
+  - name: percentage
+    alias: Peso na carteira (%)
+    description: Percentual da posição em relação à carteira total de FIIs.
+  - name: created_at
+    alias: Criado em
+    description: Data de criação do registro.
+  - name: updated_at
+    alias: Atualizado em
+    description: Data da última atualização do registro.
 
 presentation:
   kind: table
@@ -72,22 +74,20 @@ ask:
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
     - minhas posicoes
-    - minha carteira
-    - posicao
-    - minhas posiçoes
     - minhas posições
+    - minhas posiçoes
+    - minha carteira
     - carteira
     - carteira de fii
     - carteira de fiis
     - carteira de fundos imobiliarios
     - carteira de fundos imobiliários
+    - posicao
+    - posição
     - quantidade
     - qtd
     - custodia
     - custódia
-    - preco medio
-    - preço medio
-    - preço médio
     - rentabilidade
     - rentabilidade da posicao
     - rentabilidade da posição
@@ -101,23 +101,34 @@ ask:
     - porcentagem na carteira
     - participacao
     - participação
+    - corretora
+    - participante
+    - custodiado
 
   phrase_includes:
     - "minhas posicoes"
     - "minhas posições"
     - "minha carteira de fiis"
     - "minha carteira de fundos imobiliarios"
-    - "preco medio do"
-    - "preço medio do"
-    - "preço médio do"
-    - "rentabilidade do"
-    - "rentabilidade da posicao do"
-    - "rentabilidade da posição do"
-    - "peso do"
-    - "percentual do"
-    - "porcentagem do"
-    - "participacao do"
-    - "participação do"
+    - "minha carteira de fundos imobiliários"
+    - "minhas posições em fiis"
+    - "minhas posições em fundos imobiliarios"
+    - "quantidade de fiis na minha custodia"
+    - "quantidade de fiis na minha custódia"
+    - "peso do fii na minha carteira"
+    - "peso desse fii na minha carteira"
+    - "peso desse fundo na minha carteira"
+    - "rentabilidade da minha posição em"
+    - "rentabilidade da posição em"
+    - "qual a corretora do"
+    - "em qual corretora está o"
+    - "onde estão minhas cotas do"
+    - "onde o"
+    - "em qual corretora está esse fundo"
+    - "qual é o fii com maior peso na minha carteira"
+    - "qual é o fii mais rentável da minha carteira"
+    - "quais fiis da minha carteira estão dando lucro"
+    - "distribuição da minha carteira de fiis"
 
   synonyms:
     ticker:
@@ -173,9 +184,9 @@ ask:
     keywords: 1.0
     synonyms: 0.5
 
+
 params:
   required: [document_number]
-
 
 order_by_whitelist:
   - position_date desc
