@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-22T16:39:14Z",
+  "generated_at": "2025-11-22T18:27:35Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -82,8 +82,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 9,
-      "sha_all": "8ee28f9987a0a7e6f162d3c87b85738693c014bf3aee5e5c9b5d152773ddce2e"
+      "chunks": 11,
+      "sha_all": "228ed7be1f5f8bcb2e6058687436e882e592869c88185f89d9156771ae7cc7e5"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -95,7 +95,7 @@
         "entity:fiis_cadastro"
       ],
       "chunks": 3,
-      "sha_all": "61bd3fcc926d56ae645f14d79183ca16f09d5177f911dff444acf85d3111f18c"
+      "sha_all": "bc8a4c69944e5c4343881fa81290542deef8484b5cbc951ad79d78b30f2423ad"
     },
     {
       "id": "entity-fiis-dividendos",
@@ -107,7 +107,7 @@
         "entity:fiis_dividendos"
       ],
       "chunks": 2,
-      "sha_all": "38e0de5f05255cc0fe50215b7afc5016e5c50556da33444f097b2198f34fa1a5"
+      "sha_all": "922f6683c45a6a8cdc8047a25561967514f15eae4aa95a7aed1ba8f94188352c"
     },
     {
       "id": "entity-fiis-precos",
@@ -119,7 +119,7 @@
         "entity:fiis_precos"
       ],
       "chunks": 3,
-      "sha_all": "27281f38c78311e4b66a16704632cb43a5f2e96dcce67b4a607cde6a8e938b86"
+      "sha_all": "8934e1dde75b68380f25862e5766e9667a9fa65111e8a88cc115551fe4c83f21"
     },
     {
       "id": "entity-fiis-rankings",
@@ -130,8 +130,8 @@
         "rankings",
         "entity:fiis_rankings"
       ],
-      "chunks": 6,
-      "sha_all": "894a72f718d97468763d2ee120426c046281cc046f49af8338e5effadd0bc289"
+      "chunks": 7,
+      "sha_all": "74803e1bd3585709f7321da812d1fcc262a84b95e1ea105eb09965ed52bab43e"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -143,7 +143,7 @@
         "entity:fiis_imoveis"
       ],
       "chunks": 2,
-      "sha_all": "56911aa10dfb893de5ee701e422f3865d8eea0c200c00cb63c311a6e86ccd420"
+      "sha_all": "f857f7433d3a2183222cbb6f8d9fc23804e871d1e3890e71887ef07c5aff6f7f"
     },
     {
       "id": "entity-fiis-noticias",
@@ -180,7 +180,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 4,
-      "sha_all": "3b5c3eaaf44d57a0e99d1212385c1d648aa637a3f791fbd8e70fb679fd7501d1"
+      "sha_all": "ce32f3465f5a8a7a741ba05943517e58bf70ee745c44b7bdc1f277dc0404b38c"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -206,7 +206,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 3,
-      "sha_all": "b635f05ebf94d4170a78fb0e044de4afdb133d3228179e9c78245b41d6e97cc6"
+      "sha_all": "f6d7bd39997dafb10ab5755ef2c76ec88875e55ba1e6c5053958dc0c2e60fe24"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -244,7 +244,7 @@
         "entity:client_fiis_positions"
       ],
       "chunks": 4,
-      "sha_all": "079cc6b871b7f74b93fa71d9e7b3ff67e83acb1874aa18ce57461c7d652e8d31"
+      "sha_all": "4a7947b80a718de961fa2b38f8119447a134059934c22253cb5c12ce535896ea"
     },
     {
       "id": "policies-cache",
@@ -304,8 +304,8 @@
         "golden",
         "quality"
       ],
-      "chunks": 15,
-      "sha_all": "bd297e88f66089337807ed4c480a083715f7d7b895e95ea834783c9a1389d3c7"
+      "chunks": 16,
+      "sha_all": "20fccf50f9e2393acd3528a8fb3e5ecada017f3d89828c591d3b38a89917ecce"
     },
     {
       "id": "golden-m68-collisions",
@@ -327,7 +327,7 @@
         "samples"
       ],
       "chunks": 30,
-      "sha_all": "8bb9139f4d290e3a192489d45654f43dd103885c67a5565072e60f0fe31503d6"
+      "sha_all": "c44cbcbe32722a3def38ca3fd4613bfa82344614bab408dce3e12f930a507913"
     },
     {
       "id": "q-projection-cadastro",
@@ -472,7 +472,7 @@
         "entity:history_b3_indexes"
       ],
       "chunks": 2,
-      "sha_all": "d138ed788b8f01a2b5e15bf3434c322fa9cff6d0b7c40f93e1c59dee561224bd"
+      "sha_all": "671612f9162e95fc9eab358534f1305af97bb10a45074b9cedd7bcf409bb6ee4"
     },
     {
       "id": "entity-history-currency-rates",
@@ -500,5 +500,5 @@
       "sha_all": "acad56c670145e01b4dbbff46509381e1eb852fc8384a9053e87a800c3bc8ed1"
     }
   ],
-  "last_refresh_epoch": 1763829679
+  "last_refresh_epoch": 1763836193
 }

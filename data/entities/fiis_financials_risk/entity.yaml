@@ -102,9 +102,6 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-sample_questions:
-- fiis com menor drawdown
-- sharpe ratio do HGLG11 nos últimos 12 meses
   metrics_synonyms:
     volatility_ratio:
       - volatilidade
@@ -148,6 +145,10 @@ sample_questions:
       - r dois
       - coeficiente de determinacao
       - coeficiente de determinação
+
+sample_questions:
+- fiis com menor drawdown
+- sharpe ratio do HGLG11 nos últimos 12 meses
 
 order_by_whitelist:
   - updated_at desc
