@@ -119,10 +119,8 @@ class OllamaClient:
     def embed(self, texts: List[str]) -> List[List[float]]:
         """
         Garante 1:1 (len(vectors) == len(texts)).
-        POST em /api/embeddings com campo **'prompt'** (API nativa do Ollama).
-        Respostas válidas:
-          - unitária: {"embedding": [...]}
-          - batelada (alguns wrappers): {"embeddings": [[...], ...]}
+        Tenta primeiro /api/embed (batch) com campo 'input' (quando houver >1 texto).
+        Fallback: /api/embeddings com campo 'prompt' (modo unitário).
         """
         if not texts:
             return []
