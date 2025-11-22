@@ -72,6 +72,50 @@ class OllamaClient:
                 return arr[0]
         return []
 
+    def _embed_batch(self, texts: List[str]) -> List[List[float]]:
+        """
+        Usa o endpoint /api/embed do Ollama para realizar embedding em lote.
+        Espera resposta no formato:
+          { "embeddings": [[...], ...] }
+        Garante len(vetores) == len(texts).
+        """
+        last_resp: Dict[str, Any] | None = None
+
+        for attempt in range(self.retries + 1):
+            payload = {"model": self.model, "input": texts}
+            data = self._post("/api/embed", payload)
+            last_resp = data
+
+            if "error" in data:
+                time.sleep(self.backoff_s)
+                continue
+
+            if not isinstance(data, dict):
+                time.sleep(self.backoff_s)
+                continue
+
+            arr = data.get("embeddings")
+            if isinstance(arr, list) and len(arr) == len(texts):
+                # valida se todos os vetores são listas não vazias
+                if all(isinstance(v, list) and len(v) > 0 for v in arr):
+                    return arr
+
+            time.sleep(self.backoff_s)
+
+        meta = {
+            "model": self.model,
+            "base_url": self.base_url,
+            "requested": len(texts),
+            "ok": 0,
+            "failed_indexes": list(range(len(texts))),
+            "raw_first": (
+                last_resp if isinstance(last_resp, dict) else {"raw": last_resp}
+            ),
+        }
+        raise RuntimeError(
+            f"Ollama embeddings em lote vazios/inconsistentes: {json.dumps(meta, ensure_ascii=False)}"
+        )
+
     def embed(self, texts: List[str]) -> List[List[float]]:
         """
         Garante 1:1 (len(vectors) == len(texts)).
@@ -80,6 +124,21 @@ class OllamaClient:
           - unitária: {"embedding": [...]}
           - batelada (alguns wrappers): {"embeddings": [[...], ...]}
         """
+        if not texts:
+            return []
+
+        # Caminho preferencial: tentativa de batch em /api/embed (quando houver >1 texto).
+        # Mantém compatibilidade total: em caso de falha, cai para o modo legado 1:1.
+        if len(texts) > 1:
+            try:
+                vectors = self._embed_batch(texts)
+                # sanity: garante 1:1
+                if len(vectors) == len(texts):
+                    return vectors
+            except Exception:
+                # Fallback silencioso para o modo antigo (um POST por texto).
+                # Observabilidade de erros/falhas fica a cargo de quem chama.
+                pass
 
         out: List[List[float]] = []
         for idx, t in enumerate(texts):
