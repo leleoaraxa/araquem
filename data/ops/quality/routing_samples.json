@@ -523,8 +523,8 @@
     },
     {
       "question": "fiis com menor drawdown",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
     },
     {
       "question": "top fiis por dy nos ultimos 12 meses",

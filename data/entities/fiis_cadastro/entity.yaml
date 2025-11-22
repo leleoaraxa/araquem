@@ -99,6 +99,10 @@ ask:
   - site
   - custodiante
   - assembleia
+  - segmento
+  - segmentos
+  phrase_includes:
+  - segmento do
   synonyms:
     ticker:
     - ativo
@@ -112,4 +116,6 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+sample_questions:
+- segmento do HGLG11
 order_by_whitelist: []

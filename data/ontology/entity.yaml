@@ -16,7 +16,6 @@ intents:
       include:
         - posicao
         - posicoes
-        - carteira
         - minhas
         - minha
         - meu
@@ -27,6 +26,13 @@ intents:
         - cpf
         - cnpj
         - documento
+        - imovel
+        - imoveis
+        - galpao
+        - galpoes
+        - vacancia
+        - sharpe
+        - ifix
     phrases:
       include:
         - minhas posicoes
@@ -69,6 +75,8 @@ intents:
         - url
         - exclusivo
         - oficial
+        - segmento
+        - segmentos
       exclude:
         - preco
         - precos
@@ -76,6 +84,12 @@ intents:
         - dividendo
         - ranking
         - media
+        - patrimonio
+        - patrimonio liquido
+        - patrimônio
+        - patrimônio líquido
+        - numero de cotistas
+        - número de cotistas
     phrases:
       include:
         - cnpj do
@@ -120,6 +134,7 @@ intents:
         - variacao
         - diaria
         - pregao
+        - pregoes
       exclude:
         - media
         - soma
@@ -151,6 +166,9 @@ intents:
         - maxima do
         - minima do
         - variacao diaria
+        - variacao diaria do
+        - variacao diaria do ticker
+        - variacao do ticker nos ultimos
       exclude:
         - preco medio
         - media de preco
@@ -174,11 +192,18 @@ intents:
         - ultima
         - data com
         - data ex
+        - distribuiu
+        - distribuiu em
+        - quanto distribuiu
+        - media de dividendos
+        - média de dividendos
+        - media de rendimentos
+        - média de rendimentos
+        - ultimos 12 meses
+        - últimos 12 meses
       exclude:
         - soma
         - media
-        - nos
-        - ultimos
     phrases:
       include:
         - dividendo do
@@ -189,10 +214,13 @@ intents:
         - ultimo dividendo do
         - quando foi o ultimo pagamento do
         - data com do
+        - quanto o distribuiu
+        - quanto o distribuiu em
+        - media de dividendos do
+        - média de dividendos do
       exclude:
         - soma de dividendos
         - quanto de dividendos
-        - nos ultimos
     entities: [fiis_dividendos]
 
   - name: fiis_financials_snapshot
@@ -208,9 +236,18 @@ intents:
         - enterprise value
         - market cap
         - patrimonio
+        - patrimonio liquido
         - patrimonio por cota
         - price book
         - preco patrimonio
+        - numero de cotistas
+        - cotistas
+        - vacancia
+        - vacância
+        - vacancia fisica
+        - vacância física
+        - vacancia financeira
+        - vacância financeira
         - caixa
         - caixa total
         - passivos
@@ -247,6 +284,9 @@ intents:
         - reserva de dividendos do
         - taxa de adm do
         - taxa de performance do
+        - patrimonio e numero de cotistas do
+        - vacancia do
+        - vacancia fisica e financeira do
       exclude:
         - nos ultimos
         - soma de
@@ -344,29 +384,23 @@ intents:
         - coeficiente de determinacao
         - vr
         - indice de risco
-        - atual
-        - hoje
-        - d1
-        - d-1
+        - sharpe ratio
+        - ranking por sharpe
+        - melhor sharpe
+        - fiis com menor drawdown
       exclude:
-        - nos
-        - ultimos
-        - periodo
-        - retorna
         - soma
         - cdi
         - selic
         - ipca
         - inpc
-        - ultimas
-        - ultimo
-        - historico
     phrases:
       include:
         - indicador de risco do
         - risco atual do
         - volatilidade do
         - sharpe do
+        - sharpe ratio do
         - sortino do
         - treynor do
         - jensen do
@@ -375,9 +409,10 @@ intents:
         - drawdown do
         - r2 do
         - coeficiente de determinacao do
+        - ranking por sharpe do
+        - melhor sharpe do
+        - fiis com menor drawdown
       exclude:
-        - nos ultimos
-        - no periodo
     entities: [fiis_financials_risk]
 
   - name: fiis_imoveis
@@ -390,17 +425,23 @@ intents:
         - ativo
         - ativos
         - portfolio
-        - vacancia
+        - galpao
+        - galpoes
         - ocupacao
         - unidades
         - metragem
         - endereco
         - localizacao
+        - onde ficam
         - status
       exclude:
         - ranking
         - dividendo
         - preco
+        - cotistas
+        - numero de cotistas
+        - sharpe
+        - ifix
     phrases:
       include:
         - imoveis do
@@ -408,6 +449,8 @@ intents:
         - lista de propriedades do
         - area total do
         - vacancia do
+        - vacancia dos imoveis
+        - vacancia do imovel
         - status do
         - status dos imoveis do
       exclude: []
@@ -474,12 +517,12 @@ intents:
         - lista
         - aparicoes
         - movimentos
-        - ifix
-        - ifil
         - usuarios
         - sirios
         - liquidez
         - liquidez media
+        - maior liquidez
+        - liquidez média
         - volume
         - dy
         - dividend yield
@@ -487,12 +530,16 @@ intents:
         - dividendo
         - patrimonio
         - patrimonio liquido
+        - maiores fiis em patrimonio
+        - maiores fiis em patrimonio liquido
         - equity
         - sharpe
         - sortino
         - volatilidade
         - risco
+        - menor risco
         - drawdown
+        - menor drawdown
         - mdd
         - logistica
         - papel
@@ -511,6 +558,13 @@ intents:
         - noticia
         - noticia do
         - r\u00a2
+        - ifix
+        - ifil
+        - indice
+        - índice
+        - historico
+        - histórico
+        - se comportou
     phrases:
       include:
         - ranking do
@@ -524,6 +578,11 @@ intents:
         - top 10 fiis por
         - maiores fiis em
         - melhores fiis em
+        - top fiis por liquidez
+        - fiis de logistica com maior liquidez
+        - fiis de logística com maior liquidez
+        - maiores fiis em patrimonio liquido
+        - maiores fiis em patrimônio líquido
         - fiis com maior
         - fiis com menor
         - ranking dos fiis com melhor
@@ -583,6 +642,13 @@ intents:
         - quanto variou o ibov hoje
         - quanto variou o ifix no dia
         - quanto variou o ifil no dia
+        - variacao diaria do ifix
+        - variacao diaria do ifil
+        - variacao do ibov
+        - historico do ifix
+        - historico do ifix nos ultimos
+        - como o ifix se comportou
+        - como o ifix se comportou em
       exclude: []
     entities: [history_b3_indexes]
 

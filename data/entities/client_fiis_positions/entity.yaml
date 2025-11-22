@@ -74,15 +74,11 @@ ask:
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
     - minhas posicoes
-    - minha carteira
-    - carteira
-    - carteira de fii
-    - carteira de fiis
-    - carteira de fundos imobiliarios
     - posicao
     - quantidade
     - qtd
     - custodia
+    - disponivel
     - rentabilidade
     - rentabilidade da posicao
     - ganho
@@ -105,6 +101,7 @@ ask:
     - "minhas posicoes em fiis"
     - "minhas posicoes em fundos imobiliarios"
     - "quantidade de fiis na minha custodia"
+    - "quantidade em custodia"
     - "peso do fii na minha carteira"
     - "peso desse fii na minha carteira"
     - "peso desse fundo na minha carteira"

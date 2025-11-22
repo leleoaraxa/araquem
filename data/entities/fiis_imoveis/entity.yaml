@@ -64,14 +64,20 @@ ask:
   - propriedade
   - ativos
   - portfolio
-  - vacancia
   - ocupacao
   - unidades
   - area
   - metragem
   - endereco
   - localizacao
+  - galpao
+  - galpoes
+  - onde ficam
   - status operacional
+  phrase_includes:
+  - vacancia dos imoveis
+  - vacancia do imovel
+  - onde ficam os imoveis
   synonyms:
     ticker:
     - ativo
@@ -82,6 +88,9 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+sample_questions:
+- quantos imóveis o HGLG11 possui na carteira
+- onde ficam os galpões do XPLG11
 order_by_whitelist:
 - asset_name asc
 - total_area desc

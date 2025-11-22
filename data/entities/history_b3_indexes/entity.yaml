@@ -53,9 +53,21 @@ ask:
   - ifil
   - indice
   - indices
+  - índice
+  - histórico
+  - historico
   - pontos
   - fechamento
   - variacao
+  - variacao diaria
+  phrase_includes:
+  - variacao diaria do ifix
+  - variacao diaria do ifil
+  - variacao do ibov
+  - historico do ifix
+  - historico do ifix nos ultimos
+  - como o ifix se comportou
+  - como o ifix se comportou em
   synonyms:
     index_date:
     - data
@@ -64,6 +76,10 @@ ask:
     identifiers: 1.0
     keywords: 1.5
     synonyms: 0.5
+
+sample_questions:
+- histórico do IFIX nos últimos 6 meses
+- como o IFIX se comportou em 2024
 
 order_by_whitelist:
 - index_date desc

@@ -49,8 +49,22 @@ ask:
   - pagamento
   - paga
   - pagou
+  - distribuiu
+  - distribuiu em
+  - quanto distribuiu
+  - media de dividendos
+  - média de dividendos
+  - media de rendimentos
+  - média de rendimentos
+  - ultimos 12 meses
+  - últimos 12 meses
   - yield
   - dy
+  phrase_includes:
+  - quanto o distribuiu
+  - quanto o distribuiu em
+  - media de dividendos do
+  - média de dividendos do
   synonyms:
     ticker:
     - ativo
@@ -73,6 +87,9 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+sample_questions:
+- quanto o MXRF11 distribuiu em 07/2024
+- média de dividendos do HGLG11 nos últimos 12 meses
 order_by_whitelist:
 - payment_date desc
 aggregations:
