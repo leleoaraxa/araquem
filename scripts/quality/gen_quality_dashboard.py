@@ -123,12 +123,22 @@ def main():
     if not targets:
         targets = (policy.get("quality_gates") or {}).get("thresholds") or {}
 
-    min_top1_accuracy = float(targets.get("min_top1_accuracy", 0.95))
+    min_top1_accuracy = float(targets.get("min_top1_accuracy", 0.93))
     min_routed_rate = float(targets.get("min_routed_rate", 0.98))
-    min_top2_gap = float(targets.get("min_top2_gap", 0.25))
+    min_top2_gap = float(targets.get("min_top2_gap", 0.00))
     # misses_* não entram em gauge; exibiremos em stat/table
 
     db = base_dashboard()
+
+    policy_version = policy.get("version")
+    policy_window = policy.get("window")
+    suffix = []
+    if policy_version:
+        suffix.append(f"v{policy_version}")
+    if policy_window:
+        suffix.append(str(policy_window))
+    if suffix:
+        db["title"] = f"Araquem — Quality Gates ({', '.join(suffix)})"
 
     # PromQL (mesmos usados no /ops/quality/report)
     q_top1_acc = 'sum(sirios_planner_top1_match_total{result="hit"}) / clamp_min(sum(sirios_planner_top1_match_total), 1)'
