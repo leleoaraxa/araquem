@@ -70,6 +70,7 @@ PROIBIÇÕES:
 - Quando [FOCUS_METRIC_KEY] estiver definido, é proibido focar a resposta em
   métricas diferentes da pedida (por exemplo, não fale de VaR se a pergunta
   é sobre Sharpe negativo).
+- Proibido inventar nomes de métricas inexistentes ou não citadas, como "Vynor Ratio" ou termos similares.
 
 SAÍDA FINAL:
 - Sempre entregue apenas o texto pronto para o usuário.
@@ -408,10 +409,26 @@ def build_prompt(
         if isinstance(mk, str):
             focus_metric_key = mk.strip()
 
+    strict_mode = False
+    if isinstance(effective_policy, dict):
+        strict_mode = bool(effective_policy.get("strict_mode", False))
+
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
     fewshot = FEW_SHOTS.get(template_key, "")
+    # Em modo conceitual, evitamos few-shots para reduzir ruído e tamanho do prompt
+    if template_key == "concept":
+        fewshot = ""
 
     facts_payload = dict(facts or {})
+    # Em modo conceitual, FACTS servem apenas para sinalização mínima:
+    # não enviamos linhas, valores numéricos ou blobs grandes.
+    if template_key == "concept":
+        minimal_facts: Dict[str, Any] = {}
+        for key in ("fallback_message", "requested_metrics"):
+            if key in facts_payload:
+                minimal_facts[key] = facts_payload[key]
+        facts_payload = minimal_facts
+
     if "fallback_message" not in facts_payload and isinstance(entity, str):
         fallback = (meta or {}).get("fallback_message")
         if isinstance(fallback, str):
@@ -434,6 +451,19 @@ def build_prompt(
     else:
         rag_json = "(nenhum contexto adicional relevante foi encontrado.)"
 
+    additional_guard = ""
+    # Guard-rail ultra restrito: só em modo estrito + métrica foco definida
+    if strict_mode and focus_metric_key:
+        additional_guard = f"""
+Regras CRÍTICAS de foco em métrica:
+- Você só pode responder sobre a métrica identificada em [FOCUS_METRIC_KEY].
+- É proibido inventar nomes de métricas inexistentes ou diferentes da métrica foco.
+- Não migre o foco para outras métricas principais (como VaR, volatilidade genérica
+  ou qualquer termo não citado no contexto).
+- Se você não conseguir responder falando exclusivamente dessa métrica foco,
+  responda exatamente (sem variações):
+  erro: métrica fora do foco
+"""
     return f"""{SYSTEM_PROMPT}
 
 [ESTILO]: {style}
@@ -452,6 +482,7 @@ def build_prompt(
 
 Instruções adicionais:
 {base_instruction}
+{additional_guard}
 
 Few-shot de referência (opcional):
 {fewshot}

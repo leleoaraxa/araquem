@@ -201,6 +201,76 @@ def _best_rag_chunk_text(
     return best_text
 
 
+def _shrink_rag_for_concept(
+    rag_ctx: Dict[str, Any] | None, *, max_chars: int = 900
+) -> Dict[str, Any] | None:
+    """
+    Em modo conceitual, reduz o contexto de RAG para apenas o melhor chunk,
+    com texto truncado, para evitar prompts gigantes e dispersão de foco.
+    """
+    if not isinstance(rag_ctx, dict):
+        return None
+    if not rag_ctx.get("enabled"):
+        return None
+
+    chunks = rag_ctx.get("chunks")
+    if not isinstance(chunks, list) or not chunks:
+        return None
+
+    best_chunk: Dict[str, Any] | None = None
+    best_score = float("-inf")
+
+    for ch in chunks:
+        if not isinstance(ch, dict):
+            continue
+        raw_text = ch.get("text")
+        if not isinstance(raw_text, str):
+            continue
+        text = raw_text.strip()
+        if not text:
+            continue
+        score_raw = ch.get("score", 0.0)
+        try:
+            score = float(score_raw)
+        except (TypeError, ValueError):
+            score = 0.0
+        if score > best_score:
+            best_score = score
+            best_chunk = ch
+
+    if not best_chunk:
+        return None
+
+    new_chunk = dict(best_chunk)
+    raw_text = new_chunk.get("text") or ""
+    if isinstance(raw_text, str) and max_chars > 0 and len(raw_text) > max_chars:
+        truncated = raw_text[:max_chars].rsplit(" ", 1)[0].strip()
+        if not truncated:
+            truncated = raw_text[:max_chars].strip()
+        new_chunk["text"] = truncated + "..."
+
+    policy_raw = rag_ctx.get("policy") or {}
+    collections = None
+    if isinstance(policy_raw, dict):
+        collections = policy_raw.get("collections")
+    if not collections:
+        collections = rag_ctx.get("used_collections")
+
+    new_ctx: Dict[str, Any] = {
+        "enabled": True,
+        "intent": rag_ctx.get("intent"),
+        "entity": rag_ctx.get("entity"),
+        "chunks": [new_chunk],
+        "policy": {
+            "max_chunks": 1,
+            "collections": collections,
+        },
+        "used_collections": rag_ctx.get("used_collections"),
+    }
+
+    return new_ctx
+
+
 def _extract_tickers_from_question_and_filters(
     question: str,
     meta: Dict[str, Any] | None,
@@ -524,6 +594,10 @@ class Narrator:
             rag_best_text = ""
             if narrator_meta["strategy"] == "deterministic":
                 narrator_meta["strategy"] = "rag_forbidden_by_policy"
+        elif concept_mode and rag_ctx_for_prompt is not None:
+            # Em modo conceitual, usamos apenas um chunk enxuto de RAG
+            shrunk = _shrink_rag_for_concept(rag_ctx_for_prompt, max_chars=900)
+            rag_ctx_for_prompt = shrunk if shrunk is not None else None
 
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "

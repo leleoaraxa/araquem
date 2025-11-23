@@ -20,6 +20,7 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      strict_mode: true
 
     fiis_financials_revenue_schedule:
       llm_enabled: true
