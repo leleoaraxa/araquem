@@ -1,12 +1,11 @@
-# docker/Dockerfile.ollama-init
 FROM ollama/ollama:0.3.14
 SHELL ["/bin/sh","-lc"]
 
-# Job one-shot: espera o daemon, só faz pull se faltar, e termina.
 ENTRYPOINT ["sh","-lc","\
   echo '[init] aguardando ollama daemon...'; \
   until ollama ps >/dev/null 2>&1; do sleep 1; done; \
-  for m in nomic-embed-text 'llama3.1:latest'; do \
+  # 1) pull dos modelos base (embeddings + base LLM)
+  for m in ${OLLAMA_MODELS:-'nomic-embed-text llama3.1:latest'}; do \
     if ollama show \"$m\" >/dev/null 2>&1; then \
       echo \"[init] modelo já presente: $m\"; \
     else \
@@ -14,5 +13,17 @@ ENTRYPOINT ["sh","-lc","\
       ollama pull \"$m\"; \
     fi; \
   done; \
+  # 2) criação do modelo customizado sirios-narrator:latest
+  if ollama show sirios-narrator:latest >/dev/null 2>&1; then \
+    echo '[init] modelo já presente: sirios-narrator:latest'; \
+  else \
+    MF=\"${SIRIOS_MODEFILE:-/app/docker/Modelfile.sirios-narrator}\"; \
+    if [ -f \"$MF\" ]; then \
+      echo \"[init] criando modelo sirios-narrator:latest a partir de $MF\"; \
+      ollama create sirios-narrator:latest -f \"$MF\"; \
+    else \
+      echo \"[init][WARN] Modelfile do sirios-narrator não encontrado em $MF\"; \
+    fi; \
+  fi; \
   echo '[init] modelos prontos. Saindo.' \
 "]

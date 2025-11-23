@@ -76,6 +76,9 @@ services:
     environment:
       OLLAMA_HOST: "http://ollama:11434"
       OLLAMA_MODELS: "nomic-embed-text llama3.1:latest"
+      SIRIOS_MODEFILE: "/app/docker/Modelfile.sirios-narrator"
+    volumes:
+      - ./:/app
     networks: [araquem_network]
 
   rag-indexer:

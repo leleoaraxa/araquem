@@ -9,7 +9,7 @@ default:
   shadow: false
   max_llm_rows: 0
   use_rag_in_prompt: false
-  model: llama3.1:latest
+  model: sirios-narrator:latest
 
 entities:
     fiis_financials_risk:
@@ -21,6 +21,7 @@ entities:
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
       strict_mode: true
+      model: sirios-narrator:latest
 
     fiis_financials_revenue_schedule:
       llm_enabled: true
@@ -30,6 +31,7 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      model: sirios-narrator:latest
 
     fiis_noticias:
       llm_enabled: true
@@ -39,6 +41,7 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      model: sirios-narrator:latest
 
     history_market_indicators:
       llm_enabled: true
@@ -48,6 +51,7 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      model: sirios-narrator:latest
 
     history_b3_indexes:
       llm_enabled: true
@@ -57,6 +61,7 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      model: sirios-narrator:latest
 
     history_currency_rates:
       llm_enabled: true
@@ -66,3 +71,4 @@ entities:
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
+      model: sirios-narrator:latest
