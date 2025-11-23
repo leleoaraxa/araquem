@@ -348,6 +348,12 @@ def _prepare_rag_payload(rag: dict | None) -> dict | None:
 
 def _pick_template(meta: dict, facts: dict) -> str:
     # Modo conceitual força o template "concept"
+    compute = (meta or {}).get("compute") or {}
+    if isinstance(compute, dict):
+        mode = compute.get("mode")
+        if isinstance(mode, str) and mode.strip().lower() == "concept":
+            return "concept"
+
     narrator_mode = (facts or {}).get("narrator_mode") or (meta or {}).get(
         "narrator_mode"
     )

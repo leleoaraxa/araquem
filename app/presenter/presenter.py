@@ -114,12 +114,17 @@ def build_facts(
     score = score_from_meta if score_from_meta is not None else (score_from_plan or 0.0)
 
     results = orchestrator_results or {}
-    meta_result_key = meta_dict.get("result_key") if isinstance(meta_dict, dict) else None
+    meta_result_key = (
+        meta_dict.get("result_key") if isinstance(meta_dict, dict) else None
+    )
     result_key: Optional[str]
     if isinstance(meta_result_key, str) and meta_result_key in results:
         result_key = meta_result_key
     else:
-        result_key = next(iter(results.keys()), meta_result_key if isinstance(meta_result_key, str) else None)
+        result_key = next(
+            iter(results.keys()),
+            meta_result_key if isinstance(meta_result_key, str) else None,
+        )
 
     rows_raw = results.get(result_key)
     rows: List[Dict[str, Any]] = rows_raw if isinstance(rows_raw, list) else []
@@ -182,15 +187,21 @@ def present(
     - Decidir qual texto final será retornado
     - Devolver PresentResult com answer, legacy_answer, template, narrator_meta, facts
     """
-    rag_policy = load_rag_policy()
     intent = plan["chosen"]["intent"]
     entity = plan["chosen"]["entity"]
-    narrator_rag_context = build_context(
-        question=question,
-        intent=intent,
-        entity=entity,
-        policy=rag_policy,
-    )
+
+    # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
+    meta_dict = meta if isinstance(meta, dict) else {}
+    if isinstance(meta_dict.get("rag"), dict):
+        narrator_rag_context = meta_dict["rag"]
+    else:
+        rag_policy = load_rag_policy()
+        narrator_rag_context = build_context(
+            question=question,
+            intent=intent,
+            entity=entity,
+            policy=rag_policy,
+        )
 
     facts, result_key, rows = build_facts(
         question=question,
@@ -200,6 +211,32 @@ def present(
         identifiers=identifiers,
         aggregates=aggregates,
     )
+
+    # ------------------------------------------------------------------
+    # compute.mode — decide se a pergunta é conceitual ou baseada em dados
+    # ------------------------------------------------------------------
+    # Regra atual (sem heurísticas mágicas):
+    # - Se a entidade tiver prefer_concept_when_no_ticker=true na policy
+    #   do Narrator E não houver ticker extraído da pergunta (identifiers),
+    #   então compute.mode = "concept". Caso contrário, "data".
+    #
+    # Isso garante que perguntas como "Sharpe negativo em um FII quer dizer
+    # que ele é ruim?" sejam tratadas como conceituais, mesmo que exista
+    # uma view tabular por trás da entidade.
+    compute_mode = "data"
+    has_ticker_in_question = bool(identifiers.get("ticker"))
+    if narrator is not None and hasattr(narrator, "policy"):
+        policy = getattr(narrator, "policy", {}) or {}
+        entities_cfg = policy.get("entities") if isinstance(policy, dict) else {}
+        entity_policy = (
+            entities_cfg.get(facts.entity) if isinstance(entities_cfg, dict) else {}
+        )
+        if (
+            isinstance(entity_policy, dict)
+            and entity_policy.get("prefer_concept_when_no_ticker")
+            and not has_ticker_in_question
+        ):
+            compute_mode = "concept"
 
     # Baseline determinístico (sempre calculado)
     legacy_answer = render_answer(
@@ -227,6 +264,7 @@ def present(
         meta_for_narrator: Dict[str, Any] = {
             "intent": facts.intent,
             "entity": facts.entity,
+            "compute": {"mode": compute_mode},
             # se explain=True, podemos expor o porquê da rota
             "explain": (plan.get("explain") if explain else None),
             "result_key": result_key,

@@ -384,6 +384,17 @@ class Narrator:
         template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
         render_meta: Dict[str, Any] = dict(raw_meta)
 
+        # meta.compute.mode (quando presente) é a fonte primária para o modo
+        # de computação: "concept" vs "data"/"default".
+        compute_mode_meta: Optional[str] = None
+        compute_block = raw_meta.get("compute")
+        if isinstance(compute_block, dict):
+            raw_mode = compute_block.get("mode")
+            if isinstance(raw_mode, str):
+                m = raw_mode.strip().lower()
+                if m in ("concept", "data", "default"):
+                    compute_mode_meta = m
+
         # Política efetiva (global + overrides da entidade)
         effective_policy = _get_effective_policy(entity, self.policy)
         effective_enabled = bool(effective_policy.get("llm_enabled", self.enabled))
@@ -434,7 +445,15 @@ class Narrator:
         # - concept_mode=False -> resposta baseada em rows (por fundo)
         concept_mode = False
         effective_facts: Dict[str, Any] = dict(raw_facts)
-        if prefer_concept_when_no_ticker:
+
+        # Ordem de precedência:
+        # 1) meta.compute.mode (quando definido)
+        # 2) policy prefer_concept_when_no_ticker (fallback)
+        if compute_mode_meta == "concept":
+            concept_mode = True
+        elif compute_mode_meta in ("data", "default"):
+            concept_mode = False
+        elif prefer_concept_when_no_ticker:
             detected_tickers = _extract_tickers_from_question_and_filters(
                 question=question,
                 meta=render_meta,
@@ -442,6 +461,16 @@ class Narrator:
             )
             if not detected_tickers:
                 concept_mode = True
+
+        # Normaliza render_meta.compute para refletir o modo efetivo
+        if not isinstance(render_meta.get("compute"), dict):
+            render_meta["compute"] = {"mode": "concept" if concept_mode else "data"}
+        else:
+            compute_block_rm = render_meta["compute"]
+            if "mode" not in compute_block_rm:
+                compute_block_rm["mode"] = "concept" if concept_mode else "data"
+
+        narrator_meta["compute_mode"] = "concept" if concept_mode else "data"
 
         if concept_mode:
             render_meta["narrator_mode"] = "concept"
