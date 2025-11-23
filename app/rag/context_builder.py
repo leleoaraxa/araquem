@@ -1,22 +1,4 @@
 # app/rag/context_builder.py
-# -*- coding: utf-8 -*-
-"""Context builder para RAG no Araquem (SIRIOS).
-
-Responsável por montar contexto textual estruturado para o Narrator
-e para camadas de explicabilidade, usando políticas em data/policies/rag.yaml.
-
-A seção ``routing`` em data/policies/rag.yaml deve sempre usar os nomes
-canônicos de intent emitidos pelo Planner (por exemplo, ``fiis_noticias``
-em vez de abreviações como ``noticias``), e é avaliada antes das regras de
-``entities``/``default``/``profiles``.
-
-# O context_builder assume que:
-# - routing.allow_intents define quem pode usar RAG
-# - rag.entities define perfil + listas de collections
-# - default é seguro e minimalista
-
-"""
-
 from __future__ import annotations
 
 import logging
