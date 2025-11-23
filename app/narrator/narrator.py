@@ -426,6 +426,7 @@ class Narrator:
                 }
             ),
             "rag": None,
+            "compute_mode": None,
         }
 
         # Política específica da entidade (se houver)
@@ -470,7 +471,20 @@ class Narrator:
             if "mode" not in compute_block_rm:
                 compute_block_rm["mode"] = "concept" if concept_mode else "data"
 
-        narrator_meta["compute_mode"] = "concept" if concept_mode else "data"
+        compute_mode_effective = "concept" if concept_mode else "data"
+        narrator_meta["compute_mode"] = compute_mode_effective
+
+        # ------------------------------------------------------------------
+        # Métrica foco (focus_metric_key) — vinda da ontologia / requested_metrics
+        # ------------------------------------------------------------------
+        focus_metric_key: str | None = None
+        requested_metrics = effective_facts.get("requested_metrics")
+        if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
+            candidate = requested_metrics[0]
+            if isinstance(candidate, str) and candidate.strip():
+                focus_metric_key = candidate.strip()
+
+        narrator_meta["focus_metric_key"] = focus_metric_key
 
         if concept_mode:
             render_meta["narrator_mode"] = "concept"
@@ -642,6 +656,14 @@ class Narrator:
         prompt_meta = dict(render_meta)
         if concept_mode:
             prompt_meta.setdefault("narrator_mode", "concept")
+
+        # Injeta foco explícito no meta do prompt
+        if focus_metric_key:
+            focus_block = prompt_meta.get("focus")
+            if not isinstance(focus_block, dict):
+                focus_block = {}
+            focus_block["metric_key"] = focus_metric_key
+            prompt_meta["focus"] = focus_block
 
         prompt_facts = _json_sanitise(prompt_facts)
         prompt_meta = _json_sanitise(prompt_meta)

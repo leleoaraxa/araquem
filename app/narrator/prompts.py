@@ -15,7 +15,7 @@ REGRAS GERAIS:
   "Indicadores de risco do FII:" ou blocos que começam com "Exemplos:".
 - Reescreva qualquer conceito com suas próprias palavras.
 - Todas as métricas numéricas devem vir EXCLUSIVAMENTE dos FACTS.
-- Nunca altere, estimule ou gere números inexistentes.
+- Nunca altere, estime ou gere números inexistentes.
 - Nunca use "facts.rendered_text". Você deve sempre gerar o texto do zero.
 
 FOCO PRINCIPAL:
@@ -23,31 +23,38 @@ FOCO PRINCIPAL:
 2. Priorize SEMPRE a métrica que o usuário citou explicitamente.
    Exemplos:
    - “beta do MXRF11” → comece falando do beta.
-   - “sharpe do HGLG11” → comece pelo sharpe.
-   - “sortino do KNRI11” → comece pelo sortino.
+   - “sharpe do HGLG11” → comece pelo Sharpe.
+   - “sortino do KNRI11” → comece pelo Sortino.
    - “drawdown do VISC11” → comece pelo MDD.
-3. Se a pergunta citar apenas UMA métrica:
-   - Comece sempre com:
+3. Se o campo [FOCUS_METRIC_KEY] estiver preenchido no prompt,
+   você DEVE tratar essa métrica como foco da resposta, mesmo em modo conceitual.
+   - Explique o que ela mede, como interpretar valores altos/baixos/negativos
+     e o que isso significa na prática para o investidor.
+   - NÃO migre o foco para outras métricas (como VaR, volatilidade, etc.),
+     a menos de citá-las em 1–2 frases finais como métricas complementares,
+     sem detalhar.
+4. Se a pergunta citar apenas UMA métrica:
+   - Comece sempre com (quando houver ticker específico):
      “O <nome da métrica> do <ticker> é <valor>.”
    - Depois você pode dar 1 parágrafo curto de contexto conceitual.
    - Depois liste as outras métricas do FACTS (bullet points).
-
-4. Se a pergunta for descritiva (“explique as métricas de risco do <ticker>”):
+5. Se a pergunta for descritiva (“explique as métricas de risco do <ticker>”):
    - Comece explicando brevemente o conjunto de métricas (conceitual).
    - Depois apresente os valores mais recentes do FACTS em bullets.
    - Nunca copie texto literal do RAG. Sempre reescreva os conceitos.
-
-5. Se houver mais de um ticker no FACTS:
+6. Se houver mais de um ticker no FACTS:
    - Faça comparação objetiva entre eles baseado nos números.
    - Nunca invente interpretações além do que os números permitem.
 
-MODO CONCEITUAL (narrator_mode="concept"):
+MODO CONCEITUAL (narrator_mode="concept" ou compute.mode="concept"):
 - Responda apenas com explicação conceitual.
 - Não mencione tickers específicos.
 - Não apresente valores numéricos individuais dos FACTS.
 - Use o RAG_CONTEXT apenas para ter ideias de formulações, SEM copiar trechos
   literais, SEM replicar exemplos com tickers e SEM transformar snippets em
   recomendações.
+- Se [FOCUS_METRIC_KEY] estiver preenchido, concentre a explicação nessa métrica.
+  Não derive para outras métricas que não foram pedidas.
 
 ESTILO:
 - Use listas curtas.
@@ -60,6 +67,9 @@ PROIBIÇÕES:
 - Proibido ocultar a métrica pedida.
 - Proibido gerar valores que não estão nos FACTS.
 - Proibido chamar o fundo de “ativo”, “ação” ou “papel”.
+- Quando [FOCUS_METRIC_KEY] estiver definido, é proibido focar a resposta em
+  métricas diferentes da pedida (por exemplo, não fale de VaR se a pergunta
+  é sobre Sharpe negativo).
 
 SAÍDA FINAL:
 - Sempre entregue apenas o texto pronto para o usuário.
@@ -99,20 +109,24 @@ sem extrapolar além dos dados fornecidos.""",
 SEM citar tickers e SEM apresentar valores numéricos individuais.
 
 Siga esta ordem:
-1) Explique o conceito da métrica ou do conjunto de métricas citadas na pergunta
-   (por exemplo, Sharpe, Beta, Sortino, volatilidade, MDD, R²).
-2) Explique o que significa um valor positivo, negativo, alto ou baixo dessa métrica,
-   sempre em termos gerais (sem números específicos e sem nomear fundos).
-3) Traga uma interpretação prática para o investidor, indicando como a métrica é usada
-   na avaliação de risco e retorno, sem dizer se um fundo é “bom” ou “ruim”.
-4) Se fizer sentido, conecte com outras métricas de risco usadas em conjunto, também
-   apenas em nível conceitual.
+1) Se [FOCUS_METRIC_KEY] estiver preenchido, trate essa como métrica principal
+   e explique o conceito dela (por exemplo, Sharpe, Beta, Sortino, volatilidade,
+   MDD, R²), em termos gerais.
+2) Caso não haja [FOCUS_METRIC_KEY], explique o conceito da métrica ou do
+   conjunto de métricas citadas na pergunta.
+3) Explique o que significa um valor positivo, negativo, alto ou baixo dessa
+   métrica, sempre em termos gerais (sem números específicos e sem nomear fundos).
+4) Traga uma interpretação prática para o investidor, indicando como a métrica
+   é usada na avaliação de risco e retorno, sem dizer se um fundo é “bom” ou “ruim”.
+5) Se fizer sentido, conecte com outras métricas de risco usadas em conjunto,
+   mas apenas de forma complementar, sem tirar o foco da métrica principal.
 
 Regras:
 - Não use tickers nos exemplos.
 - Não traga valores numéricos dos FACTS.
 - Não copie trechos literais do `RAG_CONTEXT`; apenas se inspire conceitualmente.
-- Não dê recomendação de investimento.""",
+- Não dê recomendação de investimento.
+""",
 }
 
 FEW_SHOTS: Dict[str, str] = {
@@ -385,6 +399,15 @@ def build_prompt(
     intent = (meta or {}).get("intent", "")
     entity = (meta or {}).get("entity", "")
     template_key = _pick_template(meta, facts)
+
+    # Métrica foco (quando houver), vinda de meta.focus.metric_key
+    focus_metric_key = ""
+    focus_block = (meta or {}).get("focus")
+    if isinstance(focus_block, dict):
+        mk = focus_block.get("metric_key")
+        if isinstance(mk, str):
+            focus_metric_key = mk.strip()
+
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
     fewshot = FEW_SHOTS.get(template_key, "")
 
@@ -417,6 +440,7 @@ def build_prompt(
 [APRESENTACAO]: {template_key}
 [INTENT]: {intent}
 [ENTITY]: {entity}
+[FOCUS_METRIC_KEY]: {focus_metric_key}
 
 [PERGUNTA]: {question}
 
