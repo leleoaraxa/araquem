@@ -499,9 +499,7 @@ class Narrator:
         # 1) renderizador especializado
         deterministic_text = render_narrative(render_meta, effective_facts, self.policy)
 
-        if concept_mode and rag_best_text:
-            deterministic_text = rag_best_text
-        elif (
+        if (
             concept_with_data_when_rag
             and rag_best_text
             and (effective_facts.get("rows") or [])
@@ -692,8 +690,14 @@ class Narrator:
         )
 
         if error:
+            # Fail-safe alinhado ao data/policies/llm_prompts.md:
+            # não tentar "salvar" a resposta com baseline potencialmente contaminado.
+            failsafe_text = (
+                "Não sei responder com segurança agora. "
+                "Exemplos de perguntas válidas: 'cnpj do MCCI11', 'preço do MXRF11 hoje'."
+            )
             return _finalize_response(
-                baseline_text,
+                failsafe_text,
                 tokens_in=tokens_in,
                 tokens_out=tokens_out,
                 latency_ms=elapsed_ms,
