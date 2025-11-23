@@ -1,7 +1,4 @@
 # app/narrator/narrator.py
-# -*- coding: utf-8 -*-
-"""SIRIOS Narrator — camada de expressão determinística + LLM opcional (policy-driven)."""
-
 from __future__ import annotations
 
 import logging

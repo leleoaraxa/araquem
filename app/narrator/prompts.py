@@ -1,7 +1,4 @@
 # app/narrator/prompts.py
-# -*- coding: utf-8 -*-
-"""Prompt scaffolds and deterministic renderers for the SIRIOS Narrator."""
-
 from __future__ import annotations
 
 import json
