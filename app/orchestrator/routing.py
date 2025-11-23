@@ -525,6 +525,10 @@ class Orchestrator:
             "explain": exp if explain else None,
             "explain_analytics": explain_analytics_payload if explain else None,
             "result_key": result_key,
+            # CANÔNICOS (para debug / narrator / rag_debug)
+            "intent": intent,
+            "entity": entity,
+            # HISTÓRICO / CAMPO LEGADO
             "planner_intent": intent,
             "planner_entity": entity,
             "planner_score": score,

@@ -295,6 +295,10 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
         "meta": {
             "planner": plan,
             "result_key": result_key,
+            # CANÔNICOS
+            "intent": intent,
+            "entity": entity,
+            # LEGADO / HISTÓRICO
             "planner_intent": intent,
             "planner_entity": entity,
             "planner_score": score,
@@ -312,10 +316,10 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
                 ),
             },
             "aggregates": agg_params,
-            # agora vem do Presenter (que encapsula Narrator + Responder)
             "narrator": presenter_result.narrator_meta,
             "requested_metrics": meta.get("requested_metrics"),
         },
         "answer": presenter_result.answer,
     }
+
     return JSONResponse(json_sanitize(payload_out))
