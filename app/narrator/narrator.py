@@ -446,6 +446,7 @@ class Narrator:
         if concept_mode:
             render_meta["narrator_mode"] = "concept"
             # Evita que perguntas conceituais virem "Índice de Treynor do LPLP11 = 0,00%"
+            effective_facts["narrator_mode"] = "concept"
             effective_facts["rows"] = []
             if "rows_sample" in effective_facts:
                 effective_facts["rows_sample"] = []

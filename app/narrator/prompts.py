@@ -41,6 +41,14 @@ FOCO PRINCIPAL:
    - Faça comparação objetiva entre eles baseado nos números.
    - Nunca invente interpretações além do que os números permitem.
 
+MODO CONCEITUAL (narrator_mode="concept"):
+- Responda apenas com explicação conceitual.
+- Não mencione tickers específicos.
+- Não apresente valores numéricos individuais dos FACTS.
+- Use o RAG_CONTEXT apenas para ter ideias de formulações, SEM copiar trechos
+  literais, SEM replicar exemplos com tickers e SEM transformar snippets em
+  recomendações.
+
 ESTILO:
 - Use listas curtas.
 - Use formatação em **negrito** para valores ou métricas importantes.
@@ -87,6 +95,24 @@ em `facts.rows` na mesma ordem. Use frases curtas e objetivas, sem inventar camp
     "table": """Descreva os dados tabulares de forma textual sucinta, respeitando a estrutura de
 colunas informada em `facts.columns` quando presente. Explique o que cada coluna representa,
 sem extrapolar além dos dados fornecidos.""",
+    "concept": """Produza uma explicação **conceitual**, SEM mencionar nenhum fundo específico,
+SEM citar tickers e SEM apresentar valores numéricos individuais.
+
+Siga esta ordem:
+1) Explique o conceito da métrica ou do conjunto de métricas citadas na pergunta
+   (por exemplo, Sharpe, Beta, Sortino, volatilidade, MDD, R²).
+2) Explique o que significa um valor positivo, negativo, alto ou baixo dessa métrica,
+   sempre em termos gerais (sem números específicos e sem nomear fundos).
+3) Traga uma interpretação prática para o investidor, indicando como a métrica é usada
+   na avaliação de risco e retorno, sem dizer se um fundo é “bom” ou “ruim”.
+4) Se fizer sentido, conecte com outras métricas de risco usadas em conjunto, também
+   apenas em nível conceitual.
+
+Regras:
+- Não use tickers nos exemplos.
+- Não traga valores numéricos dos FACTS.
+- Não copie trechos literais do `RAG_CONTEXT`; apenas se inspire conceitualmente.
+- Não dê recomendação de investimento.""",
 }
 
 FEW_SHOTS: Dict[str, str] = {
@@ -122,6 +148,29 @@ No caso do **HGLG11**, os dados mais recentes indicam volatilidade em torno de 1
 Sharpe negativo, Treynor negativo, beta próximo de 0,40, Sortino negativo e um
 máximo drawdown de aproximadamente 11%. O R² baixo mostra que o fundo não acompanha
 de forma muito próxima o índice de referência.
+""",
+    "concept": """[EXEMPLO]
+Pergunta: Sharpe negativo em um FII quer dizer que ele é ruim?
+
+FACTS:
+- Sem uso de rows ou valores numéricos (modo conceitual).
+
+RAG_CONTEXT:
+- Explica que Sharpe mede o retorno excedente em relação a um ativo livre de risco,
+  dividido pela volatilidade, e que valores negativos indicam desempenho abaixo do
+  ativo livre de risco no período.
+
+Resposta esperada:
+O índice de Sharpe mede quanto de retorno excedente um investimento entregou em relação
+a um ativo considerado livre de risco, levando em conta a volatilidade assumida.
+Quando o Sharpe fica negativo, isso significa que, no período analisado, o investidor
+assumiu risco, mas recebeu menos do que receberia em uma aplicação de referência
+com baixo risco.
+
+Isso não significa, por si só, que o fundo seja “ruim” em termos absolutos, mas
+indica que, naquele intervalo, o retorno não compensou o risco. Em geral, o Sharpe
+é avaliado em conjunto com outras métricas de risco e desempenho, e com janelas de
+tempo diferentes, para entender se o comportamento foi pontual ou persistente.
 """,
 }
 
@@ -298,6 +347,13 @@ def _prepare_rag_payload(rag: dict | None) -> dict | None:
 
 
 def _pick_template(meta: dict, facts: dict) -> str:
+    # Modo conceitual força o template "concept"
+    narrator_mode = (facts or {}).get("narrator_mode") or (meta or {}).get(
+        "narrator_mode"
+    )
+    if isinstance(narrator_mode, str) and narrator_mode.strip().lower() == "concept":
+        return "concept"
+
     presentation = (facts or {}).get("presentation_kind") or (meta or {}).get(
         "presentation_kind"
     )
