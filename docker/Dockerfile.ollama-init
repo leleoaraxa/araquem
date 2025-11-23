@@ -6,7 +6,7 @@ SHELL ["/bin/sh","-lc"]
 ENTRYPOINT ["sh","-lc","\
   echo '[init] aguardando ollama daemon...'; \
   until ollama ps >/dev/null 2>&1; do sleep 1; done; \
-  for m in nomic-embed-text 'mistral:instruct'; do \
+  for m in nomic-embed-text 'mistral:latest'; do \
     if ollama show \"$m\" >/dev/null 2>&1; then \
       echo \"[init] modelo já presente: $m\"; \
     else \

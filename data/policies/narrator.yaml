@@ -9,7 +9,7 @@ default:
   shadow: true
   max_llm_rows: 0
   use_rag_in_prompt: false
-  model: mistral:instruct
+  model: mistral:latest
 
 entities:
     fiis_financials_risk:

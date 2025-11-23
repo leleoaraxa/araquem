@@ -76,7 +76,7 @@ Nenhum outro arquivo deve ser modificado.
    narrator:
      llm_enabled: true/false
      shadow: false
-     model: mistral:instruct
+     model: mistral:latest
      style: executivo
      max_llm_rows: 0
      max_prompt_tokens: 4000

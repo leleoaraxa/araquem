@@ -116,11 +116,18 @@ sections:
       - impacto_potencial: "Possível efeito no fundo."
 
   rankings:
-    title: "Rankings e Popularidade"
+    title: "Rankings e Posição Relativa"
     concepts:
-      - aparicoes: "Contagem de aparições em rankings."
-      - movimentos: "Subidas e quedas nas listas."
-      - rankings_ifix_ifil: "Posicionamento em IFIX/IFIL."
+      - posicao: "Posição atual do FII em diferentes rankings (usuários, SIRIOS, IFIX, IFIL)."
+      - movimentos: "Subidas e quedas na posição do FII ao longo do tempo."
+      - rankings_ifix_ifil: "Posição do FII nos índices IFIX e IFIL, inclusive entrada e saída em rebalanceamentos."
+    typical_questions:
+      - "qual a posição do HGLG11 no ranking de usuários?"
+      - "qual a posição do HGLG11 no ranking da SIRIOS?"
+      - "qual a posição do KNRI11 no IFIX?"
+      - "o FPAB11 já fez parte do IFIX? em quantos rebalanceamentos?"
+      - "fiis com maior liquidez no IFIX"
+      - "fundos com maior dividend yield no IFIX"
 
   macro:
     title: "Contexto de Mercado e Macroeconomia"

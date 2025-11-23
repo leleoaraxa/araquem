@@ -33,7 +33,7 @@ from app.presenter.presenter import present
 # ─────────────────────────────────────────────────────────────────────────────
 _NARRATOR_ENABLED = str(os.getenv("NARRATOR_ENABLED", "false")).lower() == "true"
 _NARRATOR_SHADOW = str(os.getenv("NARRATOR_SHADOW", "false")).lower() == "true"
-_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "mistral:instruct")
+_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "mistral:latest")
 
 try:
     from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
@@ -177,7 +177,9 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
     if isinstance(orchestration_raw, dict) and "results" in orchestration_raw:
         orchestration = orchestration_raw
     else:
-        legacy_results = orchestration_raw if isinstance(orchestration_raw, dict) else {}
+        legacy_results = (
+            orchestration_raw if isinstance(orchestration_raw, dict) else {}
+        )
         orchestration = {
             "status": {"reason": "ok", "message": "ok"},
             "results": legacy_results,

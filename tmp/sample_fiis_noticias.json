@@ -1220,7 +1220,7 @@
         "narrator": {
             "enabled": true,
             "shadow": true,
-            "model": "mistral:instruct",
+            "model": "mistral:latest",
             "latency_ms": 0.0,
             "error": null,
             "used": true,

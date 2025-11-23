@@ -239,7 +239,7 @@ def _load_narrator_policy() -> Dict[str, Any]:
     narrator:
       llm_enabled: false
       shadow: false
-      model: mistral:instruct
+      model: mistral:latest
       style: executivo
       max_llm_rows: 0
       max_prompt_tokens: 4000
@@ -248,7 +248,9 @@ def _load_narrator_policy() -> Dict[str, Any]:
     try:
         data = load_yaml_cached(str(_NARRATOR_POLICY_PATH)) or {}
         if isinstance(data, dict):
-            policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else None
+            policy = (
+                data.get("narrator") if isinstance(data.get("narrator"), dict) else None
+            )
             return policy if policy is not None else data
         return {}
     except Exception:
@@ -261,14 +263,18 @@ def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[st
     policy_dict = policy or {}
     default_policy = {}
     if isinstance(policy_dict, dict):
-        default_policy = policy_dict.get("default") if isinstance(policy_dict.get("default"), dict) else {}
+        default_policy = (
+            policy_dict.get("default")
+            if isinstance(policy_dict.get("default"), dict)
+            else {}
+        )
 
     effective_policy = {
         "llm_enabled": False,
         "shadow": False,
         "max_llm_rows": 0,
         "use_rag_in_prompt": False,
-        "model": "mistral:instruct",
+        "model": "mistral:latest",
     }
 
     base_overrides = {
@@ -312,7 +318,7 @@ class Narrator:
             or default_policy.get("model")
             or self.policy.get("model")
             or os.getenv("NARRATOR_MODEL")
-            or "mistral:instruct"
+            or "mistral:latest"
         )
         self.style = style or self.policy.get("style") or "executivo"
 
@@ -539,8 +545,8 @@ class Narrator:
             error: str | None = None,
             strategy_override: str | None = None,
         ) -> Dict[str, Any]:
-            computed_tokens_out = tokens_out if tokens_out is not None else len(
-                (text or "").split()
+            computed_tokens_out = (
+                tokens_out if tokens_out is not None else len((text or "").split())
             )
             elapsed_ms = (
                 latency_ms
@@ -615,7 +621,9 @@ class Narrator:
         prompt_facts = _json_sanitise(prompt_facts)
         prompt_meta = _json_sanitise(prompt_meta)
         rag_ctx_sanitised = (
-            _json_sanitise(rag_ctx_for_prompt) if rag_ctx_for_prompt is not None else None
+            _json_sanitise(rag_ctx_for_prompt)
+            if rag_ctx_for_prompt is not None
+            else None
         )
 
         t0 = time.perf_counter()
