@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-23T00:36:39Z",
+  "generated_at": "2025-11-23T14:52:28Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -326,8 +326,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 30,
-      "sha_all": "e4b9e67be48a237688bdebbc6fbdc57c81875e1b48458bd3928efb34d907c505"
+      "chunks": 29,
+      "sha_all": "557602a8544f8a9ed267250391b7f5f99af8e5a264024a351dfdd8fe3360e62b"
     },
     {
       "id": "q-projection-cadastro",
@@ -371,7 +371,7 @@
         "rankings"
       ],
       "chunks": 1,
-      "sha_all": "5e0010b907d92b5843a63e911450ed711cef14a52598f1deb8ea360674876a28"
+      "sha_all": "16ebee843931e263e3902227222348bf2495c8ec72805611512da7a0fc608774"
     },
     {
       "id": "q-projection-imoveis",
@@ -500,5 +500,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1763858338
+  "last_refresh_epoch": 1763909701
 }

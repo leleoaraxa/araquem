@@ -79,6 +79,18 @@ echo "================= META.RAG ==============="
 echo "$RAW_RESPONSE" | jq '.meta.rag // "sem meta.rag"'
 
 echo
+echo "================= META.INTENT/ENTITY ====="
+echo "$RAW_RESPONSE" | jq '{intent: .meta.intent, entity: .meta.entity}'
+
+echo
+echo "================= RAG – PROFILE & COLLECTIONS ====="
+echo "$RAW_RESPONSE" | jq '{
+  profile: .meta.rag.profile // "n/a",
+  used_collections: .meta.rag.used_collections // [],
+  k: .meta.rag.k // "n/a"
+}'
+
+echo
 echo "================= CHUNKS (resumo) ========"
 echo "$RAW_RESPONSE" | jq '(.meta.rag.chunks // []) | map({id: .id, score: .score, source: .source})'
 

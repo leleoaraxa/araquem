@@ -36,7 +36,7 @@ DROP MATERIALIZED VIEW IF EXISTS history_b3_indexes;
 DROP MATERIALIZED VIEW IF EXISTS history_currency_rates;
 DROP MATERIALIZED VIEW IF EXISTS rf_daily_series_mat;
 DROP MATERIALIZED VIEW IF EXISTS market_index_series;
-DROP MATERIALIZED VIEW IF EXISTS fiis_rankings_quant ;
+DROP MATERIALIZED VIEW IF EXISTS fiis_rankings_quant;
 -- =====================================================================
 -- DROP INDEX
 -- =====================================================================
@@ -1094,6 +1094,8 @@ SELECT
   ROW_NUMBER() OVER (ORDER BY max_drawdown ASC NULLS LAST)     AS rank_low_drawdown
 
 FROM base;
+
+CREATE UNIQUE INDEX idx_fiis_rankings_quant ON fiis_rankings_quant(ticker);
 
 -- =====================================================================
 -- VIEW: fiis_rankings
