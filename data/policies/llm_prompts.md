@@ -1,5 +1,17 @@
 # LLM Prompt Policies — Araquem v2.1.1
 
+## Narrator (Llama 3.1 local via Ollama)
+
+- Modelo alvo: `llama3.1:latest` (via Ollama, configurado em `data/policies/narrator.yaml`).
+- Prompt do Narrator é **minimalista**, em PT-BR, com foco em:
+  - respostas curtas (até 2–3 parágrafos),
+  - tom executivo e neutro,
+  - uso exclusivo de números presentes em FACTS,
+  - uso do RAG apenas para contexto conceitual.
+- Em caso de erro do LLM ou ausência total de evidência (sem rows e sem chunks de RAG),
+  o fail-safe canônico é: “Não sei responder com segurança agora. Exemplos de perguntas válidas: 'cnpj do MCCI11', 'preço do MXRF11 hoje'.”
+
+
 ## Planner-Explain (análise de intenção)
 **Objetivo:** justificar a escolha de intent/entity com evidências.
 **Regras:**

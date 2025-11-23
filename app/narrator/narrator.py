@@ -18,6 +18,10 @@ try:
 except Exception:  # pragma: no cover - dependência opcional
     OllamaClient = None  # type: ignore
 
+_FAILSAFE_TEXT = (
+    "Não sei responder com segurança agora. Exemplos de perguntas válidas: "
+    "'cnpj do MCCI11', 'preço do MXRF11 hoje'."
+)
 
 LOGGER = logging.getLogger(__name__)
 _ENTITY_ROOT = Path("data/entities")
@@ -720,6 +724,25 @@ class Narrator:
                 strategy_override="llm_failed",
             )
 
+        # ------------------------------------------------------------------
+        # Fail-safe de evidência: se não há linhas nem chunks de RAG,
+        # consideramos que não há contexto suficiente para o LLM trabalhar
+        # sem risco de deriva. Nesses casos, não chamamos o modelo e
+        # respondemos diretamente com o texto de segurança canônico.
+        # ------------------------------------------------------------------
+        has_rows = bool(effective_facts.get("rows") or effective_facts.get("primary"))
+        rag_chunks = []
+        if isinstance(rag_ctx, dict) and rag_ctx.get("enabled"):
+            rag_chunks = rag_ctx.get("chunks") or []
+        has_rag = bool(rag_chunks)
+
+        if not has_rows and not has_rag:
+            return _finalize_response(
+                _FAILSAFE_TEXT,
+                error="llm_skipped_no_evidence",
+                strategy_override="llm_skipped_no_evidence",
+            )
+
         prompt_facts = dict(effective_facts or {})
         prompt_facts.setdefault("rendered_text", baseline_text)
         if "fallback_message" not in prompt_facts:
@@ -817,12 +840,9 @@ class Narrator:
         if error:
             # Fail-safe alinhado ao data/policies/llm_prompts.md:
             # não tentar "salvar" a resposta com baseline potencialmente contaminado.
-            failsafe_text = (
-                "Não sei responder com segurança agora. "
-                "Exemplos de perguntas válidas: 'cnpj do MCCI11', 'preço do MXRF11 hoje'."
-            )
+
             return _finalize_response(
-                failsafe_text,
+                _FAILSAFE_TEXT,
                 tokens_in=tokens_in,
                 tokens_out=tokens_out,
                 latency_ms=elapsed_ms,
