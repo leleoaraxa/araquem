@@ -1,0 +1,32 @@
+[
+  {
+    "id": "risk_sharpe_negativo",
+    "question": "Sharpe negativo em um FII quer dizer que ele é ruim?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_sharpe_vs_treynor",
+    "question": "qual a diferença prática entre Sharpe e Treynor na análise de FIIs?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_inflacao_fiis_papel",
+    "question": "como IPCA, IGPM e outros índices de inflação afetam os recebíveis de FIIs de papel?",
+    "expected_intent": "history_market_indicators",
+    "expect_rag": true
+  },
+  {
+    "id": "portfolio_concentracao_imovel",
+    "question": "como avaliar se um FII está concentrado demais em um único imóvel ou região?",
+    "expected_intent": "fiis_imoveis",
+    "expect_rag": false
+  },
+  {
+    "id": "hibrido_risco_mxrf11",
+    "question": "me explique o risco do MXRF11 usando os indicadores quantitativos e o contexto de mercado",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  }
+]
