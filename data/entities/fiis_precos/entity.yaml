@@ -53,7 +53,8 @@ presentation:
 ask:
   intents:
     - fiis_precos
-
+  requires_identifiers:
+    - ticker
   keywords:
     - preco
     - cotacao

@@ -91,6 +91,8 @@ presentation:
 ask:
   intents:
     - fiis_cadastro
+  requires_identifiers:
+    - ticker
   keywords:
     - cadastro
     - cnpj

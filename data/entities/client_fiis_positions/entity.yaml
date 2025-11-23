@@ -70,7 +70,8 @@ presentation:
 ask:
   intents:
     - client_fiis_positions
-
+  requires_identifiers:
+    - document_number
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
     - minhas posicoes

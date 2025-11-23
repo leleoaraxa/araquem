@@ -35,10 +35,24 @@ presentation:
   empty_message: Nenhuma notícia encontrada.
 
 ask:
-  intents: [fiis_noticias]
-  keywords: [noticia, noticias, materia, reportagem, atualizacao, ultimas, novidades]
+  intents:
+    - fiis_noticias
+  requires_identifiers:
+    - ticker
+  keywords:
+    - noticia
+    - noticias
+    - materia
+    - reportagem
+    - atualizacao
+    - ultimas
+    - novidades
   synonyms:
-    ticker: [ativo, papel, fundo, fii]
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
   weights:
     identifiers: 2.0
     keywords: 1.0

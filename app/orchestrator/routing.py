@@ -259,6 +259,39 @@ class Orchestrator:
         )
         return {"key": key, "ttl": ttl, "entity": entity, "context": context}
 
+    def _should_skip_sql_for_question(
+        self,
+        entity: Optional[str],
+        entity_conf: Dict[str, Any],
+        identifiers: Dict[str, Any],
+        agg_params: Optional[Dict[str, Any]],
+    ) -> bool:
+        """
+        Decide se devemos pular o SELECT no banco para esta combinação
+        (intent/entity/pergunta), de forma 100% dirigida por YAML.
+
+        Regra: se o bloco ask.requires_identifiers estiver definido na
+        entity.yaml, e qualquer um desses identificadores estiver ausente
+        em `identifiers`, não executamos SQL (modo conceitual).
+        """
+        ask_conf = entity_conf.get("ask") if isinstance(entity_conf, dict) else None
+        if not isinstance(ask_conf, dict):
+            return False
+
+        required_ids = ask_conf.get("requires_identifiers")
+        if not isinstance(required_ids, (list, tuple, set)):
+            return False
+
+        for raw_key in required_ids:
+            key = str(raw_key or "").strip()
+            if not key:
+                continue
+            value = identifiers.get(key)
+            # Considera ausente se None ou coleção vazia
+            if value is None or (isinstance(value, (list, tuple, set)) and not value):
+                return True
+        return False
+
     def route_question(self, question: str, explain: bool = False) -> Dict[str, Any]:
         t0 = time.perf_counter()
         plan = self._planner.explain(question)
@@ -376,6 +409,14 @@ class Orchestrator:
         except Exception:
             agg_params = None  # fallback seguro: SELECT básico (sem agregação)
 
+        # Decisão compute-on-read vs conceitual puro (dirigido por YAML)
+        skip_sql = self._should_skip_sql_for_question(
+            entity=entity,
+            entity_conf=entity_conf,
+            identifiers=identifiers,
+            agg_params=agg_params,
+        )
+
         cache_ctx = self._prepare_metrics_cache_context(entity, identifiers, agg_params)
         metrics_cache_hit = False
         metrics_cache_key: Optional[str] = None
@@ -383,7 +424,7 @@ class Orchestrator:
         cached_rows_formatted = None
         cached_result_key = None
         cache_lookup_error = False
-        if cache_ctx:
+        if cache_ctx and not skip_sql:
             metrics_cache_key = cache_ctx.get("key")
             metrics_cache_ttl = cache_ctx.get("ttl")
             try:
@@ -451,8 +492,15 @@ class Orchestrator:
                 float(score) if isinstance(score, (int, float)) else 0.0,
             )
             if metrics_cache_hit:
+                # Leitura direta de cache de métricas
                 set_trace_attribute(span, "cache.hit", True)
+                set_trace_attribute(span, "sql.skipped", False)
+            elif skip_sql:
+                # Modo conceitual: não executa SQL nem usa cache de métricas
+                set_trace_attribute(span, "cache.hit", False)
+                set_trace_attribute(span, "sql.skipped", True)
             else:
+                # Caminho determinístico normal: gera SELECT + executa no Postgres
                 sql, params, result_key, return_columns = build_select_for_entity(
                     entity=entity,
                     identifiers=identifiers,
@@ -462,29 +510,36 @@ class Orchestrator:
                     params = {**params, "entity": entity}  # etiqueta para métricas SQL
                 rows_raw = self._exec.query(sql, params)
                 set_trace_attribute(span, "cache.hit", False)
+                set_trace_attribute(span, "sql.skipped", False)
 
         # elapsed consolidado para reutilização (meta e explain analytics)
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
         if not metrics_cache_hit:
-            rows_formatted = format_rows(rows_raw, return_columns)
-            if (
-                cache_ctx
-                and self._cache is not None
-                and metrics_cache_key
-                and isinstance(metrics_cache_ttl, int)
-                and metrics_cache_ttl > 0
-                and rows_formatted
-                and result_key
-            ):
-                try:
-                    self._cache.set_json(
-                        metrics_cache_key,
-                        {"result_key": result_key, "rows": rows_formatted},
-                        ttl_seconds=metrics_cache_ttl,
-                    )
-                except Exception:
-                    pass
+            if not skip_sql:
+                # Caminho normal: formatar linhas e potencialmente popular cache
+                rows_formatted = format_rows(rows_raw, return_columns)
+                if (
+                    cache_ctx
+                    and self._cache is not None
+                    and metrics_cache_key
+                    and isinstance(metrics_cache_ttl, int)
+                    and metrics_cache_ttl > 0
+                    and rows_formatted
+                    and result_key
+                ):
+                    try:
+                        self._cache.set_json(
+                            metrics_cache_key,
+                            {"result_key": result_key, "rows": rows_formatted},
+                            ttl_seconds=metrics_cache_ttl,
+                        )
+                    except Exception:
+                        pass
+            else:
+                # Modo conceitual: sem linhas formatadas (deixamos Narrator/RAG trabalhar)
+                rows_formatted = []
+
         else:
             rows_formatted = list(rows_formatted or [])
 
@@ -537,6 +592,12 @@ class Orchestrator:
             "gate": gate,
             "aggregates": (agg_params or {}),
             "requested_metrics": requested_metrics,
+            "compute": {
+                "mode": ("conceptual" if skip_sql else "sql"),
+                "metrics_cache_hit": bool(metrics_cache_hit),
+                "cache_key": metrics_cache_key,
+                "cache_ttl": metrics_cache_ttl,
+            },
         }
 
         # ------------------- M12: contexto de RAG -------------------

@@ -39,6 +39,8 @@ presentation:
 ask:
   intents:
   - fiis_dividendos
+  requires_identifiers:
+    - ticker
   keywords:
     - dividendo
     - dividendos

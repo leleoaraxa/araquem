@@ -56,47 +56,49 @@ presentation:
   empty_message: Nenhum imóvel encontrado.
 ask:
   intents:
-  - fiis_imoveis
+    - fiis_imoveis
+  requires_identifiers:
+    - ticker
   keywords:
-  - imovel
-  - imoveis
-  - propriedades
-  - propriedade
-  - ativos
-  - portfolio
-  - ocupacao
-  - unidades
-  - area
-  - metragem
-  - endereco
-  - localizacao
-  - galpao
-  - galpoes
-  - onde ficam
-  - status operacional
+    - imovel
+    - imoveis
+    - propriedades
+    - propriedade
+    - ativos
+    - portfolio
+    - ocupacao
+    - unidades
+    - area
+    - metragem
+    - endereco
+    - localizacao
+    - galpao
+    - galpoes
+    - onde ficam
+    - status operacional
   phrase_includes:
-  - vacancia dos imoveis
-  - vacancia do imovel
-  - onde ficam os imoveis
+    - vacancia dos imoveis
+    - vacancia do imovel
+    - onde ficam os imoveis
   synonyms:
     ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
+      - ativo
+      - papel
+      - fundo
+      - fii
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
 sample_questions:
-- quantos imóveis o HGLG11 possui na carteira
-- onde ficam os galpões do XPLG11
+  - quantos imóveis o HGLG11 possui na carteira
+  - onde ficam os galpões do XPLG11
 order_by_whitelist:
-- asset_name asc
-- total_area desc
-- vacancy_ratio asc
-- vacancy_ratio desc
-- updated_at desc
+  - asset_name asc
+  - total_area desc
+  - vacancy_ratio asc
+  - vacancy_ratio desc
+  - updated_at desc
 aggregations:
   enabled: true
   defaults:

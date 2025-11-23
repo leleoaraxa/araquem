@@ -58,36 +58,38 @@ presentation:
   empty_message: Nenhum processo encontrado.
 ask:
   intents:
-  - fiis_processos
+    - fiis_processos
+  requires_identifiers:
+    - ticker
   keywords:
-  - processo
-  - processos
-  - judicial
-  - judiciais
-  - andamento
-  - status
-  - litigio
-  - litgio
-  - causa
-  - risco de perda
-  - partes envolvidas
-  - valor da causa
-  - fatos principais
-  - impacto
-  - analise de impacto
+    - processo
+    - processos
+    - judicial
+    - judiciais
+    - andamento
+    - status
+    - litigio
+    - litgio
+    - causa
+    - risco de perda
+    - partes envolvidas
+    - valor da causa
+    - fatos principais
+    - impacto
+    - analise de impacto
   synonyms:
     ticker:
-    - ativo
-    - papel
-    - fundo
-    - fii
+      - ativo
+      - papel
+      - fundo
+      - fii
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
 order_by_whitelist:
-- updated_at desc
-- initiation_date desc
+  - updated_at desc
+  - initiation_date desc
 aggregations:
   enabled: true
   defaults:

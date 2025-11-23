@@ -96,6 +96,8 @@ presentation:
 ask:
   intents:
     - fiis_rankings
+  requires_identifiers:
+    - ticker
   keywords:
     - ranking
     - rank

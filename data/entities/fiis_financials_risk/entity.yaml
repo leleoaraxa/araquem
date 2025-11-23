@@ -56,7 +56,10 @@ presentation:
   empty_message: Sem indicadores de risco disponíveis.
 
 ask:
-  intents: [fiis_financials_risk]
+  intents:
+    - fiis_financials_risk
+  requires_identifiers:
+    - ticker
   keywords:
     - risco
     - volatilidade

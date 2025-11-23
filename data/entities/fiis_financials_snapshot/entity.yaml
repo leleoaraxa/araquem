@@ -106,6 +106,8 @@ presentation:
 ask:
   intents:
     - fiis_financials_snapshot
+  requires_identifiers:
+    - ticker
   keywords:
     - payout
     - alavancagem
