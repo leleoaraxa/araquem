@@ -159,7 +159,7 @@ Formato final desejado:
 "narrator": {
     "enabled": bool,
     "shadow": bool,
-    "model": "llama3.1:latest",
+    "model": "sirios-narrator:latest",
     "latency_ms": 12.5,
     "error": null,
     "used": false,
@@ -186,7 +186,7 @@ version: 1
 default:
   llm_enabled: false
   shadow: false
-  model: llama3.1:latest
+  model: sirios-narrator:latest
   max_llm_rows: 0
   use_rag_in_prompt: false
 

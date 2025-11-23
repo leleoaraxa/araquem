@@ -5,7 +5,7 @@ ENTRYPOINT ["sh","-lc","\
   echo '[init] aguardando ollama daemon...'; \
   until ollama ps >/dev/null 2>&1; do sleep 1; done; \
   # 1) pull dos modelos base (embeddings + base LLM)
-  for m in ${OLLAMA_MODELS:-'nomic-embed-text llama3.1:latest'}; do \
+  for m in ${OLLAMA_MODELS:-'nomic-embed-text'}; do \
     if ollama show \"$m\" >/dev/null 2>&1; then \
       echo \"[init] modelo já presente: $m\"; \
     else \

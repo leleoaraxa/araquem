@@ -2,7 +2,7 @@
 
 ## Narrator (Llama 3.1 local via Ollama)
 
-- Modelo alvo: `llama3.1:latest` (via Ollama, configurado em `data/policies/narrator.yaml`).
+- Modelo alvo: `sirios-narrator:latest` (via Ollama, configurado em `data/policies/narrator.yaml`).
 - Prompt do Narrator é **minimalista**, em PT-BR, com foco em:
   - respostas curtas (até 2–3 parágrafos),
   - tom executivo e neutro,

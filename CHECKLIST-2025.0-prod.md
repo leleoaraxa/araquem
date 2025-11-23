@@ -88,7 +88,7 @@
 
 ## **9. Testes de Carga e Estresse**
 
-* [ ] Testar throughput do /ask com llama3.1:latest
+* [ ] Testar throughput do /ask com sirios-narrator:latest
 * [ ] Testar embedding client (batch) sob carga
 * [ ] Testar latência com Prometheus histograms
 * [ ] Validar estabilidade em cenários extremos
