@@ -13,17 +13,26 @@ default:
 
 entities:
     fiis_financials_risk:
-      llm_enabled: false
-      shadow: false
+      llm_enabled: true
+      shadow: true
       max_llm_rows: 10
-      use_rag_in_prompt: false
+      use_rag_in_prompt: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: true
+      concept_with_data_when_rag: true
+
+    fiis_financials_revenue_schedule:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 10
+      use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
       rag_fallback_when_no_rows: true
       concept_with_data_when_rag: true
 
     fiis_noticias:
       llm_enabled: true
-      shadow: false
+      shadow: true
       max_llm_rows: 25
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
@@ -32,7 +41,7 @@ entities:
 
     history_market_indicators:
       llm_enabled: true
-      shadow: false
+      shadow: true
       max_llm_rows: 10
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
@@ -41,7 +50,7 @@ entities:
 
     history_b3_indexes:
       llm_enabled: true
-      shadow: false
+      shadow: true
       max_llm_rows: 10
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true
@@ -50,7 +59,7 @@ entities:
 
     history_currency_rates:
       llm_enabled: true
-      shadow: false
+      shadow: true
       max_llm_rows: 10
       use_rag_in_prompt: true
       prefer_concept_when_no_ticker: true

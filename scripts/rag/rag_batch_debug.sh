@@ -19,7 +19,8 @@ TOTAL=$(jq 'length' "$FILE")
 echo ">> Total de perguntas: $TOTAL"
 echo
 
-for row in $(jq -c '.[]' "$FILE"); do
+# LOOP CORRIGIDO — NÃO USA $(...)
+jq -c '.[]' "$FILE" | while IFS= read -r row; do
   ID=$(echo "$row" | jq -r '.id')
   Q=$(echo "$row"  | jq -r '.question')
   EXPECT_INTENT=$(echo "$row" | jq -r '.expected_intent')
@@ -31,7 +32,6 @@ for row in $(jq -c '.[]' "$FILE"); do
   echo "Esperado -> intent: $EXPECT_INTENT | RAG: $EXPECT_RAG"
   echo "--------------------------------------------------"
 
-  # Reutiliza o script já existente
   scripts/rag/rag_debug.sh "$Q" $RAG_FLAG
 
   echo

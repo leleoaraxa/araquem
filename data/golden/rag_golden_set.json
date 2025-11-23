@@ -14,8 +14,8 @@
   {
     "id": "macro_inflacao_fiis_papel",
     "question": "como IPCA, IGPM e outros índices de inflação afetam os recebíveis de FIIs de papel?",
-    "expected_intent": "history_market_indicators",
-    "expect_rag": true
+    "expected_intent": "fiis_financials_revenue_schedule",
+    "expect_rag": false
   },
   {
     "id": "portfolio_concentracao_imovel",

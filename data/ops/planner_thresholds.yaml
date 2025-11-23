@@ -24,7 +24,7 @@ planner:
       fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
       fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
       fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
-      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.05 }
+      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.00 }
       fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
       client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
 
@@ -39,7 +39,7 @@ planner:
       fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
       fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
       fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
-      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.05 }
+      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.00 }
       fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
       client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
 

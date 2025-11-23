@@ -85,9 +85,9 @@ echo "$RAW_RESPONSE" | jq '{intent: .meta.intent, entity: .meta.entity}'
 echo
 echo "================= RAG – PROFILE & COLLECTIONS ====="
 echo "$RAW_RESPONSE" | jq '{
-  profile: .meta.rag.profile // "n/a",
-  used_collections: .meta.rag.used_collections // [],
-  k: .meta.rag.k // "n/a"
+  profile: (.meta.rag.profile // "n/a"),
+  used_collections: (.meta.rag.used_collections // []),
+  k: (.meta.rag.k // "n/a")
 }'
 
 echo
