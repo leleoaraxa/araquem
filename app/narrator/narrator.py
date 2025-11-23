@@ -306,7 +306,7 @@ def _load_narrator_policy() -> Dict[str, Any]:
     narrator:
       llm_enabled: false
       shadow: false
-      model: mistral:latest
+      model: llama3.1:latest
       style: executivo
       max_llm_rows: 0
       max_prompt_tokens: 4000
@@ -341,7 +341,7 @@ def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[st
         "shadow": False,
         "max_llm_rows": 0,
         "use_rag_in_prompt": False,
-        "model": "mistral:latest",
+        "model": "llama3.1:latest",
     }
 
     base_overrides = {
@@ -385,7 +385,7 @@ class Narrator:
             or default_policy.get("model")
             or self.policy.get("model")
             or os.getenv("NARRATOR_MODEL")
-            or "mistral:latest"
+            or "llama3.1:latest"
         )
         self.style = style or self.policy.get("style") or "executivo"
 

@@ -1253,7 +1253,7 @@
         "narrator": {
             "enabled": true,
             "shadow": true,
-            "model": "mistral:latest",
+            "model": "llama3.1:latest",
             "latency_ms": 0.0,
             "error": null,
             "used": true,

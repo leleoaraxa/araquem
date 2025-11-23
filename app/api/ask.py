@@ -33,7 +33,7 @@ from app.presenter.presenter import present
 # ─────────────────────────────────────────────────────────────────────────────
 _NARRATOR_ENABLED = str(os.getenv("NARRATOR_ENABLED", "false")).lower() == "true"
 _NARRATOR_SHADOW = str(os.getenv("NARRATOR_SHADOW", "false")).lower() == "true"
-_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "mistral:latest")
+_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "llama3.1:latest")
 
 try:
     from app.narrator.narrator import Narrator  # arquivo novo (drop-in)

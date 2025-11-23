@@ -35,7 +35,6 @@
   * [ ] style
   * [ ] use_rag_in_prompt
 * [ ] Definir fallback seguro para todos intents
-* [ ] Testar mistral:latest vs mistral:instruct vs quantizado
 * [ ] Garantir respostas curtas/precisas para todas entidades
 
 ---
@@ -89,7 +88,7 @@
 
 ## **9. Testes de Carga e Estresse**
 
-* [ ] Testar throughput do /ask com mistral:latest
+* [ ] Testar throughput do /ask com llama3.1:latest
 * [ ] Testar embedding client (batch) sob carga
 * [ ] Testar latência com Prometheus histograms
 * [ ] Validar estabilidade em cenários extremos

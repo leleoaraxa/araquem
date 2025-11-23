@@ -9,7 +9,7 @@ default:
   shadow: false
   max_llm_rows: 0
   use_rag_in_prompt: false
-  model: mistral:latest
+  model: llama3.1:latest
 
 entities:
     fiis_financials_risk:
