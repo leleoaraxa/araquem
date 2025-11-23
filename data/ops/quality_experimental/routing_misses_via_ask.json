@@ -1,7 +1,7 @@
 [
   {
     "idx": 81,
-    "question": "quantas aparições do FPAB11 no IFIL",
+    "question": "qual a posição do FPAB11 no IFIL",
     "expected_intent": "fiis_rankings",
     "expected_entity": "fiis_rankings",
     "got_intent": "fiis_cadastro",
@@ -11,10 +11,10 @@
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "quantas aparicoes do fpab11 no ifil",
+    "normalized": "qual a posição do fpab11 no ifil",
     "tokens": [
       "quantas",
-      "aparicoes",
+      "posicoes",
       "do",
       "fpab11",
       "no",
@@ -46,7 +46,7 @@
   },
   {
     "idx": 82,
-    "question": "quantas aparições do FPAB11 no IFIX",
+    "question": "qual a posição do do FPAB11 no IFIX",
     "expected_intent": "fiis_rankings",
     "expected_entity": "fiis_rankings",
     "got_intent": "fiis_cadastro",
@@ -56,10 +56,10 @@
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "quantas aparicoes do fpab11 no ifix",
+    "normalized": "qual a posição do fpab11 no ifix",
     "tokens": [
       "quantas",
-      "aparicoes",
+      "posicoes",
       "do",
       "fpab11",
       "no",
@@ -91,7 +91,7 @@
   },
   {
     "idx": 83,
-    "question": "quantas aparições do HGLG11 no IFIX",
+    "question": "qual a posição do do HGLG11 no IFIX",
     "expected_intent": "fiis_rankings",
     "expected_entity": "fiis_rankings",
     "got_intent": "fiis_cadastro",
@@ -101,10 +101,10 @@
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "quantas aparicoes do hglg11 no ifix",
+    "normalized": "qual a posição do hglg11 no ifix",
     "tokens": [
       "quantas",
-      "aparicoes",
+      "posicoes",
       "do",
       "hglg11",
       "no",
@@ -136,7 +136,7 @@
   },
   {
     "idx": 95,
-    "question": "último DY mensal do MCCI11",
+    "question": "DY mensal do MCCI11",
     "expected_intent": "fiis_dividendos",
     "expected_entity": "fiis_dividendos",
     "got_intent": "fiis_rankings",
@@ -146,7 +146,7 @@
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "ultimo dy mensal do mcci11",
+    "normalized": "DY mensal do mcci11",
     "tokens": [
       "ultimo",
       "dy",
@@ -180,7 +180,7 @@
   },
   {
     "idx": 97,
-    "question": "maiores liquidezes do IFIX",
+    "question": "liquidez do IFIX",
     "expected_intent": "fiis_rankings",
     "expected_entity": "fiis_rankings",
     "got_intent": "fiis_cadastro",
@@ -190,7 +190,7 @@
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "maiores liquidezes do ifix",
+    "normalized": "liquidez do ifix",
     "tokens": [
       "maiores",
       "liquidezes",

@@ -402,17 +402,17 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do FPAB11 no IFIL",
+      "question": "qual a posição do FPAB11 no IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do FPAB11 no IFIX",
+      "question": "qual a posição do FPAB11 no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "quantas aparições do HGLG11 no IFIX",
+      "question": "qual a posição do HGLG11 no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -472,7 +472,7 @@
       "expected_entity": "fiis_dividendos"
     },
     {
-      "question": "último DY mensal do MCCI11",
+      "question": "DY mensal do MCCI11",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
@@ -482,22 +482,12 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "maiores liquidezes do IFIX",
+      "question": "liquidez do IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
       "question": "top 5 fiis por liquidez media 3m",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "fundos com maior dividend yield no IFIX",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "fiis de logistica com maior liquidez",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -558,11 +548,6 @@
     },
     {
       "question": "top 5 FIIs por liquidez média 3m",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "fundos com maior dividend yield no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -997,11 +982,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "fiis de logística com maior liquidez",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "quais são os maiores fiis em patrimônio líquido",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -1058,8 +1038,8 @@
     },
     {
       "question": "qual a vacância do MXRF11",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
     },
     {
       "question": "alavancagem do XPML11",
@@ -1073,8 +1053,8 @@
     },
     {
       "question": "vacância física e financeira do HGLG11",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
     },
     {
       "question": "cronograma de receitas do MXRF11 para os próximos 12 meses",

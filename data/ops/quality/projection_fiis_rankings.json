@@ -26,11 +26,11 @@
   ],
   "samples": [
     { "question": "ranking do HGLG11" },
-    { "question": "quantas aparições do HGLG11 no IFIX" },
+    { "question": "qual a posição do HGLG11 no IFIX" },
     { "question": "movimentos de ranking do HGLG11 no IFIX" },
     { "question": "quantas vezes o HGLG11 apareceu no ranking do IFIL" },
     { "question": "movimentos do HGLG11 no ranking do IFIL" },
-    { "question": "quantas aparições do HGLG11 no ranking da SIRIOS" },
+    { "question": "qual a posição do HGLG11 no ranking da SIRIOS" },
     { "question": "movimentos do HGLG11 no ranking da SIRIOS" },
     { "question": "ranking de usuarios do HGLG11" },
     { "question": "movimentos no ranking de usuarios do HGLG11" }

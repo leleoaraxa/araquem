@@ -29,7 +29,7 @@ Blocos de domínio identificados:
 | fiis_imoveis | fiis_imoveis | Imóveis e ativos operacionais do portfólio do FII. | nome do ativo, classe do ativo, endereço/localização, área total, número de unidades, vacância, inadimplência, status | “quais imóveis compõem o portfólio do VISC11?”, “qual a vacância dos ativos do KNRI11?” | não identificado |
 | fiis_processos | fiis_processos | Processos judiciais associados ao FII, com risco e andamento. | número do processo, fase de julgamento, instância, data de início, valor da causa, partes, risco de perda, análise de impacto | “o MXRF11 tem processos judiciais em andamento?”, “qual o risco de perda do processo X?” | não identificado |
 | fiis_noticias | fiis_noticias | Notícias D-1 ligadas a FIIs, com fonte e links. | fonte, título, tags, descrição, URL e imagem, data de publicação | “quais as últimas notícias do HGLG11?”, “tem matéria recente sobre o IFIX?” | não identificado |
-| fiis_rankings | fiis_rankings | Aparições e movimentos em rankings (usuários, SIRIOS, IFIX, IFIL). | contagem de aparições e movimentos líquidos para usuários, SIRIOS, IFIX, IFIL | “em que posição o VISC11 aparece nos rankings da SIRIOS?”, “quais FIIs mais subiram no IFIX?” | não identificado |
+| fiis_rankings | fiis_rankings | posições e movimentos em rankings (usuários, SIRIOS, IFIX, IFIL). | contagem de posições e movimentos líquidos para usuários, SIRIOS, IFIX, IFIL | “em que posição o VISC11 aparece nos rankings da SIRIOS?”, “quais FIIs mais subiram no IFIX?” | não identificado |
 | history_b3_indexes | history_b3_indexes | Pontos e variação diária de índices B3 (IBOV, IFIX, IFIL) D-1. | data, pontos e variação de IBOV, IFIX e IFIL | “quanto fechou o IFIX ontem?”, “qual a variação do IBOV no dia?” | não identificado |
 | history_currency_rates | history_currency_rates | Cotações D-1 de USD/EUR em BRL, compra/venda e variação. | data, dólar compra/venda e variação, euro compra/venda e variação | “qual a cotação do dólar ontem?”, “como fechou o euro (venda)?” | não identificado |
 | history_market_indicators | history_market_indicators | Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) D-1. | data, nome do indicador, valor observado | “qual foi o CDI de ontem?”, “quanto está a SELIC meta?” | não identificado |
@@ -117,7 +117,7 @@ Blocos de domínio identificados:
 
 ### 3.11 fiis_rankings
 - **Intent associada:** fiis_rankings.
-- **Tipo de dado:** contagem de aparições e movimentos em rankings diversos.
+- **Tipo de dado:** contagem de posições e movimentos em rankings diversos.
 - **Objetivo de negócio:** indicar popularidade e momentum em rankings de usuários, SIRIOS e índices IFIX/IFIL.
 - **Principais campos:** contagem e movimentos líquidos em rankings de usuários, SIRIOS, IFIX e IFIL.
 - **Relações:** ticker liga a indicadores de desempenho/risco; pode alimentar telas de “top FIIs”.
@@ -170,7 +170,7 @@ Blocos de domínio identificados:
 - **Capítulo 7 – Recebíveis e Indexadores (fiis_financials_revenue_schedule):** prazos de receitas e exposição a indexadores.
 - **Capítulo 8 – Imóveis e Portfólio Físico (fiis_imoveis):** ativos, localização, vacância, inadimplência e status.
 - **Capítulo 9 – Notícias e Eventos (fiis_noticias, fiis_processos):** notícias recentes e processos judiciais com riscos e impactos.
-- **Capítulo 10 – Rankings e Popularidade (fiis_rankings):** aparições e movimentos em rankings de usuários, SIRIOS, IFIX e IFIL.
+- **Capítulo 10 – Rankings e Popularidade (fiis_rankings):** posições e movimentos em rankings de usuários, SIRIOS, IFIX e IFIL.
 - **Capítulo 11 – Contexto de Mercado e Macroeconomia (history_b3_indexes, history_market_indicators, history_currency_rates):** índices de mercado, taxas macro e câmbio como benchmarks.
 - **Capítulo 12 – Minha Carteira de FIIs (client_fiis_positions):** visão do investidor sobre posições, quantidades e valores (com controles de privacidade).
 

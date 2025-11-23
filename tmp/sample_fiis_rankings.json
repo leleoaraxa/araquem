@@ -723,7 +723,7 @@
                     "top_doc": "golden-m65-quality-yaml",
                     "snippets": [
                         "{ question: \"rendimento do HGLG11\", expected_intent: dividendos, expected_entity: fiis_dividendos }\n - { question: \"ranking do HGLG11\", expected_intent: rankings, expected_entity: fiis_rankings }\n - { question: \"posicao do HGLG11 no IFIX\",…",
-                        "stion\": \"quantas aparições do FPAB11 no IFIL\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"quantas aparições do FPAB11 no IFIX\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\":…",
+                        "stion\": \"qual a posição do FPAB11 no IFIL\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"qual a posição do FPAB11 no IFIX\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\":…",
                         "usuarios movimento\n - variacao usuarios\n - movimentos usuarios\n sirios_rank_position:\n - sirios ranking\n - ranking da sirios\n - vezes sirios\n sirios_rank_net_movement:\n - sirios movimento\n - variacao sirios\n - movimentos sirios…"
                     ],
                     "reason": "Contexto cita tokens do intent vencedor: ranking, posicao, movimentos para entity fiis_rankings."
@@ -1262,7 +1262,7 @@
                 "top_doc": "golden-m65-quality-yaml",
                 "snippets": [
                     "{ question: \"rendimento do HGLG11\", expected_intent: dividendos, expected_entity: fiis_dividendos }\n - { question: \"ranking do HGLG11\", expected_intent: rankings, expected_entity: fiis_rankings }\n - { question: \"posicao do HGLG11 no IFIX\",…",
-                    "stion\": \"quantas aparições do FPAB11 no IFIL\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"quantas aparições do FPAB11 no IFIX\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\":…",
+                    "stion\": \"qual a posição do FPAB11 no IFIL\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"qual a posição do FPAB11 no IFIX\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\":…",
                     "usuarios movimento\n - variacao usuarios\n - movimentos usuarios\n sirios_rank_position:\n - sirios ranking\n - ranking da sirios\n - vezes sirios\n sirios_rank_net_movement:\n - sirios movimento\n - variacao sirios\n - movimentos sirios…"
                 ],
                 "reason": "Contexto cita tokens do intent vencedor: ranking, posicao, movimentos para entity fiis_rankings."

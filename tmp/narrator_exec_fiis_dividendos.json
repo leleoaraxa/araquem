@@ -608,7 +608,7 @@
           "top_doc": "entity-fiis-financials-revenue-schedule:entity-fiis-financials-revenue-hints",
           "snippets": [
             "s_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do FPAB11\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do HGLG11\",\n \"expected_intent\":…",
-            "xpected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"maiores liquidezes do IFIX (rankings)\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"qual é o CNPJ do HCTR11 (cadastro)\",…",
+            "xpected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"liquidez do IFIX (rankings)\",\n \"expected_intent\": \"fiis_rankings\",\n \"expected_entity\": \"fiis_rankings\"\n },\n {\n \"question\": \"qual é o CNPJ do HCTR11 (cadastro)\",…",
             "is_cadastro\",\n \"expected_entity\": \"fiis_cadastro\"\n },\n {\n \"question\": \"tipo de gestão do MCCI11\",\n \"expected_intent\": \"fiis_cadastro\",\n \"expected_entity\": \"fiis_cadastro\"\n },\n {\n \"question\": \"url oficial do MCCI11\",\n \"expected_intent\":…"
           ],
           "reason": "Contexto cita tokens do intent vencedor: dividendo, dividendos, rendimento para entity fiis_dividendos."
