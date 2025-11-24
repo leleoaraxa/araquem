@@ -1,4 +1,4 @@
-# responder/__init__.py
+# app/responder/__init__.py
 from __future__ import annotations
 
 from functools import lru_cache
