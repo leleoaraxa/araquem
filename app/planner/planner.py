@@ -56,6 +56,32 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
         return _THRESH_DEFAULTS
 
 
+def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, Any]:
+    """
+    Carrega a política de contexto (se existir) para expor no explain do Planner.
+
+    Importante:
+      - NÃO altera roteamento, score ou thresholds.
+      - Serve apenas para telemetria/observabilidade:
+        informa se a entidade escolhida estaria apta a usar contexto,
+        segundo data/policies/context.yaml.
+    """
+    try:
+        data = load_yaml_cached(path) or {}
+        ctx = data.get("context") or {}
+        planner_ctx = ctx.get("planner") or {}
+        return {
+            "context": ctx,
+            "planner": planner_ctx,
+        }
+    except Exception:
+        # Defensivo: em caso de erro, consideramos contexto desabilitado.
+        return {
+            "context": {},
+            "planner": {},
+        }
+
+
 def _strip_accents(s: str) -> str:
     return "".join(
         c for c in unicodedata.normalize("NFD", s) if unicodedata.category(c) != "Mn"
@@ -702,6 +728,45 @@ class Planner:
         except Exception:
             pass
 
+        # ------------------------------------------------------------------
+        # Contexto conversacional — snapshot declarativo (NÃO altera rota)
+        # ------------------------------------------------------------------
+        # Fonte única: data/policies/context.yaml
+        # Regras:
+        #   - se context.enabled = false      -> entity_allowed_for_context = False
+        #   - se planner.enabled = false     -> entity_allowed_for_context = False
+        #   - se entidade estiver em denied  -> False
+        #   - se allowed_entities vazio      -> True (whitelist vazia)
+        #   - caso contrário                 -> True somente se entidade ∈ allowed
+        ctx_policy_raw = _load_context_policy()
+        ctx_cfg = ctx_policy_raw.get("context") or {}
+        planner_ctx_cfg = ctx_policy_raw.get("planner") or {}
+
+        ctx_enabled = bool(ctx_cfg.get("enabled", False))
+        planner_ctx_enabled = bool(planner_ctx_cfg.get("enabled", True))
+
+        allowed_entities = planner_ctx_cfg.get("allowed_entities") or []
+        denied_entities = planner_ctx_cfg.get("denied_entities") or []
+
+        entity_allowed_for_context = False
+        if chosen_entity and ctx_enabled and planner_ctx_enabled:
+            if chosen_entity in denied_entities:
+                entity_allowed_for_context = False
+            elif not allowed_entities:
+                entity_allowed_for_context = True
+            else:
+                entity_allowed_for_context = chosen_entity in allowed_entities
+
+        # Expõe o snapshot de contexto apenas em explain.* (telemetria)
+        meta_explain["context"] = {
+            "enabled": ctx_enabled,
+            "planner_enabled": planner_ctx_enabled,
+            "entity_allowed": entity_allowed_for_context,
+            "entity": chosen_entity,
+            "allowed_entities": allowed_entities,
+            "denied_entities": denied_entities,
+        }
+
         return {
             "normalized": norm,
             "tokens": tokens,
@@ -713,6 +778,8 @@ class Planner:
                 "score": chosen_score,
                 # status do gate (calculado pelos thresholds)
                 "accepted": accepted,
+                # snapshot de contexto (somente leitura, não afeta decisão)
+                "context_allowed": entity_allowed_for_context,
             },
             "explain": meta_explain,
         }

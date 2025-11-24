@@ -10,6 +10,7 @@ context:
   ttl_seconds: 3600
   max_chars: 4000
 
+  # Política para uso de contexto no Planner (herança de estado entre perguntas)
   planner:
     enabled: true
     max_turns: 2
@@ -20,17 +21,19 @@ context:
       - fiis_dividendos
       - fiis_financials_risk
       - fiis_financials_snapshot
+      - fiis_imoveis
       - fiis_rankings
       - fiis_processos
       - fiis_noticias
 
-    # entidades administrativas / sistema
+    # entidades administrativas / sistema (não herdam contexto)
     denied_entities:
       - client_fiis_positions
       - history_b3_indexes
       - history_currency_rates
       - history_market_indicators
 
+  # Política para uso de contexto no Narrator (histórico em prompts)
   narrator:
     enabled: true
     inject_history: true
@@ -42,6 +45,7 @@ context:
       - fiis_dividendos
       - fiis_financials_risk
       - fiis_financials_snapshot
+      - fiis_imoveis
       - fiis_rankings
       - fiis_processos
       - fiis_noticias
@@ -51,3 +55,62 @@ context:
       - history_b3_indexes
       - history_currency_rates
       - history_market_indicators
+
+  # Política declarativa por ENTIDADE (para Presenter/Narrator usarem quando forem ler contexto)
+  entities:
+    # FII específico – preço / variação
+    fiis_precos:
+      use_referenced_ticker: true   # permite herdar ticker do turno anterior
+      use_last_entity: true         # permite herdar última entidade fiis_* relevante
+
+    # Histórico de proventos / DY
+    fiis_dividendos:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Risco quantitativo (Sharpe, Beta, MDD, etc.)
+    fiis_financials_risk:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Snapshot fundamentalista (market cap, PL, payout, etc.)
+    fiis_financials_snapshot:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Imóveis / vacância / portfólio físico
+    fiis_imoveis:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Rankings (posição do FII)
+    fiis_rankings:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Processos judiciais
+    fiis_processos:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Notícias
+    fiis_noticias:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Entidades onde contexto NÃO deve ser usado (explícito para futuros consumidores)
+    client_fiis_positions:
+      use_referenced_ticker: false
+      use_last_entity: false
+
+    history_b3_indexes:
+      use_referenced_ticker: false
+      use_last_entity: false
+
+    history_currency_rates:
+      use_referenced_ticker: false
+      use_last_entity: false
+
+    history_market_indicators:
+      use_referenced_ticker: false
+      use_last_entity: false
