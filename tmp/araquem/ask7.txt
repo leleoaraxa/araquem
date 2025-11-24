@@ -1,0 +1,1438 @@
+{
+    "status": {
+        "reason": "ok",
+        "message": "ok"
+    },
+    "results": {
+        "dividendos_fii": [
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-11-07T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-10-31T00:00:00",
+                "created_at": "2025-11-03 00:00:00",
+                "updated_at": "2025-11-03 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-10-14T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-09-30T00:00:00",
+                "created_at": "2025-10-02 00:00:00",
+                "updated_at": "2025-10-02 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-09-12T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-08-29T00:00:00",
+                "created_at": "2025-09-02 00:00:00",
+                "updated_at": "2025-09-02 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-08-14T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-07-31T00:00:00",
+                "created_at": "2025-08-01 00:00:00",
+                "updated_at": "2025-08-01 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-07-14T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-06-30T00:00:00",
+                "created_at": "2025-07-01 00:00:00",
+                "updated_at": "2025-07-01 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-06-13T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-05-30T00:00:00",
+                "created_at": "2025-06-02 00:00:00",
+                "updated_at": "2025-06-02 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-05-15T00:00:00",
+                "dividend_amt": "R$ 0,10",
+                "traded_until_date": "2025-04-30T00:00:00",
+                "created_at": "2025-05-02 00:00:00",
+                "updated_at": "2025-05-02 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-04-14T00:00:00",
+                "dividend_amt": "R$ 0,09",
+                "traded_until_date": "2025-03-31T00:00:00",
+                "created_at": "2025-04-02 00:00:00",
+                "updated_at": "2025-04-02 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-03-18T00:00:00",
+                "dividend_amt": "R$ 0,09",
+                "traded_until_date": "2025-02-28T00:00:00",
+                "created_at": "2025-03-06 00:00:00",
+                "updated_at": "2025-03-06 00:00:00"
+            },
+            {
+                "ticker": "MXRF11",
+                "payment_date": "2025-02-14T00:00:00",
+                "dividend_amt": "R$ 0,09",
+                "traded_until_date": "2025-01-31T00:00:00",
+                "created_at": "2025-02-03 00:00:00",
+                "updated_at": "2025-02-03 00:00:00"
+            }
+        ]
+    },
+    "meta": {
+        "planner": {
+            "normalized": "qual foi o ultimo dividendo do mxrf11 ",
+            "tokens": [
+                "qual",
+                "foi",
+                "o",
+                "ultimo",
+                "dividendo",
+                "do",
+                "mxrf11"
+            ],
+            "intent_scores": {
+                "client_fiis_positions": 0.0,
+                "fiis_cadastro": -4.4,
+                "fiis_precos": 0.0,
+                "fiis_dividendos": 4.4,
+                "fiis_financials_snapshot": 0.0,
+                "fiis_financials_revenue_schedule": 0.0,
+                "fiis_financials_risk": 0.0,
+                "fiis_imoveis": 0.0,
+                "fiis_noticias": 0.0,
+                "fiis_processos": 0.0,
+                "fiis_rankings": -3.3,
+                "history_b3_indexes": 0.0,
+                "history_currency_rates": 0.0,
+                "history_market_indicators": 0.0
+            },
+            "details": {
+                "client_fiis_positions": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "client_fiis_positions"
+                    ]
+                },
+                "fiis_cadastro": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "dividendo"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [
+                        "dividendo do"
+                    ],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_cadastro"
+                    ]
+                },
+                "fiis_precos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_precos"
+                    ]
+                },
+                "fiis_dividendos": {
+                    "token_includes": [
+                        "dividendo"
+                    ],
+                    "token_excludes": [],
+                    "phrase_includes": [
+                        "dividendo do"
+                    ],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_dividendos"
+                    ]
+                },
+                "fiis_financials_snapshot": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_snapshot"
+                    ]
+                },
+                "fiis_financials_revenue_schedule": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_revenue_schedule"
+                    ]
+                },
+                "fiis_financials_risk": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_risk"
+                    ]
+                },
+                "fiis_imoveis": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_imoveis"
+                    ]
+                },
+                "fiis_noticias": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_noticias"
+                    ]
+                },
+                "fiis_processos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_processos"
+                    ]
+                },
+                "fiis_rankings": {
+                    "token_includes": [
+                        "dividend"
+                    ],
+                    "token_excludes": [
+                        "dividendo"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [
+                        "dividendo do"
+                    ],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_rankings"
+                    ]
+                },
+                "history_b3_indexes": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_b3_indexes"
+                    ]
+                },
+                "history_currency_rates": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_currency_rates"
+                    ]
+                },
+                "history_market_indicators": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_market_indicators"
+                    ]
+                }
+            },
+            "chosen": {
+                "intent": "fiis_dividendos",
+                "entity": "fiis_dividendos",
+                "score": 3.74,
+                "accepted": true,
+                "context_allowed": false
+            },
+            "explain": {
+                "signals": {
+                    "token_scores": [
+                        {
+                            "token": "dividendo",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_cadastro"
+                        },
+                        {
+                            "token": "dividendo",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_dividendos"
+                        },
+                        {
+                            "token": "dividend",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_rankings"
+                        },
+                        {
+                            "token": "dividendo",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_rankings"
+                        }
+                    ],
+                    "phrase_scores": [
+                        {
+                            "phrase": "dividendo do",
+                            "weight": -3.3,
+                            "hits": 1,
+                            "intent": "fiis_cadastro"
+                        },
+                        {
+                            "phrase": "dividendo do",
+                            "weight": 3.3,
+                            "hits": 1,
+                            "intent": "fiis_dividendos"
+                        },
+                        {
+                            "phrase": "dividendo do",
+                            "weight": -3.3,
+                            "hits": 1,
+                            "intent": "fiis_rankings"
+                        }
+                    ],
+                    "anti_hits": [],
+                    "normalizations": [
+                        {
+                            "step": "lower",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_accents",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_punct",
+                            "applied": true
+                        }
+                    ],
+                    "weights_summary": {
+                        "token_sum": 0.0,
+                        "phrase_sum": -3.3,
+                        "anti_sum": 0.0,
+                        "total": -3.3
+                    }
+                },
+                "decision_path": [
+                    {
+                        "stage": "tokenize",
+                        "type": "normalization",
+                        "value": "qual foi o ultimo dividendo do mxrf11 ",
+                        "result": [
+                            "qual",
+                            "foi",
+                            "o",
+                            "ultimo",
+                            "dividendo",
+                            "do",
+                            "mxrf11"
+                        ]
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_integration",
+                        "rag_weight": 0.15
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_fusion",
+                        "weight": 0.15,
+                        "affected": 4
+                    },
+                    {
+                        "stage": "rank",
+                        "type": "intent_scoring",
+                        "intent": "fiis_dividendos",
+                        "score": 3.74
+                    },
+                    {
+                        "stage": "route",
+                        "type": "entity_select",
+                        "entity": "fiis_dividendos",
+                        "score_after": 3.74
+                    },
+                    {
+                        "stage": "rag",
+                        "type": "entity_hints",
+                        "k": 5,
+                        "min_score": 0.25,
+                        "weight": 0.35,
+                        "hints_keys": [
+                            "fiis_financials_risk"
+                        ]
+                    }
+                ],
+                "scoring": {
+                    "intent": [
+                        {
+                            "name": "fiis_dividendos",
+                            "score": 3.74,
+                            "winner": true
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "fiis_dividendos",
+                            "score": 3.74,
+                            "winner": true
+                        }
+                    ],
+                    "intent_top2_gap_base": 4.4,
+                    "intent_top2_gap_final": 3.6357629104061386,
+                    "final_combined": [
+                        {
+                            "intent": "fiis_dividendos",
+                            "score": 3.74
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "score": 0.10423708959386167
+                        },
+                        {
+                            "intent": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "score": -2.8049999999999997
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "score": -3.74
+                        }
+                    ],
+                    "rag_hint": [
+                        {
+                            "entity": "fiis_financials_risk",
+                            "score": 0.6949139306257445
+                        }
+                    ],
+                    "rag_signal": [
+                        {
+                            "intent": "client_fiis_positions",
+                            "entity": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "entity": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "entity": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "entity": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "entity": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "entity": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "entity": "fiis_financials_risk",
+                            "score": 0.6949139306257445
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "entity": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "entity": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "entity": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "entity": "fiis_rankings",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "entity": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "entity": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "entity": "history_market_indicators",
+                            "score": 0.0
+                        }
+                    ],
+                    "combined": {
+                        "intent": [
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 4.4,
+                                "rag": 0.0,
+                                "combined": 3.74,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.6949139306257445,
+                                "combined": 0.10423708959386167,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": -3.3,
+                                "rag": 0.0,
+                                "combined": -2.8049999999999997,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": -4.4,
+                                "rag": 0.0,
+                                "combined": -3.74,
+                                "winner": false
+                            }
+                        ],
+                        "entity": [
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 4.4,
+                                "rag": 0.0,
+                                "combined": 3.74,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.6949139306257445,
+                                "combined": 0.10423708959386167,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": -3.3,
+                                "rag": 0.0,
+                                "combined": -2.8049999999999997,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": -4.4,
+                                "rag": 0.0,
+                                "combined": -3.74,
+                                "winner": false
+                            }
+                        ],
+                        "weight": 0.15,
+                        "notes": "blend=base*(1-w)+rag*w"
+                    },
+                    "thresholds_applied": {
+                        "min_score": 1.0,
+                        "min_gap": 0.2,
+                        "gap": 3.6357629104061386,
+                        "accepted": true,
+                        "source": "final"
+                    }
+                },
+                "rag": {
+                    "enabled": true,
+                    "index_path": "data/embeddings/store/embeddings.jsonl",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "entity_hints": {
+                        "fiis_financials_risk": 0.6949139306257445
+                    },
+                    "error": null,
+                    "used": true,
+                    "re_rank": {
+                        "enabled": true,
+                        "mode": "blend",
+                        "weight": 0.15
+                    }
+                },
+                "rag_context": {
+                    "top_doc": "q-routing-samples",
+                    "snippets": [
+                        "s\"\n },\n {\n \"question\": \"média de dividendos do HGLG11 nos últimos 12 meses\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"histórico de proventos do XPML11\",\n \"expected_intent\":…",
+                        "\": \"fiis_precos\",\n \"expected_entity\": \"fiis_precos\"\n },\n {\n \"question\": \"dividendo anunciado pelo HCTR11 em 2024-08\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"quanto o MXRF11…",
+                        "s_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do FPAB11\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do HGLG11\",\n \"expected_intent\":…"
+                    ],
+                    "reason": "Contexto cita tokens do intent vencedor: dividendo, dividendos, provento para entity fiis_dividendos."
+                },
+                "fusion": {
+                    "enabled": true,
+                    "used": true,
+                    "weight": 0.15,
+                    "mode": "blend",
+                    "affected_entities": [
+                        "fiis_dividendos",
+                        "fiis_financials_risk",
+                        "fiis_rankings",
+                        "fiis_cadastro"
+                    ],
+                    "error": null
+                },
+                "context": {
+                    "enabled": false,
+                    "planner_enabled": true,
+                    "entity_allowed": false,
+                    "entity": "fiis_dividendos",
+                    "allowed_entities": [
+                        "fiis_precos",
+                        "fiis_dividendos",
+                        "fiis_financials_risk",
+                        "fiis_financials_snapshot",
+                        "fiis_imoveis",
+                        "fiis_rankings",
+                        "fiis_processos",
+                        "fiis_noticias"
+                    ],
+                    "denied_entities": [
+                        "client_fiis_positions",
+                        "history_b3_indexes",
+                        "history_currency_rates",
+                        "history_market_indicators"
+                    ]
+                }
+            }
+        },
+        "result_key": "dividendos_fii",
+        "intent": "fiis_dividendos",
+        "entity": "fiis_dividendos",
+        "planner_intent": "fiis_dividendos",
+        "planner_entity": "fiis_dividendos",
+        "planner_score": 3.74,
+        "rows_total": 10,
+        "elapsed_ms": 418,
+        "explain": {
+            "signals": {
+                "token_scores": [
+                    {
+                        "token": "dividendo",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_cadastro"
+                    },
+                    {
+                        "token": "dividendo",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_dividendos"
+                    },
+                    {
+                        "token": "dividend",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_rankings"
+                    },
+                    {
+                        "token": "dividendo",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_rankings"
+                    }
+                ],
+                "phrase_scores": [
+                    {
+                        "phrase": "dividendo do",
+                        "weight": -3.3,
+                        "hits": 1,
+                        "intent": "fiis_cadastro"
+                    },
+                    {
+                        "phrase": "dividendo do",
+                        "weight": 3.3,
+                        "hits": 1,
+                        "intent": "fiis_dividendos"
+                    },
+                    {
+                        "phrase": "dividendo do",
+                        "weight": -3.3,
+                        "hits": 1,
+                        "intent": "fiis_rankings"
+                    }
+                ],
+                "anti_hits": [],
+                "normalizations": [
+                    {
+                        "step": "lower",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_accents",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_punct",
+                        "applied": true
+                    }
+                ],
+                "weights_summary": {
+                    "token_sum": 0.0,
+                    "phrase_sum": -3.3,
+                    "anti_sum": 0.0,
+                    "total": -3.3
+                }
+            },
+            "decision_path": [
+                {
+                    "stage": "tokenize",
+                    "type": "normalization",
+                    "value": "qual foi o ultimo dividendo do mxrf11 ",
+                    "result": [
+                        "qual",
+                        "foi",
+                        "o",
+                        "ultimo",
+                        "dividendo",
+                        "do",
+                        "mxrf11"
+                    ]
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_integration",
+                    "rag_weight": 0.15
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_fusion",
+                    "weight": 0.15,
+                    "affected": 4
+                },
+                {
+                    "stage": "rank",
+                    "type": "intent_scoring",
+                    "intent": "fiis_dividendos",
+                    "score": 3.74
+                },
+                {
+                    "stage": "route",
+                    "type": "entity_select",
+                    "entity": "fiis_dividendos",
+                    "score_after": 3.74
+                },
+                {
+                    "stage": "rag",
+                    "type": "entity_hints",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "hints_keys": [
+                        "fiis_financials_risk"
+                    ]
+                }
+            ],
+            "scoring": {
+                "intent": [
+                    {
+                        "name": "fiis_dividendos",
+                        "score": 3.74,
+                        "winner": true
+                    }
+                ],
+                "entity": [
+                    {
+                        "name": "fiis_dividendos",
+                        "score": 3.74,
+                        "winner": true
+                    }
+                ],
+                "intent_top2_gap_base": 4.4,
+                "intent_top2_gap_final": 3.6357629104061386,
+                "final_combined": [
+                    {
+                        "intent": "fiis_dividendos",
+                        "score": 3.74
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "score": 0.10423708959386167
+                    },
+                    {
+                        "intent": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "score": -2.8049999999999997
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "score": -3.74
+                    }
+                ],
+                "rag_hint": [
+                    {
+                        "entity": "fiis_financials_risk",
+                        "score": 0.6949139306257445
+                    }
+                ],
+                "rag_signal": [
+                    {
+                        "intent": "client_fiis_positions",
+                        "entity": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "entity": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "entity": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "entity": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "entity": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "entity": "fiis_financials_risk",
+                        "score": 0.6949139306257445
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "entity": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "entity": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "entity": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "entity": "fiis_rankings",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "entity": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "entity": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "entity": "history_market_indicators",
+                        "score": 0.0
+                    }
+                ],
+                "combined": {
+                    "intent": [
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 4.4,
+                            "rag": 0.0,
+                            "combined": 3.74,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.6949139306257445,
+                            "combined": 0.10423708959386167,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": -3.3,
+                            "rag": 0.0,
+                            "combined": -2.8049999999999997,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": -4.4,
+                            "rag": 0.0,
+                            "combined": -3.74,
+                            "winner": false
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 4.4,
+                            "rag": 0.0,
+                            "combined": 3.74,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.6949139306257445,
+                            "combined": 0.10423708959386167,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": -3.3,
+                            "rag": 0.0,
+                            "combined": -2.8049999999999997,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": -4.4,
+                            "rag": 0.0,
+                            "combined": -3.74,
+                            "winner": false
+                        }
+                    ],
+                    "weight": 0.15,
+                    "notes": "blend=base*(1-w)+rag*w"
+                },
+                "thresholds_applied": {
+                    "min_score": 1.0,
+                    "min_gap": 0.2,
+                    "gap": 3.6357629104061386,
+                    "accepted": true,
+                    "source": "final"
+                }
+            },
+            "rag": {
+                "enabled": true,
+                "index_path": "data/embeddings/store/embeddings.jsonl",
+                "k": 5,
+                "min_score": 0.25,
+                "weight": 0.35,
+                "entity_hints": {
+                    "fiis_financials_risk": 0.6949139306257445
+                },
+                "error": null,
+                "used": true,
+                "re_rank": {
+                    "enabled": true,
+                    "mode": "blend",
+                    "weight": 0.15
+                }
+            },
+            "rag_context": {
+                "top_doc": "q-routing-samples",
+                "snippets": [
+                    "s\"\n },\n {\n \"question\": \"média de dividendos do HGLG11 nos últimos 12 meses\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"histórico de proventos do XPML11\",\n \"expected_intent\":…",
+                    "\": \"fiis_precos\",\n \"expected_entity\": \"fiis_precos\"\n },\n {\n \"question\": \"dividendo anunciado pelo HCTR11 em 2024-08\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"quanto o MXRF11…",
+                    "s_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do FPAB11\",\n \"expected_intent\": \"fiis_dividendos\",\n \"expected_entity\": \"fiis_dividendos\"\n },\n {\n \"question\": \"rendimento do HGLG11\",\n \"expected_intent\":…"
+                ],
+                "reason": "Contexto cita tokens do intent vencedor: dividendo, dividendos, provento para entity fiis_dividendos."
+            },
+            "fusion": {
+                "enabled": true,
+                "used": true,
+                "weight": 0.15,
+                "mode": "blend",
+                "affected_entities": [
+                    "fiis_dividendos",
+                    "fiis_financials_risk",
+                    "fiis_rankings",
+                    "fiis_cadastro"
+                ],
+                "error": null
+            },
+            "context": {
+                "enabled": false,
+                "planner_enabled": true,
+                "entity_allowed": false,
+                "entity": "fiis_dividendos",
+                "allowed_entities": [
+                    "fiis_precos",
+                    "fiis_dividendos",
+                    "fiis_financials_risk",
+                    "fiis_financials_snapshot",
+                    "fiis_imoveis",
+                    "fiis_rankings",
+                    "fiis_processos",
+                    "fiis_noticias"
+                ],
+                "denied_entities": [
+                    "client_fiis_positions",
+                    "history_b3_indexes",
+                    "history_currency_rates",
+                    "history_market_indicators"
+                ]
+            }
+        },
+        "explain_analytics": {
+            "request_id": "7fcbee587168487290a194d4c12bc6c9",
+            "timestamp": "2025-11-24T20:42:16.935379+00:00",
+            "summary": "Consulta 'fiis_dividendos' em 'fiis_dividendos' via view dividendos_fii (latência 418ms, cache miss).",
+            "details": {
+                "intent": "fiis_dividendos",
+                "entity": "fiis_dividendos",
+                "view": "dividendos_fii",
+                "route_id": "dividendos_fii",
+                "cache_hit": false,
+                "latency_ms": 418.0,
+                "route_source": "planner",
+                "notes": null
+            }
+        },
+        "cache": {
+            "hit": false,
+            "key": "araquem:dev-20251030:pub:fiis_dividendos:12c569293d35c4b73d5e28b4a3c043042a419098",
+            "ttl": 86400
+        },
+        "aggregates": {
+            "agg": null,
+            "window": null,
+            "order": "desc"
+        },
+        "narrator": {
+            "enabled": false,
+            "shadow": false,
+            "model": "sirios-narrator:latest",
+            "latency_ms": 0.11637599891400896,
+            "error": "llm_disabled_by_policy",
+            "used": false,
+            "strategy": "llm_disabled_by_policy",
+            "effective_policy": {
+                "llm_enabled": false,
+                "shadow": false,
+                "max_llm_rows": 0,
+                "use_rag_in_prompt": false,
+                "model": "sirios-narrator:latest"
+            },
+            "rag": {
+                "enabled": false,
+                "question": "qual foi o último dividendo do MXRF11?",
+                "intent": "fiis_dividendos",
+                "entity": "fiis_dividendos",
+                "used_collections": [],
+                "chunks": [],
+                "total_chunks": 0,
+                "error": null
+            },
+            "compute_mode": "data",
+            "focus_metric_key": null
+        },
+        "requested_metrics": []
+    },
+    "answer": "Foram encontrados 10 registros para a entidade fiis_dividendos.\n- ticker: MXRF11; payment_date: 2025-11-07T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-10-31T00:00:00; created_at: 2025-11-03 00:00:00; updated_at: 2025-11-03 00:00:00\n- ticker: MXRF11; payment_date: 2025-10-14T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-09-30T00:00:00; created_at: 2025-10-02 00:00:00; updated_at: 2025-10-02 00:00:00\n- ticker: MXRF11; payment_date: 2025-09-12T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-08-29T00:00:00; created_at: 2025-09-02 00:00:00; updated_at: 2025-09-02 00:00:00\n- ticker: MXRF11; payment_date: 2025-08-14T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-07-31T00:00:00; created_at: 2025-08-01 00:00:00; updated_at: 2025-08-01 00:00:00\n- ticker: MXRF11; payment_date: 2025-07-14T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-06-30T00:00:00; created_at: 2025-07-01 00:00:00; updated_at: 2025-07-01 00:00:00\n- ticker: MXRF11; payment_date: 2025-06-13T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-05-30T00:00:00; created_at: 2025-06-02 00:00:00; updated_at: 2025-06-02 00:00:00\n- ticker: MXRF11; payment_date: 2025-05-15T00:00:00; dividend_amt: R$ 0,10; traded_until_date: 2025-04-30T00:00:00; created_at: 2025-05-02 00:00:00; updated_at: 2025-05-02 00:00:00\n- ticker: MXRF11; payment_date: 2025-04-14T00:00:00; dividend_amt: R$ 0,09; traded_until_date: 2025-03-31T00:00:00; created_at: 2025-04-02 00:00:00; updated_at: 2025-04-02 00:00:00\n- ticker: MXRF11; payment_date: 2025-03-18T00:00:00; dividend_amt: R$ 0,09; traded_until_date: 2025-02-28T00:00:00; created_at: 2025-03-06 00:00:00; updated_at: 2025-03-06 00:00:00\n- ticker: MXRF11; payment_date: 2025-02-14T00:00:00; dividend_amt: R$ 0,09; traded_until_date: 2025-01-31T00:00:00; created_at: 2025-02-03 00:00:00; updated_at: 2025-02-03 00:00:00"
+}

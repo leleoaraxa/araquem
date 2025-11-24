@@ -1,0 +1,1338 @@
+{
+    "status": {
+        "reason": "ok",
+        "message": "ok"
+    },
+    "results": {
+        "financials_revenue": [
+            {
+                "ticker": "HGLG11",
+                "revenue_due_0_3m_pct": "13,47%",
+                "revenue_due_3_6m_pct": "5,18%",
+                "revenue_due_6_9m_pct": "2,05%",
+                "revenue_due_9_12m_pct": "0,96%",
+                "revenue_due_12_15m_pct": "1,81%",
+                "revenue_due_15_18m_pct": "3,03%",
+                "revenue_due_18_21m_pct": "3,58%",
+                "revenue_due_21_24m_pct": "7,55%",
+                "revenue_due_24_27m_pct": "1,54%",
+                "revenue_due_27_30m_pct": "1,88%",
+                "revenue_due_30_33m_pct": "1,14%",
+                "revenue_due_33_36m_pct": "1,00%",
+                "revenue_due_over_36m_pct": "56,76%",
+                "revenue_due_undetermined_pct": "0,00%",
+                "revenue_igpm_pct": "13,00%",
+                "revenue_inpc_pct": "0,00%",
+                "revenue_ipca_pct": "86,00%",
+                "revenue_incc_pct": "0,00%",
+                "created_at": "2024-05-22 00:00:00",
+                "updated_at": "2025-11-24 00:00:00"
+            }
+        ]
+    },
+    "meta": {
+        "planner": {
+            "normalized": "receita com vencimento em 0 3 meses do hglg11",
+            "tokens": [
+                "receita",
+                "com",
+                "vencimento",
+                "em",
+                "0",
+                "3",
+                "meses",
+                "do",
+                "hglg11"
+            ],
+            "intent_scores": {
+                "client_fiis_positions": 0.0,
+                "fiis_cadastro": 0.0,
+                "fiis_precos": 0.0,
+                "fiis_dividendos": 0.0,
+                "fiis_financials_snapshot": 0.0,
+                "fiis_financials_revenue_schedule": 5.5,
+                "fiis_financials_risk": 0.0,
+                "fiis_imoveis": 0.0,
+                "fiis_noticias": 0.0,
+                "fiis_processos": 0.0,
+                "fiis_rankings": 0.0,
+                "history_b3_indexes": 0.0,
+                "history_currency_rates": 0.0,
+                "history_market_indicators": -1.1
+            },
+            "details": {
+                "client_fiis_positions": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "client_fiis_positions"
+                    ]
+                },
+                "fiis_cadastro": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_cadastro"
+                    ]
+                },
+                "fiis_precos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_precos"
+                    ]
+                },
+                "fiis_dividendos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_dividendos"
+                    ]
+                },
+                "fiis_financials_snapshot": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_snapshot"
+                    ]
+                },
+                "fiis_financials_revenue_schedule": {
+                    "token_includes": [
+                        "receita",
+                        "vencimento"
+                    ],
+                    "token_excludes": [],
+                    "phrase_includes": [
+                        "vencimento em"
+                    ],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_revenue_schedule"
+                    ]
+                },
+                "fiis_financials_risk": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_risk"
+                    ]
+                },
+                "fiis_imoveis": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_imoveis"
+                    ]
+                },
+                "fiis_noticias": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_noticias"
+                    ]
+                },
+                "fiis_processos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_processos"
+                    ]
+                },
+                "fiis_rankings": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_rankings"
+                    ]
+                },
+                "history_b3_indexes": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_b3_indexes"
+                    ]
+                },
+                "history_currency_rates": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_currency_rates"
+                    ]
+                },
+                "history_market_indicators": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "vencimento"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_market_indicators"
+                    ]
+                }
+            },
+            "chosen": {
+                "intent": "fiis_financials_revenue_schedule",
+                "entity": "fiis_financials_revenue_schedule",
+                "score": 4.785645701130971,
+                "accepted": true,
+                "context_allowed": false
+            },
+            "explain": {
+                "signals": {
+                    "token_scores": [
+                        {
+                            "token": "receita",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_financials_revenue_schedule"
+                        },
+                        {
+                            "token": "vencimento",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_financials_revenue_schedule"
+                        },
+                        {
+                            "token": "vencimento",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_market_indicators"
+                        }
+                    ],
+                    "phrase_scores": [
+                        {
+                            "phrase": "vencimento em",
+                            "weight": 3.3,
+                            "hits": 1,
+                            "intent": "fiis_financials_revenue_schedule"
+                        }
+                    ],
+                    "anti_hits": [],
+                    "normalizations": [
+                        {
+                            "step": "lower",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_accents",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_punct",
+                            "applied": true
+                        }
+                    ],
+                    "weights_summary": {
+                        "token_sum": 1.1,
+                        "phrase_sum": 3.3,
+                        "anti_sum": 0.0,
+                        "total": 4.4
+                    }
+                },
+                "decision_path": [
+                    {
+                        "stage": "tokenize",
+                        "type": "normalization",
+                        "value": "receita com vencimento em 0 3 meses do hglg11",
+                        "result": [
+                            "receita",
+                            "com",
+                            "vencimento",
+                            "em",
+                            "0",
+                            "3",
+                            "meses",
+                            "do",
+                            "hglg11"
+                        ]
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_integration",
+                        "rag_weight": 0.15
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_fusion",
+                        "weight": 0.15,
+                        "affected": 2
+                    },
+                    {
+                        "stage": "rank",
+                        "type": "intent_scoring",
+                        "intent": "fiis_financials_revenue_schedule",
+                        "score": 4.785645701130971
+                    },
+                    {
+                        "stage": "route",
+                        "type": "entity_select",
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score_after": 4.785645701130971
+                    },
+                    {
+                        "stage": "rag",
+                        "type": "entity_hints",
+                        "k": 5,
+                        "min_score": 0.25,
+                        "weight": 0.35,
+                        "hints_keys": [
+                            "fiis_financials_revenue_schedule"
+                        ]
+                    }
+                ],
+                "scoring": {
+                    "intent": [
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "score": 4.785645701130971,
+                            "winner": true
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "score": 4.785645701130971,
+                            "winner": true
+                        }
+                    ],
+                    "intent_top2_gap_base": 5.5,
+                    "intent_top2_gap_final": 4.785645701130971,
+                    "final_combined": [
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "score": 4.785645701130971
+                        },
+                        {
+                            "intent": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "score": -0.935
+                        }
+                    ],
+                    "rag_hint": [
+                        {
+                            "entity": "fiis_financials_revenue_schedule",
+                            "score": 0.7376380075398069
+                        }
+                    ],
+                    "rag_signal": [
+                        {
+                            "intent": "client_fiis_positions",
+                            "entity": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "entity": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "entity": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "entity": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "entity": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "entity": "fiis_financials_revenue_schedule",
+                            "score": 0.7376380075398069
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "entity": "fiis_financials_risk",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "entity": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "entity": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "entity": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "entity": "fiis_rankings",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "entity": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "entity": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "entity": "history_market_indicators",
+                            "score": 0.0
+                        }
+                    ],
+                    "combined": {
+                        "intent": [
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 5.5,
+                                "rag": 0.7376380075398069,
+                                "combined": 4.785645701130971,
+                                "winner": true
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            }
+                        ],
+                        "entity": [
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 5.5,
+                                "rag": 0.7376380075398069,
+                                "combined": 4.785645701130971,
+                                "winner": true
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            }
+                        ],
+                        "weight": 0.15,
+                        "notes": "blend=base*(1-w)+rag*w"
+                    },
+                    "thresholds_applied": {
+                        "min_score": 0.8,
+                        "min_gap": 0.1,
+                        "gap": 4.785645701130971,
+                        "accepted": true,
+                        "source": "final"
+                    }
+                },
+                "rag": {
+                    "enabled": true,
+                    "index_path": "data/embeddings/store/embeddings.jsonl",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "entity_hints": {
+                        "fiis_financials_revenue_schedule": 0.7376380075398069
+                    },
+                    "error": null,
+                    "used": true,
+                    "re_rank": {
+                        "enabled": true,
+                        "mode": "blend",
+                        "weight": 0.15
+                    }
+                },
+                "rag_context": {
+                    "top_doc": "entity-fiis-financials-revenue-schedule:entity-fiis-financials-revenue-hints",
+                    "snippets": [
+                        "Receita contratada por buckets de vencimento (0–3m, 3–6m, 6–12m, >12m) e estrutura de recebíveis.\nExemplos:\n- receita com vencimento em 0–3 meses do HGLG11\n- quanto vence em 12 meses do XPML11\n- estrutura de recebíveis do VISC11\n-…",
+                        "atrimônio líquido do HGLG11\",\n \"expected_intent\": \"fiis_financials_snapshot\",\n \"expected_entity\": \"fiis_financials_snapshot\"\n },\n {\n \"question\": \"qual a vacância do MXRF11\",\n \"expected_intent\": \"fiis_imoveis\",\n \"expected_entity\":…"
+                    ],
+                    "reason": "Contexto cita tokens do intent vencedor: receita, vencimento, vencimentos para entity fiis_financials_revenue_schedule."
+                },
+                "fusion": {
+                    "enabled": true,
+                    "used": true,
+                    "weight": 0.15,
+                    "mode": "blend",
+                    "affected_entities": [
+                        "fiis_financials_revenue_schedule",
+                        "history_market_indicators"
+                    ],
+                    "error": null
+                },
+                "context": {
+                    "enabled": false,
+                    "planner_enabled": true,
+                    "entity_allowed": false,
+                    "entity": "fiis_financials_revenue_schedule",
+                    "allowed_entities": [
+                        "fiis_precos",
+                        "fiis_dividendos",
+                        "fiis_financials_risk",
+                        "fiis_financials_snapshot",
+                        "fiis_imoveis",
+                        "fiis_rankings",
+                        "fiis_processos",
+                        "fiis_noticias"
+                    ],
+                    "denied_entities": [
+                        "client_fiis_positions",
+                        "history_b3_indexes",
+                        "history_currency_rates",
+                        "history_market_indicators"
+                    ]
+                }
+            }
+        },
+        "result_key": "financials_revenue",
+        "intent": "fiis_financials_revenue_schedule",
+        "entity": "fiis_financials_revenue_schedule",
+        "planner_intent": "fiis_financials_revenue_schedule",
+        "planner_entity": "fiis_financials_revenue_schedule",
+        "planner_score": 4.785645701130971,
+        "rows_total": 1,
+        "elapsed_ms": 456,
+        "explain": {
+            "signals": {
+                "token_scores": [
+                    {
+                        "token": "receita",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_financials_revenue_schedule"
+                    },
+                    {
+                        "token": "vencimento",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_financials_revenue_schedule"
+                    },
+                    {
+                        "token": "vencimento",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_market_indicators"
+                    }
+                ],
+                "phrase_scores": [
+                    {
+                        "phrase": "vencimento em",
+                        "weight": 3.3,
+                        "hits": 1,
+                        "intent": "fiis_financials_revenue_schedule"
+                    }
+                ],
+                "anti_hits": [],
+                "normalizations": [
+                    {
+                        "step": "lower",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_accents",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_punct",
+                        "applied": true
+                    }
+                ],
+                "weights_summary": {
+                    "token_sum": 1.1,
+                    "phrase_sum": 3.3,
+                    "anti_sum": 0.0,
+                    "total": 4.4
+                }
+            },
+            "decision_path": [
+                {
+                    "stage": "tokenize",
+                    "type": "normalization",
+                    "value": "receita com vencimento em 0 3 meses do hglg11",
+                    "result": [
+                        "receita",
+                        "com",
+                        "vencimento",
+                        "em",
+                        "0",
+                        "3",
+                        "meses",
+                        "do",
+                        "hglg11"
+                    ]
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_integration",
+                    "rag_weight": 0.15
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_fusion",
+                    "weight": 0.15,
+                    "affected": 2
+                },
+                {
+                    "stage": "rank",
+                    "type": "intent_scoring",
+                    "intent": "fiis_financials_revenue_schedule",
+                    "score": 4.785645701130971
+                },
+                {
+                    "stage": "route",
+                    "type": "entity_select",
+                    "entity": "fiis_financials_revenue_schedule",
+                    "score_after": 4.785645701130971
+                },
+                {
+                    "stage": "rag",
+                    "type": "entity_hints",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "hints_keys": [
+                        "fiis_financials_revenue_schedule"
+                    ]
+                }
+            ],
+            "scoring": {
+                "intent": [
+                    {
+                        "name": "fiis_financials_revenue_schedule",
+                        "score": 4.785645701130971,
+                        "winner": true
+                    }
+                ],
+                "entity": [
+                    {
+                        "name": "fiis_financials_revenue_schedule",
+                        "score": 4.785645701130971,
+                        "winner": true
+                    }
+                ],
+                "intent_top2_gap_base": 5.5,
+                "intent_top2_gap_final": 4.785645701130971,
+                "final_combined": [
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "score": 4.785645701130971
+                    },
+                    {
+                        "intent": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "score": -0.935
+                    }
+                ],
+                "rag_hint": [
+                    {
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score": 0.7376380075398069
+                    }
+                ],
+                "rag_signal": [
+                    {
+                        "intent": "client_fiis_positions",
+                        "entity": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "entity": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "entity": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "entity": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "entity": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score": 0.7376380075398069
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "entity": "fiis_financials_risk",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "entity": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "entity": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "entity": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "entity": "fiis_rankings",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "entity": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "entity": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "entity": "history_market_indicators",
+                        "score": 0.0
+                    }
+                ],
+                "combined": {
+                    "intent": [
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 5.5,
+                            "rag": 0.7376380075398069,
+                            "combined": 4.785645701130971,
+                            "winner": true
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 5.5,
+                            "rag": 0.7376380075398069,
+                            "combined": 4.785645701130971,
+                            "winner": true
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        }
+                    ],
+                    "weight": 0.15,
+                    "notes": "blend=base*(1-w)+rag*w"
+                },
+                "thresholds_applied": {
+                    "min_score": 0.8,
+                    "min_gap": 0.1,
+                    "gap": 4.785645701130971,
+                    "accepted": true,
+                    "source": "final"
+                }
+            },
+            "rag": {
+                "enabled": true,
+                "index_path": "data/embeddings/store/embeddings.jsonl",
+                "k": 5,
+                "min_score": 0.25,
+                "weight": 0.35,
+                "entity_hints": {
+                    "fiis_financials_revenue_schedule": 0.7376380075398069
+                },
+                "error": null,
+                "used": true,
+                "re_rank": {
+                    "enabled": true,
+                    "mode": "blend",
+                    "weight": 0.15
+                }
+            },
+            "rag_context": {
+                "top_doc": "entity-fiis-financials-revenue-schedule:entity-fiis-financials-revenue-hints",
+                "snippets": [
+                    "Receita contratada por buckets de vencimento (0–3m, 3–6m, 6–12m, >12m) e estrutura de recebíveis.\nExemplos:\n- receita com vencimento em 0–3 meses do HGLG11\n- quanto vence em 12 meses do XPML11\n- estrutura de recebíveis do VISC11\n-…",
+                    "atrimônio líquido do HGLG11\",\n \"expected_intent\": \"fiis_financials_snapshot\",\n \"expected_entity\": \"fiis_financials_snapshot\"\n },\n {\n \"question\": \"qual a vacância do MXRF11\",\n \"expected_intent\": \"fiis_imoveis\",\n \"expected_entity\":…"
+                ],
+                "reason": "Contexto cita tokens do intent vencedor: receita, vencimento, vencimentos para entity fiis_financials_revenue_schedule."
+            },
+            "fusion": {
+                "enabled": true,
+                "used": true,
+                "weight": 0.15,
+                "mode": "blend",
+                "affected_entities": [
+                    "fiis_financials_revenue_schedule",
+                    "history_market_indicators"
+                ],
+                "error": null
+            },
+            "context": {
+                "enabled": false,
+                "planner_enabled": true,
+                "entity_allowed": false,
+                "entity": "fiis_financials_revenue_schedule",
+                "allowed_entities": [
+                    "fiis_precos",
+                    "fiis_dividendos",
+                    "fiis_financials_risk",
+                    "fiis_financials_snapshot",
+                    "fiis_imoveis",
+                    "fiis_rankings",
+                    "fiis_processos",
+                    "fiis_noticias"
+                ],
+                "denied_entities": [
+                    "client_fiis_positions",
+                    "history_b3_indexes",
+                    "history_currency_rates",
+                    "history_market_indicators"
+                ]
+            }
+        },
+        "explain_analytics": {
+            "request_id": "1e84fdf2b3f6422a83773a48b9ce9821",
+            "timestamp": "2025-11-24T20:44:49.074342+00:00",
+            "summary": "Consulta 'fiis_financials_revenue_schedule' em 'fiis_financials_revenue_schedule' via view financials_revenue (latência 456ms, cache miss).",
+            "details": {
+                "intent": "fiis_financials_revenue_schedule",
+                "entity": "fiis_financials_revenue_schedule",
+                "view": "financials_revenue",
+                "route_id": "financials_revenue",
+                "cache_hit": false,
+                "latency_ms": 456.0,
+                "route_source": "planner",
+                "notes": null
+            }
+        },
+        "cache": {
+            "hit": false,
+            "key": "araquem:dev-20251030:pub:fiis_financials_revenue_schedule:13e1c7790ebe064bd2f3a523046433a6d10948fa",
+            "ttl": 86400
+        },
+        "aggregates": {
+            "agg": null,
+            "window": null,
+            "order": "desc"
+        },
+        "narrator": {
+            "enabled": false,
+            "shadow": false,
+            "model": "sirios-narrator:latest",
+            "latency_ms": 0.11180100045748986,
+            "error": "llm_disabled_by_policy",
+            "used": false,
+            "strategy": "llm_disabled_by_policy",
+            "effective_policy": {
+                "llm_enabled": false,
+                "shadow": false,
+                "max_llm_rows": 0,
+                "use_rag_in_prompt": false,
+                "model": "sirios-narrator:latest"
+            },
+            "rag": {
+                "enabled": false,
+                "question": "Receita com vencimento em 0–3 meses do HGLG11",
+                "intent": "fiis_financials_revenue_schedule",
+                "entity": "fiis_financials_revenue_schedule",
+                "used_collections": [],
+                "chunks": [],
+                "total_chunks": 0,
+                "error": null
+            },
+            "compute_mode": "data",
+            "focus_metric_key": null
+        },
+        "requested_metrics": []
+    },
+    "answer": "No **HGLG11**, cerca de **13,47%** da receita contratada vence nos **próximos 0–3 meses**.\nEstrutura de vencimentos: 0–3 meses: 13,47%; 3–6 meses: 5,18%; 6–9 meses: 2,05%; 9–12 meses: 0,96%; 12–15 meses: 1,81%; 15–18 meses: 3,03%; 18–21 meses: 3,58%; 21–24 meses: 7,55%; 24–27 meses: 1,54%; 27–30 meses: 1,88%; 30–33 meses: 1,14%; 33–36 meses: 1,00%; acima de 36 meses: 56,76%; prazo indeterminado: 0,00%.\nMais da metade da receita é de longo prazo (além de 36 meses)."
+}

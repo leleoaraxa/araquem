@@ -1,0 +1,1622 @@
+{
+    "status": {
+        "reason": "ok",
+        "message": "ok"
+    },
+    "results": {
+        "history_currency_rates": [
+            {
+                "rate_date": "2025-11-17 00:00:00",
+                "usd_buy_amt": "R$ 5,30",
+                "usd_sell_amt": "R$ 5,30",
+                "usd_var_pct": "0,00%",
+                "eur_buy_amt": "R$ 6,15",
+                "eur_sell_amt": "R$ 6,16",
+                "eur_var_pct": "-1,00%",
+                "created_at": "2025-11-16 00:00:00",
+                "updated_at": "2025-11-16 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-14 00:00:00",
+                "usd_buy_amt": "R$ 5,30",
+                "usd_sell_amt": "R$ 5,30",
+                "usd_var_pct": "0,00%",
+                "eur_buy_amt": "R$ 6,15",
+                "eur_sell_amt": "R$ 6,16",
+                "eur_var_pct": "-1,00%",
+                "created_at": "2025-11-15 00:00:00",
+                "updated_at": "2025-11-15 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-13 00:00:00",
+                "usd_buy_amt": "R$ 5,30",
+                "usd_sell_amt": "R$ 5,30",
+                "usd_var_pct": "4,00%",
+                "eur_buy_amt": "R$ 6,16",
+                "eur_sell_amt": "R$ 6,17",
+                "eur_var_pct": "8,00%",
+                "created_at": "2025-11-14 00:00:00",
+                "updated_at": "2025-11-14 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-12 00:00:00",
+                "usd_buy_amt": "R$ 5,29",
+                "usd_sell_amt": "R$ 5,29",
+                "usd_var_pct": "2,00%",
+                "eur_buy_amt": "R$ 6,14",
+                "eur_sell_amt": "R$ 6,14",
+                "eur_var_pct": "3,00%",
+                "created_at": "2025-11-13 00:00:00",
+                "updated_at": "2025-11-13 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-11 00:00:00",
+                "usd_buy_amt": "R$ 5,27",
+                "usd_sell_amt": "R$ 5,27",
+                "usd_var_pct": "2,00%",
+                "eur_buy_amt": "R$ 6,11",
+                "eur_sell_amt": "R$ 6,11",
+                "eur_var_pct": "-2,00%",
+                "created_at": "2025-11-12 00:00:00",
+                "updated_at": "2025-11-12 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-10 00:00:00",
+                "usd_buy_amt": "R$ 5,33",
+                "usd_sell_amt": "R$ 5,33",
+                "usd_var_pct": "0,00%",
+                "eur_buy_amt": "R$ 6,17",
+                "eur_sell_amt": "R$ 6,17",
+                "eur_var_pct": "12,00%",
+                "created_at": "2025-11-09 00:00:00",
+                "updated_at": "2025-11-09 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-07 00:00:00",
+                "usd_buy_amt": "R$ 5,33",
+                "usd_sell_amt": "R$ 5,33",
+                "usd_var_pct": "0,00%",
+                "eur_buy_amt": "R$ 6,17",
+                "eur_sell_amt": "R$ 6,17",
+                "eur_var_pct": "12,00%",
+                "created_at": "2025-11-08 00:00:00",
+                "updated_at": "2025-11-08 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-06 00:00:00",
+                "usd_buy_amt": "R$ 5,35",
+                "usd_sell_amt": "R$ 5,35",
+                "usd_var_pct": "5,00%",
+                "eur_buy_amt": "R$ 6,18",
+                "eur_sell_amt": "R$ 6,18",
+                "eur_var_pct": "6,00%",
+                "created_at": "2025-11-07 00:00:00",
+                "updated_at": "2025-11-07 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-05 00:00:00",
+                "usd_buy_amt": "R$ 5,36",
+                "usd_sell_amt": "R$ 5,36",
+                "usd_var_pct": "9,00%",
+                "eur_buy_amt": "R$ 6,16",
+                "eur_sell_amt": "R$ 6,16",
+                "eur_var_pct": "9,00%",
+                "created_at": "2025-11-06 00:00:00",
+                "updated_at": "2025-11-06 00:00:00"
+            },
+            {
+                "rate_date": "2025-11-04 00:00:00",
+                "usd_buy_amt": "R$ 5,40",
+                "usd_sell_amt": "R$ 5,40",
+                "usd_var_pct": "-4,00%",
+                "eur_buy_amt": "R$ 6,20",
+                "eur_sell_amt": "R$ 6,20",
+                "eur_var_pct": "-2,00%",
+                "created_at": "2025-11-05 00:00:00",
+                "updated_at": "2025-11-05 00:00:00"
+            }
+        ]
+    },
+    "meta": {
+        "planner": {
+            "normalized": "cotacao do euro comercial",
+            "tokens": [
+                "cotacao",
+                "do",
+                "euro",
+                "comercial"
+            ],
+            "intent_scores": {
+                "client_fiis_positions": 0.0,
+                "fiis_cadastro": -4.4,
+                "fiis_precos": 1.0999999999999996,
+                "fiis_dividendos": 0.0,
+                "fiis_financials_snapshot": 0.0,
+                "fiis_financials_revenue_schedule": 0.0,
+                "fiis_financials_risk": 0.0,
+                "fiis_imoveis": 0.0,
+                "fiis_noticias": 0.0,
+                "fiis_processos": 1.1,
+                "fiis_rankings": -3.3,
+                "history_b3_indexes": -2.2,
+                "history_currency_rates": 11.0,
+                "history_market_indicators": -2.2
+            },
+            "details": {
+                "client_fiis_positions": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "client_fiis_positions"
+                    ]
+                },
+                "fiis_cadastro": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "cotacao"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [
+                        "cotacao do"
+                    ],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_cadastro"
+                    ]
+                },
+                "fiis_precos": {
+                    "token_includes": [
+                        "cotacao"
+                    ],
+                    "token_excludes": [
+                        "eur",
+                        "euro",
+                        "comercial"
+                    ],
+                    "phrase_includes": [
+                        "cotacao do"
+                    ],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_precos"
+                    ]
+                },
+                "fiis_dividendos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_dividendos"
+                    ]
+                },
+                "fiis_financials_snapshot": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_snapshot"
+                    ]
+                },
+                "fiis_financials_revenue_schedule": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_revenue_schedule"
+                    ]
+                },
+                "fiis_financials_risk": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_risk"
+                    ]
+                },
+                "fiis_imoveis": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_imoveis"
+                    ]
+                },
+                "fiis_noticias": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_noticias"
+                    ]
+                },
+                "fiis_processos": {
+                    "token_includes": [
+                        "acao"
+                    ],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_processos"
+                    ]
+                },
+                "fiis_rankings": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [
+                        "cotacao do"
+                    ],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_rankings"
+                    ]
+                },
+                "history_b3_indexes": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "eur",
+                        "euro"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_b3_indexes"
+                    ]
+                },
+                "history_currency_rates": {
+                    "token_includes": [
+                        "euro",
+                        "eur",
+                        "cotacao",
+                        "comercial"
+                    ],
+                    "token_excludes": [],
+                    "phrase_includes": [
+                        "cotacao do euro",
+                        "euro comercial"
+                    ],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_currency_rates"
+                    ]
+                },
+                "history_market_indicators": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "eur",
+                        "euro"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_market_indicators"
+                    ]
+                }
+            },
+            "chosen": {
+                "intent": "history_currency_rates",
+                "entity": "history_currency_rates",
+                "score": 11.0,
+                "accepted": true,
+                "context_allowed": false
+            },
+            "explain": {
+                "signals": {
+                    "token_scores": [
+                        {
+                            "token": "cotacao",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_cadastro"
+                        },
+                        {
+                            "token": "cotacao",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "token": "eur",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "token": "euro",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "token": "comercial",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "token": "acao",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "fiis_processos"
+                        },
+                        {
+                            "token": "eur",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_b3_indexes"
+                        },
+                        {
+                            "token": "euro",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_b3_indexes"
+                        },
+                        {
+                            "token": "euro",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        },
+                        {
+                            "token": "eur",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        },
+                        {
+                            "token": "cotacao",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        },
+                        {
+                            "token": "comercial",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        },
+                        {
+                            "token": "eur",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_market_indicators"
+                        },
+                        {
+                            "token": "euro",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_market_indicators"
+                        }
+                    ],
+                    "phrase_scores": [
+                        {
+                            "phrase": "cotacao do",
+                            "weight": -3.3,
+                            "hits": 1,
+                            "intent": "fiis_cadastro"
+                        },
+                        {
+                            "phrase": "cotacao do",
+                            "weight": 3.3,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "phrase": "cotacao do",
+                            "weight": -3.3,
+                            "hits": 1,
+                            "intent": "fiis_rankings"
+                        },
+                        {
+                            "phrase": "cotacao do euro",
+                            "weight": 3.3,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        },
+                        {
+                            "phrase": "euro comercial",
+                            "weight": 3.3,
+                            "hits": 1,
+                            "intent": "history_currency_rates"
+                        }
+                    ],
+                    "anti_hits": [],
+                    "normalizations": [
+                        {
+                            "step": "lower",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_accents",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_punct",
+                            "applied": true
+                        }
+                    ],
+                    "weights_summary": {
+                        "token_sum": -2.2,
+                        "phrase_sum": 3.3,
+                        "anti_sum": 0.0,
+                        "total": 1.0999999999999996
+                    }
+                },
+                "decision_path": [
+                    {
+                        "stage": "tokenize",
+                        "type": "normalization",
+                        "value": "cotacao do euro comercial",
+                        "result": [
+                            "cotacao",
+                            "do",
+                            "euro",
+                            "comercial"
+                        ]
+                    },
+                    {
+                        "stage": "rank",
+                        "type": "intent_scoring",
+                        "intent": "history_currency_rates",
+                        "score": 11.0
+                    },
+                    {
+                        "stage": "route",
+                        "type": "entity_select",
+                        "entity": "history_currency_rates",
+                        "score_after": 11.0
+                    },
+                    {
+                        "stage": "rag",
+                        "type": "entity_hints",
+                        "k": 5,
+                        "min_score": 0.25,
+                        "weight": 0.35,
+                        "hints_keys": []
+                    }
+                ],
+                "scoring": {
+                    "intent": [
+                        {
+                            "name": "history_currency_rates",
+                            "score": 11.0,
+                            "winner": true
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "history_currency_rates",
+                            "score": 11.0,
+                            "winner": true
+                        }
+                    ],
+                    "intent_top2_gap_base": 9.9,
+                    "intent_top2_gap_final": 9.9,
+                    "final_combined": [
+                        {
+                            "intent": "history_currency_rates",
+                            "score": 11.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "score": 1.1
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "score": 1.0999999999999996
+                        },
+                        {
+                            "intent": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "score": -2.2
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "score": -2.2
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "score": -3.3
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "score": -4.4
+                        }
+                    ],
+                    "rag_hint": [],
+                    "rag_signal": [
+                        {
+                            "intent": "client_fiis_positions",
+                            "entity": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "entity": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "entity": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "entity": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "entity": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "entity": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "entity": "fiis_financials_risk",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "entity": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "entity": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "entity": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "entity": "fiis_rankings",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "entity": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "entity": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "entity": "history_market_indicators",
+                            "score": 0.0
+                        }
+                    ],
+                    "combined": {
+                        "intent": [
+                            {
+                                "name": "history_currency_rates",
+                                "base": 11.0,
+                                "rag": 0.0,
+                                "combined": 11.0,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 1.1,
+                                "rag": 0.0,
+                                "combined": 1.1,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 1.0999999999999996,
+                                "rag": 0.0,
+                                "combined": 1.0999999999999996,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": -2.2,
+                                "rag": 0.0,
+                                "combined": -2.2,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": -2.2,
+                                "rag": 0.0,
+                                "combined": -2.2,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": -3.3,
+                                "rag": 0.0,
+                                "combined": -3.3,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": -4.4,
+                                "rag": 0.0,
+                                "combined": -4.4,
+                                "winner": false
+                            }
+                        ],
+                        "entity": [
+                            {
+                                "name": "history_currency_rates",
+                                "base": 11.0,
+                                "rag": 0.0,
+                                "combined": 11.0,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 1.1,
+                                "rag": 0.0,
+                                "combined": 1.1,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": 1.0999999999999996,
+                                "rag": 0.0,
+                                "combined": 1.0999999999999996,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": -2.2,
+                                "rag": 0.0,
+                                "combined": -2.2,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_market_indicators",
+                                "base": -2.2,
+                                "rag": 0.0,
+                                "combined": -2.2,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": -3.3,
+                                "rag": 0.0,
+                                "combined": -3.3,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": -4.4,
+                                "rag": 0.0,
+                                "combined": -4.4,
+                                "winner": false
+                            }
+                        ],
+                        "weight": 0.0,
+                        "notes": "blend=base*(1-w)+rag*w"
+                    },
+                    "thresholds_applied": {
+                        "min_score": 0.8,
+                        "min_gap": 0.1,
+                        "gap": 9.9,
+                        "accepted": true,
+                        "source": "final"
+                    }
+                },
+                "rag": {
+                    "enabled": true,
+                    "index_path": "data/embeddings/store/embeddings.jsonl",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "entity_hints": {},
+                    "error": null,
+                    "used": false,
+                    "re_rank": {
+                        "enabled": true,
+                        "mode": "blend",
+                        "weight": 0.15
+                    }
+                },
+                "fusion": {
+                    "enabled": true,
+                    "used": false,
+                    "weight": 0.0,
+                    "mode": "blend",
+                    "affected_entities": [],
+                    "error": null
+                },
+                "context": {
+                    "enabled": false,
+                    "planner_enabled": true,
+                    "entity_allowed": false,
+                    "entity": "history_currency_rates",
+                    "allowed_entities": [
+                        "fiis_precos",
+                        "fiis_dividendos",
+                        "fiis_financials_risk",
+                        "fiis_financials_snapshot",
+                        "fiis_imoveis",
+                        "fiis_rankings",
+                        "fiis_processos",
+                        "fiis_noticias"
+                    ],
+                    "denied_entities": [
+                        "client_fiis_positions",
+                        "history_b3_indexes",
+                        "history_currency_rates",
+                        "history_market_indicators"
+                    ]
+                }
+            }
+        },
+        "result_key": "history_currency_rates",
+        "intent": "history_currency_rates",
+        "entity": "history_currency_rates",
+        "planner_intent": "history_currency_rates",
+        "planner_entity": "history_currency_rates",
+        "planner_score": 11.0,
+        "rows_total": 10,
+        "elapsed_ms": 557,
+        "explain": {
+            "signals": {
+                "token_scores": [
+                    {
+                        "token": "cotacao",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_cadastro"
+                    },
+                    {
+                        "token": "cotacao",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "token": "eur",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "token": "euro",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "token": "comercial",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "token": "acao",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "fiis_processos"
+                    },
+                    {
+                        "token": "eur",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_b3_indexes"
+                    },
+                    {
+                        "token": "euro",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_b3_indexes"
+                    },
+                    {
+                        "token": "euro",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    },
+                    {
+                        "token": "eur",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    },
+                    {
+                        "token": "cotacao",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    },
+                    {
+                        "token": "comercial",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    },
+                    {
+                        "token": "eur",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_market_indicators"
+                    },
+                    {
+                        "token": "euro",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_market_indicators"
+                    }
+                ],
+                "phrase_scores": [
+                    {
+                        "phrase": "cotacao do",
+                        "weight": -3.3,
+                        "hits": 1,
+                        "intent": "fiis_cadastro"
+                    },
+                    {
+                        "phrase": "cotacao do",
+                        "weight": 3.3,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "phrase": "cotacao do",
+                        "weight": -3.3,
+                        "hits": 1,
+                        "intent": "fiis_rankings"
+                    },
+                    {
+                        "phrase": "cotacao do euro",
+                        "weight": 3.3,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    },
+                    {
+                        "phrase": "euro comercial",
+                        "weight": 3.3,
+                        "hits": 1,
+                        "intent": "history_currency_rates"
+                    }
+                ],
+                "anti_hits": [],
+                "normalizations": [
+                    {
+                        "step": "lower",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_accents",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_punct",
+                        "applied": true
+                    }
+                ],
+                "weights_summary": {
+                    "token_sum": -2.2,
+                    "phrase_sum": 3.3,
+                    "anti_sum": 0.0,
+                    "total": 1.0999999999999996
+                }
+            },
+            "decision_path": [
+                {
+                    "stage": "tokenize",
+                    "type": "normalization",
+                    "value": "cotacao do euro comercial",
+                    "result": [
+                        "cotacao",
+                        "do",
+                        "euro",
+                        "comercial"
+                    ]
+                },
+                {
+                    "stage": "rank",
+                    "type": "intent_scoring",
+                    "intent": "history_currency_rates",
+                    "score": 11.0
+                },
+                {
+                    "stage": "route",
+                    "type": "entity_select",
+                    "entity": "history_currency_rates",
+                    "score_after": 11.0
+                },
+                {
+                    "stage": "rag",
+                    "type": "entity_hints",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "hints_keys": []
+                }
+            ],
+            "scoring": {
+                "intent": [
+                    {
+                        "name": "history_currency_rates",
+                        "score": 11.0,
+                        "winner": true
+                    }
+                ],
+                "entity": [
+                    {
+                        "name": "history_currency_rates",
+                        "score": 11.0,
+                        "winner": true
+                    }
+                ],
+                "intent_top2_gap_base": 9.9,
+                "intent_top2_gap_final": 9.9,
+                "final_combined": [
+                    {
+                        "intent": "history_currency_rates",
+                        "score": 11.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "score": 1.1
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "score": 1.0999999999999996
+                    },
+                    {
+                        "intent": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "score": -2.2
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "score": -2.2
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "score": -3.3
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "score": -4.4
+                    }
+                ],
+                "rag_hint": [],
+                "rag_signal": [
+                    {
+                        "intent": "client_fiis_positions",
+                        "entity": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "entity": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "entity": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "entity": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "entity": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "entity": "fiis_financials_risk",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "entity": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "entity": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "entity": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "entity": "fiis_rankings",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "entity": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "entity": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "entity": "history_market_indicators",
+                        "score": 0.0
+                    }
+                ],
+                "combined": {
+                    "intent": [
+                        {
+                            "name": "history_currency_rates",
+                            "base": 11.0,
+                            "rag": 0.0,
+                            "combined": 11.0,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 1.1,
+                            "rag": 0.0,
+                            "combined": 1.1,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 1.0999999999999996,
+                            "rag": 0.0,
+                            "combined": 1.0999999999999996,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": -2.2,
+                            "rag": 0.0,
+                            "combined": -2.2,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": -2.2,
+                            "rag": 0.0,
+                            "combined": -2.2,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": -3.3,
+                            "rag": 0.0,
+                            "combined": -3.3,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": -4.4,
+                            "rag": 0.0,
+                            "combined": -4.4,
+                            "winner": false
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "history_currency_rates",
+                            "base": 11.0,
+                            "rag": 0.0,
+                            "combined": 11.0,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 1.1,
+                            "rag": 0.0,
+                            "combined": 1.1,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": 1.0999999999999996,
+                            "rag": 0.0,
+                            "combined": 1.0999999999999996,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": -2.2,
+                            "rag": 0.0,
+                            "combined": -2.2,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_market_indicators",
+                            "base": -2.2,
+                            "rag": 0.0,
+                            "combined": -2.2,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": -3.3,
+                            "rag": 0.0,
+                            "combined": -3.3,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": -4.4,
+                            "rag": 0.0,
+                            "combined": -4.4,
+                            "winner": false
+                        }
+                    ],
+                    "weight": 0.0,
+                    "notes": "blend=base*(1-w)+rag*w"
+                },
+                "thresholds_applied": {
+                    "min_score": 0.8,
+                    "min_gap": 0.1,
+                    "gap": 9.9,
+                    "accepted": true,
+                    "source": "final"
+                }
+            },
+            "rag": {
+                "enabled": true,
+                "index_path": "data/embeddings/store/embeddings.jsonl",
+                "k": 5,
+                "min_score": 0.25,
+                "weight": 0.35,
+                "entity_hints": {},
+                "error": null,
+                "used": false,
+                "re_rank": {
+                    "enabled": true,
+                    "mode": "blend",
+                    "weight": 0.15
+                }
+            },
+            "fusion": {
+                "enabled": true,
+                "used": false,
+                "weight": 0.0,
+                "mode": "blend",
+                "affected_entities": [],
+                "error": null
+            },
+            "context": {
+                "enabled": false,
+                "planner_enabled": true,
+                "entity_allowed": false,
+                "entity": "history_currency_rates",
+                "allowed_entities": [
+                    "fiis_precos",
+                    "fiis_dividendos",
+                    "fiis_financials_risk",
+                    "fiis_financials_snapshot",
+                    "fiis_imoveis",
+                    "fiis_rankings",
+                    "fiis_processos",
+                    "fiis_noticias"
+                ],
+                "denied_entities": [
+                    "client_fiis_positions",
+                    "history_b3_indexes",
+                    "history_currency_rates",
+                    "history_market_indicators"
+                ]
+            }
+        },
+        "explain_analytics": {
+            "request_id": "d2e5035ccb9c40ccaa850d4eb9a96213",
+            "timestamp": "2025-11-24T20:45:48.070966+00:00",
+            "summary": "Consulta 'history_currency_rates' em 'history_currency_rates' via view history_currency_rates (latência 557ms, cache miss).",
+            "details": {
+                "intent": "history_currency_rates",
+                "entity": "history_currency_rates",
+                "view": "history_currency_rates",
+                "route_id": "history_currency_rates",
+                "cache_hit": false,
+                "latency_ms": 557.0,
+                "route_source": "planner",
+                "notes": null
+            }
+        },
+        "cache": {
+            "hit": false,
+            "key": null,
+            "ttl": null
+        },
+        "aggregates": {
+            "agg": null,
+            "window": null,
+            "order": "desc"
+        },
+        "narrator": {
+            "enabled": false,
+            "shadow": false,
+            "model": "sirios-narrator:latest",
+            "latency_ms": 0.12440299906302243,
+            "error": "llm_disabled_by_policy",
+            "used": false,
+            "strategy": "llm_disabled_by_policy",
+            "effective_policy": {
+                "llm_enabled": false,
+                "shadow": false,
+                "max_llm_rows": 0,
+                "use_rag_in_prompt": false,
+                "model": "sirios-narrator:latest"
+            },
+            "rag": {
+                "enabled": true,
+                "question": "cotação do euro comercial",
+                "intent": "history_currency_rates",
+                "entity": "history_currency_rates",
+                "used_collections": [
+                    "concepts-macro"
+                ],
+                "chunks": [
+                    {
+                        "text": "ry_currency_rates\"\n },\n {\n \"question\": \"dólar comercial de ontem\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"euro hoje\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"variação diária do usd\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"quanto fechou o euro ontem\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"dólar compra e venda de ontem\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"euro compra e venda de ontem\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"usd hoje\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"eur hoje\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"cotação do euro comercial\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_e",
+                        "score": 0.738295732262378,
+                        "doc_id": "q-routing-samples",
+                        "chunk_id": "q-routing-samples:18",
+                        "source_id": "q-routing-samples",
+                        "collection": "araquem-core",
+                        "path": "data/ops/quality/routing_samples.json",
+                        "entity": null,
+                        "tags": [
+                            "quality",
+                            "routing",
+                            "samples"
+                        ]
+                    },
+                    {
+                        "text": "rency_rates\"\n },\n {\n \"question\": \"cotação do euro comercial\",\n \"expected_intent\": \"history_currency_rates\",\n \"expected_entity\": \"history_currency_rates\"\n },\n {\n \"question\": \"ipca de outubro\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"selic de ontem\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"cdi atual\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"taxa do igpm de ontem\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"incc de ontem\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"inpc atual\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"última atualização do ipca\",\n \"expected_intent\": \"history_market_indicators\",\n \"expected_entity\": \"history_market_indicators\"\n },\n {\n \"question\": \"valor do cdi hoje\",\n \"expected_intent\": \"history_market_indicators\",\n \"",
+                        "score": 0.6981050764749474,
+                        "doc_id": "q-routing-samples",
+                        "chunk_id": "q-routing-samples:19",
+                        "source_id": "q-routing-samples",
+                        "collection": "araquem-core",
+                        "path": "data/ops/quality/routing_samples.json",
+                        "entity": null,
+                        "tags": [
+                            "quality",
+                            "routing",
+                            "samples"
+                        ]
+                    },
+                    {
+                        "text": "o\n - dolar comercial\n - euro comercial\n - variacao do usd\n - variacao do eur\n - eur hoje d 1\n - cotacao do usd hoje\n exclude: []\n entities: [history_currency_rates]\n\n - name: history_market_indicators\n tokens:\n include:\n - ipca\n - cdi\n - selic\n - igpm\n - incc\n - inpc\n - taxa\n - juros\n - inflacao\n - indicador\n - indicadores\n - meta\n - atual\n - atualizada\n - ultima\n - atualizacao\n - valor\n - hoje\n - d1\n - d-1\n - ontem\n - janeiro\n - fevereiro\n - marco\n - março\n - abril\n - maio\n - junho\n - julho\n - agosto\n - setembro\n - outubro\n - novembro\n - dezembro\n exclude:\n - ibov\n - ibovespa\n - ifix\n - ifil\n - usd\n - dolar\n - dólar\n - eur\n - euro\n - recebiveis\n - vencimento\n - vencimentos\n - buckets\n - prazos\n phrases:\n include:\n - indicador de mercado d 1\n - ipca de ontem\n - selic de ontem\n - taxa do igpm\n - indicadores econômicos\n - taxa de juros\n - ipca de outubro d 1\n - cdi atual\n - inpc atual\n - ultima atualizacao do ipca\n - valor do cdi hoje d 1\n - selic meta atualizada\n - ipca de outubro\n - ipca outubro\n exclude: []\n entities: [history_market_indicators]\n\nanti_tokens:\n fiis_noticias: [noticia, noticias, materia, reportagem, manchete]",
+                        "score": 0.6877512775865277,
+                        "doc_id": "ontology-entity",
+                        "chunk_id": "ontology-entity:9",
+                        "source_id": "ontology-entity",
+                        "collection": "araquem-core",
+                        "path": "data/ontology/entity.yaml",
+                        "entity": null,
+                        "tags": [
+                            "ontology",
+                            "intents",
+                            "entities"
+                        ]
+                    },
+                    {
+                        "text": "_questions:\n - \"qual está sendo o IPCA acumulado?\"\n - \"qual percentual da receita do fundo está indexado ao IPCA?\"\n\n - name: \"Moedas e exposição cambial\"\n aliases:\n - \"dólar\"\n - \"euro\"\n - \"câmbio\"\n description: >\n As cotações de dólar e euro em relação ao real importam para fundos que\n possuem ativos dolarizados, contratos atrelados ao câmbio ou exposição\n indireta a moedas estrangeiras. A SIRIOS utiliza essas séries para dar\n contexto a movimentos de preço e risco em fundos sensíveis ao câmbio.\n related_entities:\n - history_currency_rates\n - history_market_indicators\n typical_uses:\n - \"explicar movimentos de FIIs com contratos dolarizados\"\n - \"avaliar sensibilidade da carteira a choques cambiais\"\n typical_questions:\n - \"como fechou o dólar ontem?\"\n - \"esse fundo é muito exposto ao câmbio?\"\n\n - name: \"Contexto macro e tomada de decisão em FIIs\"\n aliases:\n - \"cenário macro\"\n - \"macro e FIIs\"\n description: >\n O contexto macroeconômico influencia diretamente FIIs por meio de taxa de\n juros, inflação, atividade econômica e câmbio. Na SIRIOS, o papel da\n camada macro é dar referência, não fazer previsão: mostrar se um FII ou\n carteira está entregando retorno compatível com CDI, SELIC e ",
+                        "score": 0.6696362576003215,
+                        "doc_id": "concepts-macro",
+                        "chunk_id": "concepts-macro:2",
+                        "source_id": "concepts-macro",
+                        "collection": "araquem-core",
+                        "path": "data/concepts/concepts-macro.yaml",
+                        "entity": null,
+                        "tags": [
+                            "concepts",
+                            "macro",
+                            "market",
+                            "fiis"
+                        ]
+                    }
+                ],
+                "total_chunks": 4,
+                "policy": {
+                    "max_chunks": 4,
+                    "collections": [
+                        "concepts-macro"
+                    ],
+                    "min_score": 0.1
+                },
+                "error": null
+            },
+            "compute_mode": "data",
+            "focus_metric_key": null
+        },
+        "requested_metrics": []
+    },
+    "answer": "Foram encontrados 10 registros para a entidade history_currency_rates.\n- rate_date: 2025-11-17 00:00:00; usd_buy_amt: R$ 5,30; usd_sell_amt: R$ 5,30; usd_var_pct: 0,00%; eur_buy_amt: R$ 6,15; eur_sell_amt: R$ 6,16; eur_var_pct: -1,00%; created_at: 2025-11-16 00:00:00; updated_at: 2025-11-16 00:00:00\n- rate_date: 2025-11-14 00:00:00; usd_buy_amt: R$ 5,30; usd_sell_amt: R$ 5,30; usd_var_pct: 0,00%; eur_buy_amt: R$ 6,15; eur_sell_amt: R$ 6,16; eur_var_pct: -1,00%; created_at: 2025-11-15 00:00:00; updated_at: 2025-11-15 00:00:00\n- rate_date: 2025-11-13 00:00:00; usd_buy_amt: R$ 5,30; usd_sell_amt: R$ 5,30; usd_var_pct: 4,00%; eur_buy_amt: R$ 6,16; eur_sell_amt: R$ 6,17; eur_var_pct: 8,00%; created_at: 2025-11-14 00:00:00; updated_at: 2025-11-14 00:00:00\n- rate_date: 2025-11-12 00:00:00; usd_buy_amt: R$ 5,29; usd_sell_amt: R$ 5,29; usd_var_pct: 2,00%; eur_buy_amt: R$ 6,14; eur_sell_amt: R$ 6,14; eur_var_pct: 3,00%; created_at: 2025-11-13 00:00:00; updated_at: 2025-11-13 00:00:00\n- rate_date: 2025-11-11 00:00:00; usd_buy_amt: R$ 5,27; usd_sell_amt: R$ 5,27; usd_var_pct: 2,00%; eur_buy_amt: R$ 6,11; eur_sell_amt: R$ 6,11; eur_var_pct: -2,00%; created_at: 2025-11-12 00:00:00; updated_at: 2025-11-12 00:00:00\n- rate_date: 2025-11-10 00:00:00; usd_buy_amt: R$ 5,33; usd_sell_amt: R$ 5,33; usd_var_pct: 0,00%; eur_buy_amt: R$ 6,17; eur_sell_amt: R$ 6,17; eur_var_pct: 12,00%; created_at: 2025-11-09 00:00:00; updated_at: 2025-11-09 00:00:00\n- rate_date: 2025-11-07 00:00:00; usd_buy_amt: R$ 5,33; usd_sell_amt: R$ 5,33; usd_var_pct: 0,00%; eur_buy_amt: R$ 6,17; eur_sell_amt: R$ 6,17; eur_var_pct: 12,00%; created_at: 2025-11-08 00:00:00; updated_at: 2025-11-08 00:00:00\n- rate_date: 2025-11-06 00:00:00; usd_buy_amt: R$ 5,35; usd_sell_amt: R$ 5,35; usd_var_pct: 5,00%; eur_buy_amt: R$ 6,18; eur_sell_amt: R$ 6,18; eur_var_pct: 6,00%; created_at: 2025-11-07 00:00:00; updated_at: 2025-11-07 00:00:00\n- rate_date: 2025-11-05 00:00:00; usd_buy_amt: R$ 5,36; usd_sell_amt: R$ 5,36; usd_var_pct: 9,00%; eur_buy_amt: R$ 6,16; eur_sell_amt: R$ 6,16; eur_var_pct: 9,00%; created_at: 2025-11-06 00:00:00; updated_at: 2025-11-06 00:00:00\n- rate_date: 2025-11-04 00:00:00; usd_buy_amt: R$ 5,40; usd_sell_amt: R$ 5,40; usd_var_pct: -4,00%; eur_buy_amt: R$ 6,20; eur_sell_amt: R$ 6,20; eur_var_pct: -2,00%; created_at: 2025-11-05 00:00:00; updated_at: 2025-11-05 00:00:00"
+}

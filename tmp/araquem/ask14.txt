@@ -1,0 +1,1472 @@
+{
+    "status": {
+        "reason": "ok",
+        "message": "ok"
+    },
+    "results": {
+        "history_market_indicators": [
+            {
+                "indicator_date": "2025-11-14 00:00:00",
+                "indicator_name": "SELIC",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-15 00:00:00",
+                "updated_at": "2025-11-15 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-13 00:00:00",
+                "indicator_name": "SELIC",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-14 00:00:00",
+                "updated_at": "2025-11-14 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-13 00:00:00",
+                "indicator_name": "POUPANCA",
+                "indicator_amt": "R$ 0,67",
+                "created_at": "2025-11-15 00:00:00",
+                "updated_at": "2025-11-15 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-13 00:00:00",
+                "indicator_name": "CDI-DAILY",
+                "indicator_amt": "R$ 0,06",
+                "created_at": "2025-11-15 00:00:00",
+                "updated_at": "2025-11-15 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-13 00:00:00",
+                "indicator_name": "CDI",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-15 00:00:00",
+                "updated_at": "2025-11-15 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-12 00:00:00",
+                "indicator_name": "SELIC",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-13 00:00:00",
+                "updated_at": "2025-11-13 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-12 00:00:00",
+                "indicator_name": "POUPANCA",
+                "indicator_amt": "R$ 0,67",
+                "created_at": "2025-11-14 00:00:00",
+                "updated_at": "2025-11-14 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-12 00:00:00",
+                "indicator_name": "CDI-DAILY",
+                "indicator_amt": "R$ 0,06",
+                "created_at": "2025-11-14 00:00:00",
+                "updated_at": "2025-11-14 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-12 00:00:00",
+                "indicator_name": "CDI",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-14 00:00:00",
+                "updated_at": "2025-11-14 00:00:00"
+            },
+            {
+                "indicator_date": "2025-11-11 00:00:00",
+                "indicator_name": "SELIC",
+                "indicator_amt": "R$ 14,90",
+                "created_at": "2025-11-12 00:00:00",
+                "updated_at": "2025-11-12 00:00:00"
+            }
+        ]
+    },
+    "meta": {
+        "planner": {
+            "normalized": "taxa selic",
+            "tokens": [
+                "taxa",
+                "selic"
+            ],
+            "intent_scores": {
+                "client_fiis_positions": 0.0,
+                "fiis_cadastro": 0.0,
+                "fiis_precos": -1.1,
+                "fiis_dividendos": 0.0,
+                "fiis_financials_snapshot": 0.0,
+                "fiis_financials_revenue_schedule": 0.0,
+                "fiis_financials_risk": -1.1,
+                "fiis_imoveis": 0.0,
+                "fiis_noticias": 0.0,
+                "fiis_processos": 0.0,
+                "fiis_rankings": 0.0,
+                "history_b3_indexes": -1.1,
+                "history_currency_rates": 0.0,
+                "history_market_indicators": 2.2
+            },
+            "details": {
+                "client_fiis_positions": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "client_fiis_positions"
+                    ]
+                },
+                "fiis_cadastro": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_cadastro"
+                    ]
+                },
+                "fiis_precos": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "selic"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_precos"
+                    ]
+                },
+                "fiis_dividendos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_dividendos"
+                    ]
+                },
+                "fiis_financials_snapshot": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_snapshot"
+                    ]
+                },
+                "fiis_financials_revenue_schedule": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_revenue_schedule"
+                    ]
+                },
+                "fiis_financials_risk": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "selic"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_financials_risk"
+                    ]
+                },
+                "fiis_imoveis": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_imoveis"
+                    ]
+                },
+                "fiis_noticias": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_noticias"
+                    ]
+                },
+                "fiis_processos": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_processos"
+                    ]
+                },
+                "fiis_rankings": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "fiis_rankings"
+                    ]
+                },
+                "history_b3_indexes": {
+                    "token_includes": [],
+                    "token_excludes": [
+                        "selic"
+                    ],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_b3_indexes"
+                    ]
+                },
+                "history_currency_rates": {
+                    "token_includes": [],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_currency_rates"
+                    ]
+                },
+                "history_market_indicators": {
+                    "token_includes": [
+                        "selic",
+                        "taxa"
+                    ],
+                    "token_excludes": [],
+                    "phrase_includes": [],
+                    "phrase_excludes": [],
+                    "anti_penalty": 0.0,
+                    "entities": [
+                        "history_market_indicators"
+                    ]
+                }
+            },
+            "chosen": {
+                "intent": "history_market_indicators",
+                "entity": "history_market_indicators",
+                "score": 1.955377217208339,
+                "accepted": true,
+                "context_allowed": false
+            },
+            "explain": {
+                "signals": {
+                    "token_scores": [
+                        {
+                            "token": "selic",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_precos"
+                        },
+                        {
+                            "token": "selic",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "fiis_financials_risk"
+                        },
+                        {
+                            "token": "selic",
+                            "weight": -1.1,
+                            "hits": 1,
+                            "intent": "history_b3_indexes"
+                        },
+                        {
+                            "token": "selic",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_market_indicators"
+                        },
+                        {
+                            "token": "taxa",
+                            "weight": 1.1,
+                            "hits": 1,
+                            "intent": "history_market_indicators"
+                        }
+                    ],
+                    "phrase_scores": [],
+                    "anti_hits": [],
+                    "normalizations": [
+                        {
+                            "step": "lower",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_accents",
+                            "applied": true
+                        },
+                        {
+                            "step": "strip_punct",
+                            "applied": true
+                        }
+                    ],
+                    "weights_summary": {
+                        "token_sum": -1.1,
+                        "phrase_sum": 0.0,
+                        "anti_sum": 0.0,
+                        "total": -1.1
+                    }
+                },
+                "decision_path": [
+                    {
+                        "stage": "tokenize",
+                        "type": "normalization",
+                        "value": "taxa selic",
+                        "result": [
+                            "taxa",
+                            "selic"
+                        ]
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_integration",
+                        "rag_weight": 0.15
+                    },
+                    {
+                        "stage": "fuse",
+                        "type": "rag_fusion",
+                        "weight": 0.15,
+                        "affected": 5
+                    },
+                    {
+                        "stage": "rank",
+                        "type": "intent_scoring",
+                        "intent": "history_market_indicators",
+                        "score": 1.955377217208339
+                    },
+                    {
+                        "stage": "route",
+                        "type": "entity_select",
+                        "entity": "history_market_indicators",
+                        "score_after": 1.955377217208339
+                    },
+                    {
+                        "stage": "rag",
+                        "type": "entity_hints",
+                        "k": 5,
+                        "min_score": 0.25,
+                        "weight": 0.35,
+                        "hints_keys": [
+                            "fiis_rankings",
+                            "history_market_indicators"
+                        ]
+                    }
+                ],
+                "scoring": {
+                    "intent": [
+                        {
+                            "name": "history_market_indicators",
+                            "score": 1.955377217208339,
+                            "winner": true
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "history_market_indicators",
+                            "score": 1.955377217208339,
+                            "winner": true
+                        }
+                    ],
+                    "intent_top2_gap_base": 2.2,
+                    "intent_top2_gap_final": 1.8755209222144602,
+                    "final_combined": [
+                        {
+                            "intent": "history_market_indicators",
+                            "score": 1.955377217208339
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "score": 0.07985629499387886
+                        },
+                        {
+                            "intent": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "score": -0.935
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "score": -0.935
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "score": -0.935
+                        }
+                    ],
+                    "rag_hint": [
+                        {
+                            "entity": "history_market_indicators",
+                            "score": 0.5691814480555925
+                        },
+                        {
+                            "entity": "fiis_rankings",
+                            "score": 0.5323752999591924
+                        }
+                    ],
+                    "rag_signal": [
+                        {
+                            "intent": "client_fiis_positions",
+                            "entity": "client_fiis_positions",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_cadastro",
+                            "entity": "fiis_cadastro",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_precos",
+                            "entity": "fiis_precos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_dividendos",
+                            "entity": "fiis_dividendos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_snapshot",
+                            "entity": "fiis_financials_snapshot",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_revenue_schedule",
+                            "entity": "fiis_financials_revenue_schedule",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_financials_risk",
+                            "entity": "fiis_financials_risk",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_imoveis",
+                            "entity": "fiis_imoveis",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_noticias",
+                            "entity": "fiis_noticias",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_processos",
+                            "entity": "fiis_processos",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "fiis_rankings",
+                            "entity": "fiis_rankings",
+                            "score": 0.5323752999591924
+                        },
+                        {
+                            "intent": "history_b3_indexes",
+                            "entity": "history_b3_indexes",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_currency_rates",
+                            "entity": "history_currency_rates",
+                            "score": 0.0
+                        },
+                        {
+                            "intent": "history_market_indicators",
+                            "entity": "history_market_indicators",
+                            "score": 0.5691814480555925
+                        }
+                    ],
+                    "combined": {
+                        "intent": [
+                            {
+                                "name": "history_market_indicators",
+                                "base": 2.2,
+                                "rag": 0.5691814480555925,
+                                "combined": 1.955377217208339,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": 0.0,
+                                "rag": 0.5323752999591924,
+                                "combined": 0.07985629499387886,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            }
+                        ],
+                        "entity": [
+                            {
+                                "name": "history_market_indicators",
+                                "base": 2.2,
+                                "rag": 0.5691814480555925,
+                                "combined": 1.955377217208339,
+                                "winner": true
+                            },
+                            {
+                                "name": "fiis_rankings",
+                                "base": 0.0,
+                                "rag": 0.5323752999591924,
+                                "combined": 0.07985629499387886,
+                                "winner": false
+                            },
+                            {
+                                "name": "client_fiis_positions",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_cadastro",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_dividendos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_snapshot",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_revenue_schedule",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_imoveis",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_noticias",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_processos",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_currency_rates",
+                                "base": 0.0,
+                                "rag": 0.0,
+                                "combined": 0.0,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_precos",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            },
+                            {
+                                "name": "fiis_financials_risk",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            },
+                            {
+                                "name": "history_b3_indexes",
+                                "base": -1.1,
+                                "rag": 0.0,
+                                "combined": -0.935,
+                                "winner": false
+                            }
+                        ],
+                        "weight": 0.15,
+                        "notes": "blend=base*(1-w)+rag*w"
+                    },
+                    "thresholds_applied": {
+                        "min_score": 0.8,
+                        "min_gap": 0.1,
+                        "gap": 1.8755209222144602,
+                        "accepted": true,
+                        "source": "final"
+                    }
+                },
+                "rag": {
+                    "enabled": true,
+                    "index_path": "data/embeddings/store/embeddings.jsonl",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "entity_hints": {
+                        "history_market_indicators": 0.5691814480555925,
+                        "fiis_rankings": 0.5323752999591924
+                    },
+                    "error": null,
+                    "used": true,
+                    "re_rank": {
+                        "enabled": true,
+                        "mode": "blend",
+                        "weight": 0.15
+                    }
+                },
+                "rag_context": {
+                    "top_doc": "indicators-catalog",
+                    "snippets": [
+                        "no**.\n\nEm outras palavras, o Sharpe indica **se o retorno obtido compensa a volatilidade enfrentada**.\n\n---\n\n### ⚙️ Fórmula\n\\[\nSR = \\frac{R_p - R_f}{\\sigma_p}\n\\]\n\nonde:\n- \\( R_p \\): retorno médio do portfólio (ou ativo)\n- \\( R_f \\): taxa…",
+                        "icador\n - taxa\n - indice\n weights:\n identifiers: 1.0\n keywords: 1.5\n synonyms: 0.5\n\norder_by_whitelist:\n- indicator_date desc\n- indicator_name asc\n- indicator_amt desc\n\naggregations:\n enabled: true\n defaults:\n inference: true\n list:…",
+                        "- sharpe ratio\n exclude:\n - soma\n - cdi\n - selic\n - ipca\n - inpc\n phrases:\n include:\n - indicador de risco do\n - risco atual do\n - volatilidade do\n - sharpe do\n - sharpe ratio do\n - sortino do\n - treynor do\n - jensen do\n - alfa de jensen…"
+                    ],
+                    "reason": "Contexto cita tokens do intent vencedor: cdi, selic, taxa para entity history_market_indicators."
+                },
+                "fusion": {
+                    "enabled": true,
+                    "used": true,
+                    "weight": 0.15,
+                    "mode": "blend",
+                    "affected_entities": [
+                        "history_market_indicators",
+                        "fiis_rankings",
+                        "fiis_precos",
+                        "fiis_financials_risk",
+                        "history_b3_indexes"
+                    ],
+                    "error": null
+                },
+                "context": {
+                    "enabled": false,
+                    "planner_enabled": true,
+                    "entity_allowed": false,
+                    "entity": "history_market_indicators",
+                    "allowed_entities": [
+                        "fiis_precos",
+                        "fiis_dividendos",
+                        "fiis_financials_risk",
+                        "fiis_financials_snapshot",
+                        "fiis_imoveis",
+                        "fiis_rankings",
+                        "fiis_processos",
+                        "fiis_noticias"
+                    ],
+                    "denied_entities": [
+                        "client_fiis_positions",
+                        "history_b3_indexes",
+                        "history_currency_rates",
+                        "history_market_indicators"
+                    ]
+                }
+            }
+        },
+        "result_key": "history_market_indicators",
+        "intent": "history_market_indicators",
+        "entity": "history_market_indicators",
+        "planner_intent": "history_market_indicators",
+        "planner_entity": "history_market_indicators",
+        "planner_score": 1.955377217208339,
+        "rows_total": 10,
+        "elapsed_ms": 491,
+        "explain": {
+            "signals": {
+                "token_scores": [
+                    {
+                        "token": "selic",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_precos"
+                    },
+                    {
+                        "token": "selic",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "fiis_financials_risk"
+                    },
+                    {
+                        "token": "selic",
+                        "weight": -1.1,
+                        "hits": 1,
+                        "intent": "history_b3_indexes"
+                    },
+                    {
+                        "token": "selic",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_market_indicators"
+                    },
+                    {
+                        "token": "taxa",
+                        "weight": 1.1,
+                        "hits": 1,
+                        "intent": "history_market_indicators"
+                    }
+                ],
+                "phrase_scores": [],
+                "anti_hits": [],
+                "normalizations": [
+                    {
+                        "step": "lower",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_accents",
+                        "applied": true
+                    },
+                    {
+                        "step": "strip_punct",
+                        "applied": true
+                    }
+                ],
+                "weights_summary": {
+                    "token_sum": -1.1,
+                    "phrase_sum": 0.0,
+                    "anti_sum": 0.0,
+                    "total": -1.1
+                }
+            },
+            "decision_path": [
+                {
+                    "stage": "tokenize",
+                    "type": "normalization",
+                    "value": "taxa selic",
+                    "result": [
+                        "taxa",
+                        "selic"
+                    ]
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_integration",
+                    "rag_weight": 0.15
+                },
+                {
+                    "stage": "fuse",
+                    "type": "rag_fusion",
+                    "weight": 0.15,
+                    "affected": 5
+                },
+                {
+                    "stage": "rank",
+                    "type": "intent_scoring",
+                    "intent": "history_market_indicators",
+                    "score": 1.955377217208339
+                },
+                {
+                    "stage": "route",
+                    "type": "entity_select",
+                    "entity": "history_market_indicators",
+                    "score_after": 1.955377217208339
+                },
+                {
+                    "stage": "rag",
+                    "type": "entity_hints",
+                    "k": 5,
+                    "min_score": 0.25,
+                    "weight": 0.35,
+                    "hints_keys": [
+                        "fiis_rankings",
+                        "history_market_indicators"
+                    ]
+                }
+            ],
+            "scoring": {
+                "intent": [
+                    {
+                        "name": "history_market_indicators",
+                        "score": 1.955377217208339,
+                        "winner": true
+                    }
+                ],
+                "entity": [
+                    {
+                        "name": "history_market_indicators",
+                        "score": 1.955377217208339,
+                        "winner": true
+                    }
+                ],
+                "intent_top2_gap_base": 2.2,
+                "intent_top2_gap_final": 1.8755209222144602,
+                "final_combined": [
+                    {
+                        "intent": "history_market_indicators",
+                        "score": 1.955377217208339
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "score": 0.07985629499387886
+                    },
+                    {
+                        "intent": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "score": -0.935
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "score": -0.935
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "score": -0.935
+                    }
+                ],
+                "rag_hint": [
+                    {
+                        "entity": "history_market_indicators",
+                        "score": 0.5691814480555925
+                    },
+                    {
+                        "entity": "fiis_rankings",
+                        "score": 0.5323752999591924
+                    }
+                ],
+                "rag_signal": [
+                    {
+                        "intent": "client_fiis_positions",
+                        "entity": "client_fiis_positions",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_cadastro",
+                        "entity": "fiis_cadastro",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_precos",
+                        "entity": "fiis_precos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_dividendos",
+                        "entity": "fiis_dividendos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_snapshot",
+                        "entity": "fiis_financials_snapshot",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_revenue_schedule",
+                        "entity": "fiis_financials_revenue_schedule",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_financials_risk",
+                        "entity": "fiis_financials_risk",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_imoveis",
+                        "entity": "fiis_imoveis",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_noticias",
+                        "entity": "fiis_noticias",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_processos",
+                        "entity": "fiis_processos",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "fiis_rankings",
+                        "entity": "fiis_rankings",
+                        "score": 0.5323752999591924
+                    },
+                    {
+                        "intent": "history_b3_indexes",
+                        "entity": "history_b3_indexes",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_currency_rates",
+                        "entity": "history_currency_rates",
+                        "score": 0.0
+                    },
+                    {
+                        "intent": "history_market_indicators",
+                        "entity": "history_market_indicators",
+                        "score": 0.5691814480555925
+                    }
+                ],
+                "combined": {
+                    "intent": [
+                        {
+                            "name": "history_market_indicators",
+                            "base": 2.2,
+                            "rag": 0.5691814480555925,
+                            "combined": 1.955377217208339,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": 0.0,
+                            "rag": 0.5323752999591924,
+                            "combined": 0.07985629499387886,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        }
+                    ],
+                    "entity": [
+                        {
+                            "name": "history_market_indicators",
+                            "base": 2.2,
+                            "rag": 0.5691814480555925,
+                            "combined": 1.955377217208339,
+                            "winner": true
+                        },
+                        {
+                            "name": "fiis_rankings",
+                            "base": 0.0,
+                            "rag": 0.5323752999591924,
+                            "combined": 0.07985629499387886,
+                            "winner": false
+                        },
+                        {
+                            "name": "client_fiis_positions",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_cadastro",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_dividendos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_snapshot",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_revenue_schedule",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_imoveis",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_noticias",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_processos",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_currency_rates",
+                            "base": 0.0,
+                            "rag": 0.0,
+                            "combined": 0.0,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_precos",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        },
+                        {
+                            "name": "fiis_financials_risk",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        },
+                        {
+                            "name": "history_b3_indexes",
+                            "base": -1.1,
+                            "rag": 0.0,
+                            "combined": -0.935,
+                            "winner": false
+                        }
+                    ],
+                    "weight": 0.15,
+                    "notes": "blend=base*(1-w)+rag*w"
+                },
+                "thresholds_applied": {
+                    "min_score": 0.8,
+                    "min_gap": 0.1,
+                    "gap": 1.8755209222144602,
+                    "accepted": true,
+                    "source": "final"
+                }
+            },
+            "rag": {
+                "enabled": true,
+                "index_path": "data/embeddings/store/embeddings.jsonl",
+                "k": 5,
+                "min_score": 0.25,
+                "weight": 0.35,
+                "entity_hints": {
+                    "history_market_indicators": 0.5691814480555925,
+                    "fiis_rankings": 0.5323752999591924
+                },
+                "error": null,
+                "used": true,
+                "re_rank": {
+                    "enabled": true,
+                    "mode": "blend",
+                    "weight": 0.15
+                }
+            },
+            "rag_context": {
+                "top_doc": "indicators-catalog",
+                "snippets": [
+                    "no**.\n\nEm outras palavras, o Sharpe indica **se o retorno obtido compensa a volatilidade enfrentada**.\n\n---\n\n### ⚙️ Fórmula\n\\[\nSR = \\frac{R_p - R_f}{\\sigma_p}\n\\]\n\nonde:\n- \\( R_p \\): retorno médio do portfólio (ou ativo)\n- \\( R_f \\): taxa…",
+                    "icador\n - taxa\n - indice\n weights:\n identifiers: 1.0\n keywords: 1.5\n synonyms: 0.5\n\norder_by_whitelist:\n- indicator_date desc\n- indicator_name asc\n- indicator_amt desc\n\naggregations:\n enabled: true\n defaults:\n inference: true\n list:…",
+                    "- sharpe ratio\n exclude:\n - soma\n - cdi\n - selic\n - ipca\n - inpc\n phrases:\n include:\n - indicador de risco do\n - risco atual do\n - volatilidade do\n - sharpe do\n - sharpe ratio do\n - sortino do\n - treynor do\n - jensen do\n - alfa de jensen…"
+                ],
+                "reason": "Contexto cita tokens do intent vencedor: cdi, selic, taxa para entity history_market_indicators."
+            },
+            "fusion": {
+                "enabled": true,
+                "used": true,
+                "weight": 0.15,
+                "mode": "blend",
+                "affected_entities": [
+                    "history_market_indicators",
+                    "fiis_rankings",
+                    "fiis_precos",
+                    "fiis_financials_risk",
+                    "history_b3_indexes"
+                ],
+                "error": null
+            },
+            "context": {
+                "enabled": false,
+                "planner_enabled": true,
+                "entity_allowed": false,
+                "entity": "history_market_indicators",
+                "allowed_entities": [
+                    "fiis_precos",
+                    "fiis_dividendos",
+                    "fiis_financials_risk",
+                    "fiis_financials_snapshot",
+                    "fiis_imoveis",
+                    "fiis_rankings",
+                    "fiis_processos",
+                    "fiis_noticias"
+                ],
+                "denied_entities": [
+                    "client_fiis_positions",
+                    "history_b3_indexes",
+                    "history_currency_rates",
+                    "history_market_indicators"
+                ]
+            }
+        },
+        "explain_analytics": {
+            "request_id": "c54defb199b44d66a9aabe195b852771",
+            "timestamp": "2025-11-24T20:46:42.445827+00:00",
+            "summary": "Consulta 'history_market_indicators' em 'history_market_indicators' via view history_market_indicators (latência 491ms, cache miss).",
+            "details": {
+                "intent": "history_market_indicators",
+                "entity": "history_market_indicators",
+                "view": "history_market_indicators",
+                "route_id": "history_market_indicators",
+                "cache_hit": false,
+                "latency_ms": 491.0,
+                "route_source": "planner",
+                "notes": null
+            }
+        },
+        "cache": {
+            "hit": false,
+            "key": null,
+            "ttl": null
+        },
+        "aggregates": {
+            "agg": null,
+            "window": null,
+            "order": "desc"
+        },
+        "narrator": {
+            "enabled": false,
+            "shadow": false,
+            "model": "sirios-narrator:latest",
+            "latency_ms": 0.09349600077257492,
+            "error": "llm_disabled_by_policy",
+            "used": false,
+            "strategy": "llm_disabled_by_policy",
+            "effective_policy": {
+                "llm_enabled": false,
+                "shadow": false,
+                "max_llm_rows": 0,
+                "use_rag_in_prompt": false,
+                "model": "sirios-narrator:latest"
+            },
+            "rag": {
+                "enabled": true,
+                "question": "taxa SELIC",
+                "intent": "history_market_indicators",
+                "entity": "history_market_indicators",
+                "used_collections": [
+                    "concepts-macro"
+                ],
+                "chunks": [
+                    {
+                        "text": "no**.\n\nEm outras palavras, o Sharpe indica **se o retorno obtido compensa a volatilidade enfrentada**.\n\n---\n\n### ⚙️ Fórmula\n\\[\nSR = \\frac{R_p - R_f}{\\sigma_p}\n\\]\n\nonde:\n- \\( R_p \\): retorno médio do portfólio (ou ativo)\n- \\( R_f \\): taxa livre de risco (ex: Selic, CDI)\n- \\( \\sigma_p \\): desvio padrão dos retornos (volatilidade total)\n\n---\n\n### 📊 Interpretação\n| Faixa de Sharpe | Interpretação prática | Avaliação |\n|------------------|------------------------|------------|\n| **SR < 0** | Retorno abaixo da taxa livre de risco | Ineficiente |\n| **0 ≤ SR < 1** | Retorno moderado em relação ao risco | Abaixo da média |\n| **1 ≤ SR < 2** | Bom equilíbrio risco-retorno | Eficiente |\n| **SR ≥ 2** | Excelente retorno para o risco | Altamente eficiente |\n\n---\n\n### 🧮 Exemplo de cálculo (Python)\n```python\nsharpe_ratio = (mean(returns_asset) - risk_free_rate) / std(returns_asset)\n```\n\n---\n\n### 🧠 Aplicação\n\n* Comparar o **desempenho ajustado ao risco** entre diferentes FIIs ou carteiras.\n* Avaliar a **eficiência do gestor**.\n* Utilizar como métrica de seleção em estratégias quantitativas.\n\n---\n\n### 🧾 Notas técnicas (SIRIOS)\n\n* Base: retornos diários logarítmicos (janela de 252 dias).\n* Taxa livre",
+                        "score": 0.6729924549642973,
+                        "doc_id": "indicators-catalog",
+                        "chunk_id": "indicators-catalog:5",
+                        "source_id": "indicators-catalog",
+                        "collection": "araquem-core",
+                        "path": "data/raw/indicators/catalog.md",
+                        "entity": null,
+                        "tags": [
+                            "concepts",
+                            "indicators",
+                            "risk",
+                            "performance",
+                            "fiis"
+                        ]
+                    },
+                    {
+                        "text": "icador\n - taxa\n - indice\n weights:\n identifiers: 1.0\n keywords: 1.5\n synonyms: 0.5\n\norder_by_whitelist:\n- indicator_date desc\n- indicator_name asc\n- indicator_amt desc\n\naggregations:\n enabled: true\n defaults:\n inference: true\n list:\n limit: 10\n order: desc\n\nresponses:\n default:\n kind: list\n template: responses/list.md.j2",
+                        "score": 0.5691814480555925,
+                        "doc_id": "entity-history-market-indicators:entity-history-market-indicators",
+                        "chunk_id": "entity-history-market-indicators:entity-history-market-indicators:1",
+                        "source_id": "entity-history-market-indicators",
+                        "collection": "araquem-core",
+                        "path": "data/entities/history_market_indicators/entity.yaml",
+                        "entity": "history_market_indicators",
+                        "tags": [
+                            "entities",
+                            "market",
+                            "macro",
+                            "indicators",
+                            "entity:history_market_indicators"
+                        ]
+                    },
+                    {
+                        "text": " - sharpe ratio\n exclude:\n - soma\n - cdi\n - selic\n - ipca\n - inpc\n phrases:\n include:\n - indicador de risco do\n - risco atual do\n - volatilidade do\n - sharpe do\n - sharpe ratio do\n - sortino do\n - treynor do\n - jensen do\n - alfa de jensen do\n - beta do\n - drawdown do\n - r2 do\n - r² do\n - coeficiente de determinacao do\n - fiis com menor drawdown\n - fiis com menor mdd\n - fundos com menor drawdown\n - fundos com menor risco de queda\n exclude: []\n entities: [fiis_financials_risk]\n\n - name: fiis_imoveis\n tokens:\n include:\n - imovel\n - imoveis\n - propriedade\n - propriedades\n - ativo\n - ativos\n - portfolio\n - galpao\n - galpoes\n - ocupacao\n - unidades\n - metragem\n - endereco\n - localizacao\n - onde ficam\n - vacancia\n - vacancia fisica\n - vacancia financeira\n exclude: []\n phrases:\n include:\n - vacancia fisica do fii\n - vacancia fisica do fundo\n - vacancia fisica do\n - imoveis do\n - quais imoveis do\n - lista de propriedades do\n - area total do\n - vacancia do\n - vacancia dos imoveis\n - vacancia do imovel\n - status do\n - status dos imoveis do\n exclude: []\n entities: [fiis_imoveis]\n\n - name: fiis_noticias\n tokens:\n include:\n - noticia\n - noticias\n - materia\n - reportagem\n - atualizacao\n - ultimas",
+                        "score": 0.5498837721937488,
+                        "doc_id": "ontology-entity",
+                        "chunk_id": "ontology-entity:5",
+                        "source_id": "ontology-entity",
+                        "collection": "araquem-core",
+                        "path": "data/ontology/entity.yaml",
+                        "entity": null,
+                        "tags": [
+                            "ontology",
+                            "intents",
+                            "entities"
+                        ]
+                    },
+                    {
+                        "text": "ivo)\n- \\( R_f \\): taxa livre de risco (ex: CDI, Selic)\n- \\( \\beta_p \\): Beta do ativo em relação ao mercado\n\n---\n\n### 📊 Interpretação\n| Faixa de TR | Interpretação prática | Avaliação |\n|--------------|------------------------|------------|\n| **TR < 0** | Retorno abaixo da taxa livre de risco | Ineficiente |\n| **0 ≤ TR < 0.5** | Baixa compensação de risco sistemático | Abaixo da média |\n| **0.5 ≤ TR < 1.0** | Boa compensação | Eficiente |\n| **TR ≥ 1.0** | Alta eficiência de risco-retorno | Excelente desempenho |\n\n*(valores de referência indicativos, podem variar conforme a janela e o tipo de ativo)*\n\n---\n\n### 🧮 Exemplo de cálculo (Python)\n```python\ntreynor_ratio = (mean(returns_asset) - risk_free_rate) / beta_asset\n```\n\n---\n\n### 🧠 Aplicação\n\n* Comparar fundos com diferentes exposições ao mercado (diferentes Betas).\n* Avaliar **gestores que buscam superar o mercado** com risco sistemático controlado.\n* Complementar a análise do Sharpe Ratio (quando o Beta é mais relevante que a volatilidade total).\n\n---\n\n### 🧾 Notas técnicas (SIRIOS)\n\n* Usa retornos logarítmicos diários (janela de 252 dias).\n* Beta calculado conforme o módulo legado `fiis_metrics` (desativado).\n* Taxa livre de risco",
+                        "score": 0.5363518639953913,
+                        "doc_id": "indicators-catalog",
+                        "chunk_id": "indicators-catalog:10",
+                        "source_id": "indicators-catalog",
+                        "collection": "araquem-core",
+                        "path": "data/raw/indicators/catalog.md",
+                        "entity": null,
+                        "tags": [
+                            "concepts",
+                            "indicators",
+                            "risk",
+                            "performance",
+                            "fiis"
+                        ]
+                    }
+                ],
+                "total_chunks": 4,
+                "policy": {
+                    "max_chunks": 4,
+                    "collections": [
+                        "concepts-macro"
+                    ],
+                    "min_score": 0.1
+                },
+                "error": null
+            },
+            "compute_mode": "data",
+            "focus_metric_key": null
+        },
+        "requested_metrics": []
+    },
+    "answer": "Foram encontrados 10 registros para a entidade history_market_indicators.\n- indicator_date: 2025-11-14 00:00:00; indicator_name: SELIC; indicator_amt: R$ 14,90; created_at: 2025-11-15 00:00:00; updated_at: 2025-11-15 00:00:00\n- indicator_date: 2025-11-13 00:00:00; indicator_name: SELIC; indicator_amt: R$ 14,90; created_at: 2025-11-14 00:00:00; updated_at: 2025-11-14 00:00:00\n- indicator_date: 2025-11-13 00:00:00; indicator_name: POUPANCA; indicator_amt: R$ 0,67; created_at: 2025-11-15 00:00:00; updated_at: 2025-11-15 00:00:00\n- indicator_date: 2025-11-13 00:00:00; indicator_name: CDI-DAILY; indicator_amt: R$ 0,06; created_at: 2025-11-15 00:00:00; updated_at: 2025-11-15 00:00:00\n- indicator_date: 2025-11-13 00:00:00; indicator_name: CDI; indicator_amt: R$ 14,90; created_at: 2025-11-15 00:00:00; updated_at: 2025-11-15 00:00:00\n- indicator_date: 2025-11-12 00:00:00; indicator_name: SELIC; indicator_amt: R$ 14,90; created_at: 2025-11-13 00:00:00; updated_at: 2025-11-13 00:00:00\n- indicator_date: 2025-11-12 00:00:00; indicator_name: POUPANCA; indicator_amt: R$ 0,67; created_at: 2025-11-14 00:00:00; updated_at: 2025-11-14 00:00:00\n- indicator_date: 2025-11-12 00:00:00; indicator_name: CDI-DAILY; indicator_amt: R$ 0,06; created_at: 2025-11-14 00:00:00; updated_at: 2025-11-14 00:00:00\n- indicator_date: 2025-11-12 00:00:00; indicator_name: CDI; indicator_amt: R$ 14,90; created_at: 2025-11-14 00:00:00; updated_at: 2025-11-14 00:00:00\n- indicator_date: 2025-11-11 00:00:00; indicator_name: SELIC; indicator_amt: R$ 14,90; created_at: 2025-11-12 00:00:00; updated_at: 2025-11-12 00:00:00"
+}
