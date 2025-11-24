@@ -6,11 +6,12 @@
 
 ## **1. RAG – Conteúdo e Políticas**
 
-* [X] Revisar collections por entidade em `data/policies/rag.yaml`
-* [X] Criar/organizar collections específicas (ex.: fiis_risk, fiis_rankings, macro, mercado)
+* [✔️] Revisar collections por entidade em `data/policies/rag.yaml`
+* [✔️] Criar/organizar collections específicas (ex.: fiis_risk, fiis_rankings, macro, mercado)
 * [ ] Validar quantidade e qualidade dos chunks
-* [ ] Regerar embeddings se necessário (com batch embed)
-* [ ] Testar RAG fusion/re-rank em perguntas reais
+* [ ] Revisar qualidade semântica dos chunks (se estão úteis de fato)
+* [ ] Regerar embeddings se necessário (nomic-embed-text, batch 8)
+* [ ] Testar RAG fusion/re-rank com perguntas reais (Sharpe, Beta, snapshot, preço, notícias)
 
 ---
 
@@ -26,9 +27,10 @@
 
 ## **3. Narrator – Versão para Produção**
 
+* [✔️] Políticas estruturadas
+* [✔️] Modelo sirios-narrator criado
 * [ ] Revisar `data/policies/narrator.yaml`
 * [ ] Definir níveis de:
-
   * [ ] llm_enabled
   * [ ] shadow
   * [ ] max_llm_rows
