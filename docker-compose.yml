@@ -52,17 +52,23 @@ services:
     volumes:
       - ollama:/root/.ollama
     environment:
-      - OLLAMA_NUM_PARALLEL=1
-      - OLLAMA_MAX_LOADED_MODELS=1
-      - OLLAMA_KV_CACHE_TYPE=f16
-      - OLLAMA_FLASH_ATTN=0
-      - OLLAMA_CPU_THREADS=4
+      # EXECUÇÃO
+      - OLLAMA_NUM_PARALLEL=1        # 1 requisição por vez (evita thrash de memória)
+      - OLLAMA_MAX_LOADED_MODELS=1   # só o sirios-narrator na RAM
+      - OLLAMA_CPU_THREADS=8         # alinha com num_thread do Modelfile
+
+      # CACHE / LATÊNCIA
+      - OLLAMA_KEEP_ALIVE=600        # mantém o modelo carregado ~10 minutos
+      - OLLAMA_KV_CACHE_TYPE=f16     # bom compromisso para CPU
+
+      # (opcional) se quiser logs menos verbosos:
+      - OLLAMA_LOG_LEVEL=warn
     healthcheck:
       test: ["CMD-SHELL", "ollama ps >/dev/null 2>&1 || exit 1"]
       interval: 5s
-      timeout: 3s
+      timeout: 5s
       retries: 30
-      start_period: 10s
+      start_period: 15s
     networks: [araquem_network]
 
   ollama-init:

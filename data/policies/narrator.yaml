@@ -4,71 +4,88 @@ terms:
     scope: "narrator"
     version: 1
 
+# Política global + overrides
 default:
-  llm_enabled: false
+  llm_enabled: false          # default: não usa LLM
   shadow: false
-  max_llm_rows: 0
-  use_rag_in_prompt: false
   model: sirios-narrator:latest
+  style: executivo
+  max_llm_rows: 0             # 0 = nunca usa LLM
+  max_prompt_tokens: 4000
+  max_output_tokens: 700
+  use_rag_in_prompt: true
+  prefer_concept_when_no_ticker: true
+  rag_fallback_when_no_rows: true
+  concept_with_data_when_rag: false
+
+# Overrides gerais (aplicados antes dos específicos por entidade)
+llm_enabled: true             # habilita LLM "no geral"
+shadow: false
+max_llm_rows: 3               # LLM só quando houver até 3 linhas
 
 entities:
-    fiis_financials_risk:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 10
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      strict_mode: true
-      model: sirios-narrator:latest
+  fiis_financials_risk:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 1
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: true
+    model: sirios-narrator:latest
 
-    fiis_financials_revenue_schedule:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 10
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      model: sirios-narrator:latest
+  fiis_financials_revenue_schedule:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 1             # Ajustado: era 10, agora apenas 1 fundo por vez
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: false
+    model: sirios-narrator:latest
 
-    fiis_noticias:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 25
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      model: sirios-narrator:latest
+  fiis_noticias:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 25
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: false
+    model: sirios-narrator:latest
 
-    history_market_indicators:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 10
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      model: sirios-narrator:latest
+  history_market_indicators:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 10
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: false
+    model: sirios-narrator:latest
 
-    history_b3_indexes:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 10
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      model: sirios-narrator:latest
+  history_b3_indexes:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 10
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: false
+    model: sirios-narrator:latest
 
-    history_currency_rates:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 10
-      use_rag_in_prompt: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: true
-      concept_with_data_when_rag: true
-      model: sirios-narrator:latest
+  history_currency_rates:
+    llm_enabled: true
+    shadow: false
+    max_llm_rows: 10
+    use_rag_in_prompt: true
+    prefer_concept_when_no_ticker: true
+    rag_fallback_when_no_rows: true
+    concept_with_data_when_rag: true
+    strict_mode: false
+    model: sirios-narrator:latest
