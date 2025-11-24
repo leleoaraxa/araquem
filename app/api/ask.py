@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import Optional, Dict, Any
 
 import psycopg
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Query, Header
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -60,9 +60,35 @@ class AskPayload(BaseModel):
 
 
 @router.post("/ask")
-def ask(payload: AskPayload, explain: bool = Query(default=False)):
+def ask(
+    payload: AskPayload,
+    explain: bool = Query(default=False),
+    x_quality_routing_only: Optional[str] = Header(default=None),
+):
     t0 = time.perf_counter()
     request_id = make_request_id()
+
+    # ------------------------------------------------------------------
+    # QUALITY ROUTING-ONLY MODE
+    # - Ativado por:
+    #   * Header: X-Quality-Routing-Only: 1/true/yes/on
+    # - Efeito:
+    #   * Usa apenas o planner.explain
+    #   * NÃO chama Orchestrator, DB, Narrator ou RAG/Ollama
+    # ------------------------------------------------------------------
+    routing_only_env = str(os.getenv("QUALITY_ROUTING_ONLY", "0")).lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+    routing_only_header = str(x_quality_routing_only or "").lower() in {
+        "1",
+        "true",
+        "yes",
+        "on",
+    }
+    routing_only = routing_only_env or routing_only_header
 
     t_plan0 = time.perf_counter()
     plan = planner.explain(payload.question)
@@ -123,6 +149,38 @@ def ask(payload: AskPayload, explain: bool = Query(default=False)):
             "answer": "",
         }
         return JSONResponse(json_sanitize(payload_out_unr))
+
+    # ------------------------------------------------------------------
+    # QUALITY: modo "routing-only"
+    # ------------------------------------------------------------------
+    if routing_only:
+        elapsed_ms_q = int((time.perf_counter() - t0) * 1000)
+
+        payload_out_quality = {
+            "status": {"reason": "ok", "message": "ok"},
+            "results": {},  # não há consulta a DB aqui
+            "meta": {
+                "planner": plan,
+                "result_key": None,
+                # CANÔNICOS
+                "intent": intent,
+                "entity": entity,
+                # LEGADO / HISTÓRICO
+                "planner_intent": intent,
+                "planner_entity": entity,
+                "planner_score": score,
+                "rows_total": 0,
+                "elapsed_ms": elapsed_ms_q,
+                "explain": (plan.get("explain") if explain else None),
+                "explain_analytics": None,
+                "cache": {"hit": False, "key": None, "ttl": None},
+                "aggregates": {},
+                "narrator": None,
+                "requested_metrics": None,
+            },
+            "answer": "",
+        }
+        return JSONResponse(json_sanitize(payload_out_quality))
 
     identifiers = orchestrator.extract_identifiers(payload.question)
 

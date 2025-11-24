@@ -1,0 +1,53 @@
+terms:
+  - name: "context"
+    kind: "policy"
+    scope: "context"
+    version: 1
+
+context:
+  enabled: false
+  max_turns: 4
+  ttl_seconds: 3600
+  max_chars: 4000
+
+  planner:
+    enabled: true
+    max_turns: 2
+
+    # entidades reais onde faz sentido herdar contexto (ex.: ticker anterior)
+    allowed_entities:
+      - fiis_precos
+      - fiis_dividendos
+      - fiis_financials_risk
+      - fiis_financials_snapshot
+      - fiis_rankings
+      - fiis_processos
+      - fiis_noticias
+
+    # entidades administrativas / sistema
+    denied_entities:
+      - client_fiis_positions
+      - history_b3_indexes
+      - history_currency_rates
+      - history_market_indicators
+
+  narrator:
+    enabled: true
+    inject_history: true
+    max_turns: 3
+    max_chars: 2000
+
+    allowed_entities:
+      - fiis_precos
+      - fiis_dividendos
+      - fiis_financials_risk
+      - fiis_financials_snapshot
+      - fiis_rankings
+      - fiis_processos
+      - fiis_noticias
+
+    denied_entities:
+      - client_fiis_positions
+      - history_b3_indexes
+      - history_currency_rates
+      - history_market_indicators

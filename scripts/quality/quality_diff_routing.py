@@ -40,10 +40,17 @@ def ask(q: str):
         "conversation_id": CID,
         "nickname": NICK,
         "client_id": CLIENT,
-        "disable_rag": DISABLE_RAG,
     }
+
+    # Header interno para o /ask entrar em modo "routing-only"
+    headers: dict = {}
+    if DISABLE_RAG:
+        headers["X-Quality-Routing-Only"] = "1"
+
     try:
-        r = httpx.post(f"{API}/ask", json=payload, timeout=300.0)
+        r = httpx.post(
+            f"{API}/ask", json=payload, timeout=300.0, headers=headers or None
+        )
         r.raise_for_status()
     except httpx.ReadTimeout:
         # Marca como timeout e continua

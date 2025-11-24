@@ -6,7 +6,7 @@
     "expected_entity": "fiis_dividendos",
     "got_intent": "fiis_rankings",
     "got_entity": "fiis_rankings",
-    "score": 1.0161948276688508,
+    "score": 1.0161825952036467,
     "status": {
       "reason": "ok",
       "message": "ok"
@@ -37,7 +37,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
-      "gap": 0.935950508273063,
+      "gap": 0.9359382758078589,
       "accepted": true,
       "source": "final"
     }
@@ -91,7 +91,7 @@
     "expected_entity": "fiis_financials_risk",
     "got_intent": "fiis_rankings",
     "got_entity": "fiis_rankings",
-    "score": 4.772304962670876,
+    "score": 4.768931278049056,
     "status": {
       "reason": "ok",
       "message": "ok"
@@ -122,7 +122,7 @@
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
-      "gap": 3.7392078978456533,
+      "gap": 3.735834213223834,
       "accepted": true,
       "source": "final"
     }
