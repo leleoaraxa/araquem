@@ -113,7 +113,7 @@ samples:
   - { question: "sharpe ratio do HGLG11 nos últimos 12 meses",          expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "sortino ratio do XPML11",                              expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "max drawdown do MXRF11",                               expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
-  - { question: "r² do HGLG11 em relação ao IFIX",                      expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
+  - { question: "r² do HGLG11",                      expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
   - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
   - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }

@@ -85,6 +85,13 @@ intents:
         - patrimonio
         - patrimonio liquido
         - numero de cotistas
+        - sharpe
+        - sortino
+        - treynor
+        - beta
+        - r2
+        - r²
+        - coeficiente de determinacao
     phrases:
       include:
         - cnpj do
@@ -130,6 +137,11 @@ intents:
         - diaria
         - pregao
         - pregoes
+        - data de pregao
+        - data do pregao
+        - ultimo pregao
+        - fechamento do dia
+        - ultimo fechamento
       exclude:
         - media
         - soma
@@ -168,6 +180,14 @@ intents:
         - media de preco
         - nos ultimos
         - retorno no periodo
+        - variacao diaria do usd
+        - variacao diaria do dolar
+        - variacao diaria do dólar
+        - variacao diaria do eur
+        - variacao diaria do euro
+        - variacao diaria do ibov
+        - variacao diaria do ifix
+        - variacao diaria do ifil
     entities: [fiis_precos]
 
   - name: fiis_dividendos
@@ -190,11 +210,22 @@ intents:
         - media de dividendos
         - media de rendimentos
         - ultimos 12 meses
-      exclude:
-        - soma
-        - media
+        - dy
+        - dy mensal
+        - dy 12m
+        - dividend yield
+        - yield
+        - rendimento mensal
+        - rendimento 12m
+      exclude: []
     phrases:
       include:
+        - dy mensal do
+        - dy mensal do fii
+        - dy mensal do fundo
+        - dy 12m do
+        - dy 12m do fii
+        - dy 12 meses do fii
         - dividendo do
         - dividendos do
         - proventos do
@@ -204,9 +235,7 @@ intents:
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
-      exclude:
-        - soma de dividendos
-        - quanto de dividendos
+      exclude: []
     entities: [fiis_dividendos]
 
   - name: fiis_financials_snapshot
@@ -348,6 +377,7 @@ intents:
         - jensen
         - alfa
         - beta
+        - max drawdown
         - drawdown
         - mdd
         - r2
@@ -376,8 +406,13 @@ intents:
         - beta do
         - drawdown do
         - r2 do
+        - r² do
         - coeficiente de determinacao do
-      exclude:
+        - fiis com menor drawdown
+        - fiis com menor mdd
+        - fundos com menor drawdown
+        - fundos com menor risco de queda
+      exclude: []
     entities: [fiis_financials_risk]
 
   - name: fiis_imoveis
@@ -398,17 +433,15 @@ intents:
         - endereco
         - localizacao
         - onde ficam
-        - status
-      exclude:
-        - ranking
-        - dividendo
-        - preco
-        - cotistas
-        - numero de cotistas
-        - sharpe
-        - ifix
+        - vacancia
+        - vacancia fisica
+        - vacancia financeira
+      exclude: []
     phrases:
       include:
+        - vacancia fisica do fii
+        - vacancia fisica do fundo
+        - vacancia fisica do
         - imoveis do
         - quais imoveis do
         - lista de propriedades do
@@ -479,29 +512,14 @@ intents:
         - maiores
         - menores
         - piores
-        - lista
         - usuarios
         - sirios
-        - dy
-        - dividend yield
-        - rendimento
-        - dividendo
-        - patrimonio
-        - patrimonio liquido
-        - maiores fiis em patrimonio
-        - maiores fiis em patrimonio liquido
-        - equity
-        - sharpe
-        - sortino
-        - volatilidade
-        - risco
-        - menor risco
-        - drawdown
-        - menor drawdown
-        - mdd
+        - lista
       exclude:
         - preco
-        - dividendo do
+        - dy
+        - dividendo
+        - dividendos
         - media do
         - variacao diaria
         - pontos
@@ -512,7 +530,8 @@ intents:
         - beta
         - noticia
         - noticia do
-        - r\u00a2
+        - r2
+        - r²
         - ifix
         - ifil
         - indice
@@ -520,6 +539,8 @@ intents:
         - historico
         - histórico
         - se comportou
+        - mdd
+        - drawdown
     phrases:
       include:
         - ranking do
@@ -532,8 +553,6 @@ intents:
         - maiores fiis em
         - melhores fiis em
         - maiores fiis em patrimonio liquido
-        - fiis com maior
-        - fiis com menor
         - ranking dos fiis com melhor
         - ranking dos fiis com menor
       exclude:
@@ -545,6 +564,7 @@ intents:
         - cotacao do
         - preco hoje
         - preco ontem
+        - dy do
     entities: [fiis_rankings]
 
   - name: history_b3_indexes
@@ -593,7 +613,6 @@ intents:
         - quanto variou o ifil no dia
         - variacao diaria do ifix
         - variacao diaria do ifil
-        - variacao do ibov
         - historico do ifix
         - historico do ifix nos ultimos
         - como o ifix se comportou
@@ -618,21 +637,19 @@ intents:
         - d1
         - d-1
         - ontem
+        - comercial
       exclude:
-        - ibov
-        - ibovespa
-        - ifix
-        - ifil
-        - cdi
-        - selic
-        - ipca
-        - inpc
-        - nome
-        - exibicao
-        - abertura
-        - fechamento
+        - fii
+        - fundo imobiliario
+        - fundo de investimento imobiliario
     phrases:
       include:
+        - variacao diaria do usd
+        - variacao diaria do dolar
+        - variacao diaria do dólar
+        - variacao do usd hoje
+        - variacao do dolar hoje
+        - variacao do dólar hoje
         - variacao da moeda no dia
         - cotacao do dolar
         - cotacao do euro
@@ -640,7 +657,6 @@ intents:
         - euro comercial
         - variacao do usd
         - variacao do eur
-        - variacao diaria do usd
         - eur hoje d 1
         - cotacao do usd hoje
       exclude: []

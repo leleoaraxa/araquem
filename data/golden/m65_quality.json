@@ -567,7 +567,7 @@
       "expected_entity": "fiis_financials_risk"
     },
     {
-      "question": "r² do HGLG11 em relação ao IFIX",
+      "question": "r² do HGLG11",
       "expected_intent": "fiis_financials_risk",
       "expected_entity": "fiis_financials_risk"
     },

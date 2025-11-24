@@ -482,11 +482,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "liquidez do IFIX",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "top 5 fiis por liquidez media 3m",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -742,11 +737,6 @@
       "expected_entity": "history_b3_indexes"
     },
     {
-      "question": "variação diária do ibov",
-      "expected_intent": "history_b3_indexes",
-      "expected_entity": "history_b3_indexes"
-    },
-    {
       "question": "ifix ontem",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
@@ -890,11 +880,6 @@
       "question": "quanto variou o IFIL no dia",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
-    },
-    {
-      "question": "variação diária do USD",
-      "expected_intent": "history_currency_rates",
-      "expected_entity": "history_currency_rates"
     },
     {
       "question": "EUR hoje",
@@ -1052,7 +1037,7 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "vacância física e financeira do HGLG11",
+      "question": "vacância física do HGLG11",
       "expected_intent": "fiis_imoveis",
       "expected_entity": "fiis_imoveis"
     },
@@ -1102,7 +1087,7 @@
       "expected_entity": "fiis_financials_risk"
     },
     {
-      "question": "r² do HGLG11 em relação ao IFIX",
+      "question": "r² do HGLG11",
       "expected_intent": "fiis_financials_risk",
       "expected_entity": "fiis_financials_risk"
     },

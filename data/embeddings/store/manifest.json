@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-24T12:51:16Z",
+  "generated_at": "2025-11-24T18:25:08Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -83,7 +83,7 @@
         "entities"
       ],
       "chunks": 10,
-      "sha_all": "e89da1f7a83738242f06d53243b8a03fb8574e2c9fc47a90cafd908dcdb91033"
+      "sha_all": "b1987c5891eefc0b53af398a06ed0d20d1689fc2b1d10d6cccffec22de251d4a"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -305,7 +305,7 @@
         "quality"
       ],
       "chunks": 15,
-      "sha_all": "cfae22e4b0d59bc1cae0cb2f8275c4d09f97955b389bff2c0446a0b4ad103ae3"
+      "sha_all": "0566d3abba51baffe8a4850f1591d83d154a8b2d7e66dc05cb1bb7face18f5c0"
     },
     {
       "id": "golden-m68-collisions",
@@ -327,7 +327,7 @@
         "samples"
       ],
       "chunks": 29,
-      "sha_all": "557602a8544f8a9ed267250391b7f5f99af8e5a264024a351dfdd8fe3360e62b"
+      "sha_all": "4f879498c055c7be390f27da0ccbf2f3480d668ef365562400cc8854579572ca"
     },
     {
       "id": "q-projection-cadastro",
@@ -500,5 +500,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1763988809
+  "last_refresh_epoch": 1764008838
 }

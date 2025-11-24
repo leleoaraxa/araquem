@@ -1,106 +1,161 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-**(Somente o que realmente falta — baseado no status REAL do sistema)**
+### *(versão Sirius 24/11 — consolidada e atualizada)*
 
 ---
 
-## **1. RAG – Conteúdo e Políticas**
+# **0. Contexto Conversacional (M12–M13)**
 
-* [✔️] Revisar collections por entidade em `data/policies/rag.yaml`
-* [✔️] Criar/organizar collections específicas (ex.: fiis_risk, fiis_rankings, macro, mercado)
-* [ ] Validar quantidade e qualidade dos chunks
-* [ ] Revisar qualidade semântica dos chunks (se estão úteis de fato)
-* [ ] Regerar embeddings se necessário (nomic-embed-text, batch 8)
-* [ ] Testar RAG fusion/re-rank com perguntas reais (Sharpe, Beta, snapshot, preço, notícias)
+> 🟩 *Base técnica pronta. Próxima etapa: ativar e calibrar.*
+
+### ✔️ Feito:
+
+* ✔ `context_manager.py` criado
+* ✔ Integração mínima no `/ask` (append_turn)
+* ✔ Presenter injeta `history` no meta do Narrator
+* ✔ Policies definidas em `data/policies/context.yaml`
+* ✔ Total compliance com Guardrails v2.1.1
+* ✔ Zero impacto quando `enabled: false`
+
+### 🔵 Falta:
+
+* [ ] Ativar context (`enabled: true`) **somente após baseline**
+* [ ] Definir quais entidades podem usar contexto
+* [ ] Validar herança de referência (ex.: Sharpe do “fundo anterior”)
+* [ ] Testar histórico em modo Narrator (sem afetar dados)
+* [ ] Criar heurísticas leves para “entity fallback” no Narrator
 
 ---
 
-## **2. Planner – Thresholds e Calibração Final**
+# **1. RAG – Conteúdo e Políticas**
 
-* [ ] Revisar `planner_thresholds.yaml` (min_score, min_gap)
-* [ ] Ajustar threshold por intent/entity com base nos gaps reais
-* [ ] Validar threshold com explain logs (aceites vs rejections)
-* [ ] Validar comportamento com RAG blend/re-rank habilitado
-* [ ] Fechar baseline de roteamento pós-calibração
+* [✔️] Collections revisadas por entidade
+* [✔️] Collections específicas (risk, rankings, macro, mercado)
+* [ ] Validar **quantidade real** de chunks por entidade
+* [ ] Revisar **qualidade semântica** dos chunks
+* [ ] Regerar embeddings (batch 8 – nomic-embed-text)
+* [ ] Testar fusion/re-rank com perguntas reais
+* [ ] Analisar RAG pelo `rag_debug.sh` após cada ajuste
 
 ---
 
-## **3. Narrator – Versão para Produção**
+# **2. Planner – Thresholds e Calibração Final**
+
+* [ ] Revisar `planner_thresholds.yaml`
+* [ ] Ajustar thresholds por intent/entity
+* [ ] Validar explain logs:
+
+  * [ ] intent_top2_gap
+  * [ ] entity_top2_gap
+* [ ] Validar comportamento com RAG habilitado
+* [ ] Fechar baseline de roteamento final
+
+---
+
+# **3. Narrator – Versão para Produção**
 
 * [✔️] Políticas estruturadas
 * [✔️] Modelo sirios-narrator criado
-* [ ] Revisar `data/policies/narrator.yaml`
-* [ ] Definir níveis de:
-  * [ ] llm_enabled
-  * [ ] shadow
-  * [ ] max_llm_rows
-  * [ ] style
-  * [ ] use_rag_in_prompt
-* [ ] Definir fallback seguro para todos intents
-* [ ] Garantir respostas curtas/precisas para todas entidades
+* [ ] Ajustar `narrator.yaml` para produção
+* [ ] Definir:
+
+  * [ ] `llm_enabled`
+  * [ ] `shadow`
+  * [ ] `max_llm_rows`
+  * [ ] `style`
+  * [ ] `use_rag_in_prompt`
+* [ ] Validar fallback seguro para cada entidade
+* [ ] Testar estilo final (executivo / objetivo / curto)
 
 ---
 
-## **4. RAG + Narrator – Integração**
+# **4. RAG + Narrator – Integração Profissional**
 
-* [ ] Confirmar quando Narrator deve usar RAG no prompt
-* [ ] Validar tamanhos dos snippets e compressão
-* [ ] Verificar latências do Ollama (LLM e embeddings)
-* [ ] Testar shadow mode com dataset real
-
----
-
-## **5. Quality – Baseline Final**
-
-* [ ] Corrigir os 16 misses restantes (curadoria final)
-* [ ] Rodar nova bateria `quality_list_misses.py`
-* [ ] Rodar push com samples completos
-* [ ] Validar gaps e top1/top2 no Prometheus
-* [ ] Fixar baseline “2025.0-prod”
+* [ ] Definir políticas de uso do RAG no prompt
+* [ ] Reduzir tamanho dos snippets (máx. 250–350 chars)
+* [ ] Validar tempo de inferência com snippets
+* [ ] Testar shadow mode real (com logs)
+* [ ] Ajustar tamanho final do prompt (≤ 3800 tokens)
 
 ---
 
-## **6. Infra/Prod – Ambiente Real**
+# **5. Quality – Baseline Final**
 
-* [ ] Definir e aplicar `DATABASE_URL` de produção
-* [ ] Configurar OTEL Collector (prod URL)
-* [ ] Configurar Tempo/Grafana/Prometheus prod
-* [ ] Habilitar alerts e dashboards reais
-* [ ] Confirmar cache Redis (TTL e blue/green)
-
----
-
-## **7. Segurança & LGPD**
-
-* [ ] Sanitização de PII no presenter/formatter
-* [ ] Garantir que explain-events não vazam dados sensíveis
-* [ ] Ajustar regras de acesso e tokens (quality & ops)
-* [ ] Validar logs/traces para ausência de payloads sensíveis
+* [ ] Curadoria dos 16 misses
+* [ ] Rodar `quality_list_misses.py` novamente
+* [ ] Rodar `quality_diff_routing.py` em modo seguro (sem Ollama)
+* [ ] Fixar baseline “2025.0-prod” no YAML
+* [ ] Confirmar métricas `top1`, `top2_gap`, `routed_rate` no Grafana
 
 ---
 
-## **8. Documentação Final**
+# **6. Infra/Produção – Ambientes e Deploy**
 
-* [ ] Atualizar `ARAQUEM_STATUS_2025.md` com baseline final
-* [ ] Gerar diagramas (C4) atualizados
-* [ ] Documentar roles e policies (RAG/Narrator/Quality/Cache)
-* [ ] Documentar rotas `/ask`, `/ops/*`, explain-mode
+* [ ] Configurar `DATABASE_URL` de produção
+* [ ] Configurar OTEL Collector + Tempo + Prometheus + Grafana
+* [ ] Definir dashboards finais (/ask, planner, narrator, rag)
+* [ ] Ajustar Redis (TTL, namespaces, blue/green)
+* [ ] Habilitar alertas de:
 
----
-
-## **9. Testes de Carga e Estresse**
-
-* [ ] Testar throughput do /ask com sirios-narrator:latest
-* [ ] Testar embedding client (batch) sob carga
-* [ ] Testar latência com Prometheus histograms
-* [ ] Validar estabilidade em cenários extremos
+  * timeouts
+  * cache-miss spikes
+  * RAG latency high
 
 ---
 
-## **10. Entrega Final (2025.0-prod)**
+# **7. Segurança & LGPD**
 
-* [ ] Criar tag da versão
-* [ ] Ativar CI/CD com blue/green Redis
-* [ ] Congelar embeddings + ontology
-* [ ] Gerar pacote final para deploy
-* [ ] Validar smoke test no ambiente final
+* [ ] Sanitização de PII no Presenter/Formatter
+* [ ] Reduzir exposição de metas sensíveis em explain
+* [ ] Ajustar tokens e policies de acesso (quality ops)
+* [ ] Verificar que logs/traces não mostram payload completo
+* [ ] Revisar roles do Postgres (sirios_api e edge_user)
+
+---
+
+# **8. Documentação Final**
+
+* [ ] Atualizar `ARAQUEM_STATUS_2025.md`
+* [ ] Atualizar diagramas C4 (context, container, component)
+* [ ] Documentar:
+
+  * [ ] RAG flows
+  * [ ] Narrator
+  * [ ] Context Manager
+  * [ ] planner.explain()
+  * [ ] policies (RAG/Narrator/Cache/Context)
+* [ ] Documentar rotas `/ask` e `/ops/*`
+
+---
+
+# **9. Testes de Carga e Estresse**
+
+* [ ] Testar throughput com sirios-narrator:latest
+* [ ] Testar embeddings sob carga (batch 8, 16, 32)
+* [ ] Validar latência p95/p99
+* [ ] Simular 200–500 perguntas simultâneas
+
+---
+
+# **10. Entrega Final — “2025.0-prod”**
+
+* [ ] Criar tag
+* [ ] Congelar embeddings
+* [ ] Congelar ontologia
+* [ ] Congelar thresholds
+* [ ] Ativar CI/CD com blue/green
+* [ ] Smoke test no ambiente final
+* [ ] Publicar versão
+
+---
+
+# ✔️ **Checklist atualizado e pronto**
+
+Se quiser, posso:
+
+👉 Priorizar a ordem de execução
+👉 Criar um **roadmap de 3 dias** até produção
+👉 Gerar um **Kanban CSV/Excel**
+👉 Gerar um **patch plan** por módulo (RAG, Narrator, Planner, Context)
+
+Só pedir.
