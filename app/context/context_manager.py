@@ -245,11 +245,43 @@ class ContextManager:
     def narrator_allows_entity(self, entity: Optional[str]) -> bool:
         return _entity_allowed(entity, self.narrator_policy)
 
+    # --------- limites globais e por escopo ---------
+
     def _max_turns(self) -> int:
         return int(self._policy.get("max_turns", DEFAULT_POLICY["max_turns"]))
 
     def _ttl_seconds(self) -> int:
         return int(self._policy.get("ttl_seconds", DEFAULT_POLICY["ttl_seconds"]))
+
+    def planner_max_turns(self) -> int:
+        """
+        Limite de turns que o Planner deve considerar, vindo de
+        context.planner.max_turns (fallback para context.max_turns).
+        """
+        try:
+            return int(self.planner_policy.get("max_turns", self._max_turns()))
+        except (TypeError, ValueError):
+            return self._max_turns()
+
+    def narrator_max_turns(self) -> int:
+        """
+        Limite de turns que o Narrator deve considerar, vindo de
+        context.narrator.max_turns (fallback para context.max_turns).
+        """
+        try:
+            return int(self.narrator_policy.get("max_turns", self._max_turns()))
+        except (TypeError, ValueError):
+            return self._max_turns()
+
+    def narrator_max_chars(self) -> int:
+        """
+        Limite de caracteres do histórico que o Narrator pode receber,
+        vindo de context.narrator.max_chars (fallback para context.max_chars).
+        """
+        try:
+            return int(self.narrator_policy.get("max_chars", self.max_chars()))
+        except (TypeError, ValueError):
+            return self.max_chars()
 
     # -------------------------
     # API pública
