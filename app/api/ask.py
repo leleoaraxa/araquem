@@ -323,6 +323,8 @@ def ask(
             "shadow": _NARRATOR_SHADOW,
             "model": _NARRATOR_MODEL,
         },
+        client_id=payload.client_id,
+        conversation_id=payload.conversation_id,
         explain=explain,
     )
 

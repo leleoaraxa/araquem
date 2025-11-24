@@ -14,6 +14,7 @@ from app.observability.metrics import (
 )
 from app.rag.context_builder import build_context, load_rag_policy
 from app.responder import render_answer
+from app.core.context import context_manager
 
 
 class FactsPayload(BaseModel):
@@ -175,6 +176,8 @@ def present(
     narrator: Optional[Narrator],
     narrator_flags: Dict[str, Any],
     narrator_meta: Optional[Dict[str, Any]] = None,
+    client_id: str,
+    conversation_id: str,
     explain: bool = False,
 ) -> PresentResult:
     """
@@ -202,6 +205,19 @@ def present(
             entity=entity,
             policy=rag_policy,
         )
+
+    # ------------------------------------------------------------------
+    # CONTEXTO CONVERSACIONAL — carga best-effort para o Narrator
+    # ------------------------------------------------------------------
+    context_history_wire: List[Dict[str, Any]] = []
+    try:
+        if context_manager.enabled and context_manager.narrator_allows_entity(entity):
+            turns = context_manager.load_recent(client_id, conversation_id)
+            if turns:
+                context_history_wire = context_manager.to_wire(turns)
+    except Exception:
+        # Contexto nunca deve quebrar a resposta principal
+        context_history_wire = []
 
     facts, result_key, rows = build_facts(
         question=question,
@@ -270,6 +286,11 @@ def present(
             "result_key": result_key,
             "rag": narrator_rag_context,
         }
+
+        # Injeta histórico de contexto no meta consumido pelo Narrator.
+        # Não altera o payload externo do /ask: é apenas meta interno.
+        if context_history_wire:
+            meta_for_narrator["history"] = context_history_wire
 
         if narrator_meta:
             meta_for_narrator.update(narrator_meta)
