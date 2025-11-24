@@ -12,6 +12,8 @@ from app.api.ops.rag_debug import router as ops_rag_debug_router
 from app.api.ops.rag import router as ops_rag_router
 from app.common.http import metrics_middleware
 from app.api.ops.context_debug import router as ops_context_debug_router
+from app.api.ops.context_clear import router as ops_context_clear_router
+
 
 # Inicialização do runtime de observabilidade (guardrails-friendly)
 from app.observability.runtime import (
@@ -46,5 +48,6 @@ def get_app() -> FastAPI:
     app.include_router(ops_rag_debug_router)
     app.include_router(ops_rag_router)
     app.include_router(ops_context_debug_router)
+    app.include_router(ops_context_clear_router)
 
     return app
