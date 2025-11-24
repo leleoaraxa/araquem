@@ -20,6 +20,7 @@ def _fake_policy_enabled() -> Dict[str, Any]:
         "max_llm_rows": 10,
         "max_prompt_tokens": 4000,
         "max_output_tokens": 700,
+        "use_rag_in_prompt": True,
     }
 
 
