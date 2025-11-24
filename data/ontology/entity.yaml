@@ -503,6 +503,11 @@ intents:
   - name: fiis_rankings
     tokens:
       include:
+        - dy
+        - dividend
+        - yield
+        - rendimento
+        - dividendos
         - ranking
         - rank
         - posicao
@@ -543,6 +548,17 @@ intents:
         - drawdown
     phrases:
       include:
+        - ranking por dividend yield
+        - ranking de dy
+        - ranking de rendimento
+        - ranking de dividendos
+        - top fiis por dividend yield
+        - top fiis por dy
+        - top 5 fiis por dy
+        - top 10 fiis por dy
+        - fiis com maior dividend yield
+        - fiis com maior dy
+        - fiis com maior rendimento
         - ranking do
         - ranking dos fiis
         - ranking de fiis
