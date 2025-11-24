@@ -1,4 +1,4 @@
-# app/responder/__init__.py
+# app/templates_answer/__init__.py
 from __future__ import annotations
 
 from functools import lru_cache

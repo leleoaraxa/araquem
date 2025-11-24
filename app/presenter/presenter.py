@@ -13,7 +13,7 @@ from app.observability.metrics import (
     emit_histogram as histogram,
 )
 from app.rag.context_builder import build_context, load_rag_policy
-from app.responder import render_answer
+from app.templates_answer import render_answer
 from app.core.context import context_manager
 
 

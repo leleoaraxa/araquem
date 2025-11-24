@@ -23,7 +23,7 @@ from app.planner.param_inference import infer_params
 # ainda importamos responder/formatter aqui para retrocompatibilidade
 # (o presenter usa esses módulos internamente)
 from app.formatter.rows import render_rows_template
-from app.responder import render_answer
+from app.templates_answer import render_answer
 
 # nova camada de apresentação (pós-formatter)
 from app.presenter.presenter import present
