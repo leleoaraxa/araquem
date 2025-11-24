@@ -209,22 +209,10 @@ def _extract_city_state(address: str) -> str:
 
 def _prepare_rag_payload(rag: dict | None) -> dict | None:
     """
-    Normaliza o contexto de RAG para o prompt do Narrator.
+    Converte o contexto de RAG em um payload direto para o prompt do Narrator.
 
-    Espera um dict no formato produzido por app/rag/context_builder.build_context:
-      - enabled: bool
-      - chunks: List[Dict[str, Any]] (cada um com 'text', 'score', 'doc_id', 'tags', etc.)
-      - policy: Dict[str, Any] (incluindo max_chunks, collections, ...)
-
-    Retorna um payload enxuto com:
-      {
-        "enabled": true,
-        "source": { "intent": ..., "entity": ..., "collections": [...] },
-        "snippets": [
-          { "doc_id": "...", "score": 0.87, "snippet": "trecho truncado...", "tags": [...] },
-          ...
-        ]
-      }
+    Usa exatamente os chunks fornecidos, respeitando apenas o limite declarado em
+    `policy.max_chunks` quando presente.
     """
     if not isinstance(rag, dict):
         return None
@@ -236,18 +224,23 @@ def _prepare_rag_payload(rag: dict | None) -> dict | None:
         return None
 
     policy = rag.get("policy") or {}
-    max_items = 5
-    try:
-        max_items = int(policy.get("max_chunks", max_items))
-    except Exception:
-        pass
+    max_items: int | None = None
+    if isinstance(policy, dict) and "max_chunks" in policy:
+        try:
+            parsed_max = int(policy.get("max_chunks"))
+            if parsed_max > 0:
+                max_items = parsed_max
+        except Exception:
+            max_items = None
+
+    limited_chunks = chunks[:max_items] if max_items is not None else chunks
 
     snippets: List[Dict[str, Any]] = []
-    for ch in chunks[:max_items]:
+    for ch in limited_chunks:
         if not isinstance(ch, dict):
             continue
         text = ch.get("text") or ""
-        snippet = _truncate(text, 600)
+        snippet = text.strip()
         if not snippet:
             continue
         snippets.append(
@@ -287,15 +280,13 @@ def _pick_template(meta: dict, facts: dict) -> str:
     if isinstance(narrator_mode, str) and narrator_mode.strip().lower() == "concept":
         return "concept"
 
-    presentation = (facts or {}).get("presentation_kind") or (meta or {}).get(
+    presentation = (meta or {}).get("presentation_kind") or (facts or {}).get(
         "presentation_kind"
     )
     if isinstance(presentation, str):
         normalized = presentation.strip().lower()
         if normalized in PROMPT_TEMPLATES:
             return normalized
-    if (facts or {}).get("rows"):
-        return "list"
     return "summary"
 
 
@@ -309,11 +300,18 @@ def build_prompt(
 ) -> str:
     """Compose the final prompt string for the LLM."""
 
+    policy_cfg = effective_policy if isinstance(effective_policy, dict) else {}
+    narrator_style = policy_cfg.get("style") or style
+    narrator_model = policy_cfg.get("model")
+    llm_enabled = policy_cfg.get("llm_enabled")
+    shadow_enabled = policy_cfg.get("shadow")
+    max_prompt_tokens = policy_cfg.get("max_prompt_tokens")
+    max_output_tokens = policy_cfg.get("max_output_tokens")
+
     intent = (meta or {}).get("intent", "")
     entity = (meta or {}).get("entity", "")
     template_key = _pick_template(meta, facts)
 
-    # Métrica foco (quando houver), vinda de meta.focus.metric_key
     focus_metric_key = ""
     focus_block = (meta or {}).get("focus")
     if isinstance(focus_block, dict):
@@ -321,34 +319,8 @@ def build_prompt(
         if isinstance(mk, str):
             focus_metric_key = mk.strip()
 
-    strict_mode = False
-    if isinstance(effective_policy, dict):
-        strict_mode = bool(effective_policy.get("strict_mode", False))
-
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
-    fewshot = FEW_SHOTS.get(template_key, "")
-    # Em modo conceitual, evitamos few-shots para reduzir ruído e tamanho do prompt
-    if template_key == "concept":
-        fewshot = ""
-
-    facts_payload = dict(facts or {})
-    # Em modo conceitual, FACTS servem apenas para sinalização mínima:
-    # não enviamos linhas, valores numéricos ou blobs grandes.
-    if template_key == "concept":
-        minimal_facts: Dict[str, Any] = {}
-        for key in ("fallback_message", "requested_metrics"):
-            if key in facts_payload:
-                minimal_facts[key] = facts_payload[key]
-        facts_payload = minimal_facts
-
-    if "fallback_message" not in facts_payload and isinstance(entity, str):
-        fallback = (meta or {}).get("fallback_message")
-        if isinstance(fallback, str):
-            facts_payload["fallback_message"] = fallback
-
-    facts_json = json.dumps(facts_payload, ensure_ascii=False, indent=2)
-    if len(facts_json) > 50000:
-        facts_json = facts_json[:49000] + "\n... (truncado)\n"
+    facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
 
     if isinstance(effective_policy, dict) and not effective_policy.get(
         "use_rag_in_prompt", False
@@ -358,27 +330,16 @@ def build_prompt(
     rag_payload = _prepare_rag_payload(rag)
     if rag_payload is not None:
         rag_json = json.dumps(rag_payload, ensure_ascii=False, indent=2)
-        if len(rag_json) > 20000:
-            rag_json = rag_json[:19000] + "\n... (truncado)\n"
     else:
         rag_json = "(nenhum contexto adicional relevante foi encontrado.)"
-
-    additional_guard = ""
-    # Guard-rail ultra restrito: só em modo estrito + métrica foco definida
-    if strict_mode and focus_metric_key:
-        additional_guard = f"""
-Regras CRÍTICAS de foco em métrica:
-- Você só pode responder sobre a métrica identificada em [FOCUS_METRIC_KEY].
-- É proibido inventar nomes de métricas inexistentes ou diferentes da métrica foco.
-- Não migre o foco para outras métricas principais (como VaR, volatilidade genérica
-  ou qualquer termo não citado no contexto).
-- Se você não conseguir responder falando exclusivamente dessa métrica foco,
-  responda exatamente (sem variações):
-  erro: métrica fora do foco
-"""
     return f"""{SYSTEM_PROMPT}
 
-[ESTILO]: {style}
+[MODEL]: {narrator_model}
+[ESTILO]: {narrator_style}
+[LLM_ENABLED]: {llm_enabled}
+[SHADOW]: {shadow_enabled}
+[MAX_PROMPT_TOKENS]: {max_prompt_tokens}
+[MAX_OUTPUT_TOKENS]: {max_output_tokens}
 [APRESENTACAO]: {template_key}
 [INTENT]: {intent}
 [ENTITY]: {entity}
@@ -394,10 +355,6 @@ Regras CRÍTICAS de foco em métrica:
 
 Instruções adicionais:
 {base_instruction}
-{additional_guard}
-
-Few-shot de referência (opcional):
-{fewshot}
 
 Entregue apenas o texto final para o usuário.
 """
