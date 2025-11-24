@@ -13,7 +13,7 @@ from pydantic import BaseModel
 from app.analytics.explain import explain as _explain_analytics
 from app.cache.rt_cache import read_through
 from app.common.http import json_sanitize, make_request_id
-from app.core.context import cache, orchestrator, planner, policies
+from app.core.context import cache, orchestrator, planner, policies, context_manager
 from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
@@ -102,6 +102,25 @@ def ask(
     intent = plan["chosen"]["intent"]
     score = plan["chosen"]["score"]
 
+    # ------------------------------------------------------------------
+    # CONTEXTO CONVERSACIONAL (M12) — registro do turno do usuário
+    # ------------------------------------------------------------------
+    try:
+        context_manager.append_turn(
+            client_id=payload.client_id,
+            conversation_id=payload.conversation_id,
+            role="user",
+            content=payload.question,
+            meta={
+                "request_id": request_id,
+                "intent": intent,
+                "entity": entity,
+            },
+        )
+    except Exception:
+        # Contexto é best-effort; nunca quebra o /ask
+        pass
+
     counter("sirios_planner_routed_total", outcome=("ok" if entity else "unroutable"))
 
     if explain:
@@ -148,6 +167,24 @@ def ask(
             },
             "answer": "",
         }
+
+        # Registro do turno do "assistant" (resposta vazia/unroutable)
+        try:
+            context_manager.append_turn(
+                client_id=payload.client_id,
+                conversation_id=payload.conversation_id,
+                role="assistant",
+                content=payload_out_unr.get("answer", "") or "",
+                meta={
+                    "request_id": request_id,
+                    "intent": intent,
+                    "entity": entity,
+                    "status_reason": "unroutable",
+                },
+            )
+        except Exception:
+            pass
+
         return JSONResponse(json_sanitize(payload_out_unr))
 
     # ------------------------------------------------------------------
@@ -180,6 +217,24 @@ def ask(
             },
             "answer": "",
         }
+
+        # Registro do turno do "assistant" (modo quality routing-only)
+        try:
+            context_manager.append_turn(
+                client_id=payload.client_id,
+                conversation_id=payload.conversation_id,
+                role="assistant",
+                content=payload_out_quality.get("answer", "") or "",
+                meta={
+                    "request_id": request_id,
+                    "intent": intent,
+                    "entity": entity,
+                    "status_reason": "routing_only",
+                },
+            )
+        except Exception:
+            pass
+
         return JSONResponse(json_sanitize(payload_out_quality))
 
     identifiers = orchestrator.extract_identifiers(payload.question)
@@ -379,5 +434,24 @@ def ask(
         },
         "answer": presenter_result.answer,
     }
+
+    # ------------------------------------------------------------------
+    # CONTEXTO CONVERSACIONAL — registro do turno do "assistant"
+    # ------------------------------------------------------------------
+    try:
+        context_manager.append_turn(
+            client_id=payload.client_id,
+            conversation_id=payload.conversation_id,
+            role="assistant",
+            content=presenter_result.answer or "",
+            meta={
+                "request_id": request_id,
+                "intent": intent,
+                "entity": entity,
+                "status_reason": "ok",
+            },
+        )
+    except Exception:
+        pass
 
     return JSONResponse(json_sanitize(payload_out))
