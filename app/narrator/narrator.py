@@ -301,31 +301,105 @@ def _extract_tickers_from_question_and_filters(
     return tickers
 
 
-def _load_narrator_policy() -> Dict[str, Any]:
+def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, Any]:
     """
     Carrega política declarativa do Narrator a partir de data/policies/narrator.yaml.
 
-    Estrutura esperada:
+    Retorna um dicionário com `status` explícito:
+      - "ok" quando a policy é válida
+      - "missing" quando o arquivo está ausente
+      - "invalid" quando a estrutura ou tipos estão incorretos
 
-    narrator:
-      llm_enabled: false
-      shadow: false
-      model: sirios-narrator:latest
-      style: executivo
-      max_llm_rows: 0
-      max_prompt_tokens: 4000
-      max_output_tokens: 700
+    Quando inválido/ausente, a policy retornada é vazia para operar em modo
+    degradado (LLM desabilitado).
     """
+
+    policy_path = Path(path)
+
+    def _invalid(msg: str) -> Dict[str, Any]:
+        LOGGER.error(msg)
+        return {"status": "invalid", "error": msg, "policy": {}}
+
+    if not policy_path.exists():
+        msg = f"Narrator policy ausente em {policy_path}"
+        LOGGER.error(msg)
+        return {"status": "missing", "error": msg, "policy": {}}
+
     try:
-        data = load_yaml_cached(str(_NARRATOR_POLICY_PATH)) or {}
-        if isinstance(data, dict):
-            policy = (
-                data.get("narrator") if isinstance(data.get("narrator"), dict) else None
-            )
-            return policy if policy is not None else data
-        return {}
-    except Exception:
-        return {}
+        data = load_yaml_cached(str(policy_path)) or {}
+    except Exception as exc:  # pragma: no cover - caminho excepcional
+        LOGGER.error("Falha ao carregar Narrator policy", exc_info=True)
+        return {
+            "status": "invalid",
+            "error": f"Erro ao carregar Narrator policy: {exc}",
+            "policy": {},
+        }
+
+    if not isinstance(data, dict):
+        return _invalid("Narrator policy inválida: raiz YAML deve ser um mapeamento")
+
+    raw_policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else data
+    if not isinstance(raw_policy, dict):
+        return _invalid("Narrator policy malformada: bloco 'narrator' deve ser um dict")
+
+    errors: list[str] = []
+
+    def _validate_bool_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
+        if key not in container:
+            return
+        val = container[key]
+        if not isinstance(val, bool):
+            errors.append(f"{prefix}{key} deve ser booleano")
+
+    def _validate_int_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
+        if key not in container:
+            return
+        val = container[key]
+        if isinstance(val, bool) or not isinstance(val, int):
+            errors.append(f"{prefix}{key} deve ser inteiro")
+
+    def _validate_str_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
+        if key not in container:
+            return
+        val = container[key]
+        if not isinstance(val, str) or not val.strip():
+            errors.append(f"{prefix}{key} deve ser string não vazia")
+
+    def _validate_block(container: Dict[str, Any], prefix: str = "") -> None:
+        _validate_bool_field(container, "llm_enabled", prefix)
+        _validate_bool_field(container, "shadow", prefix)
+        _validate_bool_field(container, "use_rag_in_prompt", prefix)
+        _validate_bool_field(container, "prefer_concept_when_no_ticker", prefix)
+        _validate_bool_field(container, "rag_fallback_when_no_rows", prefix)
+        _validate_bool_field(container, "concept_with_data_when_rag", prefix)
+        _validate_int_field(container, "max_llm_rows", prefix)
+        _validate_int_field(container, "max_prompt_tokens", prefix)
+        _validate_int_field(container, "max_output_tokens", prefix)
+        _validate_str_field(container, "model", prefix)
+        _validate_str_field(container, "style", prefix)
+
+    _validate_block(raw_policy)
+
+    default_block = raw_policy.get("default")
+    if default_block is not None and not isinstance(default_block, dict):
+        errors.append("default deve ser um mapeamento")
+    elif isinstance(default_block, dict):
+        _validate_block(default_block, prefix="default.")
+
+    entities_block = raw_policy.get("entities")
+    if entities_block is not None and not isinstance(entities_block, dict):
+        errors.append("entities deve ser um mapeamento")
+    elif isinstance(entities_block, dict):
+        for entity_key, entity_block in entities_block.items():
+            if not isinstance(entity_block, dict):
+                errors.append(f"entities.{entity_key} deve ser um mapeamento")
+                continue
+            _validate_block(entity_block, prefix=f"entities.{entity_key}.")
+
+    if errors:
+        return _invalid("; ".join(errors))
+
+    return {"status": "ok", "policy": raw_policy}
 
 
 def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:
@@ -371,7 +445,25 @@ def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[st
 class Narrator:
     def __init__(self, model: str | None = None, style: str = "executivo"):
         # Política declarativa (fonte de verdade)
-        self.policy: Dict[str, Any] = _load_narrator_policy()
+        policy_payload = _load_narrator_policy()
+        self._policy_status: str = "ok"
+        self._policy_error: str | None = None
+        policy_content: Dict[str, Any] = {}
+
+        if isinstance(policy_payload, dict):
+            if "status" in policy_payload:
+                self._policy_status = policy_payload.get("status", "ok") or "ok"
+            raw_error = policy_payload.get("error")
+            if isinstance(raw_error, str) and raw_error.strip():
+                self._policy_error = raw_error.strip()
+
+            candidate_policy = policy_payload.get("policy")
+            if isinstance(candidate_policy, dict):
+                policy_content = candidate_policy
+            elif "status" not in policy_payload:
+                policy_content = policy_payload
+
+        self.policy = policy_content
 
         default_policy = _get_effective_policy(None, self.policy)
 
