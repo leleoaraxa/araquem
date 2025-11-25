@@ -2,6 +2,7 @@
 # Backend Prometheus + (no-op) spans e bootstrap. Registro centralizado de métricas.
 import logging
 import os, yaml, re, hashlib, json, urllib.parse, urllib.request
+from pathlib import Path
 from typing import Dict, Any, Tuple, Optional
 
 from prometheus_client import (
@@ -25,9 +26,69 @@ from app.observability import instrumentation as obs
 
 
 def load_config():
-    cfg_path = os.environ.get("OBSERVABILITY_CONFIG", "data/ops/observability.yaml")
-    with open(cfg_path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f)
+    env_path = os.environ.get("OBSERVABILITY_CONFIG")
+    config_path = Path(env_path) if env_path else Path("data/ops/observability.yaml")
+
+    if env_path and not config_path.is_file():
+        _LOGGER.error("Arquivo de configuração de observabilidade ausente: %s", config_path)
+        raise ValueError(f"Arquivo de configuração de observabilidade ausente: {config_path}")
+
+    if not env_path and not config_path.is_file():
+        _LOGGER.error("Configuração de observabilidade padrão ausente: %s", config_path)
+        raise ValueError(f"Arquivo de configuração de observabilidade ausente: {config_path}")
+
+    try:
+        with config_path.open("r", encoding="utf-8") as f:
+            cfg = yaml.safe_load(f)
+    except yaml.YAMLError as exc:
+        _LOGGER.error(
+            "Erro ao parsear configuração de observabilidade: %s", config_path, exc_info=True
+        )
+        raise ValueError(f"Arquivo de configuração de observabilidade inválido: {config_path}") from exc
+    except Exception as exc:
+        _LOGGER.error(
+            "Erro ao ler configuração de observabilidade: %s", config_path, exc_info=True
+        )
+        raise
+
+    if not isinstance(cfg, dict):
+        err = ValueError(
+            f"Arquivo de configuração de observabilidade inválido: {config_path}"
+        )
+        _LOGGER.error(
+            "Arquivo de configuração de observabilidade inválido (esperado mapeamento): %s",
+            config_path,
+            exc_info=err,
+        )
+        raise err
+
+    services = cfg.get("services")
+    global_cfg = cfg.get("global")
+    if not isinstance(services, dict) or not isinstance(global_cfg, dict):
+        raise ValueError(
+            f"Configuração de observabilidade malformada: blocos 'services' e 'global' são obrigatórios em {config_path}"
+        )
+
+    gateway = services.get("gateway")
+    if not isinstance(gateway, dict):
+        raise ValueError(
+            f"Configuração de observabilidade malformada: bloco services.gateway é obrigatório em {config_path}"
+        )
+
+    tracing_cfg = gateway.get("tracing")
+    metrics_cfg = gateway.get("metrics")
+    if not isinstance(tracing_cfg, dict) or not isinstance(metrics_cfg, dict):
+        raise ValueError(
+            f"Configuração de observabilidade malformada: blocos services.gateway.tracing/metrics devem ser dict em {config_path}"
+        )
+
+    exporters = global_cfg.get("exporters")
+    if not isinstance(exporters, dict) or "otlp_endpoint" not in exporters:
+        raise ValueError(
+            f"Configuração de observabilidade malformada: bloco global.exporters.otlp_endpoint é obrigatório em {config_path}"
+        )
+
+    return cfg
 
 
 # ---------------- Tracing (opcional) ----------------------------------------

@@ -23,7 +23,7 @@
 | app/planner/param_inference.py | _load_yaml | param_inference.yaml | 🟦 OPCIONAL | Fallback `{}` sem log | Usado para defaults de agregação; ausência aceita. |
 | app/context/context_manager.py | _load_policy | context.yaml | 🟧 IMPORTANTE | Hardened (status/log + DEFAULT_POLICY explícito) | Mantém merge com defaults; expõe policy_status/policy_error. |
 | app/cache/rt_cache.py | CachePolicies.__init__ | cache.yaml | 🟧 IMPORTANTE | Hardened (status/log + validação de mapping) | Mantém `_policies` vazio em falha; status ok/missing/invalid. |
-| app/observability/runtime.py | load_config | observability.yaml (env OBSERVABILITY_CONFIG) | 🟥 CRÍTICA | Leitura env sem validação; open sem tratamento | Falha dura se arquivo ausente/malformado; sem feedback estruturado. |
+| app/observability/runtime.py | load_config | observability.yaml (env OBSERVABILITY_CONFIG) | 🟥 CRÍTICA | — | Fail-fast com mensagens claras para arquivo ausente/YAML inválido; logs estruturados e validação mínima de schema. |
 | app/api/ops/quality.py | quality_report → _load_candidate | quality.yaml ou planner_thresholds.yaml | 🟧 IMPORTANTE | Erros acumulam, mas retorno 500 só se nenhum arquivo carregado | Leitura com fallback; ausência de schema não validada. |
 | app/planner/ontology_loader.py | load_ontology | ontology/entity.yaml | 🟥 CRÍTICA | — | Fail-fast para arquivo ausente ou YAML inválido, com validação mínima de mapeamento e blocos usados pelo Planner. |
 
@@ -68,12 +68,7 @@
 
 - **Tipo de config:** observability.yaml (tracing/metrics exporter).
 - **Classificação sugerida:** 🟥 CRÍTICA.
-- **Problemas encontrados:**
-  - Usa `os.environ.get` sem validar path; `open`/`yaml.safe_load` sem try/except.
-  - Falha dura em runtime sem mensagem estruturada; não diferencia ausência de malformação.
-- **Recomendação futura:**
-  - Fail-fast com mensagens claras e validação do schema mínimo (services/global/exporters).
-  - Permitir status “missing/invalid” para operar em modo degradado opcional.
+- **Status:** Endurecido. Resolve caminho via env ou default com `Path`, falha rápida se arquivo estiver ausente ou YAML inválido e registra logs estruturados (com `exc_info` em parse). Valida blocos mínimos (`services.gateway.tracing/metrics`, `global.exporters.otlp_endpoint`) antes de devolver a config.
 
 ### 3.7 app/api/ops/quality.py — função interna `_load_candidate`
 
