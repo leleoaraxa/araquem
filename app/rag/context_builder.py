@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 import os
 from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 from app.rag.index_reader import EmbeddingStore
 from app.rag.ollama_client import OllamaClient
@@ -16,21 +17,30 @@ _RAG_INDEX_PATH = os.getenv("RAG_INDEX_PATH", "data/embeddings/store/embeddings.
 
 
 def load_rag_policy() -> Dict[str, Any]:
-    """Carrega e cacheia a política de RAG a partir de data/policies/rag.yaml.
+    """Carrega e cacheia a política de RAG.
 
-    Se o arquivo não existir ou estiver inválido, retorna um dicionário vazio.
-    Não levanta exceção para o chamador.
+    Regras de guardrail:
+      - se o arquivo não existir, RAG é tratado como desabilitado ({}), com warning.
+      - se o arquivo existir mas for inválido/malformado, levanta RuntimeError para
+        falhar rápido e evitar fallback silencioso.
     """
 
-    try:
-        data = load_yaml_cached(str(_RAG_POLICY_PATH)) or {}
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        LOGGER.warning(
-            "Falha ao carregar política de RAG; aplicando fallback vazio",
-            exc_info=True,
-        )
+    policy_path = Path(_RAG_POLICY_PATH)
+    if not policy_path.exists():
+        LOGGER.warning("Política de RAG ausente; RAG considerado desabilitado")
         return {}
+
+    try:
+        data = load_yaml_cached(str(policy_path)) or {}
+    except Exception as exc:  # pragma: no cover - erros inesperados
+        LOGGER.error("Erro ao carregar política de RAG", exc_info=True)
+        raise RuntimeError("Falha ao carregar política de RAG") from exc
+
+    if not isinstance(data, dict):
+        LOGGER.error("Política de RAG deve ser um mapeamento YAML")
+        raise RuntimeError("Política de RAG inválida (não é um dict)")
+
+    return data
 
 
 def _rag_section(policy: Dict[str, Any]) -> Dict[str, Any]:
@@ -207,6 +217,9 @@ def build_context(
             max_tokens = None
 
     try:
+        if not Path(_RAG_INDEX_PATH).exists():
+            raise FileNotFoundError(f"RAG index não encontrado em {_RAG_INDEX_PATH}")
+
         store: EmbeddingStore = cached_embedding_store(_RAG_INDEX_PATH)
         embedder = OllamaClient()
         vectors = embedder.embed([question])
