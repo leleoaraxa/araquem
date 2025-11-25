@@ -26,6 +26,10 @@ def load_rag_policy() -> Dict[str, Any]:
         data = load_yaml_cached(str(_RAG_POLICY_PATH)) or {}
         return data if isinstance(data, dict) else {}
     except Exception:
+        LOGGER.warning(
+            "Falha ao carregar política de RAG; aplicando fallback vazio",
+            exc_info=True,
+        )
         return {}
 
 

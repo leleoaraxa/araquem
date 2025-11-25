@@ -75,6 +75,7 @@ def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, 
         }
     except Exception:
         # Defensivo: em caso de erro, consideramos contexto desabilitado.
+        _LOG.warning("Falha ao carregar política de contexto", exc_info=True)
         return {
             "context": {},
             "planner": {},

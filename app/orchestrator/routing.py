@@ -1,5 +1,6 @@
 # app/orchestrator/routing.py
 
+import logging
 import os
 import re
 import time
@@ -26,6 +27,8 @@ from app.analytics.explain import explain as _explain_analytics
 from app.planner.param_inference import infer_params  # novo: inferência compute-on-read
 from app.utils.filecache import load_yaml_cached
 from app.rag.context_builder import build_context as build_rag_context
+
+LOGGER = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from app.cache.rt_cache import CachePolicies, RedisCache
@@ -55,7 +58,12 @@ def _load_entity_config(entity: Optional[str]) -> Dict[str, Any]:
     path = _ENTITY_ROOT / str(entity) / "entity.yaml"
     try:
         data = load_yaml_cached(str(path)) or {}
-    except Exception:
+    except Exception as exc:
+        LOGGER.warning(
+            "Falha ao carregar entity.yaml para %s; usando config vazia",
+            entity,
+            exc_info=True,
+        )
         data = {}
     return data if isinstance(data, dict) else {}
 
@@ -407,6 +415,11 @@ class Orchestrator:
                 defaults_yaml_path="data/ops/param_inference.yaml",
             )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
         except Exception:
+            LOGGER.warning(
+                "Inferência de parâmetros falhou; usando SELECT básico",
+                exc_info=True,
+                extra={"entity": entity, "intent": intent},
+            )
             agg_params = None  # fallback seguro: SELECT básico (sem agregação)
 
         # Decisão compute-on-read vs conceitual puro (dirigido por YAML)
@@ -430,6 +443,9 @@ class Orchestrator:
             try:
                 cached_payload = self._cache.get_json(metrics_cache_key)
             except Exception:
+                LOGGER.warning(
+                    "Falha ao consultar cache de métricas", exc_info=True
+                )
                 cache_lookup_error = True
                 cached_payload = None
             if not cache_lookup_error and isinstance(cached_payload, dict):
@@ -535,7 +551,10 @@ class Orchestrator:
                             ttl_seconds=metrics_cache_ttl,
                         )
                     except Exception:
-                        pass
+                        LOGGER.warning(
+                            "Falha ao gravar payload no cache de métricas",
+                            exc_info=True,
+                        )
             else:
                 # Modo conceitual: sem linhas formatadas (deixamos Narrator/RAG trabalhar)
                 rows_formatted = []
@@ -611,6 +630,7 @@ class Orchestrator:
                 entity=str(entity or ""),
             )
         except Exception as exc:
+            LOGGER.warning("Erro ao montar contexto de RAG", exc_info=True)
             meta["rag"] = {
                 "enabled": False,
                 "question": question,

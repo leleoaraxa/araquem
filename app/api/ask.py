@@ -1,5 +1,6 @@
 # app/api/ask.py
 import json
+import logging
 import os
 import time
 from decimal import Decimal
@@ -33,6 +34,9 @@ from app.utils.filecache import load_yaml_cached
 # Narrator (camada de apresentação M10)
 # ─────────────────────────────────────────────────────────────────────────────
 from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
+
+
+LOGGER = logging.getLogger(__name__)
 
 
 def _load_narrator_flags(path: str = "data/policies/narrator.yaml") -> Dict[str, Any]:
@@ -119,8 +123,7 @@ def ask(
             },
         )
     except Exception:
-        # Contexto é best-effort; nunca quebra o /ask
-        pass
+        LOGGER.warning("Falha ao registrar turno do usuário no contexto", exc_info=True)
 
     counter("sirios_planner_routed_total", outcome=("ok" if entity else "unroutable"))
 
@@ -184,7 +187,11 @@ def ask(
                 },
             )
         except Exception:
-            pass
+            LOGGER.warning(
+                "Falha ao registrar turno unroutable no contexto",
+                exc_info=True,
+                extra={"request_id": request_id, "entity": entity, "intent": intent},
+            )
 
         return JSONResponse(json_sanitize(payload_out_unr))
 
@@ -199,6 +206,11 @@ def ask(
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
     except Exception:
+        LOGGER.warning(
+            "Inferência de parâmetros falhou; seguindo sem agregados",
+            extra={"entity": entity, "intent": intent, "request_id": request_id},
+            exc_info=True,
+        )
         agg_params = {}
 
     def _fetch():
@@ -353,6 +365,9 @@ def ask(
                     )
                     conn.commit()
         except Exception:
+            LOGGER.error(
+                "Falha ao registrar explain/narrator events no banco", exc_info=True
+            )
             counter("sirios_explain_events_failed_total")
 
     payload_out = {
@@ -405,6 +420,10 @@ def ask(
             },
         )
     except Exception:
-        pass
+        LOGGER.warning(
+            "Falha ao registrar turno final do assistant no contexto",
+            exc_info=True,
+            extra={"request_id": request_id, "entity": entity, "intent": intent},
+        )
 
     return JSONResponse(json_sanitize(payload_out))
