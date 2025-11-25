@@ -7,7 +7,7 @@ description: >
   O payload do /ask é imutável; este arquivo define toda a lógica declarativa.
 
 intents:
-  dividendos:
+  fiis_dividendos:
     default_agg: list
     default_window: "count:6"
     agg_keywords:
@@ -28,7 +28,7 @@ intents:
         12: [12 ultimos, doze ultimos]
         24: [24 ultimos, vinte e quatro ultimos]
 
-  precos:
+  fiis_precos:
     default_agg: latest
     default_window: "count:1"
     agg_keywords:

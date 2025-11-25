@@ -631,6 +631,38 @@ class TestParamInferenceConfig:
             "order": "asc",
         }
 
+    def test_param_inference_canonical_intent_fiis_precos(self):
+        result = param_inference.infer_params(
+            "Quero listar preços do MXRF11 no semestre",
+            "fiis_precos",
+            entity="fiis_precos",
+            entity_yaml_path="data/entities/fiis_precos/entity.yaml",
+            defaults_yaml_path="data/ops/param_inference.yaml",
+        )
+
+        assert result == {
+            "agg": "list",
+            "window": "months:6",
+            "limit": 10,
+            "order": "desc",
+        }
+
+    def test_param_inference_canonical_intent_fiis_dividendos(self):
+        result = param_inference.infer_params(
+            "Quais dividendos do MXRF11?",
+            "fiis_dividendos",
+            entity="fiis_dividendos",
+            entity_yaml_path="data/entities/fiis_dividendos/entity.yaml",
+            defaults_yaml_path="data/ops/param_inference.yaml",
+        )
+
+        assert result == {
+            "agg": "list",
+            "window": "count:6",
+            "limit": 6,
+            "order": "desc",
+        }
+
 
 class TestOntologyLoader:
     def _write_ontology(self, tmp_path: Path, content: dict, name: str) -> Path:
