@@ -542,11 +542,19 @@ def quality_push(
         ok = fail = 0
         for s in samples_raw:
             q = s.get("question") or ""
-            params = payload.get("params") or {}
             try:
-                out = orchestrator.route_question(q, params=params)
-            except TypeError:
                 out = orchestrator.route_question(q)
+            except Exception:
+                LOGGER.error(
+                    "quality projection failed to route question", exc_info=True
+                )
+                fail += 1
+                counter(
+                    "sirios_planner_projection_total",
+                    outcome="fail",
+                    entity=str(entity),
+                )
+                continue
             results = out.get("results") or {}
             rows = results.get(result_key) or []
             passed = False
