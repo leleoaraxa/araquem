@@ -17,7 +17,7 @@
 | app/orchestrator/routing.py | _load_entity_config | entity.yaml para roteamento/presenter | 🟧 IMPORTANTE | Hardened (status/log); fallback `{}` somente após warning/error | Riscos mitigados; mantém compatibilidade com chamadas antigas. |
 | app/orchestrator/routing.py | _load_thresholds | thresholds do planner (env PLANNER_THRESHOLDS_PATH) | 🟧 IMPORTANTE | Reusa loader crítico do planner; logs de ausência/erro antes de fallback controlado | Fallback `{}` apenas após warning/error explícito; mantém compatibilidade do roteamento. |
 | app/api/ask.py | _load_narrator_flags | narrador (data/policies/narrator.yaml) | 🟥 CRÍTICA | — | Fail-fast: exige arquivo e tipos corretos. |
-| app/narrator/narrator.py | _load_narrator_policy | narrador (data/policies/narrator.yaml) | 🟧 IMPORTANTE | — | Fail-fast para arquivo ausente/YAML inválido e tipos incorretos; usa apenas policies válidas, sem fallback silencioso. |
+| app/narrator/narrator.py | _load_narrator_policy | narrador (data/policies/narrator.yaml) | 🟧 IMPORTANTE | — | Fail-fast para arquivo ausente/YAML inválido e blocos malformados; usa apenas policies válidas, sem fallback silencioso. |
 | app/planner/planner.py | _load_thresholds | thresholds + rag | 🟥 CRÍTICA | — | Fail-fast com validação de blocos/numéricos. |
 | app/planner/planner.py | _load_context_policy | política de contexto | 🟧 IMPORTANTE | — | Implementa padrão de status/error; mantém defaults. |
 | app/planner/param_inference.py | _load_yaml | param_inference.yaml | 🟦 OPCIONAL | Fallback `{}` sem log | Usado para defaults de agregação; ausência aceita. |
@@ -45,12 +45,7 @@
 
 - **Tipo de config:** política do Narrator.
 - **Classificação sugerida:** 🟧 IMPORTANTE.
-- **Problemas encontrados:**
-  - Encapsula todo load em `try/except Exception` e devolve `{}` sem log.
-  - Permite iniciar Narrator sem política, contrariando `_load_narrator_flags` (crítico) no gateway.
-- **Recomendação futura:**
-  - Fail-fast alinhado a `_load_narrator_flags`, com validação de blocos obrigatórios.
-  - Registrar status/erro no objeto para observabilidade.
+- **Status:** Endurecido. Falha rápido se o arquivo estiver ausente, se o YAML não for um mapeamento ou se o bloco `narrator`/campos obrigatórios (`model`, `llm_enabled`, `shadow`) estiverem malformados. Logs estruturados em português antes de levantar exceções; retorna apenas policies válidas sem fallback silencioso.
 
 ### 3.4 app/context/context_manager.py — função `_load_policy`
 
