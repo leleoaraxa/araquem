@@ -1,7 +1,7 @@
 # Codex Prompts – Araquem Edition (Sirius v1.0)
 
 Este documento define os prompts padronizados para uso com o Codex no contexto do Araquem,
-seguindo o Guardrails Araquem v2.1.1 (sem heurísticas, sem hardcodes, YAML/SQL como fonte
+seguindo o Guardrails Araquem v2.2.0 (sem heurísticas, sem hardcodes, YAML/SQL como fonte
 de verdade).
 
 Use estes modos como _contrato_ sempre que for pedir algo ao Codex.
@@ -62,10 +62,9 @@ antes de deixar o Codex aplicar o patch.
 
 ```text
 Etapa 1: Liste e explique TODAS as heurísticas existentes em app/narrator/prompts.py.
-Etapa 2: Mostre como cada uma viola o Guardrails Araquem v2.1.1.
+Etapa 2: Mostre como cada uma viola o Guardrails Araquem v2.2.0.
 Etapa 3: Aguarde minha confirmação.
-Etapa 4: Só então gere o patch removendo as heurísticas, usando apenas data/policies/narrator.yaml
-como fonte de verdade.
+Etapa 4: Só então gere o patch removendo as heurísticas, usando apenas data/policies/narrator.yaml como fonte de verdade.
 
 Regras:
 - Nenhuma função nova.
@@ -88,7 +87,7 @@ Realize auditoria completa em app/narrator/prompts.py:
 - Encontre heurísticas
 - Identifique comportamento implícito
 - Liste regras não declaradas em YAML
-- Aponte riscos de violação ao Guardrails Araquem v2.1.1
+- Aponte riscos de violação ao Guardrails Araquem v2.2.0
 
 Não faça mudanças ainda.
 
@@ -107,7 +106,7 @@ Saída: relatório técnico somente.
 Valide se app/narrator/prompts.py está 100% em conformidade com:
 
 1) data/policies/narrator.yaml
-2) Guardrails Araquem v2.1.1
+2) Guardrails Araquem v2.2.0
 3) Zero heurística
 4) Comportamento determinístico
 
@@ -174,7 +173,7 @@ Para cada mudança:
 - mostre o trecho original
 - mostre o novo trecho
 - referencie a parte relevante do data/policies/narrator.yaml
-- referencie o Guardrails Araquem v2.1.1
+- referencie o Guardrails Araquem v2.2.0
 
 Saída: relatório + patch Git.
 ```
@@ -264,7 +263,7 @@ modes:
     description: "Primeiro audita, depois refatora."
     steps:
       - "listar e explicar heurísticas"
-      - "relacionar violações ao Guardrails Araquem v2.1.1"
+      - "relacionar violações ao Guardrails Araquem v2.2.0"
       - "aguardar aprovação humana"
       - "só então gerar patch de remoção"
     rules:
@@ -288,7 +287,7 @@ modes:
     description: "Validação para pipelines e PRs."
     rules:
       - "verificar conformidade com data/policies/*.yaml"
-      - "verificar alinhamento ao Guardrails Araquem v2.1.1"
+      - "verificar alinhamento ao Guardrails Araquem v2.2.0"
       - "garantir ausência de heurísticas"
       - "garantir comportamento determinístico"
       - "não gerar patches"
@@ -386,7 +385,7 @@ modes:
     "prefix": "codexDebug",
     "body": [
       "Etapa 1: Liste e explique TODAS as heurísticas existentes em app/narrator/prompts.py.",
-      "Etapa 2: Mostre como cada uma viola o Guardrails Araquem v2.1.1.",
+      "Etapa 2: Mostre como cada uma viola o Guardrails Araquem v2.2.0.",
       "Etapa 3: Aguarde minha confirmação.",
       "Etapa 4: Só então gere o patch removendo as heurísticas, usando apenas data/policies/narrator.yaml como fonte de verdade.",
       "",
@@ -407,7 +406,7 @@ modes:
       "- Encontre heurísticas",
       "- Identifique comportamento implícito",
       "- Liste regras não declaradas em YAML",
-      "- Aponte riscos de violação ao Guardrails Araquem v2.1.1",
+      "- Aponte riscos de violação ao Guardrails Araquem v2.2.0",
       "",
       "Não faça mudanças ainda.",
       "",
