@@ -1,0 +1,123 @@
+# Auditoria de Loaders de Configuração — Araquem
+
+## 1. Sumário Executivo
+
+- 16 loaders analisados em app/** e data/** que consomem YAML ou variáveis de ambiente para comportamento interno.
+- Classificação sugerida: 6 críticas, 6 importantes e 4 opcionais.
+- Maior risco em carregamentos de entidades/ontologia, thresholds do planner e policies do narrador/RAG quando caem em fallback silencioso ou sem validação de ambiente.
+
+## 2. Tabela de Loaders Analisados
+
+| Módulo | Função | Tipo de config | Classificação | Anti-padrões detectados | Observações |
+| --- | --- | --- | --- | --- | --- |
+| app/formatter/rows.py | render_rows_template | apresentação por entidade (entity.yaml) | 🟦 OPCIONAL | Fallback silencioso para `{}`/string vazia | Não sinaliza ausência ou schema inválido. |
+| app/builder/sql_builder.py | _load_entity_yaml | entidade (entity.yaml) | 🟥 CRÍTICA | — | Falha rápida com log/exception se YAML ausente ou vazio. |
+| app/rag/context_builder.py | load_rag_policy | política RAG (env RAG_POLICY_PATH) | 🟦 OPCIONAL | — | Fail-fast se arquivo existe e é inválido; trata ausência como RAG desabilitado. |
+| app/rag/context_builder.py | build_context | índice RAG (env RAG_INDEX_PATH) | 🟦 OPCIONAL | Leitura de env sem validação de path/exists antes de uso do store | Trava só quando arquivo não existe; max_tokens/min_score toleram tipos inválidos. |
+| app/orchestrator/routing.py | _load_entity_config | entity.yaml para roteamento/presenter | 🟧 IMPORTANTE | Fallback silencioso `{}` em erro; captura Exception ampla | Riscos de degradar extração de métricas sem status. |
+| app/orchestrator/routing.py | _load_thresholds | thresholds do planner (env PLANNER_THRESHOLDS_PATH) | 🟥 CRÍTICA | Fallback `{}` sem validar schema | Pode mascarar thresholds ausentes/invalidos, sem log. |
+| app/api/ask.py | _load_narrator_flags | narrador (data/policies/narrator.yaml) | 🟥 CRÍTICA | — | Fail-fast: exige arquivo e tipos corretos. |
+| app/narrator/narrator.py | _load_narrator_policy | narrador (data/policies/narrator.yaml) | 🟧 IMPORTANTE | Fallback `{}` em qualquer Exception | Contradiz contrato de fail-fast do narrador; pode operar sem política. |
+| app/planner/planner.py | _load_thresholds | thresholds + rag | 🟥 CRÍTICA | — | Fail-fast com validação de blocos/numéricos. |
+| app/planner/planner.py | _load_context_policy | política de contexto | 🟧 IMPORTANTE | — | Implementa padrão de status/error; mantém defaults. |
+| app/planner/param_inference.py | _load_yaml | param_inference.yaml | 🟦 OPCIONAL | Fallback `{}` sem log | Usado para defaults de agregação; ausência aceita. |
+| app/context/context_manager.py | _load_policy | context.yaml | 🟧 IMPORTANTE | Captura Exception ampla, fallback DEFAULT_POLICY | Não sinaliza erro; merge superficial pode esconder inconsistências. |
+| app/cache/rt_cache.py | CachePolicies.__init__ | cache.yaml | 🟧 IMPORTANTE | Fallback `{}` silencioso | Não valida estrutura; ausência considerada ok. |
+| app/observability/runtime.py | load_config | observability.yaml (env OBSERVABILITY_CONFIG) | 🟥 CRÍTICA | Leitura env sem validação; open sem tratamento | Falha dura se arquivo ausente/malformado; sem feedback estruturado. |
+| app/api/ops/quality.py | quality_report → _load_candidate | quality.yaml ou planner_thresholds.yaml | 🟧 IMPORTANTE | Erros acumulam, mas retorno 500 só se nenhum arquivo carregado | Leitura com fallback; ausência de schema não validada. |
+| app/planner/ontology_loader.py | load_ontology | ontology/entity.yaml | 🟥 CRÍTICA | Defaults embutidos em código (weights/token split) | Sem validação de schema; falha no open quando ausente. |
+
+## 3. Casos de atenção (detalhados)
+
+### 3.1 app/orchestrator/routing.py — função `_load_entity_config`
+
+- **Tipo de config:** entity.yaml para ask/routing/presenter.
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Problemas encontrados:**
+  - Captura `Exception` genérica e retorna `{}` sem status/log estruturado.
+  - Nenhuma validação mínima de schema; mistura erros de E/S com YAML malformado.
+- **Recomendação futura:**
+  - Alinhar a `_load_context_policy`: status ok/missing/invalid + erro textual.
+  - Fail-soft com telemetria explícita para diferenciar ausência vs. erro.
+
+### 3.2 app/orchestrator/routing.py — função `_load_thresholds`
+
+- **Tipo de config:** thresholds do planner (env `PLANNER_THRESHOLDS_PATH`).
+- **Classificação sugerida:** 🟥 CRÍTICA.
+- **Problemas encontrados:**
+  - Retorna `{}` para qualquer YAML inválido/ausente, sem log ou validação.
+  - Diverge do padrão `_load_thresholds` do planner (fail-fast com validação).
+- **Recomendação futura:**
+  - Reusar o loader crítico do planner ou propagar erro explícito.
+  - Evitar fallback silencioso; instrumentar métricas de falha de config.
+
+### 3.3 app/narrator/narrator.py — função `_load_narrator_policy`
+
+- **Tipo de config:** política do Narrator.
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Problemas encontrados:**
+  - Encapsula todo load em `try/except Exception` e devolve `{}` sem log.
+  - Permite iniciar Narrator sem política, contrariando `_load_narrator_flags` (crítico) no gateway.
+- **Recomendação futura:**
+  - Fail-fast alinhado a `_load_narrator_flags`, com validação de blocos obrigatórios.
+  - Registrar status/erro no objeto para observabilidade.
+
+### 3.4 app/context/context_manager.py — função `_load_policy`
+
+- **Tipo de config:** política de contexto (planner/narrator).
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Problemas encontrados:**
+  - Captura `Exception` e retorna `DEFAULT_POLICY` sem indicar falha.
+  - Merge raso pode esconder chaves ausentes; ausência de status/erro.
+- **Recomendação futura:**
+  - Seguir padrão de `status`/`error` de `_load_context_policy` do planner.
+  - Validar tipos básicos (dict/list/bool/int) antes de aplicar merges.
+
+### 3.5 app/cache/rt_cache.py — método `CachePolicies.__init__`
+
+- **Tipo de config:** política de cache.
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Problemas encontrados:**
+  - Fallback `{}` silencioso para ausência/erro; não distingue entre arquivo faltante e YAML inválido.
+  - Não valida blocos obrigatórios (policies, TTLs), podendo gerar comportamentos incoerentes.
+- **Recomendação futura:**
+  - Tratar como importante com status/erro; logar falhas de parse.
+  - Validar chaves mínimas antes de expor `_policies`.
+
+### 3.6 app/observability/runtime.py — função `load_config`
+
+- **Tipo de config:** observability.yaml (tracing/metrics exporter).
+- **Classificação sugerida:** 🟥 CRÍTICA.
+- **Problemas encontrados:**
+  - Usa `os.environ.get` sem validar path; `open`/`yaml.safe_load` sem try/except.
+  - Falha dura em runtime sem mensagem estruturada; não diferencia ausência de malformação.
+- **Recomendação futura:**
+  - Fail-fast com mensagens claras e validação do schema mínimo (services/global/exporters).
+  - Permitir status “missing/invalid” para operar em modo degradado opcional.
+
+### 3.7 app/api/ops/quality.py — função interna `_load_candidate`
+
+- **Tipo de config:** políticas de qualidade / thresholds.
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Problemas encontrados:**
+  - Fallbacks múltiplos sem validação de schema; erros acumulados apenas em mensagem final.
+  - Retorna `{}` em malformação parcial, possivelmente mascarando políticas críticas.
+- **Recomendação futura:**
+  - Validar estrutura (targets/quality_gates) antes de aceitar; expor status ok/missing/invalid.
+  - Aderir ao padrão de fail-fast ou status explícito com telemetria.
+
+### 3.8 app/planner/ontology_loader.py — função `load_ontology`
+
+- **Tipo de config:** ontologia de intents/entidades.
+- **Classificação sugerida:** 🟥 CRÍTICA.
+- **Problemas encontrados:**
+  - Sem validação de campos obrigatórios; defaults embutidos em código (`weights`, `token_split`).
+  - Falha apenas se arquivo ausente; valores incorretos passam silenciosamente.
+- **Recomendação futura:**
+  - Validar schema completo (intents, tokens, phrases, entities) e tipos numéricos.
+  - Remover defaults de negócio do código, movendo-os para YAML validado.
+
+## 4. Conclusão
+
+- Loaders alinhados aos guardrails: `_load_narrator_flags`, `_load_thresholds` (planner), `_load_context_policy` e `load_rag_policy` já incorporam fail-fast ou status/erro explícito.
+- Principais candidatos a endurecimento: `_load_thresholds` do orchestrator, `_load_narrator_policy`, `CachePolicies.__init__`, `load_config` de observability e `load_ontology` (ontologia/entidades), por combinarem ausência de validação com fallbacks silenciosos ou falhas abruptas.
