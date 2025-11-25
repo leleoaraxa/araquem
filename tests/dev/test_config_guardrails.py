@@ -10,6 +10,7 @@ from app.cache.rt_cache import CachePolicies
 from app.context import context_manager as cm
 from app.context.context_manager import ContextManager, DEFAULT_POLICY
 from app.orchestrator import routing
+from app.narrator import narrator as narrator_module
 from app.planner import planner
 from app.planner.ontology_loader import load_ontology
 from app.rag import context_builder
@@ -88,6 +89,110 @@ class TestNarratorConfig:
         assert isinstance(result["shadow"], bool)
         assert isinstance(result["model"], str)
         assert result == {"enabled": True, "shadow": False, "model": "meu-modelo"}
+
+
+class TestNarratorPolicyLoader:
+    def test_load_narrator_policy_missing_file_raises(self, tmp_path, caplog):
+        caplog.set_level(logging.ERROR)
+        missing_path = tmp_path / "narrator_missing.yaml"
+
+        with pytest.raises(RuntimeError, match="ausente"):
+            narrator_module._load_narrator_policy(path=str(missing_path))
+
+        assert any("Narrator policy ausente" in rec.message for rec in caplog.records)
+
+    def test_load_narrator_policy_non_mapping_yaml_raises(self, tmp_path, caplog):
+        caplog.set_level(logging.ERROR)
+        yaml_path = tmp_path / "narrator_list.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+
+        with pytest.raises(RuntimeError, match="mapeamento"):
+            narrator_module._load_narrator_policy(path=str(yaml_path))
+
+        assert any("raiz não é mapeamento" in rec.message for rec in caplog.records)
+
+    @pytest.mark.parametrize(
+        "content,match",
+        [({}, "ausente|mapeamento"), ({"narrator": []}, "mapeamento")],
+    )
+    def test_load_narrator_policy_missing_or_invalid_block(
+        self, tmp_path, caplog, content, match
+    ):
+        caplog.set_level(logging.ERROR)
+        yaml_path = tmp_path / "narrator_invalid.yaml"
+        import yaml
+
+        yaml_path.write_text(yaml.safe_dump(content))
+
+        with pytest.raises(RuntimeError, match=match):
+            narrator_module._load_narrator_policy(path=str(yaml_path))
+
+        assert any(
+            "bloco 'narrator'" in rec.message
+            or "campo obrigatório ausente" in rec.message
+            for rec in caplog.records
+        )
+
+    @pytest.mark.parametrize(
+        "key,value,match",
+        [
+            ("model", 123, "string"),
+            ("model", "", "string"),
+            ("llm_enabled", "true", "booleano"),
+            ("shadow", "false", "booleano"),
+        ],
+    )
+    def test_load_narrator_policy_invalid_required_fields(
+        self, tmp_path, caplog, key, value, match
+    ):
+        caplog.set_level(logging.ERROR)
+        import yaml
+
+        yaml_path = tmp_path / "narrator_required.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "narrator": {
+                        "model": "modelo",  # sobrescrito conforme parametrização
+                        "llm_enabled": True,
+                        "shadow": False,
+                    }
+                }
+            )
+        )
+
+        data = yaml.safe_load(yaml_path.read_text())
+        data["narrator"][key] = value
+        yaml_path.write_text(yaml.safe_dump(data))
+
+        with pytest.raises(RuntimeError, match=match):
+            narrator_module._load_narrator_policy(path=str(yaml_path))
+
+        assert any(key in rec.message for rec in caplog.records)
+
+    def test_load_narrator_policy_happy_path(self, tmp_path):
+        yaml_path = tmp_path / "narrator_valid.yaml"
+        import yaml
+
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "narrator": {
+                        "model": "mistral:instruct",
+                        "llm_enabled": True,
+                        "shadow": False,
+                    }
+                }
+            )
+        )
+
+        result = narrator_module._load_narrator_policy(path=str(yaml_path))
+
+        assert result == {
+            "model": "mistral:instruct",
+            "llm_enabled": True,
+            "shadow": False,
+        }
 
 
 class TestOntologyLoader:
