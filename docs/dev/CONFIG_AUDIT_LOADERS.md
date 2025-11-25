@@ -25,7 +25,7 @@
 | app/cache/rt_cache.py | CachePolicies.__init__ | cache.yaml | 🟧 IMPORTANTE | Hardened (status/log + validação de mapping) | Mantém `_policies` vazio em falha; status ok/missing/invalid. |
 | app/observability/runtime.py | load_config | observability.yaml (env OBSERVABILITY_CONFIG) | 🟥 CRÍTICA | Leitura env sem validação; open sem tratamento | Falha dura se arquivo ausente/malformado; sem feedback estruturado. |
 | app/api/ops/quality.py | quality_report → _load_candidate | quality.yaml ou planner_thresholds.yaml | 🟧 IMPORTANTE | Erros acumulam, mas retorno 500 só se nenhum arquivo carregado | Leitura com fallback; ausência de schema não validada. |
-| app/planner/ontology_loader.py | load_ontology | ontology/entity.yaml | 🟥 CRÍTICA | Defaults embutidos em código (weights/token split) | Sem validação de schema; falha no open quando ausente. |
+| app/planner/ontology_loader.py | load_ontology | ontology/entity.yaml | 🟥 CRÍTICA | — | Fail-fast para arquivo ausente ou YAML inválido, com validação mínima de mapeamento e blocos usados pelo Planner. |
 
 ## 3. Casos de atenção (detalhados)
 

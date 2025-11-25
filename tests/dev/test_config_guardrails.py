@@ -11,6 +11,7 @@ from app.context import context_manager as cm
 from app.context.context_manager import ContextManager, DEFAULT_POLICY
 from app.orchestrator import routing
 from app.planner import planner
+from app.planner.ontology_loader import load_ontology
 from app.rag import context_builder
 
 
@@ -86,6 +87,59 @@ class TestNarratorConfig:
         assert isinstance(result["shadow"], bool)
         assert isinstance(result["model"], str)
         assert result == {"enabled": True, "shadow": False, "model": "meu-modelo"}
+
+
+class TestOntologyLoader:
+    def test_load_ontology_missing_file_raises(self, tmp_path: Path):
+        missing_path = tmp_path / "missing_ontology.yaml"
+
+        with pytest.raises(ValueError, match="ontologia ausente"):
+            load_ontology(str(missing_path))
+
+    def test_load_ontology_invalid_yaml_raises(self, tmp_path: Path):
+        yaml_path = tmp_path / "ontology_list.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+
+        with pytest.raises(ValueError, match="ontologia inválido"):
+            load_ontology(str(yaml_path))
+
+    def test_load_ontology_happy_path(self, tmp_path: Path):
+        yaml_path = tmp_path / "ontology_valid.yaml"
+        import yaml
+
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "normalize": ["lower"],
+                    "tokenization": {"split": r"\b"},
+                    "weights": {"token": 1.0, "phrase": 2.5},
+                    "intents": [
+                        {
+                            "name": "foo",
+                            "tokens": {"include": ["a"], "exclude": ["b"]},
+                            "phrases": {"include": ["ola"], "exclude": ["tchau"]},
+                            "entities": ["fiis_precos"],
+                        }
+                    ],
+                    "anti_tokens": {"foo": ["bar"]},
+                }
+            )
+        )
+
+        ontology = load_ontology(str(yaml_path))
+
+        assert ontology.normalize == ["lower"]
+        assert ontology.token_split == r"\b"
+        assert ontology.weights == {"token": 1.0, "phrase": 2.5}
+        assert ontology.anti_tokens == {"foo": ["bar"]}
+        assert len(ontology.intents) == 1
+        intent = ontology.intents[0]
+        assert intent.name == "foo"
+        assert intent.tokens_include == ["a"]
+        assert intent.tokens_exclude == ["b"]
+        assert intent.phrases_include == ["ola"]
+        assert intent.phrases_exclude == ["tchau"]
+        assert intent.entities == ["fiis_precos"]
 
 
 class TestPlannerThresholds:
