@@ -13,6 +13,7 @@ from app.context.context_manager import ContextManager, DEFAULT_POLICY
 from app.orchestrator import routing
 from app.narrator import narrator as narrator_module
 from app.planner import planner
+from app.planner import param_inference
 from app.planner.ontology_loader import load_ontology
 from app.rag import context_builder
 from app.observability import runtime
@@ -270,6 +271,118 @@ class TestNarratorPolicyLoader:
             "model": "mistral:instruct",
             "llm_enabled": True,
             "shadow": False,
+        }
+
+
+class TestParamInferenceConfig:
+    def test_param_inference_missing_file_returns_safe_empty(self, tmp_path: Path):
+        missing_path = tmp_path / "param_inference.yaml"
+
+        result = param_inference._load_yaml(missing_path)
+
+        assert result == {}
+
+    def test_param_inference_invalid_root_yaml_raises(self, tmp_path: Path):
+        yaml_path = tmp_path / "param_inference_list.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+
+        with pytest.raises(ValueError, match="raiz.*mapeamento|raiz do YAML"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_intents_block_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_intents.yaml"
+        yaml_path.write_text(yaml.safe_dump({"intents": []}))
+
+        with pytest.raises(ValueError, match="intents.*mapeamento"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_default_agg_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {"intents": {"fiis_precos": {"default_agg": "median"}}}
+            )
+        )
+
+        with pytest.raises(ValueError, match="default_agg.*desconhecido"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_default_window_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump({"intents": {"fiis_precos": {"default_window": "ano"}}})
+        )
+
+        with pytest.raises(ValueError, match="default_window.*formato"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_windows_allowed_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_windows_allowed.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {"intents": {"fiis_precos": {"windows_allowed": "months:6"}}}
+            )
+        )
+
+        with pytest.raises(ValueError, match="windows_allowed.*lista"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_happy_path(self, tmp_path: Path):
+        import yaml
+
+        defaults_path = tmp_path / "param_inference.yaml"
+        defaults_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_financials_risk": {
+                            "default_agg": "list",
+                            "default_window": "count:3",
+                            "agg_keywords": {
+                                "list": {"include": ["listar", "traga lista"]}
+                            },
+                            "window_keywords": {"months": {6: ["ultimo semestre"]}},
+                            "defaults": {"list": {"order": "asc"}},
+                            "windows_allowed": ["count:3", "months:6"],
+                        }
+                    }
+                }
+            )
+        )
+
+        entity_yaml = tmp_path / "entity.yaml"
+        entity_yaml.write_text(
+            yaml.safe_dump(
+                {
+                    "aggregations": {
+                        "defaults": {"list": {"limit": 50}},
+                        "windows_allowed": ["months:6"],
+                    }
+                }
+            )
+        )
+
+        result = param_inference.infer_params(
+            "Quero listar dados ultimo semestre",
+            "fiis_financials_risk",
+            entity="fiis",
+            entity_yaml_path=str(entity_yaml),
+            defaults_yaml_path=str(defaults_path),
+        )
+
+        assert result == {
+            "agg": "list",
+            "window": "months:6",
+            "limit": 50,
+            "order": "asc",
         }
 
 
