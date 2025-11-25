@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import Optional, Dict, Any
 
 import psycopg
-from fastapi import APIRouter, Query, Header
+from fastapi import APIRouter, Query
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -27,25 +27,49 @@ from app.templates_answer import render_answer
 
 # nova camada de apresentação (pós-formatter)
 from app.presenter.presenter import present
+from app.utils.filecache import load_yaml_cached
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Narrator (camada de apresentação M10) — totalmente opcional e sem regressão
+# Narrator (camada de apresentação M10)
 # ─────────────────────────────────────────────────────────────────────────────
-_NARRATOR_ENABLED = str(os.getenv("NARRATOR_ENABLED", "false")).lower() == "true"
-_NARRATOR_SHADOW = str(os.getenv("NARRATOR_SHADOW", "false")).lower() == "true"
-_NARRATOR_MODEL = os.getenv("NARRATOR_MODEL", "sirios-narrator:latest")
+from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
 
-try:
-    from app.narrator.narrator import Narrator  # arquivo novo (drop-in)
 
-    # depois (deixe o Narrator ler do .env)
-    _NARR: Optional[Narrator] = Narrator(model=_NARRATOR_MODEL)
+def _load_narrator_flags(path: str = "data/policies/narrator.yaml") -> Dict[str, Any]:
+    data = load_yaml_cached(path)
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Narrator policy inválida ou ausente em {path}")
 
-except Exception:
-    # Se o pacote do Narrator ainda não estiver presente, seguimos como hoje.
-    _NARR = None
-    _NARRATOR_ENABLED = False
-    _NARRATOR_SHADOW = False
+    policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else data
+    if not isinstance(policy, dict):
+        raise RuntimeError(f"Narrator policy malformada em {path}")
+
+    default_block = (
+        policy.get("default") if isinstance(policy.get("default"), dict) else {}
+    )
+
+    def _require_flag(key: str) -> Any:
+        if key in policy:
+            return policy[key]
+        if key in default_block:
+            return default_block[key]
+        raise RuntimeError(f"Narrator policy precisa definir '{key}' em {path}")
+
+    model = policy.get("model") or default_block.get("model")
+    if not isinstance(model, str) or not model.strip():
+        raise RuntimeError("Narrator policy deve definir 'model' como string não vazia")
+
+    enabled_raw = _require_flag("llm_enabled")
+    shadow_raw = _require_flag("shadow")
+
+    return {"enabled": bool(enabled_raw), "shadow": bool(shadow_raw), "model": model.strip()}
+
+
+_NARRATOR_FLAGS = _load_narrator_flags()
+_NARRATOR_ENABLED = bool(_NARRATOR_FLAGS["enabled"])
+_NARRATOR_SHADOW = bool(_NARRATOR_FLAGS["shadow"])
+_NARRATOR_MODEL = str(_NARRATOR_FLAGS["model"])
+_NARR: Optional[Narrator] = Narrator(model=_NARRATOR_MODEL)
 
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -63,32 +87,9 @@ class AskPayload(BaseModel):
 def ask(
     payload: AskPayload,
     explain: bool = Query(default=False),
-    x_quality_routing_only: Optional[str] = Header(default=None),
 ):
     t0 = time.perf_counter()
     request_id = make_request_id()
-
-    # ------------------------------------------------------------------
-    # QUALITY ROUTING-ONLY MODE
-    # - Ativado por:
-    #   * Header: X-Quality-Routing-Only: 1/true/yes/on
-    # - Efeito:
-    #   * Usa apenas o planner.explain
-    #   * NÃO chama Orchestrator, DB, Narrator ou RAG/Ollama
-    # ------------------------------------------------------------------
-    routing_only_env = str(os.getenv("QUALITY_ROUTING_ONLY", "0")).lower() in {
-        "1",
-        "true",
-        "yes",
-        "on",
-    }
-    routing_only_header = str(x_quality_routing_only or "").lower() in {
-        "1",
-        "true",
-        "yes",
-        "on",
-    }
-    routing_only = routing_only_env or routing_only_header
 
     t_plan0 = time.perf_counter()
     plan = planner.explain(payload.question)
@@ -186,56 +187,6 @@ def ask(
             pass
 
         return JSONResponse(json_sanitize(payload_out_unr))
-
-    # ------------------------------------------------------------------
-    # QUALITY: modo "routing-only"
-    # ------------------------------------------------------------------
-    if routing_only:
-        elapsed_ms_q = int((time.perf_counter() - t0) * 1000)
-
-        payload_out_quality = {
-            "status": {"reason": "ok", "message": "ok"},
-            "results": {},  # não há consulta a DB aqui
-            "meta": {
-                "planner": plan,
-                "result_key": None,
-                # CANÔNICOS
-                "intent": intent,
-                "entity": entity,
-                # LEGADO / HISTÓRICO
-                "planner_intent": intent,
-                "planner_entity": entity,
-                "planner_score": score,
-                "rows_total": 0,
-                "elapsed_ms": elapsed_ms_q,
-                "explain": (plan.get("explain") if explain else None),
-                "explain_analytics": None,
-                "cache": {"hit": False, "key": None, "ttl": None},
-                "aggregates": {},
-                "narrator": None,
-                "requested_metrics": None,
-            },
-            "answer": "",
-        }
-
-        # Registro do turno do "assistant" (modo quality routing-only)
-        try:
-            context_manager.append_turn(
-                client_id=payload.client_id,
-                conversation_id=payload.conversation_id,
-                role="assistant",
-                content=payload_out_quality.get("answer", "") or "",
-                meta={
-                    "request_id": request_id,
-                    "intent": intent,
-                    "entity": entity,
-                    "status_reason": "routing_only",
-                },
-            )
-        except Exception:
-            pass
-
-        return JSONResponse(json_sanitize(payload_out_quality))
 
     identifiers = orchestrator.extract_identifiers(payload.question)
 

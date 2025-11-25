@@ -17,43 +17,42 @@ from app.observability.instrumentation import counter, histogram
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
 
-_THRESH_DEFAULTS = {
-    "planner": {
-        "thresholds": {
-            "defaults": {"min_score": 1.0, "min_gap": 0.5},
-            "intents": {},
-            "entities": {},
-            "apply_on": "base",
-        },
-        "rag": {
-            "enabled": False,
-            "k": 5,
-            "min_score": 0.20,
-            "weight": 0.35,
-            "re_rank": {"enabled": False, "mode": "blend", "weight": 0.25},
-        },
-    }
-}
+
+def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
+    if key not in cfg:
+        raise ValueError(f"Configuração ausente: {path}.{key}")
+    return cfg[key]
 
 
 def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str, Any]:
-    try:
-        data = load_yaml_cached(path) or {}
-        planner = data.get("planner") or {}
-        thresholds = planner.get("thresholds") or dict(
-            _THRESH_DEFAULTS["planner"]["thresholds"]
-        )
-        rag = planner.get("rag") or dict(_THRESH_DEFAULTS["planner"]["rag"])
-        # Garantir chaves novas (defaults se ausentes)
-        if "apply_on" not in thresholds:
-            thresholds["apply_on"] = _THRESH_DEFAULTS["planner"]["thresholds"][
-                "apply_on"
-            ]
-        if "re_rank" not in rag:
-            rag["re_rank"] = dict(_THRESH_DEFAULTS["planner"]["rag"]["re_rank"])
-        return {"planner": {"thresholds": thresholds, "rag": rag}}
-    except Exception:
-        return _THRESH_DEFAULTS
+    data = load_yaml_cached(path)
+    if not isinstance(data, dict):
+        raise ValueError(f"Arquivo de thresholds inválido: {path}")
+
+    planner = data.get("planner")
+    if not isinstance(planner, dict):
+        raise ValueError(f"Bloco 'planner' obrigatório em {path}")
+
+    thresholds = planner.get("thresholds")
+    rag = planner.get("rag")
+    if not isinstance(thresholds, dict) or not isinstance(rag, dict):
+        raise ValueError(f"Blocos 'thresholds' e 'rag' são obrigatórios em {path}")
+
+    defaults = thresholds.get("defaults")
+    if not isinstance(defaults, dict) or "min_score" not in defaults or "min_gap" not in defaults:
+        raise ValueError("thresholds.defaults deve definir min_score e min_gap")
+
+    re_rank_cfg = rag.get("re_rank")
+    if not isinstance(re_rank_cfg, dict):
+        raise ValueError("Bloco rag.re_rank deve estar definido no YAML")
+
+    _require_key(thresholds, "apply_on", path="thresholds")
+    for key in ("enabled", "k", "min_score", "weight"):
+        _require_key(rag, key, path="rag")
+    for key in ("enabled", "mode", "weight"):
+        _require_key(re_rank_cfg, key, path="rag.re_rank")
+
+    return {"planner": {"thresholds": thresholds, "rag": rag}}
 
 
 def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, Any]:
@@ -211,26 +210,24 @@ class Planner:
             }
 
         # --- configurações RAG ---
-        rag_cfg = _THRESH_DEFAULTS.get("planner", {}).get("rag") or {}
         cfg = _load_thresholds()
-        planner_cfg = cfg.get("planner") or {}
-        rag_cfg = planner_cfg.get("rag") or rag_cfg
-        thresholds_cfg = planner_cfg.get("thresholds") or {}
-        rag_enabled = bool(rag_cfg.get("enabled", False))
-        rag_k = int(rag_cfg.get("k", 5))
-        rag_min_score = float(rag_cfg.get("min_score", 0.20))
-        rag_weight = float(
-            rag_cfg.get("weight", 0.30)
-        )  # só informativo quando re_rank desliga
+        planner_cfg = cfg["planner"]
+        rag_cfg = planner_cfg["rag"]
+        thresholds_cfg = planner_cfg["thresholds"]
+
+        rag_enabled = bool(rag_cfg["enabled"])
+        rag_k = int(rag_cfg["k"])
+        rag_min_score = float(rag_cfg["min_score"])
+        rag_weight = float(rag_cfg["weight"])
         rag_index_path = os.getenv(
             "RAG_INDEX_PATH", "data/embeddings/store/embeddings.jsonl"
         )
         # Re-rank (Preparação M7.4 — desligado por padrão)
-        re_rank_cfg = rag_cfg.get("re_rank") or {}
-        re_rank_enabled = bool(re_rank_cfg.get("enabled", False))
-        re_rank_mode = str(re_rank_cfg.get("mode", "blend"))
-        re_rank_weight = float(re_rank_cfg.get("weight", 0.25))
-        thr_apply_on = str(thresholds_cfg.get("apply_on", "base"))
+        re_rank_cfg = rag_cfg["re_rank"]
+        re_rank_enabled = bool(re_rank_cfg["enabled"])
+        re_rank_mode = str(re_rank_cfg["mode"])
+        re_rank_weight = float(re_rank_cfg["weight"])
+        thr_apply_on = str(thresholds_cfg["apply_on"])
         # Compat: 'fused' deve usar o score final (pós-fusão) no gate
         if thr_apply_on == "fused":
             thr_apply_on = "final"
