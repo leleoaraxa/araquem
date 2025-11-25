@@ -274,55 +274,179 @@ class TestNarratorPolicyLoader:
 
 
 class TestOntologyLoader:
+    def _write_ontology(self, tmp_path: Path, content: dict, name: str) -> Path:
+        import yaml
+
+        yaml_path = tmp_path / name
+        yaml_path.write_text(yaml.safe_dump(content))
+        return yaml_path
+
+    def _base_ontology(self) -> dict:
+        return {
+            "normalize": ["lower", "strip_accents"],
+            "tokenization": {"split": r"\b"},
+            "weights": {"token": 1.0, "phrase": 2.0},
+            "intents": [
+                {
+                    "name": "fiis_precos",
+                    "tokens": {"include": ["preco"], "exclude": []},
+                    "phrases": {"include": [], "exclude": []},
+                    "entities": ["fiis_precos"],
+                }
+            ],
+            "anti_tokens": {"generic": ["fiis"]},
+        }
+
     def test_load_ontology_missing_file_raises(self, tmp_path: Path):
         missing_path = tmp_path / "missing_ontology.yaml"
 
-        with pytest.raises(ValueError, match="ontologia ausente"):
+        with pytest.raises(ValueError) as exc:
             load_ontology(str(missing_path))
 
-    def test_load_ontology_invalid_yaml_raises(self, tmp_path: Path):
+        assert "ontologia ausente" in str(exc.value)
+
+    def test_load_ontology_root_non_mapping_raises(self, tmp_path: Path):
         yaml_path = tmp_path / "ontology_list.yaml"
         yaml_path.write_text("- 1\n- 2\n")
 
-        with pytest.raises(ValueError, match="ontologia inválido"):
+        with pytest.raises(ValueError, match="mapeamento|inválido"):
             load_ontology(str(yaml_path))
 
-    def test_load_ontology_happy_path(self, tmp_path: Path):
-        yaml_path = tmp_path / "ontology_valid.yaml"
-        import yaml
+    def test_load_ontology_missing_intents_raises(self, tmp_path: Path):
+        data = self._base_ontology()
+        data.pop("intents")
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_missing_intents.yaml")
 
-        yaml_path.write_text(
-            yaml.safe_dump(
+        with pytest.raises(ValueError) as exc:
+            load_ontology(str(yaml_path))
+
+        assert "intents" in str(exc.value)
+
+    def test_load_ontology_intents_not_list_raises(self, tmp_path: Path):
+        data = self._base_ontology()
+        data["intents"] = {"name": "fiis_precos"}
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_intents_not_list.yaml")
+
+        with pytest.raises(ValueError) as exc:
+            load_ontology(str(yaml_path))
+
+        assert "intents" in str(exc.value)
+        assert "lista" in str(exc.value)
+
+    @pytest.mark.parametrize(
+        "modifier,expected",
+        [
+            (lambda data: data["intents"].__setitem__(0, "precos"), "intent"),
+            (
+                lambda data: data["intents"][0].__setitem__("tokens", ["preco"]),
+                "tokens",
+            ),
+            (
+                lambda data: data["intents"][0].__setitem__("phrases", ["ola"]),
+                "phrases",
+            ),
+            (
+                lambda data: data["intents"][0].__setitem__("entities", "fiis"),
+                "entities",
+            ),
+        ],
+    )
+    def test_load_ontology_invalid_intents_raise(self, tmp_path: Path, caplog, modifier, expected):
+        data = self._base_ontology()
+        modifier(data)
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_intents.yaml")
+
+        caplog.set_level(logging.ERROR)
+
+        with pytest.raises(ValueError):
+            load_ontology(str(yaml_path))
+
+        assert any(expected in rec.getMessage() for rec in caplog.records)
+
+    def test_load_ontology_invalid_anti_tokens_type(self, tmp_path: Path, caplog):
+        data = self._base_ontology()
+        data["anti_tokens"] = ["should", "be", "dict"]
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_anti_tokens.yaml")
+
+        caplog.set_level(logging.ERROR)
+
+        with pytest.raises(ValueError):
+            load_ontology(str(yaml_path))
+
+        assert any("anti_tokens" in rec.getMessage() for rec in caplog.records)
+
+    @pytest.mark.parametrize(
+        "tokenization,expected",
+        [
+            ("split", "tokenization deve ser dict"),
+            ({}, "tokenization.split"),
+            ({"split": " "}, "split"),
+            ({"split": "   "}, "split"),
+        ],
+    )
+    def test_load_ontology_invalid_tokenization(self, tmp_path: Path, tokenization, expected):
+        data = self._base_ontology()
+        data["tokenization"] = tokenization
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_tokenization.yaml")
+
+        with pytest.raises(ValueError) as exc:
+            load_ontology(str(yaml_path))
+
+        assert "tokenization" in str(exc.value)
+        if "dict" in expected:
+            assert "dict" in str(exc.value)
+        else:
+            assert "split" in str(exc.value)
+
+    @pytest.mark.parametrize(
+        "weights,expected",
+        [
+            (None, "weights"),
+            ({"token": "alto", "phrase": 2.0}, "weights.token"),
+            ({"token": 1.0, "phrase": -2}, "não pode ser negativo"),
+        ],
+    )
+    def test_load_ontology_invalid_weights(self, tmp_path: Path, weights, expected):
+        data = self._base_ontology()
+        data["weights"] = weights
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_weights.yaml")
+
+        with pytest.raises(ValueError) as exc:
+            load_ontology(str(yaml_path))
+
+        assert "weights" in str(exc.value)
+        assert expected in str(exc.value)
+
+    def test_load_ontology_happy_path(self, tmp_path: Path):
+        data = {
+            "normalize": ["lower", "strip_accents", "strip_punct"],
+            "tokenization": {"split": r"\b"},
+            "weights": {"token": 1.0, "phrase": 2.0},
+            "anti_tokens": {"generic": ["fiis", "fundo imobiliario"]},
+            "intents": [
                 {
-                    "normalize": ["lower"],
-                    "tokenization": {"split": r"\b"},
-                    "weights": {"token": 1.0, "phrase": 2.5},
-                    "intents": [
-                        {
-                            "name": "foo",
-                            "tokens": {"include": ["a"], "exclude": ["b"]},
-                            "phrases": {"include": ["ola"], "exclude": ["tchau"]},
-                            "entities": ["fiis_precos"],
-                        }
-                    ],
-                    "anti_tokens": {"foo": ["bar"]},
+                    "name": "fiis_precos",
+                    "tokens": {"include": ["preco", "cotacao"], "exclude": []},
+                    "phrases": {"include": [], "exclude": []},
+                    "entities": ["fiis_precos"],
                 }
-            )
-        )
+            ],
+        }
+        yaml_path = self._write_ontology(tmp_path, data, "ontology_valid.yaml")
 
         ontology = load_ontology(str(yaml_path))
 
-        assert ontology.normalize == ["lower"]
+        assert ontology.normalize == ["lower", "strip_accents", "strip_punct"]
         assert ontology.token_split == r"\b"
-        assert ontology.weights == {"token": 1.0, "phrase": 2.5}
-        assert ontology.anti_tokens == {"foo": ["bar"]}
+        assert ontology.weights == {"token": 1.0, "phrase": 2.0}
+        assert ontology.anti_tokens["generic"] == ["fiis", "fundo imobiliario"]
         assert len(ontology.intents) == 1
         intent = ontology.intents[0]
-        assert intent.name == "foo"
-        assert intent.tokens_include == ["a"]
-        assert intent.tokens_exclude == ["b"]
-        assert intent.phrases_include == ["ola"]
-        assert intent.phrases_exclude == ["tchau"]
+        assert intent.name == "fiis_precos"
+        assert set(intent.tokens_include) == {"preco", "cotacao"}
+        assert intent.tokens_exclude == []
+        assert intent.phrases_include == []
+        assert intent.phrases_exclude == []
         assert intent.entities == ["fiis_precos"]
 
 
