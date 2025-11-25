@@ -197,6 +197,65 @@ class TestPlannerThresholds:
         assert first is second
 
 
+class TestOrchestratorThresholds:
+    @pytest.fixture(autouse=True)
+    def _reset_cache(self, monkeypatch):
+        monkeypatch.setattr(planner, "_THRESHOLDS_CACHE", None)
+
+    def _write_thresholds(self, tmp_path: Path, config: dict) -> str:
+        import yaml
+
+        yaml_path = tmp_path / "orchestrator_thresholds.yaml"
+        yaml_path.write_text(yaml.safe_dump(config))
+        return str(yaml_path)
+
+    def _base_thresholds(self) -> dict:
+        return {
+            "planner": {
+                "thresholds": {
+                    "defaults": {"min_score": 0.2, "min_gap": 0.1},
+                    "apply_on": "base",
+                },
+                "rag": {
+                    "enabled": False,
+                    "k": 3,
+                    "min_score": 0.1,
+                    "weight": 0.2,
+                    "re_rank": {"enabled": False, "mode": "blend", "weight": 0.1},
+                },
+            }
+        }
+
+    def test_orchestrator_thresholds_missing_file_logs_warning(self, tmp_path, caplog):
+        missing_path = tmp_path / "missing_thresholds.yaml"
+        caplog.set_level(logging.WARNING)
+
+        result = routing._load_thresholds(str(missing_path))
+
+        assert result == {}
+        assert any("ausente" in rec.message for rec in caplog.records)
+
+    def test_orchestrator_thresholds_invalid_yaml_logs_error(self, tmp_path, caplog):
+        yaml_path = tmp_path / "invalid_thresholds.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+        caplog.set_level(logging.ERROR)
+
+        result = routing._load_thresholds(str(yaml_path))
+
+        assert result == {}
+        assert any("inválido" in rec.message for rec in caplog.records)
+
+    def test_orchestrator_thresholds_happy_path(self, tmp_path, caplog):
+        yaml_path = self._write_thresholds(tmp_path, self._base_thresholds())
+        caplog.set_level(logging.ERROR)
+
+        result = routing._load_thresholds(str(yaml_path))
+
+        assert result["defaults"]["min_score"] == 0.2
+        assert result["defaults"]["min_gap"] == 0.1
+        assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
+
+
 class TestContextPolicy:
     def test_load_context_policy_missing_file(self, tmp_path):
         missing_path = tmp_path / "context_missing.yaml"

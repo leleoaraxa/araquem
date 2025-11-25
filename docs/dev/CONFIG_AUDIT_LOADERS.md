@@ -15,7 +15,7 @@
 | app/rag/context_builder.py | load_rag_policy | política RAG (env RAG_POLICY_PATH) | 🟦 OPCIONAL | — | Fail-fast se arquivo existe e é inválido; trata ausência como RAG desabilitado. |
 | app/rag/context_builder.py | build_context | índice RAG (env RAG_INDEX_PATH) | 🟦 OPCIONAL | Leitura de env sem validação de path/exists antes de uso do store | Trava só quando arquivo não existe; max_tokens/min_score toleram tipos inválidos. |
 | app/orchestrator/routing.py | _load_entity_config | entity.yaml para roteamento/presenter | 🟧 IMPORTANTE | Hardened (status/log); fallback `{}` somente após warning/error | Riscos mitigados; mantém compatibilidade com chamadas antigas. |
-| app/orchestrator/routing.py | _load_thresholds | thresholds do planner (env PLANNER_THRESHOLDS_PATH) | 🟥 CRÍTICA | Fallback `{}` sem validar schema | Pode mascarar thresholds ausentes/invalidos, sem log. |
+| app/orchestrator/routing.py | _load_thresholds | thresholds do planner (env PLANNER_THRESHOLDS_PATH) | 🟧 IMPORTANTE | Reusa loader crítico do planner; logs de ausência/erro antes de fallback controlado | Fallback `{}` apenas após warning/error explícito; mantém compatibilidade do roteamento. |
 | app/api/ask.py | _load_narrator_flags | narrador (data/policies/narrator.yaml) | 🟥 CRÍTICA | — | Fail-fast: exige arquivo e tipos corretos. |
 | app/narrator/narrator.py | _load_narrator_policy | narrador (data/policies/narrator.yaml) | 🟧 IMPORTANTE | Fallback `{}` em qualquer Exception | Contradiz contrato de fail-fast do narrador; pode operar sem política. |
 | app/planner/planner.py | _load_thresholds | thresholds + rag | 🟥 CRÍTICA | — | Fail-fast com validação de blocos/numéricos. |
@@ -38,13 +38,8 @@
 ### 3.2 app/orchestrator/routing.py — função `_load_thresholds`
 
 - **Tipo de config:** thresholds do planner (env `PLANNER_THRESHOLDS_PATH`).
-- **Classificação sugerida:** 🟥 CRÍTICA.
-- **Problemas encontrados:**
-  - Retorna `{}` para qualquer YAML inválido/ausente, sem log ou validação.
-  - Diverge do padrão `_load_thresholds` do planner (fail-fast com validação).
-- **Recomendação futura:**
-  - Reusar o loader crítico do planner ou propagar erro explícito.
-  - Evitar fallback silencioso; instrumentar métricas de falha de config.
+- **Classificação sugerida:** 🟧 IMPORTANTE.
+- **Status:** Endurecido. Agora delega parsing/validação para `planner._load_thresholds`, logando ausência (warning) ou YAML inválido (error com `exc_info`) antes de recorrer a fallback `{}` mínimo para manter compatibilidade do roteamento.
 
 ### 3.3 app/narrator/narrator.py — função `_load_narrator_policy`
 

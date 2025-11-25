@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import uuid4
 
 from app.cache.rt_cache import make_cache_key
+from app.planner import planner as planner_module
 from app.planner.planner import Planner
 from app.builder.sql_builder import build_select_for_entity
 from app.executor.pg import PgExecutor
@@ -139,8 +140,40 @@ _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yam
 
 
 def _load_thresholds(path: str) -> Dict[str, Any]:
-    raw = load_yaml_cached(path) or {}
-    return (raw.get("planner") or {}).get("thresholds") or {}
+    policy_path = Path(path)
+    if not policy_path.exists():
+        LOGGER.warning(
+            "Arquivo de thresholds do Orchestrator ausente em %s; usando fallback vazio",
+            policy_path,
+        )
+        return {}
+
+    try:
+        planner_cfg = planner_module._load_thresholds(path=path)
+    except ValueError:
+        LOGGER.error(
+            "YAML de thresholds do Orchestrator inválido em %s; usando fallback vazio",
+            policy_path,
+            exc_info=True,
+        )
+        return {}
+    except Exception:
+        LOGGER.error(
+            "Erro inesperado ao carregar thresholds do Orchestrator em %s; usando fallback vazio",
+            policy_path,
+            exc_info=True,
+        )
+        return {}
+
+    planner_block = planner_cfg.get("planner") if isinstance(planner_cfg, dict) else {}
+    thresholds = planner_block.get("thresholds") if isinstance(planner_block, dict) else {}
+    if not isinstance(thresholds, dict):
+        LOGGER.error(
+            "Configuração de thresholds do Orchestrator não é um mapeamento em %s; usando fallback vazio",
+            policy_path,
+        )
+        return {}
+    return thresholds
 
 
 class Orchestrator:
