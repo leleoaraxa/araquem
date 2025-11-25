@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import time
+from pathlib import Path
 from decimal import Decimal
 from typing import Optional, Dict, Any
 
@@ -40,13 +41,17 @@ LOGGER = logging.getLogger(__name__)
 
 
 def _load_narrator_flags(path: str = "data/policies/narrator.yaml") -> Dict[str, Any]:
-    data = load_yaml_cached(path)
+    policy_path = Path(path)
+    if not policy_path.exists():
+        raise RuntimeError(f"Narrator policy ausente em {policy_path}")
+
+    data = load_yaml_cached(str(policy_path))
     if not isinstance(data, dict):
-        raise RuntimeError(f"Narrator policy inválida ou ausente em {path}")
+        raise RuntimeError(f"Narrator policy inválida ou não é um dict em {policy_path}")
 
     policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else data
     if not isinstance(policy, dict):
-        raise RuntimeError(f"Narrator policy malformada em {path}")
+        raise RuntimeError(f"Narrator policy malformada em {policy_path}")
 
     default_block = (
         policy.get("default") if isinstance(policy.get("default"), dict) else {}
@@ -57,16 +62,21 @@ def _load_narrator_flags(path: str = "data/policies/narrator.yaml") -> Dict[str,
             return policy[key]
         if key in default_block:
             return default_block[key]
-        raise RuntimeError(f"Narrator policy precisa definir '{key}' em {path}")
+        raise RuntimeError(f"Narrator policy precisa definir '{key}' em {policy_path}")
 
     model = policy.get("model") or default_block.get("model")
     if not isinstance(model, str) or not model.strip():
         raise RuntimeError("Narrator policy deve definir 'model' como string não vazia")
 
     enabled_raw = _require_flag("llm_enabled")
-    shadow_raw = _require_flag("shadow")
+    if not isinstance(enabled_raw, bool):
+        raise RuntimeError("Narrator policy 'llm_enabled' deve ser booleano")
 
-    return {"enabled": bool(enabled_raw), "shadow": bool(shadow_raw), "model": model.strip()}
+    shadow_raw = _require_flag("shadow")
+    if not isinstance(shadow_raw, bool):
+        raise RuntimeError("Narrator policy 'shadow' deve ser booleano")
+
+    return {"enabled": enabled_raw, "shadow": shadow_raw, "model": model.strip()}
 
 
 _NARRATOR_FLAGS = _load_narrator_flags()
@@ -427,3 +437,4 @@ def ask(
         )
 
     return JSONResponse(json_sanitize(payload_out))
+from pathlib import Path

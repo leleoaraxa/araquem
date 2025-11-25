@@ -5,6 +5,7 @@ import re, unicodedata
 import logging
 import os
 import time
+from pathlib import Path
 
 from .ontology_loader import load_ontology
 
@@ -24,8 +25,40 @@ def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
     return cfg[key]
 
 
+def _require_number(value: Any, *, key: str, path: str, allow_int: bool = True) -> float:
+    if isinstance(value, bool):
+        raise ValueError(f"{path}.{key} deve ser numérico, não booleano")
+    if isinstance(value, (int, float)):
+        if not allow_int and isinstance(value, int):
+            raise ValueError(f"{path}.{key} deve ser float")
+        if value < 0:
+            raise ValueError(f"{path}.{key} não pode ser negativo")
+        return float(value)
+    raise ValueError(f"{path}.{key} deve ser numérico")
+
+
+def _require_positive_int(value: Any, *, key: str, path: str) -> int:
+    if isinstance(value, bool) or not isinstance(value, int):
+        raise ValueError(f"{path}.{key} deve ser inteiro positivo")
+    if value <= 0:
+        raise ValueError(f"{path}.{key} deve ser > 0")
+    return int(value)
+
+
+_THRESHOLDS_CACHE: Dict[str, Any] | None = None
+
+
 def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str, Any]:
-    data = load_yaml_cached(path)
+    global _THRESHOLDS_CACHE
+
+    if _THRESHOLDS_CACHE is not None:
+        return _THRESHOLDS_CACHE
+
+    policy_path = Path(path)
+    if not policy_path.exists():
+        raise ValueError(f"Arquivo de thresholds ausente: {policy_path}")
+
+    data = load_yaml_cached(str(policy_path))
     if not isinstance(data, dict):
         raise ValueError(f"Arquivo de thresholds inválido: {path}")
 
@@ -41,6 +74,8 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
     defaults = thresholds.get("defaults")
     if not isinstance(defaults, dict) or "min_score" not in defaults or "min_gap" not in defaults:
         raise ValueError("thresholds.defaults deve definir min_score e min_gap")
+    _require_number(defaults.get("min_score"), key="min_score", path="thresholds.defaults")
+    _require_number(defaults.get("min_gap"), key="min_gap", path="thresholds.defaults")
 
     re_rank_cfg = rag.get("re_rank")
     if not isinstance(re_rank_cfg, dict):
@@ -52,7 +87,14 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
     for key in ("enabled", "mode", "weight"):
         _require_key(re_rank_cfg, key, path="rag.re_rank")
 
-    return {"planner": {"thresholds": thresholds, "rag": rag}}
+    # Validações mínimas de tipo/intervalo (sem regras de negócio).
+    _require_positive_int(rag.get("k"), key="k", path="rag")
+    _require_number(rag.get("min_score"), key="min_score", path="rag")
+    _require_number(rag.get("weight"), key="weight", path="rag")
+    _require_number(re_rank_cfg.get("weight"), key="weight", path="rag.re_rank")
+
+    _THRESHOLDS_CACHE = {"planner": {"thresholds": thresholds, "rag": rag}}
+    return _THRESHOLDS_CACHE
 
 
 def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, Any]:
@@ -65,20 +107,34 @@ def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, 
         informa se a entidade escolhida estaria apta a usar contexto,
         segundo data/policies/context.yaml.
     """
-    try:
-        data = load_yaml_cached(path) or {}
-        ctx = data.get("context") or {}
-        planner_ctx = ctx.get("planner") or {}
-        return {
-            "context": ctx,
-            "planner": planner_ctx,
-        }
-    except Exception:
-        # Defensivo: em caso de erro, consideramos contexto desabilitado.
-        _LOG.warning("Falha ao carregar política de contexto", exc_info=True)
+    policy_path = Path(path)
+    if not policy_path.exists():
+        _LOG.warning("Política de contexto ausente; contexto desabilitado")
         return {
             "context": {},
             "planner": {},
+            "status": "missing",
+        }
+
+    try:
+        data = load_yaml_cached(str(policy_path)) or {}
+        if not isinstance(data, dict):
+            raise ValueError("context.yaml deve ser um mapeamento")
+        ctx = data.get("context") or {}
+        planner_ctx = ctx.get("planner") or {}
+        return {
+            "context": ctx if isinstance(ctx, dict) else {},
+            "planner": planner_ctx if isinstance(planner_ctx, dict) else {},
+            "status": "ok",
+        }
+    except Exception as exc:
+        # Defensivo: em caso de erro, consideramos contexto desabilitado e registramos o erro.
+        _LOG.error("Falha ao carregar política de contexto", exc_info=True)
+        return {
+            "context": {},
+            "planner": {},
+            "status": "invalid",
+            "error": str(exc),
         }
 
 
@@ -763,6 +819,8 @@ class Planner:
             "entity": chosen_entity,
             "allowed_entities": allowed_entities,
             "denied_entities": denied_entities,
+            "status": ctx_policy_raw.get("status"),
+            "error": ctx_policy_raw.get("error"),
         }
 
         return {
