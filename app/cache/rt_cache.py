@@ -1,4 +1,5 @@
 # app/cache/rt_cache.py
+import logging
 import os, json, hashlib, time, datetime as dt
 from typing import Any, Dict, Optional
 from pathlib import Path
@@ -8,12 +9,16 @@ import yaml
 
 from app.observability.instrumentation import counter, histogram
 
+LOGGER = logging.getLogger(__name__)
+
 # Fonte oficial (novo) e caminho legado (compat)
 POLICY_PATH = Path("data/policies/cache.yaml")
 
 
 class CachePolicies:
     def __init__(self, path: Optional[Path] = None):
+        self._status: str = "ok"
+        self._error: Optional[str] = None
         # Escolhe automaticamente: novo caminho > legado
         selected = None
         if path:
@@ -21,20 +26,37 @@ class CachePolicies:
         else:
             selected = POLICY_PATH
 
-        # Fallback seguro: sem arquivo -> política vazia
-        if selected and selected.exists():
-            with open(selected, "r", encoding="utf-8") as f:
-                self.data = yaml.safe_load(f) or {}
-            self.path = selected
-            self.mtime = self.path.stat().st_mtime
-            # Extrai bloco de policies para acesso rápido
-            self._policies: Dict[str, Any] = self.data.get("policies", {}) or {}
-        else:
-            # Não explode a API se o arquivo não existir
+        self.path = selected or POLICY_PATH
+        self.mtime = None
+
+        if not self.path.exists():
             self.data = {}
-            self.path = POLICY_PATH
-            self.mtime = None
-            self._policies: Dict[str, Any] = {}
+            self._policies = {}
+            self._status = "missing"
+            self._error = f"Arquivo de políticas de cache ausente em {self.path}"
+            LOGGER.warning("Política de cache ausente em %s; usando política vazia", self.path)
+            return
+
+        try:
+            with open(self.path, "r", encoding="utf-8") as f:
+                self.data = yaml.safe_load(f) or {}
+            self.mtime = self.path.stat().st_mtime
+            if not isinstance(self.data, dict):
+                raise ValueError("cache.yaml deve ser um mapeamento")
+            policies_block = self.data.get("policies") or {}
+            if policies_block and not isinstance(policies_block, dict):
+                raise ValueError("Bloco 'policies' deve ser um mapeamento")
+            self._policies = policies_block if isinstance(policies_block, dict) else {}
+        except Exception as exc:
+            self.data = {}
+            self._policies = {}
+            self._status = "invalid"
+            self._error = str(exc)
+            LOGGER.error(
+                "Falha ao carregar políticas de cache de %s; usando política vazia",
+                self.path,
+                exc_info=True,
+            )
 
     def get(self, entity: str) -> Optional[Dict[str, Any]]:
         # Lê do bloco "policies" do YAML; None quando não houver

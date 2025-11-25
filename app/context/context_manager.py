@@ -22,7 +22,8 @@ from __future__ import annotations
 import logging
 import time
 from dataclasses import asdict, dataclass
-from typing import Any, Dict, List, Optional, Protocol, Literal
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Protocol, Literal, Tuple
 
 from app.utils.filecache import load_yaml_cached
 
@@ -85,7 +86,7 @@ DEFAULT_POLICY: Dict[str, Any] = {
 }
 
 
-def _load_policy() -> Dict[str, Any]:
+def _load_policy(path: str = "data/policies/context.yaml") -> Tuple[Dict[str, Any], str, Optional[str]]:
     """
     Carrega política de contexto de data/policies/context.yaml, se existir.
 
@@ -121,33 +122,51 @@ def _load_policy() -> Dict[str, Any]:
 
     Se o arquivo não existir ou estiver inválido, usa DEFAULT_POLICY.
     """
-    path = "data/policies/context.yaml"
-    try:
-        raw = load_yaml_cached(path) or {}
-        policy = raw.get("context") or {}
+    policy_path = Path(path)
+    if not policy_path.exists():
+        error = f"Política de contexto ausente em {policy_path}"
+        LOGGER.warning("%s; usando DEFAULT_POLICY", error)
+        return dict(DEFAULT_POLICY), "missing", error
 
-        # merge raso do topo
+    try:
+        raw = load_yaml_cached(str(policy_path)) or {}
+        if not isinstance(raw, dict):
+            raise ValueError("context.yaml deve ser um mapeamento")
+
+        policy = raw.get("context") or {}
+        if policy and not isinstance(policy, dict):
+            raise ValueError("Bloco 'context' deve ser um mapeamento")
+
         merged: Dict[str, Any] = {**DEFAULT_POLICY, **policy}
 
-        # merge dos blocos planner / narrator preservando defaults
-        planner_raw = policy.get("planner") or {}
-        narrator_raw = policy.get("narrator") or {}
+        planner_raw = policy.get("planner") if isinstance(policy, dict) else None
+        narrator_raw = policy.get("narrator") if isinstance(policy, dict) else None
 
-        merged["planner"] = {**DEFAULT_PLANNER_POLICY, **planner_raw}
-        merged["narrator"] = {**DEFAULT_NARRATOR_POLICY, **narrator_raw}
-        LOGGER.info("Context policy carregada de %s: %r", path, merged)
-        return merged
+        if planner_raw and not isinstance(planner_raw, dict):
+            raise ValueError("context.planner deve ser um mapeamento")
+        if narrator_raw and not isinstance(narrator_raw, dict):
+            raise ValueError("context.narrator deve ser um mapeamento")
+
+        merged["planner"] = {
+            **DEFAULT_PLANNER_POLICY,
+            **(planner_raw or {}),
+        }
+        merged["narrator"] = {
+            **DEFAULT_NARRATOR_POLICY,
+            **(narrator_raw or {}),
+        }
+        LOGGER.info("Context policy carregada de %s: %r", policy_path, merged)
+        return merged, "ok", None
     except Exception as exc:  # pragma: no cover - defensivo
-        LOGGER.warning(
-            "Falha ao carregar política de contexto de %s (%s). "
-            "Usando DEFAULT_POLICY.",
-            path,
-            exc,
+        LOGGER.error(
+            "Falha ao carregar política de contexto de %s; usando DEFAULT_POLICY",
+            policy_path,
+            exc_info=True,
         )
-        return dict(DEFAULT_POLICY)
+        return dict(DEFAULT_POLICY), "invalid", str(exc)
 
 
-POLICY: Dict[str, Any] = _load_policy()
+POLICY, POLICY_STATUS, POLICY_ERROR = _load_policy()
 
 
 class ContextBackend(Protocol):
@@ -217,7 +236,12 @@ class ContextManager:
         policy: Optional[Dict[str, Any]] = None,
     ) -> None:
         self._backend: ContextBackend = backend or InMemoryBackend()
-        self._policy: Dict[str, Any] = policy or POLICY
+        if policy is not None:
+            self._policy = policy
+            self._policy_status = "ok"
+            self._policy_error = None
+        else:
+            self._policy, self._policy_status, self._policy_error = _load_policy()
 
     # -------------------------
     # Propriedades / helpers
@@ -226,6 +250,14 @@ class ContextManager:
     @property
     def enabled(self) -> bool:
         return bool(self._policy.get("enabled", False))
+
+    @property
+    def policy_status(self) -> str:
+        return getattr(self, "_policy_status", "ok")
+
+    @property
+    def policy_error(self) -> Optional[str]:
+        return getattr(self, "_policy_error", None)
 
     # -------------------------
     # Políticas específicas

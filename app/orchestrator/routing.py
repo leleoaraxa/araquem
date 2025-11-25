@@ -56,16 +56,32 @@ def _load_entity_config(entity: Optional[str]) -> Dict[str, Any]:
     if not entity:
         return {}
     path = _ENTITY_ROOT / str(entity) / "entity.yaml"
-    try:
-        data = load_yaml_cached(str(path)) or {}
-    except Exception as exc:
+    if not path.exists():
         LOGGER.warning(
-            "Falha ao carregar entity.yaml para %s; usando config vazia",
+            "entity.yaml ausente para %s em %s; usando config vazia", entity, path
+        )
+        return {}
+
+    try:
+        data = load_yaml_cached(str(path))
+    except Exception:
+        LOGGER.error(
+            "Falha ao carregar entity.yaml para %s em %s; usando config vazia",
             entity,
+            path,
             exc_info=True,
         )
-        data = {}
-    return data if isinstance(data, dict) else {}
+        return {}
+
+    if not isinstance(data, dict):
+        LOGGER.error(
+            "entity.yaml inválido para %s em %s (esperado mapeamento); usando config vazia",
+            entity,
+            path,
+        )
+        return {}
+
+    return data
 
 
 def extract_requested_metrics(question: str, entity_conf: Dict[str, Any]) -> List[str]:

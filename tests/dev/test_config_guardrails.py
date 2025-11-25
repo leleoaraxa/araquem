@@ -1,10 +1,15 @@
 # tests/dev/test_config_guardrails.py
 
+import logging
 from pathlib import Path
 
 import pytest
 
 from app.api.ask import _load_narrator_flags
+from app.cache.rt_cache import CachePolicies
+from app.context import context_manager as cm
+from app.context.context_manager import ContextManager, DEFAULT_POLICY
+from app.orchestrator import routing
 from app.planner import planner
 from app.rag import context_builder
 
@@ -236,6 +241,146 @@ class TestContextPolicy:
         assert result["status"] == "ok"
         assert isinstance(result["context"], dict)
         assert isinstance(result["planner"], dict)
+
+
+class TestEntityConfigLoader:
+    def test_load_entity_config_missing_logs_warning(self, tmp_path, caplog, monkeypatch):
+        monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
+        caplog.set_level(logging.WARNING)
+
+        result = routing._load_entity_config("foo")
+
+        assert result == {}
+        assert any("entity.yaml ausente" in rec.message for rec in caplog.records)
+
+    def test_load_entity_config_invalid_yaml_logs_error(self, tmp_path, caplog, monkeypatch):
+        entity_dir = tmp_path / "bar"
+        entity_dir.mkdir(parents=True)
+        yaml_path = entity_dir / "entity.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+        monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
+        caplog.set_level(logging.ERROR)
+
+        result = routing._load_entity_config("bar")
+
+        assert result == {}
+        assert any("inválido" in rec.message for rec in caplog.records)
+
+    def test_load_entity_config_happy_path(self, tmp_path, caplog, monkeypatch):
+        entity_dir = tmp_path / "baz"
+        entity_dir.mkdir(parents=True)
+        yaml_path = entity_dir / "entity.yaml"
+        yaml_path.write_text("foo: bar\n")
+        monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
+        caplog.set_level(logging.ERROR)
+
+        result = routing._load_entity_config("baz")
+
+        assert result == {"foo": "bar"}
+        assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
+
+
+class TestCachePoliciesConfig:
+    def test_cache_policies_missing_file(self, tmp_path, caplog):
+        missing_path = tmp_path / "cache_missing.yaml"
+        caplog.set_level(logging.WARNING)
+
+        policies = CachePolicies(path=missing_path)
+
+        assert policies._policies == {}
+        assert policies._status == "missing"
+        assert policies._error
+        assert any("ausente" in rec.message for rec in caplog.records)
+
+    def test_cache_policies_invalid_yaml(self, tmp_path, caplog):
+        yaml_path = tmp_path / "cache_invalid.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+        caplog.set_level(logging.ERROR)
+
+        policies = CachePolicies(path=yaml_path)
+
+        assert policies._policies == {}
+        assert policies._status == "invalid"
+        assert policies._error
+        assert any("Falha ao carregar" in rec.message for rec in caplog.records)
+
+    def test_cache_policies_happy_path(self, tmp_path, caplog):
+        import yaml
+
+        yaml_path = tmp_path / "cache_valid.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump({"policies": {"foo": {"ttl_seconds": 10, "scope": "pub"}}})
+        )
+        caplog.set_level(logging.WARNING)
+
+        policies = CachePolicies(path=yaml_path)
+
+        assert policies._status == "ok"
+        assert policies._error is None
+        assert policies.get("foo") == {"ttl_seconds": 10, "scope": "pub"}
+        assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
+
+
+class TestContextManagerPolicy:
+    def _patch_loader(self, monkeypatch, path: Path):
+        original = cm._load_policy
+
+        def _override(path_override: str = str(path)):
+            return original(path=path_override)
+
+        monkeypatch.setattr(cm, "_load_policy", _override)
+
+    def test_context_policy_missing_file(self, tmp_path, caplog, monkeypatch):
+        missing_path = tmp_path / "context_missing.yaml"
+        self._patch_loader(monkeypatch, missing_path)
+        caplog.set_level(logging.WARNING)
+
+        manager = ContextManager()
+
+        assert manager._policy == DEFAULT_POLICY
+        assert manager.policy_status == "missing"
+        assert manager.policy_error
+        assert any("DEFAULT_POLICY" in rec.message for rec in caplog.records)
+
+    def test_context_policy_invalid_yaml(self, tmp_path, caplog, monkeypatch):
+        yaml_path = tmp_path / "context_invalid.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+        self._patch_loader(monkeypatch, yaml_path)
+        caplog.set_level(logging.ERROR)
+
+        manager = ContextManager()
+
+        assert manager._policy == DEFAULT_POLICY
+        assert manager.policy_status == "invalid"
+        assert manager.policy_error
+        assert any("Falha ao carregar" in rec.message for rec in caplog.records)
+
+    def test_context_policy_happy_path(self, tmp_path, caplog, monkeypatch):
+        import yaml
+
+        yaml_path = tmp_path / "context_valid.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "context": {
+                        "enabled": True,
+                        "planner": {"enabled": False},
+                        "narrator": {"max_turns": 5},
+                    }
+                }
+            )
+        )
+        self._patch_loader(monkeypatch, yaml_path)
+        caplog.set_level(logging.ERROR)
+
+        manager = ContextManager()
+
+        assert manager.enabled is True
+        assert manager.policy_status == "ok"
+        assert manager.policy_error is None
+        assert manager.planner_policy.get("enabled") is False
+        assert manager.narrator_policy.get("max_turns") == 5
+        assert manager.narrator_policy.get("max_chars") == DEFAULT_POLICY["narrator"]["max_chars"]
 
 
 class TestRagPolicyAndIndex:
