@@ -25,7 +25,9 @@ def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
     return cfg[key]
 
 
-def _require_number(value: Any, *, key: str, path: str, allow_int: bool = True) -> float:
+def _require_number(
+    value: Any, *, key: str, path: str, allow_int: bool = True
+) -> float:
     if isinstance(value, bool):
         raise ValueError(f"{path}.{key} deve ser numérico, não booleano")
     if isinstance(value, (int, float)):
@@ -72,9 +74,15 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
         raise ValueError(f"Blocos 'thresholds' e 'rag' são obrigatórios em {path}")
 
     defaults = thresholds.get("defaults")
-    if not isinstance(defaults, dict) or "min_score" not in defaults or "min_gap" not in defaults:
+    if (
+        not isinstance(defaults, dict)
+        or "min_score" not in defaults
+        or "min_gap" not in defaults
+    ):
         raise ValueError("thresholds.defaults deve definir min_score e min_gap")
-    _require_number(defaults.get("min_score"), key="min_score", path="thresholds.defaults")
+    _require_number(
+        defaults.get("min_score"), key="min_score", path="thresholds.defaults"
+    )
     _require_number(defaults.get("min_gap"), key="min_gap", path="thresholds.defaults")
 
     re_rank_cfg = rag.get("re_rank")
@@ -181,8 +189,9 @@ class Planner:
         norm = _normalize(question, self.onto.normalize)
         tokens = _tokenize(norm, self.onto.token_split)
 
-        token_weight = float(self.onto.weights.get("token", 1.0))
-        phrase_weight = float(self.onto.weights.get("phrase", 2.0))
+        # pesos vêm 100% da ontologia validada (sem defaults embutidos no código)
+        token_weight = float(self.onto.weights["token"])
+        phrase_weight = float(self.onto.weights["phrase"])
 
         intent_scores: Dict[str, float] = {}
         details = {}

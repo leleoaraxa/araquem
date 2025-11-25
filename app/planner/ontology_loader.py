@@ -10,6 +10,7 @@ import yaml
 
 LOGGER = logging.getLogger(__name__)
 
+
 @dataclass
 class IntentDef:
     name: str
@@ -19,6 +20,7 @@ class IntentDef:
     phrases_exclude: List[str]
     entities: List[str]
 
+
 @dataclass
 class Ontology:
     normalize: List[str]
@@ -27,6 +29,7 @@ class Ontology:
     intents: List[IntentDef]
     anti_tokens: Dict[str, List[str]]
 
+
 def _get(d: Dict[str, Any], path: List[str], default=None):
     cur = d
     for p in path:
@@ -34,6 +37,7 @@ def _get(d: Dict[str, Any], path: List[str], default=None):
             return default
         cur = cur.get(p)
     return cur if cur is not None else default
+
 
 def load_ontology(path: str) -> Ontology:
     ontology_path = Path(path)
@@ -56,6 +60,36 @@ def load_ontology(path: str) -> Ontology:
             "Arquivo de ontologia inválido (esperado mapeamento): %s", ontology_path
         )
         raise ValueError(f"Arquivo de ontologia inválido: {ontology_path}")
+
+    # --- normalize: se existir, precisa ser lista ---
+    normalize_raw = raw.get("normalize", []) or []
+    if not isinstance(normalize_raw, list):
+        LOGGER.error(
+            "Arquivo de ontologia inválido: bloco 'normalize' deve ser lista em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: bloco 'normalize' deve ser lista em {ontology_path}"
+        )
+
+    # --- intents: bloco obrigatório, lista de dicts ---
+    intents_raw = raw.get("intents")
+    if intents_raw is None:
+        LOGGER.error(
+            "Arquivo de ontologia inválido: bloco 'intents' ausente em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: bloco 'intents' ausente em {ontology_path}"
+        )
+    if not isinstance(intents_raw, list):
+        LOGGER.error(
+            "Arquivo de ontologia inválido: bloco 'intents' deve ser lista em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: bloco 'intents' deve ser lista em {ontology_path}"
+        )
 
     intents_raw = raw.get("intents", [])
     if intents_raw is None:
@@ -118,22 +152,70 @@ def load_ontology(path: str) -> Ontology:
     anti_tokens = raw.get("anti_tokens", {}) or {}
     if anti_tokens is not None and not isinstance(anti_tokens, dict):
         LOGGER.error(
-            "Arquivo de ontologia inválido: anti_tokens deve ser dict em %s", ontology_path
-        )
-        raise ValueError(f"Arquivo de ontologia inválido: {ontology_path}")
-
-    tokenization = raw.get("tokenization")
-    if tokenization is not None and not isinstance(tokenization, dict):
-        LOGGER.error(
-            "Arquivo de ontologia inválido: tokenization deve ser dict em %s",
+            "Arquivo de ontologia inválido: anti_tokens deve ser dict em %s",
             ontology_path,
         )
         raise ValueError(f"Arquivo de ontologia inválido: {ontology_path}")
 
+    # --- tokenization: bloco obrigatório + split obrigatório ---
+    tokenization = raw.get("tokenization")
+    if not isinstance(tokenization, dict):
+        LOGGER.error(
+            "Arquivo de ontologia inválido: tokenization deve ser dict em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: tokenization deve ser dict em {ontology_path}"
+        )
+
+    token_split = tokenization.get("split")
+    if not isinstance(token_split, str) or not token_split.strip():
+        LOGGER.error(
+            "Arquivo de ontologia inválido: tokenization.split deve ser string não vazia em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: tokenization.split deve ser string não vazia em {ontology_path}"
+        )
+
+    # --- weights: bloco obrigatório, com campos numéricos ---
+    weights_raw = raw.get("weights")
+    if not isinstance(weights_raw, dict):
+        LOGGER.error(
+            "Arquivo de ontologia inválido: bloco 'weights' deve ser dict em %s",
+            ontology_path,
+        )
+        raise ValueError(
+            f"Arquivo de ontologia inválido: bloco 'weights' deve ser dict em {ontology_path}"
+        )
+
+    weights: Dict[str, float] = {}
+    for key in ("token", "phrase"):
+        val = weights_raw.get(key)
+        if isinstance(val, bool) or not isinstance(val, (int, float)):
+            LOGGER.error(
+                "Arquivo de ontologia inválido: weights.%s deve ser numérico em %s",
+                key,
+                ontology_path,
+            )
+            raise ValueError(
+                f"Arquivo de ontologia inválido: weights.{key} deve ser numérico em {ontology_path}"
+            )
+        if float(val) < 0:
+            LOGGER.error(
+                "Arquivo de ontologia inválido: weights.%s não pode ser negativo em %s",
+                key,
+                ontology_path,
+            )
+            raise ValueError(
+                f"Arquivo de ontologia inválido: weights.{key} não pode ser negativo em {ontology_path}"
+            )
+        weights[key] = float(val)
+
     return Ontology(
-        normalize=raw.get("normalize", []),
-        token_split=_get(raw, ["tokenization", "split"], r"\b"),
-        weights=raw.get("weights", {"token": 1.0, "phrase": 2.0}),
+        normalize=normalize_raw,
+        token_split=token_split,
+        weights=weights,
         intents=intents,
         anti_tokens=anti_tokens,
     )
