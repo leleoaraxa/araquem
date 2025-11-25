@@ -9,13 +9,11 @@ description: >
 intents:
   dividendos:
     default_agg: list
-    default_window:
-      count: 6
+    default_window: "count:6"
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, recente, atual]
-        window:
-          count: 1
+        window: "count:1"
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
     window_keywords:
@@ -32,13 +30,11 @@ intents:
 
   precos:
     default_agg: latest
-    default_window:
-      count: 1
+    default_window: "count:1"
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, fechamento, atual]
-        window:
-          count: 1
+        window: "count:1"
       list:
         include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
     window_keywords:
