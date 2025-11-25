@@ -47,7 +47,9 @@ def _load_narrator_flags(path: str = "data/policies/narrator.yaml") -> Dict[str,
 
     data = load_yaml_cached(str(policy_path))
     if not isinstance(data, dict):
-        raise RuntimeError(f"Narrator policy inválida ou não é um dict em {policy_path}")
+        raise RuntimeError(
+            f"Narrator policy inválida ou não é um dict em {policy_path}"
+        )
 
     policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else data
     if not isinstance(policy, dict):
@@ -437,4 +439,3 @@ def ask(
         )
 
     return JSONResponse(json_sanitize(payload_out))
-from pathlib import Path
