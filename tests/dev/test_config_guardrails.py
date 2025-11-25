@@ -1,3 +1,5 @@
+# tests/dev/test_config_guardrails.py
+
 from pathlib import Path
 
 import pytest
@@ -142,7 +144,9 @@ class TestPlannerThresholds:
         config["planner"]["thresholds"]["defaults"].pop("min_gap")
         yaml_path = self._write_thresholds(tmp_path, config)
 
-        with pytest.raises(ValueError, match="thresholds.defaults deve definir min_score e min_gap"):
+        with pytest.raises(
+            ValueError, match="thresholds.defaults deve definir min_score e min_gap"
+        ):
             planner._load_thresholds(path=yaml_path)
 
     @pytest.mark.parametrize(
@@ -154,7 +158,9 @@ class TestPlannerThresholds:
             (("planner", "rag", "re_rank", "weight"), "numérico"),
         ],
     )
-    def test_load_thresholds_invalid_types_or_negative_values(self, tmp_path, override_path, match):
+    def test_load_thresholds_invalid_types_or_negative_values(
+        self, tmp_path, override_path, match
+    ):
         config = self._base_thresholds()
         target = config
         for key in override_path[:-1]:
@@ -250,7 +256,9 @@ class TestRagPolicyAndIndex:
             context_builder.load_rag_policy()
 
     def test_build_context_missing_index(self, tmp_path, monkeypatch):
-        monkeypatch.setattr(context_builder, "_RAG_INDEX_PATH", str(tmp_path / "missing_index.jsonl"))
+        monkeypatch.setattr(
+            context_builder, "_RAG_INDEX_PATH", str(tmp_path / "missing_index.jsonl")
+        )
         monkeypatch.setattr(
             context_builder,
             "load_rag_policy",
