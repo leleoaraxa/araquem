@@ -1,8 +1,10 @@
 # tests/dev/test_config_guardrails.py
 
 import importlib
+import importlib.util
 import logging
 from pathlib import Path
+from typing import List
 
 import pytest
 from app.cache.rt_cache import CachePolicies
@@ -14,6 +16,18 @@ from app.planner import planner
 from app.planner.ontology_loader import load_ontology
 from app.rag import context_builder
 from app.observability import runtime
+
+
+@pytest.fixture
+def quality_module(monkeypatch):
+    spec = importlib.util.spec_from_file_location(
+        "quality_module_for_test", Path("app/api/ops/quality.py")
+    )
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    monkeypatch.setattr(module, "_QUALITY_LOADER_ERRORS", [])
+    return module
 
 
 @pytest.fixture
@@ -477,6 +491,91 @@ class TestOrchestratorThresholds:
 
         assert result["defaults"]["min_score"] == 0.2
         assert result["defaults"]["min_gap"] == 0.1
+        assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
+
+
+class TestQualityConfigLoader:
+    def _set_error_sink(self, module, monkeypatch) -> List[str]:
+        errors: List[str] = []
+        monkeypatch.setattr(module, "_QUALITY_LOADER_ERRORS", errors)
+        return errors
+
+    def test_load_candidate_missing_file_logs_warning(
+        self, tmp_path, caplog, quality_module, monkeypatch
+    ):
+        caplog.set_level(logging.WARNING)
+        errors = self._set_error_sink(quality_module, monkeypatch)
+
+        missing_path = tmp_path / "missing_quality.yaml"
+        result = quality_module._load_candidate(str(missing_path))
+
+        assert result is None
+        assert any("ausente" in rec.message for rec in caplog.records)
+        assert any("ausente" in err for err in errors)
+
+    def test_load_candidate_non_mapping_yaml_logs_error(
+        self, tmp_path, caplog, quality_module, monkeypatch
+    ):
+        caplog.set_level(logging.ERROR)
+        errors = self._set_error_sink(quality_module, monkeypatch)
+
+        yaml_path = tmp_path / "quality_list.yaml"
+        yaml_path.write_text("- 1\n- 2\n")
+
+        result = quality_module._load_candidate(str(yaml_path))
+
+        assert result is None
+        assert any("mapeamento" in rec.message for rec in caplog.records)
+        assert any("mapeamento" in err for err in errors)
+
+    def test_load_candidate_malformed_schema(self, tmp_path, caplog, quality_module, monkeypatch):
+        caplog.set_level(logging.ERROR)
+        errors = self._set_error_sink(quality_module, monkeypatch)
+
+        import yaml
+
+        yaml_path = tmp_path / "quality_invalid.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "targets": ["should", "be", "dict"],
+                    "quality_gates": {"thresholds": []},
+                }
+            )
+        )
+
+        result = quality_module._load_candidate(str(yaml_path))
+
+        assert result is None
+        assert any("malformada" in err for err in errors)
+        assert any("malformada" in rec.message for rec in caplog.records)
+
+    def test_load_candidate_happy_path(self, tmp_path, caplog, quality_module, monkeypatch):
+        caplog.set_level(logging.ERROR)
+        errors = self._set_error_sink(quality_module, monkeypatch)
+
+        import yaml
+
+        yaml_path = tmp_path / "quality_valid.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "targets": {
+                        "min_top1_accuracy": 0.9,
+                        "min_routed_rate": 0.8,
+                        "min_top2_gap": 0.1,
+                        "max_misses_absolute": 10,
+                        "max_misses_ratio": 0.2,
+                    }
+                }
+            )
+        )
+
+        result = quality_module._load_candidate(str(yaml_path))
+
+        assert isinstance(result, dict)
+        assert result.get("targets", {}).get("min_top1_accuracy") == 0.9
+        assert errors == []
         assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
 
 

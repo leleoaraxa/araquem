@@ -4,6 +4,7 @@ import os
 import logging
 from fastapi import Request
 from typing import Any, Dict, List, Optional, Tuple
+import yaml
 
 from fastapi import APIRouter, Body, Header
 from fastapi.responses import JSONResponse
@@ -18,6 +19,8 @@ from app.observability.metrics import (
 from app.observability.runtime import prom_query_instant
 
 router = APIRouter()
+LOGGER = logging.getLogger(__name__)
+_QUALITY_LOADER_ERRORS: List[str] | None = None
 
 
 class QualitySample(BaseModel):
@@ -54,6 +57,78 @@ def _sanitize(v: float) -> float:
     if math.isnan(v) or math.isinf(v):
         return 0.0
     return round(float(v), 6)
+
+
+def _append_quality_error(msg: str, sink: Optional[List[str]]) -> None:
+    if sink is not None:
+        sink.append(msg)
+
+    global _QUALITY_LOADER_ERRORS
+    if _QUALITY_LOADER_ERRORS is not None and _QUALITY_LOADER_ERRORS is not sink:
+        _QUALITY_LOADER_ERRORS.append(msg)
+
+
+def _load_candidate(path: str) -> Optional[Dict[str, Any]]:
+    errors_sink = _QUALITY_LOADER_ERRORS
+
+    if not path:
+        return None
+
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            try:
+                loaded = yaml.safe_load(f) or {}
+            except yaml.YAMLError:
+                LOGGER.error(
+                    "Falha ao carregar configuração de qualidade de %s", path, exc_info=True
+                )
+                _append_quality_error(f"YAML inválido em {path}", errors_sink)
+                return None
+    except FileNotFoundError:
+        msg = f"arquivo de qualidade ausente: {path}"
+        LOGGER.warning(msg)
+        _append_quality_error(msg, errors_sink)
+        return None
+    except Exception:
+        LOGGER.error(
+            "Falha ao carregar configuração de qualidade de %s", path, exc_info=True
+        )
+        _append_quality_error(f"falha ao ler arquivo: {path}", errors_sink)
+        return None
+
+    if not isinstance(loaded, dict):
+        msg = f"Configuração de qualidade inválida (esperado mapeamento): {path}"
+        LOGGER.error(msg)
+        _append_quality_error(msg, errors_sink)
+        return None
+
+    targets = loaded.get("targets") if isinstance(loaded, dict) else None
+    quality_gates = loaded.get("quality_gates") if isinstance(loaded, dict) else None
+    thresholds = None
+
+    schema_errors: List[str] = []
+    if targets is not None and not isinstance(targets, dict):
+        schema_errors.append("targets deve ser um mapeamento")
+    if quality_gates is not None and not isinstance(quality_gates, dict):
+        schema_errors.append("quality_gates deve ser um mapeamento")
+    if isinstance(quality_gates, dict):
+        thresholds = quality_gates.get("thresholds")
+        if thresholds is not None and not isinstance(thresholds, dict):
+            schema_errors.append("quality_gates.thresholds deve ser um mapeamento")
+
+    if schema_errors:
+        msg = f"Configuração de qualidade malformada em {path}: {'; '.join(schema_errors)}"
+        LOGGER.error(msg)
+        _append_quality_error(msg, errors_sink)
+        return None
+
+    if targets is None and thresholds is None:
+        msg = f"Configuração de qualidade vazia ou sem thresholds em {path}"
+        LOGGER.error(msg)
+        _append_quality_error(msg, errors_sink)
+        return None
+
+    return loaded
 
 
 def _first_nonzero_expr(exprs: List[str]) -> float:
@@ -513,22 +588,8 @@ def quality_report():
     errors: List[str] = []
     used_path: Optional[str] = None
 
-    def _load_candidate(path: str) -> Optional[Dict[str, Any]]:
-        nonlocal errors
-        if not path:
-            return None
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                return yaml.safe_load(f) or {}
-        except FileNotFoundError:
-            error_msg = f"file not found '{path}'"
-            errors.append(error_msg)
-            logging.error(error_msg)
-        except Exception as exc:
-            error_msg = f"Error loading '{path}': {exc}"
-            errors.append(error_msg)
-            logging.exception(error_msg)
-        return None
+    global _QUALITY_LOADER_ERRORS
+    _QUALITY_LOADER_ERRORS = errors
 
     def _extract_targets(policy_dict: Optional[Dict[str, Any]]) -> Dict[str, Any]:
         if not policy_dict:
@@ -555,6 +616,7 @@ def quality_report():
             used_path = fallback_path
 
     if policy is None:
+        _QUALITY_LOADER_ERRORS = None
         return JSONResponse(
             {"error": f"failed to load quality policy: {'; '.join(errors)}"},
             status_code=500,
@@ -629,6 +691,8 @@ def quality_report():
         "misses_abs": _sanitize(miss_abs_v),
         "misses_ratio": _sanitize(miss_ratio),
     }
+
+    _QUALITY_LOADER_ERRORS = None
 
     return {
         "status": status,
