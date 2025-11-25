@@ -663,6 +663,38 @@ class TestParamInferenceConfig:
             "order": "desc",
         }
 
+    def test_param_inference_canonical_intent_fiis_financials_revenue_schedule(self):
+        result = param_inference.infer_params(
+            "Quero o cronograma de receitas do MXRF11 no ultimo ano",
+            "fiis_financials_revenue_schedule",
+            entity="fiis_financials_revenue_schedule",
+            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/entity.yaml",
+            defaults_yaml_path="data/ops/param_inference.yaml",
+        )
+
+        assert result == {
+            "agg": "list",
+            "window": "months:12",
+            "limit": 10,
+            "order": "desc",
+        }
+
+    def test_param_inference_fiis_financials_revenue_schedule_semestre(self):
+        result = param_inference.infer_params(
+            "Mostre o calendario de receitas do HCTR11 no ultimo semestre",
+            "fiis_financials_revenue_schedule",
+            entity="fiis_financials_revenue_schedule",
+            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/entity.yaml",
+            defaults_yaml_path="data/ops/param_inference.yaml",
+        )
+
+        assert result == {
+            "agg": "list",
+            "window": "months:6",
+            "limit": 10,
+            "order": "desc",
+        }
+
 
 class TestOntologyLoader:
     def _write_ontology(self, tmp_path: Path, content: dict, name: str) -> Path:

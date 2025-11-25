@@ -86,8 +86,8 @@ intents:
           - 24 meses
     defaults:
       list:
-        limit: 50    # ou outro limite que faça sentido
-        order: asc   # cronograma tende a ser melhor crescente (mais antigo -> mais recente)
+        limit: 10
+        order: desc
     windows_allowed:
       - "months:6"
       - "months:12"
