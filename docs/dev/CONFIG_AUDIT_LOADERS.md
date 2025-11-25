@@ -24,7 +24,7 @@
 | app/context/context_manager.py | _load_policy | context.yaml | 🟧 IMPORTANTE | Hardened (status/log + DEFAULT_POLICY explícito) | Mantém merge com defaults; expõe policy_status/policy_error. |
 | app/cache/rt_cache.py | CachePolicies.__init__ | cache.yaml | 🟧 IMPORTANTE | Hardened (status/log + validação de mapping) | Mantém `_policies` vazio em falha; status ok/missing/invalid. |
 | app/observability/runtime.py | load_config | observability.yaml (env OBSERVABILITY_CONFIG) | 🟥 CRÍTICA | — | Fail-fast com mensagens claras para arquivo ausente/YAML inválido; logs estruturados e validação mínima de schema. |
-| app/api/ops/quality.py | quality_report → _load_candidate | quality.yaml ou planner_thresholds.yaml | 🟧 IMPORTANTE | Erros acumulam, mas retorno 500 só se nenhum arquivo carregado | Leitura com fallback; ausência de schema não validada. |
+| app/api/ops/quality.py | quality_report → _load_candidate | quality.yaml ou planner_thresholds.yaml | 🟧 IMPORTANTE | — | Loader endurecido com validação mínima de schema, logs estruturados e erros explícitos; evita aceitar configs malformadas silenciosamente. |
 | app/planner/ontology_loader.py | load_ontology | ontology/entity.yaml | 🟥 CRÍTICA | — | Fail-fast para arquivo ausente ou YAML inválido, com validação mínima de mapeamento e blocos usados pelo Planner. |
 
 ## 3. Casos de atenção (detalhados)
@@ -69,12 +69,7 @@
 
 - **Tipo de config:** políticas de qualidade / thresholds.
 - **Classificação sugerida:** 🟧 IMPORTANTE.
-- **Problemas encontrados:**
-  - Fallbacks múltiplos sem validação de schema; erros acumulados apenas em mensagem final.
-  - Retorna `{}` em malformação parcial, possivelmente mascarando políticas críticas.
-- **Recomendação futura:**
-  - Validar estrutura (targets/quality_gates) antes de aceitar; expor status ok/missing/invalid.
-  - Aderir ao padrão de fail-fast ou status explícito com telemetria.
+- **Status:** Endurecido. Agora valida mapeamento na raiz, estrutura mínima de `targets`/`quality_gates` e registra warnings/erros explícitos para arquivo ausente, YAML inválido ou schema malformado. Mantém contrato de retorno, mas evita aceitar configs vazias ou incorretas de forma silenciosa.
 
 ### 3.8 app/planner/ontology_loader.py — função `load_ontology`
 
