@@ -19,7 +19,13 @@ def _fake_concept_policy() -> Dict[str, Any]:
         "max_llm_rows": 0,
         "max_prompt_tokens": 4000,
         "max_output_tokens": 700,
-        "entities": {"fiis_financials_risk": {"prefer_concept_when_no_ticker": True}},
+        "use_rag_in_prompt": True,
+        "entities": {
+            "fiis_financials_risk": {
+                "prefer_concept_when_no_ticker": True,
+                "use_rag_in_prompt": True,
+            }
+        },
     }
 
 
@@ -33,6 +39,7 @@ def _fake_concept_policy_with_rag() -> Dict[str, Any]:
             "prefer_concept_when_no_ticker": True,
             "rag_fallback_when_no_rows": True,
             "concept_with_data_when_rag": True,
+            "use_rag_in_prompt": True,
         }
     )
     return policy
