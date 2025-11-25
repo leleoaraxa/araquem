@@ -335,6 +335,252 @@ class TestParamInferenceConfig:
         with pytest.raises(ValueError, match="windows_allowed.*lista"):
             param_inference._load_yaml(yaml_path)
 
+    def test_param_inference_invalid_agg_priority_type_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg_priority_type.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump({"intents": {"fiis_precos": {"agg_priority": "latest"}}})
+        )
+
+        with pytest.raises(ValueError, match="agg_priority.*lista"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_agg_priority_unknown_agg_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg_priority_unknown.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {"intents": {"fiis_precos": {"agg_priority": ["avg", "median"]}}}
+            )
+        )
+
+        with pytest.raises(ValueError, match="agg_priority.*agregações conhecidas"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_valid_agg_priority_passes(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_valid_agg_priority.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "agg_priority": ["latest", "list", "avg", "sum"]
+                        }
+                    }
+                }
+            )
+        )
+
+        param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_agg_keywords_unknown_agg_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg_keywords_unknown.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "agg_keywords": {"median": {"include": ["mediana"]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="agg 'median' desconhecido.*fiis_precos"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_agg_keywords_include_type_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg_keywords_include_type.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "agg_keywords": {"list": {"include": "listar"}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="include de agg 'list'.*lista"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_agg_keywords_include_non_string_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_agg_keywords_include_non_string.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "agg_keywords": {"list": {"include": ["ok", 123]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="keywords de agg 'list'.*strings"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_window_keywords_kind_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window_keywords_kind.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "window_keywords": {"dias": {7: ["ultima semana"]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="kind desconhecido.*fiis_precos"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_window_keywords_key_not_int_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window_keywords_key_not_int.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "window_keywords": {"months": {"zero": ["texto"]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="chave de janela 'zero' deve ser inteiro"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_window_keywords_key_non_positive_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window_keywords_key_non_positive.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "window_keywords": {"months": {"-1": ["texto"]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="janela '-1' deve ser > 0"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_window_keywords_values_type_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window_keywords_values_type.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "window_keywords": {"months": {6: "texto"}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="window_keywords.months.6.*lista"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_window_keywords_values_non_string_raises(
+        self, tmp_path: Path
+    ):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_window_keywords_values_non_string.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {
+                            "window_keywords": {"months": {6: ["ok", 123]}}
+                        }
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="keywords em window_keywords.months.6.*strings"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_list_limit_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_list_limit.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {"defaults": {"list": {"limit": -5}}}
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="defaults.list.limit.*inteiro positivo"):
+            param_inference._load_yaml(yaml_path)
+
+    def test_param_inference_invalid_list_order_raises(self, tmp_path: Path):
+        import yaml
+
+        yaml_path = tmp_path / "param_inference_invalid_list_order.yaml"
+        yaml_path.write_text(
+            yaml.safe_dump(
+                {
+                    "intents": {
+                        "fiis_precos": {"defaults": {"list": {"order": "down"}}}
+                    }
+                }
+            )
+        )
+
+        with pytest.raises(ValueError, match="defaults.list.order.*'asc' ou 'desc'"):
+            param_inference._load_yaml(yaml_path)
+
     def test_param_inference_happy_path(self, tmp_path: Path):
         import yaml
 

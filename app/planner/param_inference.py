@@ -82,6 +82,16 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                     f"param_inference.yaml inválido: default_agg para intent '{intent_name}' é desconhecido"
                 )
 
+        if "agg_priority" in cfg:
+            agg_priority = cfg["agg_priority"]
+            if not isinstance(agg_priority, list) or any(
+                not isinstance(a, str) or a not in _ALLOWED_AGGS for a in agg_priority
+            ):
+                raise ValueError(
+                    "param_inference.yaml inválido: agg_priority da intent "
+                    f"'{intent_name}' deve ser lista de agregações conhecidas"
+                )
+
         if "default_window" in cfg:
             cfg["default_window"] = _validate_window(
                 cfg["default_window"], context=f"default_window para intent '{intent_name}'"
