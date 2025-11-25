@@ -11,6 +11,7 @@ Loaders de configuração são superfície crítica porque determinam, em tempo 
 ### Planner Thresholds / Context Policy
 - **Antes:** carregamento de thresholds tolerava ausência/estruturas incorretas e não cacheava resultados, reabrindo YAML em cada requisição; política de contexto não expunha estado explícito.
 - **Depois:** `_load_thresholds` falha rápido se `data/ops/planner_thresholds.yaml` estiver ausente ou malformado, valida blocos `planner.thresholds`/`planner.rag` e tipos numéricos via `_require_number` e `_require_positive_int`, além de cachear em `_THRESHOLDS_CACHE` para evitar reparse. `_load_context_policy` expõe `status`/`error`, trata arquivo ausente como `missing` e erro de parse como `invalid`, retornando contexto desabilitado com log — evitando heurísticas escondidas no explain do Planner. 【F:app/planner/planner.py†L22-L138】【F:app/planner/planner.py†L48-L139】
+- **Alinhamento Orchestrator/Planner:** o loader de thresholds do Orchestrator agora delega para `planner._load_thresholds`, com logs explícitos para ausência ou YAML inválido antes de fallback controlado — mantendo o ciclo de thresholds consistente entre módulos.
 
 ### RAG Policy / Index
 - **Antes:** ausência ou corrupção da política de RAG podia passar despercebida, e o builder de contexto assumia presença do índice, potencialmente quebrando o `/ask`.
