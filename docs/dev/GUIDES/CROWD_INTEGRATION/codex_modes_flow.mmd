@@ -1,0 +1,33 @@
+flowchart TD
+    A[Início<br/>Você vai alterar qual parte do Araquem?] --> B{É Planner,<br/>Builder ou Narrator?}
+
+    %% Ramo 1: Partes mais críticas
+    B -- Sim --> M1[Modo ULTRA RESTRITO<br/>Zero heurística<br/>Zero inferência<br/>Segurança máxima]
+    B -- Não --> C{Você precisa entender<br/>o arquivo antes de mexer?}
+
+    %% Ramo 2: Debug
+    C -- Sim --> M2[Modo DEBUG-FRIENDLY<br/>Auditar primeiro<br/>Só depois refatorar]
+    C -- Não --> D{Suspeita de heurística<br/>ou gambiarra?}
+
+    %% Ramo 3: Polícia Federal
+    D -- Sim --> M3[Modo POLÍCIA FEDERAL<br/>Caça heurística<br/>Sem alterar nada]
+
+    D -- Não --> E{O arquivo é sensível<br/>e exige toque mínimo?}
+
+    %% Ramo 4: Cirúrgico
+    E -- Sim --> M4[Modo CIRÚRGICO<br/>Alteração mínima<br/>3–5 linhas no máximo]
+
+    E -- Não --> F{O arquivo toca em<br/>LLM / RAG / Ollama?}
+
+    %% Ramo 5: Blindado
+    F -- Sim --> M5[Modo BLINDADO<br/>Sem risco de chamadas indevidas<br/>RAG/LLM proibido]
+
+    F -- Não --> M6[Modo CURTO E OBJETIVO<br/>Manutenção leve<br/>Refatoração direta]
+
+    %% Finalização
+    M1 --> Z[Fim]
+    M2 --> Z
+    M3 --> Z
+    M4 --> Z
+    M5 --> Z
+    M6 --> Z

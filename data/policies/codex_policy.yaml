@@ -1,0 +1,36 @@
+terms:
+  - name: "codex_prompts"
+    kind: "policy"
+    scope: "codex"
+    version: 1
+
+modes:
+  curto_objetivo:
+    description: "Uso diário, refatoração rápida e segura."
+    target_files:
+      - "app/narrator/prompts.py"
+    rules:
+      - "remover heurísticas"
+      - "usar apenas data/policies/narrator.yaml"
+      - "não inventar funções, variáveis ou textos"
+      - "não alterar outros arquivos"
+    output: "git_diff"
+
+  ultra_restrito:
+    description: "Modo máximo de segurança, zero inferência."
+    rules:
+      - "nenhuma heurística"
+      - "nenhuma inferência"
+      - "não criar funções"
+      - "não mudar assinaturas"
+      - "não modificar fluxo externo"
+      - "usar exclusivamente valores definidos em YAML"
+    output: "git_diff"
+
+  debug_friendly:
+    description: "Primeiro audita, depois modifica."
+    steps:
+      - "listar heurísticas e violações"
+      - "aguardar aprovação humana"
+      - "só então gerar patch"
+    output: "relatorio + git_diff"
