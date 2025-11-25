@@ -5,13 +5,14 @@ import logging
 import os
 import re
 import time
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
-from decimal import Decimal
 
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import build_prompt, render_narrative
 from app.utils.filecache import load_yaml_cached
+import yaml
 
 try:
     from app.rag.ollama_client import OllamaClient
@@ -305,101 +306,97 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
     """
     Carrega política declarativa do Narrator a partir de data/policies/narrator.yaml.
 
-    Retorna um dicionário com `status` explícito:
-      - "ok" quando a policy é válida
-      - "missing" quando o arquivo está ausente
-      - "invalid" quando a estrutura ou tipos estão incorretos
-
-    Quando inválido/ausente, a policy retornada é vazia para operar em modo
-    degradado (LLM desabilitado).
+    Falha rápido para arquivos ausentes, YAML inválido ou estrutura incorreta.
     """
 
     policy_path = Path(path)
-
-    def _invalid(msg: str) -> Dict[str, Any]:
-        LOGGER.error(msg)
-        return {"status": "invalid", "error": msg, "policy": {}}
-
     if not policy_path.exists():
         msg = f"Narrator policy ausente em {policy_path}"
         LOGGER.error(msg)
-        return {"status": "missing", "error": msg, "policy": {}}
+        raise RuntimeError(f"Narrator policy ausente: {policy_path}")
 
     try:
-        data = load_yaml_cached(str(policy_path)) or {}
+        data = load_yaml_cached(str(policy_path))
+    except (yaml.YAMLError, OSError, RuntimeError) as exc:
+        LOGGER.error(
+            "Falha ao carregar Narrator policy em %s", policy_path, exc_info=True
+        )
+        raise RuntimeError(f"Erro ao carregar Narrator policy: {exc}") from exc
     except Exception as exc:  # pragma: no cover - caminho excepcional
-        LOGGER.error("Falha ao carregar Narrator policy", exc_info=True)
-        return {
-            "status": "invalid",
-            "error": f"Erro ao carregar Narrator policy: {exc}",
-            "policy": {},
-        }
+        LOGGER.error(
+            "Erro inesperado ao carregar Narrator policy em %s", policy_path,
+            exc_info=True,
+        )
+        raise RuntimeError(f"Erro ao carregar Narrator policy: {exc}") from exc
 
     if not isinstance(data, dict):
-        return _invalid("Narrator policy inválida: raiz YAML deve ser um mapeamento")
+        LOGGER.error(
+            "Narrator policy inválida (raiz não é mapeamento): %s", policy_path
+        )
+        raise RuntimeError(
+            f"Narrator policy inválida (esperado mapeamento): {policy_path}"
+        )
 
-    raw_policy = data.get("narrator") if isinstance(data.get("narrator"), dict) else data
+    raw_policy: Dict[str, Any] | None = None
+    if "narrator" in data:
+        if isinstance(data.get("narrator"), dict):
+            raw_policy = data.get("narrator")
+        else:
+            LOGGER.error(
+                "Narrator policy inválida: bloco 'narrator' deve ser mapeamento em %s",
+                policy_path,
+            )
+            raise RuntimeError(
+                f"Narrator policy inválida: bloco 'narrator' deve ser um mapeamento em {policy_path}"
+            )
+    elif isinstance(data, dict):
+        raw_policy = data
+
     if not isinstance(raw_policy, dict):
-        return _invalid("Narrator policy malformada: bloco 'narrator' deve ser um dict")
+        LOGGER.error(
+            "Narrator policy inválida: bloco 'narrator' deve ser mapeamento em %s",
+            policy_path,
+        )
+        raise RuntimeError(
+            f"Narrator policy inválida: bloco 'narrator' deve ser um mapeamento em {policy_path}"
+        )
 
-    errors: list[str] = []
+    required_fields: dict[str, type] = {
+        "model": str,
+        "llm_enabled": bool,
+        "shadow": bool,
+    }
 
-    def _validate_bool_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
-        if key not in container:
-            return
-        val = container[key]
-        if not isinstance(val, bool):
-            errors.append(f"{prefix}{key} deve ser booleano")
+    for key, expected_type in required_fields.items():
+        has_key = key in raw_policy
+        value = raw_policy.get(key)
+        if not has_key:
+            default_block = raw_policy.get("default")
+            if isinstance(default_block, dict) and key in default_block:
+                value = default_block.get(key)
+                has_key = True
+        if not has_key:
+            LOGGER.error(
+                "Narrator policy inválida: campo obrigatório ausente: %s", key
+            )
+            raise RuntimeError(
+                f"Narrator policy inválida: campo obrigatório ausente: {key}"
+            )
+        if expected_type is bool and not isinstance(value, bool):
+            LOGGER.error("Narrator policy inválida: %s deve ser booleano", key)
+            raise RuntimeError(
+                f"Narrator policy inválida: {key} deve ser booleano"
+            )
+        if expected_type is str:
+            if not isinstance(value, str) or not value.strip():
+                LOGGER.error(
+                    "Narrator policy inválida: %s deve ser string não vazia", key
+                )
+                raise RuntimeError(
+                    f"Narrator policy inválida: {key} deve ser string não vazia"
+                )
 
-    def _validate_int_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
-        if key not in container:
-            return
-        val = container[key]
-        if isinstance(val, bool) or not isinstance(val, int):
-            errors.append(f"{prefix}{key} deve ser inteiro")
-
-    def _validate_str_field(container: Dict[str, Any], key: str, prefix: str = "") -> None:
-        if key not in container:
-            return
-        val = container[key]
-        if not isinstance(val, str) or not val.strip():
-            errors.append(f"{prefix}{key} deve ser string não vazia")
-
-    def _validate_block(container: Dict[str, Any], prefix: str = "") -> None:
-        _validate_bool_field(container, "llm_enabled", prefix)
-        _validate_bool_field(container, "shadow", prefix)
-        _validate_bool_field(container, "use_rag_in_prompt", prefix)
-        _validate_bool_field(container, "prefer_concept_when_no_ticker", prefix)
-        _validate_bool_field(container, "rag_fallback_when_no_rows", prefix)
-        _validate_bool_field(container, "concept_with_data_when_rag", prefix)
-        _validate_int_field(container, "max_llm_rows", prefix)
-        _validate_int_field(container, "max_prompt_tokens", prefix)
-        _validate_int_field(container, "max_output_tokens", prefix)
-        _validate_str_field(container, "model", prefix)
-        _validate_str_field(container, "style", prefix)
-
-    _validate_block(raw_policy)
-
-    default_block = raw_policy.get("default")
-    if default_block is not None and not isinstance(default_block, dict):
-        errors.append("default deve ser um mapeamento")
-    elif isinstance(default_block, dict):
-        _validate_block(default_block, prefix="default.")
-
-    entities_block = raw_policy.get("entities")
-    if entities_block is not None and not isinstance(entities_block, dict):
-        errors.append("entities deve ser um mapeamento")
-    elif isinstance(entities_block, dict):
-        for entity_key, entity_block in entities_block.items():
-            if not isinstance(entity_block, dict):
-                errors.append(f"entities.{entity_key} deve ser um mapeamento")
-                continue
-            _validate_block(entity_block, prefix=f"entities.{entity_key}.")
-
-    if errors:
-        return _invalid("; ".join(errors))
-
-    return {"status": "ok", "policy": raw_policy}
+    return raw_policy
 
 
 def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:
