@@ -311,54 +311,40 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
 
     policy_path = Path(path)
     if not policy_path.exists():
-        msg = f"Narrator policy ausente em {policy_path}"
-        LOGGER.error(msg)
+        LOGGER.error("Narrator policy ausente em %s", policy_path)
         raise RuntimeError(f"Narrator policy ausente: {policy_path}")
 
     try:
         data = load_yaml_cached(str(policy_path))
     except (yaml.YAMLError, OSError, RuntimeError) as exc:
         LOGGER.error(
-            "Falha ao carregar Narrator policy em %s", policy_path, exc_info=True
+            "Erro ao carregar Narrator policy de %s", policy_path, exc_info=True
         )
-        raise RuntimeError(f"Erro ao carregar Narrator policy: {exc}") from exc
+        raise ValueError(f"Narrator policy inválida: {policy_path}") from exc
     except Exception as exc:  # pragma: no cover - caminho excepcional
         LOGGER.error(
-            "Erro inesperado ao carregar Narrator policy em %s", policy_path,
+            "Erro inesperado ao carregar Narrator policy de %s",
+            policy_path,
             exc_info=True,
         )
-        raise RuntimeError(f"Erro ao carregar Narrator policy: {exc}") from exc
+        raise RuntimeError(f"Erro ao carregar Narrator policy: {policy_path}") from exc
 
     if not isinstance(data, dict):
         LOGGER.error(
-            "Narrator policy inválida (raiz não é mapeamento): %s", policy_path
+            "Narrator policy inválida (esperado mapeamento): %s", policy_path
         )
-        raise RuntimeError(
-            f"Narrator policy inválida (esperado mapeamento): {policy_path}"
+        raise ValueError(
+            f"Narrator policy inválida: esperado mapeamento em {policy_path}"
         )
 
-    raw_policy: Dict[str, Any] | None = None
-    if "narrator" in data:
-        if isinstance(data.get("narrator"), dict):
-            raw_policy = data.get("narrator")
-        else:
-            LOGGER.error(
-                "Narrator policy inválida: bloco 'narrator' deve ser mapeamento em %s",
-                policy_path,
-            )
-            raise RuntimeError(
-                f"Narrator policy inválida: bloco 'narrator' deve ser um mapeamento em {policy_path}"
-            )
-    elif isinstance(data, dict):
-        raw_policy = data
-
-    if not isinstance(raw_policy, dict):
+    cfg = data.get("narrator")
+    if not isinstance(cfg, dict):
         LOGGER.error(
-            "Narrator policy inválida: bloco 'narrator' deve ser mapeamento em %s",
+            "Narrator policy inválida: bloco 'narrator' ausente ou malformado em %s",
             policy_path,
         )
-        raise RuntimeError(
-            f"Narrator policy inválida: bloco 'narrator' deve ser um mapeamento em {policy_path}"
+        raise ValueError(
+            f"Narrator policy inválida: bloco 'narrator' deve ser mapeamento em {policy_path}"
         )
 
     required_fields: dict[str, type] = {
@@ -368,35 +354,34 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
     }
 
     for key, expected_type in required_fields.items():
-        has_key = key in raw_policy
-        value = raw_policy.get(key)
-        if not has_key:
-            default_block = raw_policy.get("default")
-            if isinstance(default_block, dict) and key in default_block:
-                value = default_block.get(key)
-                has_key = True
-        if not has_key:
+        if key not in cfg:
             LOGGER.error(
-                "Narrator policy inválida: campo obrigatório ausente: %s", key
+                "Narrator policy malformada: campo '%s' é obrigatório", key
             )
-            raise RuntimeError(
-                f"Narrator policy inválida: campo obrigatório ausente: {key}"
+            raise ValueError(
+                f"Narrator policy malformada: campo '{key}' é obrigatório"
             )
-        if expected_type is bool and not isinstance(value, bool):
-            LOGGER.error("Narrator policy inválida: %s deve ser booleano", key)
-            raise RuntimeError(
-                f"Narrator policy inválida: {key} deve ser booleano"
-            )
-        if expected_type is str:
+
+        value = cfg.get(key)
+        if expected_type is bool:
+            if not isinstance(value, bool):
+                LOGGER.error(
+                    "Narrator policy malformada: '%s' deve ser booleano", key
+                )
+                raise ValueError(
+                    f"Narrator policy malformada: '{key}' deve ser booleano"
+                )
+        elif expected_type is str:
             if not isinstance(value, str) or not value.strip():
                 LOGGER.error(
-                    "Narrator policy inválida: %s deve ser string não vazia", key
+                    "Narrator policy malformada: '%s' deve ser string não vazia",
+                    key,
                 )
-                raise RuntimeError(
-                    f"Narrator policy inválida: {key} deve ser string não vazia"
+                raise ValueError(
+                    f"Narrator policy malformada: '{key}' deve ser string não vazia"
                 )
 
-    return raw_policy
+    return cfg
 
 
 def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:

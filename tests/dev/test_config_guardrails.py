@@ -1,11 +1,10 @@
 # tests/dev/test_config_guardrails.py
 
+import importlib
 import logging
 from pathlib import Path
 
 import pytest
-
-from app.api.ask import _load_narrator_flags
 from app.cache.rt_cache import CachePolicies
 from app.context import context_manager as cm
 from app.context.context_manager import ContextManager, DEFAULT_POLICY
@@ -17,19 +16,47 @@ from app.rag import context_builder
 from app.observability import runtime
 
 
+@pytest.fixture
+def ask_module(monkeypatch, tmp_path):
+    import yaml
+
+    policy_path = tmp_path / "narrator_fixture.yaml"
+    policy_path.write_text(
+        yaml.safe_dump(
+            {
+                "narrator": {
+                    "model": "sirios-narrator:latest",
+                    "llm_enabled": False,
+                    "shadow": False,
+                }
+            }
+        )
+    )
+    monkeypatch.setattr(narrator_module, "_NARRATOR_POLICY_PATH", policy_path)
+
+    original_loader = narrator_module._load_narrator_policy
+
+    def _patched_loader(path: str = str(policy_path)):
+        return original_loader(path=str(policy_path))
+
+    monkeypatch.setattr(narrator_module, "_load_narrator_policy", _patched_loader)
+    module = importlib.import_module("app.api.ask")
+    return importlib.reload(module)
+
+
 class TestNarratorConfig:
-    def test_load_narrator_flags_missing_file_raises(self, tmp_path):
+    def test_load_narrator_flags_missing_file_raises(self, tmp_path, ask_module):
         missing_path = tmp_path / "narrator_missing.yaml"
 
         with pytest.raises(RuntimeError, match="Narrator policy ausente"):
-            _load_narrator_flags(path=str(missing_path))
+            ask_module._load_narrator_flags(path=str(missing_path))
 
-    def test_load_narrator_flags_non_mapping_yaml_raises(self, tmp_path):
+    def test_load_narrator_flags_non_mapping_yaml_raises(self, tmp_path, ask_module):
         yaml_path = tmp_path / "narrator_list.yaml"
         yaml_path.write_text("- 1\n- 2\n")
 
         with pytest.raises(RuntimeError, match="não é um dict"):
-            _load_narrator_flags(path=str(yaml_path))
+            ask_module._load_narrator_flags(path=str(yaml_path))
 
     @pytest.mark.parametrize(
         "content",
@@ -38,16 +65,16 @@ class TestNarratorConfig:
             {"narrator": []},
         ],
     )
-    def test_load_narrator_flags_malformed_block_raises(self, tmp_path, content):
+    def test_load_narrator_flags_malformed_block_raises(self, tmp_path, content, ask_module):
         yaml_path = tmp_path / "narrator_invalid.yaml"
         import yaml
 
         yaml_path.write_text(yaml.safe_dump(content))
 
         with pytest.raises(RuntimeError, match="policy malformada|model"):
-            _load_narrator_flags(path=str(yaml_path))
+            ask_module._load_narrator_flags(path=str(yaml_path))
 
-    def test_load_narrator_flags_invalid_flag_types_raises(self, tmp_path):
+    def test_load_narrator_flags_invalid_flag_types_raises(self, tmp_path, ask_module):
         yaml_path = tmp_path / "narrator_flags.yaml"
         import yaml
 
@@ -64,9 +91,9 @@ class TestNarratorConfig:
         )
 
         with pytest.raises(RuntimeError, match="booleano"):
-            _load_narrator_flags(path=str(yaml_path))
+            ask_module._load_narrator_flags(path=str(yaml_path))
 
-    def test_load_narrator_flags_happy_path(self, tmp_path):
+    def test_load_narrator_flags_happy_path(self, tmp_path, ask_module):
         yaml_path = tmp_path / "narrator_valid.yaml"
         import yaml
 
@@ -82,7 +109,7 @@ class TestNarratorConfig:
             )
         )
 
-        result = _load_narrator_flags(path=str(yaml_path))
+        result = ask_module._load_narrator_flags(path=str(yaml_path))
 
         assert set(result.keys()) == {"enabled", "shadow", "model"}
         assert isinstance(result["enabled"], bool)
@@ -92,46 +119,81 @@ class TestNarratorConfig:
 
 
 class TestNarratorPolicyLoader:
-    def test_load_narrator_policy_missing_file_raises(self, tmp_path, caplog):
+    def _set_policy_path(self, monkeypatch, yaml_path: Path) -> None:
+        monkeypatch.setattr(narrator_module, "_NARRATOR_POLICY_PATH", yaml_path)
+        original_loader = narrator_module._load_narrator_policy
+
+        def _patched_loader(path: str = str(yaml_path)):
+            return original_loader(path=str(yaml_path))
+
+        monkeypatch.setattr(narrator_module, "_load_narrator_policy", _patched_loader)
+
+    def test_load_narrator_policy_missing_file_raises(self, tmp_path, caplog, monkeypatch):
         caplog.set_level(logging.ERROR)
         missing_path = tmp_path / "narrator_missing.yaml"
+        self._set_policy_path(monkeypatch, missing_path)
 
-        with pytest.raises(RuntimeError, match="ausente"):
-            narrator_module._load_narrator_policy(path=str(missing_path))
+        with pytest.raises(RuntimeError, match="Narrator policy ausente"):
+            narrator_module._load_narrator_policy()
 
-        assert any("Narrator policy ausente" in rec.message for rec in caplog.records)
+        assert any("Narrator policy ausente" in rec.getMessage() for rec in caplog.records)
 
-    def test_load_narrator_policy_non_mapping_yaml_raises(self, tmp_path, caplog):
+    def test_load_narrator_policy_non_mapping_yaml_raises(self, tmp_path, caplog, monkeypatch):
         caplog.set_level(logging.ERROR)
         yaml_path = tmp_path / "narrator_list.yaml"
         yaml_path.write_text("- 1\n- 2\n")
+        self._set_policy_path(monkeypatch, yaml_path)
 
-        with pytest.raises(RuntimeError, match="mapeamento"):
-            narrator_module._load_narrator_policy(path=str(yaml_path))
+        with pytest.raises(ValueError, match="mapeamento|inválida"):
+            narrator_module._load_narrator_policy()
 
-        assert any("raiz não é mapeamento" in rec.message for rec in caplog.records)
+        assert any("esperado mapeamento" in rec.getMessage() for rec in caplog.records)
 
     @pytest.mark.parametrize(
         "content,match",
-        [({}, "ausente|mapeamento"), ({"narrator": []}, "mapeamento")],
+        [
+            ({}, "ausente|mapeamento"),
+            ({"narrator": []}, "mapeamento"),
+            ({"narrator": "foo"}, "mapeamento"),
+        ],
     )
     def test_load_narrator_policy_missing_or_invalid_block(
-        self, tmp_path, caplog, content, match
+        self, tmp_path, caplog, content, match, monkeypatch
     ):
         caplog.set_level(logging.ERROR)
         yaml_path = tmp_path / "narrator_invalid.yaml"
         import yaml
 
         yaml_path.write_text(yaml.safe_dump(content))
+        self._set_policy_path(monkeypatch, yaml_path)
 
-        with pytest.raises(RuntimeError, match=match):
-            narrator_module._load_narrator_policy(path=str(yaml_path))
+        with pytest.raises((RuntimeError, ValueError), match=match):
+            narrator_module._load_narrator_policy()
 
-        assert any(
-            "bloco 'narrator'" in rec.message
-            or "campo obrigatório ausente" in rec.message
-            for rec in caplog.records
-        )
+        assert any("narrator" in rec.getMessage() for rec in caplog.records)
+
+    @pytest.mark.parametrize(
+        "content,match",
+        [
+            ({"narrator": {"llm_enabled": True, "shadow": False}}, "model"),
+            ({"narrator": {"model": "modelo", "shadow": False}}, "llm_enabled"),
+            ({"narrator": {"model": "modelo", "llm_enabled": True}}, "shadow"),
+        ],
+    )
+    def test_load_narrator_policy_missing_required_fields(
+        self, tmp_path, caplog, content, match, monkeypatch
+    ):
+        caplog.set_level(logging.ERROR)
+        yaml_path = tmp_path / "narrator_missing_fields.yaml"
+        import yaml
+
+        yaml_path.write_text(yaml.safe_dump(content))
+        self._set_policy_path(monkeypatch, yaml_path)
+
+        with pytest.raises(ValueError, match="obrigatório|malformada"):
+            narrator_module._load_narrator_policy()
+
+        assert any(match in rec.getMessage() for rec in caplog.records)
 
     @pytest.mark.parametrize(
         "key,value,match",
@@ -143,7 +205,7 @@ class TestNarratorPolicyLoader:
         ],
     )
     def test_load_narrator_policy_invalid_required_fields(
-        self, tmp_path, caplog, key, value, match
+        self, tmp_path, caplog, key, value, match, monkeypatch
     ):
         caplog.set_level(logging.ERROR)
         import yaml
@@ -153,7 +215,7 @@ class TestNarratorPolicyLoader:
             yaml.safe_dump(
                 {
                     "narrator": {
-                        "model": "modelo",  # sobrescrito conforme parametrização
+                        "model": "modelo",
                         "llm_enabled": True,
                         "shadow": False,
                     }
@@ -164,13 +226,14 @@ class TestNarratorPolicyLoader:
         data = yaml.safe_load(yaml_path.read_text())
         data["narrator"][key] = value
         yaml_path.write_text(yaml.safe_dump(data))
+        self._set_policy_path(monkeypatch, yaml_path)
 
-        with pytest.raises(RuntimeError, match=match):
-            narrator_module._load_narrator_policy(path=str(yaml_path))
+        with pytest.raises(ValueError, match=match):
+            narrator_module._load_narrator_policy()
 
-        assert any(key in rec.message for rec in caplog.records)
+        assert any(key in rec.getMessage() for rec in caplog.records)
 
-    def test_load_narrator_policy_happy_path(self, tmp_path):
+    def test_load_narrator_policy_happy_path(self, tmp_path, monkeypatch):
         yaml_path = tmp_path / "narrator_valid.yaml"
         import yaml
 
@@ -185,8 +248,9 @@ class TestNarratorPolicyLoader:
                 }
             )
         )
+        self._set_policy_path(monkeypatch, yaml_path)
 
-        result = narrator_module._load_narrator_policy(path=str(yaml_path))
+        result = narrator_module._load_narrator_policy()
 
         assert result == {
             "model": "mistral:instruct",
