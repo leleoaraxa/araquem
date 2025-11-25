@@ -13,6 +13,7 @@ from app.orchestrator import routing
 from app.planner import planner
 from app.planner.ontology_loader import load_ontology
 from app.rag import context_builder
+from app.observability import runtime
 
 
 class TestNarratorConfig:
@@ -529,3 +530,52 @@ class TestRagPolicyAndIndex:
 
         assert result["enabled"] is False
         assert "RAG index não encontrado" in (result.get("error") or "")
+
+
+class TestObservabilityConfig:
+    def test_env_missing_file_raises(self, tmp_path, monkeypatch, caplog):
+        missing_path = tmp_path / "missing_observability.yaml"
+        monkeypatch.setenv("OBSERVABILITY_CONFIG", str(missing_path))
+        caplog.set_level(logging.ERROR)
+
+        with pytest.raises(ValueError, match="observabilidade|ausente"):
+            runtime.load_config()
+
+        assert any("observabilidade" in rec.getMessage() for rec in caplog.records)
+
+    def test_invalid_yaml_logs_and_raises(self, tmp_path, monkeypatch, caplog):
+        invalid_path = tmp_path / "observability_invalid.yaml"
+        invalid_path.write_text("- 1\n- 2\n")
+        monkeypatch.setenv("OBSERVABILITY_CONFIG", str(invalid_path))
+        caplog.set_level(logging.ERROR)
+
+        with pytest.raises(ValueError, match="inválido|observabilidade"):
+            runtime.load_config()
+
+        assert any(rec.levelno >= logging.ERROR for rec in caplog.records)
+        assert any(rec.exc_info for rec in caplog.records)
+
+    def test_valid_minimal_config(self, tmp_path, monkeypatch):
+        import yaml
+
+        valid_path = tmp_path / "observability_valid.yaml"
+        valid_path.write_text(
+            yaml.safe_dump(
+                {
+                    "services": {
+                        "gateway": {
+                            "tracing": {"enabled": True},
+                            "metrics": {},
+                        }
+                    },
+                    "global": {"exporters": {"otlp_endpoint": "http://otel:4317"}},
+                }
+            )
+        )
+        monkeypatch.setenv("OBSERVABILITY_CONFIG", str(valid_path))
+
+        cfg = runtime.load_config()
+
+        assert isinstance(cfg, dict)
+        assert set(cfg.keys()) >= {"services", "global"}
+        assert cfg["services"]["gateway"]["tracing"]["enabled"] is True
