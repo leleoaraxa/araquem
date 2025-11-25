@@ -5,6 +5,14 @@ terms:
     version: 1
 
 # ======================
+#  BLOCO CANÔNICO (USADO PELO LOADER ATUAL)
+# ======================
+narrator:
+  model: "sirios-narrator:latest"
+  llm_enabled: false
+  shadow: false
+
+# ======================
 #  DEFAULT (LLM OFF)
 # ======================
 default:
@@ -16,9 +24,8 @@ default:
   max_prompt_tokens: 4000
   max_output_tokens: 700
 
-  use_rag_in_prompt: false     # <<< desliga consumo de RAG dentro do prompt do Narrator
+  use_rag_in_prompt: false
 
-  # Contexto conversacional (não tem efeito enquanto llm_enabled=false)
   use_conversation_context: false
   prefer_concept_when_no_ticker: true
   rag_fallback_when_no_rows: false
@@ -27,7 +34,7 @@ default:
 # ======================
 #  OVERRIDES GLOBAIS
 # ======================
-llm_enabled: false             # <<< garante OFF mesmo se entity sobrescrever
+llm_enabled: false
 shadow: false
 max_llm_rows: 0
 
