@@ -53,6 +53,7 @@
 - **Históricas**: history_b3_indexes, history_currency_rates, history_market_indicators.【F:data/entities†L1-L4】
 - **Cliente**: client_fiis_positions.【F:data/entities†L1-L2】
 - **Contratos+tolerances**: cada entidade tem contrato YAML com columns/result_key/sql_view/identifiers/order/aggregations/metrics e bloco `tolerance` (extra_columns_allowed, missing_columns_allowed, nullable_mismatch_warn_only). Exemplo fiis_cadastro marca false para extras/missing/nullable, enforce estrito.【F:data/contracts/entities/fiis_cadastro.schema.yaml†L1-L86】
+- **Correções recentes**: `fiis_financials_revenue_schedule` é snapshot D-1 sem histórico; janelas temporais removidas de `entity.yaml`/`param_inference.yaml` e bloco RAG da entidade eliminado mantendo intent negado para RAG.
 
 # 4. Ontologia
 - **Estrutura**: `data/ontology/entity.yaml` define normalize (lower/strip_accents/strip_punct), token_split `\b`, weights token/phrase e intents com tokens/phrases include/exclude, anti_tokens e entities associadas.【F:data/ontology/entity.yaml†L1-L120】
