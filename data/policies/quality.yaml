@@ -93,3 +93,29 @@ datasets:
   client_fiis_positions:
     freshness: { max_age_minutes: 30 }
     not_null: [document_number, position_date, ticker]
+
+  history_currency_rates:
+    freshness: { max_age_hours: 30 }
+    not_null: [rate_date]
+    accepted_range:
+      usd_buy_amt:  { min: 0.0 }
+      usd_sell_amt: { min: 0.0 }
+      eur_buy_amt:  { min: 0.0 }
+      eur_sell_amt: { min: 0.0 }
+
+  history_b3_indexes:
+    freshness: { max_age_hours: 30 }
+    not_null: [index_date]
+    accepted_range:
+      ibov_points_count: { min: 0.0 }
+      ifix_points_count: { min: 0.0 }
+      ifil_points_count: { min: 0.0 }
+      ibov_var_pct:      { min: -5.0, max: 5.0 }
+      ifix_var_pct:      { min: -5.0, max: 5.0 }
+      ifil_var_pct:      { min: -5.0, max: 5.0 }
+
+  history_market_indicators:
+    freshness: { max_age_hours: 30 }
+    not_null: [indicator_date, indicator_name]
+    accepted_range:
+      indicator_amt: { min: -5.0, max: 30.0 }

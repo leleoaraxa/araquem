@@ -91,3 +91,119 @@ intents:
       list:
         limit: 10
         order: desc
+
+  history_currency_rates:
+    default_agg: list
+    # janela padrão de histórico para perguntas genéricas de "histórico"
+    default_window: "months:6"
+    windows_allowed:
+      months: [1, 3, 6, 12]
+      count: [1, 5, 20]
+    agg_keywords:
+      latest:
+        include:
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - fechamento
+          - fechamento de ontem
+        window: "count:1"
+      list:
+        include:
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
+    window_keywords:
+      months:
+        1:  [1 mes, um mes, 1 mês, um mês, ultimo mes, último mes, ultimo mês, último mês]
+        3:  [3 meses, tres meses, trimestre, ultimos 3 meses, últimos 3 meses]
+        6:  [6 meses, seis meses, ultimos 6 meses, últimos 6 meses]
+        12: [12 meses, doze meses, ano, anual, ultimo ano, último ano]
+      count:
+        1:  [ultimo dia, último dia, ontem, cambio de ontem, cotacao de ontem, cotação de ontem]
+        5:  [ultimos 5 dias, últimos 5 dias, ultima semana, última semana]
+        20: [ultimos 20 dias, últimos 20 dias, ultimo mes de pregão, último mes de pregão]
+
+  history_b3_indexes:
+    default_agg: list
+    default_window: "months:6"
+    windows_allowed:
+      months: [3, 6, 12, 24]
+      count: [1, 5, 20, 60]
+    agg_keywords:
+      latest:
+        include:
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - fechamento
+          - fechamento de ontem
+        window: "count:1"
+      list:
+        include:
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
+          - historico do ifix
+          - histórico do ifix
+    window_keywords:
+      months:
+        3:  [trimestre, 3 meses, tres meses, ultimos 3 meses, últimos 3 meses]
+        6:  [semestre, 6 meses, seis meses, ultimos 6 meses, últimos 6 meses]
+        12: [ano, anual, 12 meses, doze meses, ultimo ano, último ano, ultimos 12 meses, últimos 12 meses]
+        24: [2 anos, dois anos, 24 meses, ultimos 24 meses, últimos 24 meses]
+      count:
+        1:  [ultimo dia, último dia, ontem, fechamento de ontem]
+        5:  [ultimos 5 dias, últimos 5 dias, ultima semana, última semana]
+        20: [ultimos 20 dias, últimos 20 dias, ultimos 20 pregoes, últimos 20 pregoes, ultimos 20 pregões, últimos 20 pregões]
+        60: [ultimos 60 dias, últimos 60 dias]
+
+  history_market_indicators:
+    default_agg: list
+    default_window: "months:6"
+    windows_allowed:
+      months: [1, 3, 6, 12]
+      count: [1, 5, 20]
+    agg_keywords:
+      latest:
+        include:
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - ontem
+          - indicador de ontem
+          - taxa de ontem
+        window: "count:1"
+      list:
+        include:
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
+    window_keywords:
+      months:
+        1:  [1 mes, um mes, 1 mês, um mês, ultimo mes, último mes, ultimo mês, último mês]
+        3:  [3 meses, tres meses, trimestre, ultimos 3 meses, últimos 3 meses]
+        6:  [6 meses, seis meses, ultimos 6 meses, últimos 6 meses]
+        12: [12 meses, doze meses, ano, anual, ultimo ano, último ano, ultimos 12 meses, últimos 12 meses]
+      count:
+        1:  [ultimo dia, último dia, ontem]
+        5:  [ultimos 5 dias, últimos 5 dias, ultima semana, última semana]
+        20: [ultimos 20 dias, últimos 20 dias]
