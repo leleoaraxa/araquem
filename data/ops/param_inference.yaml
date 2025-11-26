@@ -57,7 +57,6 @@ intents:
 
   fiis_financials_revenue_schedule:
     default_agg: list
-    default_window: "months:12"
     agg_keywords:
       list:
         include:
@@ -68,27 +67,7 @@ intents:
           - listar
           - traga
           - mostrar
-    window_keywords:
-      months:
-        6:
-          - ultimo semestre
-          - último semestre
-          - 6 meses
-          - seis meses
-        12:
-          - ultimo ano
-          - último ano
-          - 12 meses
-          - doze meses
-        24:
-          - 2 anos
-          - dois anos
-          - 24 meses
     defaults:
       list:
         limit: 10
         order: desc
-    windows_allowed:
-      - "months:6"
-      - "months:12"
-      - "months:24"
