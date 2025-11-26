@@ -9,7 +9,7 @@ description: >
 intents:
   fiis_dividendos:
     default_agg: list
-    default_window: "count:6"
+    default_window: "months:12"
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, recente, atual]
@@ -23,10 +23,11 @@ intents:
         12: [ano, anual, 12 meses, doze meses, ultimo ano, últimos 12 meses]
         24: [2 anos, dois anos, 24 meses]
       count:
-        3: [3 ultimos, tres ultimos, tres últimas]
-        6: [6 ultimos, seis ultimos]
-        12: [12 ultimos, doze ultimos]
-        24: [24 ultimos, vinte e quatro ultimos]
+        1: [ultimo pagamento, último pagamento, ultimo dividendo, último dividendo]
+        3: [3 ultimos, tres ultimos, tres últimas, 3 últimos]
+        6: [6 ultimos, seis ultimos, 6 últimos, seis últimos]
+        12: [12 ultimos, doze ultimos, 12 últimos, doze últimos]
+        24: [24 ultimos, vinte e quatro ultimos, 24 últimos, vinte e quatro últimos]
 
   fiis_precos:
     default_agg: list

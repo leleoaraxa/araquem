@@ -225,22 +225,16 @@ intents:
         - media de dividendos
         - media de rendimentos
         - ultimos 12 meses
+        - rendimento mensal
+        - rendimento 12m
+      exclude:
         - dy
         - dy mensal
         - dy 12m
         - dividend yield
         - yield
-        - rendimento mensal
-        - rendimento 12m
-      exclude: []
     phrases:
       include:
-        - dy mensal do
-        - dy mensal do fii
-        - dy mensal do fundo
-        - dy 12m do
-        - dy 12m do fii
-        - dy 12 meses do fii
         - dividendo do
         - dividendos do
         - proventos do
@@ -250,7 +244,12 @@ intents:
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
-      exclude: []
+      exclude:
+        - dy
+        - dy mensal
+        - dy 12m
+        - dividend yield
+        - yield
     entities: [fiis_dividendos]
 
   - name: fiis_financials_snapshot
