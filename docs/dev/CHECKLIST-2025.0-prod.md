@@ -1,14 +1,14 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-### *(versão Sirius 24/11 — consolidada e atualizada)*
+### *(versão Sirius 25/11 — consolidada e atualizada)*
 
 ---
 
-# **0. Contexto Conversacional (M12–M13)**
+## **0. Contexto Conversacional (M12–M13)**
 
 > 🟩 *Base técnica pronta. Próxima etapa: ativar e calibrar.*
 
-### ✔️ Feito:
+**✔️ Feito**
 
 * ✔ `context_manager.py` criado
 * ✔ Integração mínima no `/ask` (append_turn)
@@ -17,7 +17,7 @@
 * ✔ Total compliance com Guardrails v2.1.1
 * ✔ Zero impacto quando `enabled: false`
 
-### 🔵 Falta:
+**🔵 Falta**
 
 * [ ] Ativar context (`enabled: true`) **somente após baseline**
 * [ ] Definir quais entidades podem usar contexto
@@ -27,7 +27,33 @@
 
 ---
 
-# **1. RAG – Conteúdo e Políticas**
+## **1. Entidades & Realidade dos Dados (D-1 vs Histórico)** 🆕
+
+> 🟦 *Pauta de amanhã: entender o que **cada entidade é de verdade** no banco.*
+
+* [ ] Mapear, entidade por entidade, se é:
+
+  * série histórica (ex.: preços, dividendos, índices), ou
+  * foto D-1 / snapshot (estado consolidado do dia anterior).
+* [ ] Registrar para cada entidade:
+
+  * periodicidade de refresh (D-1, intraday, estática),
+  * cardinalidade aproximada (ex.: nº de FIIs / linhas),
+  * chaves naturais (ticker, data, etc.).
+* [ ] **Exemplo anotado:**
+
+  * `fiis_financials_revenue_schedule` = **foto real do dia anterior**,
+    sem histórico, apenas os ~415 FIIs ativos.
+* [ ] Usar esse mapeamento depois para:
+
+  * revisar `param_inference.yaml` (se faz sentido `window` para cada intent),
+  * ajustar `windows_allowed` por entidade,
+  * alinhar expectativas do Narrator (o que ele pode ou não prometer na resposta).
+* [ ] Documentar esse resumo em `ARAQUEM_STATUS_2025.md` (seção Entidades D-1 vs Históricas).
+
+---
+
+## **2. RAG – Conteúdo e Políticas**
 
 * [✔️] Collections revisadas por entidade
 * [✔️] Collections específicas (risk, rankings, macro, mercado)
@@ -39,20 +65,22 @@
 
 ---
 
-# **2. Planner – Thresholds e Calibração Final**
+## **3. Planner – Thresholds e Calibração Final**
 
 * [ ] Revisar `planner_thresholds.yaml`
 * [ ] Ajustar thresholds por intent/entity
 * [ ] Validar explain logs:
 
-  * [ ] intent_top2_gap
-  * [ ] entity_top2_gap
+  * [ ] `intent_top2_gap`
+  * [ ] `entity_top2_gap`
 * [ ] Validar comportamento com RAG habilitado
 * [ ] Fechar baseline de roteamento final
 
+*(Depois que mapeamos as entidades D-1 vs históricas, voltamos aqui para checar se todas as intents “temporais” fazem sentido com as janelas permitidas.)*
+
 ---
 
-# **3. Narrator – Versão para Produção**
+## **4. Narrator – Versão para Produção**
 
 * [✔️] Políticas estruturadas
 * [✔️] Modelo sirios-narrator criado
@@ -69,7 +97,7 @@
 
 ---
 
-# **4. RAG + Narrator – Integração Profissional**
+## **5. RAG + Narrator – Integração Profissional**
 
 * [ ] Definir políticas de uso do RAG no prompt
 * [ ] Reduzir tamanho dos snippets (máx. 250–350 chars)
@@ -79,7 +107,7 @@
 
 ---
 
-# **5. Quality – Baseline Final**
+## **6. Quality – Baseline Final**
 
 * [ ] Curadoria dos 16 misses
 * [ ] Rodar `quality_list_misses.py` novamente
@@ -89,7 +117,7 @@
 
 ---
 
-# **6. Infra/Produção – Ambientes e Deploy**
+## **7. Infra/Produção – Ambientes e Deploy**
 
 * [ ] Configurar `DATABASE_URL` de produção
 * [ ] Configurar OTEL Collector + Tempo + Prometheus + Grafana
@@ -103,17 +131,17 @@
 
 ---
 
-# **7. Segurança & LGPD**
+## **8. Segurança & LGPD**
 
 * [ ] Sanitização de PII no Presenter/Formatter
 * [ ] Reduzir exposição de metas sensíveis em explain
 * [ ] Ajustar tokens e policies de acesso (quality ops)
 * [ ] Verificar que logs/traces não mostram payload completo
-* [ ] Revisar roles do Postgres (sirios_api e edge_user)
+* [ ] Revisar roles do Postgres (`sirios_api` e `edge_user`)
 
 ---
 
-# **8. Documentação Final**
+## **9. Documentação Final**
 
 * [ ] Atualizar `ARAQUEM_STATUS_2025.md`
 * [ ] Atualizar diagramas C4 (context, container, component)
@@ -122,22 +150,22 @@
   * [ ] RAG flows
   * [ ] Narrator
   * [ ] Context Manager
-  * [ ] planner.explain()
+  * [ ] `planner.explain()`
   * [ ] policies (RAG/Narrator/Cache/Context)
 * [ ] Documentar rotas `/ask` e `/ops/*`
 
 ---
 
-# **9. Testes de Carga e Estresse**
+## **10. Testes de Carga e Estresse**
 
-* [ ] Testar throughput com sirios-narrator:latest
+* [ ] Testar throughput com `sirios-narrator:latest`
 * [ ] Testar embeddings sob carga (batch 8, 16, 32)
 * [ ] Validar latência p95/p99
 * [ ] Simular 200–500 perguntas simultâneas
 
 ---
 
-# **10. Entrega Final — “2025.0-prod”**
+## **11. Entrega Final — “2025.0-prod”**
 
 * [ ] Criar tag
 * [ ] Congelar embeddings
@@ -148,14 +176,3 @@
 * [ ] Publicar versão
 
 ---
-
-# ✔️ **Checklist atualizado e pronto**
-
-Se quiser, posso:
-
-👉 Priorizar a ordem de execução
-👉 Criar um **roadmap de 3 dias** até produção
-👉 Gerar um **Kanban CSV/Excel**
-👉 Gerar um **patch plan** por módulo (RAG, Narrator, Planner, Context)
-
-Só pedir.
