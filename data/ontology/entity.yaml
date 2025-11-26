@@ -142,11 +142,16 @@ intents:
         - ultimo pregao
         - fechamento do dia
         - ultimo fechamento
+        - historico
+        - histórico
+        - ultimos
+        - últimos
+        - nos
+        - periodo
+        - período
       exclude:
         - media
         - soma
-        - nos
-        - ultimos
         - ranking
         - ibov
         - ibovespa
@@ -175,10 +180,20 @@ intents:
         - variacao diaria do
         - variacao diaria do ticker
         - variacao do ticker nos ultimos
+        - historico de preco
+        - historico de preços
+        - histórico de preços
+        - historico de cotacao
+        - historico de cotacoes
+        - preco nos ultimos
+        - preco nos últimos
+        - cotacao nos ultimos
+        - cotacao nos últimos
+        - historico de preço nos ultimos 12 meses
+        - histórico de preço nos últimos 12 meses
       exclude:
         - preco medio
         - media de preco
-        - nos ultimos
         - retorno no periodo
         - variacao diaria do usd
         - variacao diaria do dolar

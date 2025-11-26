@@ -50,6 +50,7 @@
 
 # 3. Entidades
 - **FIIs**: fiis_cadastro, fiis_precos, fiis_dividendos, fiis_imoveis, fiis_rankings, fiis_processos, fiis_financials_snapshot, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_noticias.【F:data/entities†L1-L4】
+- **fiis_precos (histórica)**: série diária multi-ticker (open/close/adj_close/max/min/daily_variation_pct) com `default_date_field: traded_at`, janelas months 3/6/12/24 para histórico; param_inference ajustado para mapear "últimos X meses/anos" e separar latest/list; qualidade atualizada para variações diárias realistas; RAG negado (100% SQL) e Narrator determinístico.
 - **Históricas**: history_b3_indexes, history_currency_rates, history_market_indicators.【F:data/entities†L1-L4】
 - **Cliente**: client_fiis_positions.【F:data/entities†L1-L2】
 - **Contratos+tolerances**: cada entidade tem contrato YAML com columns/result_key/sql_view/identifiers/order/aggregations/metrics e bloco `tolerance` (extra_columns_allowed, missing_columns_allowed, nullable_mismatch_warn_only). Exemplo fiis_cadastro marca false para extras/missing/nullable, enforce estrito.【F:data/contracts/entities/fiis_cadastro.schema.yaml†L1-L86】
