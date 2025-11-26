@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-25T20:25:07Z",
+  "generated_at": "2025-11-26T14:11:29Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -82,8 +82,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 10,
-      "sha_all": "8e2278ad05b11ad1672b8423a5a71f7ebbc21a6e36f707c166da7a5c61568530"
+      "chunks": 11,
+      "sha_all": "a95638820336afdf2f2f50b984ccc0c71bedbef659f7ba157ebe35844e91e1b2"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -193,7 +193,7 @@
         "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 5,
-      "sha_all": "2b1ef3b59f46485c595e8d1f7aaefaee5459a4bcae3421dd86122f8802e2ae29"
+      "sha_all": "71a54c47adfe4c793fec48774a582ac6c63a622af67e8b3c80cecb068348c484"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -206,7 +206,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 3,
-      "sha_all": "2f8c771e87b5ec0d83eff6c02cb98fc9efb8d202fbc84e8a9ff4a7095860e5e4"
+      "sha_all": "fb75b64cf4705b93ddcad9ca08d36ee33206876fe5e4015fdb039536e942d6e4"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -264,7 +264,7 @@
         "quality"
       ],
       "chunks": 3,
-      "sha_all": "938bb947b4e65ad2e4d5f8f1a2a0eb204b7795c7b8b52a183178e2e5618b0fe6"
+      "sha_all": "50cc1d1d745e8dbe32e1f028ce159d4515e42878771dda34994b71e5982cc4bc"
     },
     {
       "id": "policies-rag",
@@ -274,7 +274,7 @@
         "rag"
       ],
       "chunks": 3,
-      "sha_all": "54702e9eef323453b18b34b25d0e72b3689570bcb8ecd53a4aea89e42696741d"
+      "sha_all": "166ee390c5a15f6e98e8494723c9db6cfb94396fb7ef8ee6ed33b47470f03338"
     },
     {
       "id": "ops-planner-thresholds",
@@ -500,5 +500,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764102444
+  "last_refresh_epoch": 1764166426
 }

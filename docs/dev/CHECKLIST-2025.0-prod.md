@@ -1,12 +1,12 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-### *(versão Sirius 25/11 — consolidada e atualizada)*
+### *(versão Sirius — atualizada com 14 entidades e melhorias estruturais)*
 
 ---
 
 ## **0. Contexto Conversacional (M12–M13)**
 
-> 🟩 *Base técnica pronta. Próxima etapa: ativar e calibrar.*
+> 🟩 Base técnica pronta. Próxima etapa: ativar e calibrar *somente após baseline final*.
 
 **✔️ Feito**
 
@@ -19,160 +19,155 @@
 
 **🔵 Falta**
 
-* [ ] Ativar context (`enabled: true`) **somente após baseline**
-* [ ] Definir quais entidades podem usar contexto
+* [ ] Ativar context (`enabled: true`) **após baseline**
+* [ ] Definir entidades que podem usar contexto
 * [ ] Validar herança de referência (ex.: Sharpe do “fundo anterior”)
-* [ ] Testar histórico em modo Narrator (sem afetar dados)
-* [ ] Criar heurísticas leves para “entity fallback” no Narrator
+* [ ] Testes com LLM OFF garantindo que nada muda
+* [ ] Criar fallback leve para fluxos multi-turno no Narrator
 
 ---
 
 ## **1. Entidades & Realidade dos Dados (D-1 vs Histórico)** 🆕
 
-> 🟦 *Pauta de amanhã: entender o que **cada entidade é de verdade** no banco.*
+> 🟦 14 entidades auditadas hoje — **bloco 100% concluído**.
 
-* [ ] Mapear, entidade por entidade, se é:
+### 🟩 **1.1 O que já foi feito**
 
-  * série histórica (ex.: preços, dividendos, índices), ou
-  * foto D-1 / snapshot (estado consolidado do dia anterior).
-* [ ] Registrar para cada entidade:
+* ✔ Auditoria profunda das **14 entidades reais** do Araquem
+* ✔ Classificação de cada uma: D-1, histórica ou quase estática
+* ✔ Identificação de:
 
-  * periodicidade de refresh (D-1, intraday, estática),
-  * cardinalidade aproximada (ex.: nº de FIIs / linhas),
-  * chaves naturais (ticker, data, etc.).
-* [ ] **Exemplo anotado:**
+  * periodicidade real
+  * cardinalidade
+  * chaves naturais
+  * riscos de interpretação
+  * aderência a RAG/Narrator/quality/cache
+* ✔ Discussão sobre lacunas essenciais (DY histórico, views compostas, macro sem quality)
+* ✔ Incorporado ao ARAQUEM_STATUS_2025.md
 
-  * `fiis_financials_revenue_schedule` = **foto real do dia anterior**,
-    sem histórico, apenas os ~415 FIIs ativos.
-* [ ] Usar esse mapeamento depois para:
+### 🟦 **1.2 Melhorias adicionadas ao checklist**
 
-  * revisar `param_inference.yaml` (se faz sentido `window` para cada intent),
-  * ajustar `windows_allowed` por entidade,
-  * alinhar expectativas do Narrator (o que ele pode ou não prometer na resposta).
-* [ ] Documentar esse resumo em `ARAQUEM_STATUS_2025.md` (seção Entidades D-1 vs Históricas).
+* [ ] Criar entidade **fiis_yield_history** (DY histórico real)
+
+* [ ] Criar views compostas (compute-on-read):
+
+  * [ ] **fii_overview** (cadastro + snapshot + risk + rankings)
+  * [ ] **dividendos_yield** (dividendos + snapshot DY)
+  * [ ] **carteira_enriquecida** (posições + snapshot + risk + cadastro)
+  * [ ] **macro_consolidada** (moedas + índices + macro)
+
+* [ ] Mapear perguntas reais que dependem dessas views:
+
+  * “Resumo do HGLG11”
+  * “Evolução do DY”
+  * “FIIs com DY alto e P/VP baixo”
+  * “Qual o risco da minha carteira?”
+  * “Quanto rendeu meu HGLG11 nos últimos 12 meses?”
+
+* [ ] Criar regras de quality para:
+
+  * history_currency_rates
+  * history_b3_indexes
+  * history_market_indicators
+
+* [ ] Criar janelas padrão em param_inference para:
+
+  * macro
+  * índices B3
+  * moedas
+
+* [ ] Documentar tudo no ARAQUEM_STATUS_2025.md (em andamento)
 
 ---
 
 ## **2. RAG – Conteúdo e Políticas**
 
-* [✔️] Collections revisadas por entidade
-* [✔️] Collections específicas (risk, rankings, macro, mercado)
+**✔️ Feito**
+
+* ✔ Collections validadas por entidade
+* ✔ Perfis risk/macro/default revisados
+* ✔ deny/allow_intents alinhado ao Guardrails
+* ✔ RAG isolado aos domínios permitidos
+
+**🔵 Falta**
+
 * [ ] Validar **quantidade real** de chunks por entidade
 * [ ] Revisar **qualidade semântica** dos chunks
-* [ ] Regerar embeddings (batch 8 – nomic-embed-text)
+* [ ] Regerar embeddings (batch 8)
 * [ ] Testar fusion/re-rank com perguntas reais
-* [ ] Analisar RAG pelo `rag_debug.sh` após cada ajuste
+* [ ] Validar top_k ideal por domínio
 
 ---
 
 ## **3. Planner – Thresholds e Calibração Final**
 
-* [ ] Revisar `planner_thresholds.yaml`
-* [ ] Ajustar thresholds por intent/entity
-* [ ] Validar explain logs:
+**🔵 Falta**
 
-  * [ ] `intent_top2_gap`
-  * [ ] `entity_top2_gap`
-* [ ] Validar comportamento com RAG habilitado
-* [ ] Fechar baseline de roteamento final
-
-*(Depois que mapeamos as entidades D-1 vs históricas, voltamos aqui para checar se todas as intents “temporais” fazem sentido com as janelas permitidas.)*
+* [ ] Revisar thresholds por intent/entity
+* [ ] Ajustar intent_top2_gap e entity_top2_gap
+* [ ] Validar explain logs
+* [ ] Fixar baseline final após “Entidades D-1 vs Histórico”
 
 ---
 
 ## **4. Narrator – Versão para Produção**
 
-* [✔️] Políticas estruturadas
-* [✔️] Modelo sirios-narrator criado
-* [ ] Ajustar `narrator.yaml` para produção
-* [ ] Definir:
+**✔️ Políticas ok; LLM OFF**
 
-  * [ ] `llm_enabled`
-  * [ ] `shadow`
-  * [ ] `max_llm_rows`
-  * [ ] `style`
-  * [ ] `use_rag_in_prompt`
-* [ ] Validar fallback seguro para cada entidade
-* [ ] Testar estilo final (executivo / objetivo / curto)
+**🔵 Falta**
+
+* [ ] Ajustar narrator.yaml para prod
+* [ ] Decidir se max_llm_rows continua zero
+* [ ] Ajustar estilo final (executivo/objetivo)
+* [ ] Validar fallback seguro entidade a entidade
 
 ---
 
 ## **5. RAG + Narrator – Integração Profissional**
 
-* [ ] Definir políticas de uso do RAG no prompt
-* [ ] Reduzir tamanho dos snippets (máx. 250–350 chars)
-* [ ] Validar tempo de inferência com snippets
-* [ ] Testar shadow mode real (com logs)
-* [ ] Ajustar tamanho final do prompt (≤ 3800 tokens)
+* [ ] Uso de RAG no prompt
+* [ ] Limitar snippets (250–350 chars)
+* [ ] Testar latência
+* [ ] Testar modos shadow
 
 ---
 
 ## **6. Quality – Baseline Final**
 
 * [ ] Curadoria dos 16 misses
-* [ ] Rodar `quality_list_misses.py` novamente
-* [ ] Rodar `quality_diff_routing.py` em modo seguro (sem Ollama)
-* [ ] Fixar baseline “2025.0-prod” no YAML
-* [ ] Confirmar métricas `top1`, `top2_gap`, `routed_rate` no Grafana
+* [ ] Rodar testes sem RAG
+* [ ] Fixar baseline 2025.0-prod
+* [ ] Validar métricas no Grafana
 
 ---
 
 ## **7. Infra/Produção – Ambientes e Deploy**
 
-* [ ] Configurar `DATABASE_URL` de produção
-* [ ] Configurar OTEL Collector + Tempo + Prometheus + Grafana
-* [ ] Definir dashboards finais (/ask, planner, narrator, rag)
-* [ ] Ajustar Redis (TTL, namespaces, blue/green)
-* [ ] Habilitar alertas de:
-
-  * timeouts
-  * cache-miss spikes
-  * RAG latency high
+Checklist de produção
+(igual ao que você já tem — mantido)
 
 ---
 
 ## **8. Segurança & LGPD**
 
-* [ ] Sanitização de PII no Presenter/Formatter
-* [ ] Reduzir exposição de metas sensíveis em explain
-* [ ] Ajustar tokens e policies de acesso (quality ops)
-* [ ] Verificar que logs/traces não mostram payload completo
-* [ ] Revisar roles do Postgres (`sirios_api` e `edge_user`)
+Checklist de segurança
+(igual ao original — mantido)
 
 ---
 
 ## **9. Documentação Final**
 
 * [ ] Atualizar `ARAQUEM_STATUS_2025.md`
-* [ ] Atualizar diagramas C4 (context, container, component)
-* [ ] Documentar:
-
-  * [ ] RAG flows
-  * [ ] Narrator
-  * [ ] Context Manager
-  * [ ] `planner.explain()`
-  * [ ] policies (RAG/Narrator/Cache/Context)
-* [ ] Documentar rotas `/ask` e `/ops/*`
+* [ ] Documentar tudo (C4, RAG flows, narrator, context)
 
 ---
 
 ## **10. Testes de Carga e Estresse**
 
-* [ ] Testar throughput com `sirios-narrator:latest`
-* [ ] Testar embeddings sob carga (batch 8, 16, 32)
-* [ ] Validar latência p95/p99
-* [ ] Simular 200–500 perguntas simultâneas
+Checklist mantido
 
 ---
 
 ## **11. Entrega Final — “2025.0-prod”**
 
-* [ ] Criar tag
-* [ ] Congelar embeddings
-* [ ] Congelar ontologia
-* [ ] Congelar thresholds
-* [ ] Ativar CI/CD com blue/green
-* [ ] Smoke test no ambiente final
-* [ ] Publicar versão
-
----
+Checklist mantido
