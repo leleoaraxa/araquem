@@ -393,12 +393,13 @@ def infer_params(
         if intent_allowed or ent_windows_allowed
         else set()
     )
-    if allowed:
-        if window is None:
-            fallback = icfg.get("default_window")
-            if fallback and str(fallback) in allowed:
-                window = fallback
-        elif str(window) not in allowed:
+    # Se há janelas permitidas mas nenhuma janela foi inferida,
+    # tenta usar a default_window declarada para a intent.
+    if allowed and not window:
+        window = icfg.get("default_window")
+
+    if allowed and window:
+        if str(window) not in allowed:
             fallback = icfg.get("default_window")
             if fallback and str(fallback) in allowed:
                 window = fallback
