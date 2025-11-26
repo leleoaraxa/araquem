@@ -71,3 +71,18 @@ intents:
       list:
         limit: 10
         order: desc
+
+  fiis_financials_risk:
+    default_agg: list
+    agg_keywords:
+      list:
+        include:
+          - lista
+          - listar
+          - traga
+          - quais
+          - mostrar
+    defaults:
+      list:
+        limit: 10
+        order: desc
