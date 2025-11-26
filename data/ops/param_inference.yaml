@@ -29,25 +29,29 @@ intents:
         24: [24 ultimos, vinte e quatro ultimos]
 
   fiis_precos:
-    default_agg: latest
-    default_window: "count:1"
+    default_agg: list
+    default_window: "months:12"
+    windows_allowed:
+      months: [3, 6, 12, 24]
+      count: [1, 3, 6, 12, 24]
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, fechamento, atual]
         window: "count:1"
       list:
-        include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais]
+        include: [ultimos, últimas, historico, histórico, lista, listar, traga, quais, historico de preco, histórico de preço, historico de precos, histórico de preços]
     window_keywords:
       months:
-        3: [trimestre, 3 meses, tres meses]
-        6: [semestre, 6 meses, seis meses]
-        12: [ano, anual, 12 meses, doze meses, ultimo ano]
-        24: [2 anos, dois anos, 24 meses]
+        3: [trimestre, 3 meses, tres meses, ultimos 3 meses, últimos 3 meses]
+        6: [semestre, 6 meses, seis meses, ultimos 6 meses, últimos 6 meses]
+        12: [ano, anual, 12 meses, doze meses, ultimo ano, último ano, ultimos 12 meses, últimos 12 meses]
+        24: [2 anos, dois anos, 24 meses, ultimos 24 meses, últimos 24 meses, ultimos 2 anos, últimos 2 anos]
       count:
-        3: [3 ultimos, tres ultimos, tres últimas]
-        6: [6 ultimos, seis ultimos]
-        12: [12 ultimos, doze ultimos]
-        24: [24 ultimos, vinte e quatro ultimos]
+        1: [ultimo pregao, último pregao, ultimo pregão, último pregão, ultima cotacao, última cotacao, ultima cotação, última cotação]
+        3: [3 ultimos, tres ultimos, tres últimas, 3 últimas]
+        6: [6 ultimos, seis ultimos, 6 últimas]
+        12: [12 ultimos, doze ultimos, 12 últimas]
+        24: [24 ultimos, vinte e quatro ultimos, 24 últimas]
 
   client_fiis_positions:
     inference: false           # não inferir por texto
