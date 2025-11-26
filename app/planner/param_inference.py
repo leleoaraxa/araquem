@@ -393,18 +393,23 @@ def infer_params(
         if intent_allowed or ent_windows_allowed
         else set()
     )
-    if allowed and (str(window) not in allowed):
-        fallback = icfg.get("default_window")
-        if fallback and str(fallback) in allowed:
-            window = fallback
-        elif fallback:
-            raise ValueError(
-                f"param_inference: janela '{window}' não permitida e default_window '{fallback}' fora da lista permitida para intent '{intent}'"
-            )
-        else:
-            raise ValueError(
-                f"param_inference: janela '{window}' não permitida para intent '{intent}'"
-            )
+    if allowed:
+        if window is None:
+            fallback = icfg.get("default_window")
+            if fallback and str(fallback) in allowed:
+                window = fallback
+        elif str(window) not in allowed:
+            fallback = icfg.get("default_window")
+            if fallback and str(fallback) in allowed:
+                window = fallback
+            elif fallback:
+                raise ValueError(
+                    f"param_inference: janela '{window}' não permitida e default_window '{fallback}' fora da lista permitida para intent '{intent}'"
+                )
+            else:
+                raise ValueError(
+                    f"param_inference: janela '{window}' não permitida para intent '{intent}'"
+                )
 
     out = {"agg": agg, "window": window}
     if limit is not None:
