@@ -33,8 +33,15 @@ intents:
     default_agg: list
     default_window: "months:12"
     windows_allowed:
-      months: [3, 6, 12, 24]
-      count: [1, 3, 6, 12, 24]
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:3"
+      - "count:6"
+      - "count:12"
+      - "count:24"
     agg_keywords:
       latest:
         include: [ultimo, última, mais recente, agora, hoje, fechamento, atual]
@@ -94,11 +101,15 @@ intents:
 
   history_currency_rates:
     default_agg: list
-    # janela padrão de histórico para perguntas genéricas de "histórico"
     default_window: "months:6"
     windows_allowed:
-      months: [1, 3, 6, 12]
-      count: [1, 5, 20]
+      - "months:1"
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "count:1"
+      - "count:5"
+      - "count:20"
     agg_keywords:
       latest:
         include:
@@ -128,14 +139,20 @@ intents:
       count:
         1:  [ultimo dia, último dia, ontem, cambio de ontem, cotacao de ontem, cotação de ontem]
         5:  [ultimos 5 dias, últimos 5 dias, ultima semana, última semana]
-        20: [ultimos 20 dias, últimos 20 dias, ultimo mes de pregão, último mes de pregão]
+        20:[ultimos 20 dias, últimos 20 dias, ultimo mes de pregão, último mes de pregão]
 
   history_b3_indexes:
     default_agg: list
     default_window: "months:6"
     windows_allowed:
-      months: [3, 6, 12, 24]
-      count: [1, 5, 20, 60]
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:5"
+      - "count:20"
+      - "count:60"
     agg_keywords:
       latest:
         include:
@@ -174,8 +191,13 @@ intents:
     default_agg: list
     default_window: "months:6"
     windows_allowed:
-      months: [1, 3, 6, 12]
-      count: [1, 5, 20]
+      - "months:1"
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "count:1"
+      - "count:5"
+      - "count:20"
     agg_keywords:
       latest:
         include:
