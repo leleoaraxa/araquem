@@ -71,3 +71,21 @@ policies:
     refresh_at: "07:00"
     scope: pub
     key_fields: [ticker]
+
+  history_currency_rates:
+    ttl_seconds: 86400
+    refresh_at: "07:00"
+    scope: pub
+    key_fields: [rate_date]
+
+  history_b3_indexes:
+    ttl_seconds: 86400
+    refresh_at: "07:00"
+    scope: pub
+    key_fields: [index_date]
+
+  history_market_indicators:
+    ttl_seconds: 86400
+    refresh_at: "07:00"
+    scope: pub
+    key_fields: [indicator_date, indicator_name]
