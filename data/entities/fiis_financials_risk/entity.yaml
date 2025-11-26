@@ -11,8 +11,6 @@ identifiers:
   - name: ticker
     description: Ticker do FII normalizado (AAAA11)
 
-default_date_field: updated_at
-
 columns:
   - name: ticker
     alias: Código FII
