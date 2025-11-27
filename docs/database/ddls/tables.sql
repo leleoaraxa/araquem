@@ -176,3 +176,6 @@ CREATE INDEX IF NOT EXISTS idx_narrator_ts
     (ts DESC NULLS FIRST)
     TABLESPACE pg_default;
 
+CREATE TABLE IF NOT EXISTS public.allowed_benchmarks (benchmark_code text PRIMARY KEY);
+INSERT INTO public.allowed_benchmarks (benchmark_code) VALUES ('CDI'), ('IFIX'), ('IFIL'), ('IBOV')
+ON CONFLICT DO NOTHING;

@@ -1,6 +1,8 @@
 -- =====================================================================
 -- DROP VIEW
 -- =====================================================================
+DROP VIEW IF EXISTS client_fiis_dividends_evolution;
+DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
 DROP VIEW IF EXISTS fii_overview;
 DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
@@ -1261,6 +1263,50 @@ LEFT JOIN fiis_financials_risk r
        ON r.ticker = c.ticker
 LEFT JOIN fiis_rankings rk
        ON rk.ticker = c.ticker;
+
+-- =====================================================================
+-- VIEW: client_fiis_dividends_evolution
+-- =====================================================================
+CREATE OR REPLACE VIEW public.client_fiis_dividends_evolution AS
+WITH docs AS (
+    SELECT DISTINCT document_number
+    FROM equities_positions
+)
+SELECT
+    d.document_number,
+    evo.year_reference,
+    evo.month_number,
+    evo.month_name,
+    evo.total_dividends
+FROM docs d
+CROSS JOIN LATERAL public.calc_fiis_dividends_evolution(d.document_number) AS evo;
+
+-- =====================================================================
+-- VIEW: client_fiis_performance_vs_benchmark
+-- =====================================================================
+CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark AS
+WITH docs AS (
+    SELECT DISTINCT document_number
+    FROM equities_positions
+),
+bench AS (
+    SELECT benchmark_code FROM public.allowed_benchmarks
+)
+SELECT
+    d.document_number,
+    b.benchmark_code,
+    perf.date_reference,
+    perf.portfolio_amount,
+    perf.portfolio_return_pct,
+    perf.benchmark_value,
+    perf.benchmark_return_pct
+FROM docs d
+CROSS JOIN bench b
+CROSS JOIN LATERAL public.calc_fiis_performance_vs_benchmark(
+    d.document_number,
+    b.benchmark_code
+) AS perf;
+
 -- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
@@ -1318,3 +1364,6 @@ ALTER VIEW public.view_markowitz_sirios_portfolios OWNER TO edge_user;
 ALTER VIEW public.view_markowitz_frontier_best_sharpe OWNER TO edge_user;
 ALTER VIEW public.view_markowitz_universe_stats OWNER TO edge_user;
 ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
+ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
+ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
+-- =====================================================================

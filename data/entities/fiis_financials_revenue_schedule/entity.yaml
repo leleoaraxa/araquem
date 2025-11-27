@@ -101,6 +101,21 @@ ask:
   - incc
   - duration da receita
   - cronograma de receitas
+  - receita futura
+  - receita esperada
+  - receita projetada
+  - receita por indice
+  - distribuicao da receita
+  - distribuida por indice
+  - cronograma de receita futura
+  - cronograma de recebiveis
+  phrase_includes:
+    - "receita futura do"
+    - "como esta distribuida a receita do"
+    - "como esta distribuida a receita futura do"
+    - "cronograma de receitas do"
+    - "cronograma de receita futura do"
+    - "receita futura do mxrf11 por indice"
   synonyms:
     ticker:
     - ativo
@@ -119,6 +134,10 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
+  sample_questions:
+    - como esta distribuida a receita futura do MXRF11 por indice
+    - cronograma de receita futura do MXRF11 por indexador
+    - como estao distribuidos os recebiveis do CPTS11 por indice
   metrics_synonyms:
     revenue_due_0_3m_pct:
       - receita 0 a 3 meses
