@@ -1,4 +1,5 @@
 Use os buckets padronizados descritos em `data/concepts/concepts-fiis.yaml` (camada revenue_schedule) para contextualizar prazos e indexadores.
+- As faixas de vencimento são janelas de 3 em 3 meses de 0 a 36 meses, seguidas de "acima de 36 meses" e "indeterminado".
 - Se não houver valores em um bucket, responda que a faixa não possui recebíveis cadastrados.
 - Quando perguntarem sobre exposição a inflação, destaque IPCA/IGPM e relacione ao conceito de indexadores.
 
