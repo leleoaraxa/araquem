@@ -74,7 +74,23 @@ datasets:
     not_null: [ticker]
     accepted_range:
       revenue_due_0_3m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_3_6m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_6_9m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_9_12m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_12_15m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_15_18m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_18_21m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_21_24m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_24_27m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_27_30m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_30_33m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_33_36m_pct: { min: 0.0, max: 1.0 }
       revenue_due_over_36m_pct: { min: 0.0, max: 1.0 }
+      revenue_due_undetermined_pct: { min: 0.0, max: 1.0 }
+      revenue_ipca_pct: { min: 0.0, max: 1.0 }
+      revenue_igpm_pct: { min: 0.0, max: 1.0 }
+      revenue_inpc_pct: { min: 0.0, max: 1.0 }
+      revenue_incc_pct: { min: 0.0, max: 1.0 }
 
   fiis_financials_risk:
     freshness: { max_age_hours: 30 }
