@@ -1,6 +1,7 @@
 -- =====================================================================
 -- DROP VIEW
 -- =====================================================================
+DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_cadastro;
 DROP VIEW IF EXISTS fiis_dividendos;
@@ -1124,6 +1125,58 @@ SELECT
   i.updated_at
 FROM view_fiis_info i
 LEFT JOIN fiis_rankings_quant q USING (ticker);
+
+
+-- =====================================================================
+-- VIEW: fiis_rankings
+-- =====================================================================
+CREATE OR REPLACE VIEW fiis_yield_history AS
+WITH monthly_dividends AS (
+    SELECT
+        d.ticker,
+        date_trunc('month', d.payment_date::timestamp)::date AS ref_month,
+        SUM(d.amount) AS dividends_sum
+    FROM hist_dividends d
+    GROUP BY
+        d.ticker,
+        date_trunc('month', d.payment_date::timestamp)
+),
+
+monthly_prices AS (
+    -- Subselect para normalizar tipos e evitar repetir date_trunc
+    SELECT DISTINCT ON (p.ticker, p.month_ref)
+        p.ticker,
+        p.month_ref       AS ref_month,
+        p.close_price     AS price_ref
+    FROM (
+        SELECT
+            fp.ticker,
+            fp.traded_at::timestamp              AS traded_ts,
+            fp.close_price,
+            date_trunc('month', fp.traded_at::timestamp)::date AS month_ref
+        FROM fiis_precos fp
+    ) p
+    ORDER BY
+        p.ticker,
+        p.month_ref ASC,
+        p.traded_ts DESC   -- pega o último preço do mês
+)
+
+SELECT
+    m.ticker,
+    m.ref_month,
+    m.dividends_sum,
+    mp.price_ref,
+    CASE
+        WHEN mp.price_ref IS NOT NULL AND mp.price_ref > 0
+            THEN m.dividends_sum / mp.price_ref
+        ELSE NULL
+    END AS dy_monthly
+FROM monthly_dividends m
+LEFT JOIN monthly_prices mp
+    ON mp.ticker = m.ticker
+   AND mp.ref_month = m.ref_month;
+
 -- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
