@@ -272,7 +272,7 @@ IMPORTANTE:
 
    - [NEW] data/entities/fiis_yield_history/entity.yaml
    - [NEW] data/entities/fiis_yield_history/responses/table.md.j2
-   - [NEW] data/entities/fiis_yield_history/responses/template.md.j2
+   - [NEW] data/entities/fiis_yield_history/template.md
    - [NEW] data/entities/fiis_yield_history/hints.md
    - [NEW] data/contracts/entities/fiis_yield_history.schema.yaml
    - [MOD] data/ontology/entity.yaml
