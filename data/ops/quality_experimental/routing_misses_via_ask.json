@@ -1,46 +1,229 @@
 [
   {
-    "idx": 193,
-    "question": "top 5 fiis com maior dividend yield",
-    "expected_intent": "fiis_rankings",
-    "expected_entity": "fiis_rankings",
-    "got_intent": "fiis_dividendos",
-    "got_entity": "fiis_dividendos",
-    "score": 1.9676221273982528,
+    "idx": 95,
+    "question": "DY mensal do MCCI11",
+    "expected_intent": "fiis_dividendos",
+    "expected_entity": "fiis_dividendos",
+    "got_intent": "fiis_rankings",
+    "got_entity": "fiis_rankings",
+    "score": 0.0811825952036466,
     "status": {
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "top 5 fiis com maior dividend yield",
+    "normalized": "dy mensal do mcci11",
     "tokens": [
-      "top",
-      "5",
-      "fiis",
-      "com",
-      "maior",
-      "dividend",
-      "yield"
+      "dy",
+      "mensal",
+      "do",
+      "mcci11"
     ],
     "intent_scores": {
       "client_fiis_positions": 0.0,
       "fiis_cadastro": 0.0,
       "fiis_precos": 0.0,
-      "fiis_dividendos": 2.2,
+      "fiis_dividendos": -8.8,
       "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": 0.0,
+      "history_b3_indexes": 0.0,
+      "history_currency_rates": 0.0,
+      "history_market_indicators": 0.0
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0009382758078587544,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 203,
+    "question": "alguma notícia negativa do XPML11 nos últimos 30 dias",
+    "expected_intent": "fiis_noticias",
+    "expected_entity": "fiis_noticias",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 1.4025,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "alguma noticia negativa do xpml11 nos ultimos 30 dias",
+    "tokens": [
+      "alguma",
+      "noticia",
+      "negativa",
+      "do",
+      "xpml11",
+      "nos",
+      "ultimos",
+      "30",
+      "dias"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": -0.55,
+      "fiis_cadastro": -0.55,
+      "fiis_precos": 1.6500000000000001,
+      "fiis_dividendos": -0.55,
+      "fiis_financials_snapshot": -6.05,
+      "fiis_financials_revenue_schedule": -1.6500000000000001,
+      "fiis_financials_risk": -0.55,
+      "fiis_imoveis": -0.55,
+      "fiis_noticias": 0.55,
+      "fiis_processos": -0.55,
+      "fiis_rankings": -1.6500000000000001,
+      "history_b3_indexes": -0.55,
+      "history_currency_rates": -0.55,
+      "history_market_indicators": -0.55
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.935,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 229,
+    "question": "histórico do dólar nos últimos 30 dias",
+    "expected_intent": "history_currency_rates",
+    "expected_entity": "history_currency_rates",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 1.87,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "historico do dolar nos ultimos 30 dias",
+    "tokens": [
+      "historico",
+      "do",
+      "dolar",
+      "nos",
+      "ultimos",
+      "30",
+      "dias"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 2.2,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": -5.5,
       "fiis_financials_revenue_schedule": -1.1,
       "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
       "fiis_noticias": 0.0,
       "fiis_processos": 0.0,
-      "fiis_rankings": 1.1,
+      "fiis_rankings": -1.1,
+      "history_b3_indexes": -1.1,
+      "history_currency_rates": 1.1,
+      "history_market_indicators": -1.1
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.935,
+      "accepted": true,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 230,
+    "question": "variação do dólar nos últimos 12 meses",
+    "expected_intent": "history_currency_rates",
+    "expected_entity": "history_currency_rates",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 1.87,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "variacao do dolar nos ultimos 12 meses",
+    "tokens": [
+      "variacao",
+      "do",
+      "dolar",
+      "nos",
+      "ultimos",
+      "12",
+      "meses"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 2.2,
+      "fiis_dividendos": 1.1,
+      "fiis_financials_snapshot": -5.5,
+      "fiis_financials_revenue_schedule": -1.1,
+      "fiis_financials_risk": 0.0,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 1.1,
+      "fiis_rankings": 0.0,
       "history_b3_indexes": 0.0,
-      "history_currency_rates": -1.1,
+      "history_currency_rates": 2.2,
+      "history_market_indicators": -1.1
+    },
+    "thresholds": {
+      "min_score": 1.0,
+      "min_gap": 0.2,
+      "gap": 0.0,
+      "accepted": false,
+      "source": "final"
+    }
+  },
+  {
+    "idx": 232,
+    "question": "histórico do IPCA nos últimos 24 meses",
+    "expected_intent": "history_market_indicators",
+    "expected_entity": "history_market_indicators",
+    "got_intent": "fiis_precos",
+    "got_entity": "fiis_precos",
+    "score": 1.87,
+    "status": {
+      "reason": "ok",
+      "message": "ok"
+    },
+    "normalized": "historico do ipca nos ultimos 24 meses",
+    "tokens": [
+      "historico",
+      "do",
+      "ipca",
+      "nos",
+      "ultimos",
+      "24",
+      "meses"
+    ],
+    "intent_scores": {
+      "client_fiis_positions": 0.0,
+      "fiis_cadastro": 0.0,
+      "fiis_precos": 2.2,
+      "fiis_dividendos": 0.0,
+      "fiis_financials_snapshot": -5.5,
+      "fiis_financials_revenue_schedule": 0.0,
+      "fiis_financials_risk": -1.1,
+      "fiis_imoveis": 0.0,
+      "fiis_noticias": 0.0,
+      "fiis_processos": 0.0,
+      "fiis_rankings": -1.1,
+      "history_b3_indexes": -1.1,
+      "history_currency_rates": 0.0,
       "history_market_indicators": 1.1
     },
     "thresholds": {
       "min_score": 1.0,
       "min_gap": 0.2,
-      "gap": 0.9322186778250914,
+      "gap": 0.935,
       "accepted": true,
       "source": "final"
     }

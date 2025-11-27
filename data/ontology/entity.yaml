@@ -143,12 +143,8 @@ intents:
         - fechamento do dia
         - ultimo fechamento
         - historico
-        - histórico
         - ultimos
-        - últimos
-        - nos
         - periodo
-        - período
       exclude:
         - media
         - soma
@@ -162,12 +158,10 @@ intents:
         - eur
         - euro
         - cambio
-        - câmbio
         - cdi
         - selic
         - ipca
         - inflacao
-        - inflação
         - inpc
         - comercial
     phrases:
@@ -185,28 +179,21 @@ intents:
         - variacao diaria do ticker
         - variacao do ticker nos ultimos
         - historico de preco
-        - historico de preços
-        - histórico de preços
+        - historico de precos
         - historico de cotacao
         - historico de cotacoes
         - preco nos ultimos
-        - preco nos últimos
         - cotacao nos ultimos
-        - cotacao nos últimos
-        - historico de preço nos ultimos 12 meses
-        - histórico de preço nos últimos 12 meses
+        - historico de preco nos ultimos 12 meses
       exclude:
         - preco medio
         - media de preco
         - retorno no periodo
         - variacao diaria do usd
         - variacao diaria do dolar
-        - variacao diaria do dólar
         - historico do dolar
-        - historico do dólar
         - historico do ipca
         - historico da inflacao
-        - historico da inflação
         - variacao diaria do eur
         - variacao diaria do euro
         - variacao diaria do ibov
@@ -481,10 +468,7 @@ intents:
       include:
         - noticia
         - noticias
-        - notícia
-        - notícias
         - materia
-        - matéria
         - manchete
         - reportagem
         - fato relevante
@@ -579,9 +563,7 @@ intents:
         - ifix
         - ifil
         - indice
-        - índice
         - historico
-        - histórico
         - se comportou
         - mdd
         - drawdown
@@ -647,7 +629,6 @@ intents:
       exclude:
         - usd
         - dolar
-        - dólar
         - eur
         - euro
         - cdi
@@ -683,24 +664,19 @@ intents:
     tokens:
       include:
         - dolar
-        - dólar
         - usd
         - euro
         - eur
         - cambio
-        - câmbio
         - moeda americana
         - moeda estrangeira
         - cotacao
-        - cotação
         - compra
         - venda
         - variacao
         - variacao diaria
         - historico
-        - histórico
         - serie historica
-        - série histórica
         - hoje
         - d1
         - d-1
@@ -714,24 +690,18 @@ intents:
       include:
         - variacao diaria do usd
         - variacao diaria do dolar
-        - variacao diaria do dólar
         - variacao do usd hoje
         - variacao do dolar hoje
-        - variacao do dólar hoje
         - variacao da moeda no dia
         - cotacao do dolar
         - cotacao do euro
         - historico do dolar
-        - historico do dólar
         - historico do usd
         - historico do cambio
         - variacao do dolar nos ultimos
-        - variacao do dólar nos ultimos
         - variacao do usd nos ultimos
         - alta do dolar
-        - alta do dólar
         - queda do dolar
-        - queda do dólar
         - dolar comercial
         - euro comercial
         - variacao do usd
@@ -746,13 +716,8 @@ intents:
       include:
         - ipca
         - indice de preco
-        - indice de preços
-        - índice de preco
-        - índice de preços
         - indice de inflacao
-        - índice de inflação
         - inflacao historica
-        - inflação historica
         - cdi
         - selic
         - igpm
@@ -776,7 +741,6 @@ intents:
         - janeiro
         - fevereiro
         - marco
-        - março
         - abril
         - maio
         - junho
@@ -793,7 +757,6 @@ intents:
         - ifil
         - usd
         - dolar
-        - dólar
         - eur
         - euro
         - recebiveis
@@ -807,7 +770,7 @@ intents:
         - ipca de ontem
         - selic de ontem
         - taxa do igpm
-        - indicadores econômicos
+        - indicadores economicos
         - taxa de juros
         - ipca de outubro d 1
         - cdi atual
@@ -820,11 +783,9 @@ intents:
         - historico do ipca
         - historico do ipca nos ultimos
         - historico da inflacao
-        - historico da inflação
         - serie historica do ipca
-        - série histórica do ipca
         - indice de inflacao nos ultimos
-        - histórico do indice de preços
+        - historico do indice de precos
       exclude: []
     entities: [history_market_indicators]
 
