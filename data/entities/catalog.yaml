@@ -71,6 +71,23 @@ entities:
         - ref_month
     notes: []
 
+  fii_overview:
+    title: "FIIs – Visão consolidada (overview)"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fii_overview/entity.yaml"
+      schema: "data/contracts/entities/fii_overview.schema.yaml"
+      quality_projection: null   # ou o que fizer sentido, se vier a existir
+    coverage:
+      cache_policy: true
+      rag_policy: true      # há regra em rag.yaml (deny)
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+    notes: []
+
   fiis_financials_snapshot:
     title: "FIIs – Indicadores financeiros (snapshot D-1)"
     kind: "snapshot"

@@ -212,55 +212,55 @@ columns:
     nullable: true
     desc: Data de atualização dos indicadores de risco.
   - name: users_rank_position
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição no ranking de popularidade de usuários (menor é melhor).
   - name: sirios_rank_position
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição no ranking Sírios (menor é melhor).
   - name: ifix_rank_position
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição no ranking IFIX (menor é melhor).
   - name: ifil_rank_position
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição no ranking IFIL (menor é melhor).
   - name: rank_dy_12m
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar pelo dividend yield de 12 meses.
   - name: rank_dy_monthly
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar pelo dividend yield mensal.
   - name: rank_dividends_12m
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar pelo total de dividendos pagos em 12 meses.
   - name: rank_market_cap
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por valor de mercado.
   - name: rank_equity
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por patrimônio líquido.
   - name: rank_sharpe
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por Sharpe ratio.
   - name: rank_sortino
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por Sortino ratio.
   - name: rank_low_volatility
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por menor volatilidade.
   - name: rank_low_drawdown
-    type: numeric
+    type: integer
     nullable: true
     desc: Posição ao ordenar por menor drawdown.
   - name: rankings_created_at
@@ -275,21 +275,7 @@ presentation:
   kind: table
   fields:
     key: ticker
-    columns:
-      - display_name
-      - sector
-      - dy_monthly_pct
-      - dy_12m_pct
-      - dividends_12m_amt
-      - market_cap_value
-      - sharpe_ratio
-      - sortino_ratio
-      - volatility_ratio
-      - max_drawdown
-      - sirios_rank_position
-      - ifix_rank_position
-      - ifil_rank_position
-      - rank_dy_12m
+    value: display_name
   empty_message: Nenhum FII encontrado para os filtros informados.
 ask:
   intents:

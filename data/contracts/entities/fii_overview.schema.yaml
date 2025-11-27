@@ -91,7 +91,7 @@ presentation:
     rank_dy_12m:          { as: integer }
   rules: {}
 
-required: [ticker, display_name, sector, dy_monthly_pct, dy_12m_pct]
+required: [ticker, display_name]
 
 sample_questions:
   - "resumo do HGLG11"

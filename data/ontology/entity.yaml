@@ -131,7 +131,6 @@ intents:
         - fotografia
       exclude:
         - noticia
-        - noticia
         - noticias
         - historico
         - historia
