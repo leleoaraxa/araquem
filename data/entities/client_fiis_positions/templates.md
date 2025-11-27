@@ -1,3 +1,12 @@
+## Descrição
+Posições do investidor em FIIs, incluindo quantidades custodiadas, valores e participante responsável.
+
+## Exemplos de perguntas
+- "quais FIIs tenho na carteira?"
+- "quantas cotas possuo de MXRF11?"
+- "qual o valor total da posição de HGLG11?"
+
+## Respostas usando templates
 ### list_header
 Posições do documento **{document_number}**:
 
