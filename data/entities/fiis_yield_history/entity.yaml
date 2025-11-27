@@ -121,4 +121,4 @@ aggregations:
 responses:
   default:
     kind: table
-    template: responses/template.md.j2
+    template: template.md
