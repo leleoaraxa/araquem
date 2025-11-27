@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "fiis_yield_history",
+  "result_key": "yield_history",
+  "must_have_columns": [
+    "ticker",
+    "ref_month",
+    "dividends_sum",
+    "dy_monthly",
+    "price_ref"
+  ],
+  "samples": [
+    { "question": "historico de dividend yield do MXRF11 nos ultimos 12 meses" },
+    { "question": "evolucao do dy do KNRI11" },
+    { "question": "quanto o CPTS11 pagou de dividendos e dy em 2023-08" },
+    { "question": "comparativo de dy mensal entre HGLG11 e VISC11" }
+  ]
+}

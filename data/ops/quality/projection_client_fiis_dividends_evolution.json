@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "client_fiis_dividends_evolution",
+  "result_key": "dividends_evolution",
+  "must_have_columns": [
+    "document_number",
+    "year_reference",
+    "month_number",
+    "total_dividends"
+  ],
+  "samples": [
+    { "question": "evolucao dos dividendos da minha carteira de fiis" },
+    { "question": "renda mensal dos meus fiis" },
+    { "question": "quanto minha carteira de fiis recebeu de dividendos em cada mes" },
+    { "question": "historico de dividendos da minha carteira" },
+    { "question": "minha renda mensal com fiis esta crescendo" }
+  ]
+}

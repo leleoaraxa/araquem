@@ -1,0 +1,26 @@
+{
+  "type": "projection",
+  "entity": "fii_overview",
+  "result_key": "fii_overview",
+  "must_have_columns": [
+    "ticker",
+    "dy_12m_pct",
+    "dividends_12m_amt",
+    "market_cap_value",
+    "equity_value",
+    "volatility_ratio",
+    "sharpe_ratio",
+    "sortino_ratio",
+    "max_drawdown",
+    "sirios_rank_position",
+    "ifix_rank_position",
+    "ifil_rank_position"
+  ],
+  "samples": [
+    { "question": "resumo do HGLG11" },
+    { "question": "overview do KNRI11" },
+    { "question": "como esta o MXRF11 hoje" },
+    { "question": "quais os principais indicadores do CPTS11" },
+    { "question": "me de uma visao geral do VISC11" }
+  ]
+}
