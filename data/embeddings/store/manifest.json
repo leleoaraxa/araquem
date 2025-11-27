@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-27T23:18:05Z",
+  "generated_at": "2025-11-27T23:23:59Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -451,6 +451,50 @@
       "sha_all": "eea70b02626c969d6a6785e9b6765a1147408e44840f098e444a670ee88731e0"
     },
     {
+      "id": "q-projection-client-dividends-evolution",
+      "path": "data/ops/quality/projection_client_fiis_dividends_evolution.json",
+      "tags": [
+        "quality",
+        "projection",
+        "private"
+      ],
+      "chunks": 1,
+      "sha_all": "7ccf83b7c9d530701b564957d7d23ee4958ae1c07c4dd7a2ddc8460ed587787e"
+    },
+    {
+      "id": "q-projection-client-performance-vs-benchmark",
+      "path": "data/ops/quality/projection_client_fiis_performance_vs_benchmark.json",
+      "tags": [
+        "quality",
+        "projection",
+        "private"
+      ],
+      "chunks": 1,
+      "sha_all": "3ee919854b84415f3b64d4b2c7cc73bbb35038851b42e3bf21c316b2f65e01cb"
+    },
+    {
+      "id": "q-projection-fii-overview",
+      "path": "data/ops/quality/projection_fii_overview_evolution.json",
+      "tags": [
+        "quality",
+        "projection",
+        "overview"
+      ],
+      "chunks": 1,
+      "sha_all": "0a8d77517b87c21e7b40047d23ae29ca969f49a758b2c33fa44f8c3acbaadf15"
+    },
+    {
+      "id": "q-projection-fiis-yield-history",
+      "path": "data/ops/quality/projection_fiis_yield_history_evolution.json",
+      "tags": [
+        "quality",
+        "projection",
+        "yield"
+      ],
+      "chunks": 1,
+      "sha_all": "f07e73e014c5087e1b489dd6562f91d0c76a56b30fbbb5d10208cac20012086b"
+    },
+    {
       "id": "q-m66-projection",
       "path": "data/ops/quality_experimental/m66_projection.json",
       "tags": [
@@ -500,5 +544,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764285629
+  "last_refresh_epoch": 1764285985
 }
