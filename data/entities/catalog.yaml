@@ -10,13 +10,55 @@ entities:
       cache_policy: true
       rag_policy: true
       narrator_policy: false
-      param_inference: false
+      param_inference: true
     identifiers:
       natural_keys:
         - document_number
         - position_date
         - ticker
     notes: []
+
+  client_fiis_dividends_evolution:
+    title: "Carteira do cliente – evolução dos dividendos"
+    kind: "client"
+    paths:
+      entity_yaml: "data/entities/client_fiis_dividends_evolution/entity.yaml"
+      schema: "data/contracts/entities/client_fiis_dividends_evolution.schema.yaml"
+      quality_projection: "data/ops/quality/projection_client_fiis_dividends_evolution.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - document_number
+        - year_reference
+        - month_number
+    notes:
+      - "entidade privada de carteira; dados por document_number"
+      - "RAG/Narrator negados por policy; resposta 100% SQL determinística"
+
+  client_fiis_performance_vs_benchmark:
+    title: "Carteira do cliente – performance vs benchmark"
+    kind: "client"
+    paths:
+      entity_yaml: "data/entities/client_fiis_performance_vs_benchmark/entity.yaml"
+      schema: "data/contracts/entities/client_fiis_performance_vs_benchmark.schema.yaml"
+      quality_projection: "data/ops/quality/projection_client_fiis_performance_vs_benchmark.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - document_number
+        - benchmark_code
+        - date_reference
+    notes:
+      - "entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI"
+      - "binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário"
 
   fiis_cadastro:
     title: "FIIs – Cadastro"
@@ -77,7 +119,7 @@ entities:
     paths:
       entity_yaml: "data/entities/fii_overview/entity.yaml"
       schema: "data/contracts/entities/fii_overview.schema.yaml"
-      quality_projection: null   # ou o que fizer sentido, se vier a existir
+      quality_projection: "data/ops/quality/projection_fii_overview_evolution.json"
     coverage:
       cache_policy: true
       rag_policy: true      # há regra em rag.yaml (deny)

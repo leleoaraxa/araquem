@@ -73,6 +73,60 @@ intents:
     bindings:
       document_number: context.client_id   # mapear do contexto seguro -> parâmetro SQL
 
+  client_fiis_dividends_evolution:
+    inference: false                  # sem inferência por texto, só contexto seguro
+    required: [document_number]
+    bindings:
+      document_number: context.client_id
+
+  client_fiis_performance_vs_benchmark:
+    inference: false                  # idem: nada de documento vindo do texto
+    required: [document_number]
+    bindings:
+      document_number: context.client_id
+
+  fiis_yield_history:
+    default_agg: list
+    default_window: "months:12"
+    windows_allowed:
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:3"
+      - "count:6"
+      - "count:12"
+      - "count:24"
+    agg_keywords:
+      latest:
+        include:
+          - ultimo dy
+          - última dy
+          - dy mais recente
+          - dy atual
+        window: "count:1"
+      list:
+        include:
+          - historico de dy
+          - histórico de dy
+          - historico de dividend yield
+          - histórico de dividend yield
+          - ultimos dy
+          - últimos dy
+          - dy dos ultimos meses
+          - dy dos últimos meses
+    window_keywords:
+      months:
+        3:  [trimestre, 3 meses, tres meses]
+        6:  [semestre, 6 meses, seis meses]
+        12: [ano, anual, 12 meses, doze meses, ultimo ano, último ano, ultimos 12 meses, últimos 12 meses]
+        24: [2 anos, dois anos, 24 meses]
+      count:
+        3:  [3 ultimos, tres ultimos, 3 últimos, tres últimos]
+        6:  [6 ultimos, seis ultimos, 6 últimos, seis últimos]
+        12: [12 ultimos, doze ultimos, 12 últimos, doze últimos]
+        24: [24 ultimos, vinte e quatro ultimos, 24 últimos, vinte e quatro últimos]
+
   fiis_financials_revenue_schedule:
     default_agg: list
     agg_keywords:

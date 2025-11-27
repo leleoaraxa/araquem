@@ -2,9 +2,7 @@
 | Ano | Mês | Total de dividendos (R$) |
 |---|---|---|
 {%- for r in rows %}
-| {{ r.year_reference }}
-  | {{ r.month_name or r.month_number }}
-  | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
+| {{ r.year_reference }} | {{ r.month_name or r.month_number }} | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
 {%- endfor %}
 {%- else -%}
 {{ empty_message or "Sem histórico de dividendos para exibir." }}
