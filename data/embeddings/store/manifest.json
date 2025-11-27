@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-26T18:33:17Z",
+  "generated_at": "2025-11-27T12:24:06Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -23,8 +23,8 @@
         "concepts",
         "fiis"
       ],
-      "chunks": 5,
-      "sha_all": "d0f1636e2501c500e861c3c04781a49bd2333c310659e1df6301a9e67a555110"
+      "chunks": 6,
+      "sha_all": "f0f2d1dd143b372584bf2cc01042faf444b044ad4719e9f01c6494b0ca2da6a8"
     },
     {
       "id": "concepts-risk",
@@ -83,7 +83,7 @@
         "entities"
       ],
       "chunks": 11,
-      "sha_all": "a95638820336afdf2f2f50b984ccc0c71bedbef659f7ba157ebe35844e91e1b2"
+      "sha_all": "6ae78e8513d1f8d42e6e394fa4b2e582c4145f4ea77dbfa48034457a8c19947b"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -219,7 +219,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 1,
-      "sha_all": "d1097fdb70d4f5284bb51a90522e6b5cbb253999263b35e643d522b03096d899"
+      "sha_all": "9c297e3680bc344563ed0d55b5a4103412626668a33cce4deb40e3eeee339e78"
     },
     {
       "id": "entity-fiis-financials-revenue-hints",
@@ -232,7 +232,7 @@
         "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 1,
-      "sha_all": "6575fa087b64fc0b6169d292adbddd9b5ef96d87228ca6181356a0e003286de5"
+      "sha_all": "a22fd79ffe2e7a15d609f0d6ebdb45d85e88351fee8d63ed543d25446782a70b"
     },
     {
       "id": "entity-client-fiis-positions",
@@ -263,8 +263,8 @@
         "policies",
         "quality"
       ],
-      "chunks": 3,
-      "sha_all": "ee02054da96565ac646ee304ebb5ec931599638cc8ac7bac43b7f0124d41bd90"
+      "chunks": 4,
+      "sha_all": "c4e219e0b14713307a43c283a09f61ab386a32832a90a734f16ee7afe35a59ab"
     },
     {
       "id": "policies-rag",
@@ -500,5 +500,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764182142
+  "last_refresh_epoch": 1764246386
 }
