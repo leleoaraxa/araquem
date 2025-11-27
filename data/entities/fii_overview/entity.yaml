@@ -1,0 +1,347 @@
+entity: fii_overview
+kind: snapshot
+version: 1
+description: Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros, risco quantitativo e posições em rankings.
+source:
+  schema: public
+  object: fii_overview
+grain:
+  - ticker
+identifiers:
+  natural_keys:
+    - ticker
+  alternate_keys:
+    - display_name
+options:
+  supports_multi_ticker: true
+columns:
+  - name: ticker
+    type: string
+    nullable: false
+    desc: Código do FII na B3 (formato AAAA11).
+  - name: display_name
+    type: string
+    nullable: true
+    desc: Nome de exibição do FII.
+  - name: b3_name
+    type: string
+    nullable: true
+    desc: Nome de pregão na B3.
+  - name: classification
+    type: string
+    nullable: true
+    desc: Classificação geral do fundo imobiliário.
+  - name: sector
+    type: string
+    nullable: true
+    desc: Setor principal do FII.
+  - name: sub_sector
+    type: string
+    nullable: true
+    desc: Subsetor do FII.
+  - name: management_type
+    type: string
+    nullable: true
+    desc: Tipo de gestão (ativa, passiva etc.).
+  - name: target_market
+    type: string
+    nullable: true
+    desc: Mercado-alvo do FII.
+  - name: is_exclusive
+    type: boolean
+    nullable: true
+    desc: Indica se o fundo é exclusivo.
+  - name: ifil_weight_pct
+    type: numeric
+    nullable: true
+    desc: Peso do FII no índice IFIL (percentual).
+  - name: ifix_weight_pct
+    type: numeric
+    nullable: true
+    desc: Peso do FII no índice IFIX (percentual).
+  - name: shares_count
+    type: numeric
+    nullable: true
+    desc: Quantidade de cotas emitidas.
+  - name: shareholders_count
+    type: numeric
+    nullable: true
+    desc: Quantidade de cotistas.
+  - name: dy_monthly_pct
+    type: numeric
+    nullable: true
+    desc: Dividend yield mensal (percentual).
+  - name: dy_12m_pct
+    type: numeric
+    nullable: true
+    desc: Dividend yield acumulado em 12 meses (percentual).
+  - name: dividends_12m_amt
+    type: numeric
+    nullable: true
+    desc: Total de dividendos pagos nos últimos 12 meses.
+  - name: last_dividend_amt
+    type: numeric
+    nullable: true
+    desc: Valor do último dividendo pago.
+  - name: last_payment_date
+    type: date
+    nullable: true
+    desc: Data do último pagamento de proventos.
+  - name: market_cap_value
+    type: numeric
+    nullable: true
+    desc: Valor de mercado do FII.
+  - name: enterprise_value
+    type: numeric
+    nullable: true
+    desc: Enterprise value do FII.
+  - name: price_book_ratio
+    type: numeric
+    nullable: true
+    desc: Relação preço/patrimônio (P/BV).
+  - name: equity_per_share
+    type: numeric
+    nullable: true
+    desc: Patrimônio líquido por cota.
+  - name: revenue_per_share
+    type: numeric
+    nullable: true
+    desc: Receita por cota.
+  - name: dividend_payout_pct
+    type: numeric
+    nullable: true
+    desc: Percentual de payout de dividendos.
+  - name: growth_rate
+    type: numeric
+    nullable: true
+    desc: Taxa de crescimento estimada.
+  - name: cap_rate
+    type: numeric
+    nullable: true
+    desc: Taxa de capitalização.
+  - name: leverage_ratio
+    type: numeric
+    nullable: true
+    desc: Indicador de alavancagem.
+  - name: equity_value
+    type: numeric
+    nullable: true
+    desc: Valor do patrimônio líquido.
+  - name: variation_month_ratio
+    type: numeric
+    nullable: true
+    desc: Variação percentual no mês.
+  - name: variation_year_ratio
+    type: numeric
+    nullable: true
+    desc: Variação percentual no ano.
+  - name: equity_month_ratio
+    type: numeric
+    nullable: true
+    desc: Variação do patrimônio no mês (percentual).
+  - name: dividend_reserve_amt
+    type: numeric
+    nullable: true
+    desc: Montante em reserva de dividendos.
+  - name: admin_fee_due_amt
+    type: numeric
+    nullable: true
+    desc: Taxa de administração devida.
+  - name: perf_fee_due_amt
+    type: numeric
+    nullable: true
+    desc: Taxa de performance devida.
+  - name: total_cash_amt
+    type: numeric
+    nullable: true
+    desc: Caixa total disponível.
+  - name: expected_revenue_amt
+    type: numeric
+    nullable: true
+    desc: Receita esperada projetada.
+  - name: liabilities_total_amt
+    type: numeric
+    nullable: true
+    desc: Total de passivos.
+  - name: snapshot_created_at
+    type: datetime
+    nullable: true
+    desc: Data de criação do snapshot financeiro.
+  - name: snapshot_updated_at
+    type: datetime
+    nullable: true
+    desc: Data de atualização do snapshot financeiro.
+  - name: volatility_ratio
+    type: numeric
+    nullable: true
+    desc: Volatilidade histórica anualizada.
+  - name: sharpe_ratio
+    type: numeric
+    nullable: true
+    desc: Sharpe ratio do FII.
+  - name: treynor_ratio
+    type: numeric
+    nullable: true
+    desc: Índice de Treynor do FII.
+  - name: jensen_alpha
+    type: numeric
+    nullable: true
+    desc: Jensen alpha relativo ao benchmark.
+  - name: beta_index
+    type: numeric
+    nullable: true
+    desc: Beta em relação ao índice de referência.
+  - name: sortino_ratio
+    type: numeric
+    nullable: true
+    desc: Sortino ratio do FII.
+  - name: max_drawdown
+    type: numeric
+    nullable: true
+    desc: Maior queda acumulada no período analisado.
+  - name: r_squared
+    type: numeric
+    nullable: true
+    desc: Coeficiente de determinação (R²) frente ao benchmark.
+  - name: risk_created_at
+    type: datetime
+    nullable: true
+    desc: Data de criação dos indicadores de risco.
+  - name: risk_updated_at
+    type: datetime
+    nullable: true
+    desc: Data de atualização dos indicadores de risco.
+  - name: users_rank_position
+    type: numeric
+    nullable: true
+    desc: Posição no ranking de popularidade de usuários (menor é melhor).
+  - name: sirios_rank_position
+    type: numeric
+    nullable: true
+    desc: Posição no ranking Sírios (menor é melhor).
+  - name: ifix_rank_position
+    type: numeric
+    nullable: true
+    desc: Posição no ranking IFIX (menor é melhor).
+  - name: ifil_rank_position
+    type: numeric
+    nullable: true
+    desc: Posição no ranking IFIL (menor é melhor).
+  - name: rank_dy_12m
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar pelo dividend yield de 12 meses.
+  - name: rank_dy_monthly
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar pelo dividend yield mensal.
+  - name: rank_dividends_12m
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar pelo total de dividendos pagos em 12 meses.
+  - name: rank_market_cap
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por valor de mercado.
+  - name: rank_equity
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por patrimônio líquido.
+  - name: rank_sharpe
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por Sharpe ratio.
+  - name: rank_sortino
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por Sortino ratio.
+  - name: rank_low_volatility
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por menor volatilidade.
+  - name: rank_low_drawdown
+    type: numeric
+    nullable: true
+    desc: Posição ao ordenar por menor drawdown.
+  - name: rankings_created_at
+    type: datetime
+    nullable: true
+    desc: Data de criação dos rankings consolidados.
+  - name: rankings_updated_at
+    type: datetime
+    nullable: true
+    desc: Data de atualização dos rankings consolidados.
+presentation:
+  kind: table
+  fields:
+    key: ticker
+    columns:
+      - display_name
+      - sector
+      - dy_monthly_pct
+      - dy_12m_pct
+      - dividends_12m_amt
+      - market_cap_value
+      - sharpe_ratio
+      - sortino_ratio
+      - volatility_ratio
+      - max_drawdown
+      - sirios_rank_position
+      - ifix_rank_position
+      - ifil_rank_position
+      - rank_dy_12m
+  empty_message: Nenhum FII encontrado para os filtros informados.
+ask:
+  intents:
+    - fii_overview
+  requires_identifiers:
+    - ticker
+  keywords:
+    - overview
+    - resumo
+    - situacao
+    - foto
+    - visao geral
+    - indicadores
+    - dy
+    - dividendos
+    - market cap
+    - risco
+    - sharpe
+    - sortino
+    - volatilidade
+    - ranking
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    display_name:
+      - nome
+      - nome de exibicao
+      - nome b3
+    dy_12m_pct:
+      - dy 12 meses
+      - dividend yield 12m
+    dy_monthly_pct:
+      - dy mensal
+      - dividend yield mensal
+    market_cap_value:
+      - valor de mercado
+      - marketcap
+    sharpe_ratio:
+      - sharpe
+    sortino_ratio:
+      - sortino
+    volatility_ratio:
+      - volatilidade
+    max_drawdown:
+      - drawdown
+      - mdd
+defaults:
+  order_by:
+    ticker: asc
+    sirios_rank_position: asc
+notes:
+  - "view composta D-1: cadastro + snapshot financeiro + risco + rankings"

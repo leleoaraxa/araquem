@@ -1,0 +1,101 @@
+entity: fii_overview
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,                type: string,   nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: display_name,          type: string,   nullable: true,  desc: "nome de exibição do FII." }
+  - { name: b3_name,               type: string,   nullable: true,  desc: "nome de pregão na B3." }
+  - { name: classification,        type: string,   nullable: true,  desc: "classificação geral do FII." }
+  - { name: sector,                type: string,   nullable: true,  desc: "setor do FII." }
+  - { name: sub_sector,            type: string,   nullable: true,  desc: "subsetor do FII." }
+  - { name: management_type,       type: string,   nullable: true,  desc: "tipo de gestão." }
+  - { name: target_market,         type: string,   nullable: true,  desc: "mercado-alvo do FII." }
+  - { name: is_exclusive,          type: boolean,  nullable: true,  desc: "indica fundo exclusivo." }
+  - { name: ifil_weight_pct,       type: number,   nullable: true,  desc: "peso no IFIL (percentual)." }
+  - { name: ifix_weight_pct,       type: number,   nullable: true,  desc: "peso no IFIX (percentual)." }
+  - { name: shares_count,          type: number,   nullable: true,  desc: "quantidade de cotas emitidas." }
+  - { name: shareholders_count,    type: number,   nullable: true,  desc: "quantidade de cotistas." }
+  - { name: dy_monthly_pct,        type: number,   nullable: true,  desc: "dividend yield mensal." }
+  - { name: dy_12m_pct,            type: number,   nullable: true,  desc: "dividend yield 12 meses." }
+  - { name: dividends_12m_amt,     type: number,   nullable: true,  desc: "dividendos pagos em 12 meses." }
+  - { name: last_dividend_amt,     type: number,   nullable: true,  desc: "último dividendo pago." }
+  - { name: last_payment_date,     type: date,     nullable: true,  desc: "data do último pagamento." }
+  - { name: market_cap_value,      type: number,   nullable: true,  desc: "valor de mercado." }
+  - { name: enterprise_value,      type: number,   nullable: true,  desc: "enterprise value." }
+  - { name: price_book_ratio,      type: number,   nullable: true,  desc: "relação preço/patrimônio." }
+  - { name: equity_per_share,      type: number,   nullable: true,  desc: "patrimônio líquido por cota." }
+  - { name: revenue_per_share,     type: number,   nullable: true,  desc: "receita por cota." }
+  - { name: dividend_payout_pct,   type: number,   nullable: true,  desc: "payout de dividendos." }
+  - { name: growth_rate,           type: number,   nullable: true,  desc: "taxa de crescimento estimada." }
+  - { name: cap_rate,              type: number,   nullable: true,  desc: "taxa de capitalização." }
+  - { name: leverage_ratio,        type: number,   nullable: true,  desc: "indicador de alavancagem." }
+  - { name: equity_value,          type: number,   nullable: true,  desc: "valor do patrimônio." }
+  - { name: variation_month_ratio, type: number,   nullable: true,  desc: "variação percentual no mês." }
+  - { name: variation_year_ratio,  type: number,   nullable: true,  desc: "variação percentual no ano." }
+  - { name: equity_month_ratio,    type: number,   nullable: true,  desc: "variação do patrimônio no mês." }
+  - { name: dividend_reserve_amt,  type: number,   nullable: true,  desc: "reserva de dividendos." }
+  - { name: admin_fee_due_amt,     type: number,   nullable: true,  desc: "taxa de administração devida." }
+  - { name: perf_fee_due_amt,      type: number,   nullable: true,  desc: "taxa de performance devida." }
+  - { name: total_cash_amt,        type: number,   nullable: true,  desc: "total de caixa." }
+  - { name: expected_revenue_amt,  type: number,   nullable: true,  desc: "receita esperada." }
+  - { name: liabilities_total_amt, type: number,   nullable: true,  desc: "total de passivos." }
+  - { name: snapshot_created_at,   type: datetime, nullable: true,  desc: "criação do snapshot financeiro." }
+  - { name: snapshot_updated_at,   type: datetime, nullable: true,  desc: "atualização do snapshot financeiro." }
+  - { name: volatility_ratio,      type: number,   nullable: true,  desc: "volatilidade histórica." }
+  - { name: sharpe_ratio,          type: number,   nullable: true,  desc: "sharpe ratio." }
+  - { name: treynor_ratio,         type: number,   nullable: true,  desc: "índice de Treynor." }
+  - { name: jensen_alpha,          type: number,   nullable: true,  desc: "jensen alpha." }
+  - { name: beta_index,            type: number,   nullable: true,  desc: "beta vs benchmark." }
+  - { name: sortino_ratio,         type: number,   nullable: true,  desc: "sortino ratio." }
+  - { name: max_drawdown,          type: number,   nullable: true,  desc: "maior drawdown." }
+  - { name: r_squared,             type: number,   nullable: true,  desc: "coeficiente de determinação." }
+  - { name: risk_created_at,       type: datetime, nullable: true,  desc: "criação dos indicadores de risco." }
+  - { name: risk_updated_at,       type: datetime, nullable: true,  desc: "atualização dos indicadores de risco." }
+  - { name: users_rank_position,   type: integer,  nullable: true,  desc: "ranking de usuários." }
+  - { name: sirios_rank_position,  type: integer,  nullable: true,  desc: "ranking Sírios." }
+  - { name: ifix_rank_position,    type: integer,  nullable: true,  desc: "ranking IFIX." }
+  - { name: ifil_rank_position,    type: integer,  nullable: true,  desc: "ranking IFIL." }
+  - { name: rank_dy_12m,           type: integer,  nullable: true,  desc: "posição por DY 12 meses." }
+  - { name: rank_dy_monthly,       type: integer,  nullable: true,  desc: "posição por DY mensal." }
+  - { name: rank_dividends_12m,    type: integer,  nullable: true,  desc: "posição por dividendos 12m." }
+  - { name: rank_market_cap,       type: integer,  nullable: true,  desc: "posição por valor de mercado." }
+  - { name: rank_equity,           type: integer,  nullable: true,  desc: "posição por patrimônio." }
+  - { name: rank_sharpe,           type: integer,  nullable: true,  desc: "posição por sharpe." }
+  - { name: rank_sortino,          type: integer,  nullable: true,  desc: "posição por sortino." }
+  - { name: rank_low_volatility,   type: integer,  nullable: true,  desc: "posição por menor volatilidade." }
+  - { name: rank_low_drawdown,     type: integer,  nullable: true,  desc: "posição por menor drawdown." }
+  - { name: rankings_created_at,   type: datetime, nullable: true,  desc: "criação dos rankings." }
+  - { name: rankings_updated_at,   type: datetime, nullable: true,  desc: "atualização dos rankings." }
+
+ordering: [ticker, sirios_rank_position ASC]
+
+presentation:
+  columns:
+    ticker:               { as: string }
+    display_name:         { as: string }
+    sector:               { as: string }
+    sub_sector:           { as: string }
+    management_type:      { as: string }
+    dy_monthly_pct:       { as: percent, multiply_by_100: false, precision: 2 }
+    dy_12m_pct:           { as: percent, multiply_by_100: false, precision: 2 }
+    dividends_12m_amt:    { as: currency }
+    market_cap_value:     { as: currency }
+    sharpe_ratio:         { as: number, precision: 2 }
+    sortino_ratio:        { as: number, precision: 2 }
+    volatility_ratio:     { as: percent, multiply_by_100: false, precision: 2 }
+    max_drawdown:         { as: percent, multiply_by_100: false, precision: 2 }
+    sirios_rank_position: { as: integer }
+    ifix_rank_position:   { as: integer }
+    ifil_rank_position:   { as: integer }
+    rank_dy_12m:          { as: integer }
+  rules: {}
+
+required: [ticker, display_name, sector, dy_monthly_pct, dy_12m_pct]
+
+sample_questions:
+  - "resumo do HGLG11"
+  - "overview do KNRI11"
+  - "como está o MXRF11 hoje?"
+  - "quais os principais indicadores do CPTS11?"
+  - "me dê uma visão geral do VISC11"

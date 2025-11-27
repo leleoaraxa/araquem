@@ -107,6 +107,25 @@ datasets:
       max_drawdown: { min: 0.0, max: 1.0 }
       r_squared: { min: 0.0, max: 1.0 }
 
+  fii_overview:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker, display_name]
+    accepted_range:
+      dy_monthly_pct: { min: 0.0, max: 1.0 }
+      dy_12m_pct: { min: 0.0, max: 2.0 }
+      dividends_12m_amt: { min: 0.0 }
+      market_cap_value: { min: 0.0 }
+      equity_value: { min: 0.0 }
+      leverage_ratio: { min: 0.0, max: 5.0 }
+      volatility_ratio: { min: 0.0, max: 1.0 }
+      sharpe_ratio: { min: -5.0, max: 5.0 }
+      sortino_ratio: { min: -5.0, max: 10.0 }
+      max_drawdown: { min: 0.0, max: 1.0 }
+      sirios_rank_position: { min: 1 }
+      ifix_rank_position: { min: 1 }
+      ifil_rank_position: { min: 1 }
+      rank_dy_12m: { min: 1 }
+
   fiis_noticias:
     freshness: { max_age_hours: 30 }
     not_null: [ticker, title, url, published_at]
