@@ -10,7 +10,7 @@ entities:
       cache_policy: true
       rag_policy: true
       narrator_policy: false
-      param_inference: true
+      param_inference: false
     identifiers:
       natural_keys:
         - document_number
