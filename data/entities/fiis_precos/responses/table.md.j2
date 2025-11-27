@@ -1,9 +1,13 @@
 {% if rows and rows|length > 0 -%}
-| {{ fields.key }} | {{ fields.value }} |
-|---|---|
-{%- for r in rows %}
-| {{ r[fields.key] }} | {{ r[fields.value] }} |
-{%- endfor %}
+  {%- if rows|length == 1 -%}
+    {%- set r = rows[0] -%}
+O {{ r.ticker }} fechou em {{ r.close_price|currency_br }} em {{ r.traded_at|date_br }}, com abertura em {{ r.open_price|currency_br }}, máxima de {{ r.max_price|currency_br }} e mínima de {{ r.min_price|currency_br }}. A variação do dia foi de {{ r.daily_variation_pct|percent_br }}.
+  {%- else -%}
+Histórico recente de cotações:
+{%-   for r in rows %}
+- {{ r.traded_at|date_br }} — fechou em {{ r.close_price|currency_br }} (variação {{ r.daily_variation_pct|percent_br }}); abertura {{ r.open_price|currency_br }}, máxima {{ r.max_price|currency_br }}, mínima {{ r.min_price|currency_br }}.
+{%-   endfor %}
+  {%- endif -%}
 {%- else -%}
-{{ empty_message or "Sem registros para exibir." }}
+{{ empty_message or "Sem preços para exibir." }}
 {%- endif %}

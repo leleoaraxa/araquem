@@ -1,9 +1,21 @@
 {% if rows and rows|length > 0 -%}
-| {{ fields.key }} | {{ fields.value }} |
-|---|---|
-{%- for r in rows %}
-| {{ r[fields.key] }} | {{ r[fields.value] }} |
-{%- endfor %}
+  {%- if rows|length == 1 -%}
+    {%- set r = rows[0] -%}
+Estrutura de recebíveis do **{{ r.ticker }}** (percentual sobre a receita contratada):
+
+- Curto prazo (0–12 meses): 0–3m {{ r.revenue_due_0_3m_pct|percent_br }}, 3–6m {{ r.revenue_due_3_6m_pct|percent_br }}, 6–9m {{ r.revenue_due_6_9m_pct|percent_br }}, 9–12m {{ r.revenue_due_9_12m_pct|percent_br }}.
+- Médio prazo (12–36 meses): 12–15m {{ r.revenue_due_12_15m_pct|percent_br }}, 15–18m {{ r.revenue_due_15_18m_pct|percent_br }}, 18–21m {{ r.revenue_due_18_21m_pct|percent_br }}, 21–24m {{ r.revenue_due_21_24m_pct|percent_br }}, 24–27m {{ r.revenue_due_24_27m_pct|percent_br }}, 27–30m {{ r.revenue_due_27_30m_pct|percent_br }}, 30–33m {{ r.revenue_due_30_33m_pct|percent_br }}, 33–36m {{ r.revenue_due_33_36m_pct|percent_br }}.
+- Longo prazo: acima de 36 meses {{ r.revenue_due_over_36m_pct|percent_br }}; prazo indeterminado {{ r.revenue_due_undetermined_pct|percent_br }}.
+- Exposição a indexadores: IPCA {{ r.revenue_ipca_pct|percent_br }}, IGPM {{ r.revenue_igpm_pct|percent_br }}, INPC {{ r.revenue_inpc_pct|percent_br }}, INCC {{ r.revenue_incc_pct|percent_br }}.
+
+  {%- else -%}
+Resumo de recebíveis por FII:
+
+{%-   for r in rows %}
+- **{{ r.ticker }}** — curto 0–12m: 0–3m {{ r.revenue_due_0_3m_pct|percent_br }}, 3–6m {{ r.revenue_due_3_6m_pct|percent_br }}, 6–9m {{ r.revenue_due_6_9m_pct|percent_br }}, 9–12m {{ r.revenue_due_9_12m_pct|percent_br }}; médio 12–36m: 12–15m {{ r.revenue_due_12_15m_pct|percent_br }}, 15–18m {{ r.revenue_due_15_18m_pct|percent_br }}, 18–21m {{ r.revenue_due_18_21m_pct|percent_br }}, 21–24m {{ r.revenue_due_21_24m_pct|percent_br }}, 24–27m {{ r.revenue_due_24_27m_pct|percent_br }}, 27–30m {{ r.revenue_due_27_30m_pct|percent_br }}, 30–33m {{ r.revenue_due_30_33m_pct|percent_br }}, 33–36m {{ r.revenue_due_33_36m_pct|percent_br }}; longo >36m {{ r.revenue_due_over_36m_pct|percent_br }}, indeterminado {{ r.revenue_due_undetermined_pct|percent_br }}; indexadores: IPCA {{ r.revenue_ipca_pct|percent_br }}, IGPM {{ r.revenue_igpm_pct|percent_br }}, INPC {{ r.revenue_inpc_pct|percent_br }}, INCC {{ r.revenue_incc_pct|percent_br }}.
+{%-   endfor %}
+
+  {%- endif -%}
 {%- else -%}
-{{ empty_message or "Sem registros para exibir." }}
+{{ empty_message or "Sem cronograma de receitas disponível." }}
 {%- endif %}
