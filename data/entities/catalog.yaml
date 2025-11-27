@@ -1,0 +1,248 @@
+entities:
+  client_fiis_positions:
+    title: "Carteira do cliente – posições em FIIs"
+    kind: "client"
+    paths:
+      entity_yaml: "data/entities/client_fiis_positions/entity.yaml"
+      schema: "data/contracts/entities/client_fiis_positions.schema.yaml"
+      quality_projection: "data/ops/quality/projection_client_fiis_positions.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - document_number
+        - position_date
+        - ticker
+    notes: []
+
+  fiis_cadastro:
+    title: "FIIs – Cadastro"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_cadastro/entity.yaml"
+      schema: "data/contracts/entities/fiis_cadastro.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_cadastro.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+    notes: []
+
+  fiis_dividendos:
+    title: "FIIs – Dividendos históricos"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/fiis_dividendos/entity.yaml"
+      schema: "data/contracts/entities/fiis_dividendos.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_dividendos.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - ticker
+        - payment_date
+    notes: []
+
+  fiis_financials_snapshot:
+    title: "FIIs – Indicadores financeiros (snapshot D-1)"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_financials_snapshot/entity.yaml"
+      schema: "data/contracts/entities/fiis_financials_snapshot.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_financials_snapshot.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+        - updated_at
+    notes: []
+
+  fiis_financials_revenue_schedule:
+    title: "FIIs – Cronograma de receitas e indexadores"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_financials_revenue_schedule/entity.yaml"
+      schema: "data/contracts/entities/fiis_financials_revenue_schedule.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_financials_revenue_schedule.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - ticker
+        - updated_at
+    notes: []
+
+  fiis_financials_risk:
+    title: "FIIs – Indicadores de risco (D-1)"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_financials_risk/entity.yaml"
+      schema: "data/contracts/entities/fiis_financials_risk.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_financials_risk.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - ticker
+    notes: []
+
+  fiis_imoveis:
+    title: "FIIs – Imóveis e propriedades"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_imoveis/entity.yaml"
+      schema: "data/contracts/entities/fiis_imoveis.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_imoveis.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+        - asset_name
+    notes: []
+
+  fiis_noticias:
+    title: "FIIs – Notícias (D-1)"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/fiis_noticias/entity.yaml"
+      schema: "data/contracts/entities/fiis_noticias.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_noticias.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+        - published_at
+    notes: []
+
+  fiis_precos:
+    title: "FIIs – Preços diários"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/fiis_precos/entity.yaml"
+      schema: "data/contracts/entities/fiis_precos.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_precos.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - ticker
+        - traded_at
+    notes: []
+
+  fiis_processos:
+    title: "FIIs – Processos judiciais"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_processos/entity.yaml"
+      schema: "data/contracts/entities/fiis_processos.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_processos.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+        - process_number
+    notes: []
+
+  fiis_rankings:
+    title: "FIIs – Rankings e posições"
+    kind: "snapshot"
+    paths:
+      entity_yaml: "data/entities/fiis_rankings/entity.yaml"
+      schema: "data/contracts/entities/fiis_rankings.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_rankings.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys:
+        - ticker
+    notes: []
+
+  history_b3_indexes:
+    title: "Mercado – Índices B3 (D-1)"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/history_b3_indexes/entity.yaml"
+      schema: "data/contracts/entities/history_b3_indexes.schema.yaml"
+      quality_projection: "data/ops/quality/projection_history_b3_indexes.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - index_date
+    notes: []
+
+  history_currency_rates:
+    title: "Mercado – Taxas de câmbio (D-1)"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/history_currency_rates/entity.yaml"
+      schema: "data/contracts/entities/history_currency_rates.schema.yaml"
+      quality_projection: "data/ops/quality/projection_history_currency_rates.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - rate_date
+    notes: []
+
+  history_market_indicators:
+    title: "Mercado – Indicadores macro (D-1)"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/history_market_indicators/entity.yaml"
+      schema: "data/contracts/entities/history_market_indicators.schema.yaml"
+      quality_projection: "data/ops/quality/projection_history_market_indicators.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: true
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - indicator_date
+        - indicator_name
+    notes: []
