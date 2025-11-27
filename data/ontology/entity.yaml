@@ -194,6 +194,18 @@ intents:
         - noticias
         - historico
         - historia
+        - receita
+        - receitas
+        - recebiveis
+        - cronograma
+        - calendario
+        - indexador
+        - indexadores
+        - indice
+        - futuro
+        - futura
+        - distribuida
+        - distribuicao
     phrases:
       include:
         - resumo do
@@ -423,6 +435,11 @@ intents:
         - receita
         - receitas
         - recebiveis
+        - futuro
+        - futura
+        - distribuida
+        - distribuicao
+        - cronograma
         - vencimento
         - vencimentos
         - prazo
@@ -484,6 +501,12 @@ intents:
         - receitas 3 6m do
         - receitas 6 12m do
         - receitas acima 36m do
+        - receita futura do
+        - receita futura por indice
+        - receita futura por indice do
+        - como esta distribuida a receita futura
+        - distribuicao da receita futura
+        - distribuicao da receita por indice
       exclude:
         - soma de dividendos
         - media de preco
