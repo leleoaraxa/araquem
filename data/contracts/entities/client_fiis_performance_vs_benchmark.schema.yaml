@@ -1,0 +1,39 @@
+entity: client_fiis_performance_vs_benchmark
+kind: view
+version: 1
+
+columns:
+  - { name: document_number,       type: string,   nullable: false, desc: "documento do cliente (CPF/CNPJ)" }
+  - { name: benchmark_code,        type: string,   nullable: false, desc: "código do benchmark (IFIX, IFIL, IBOV, CDI)" }
+  - { name: date_reference,        type: date,     nullable: false, desc: "data de referência" }
+  - { name: portfolio_amount,      type: number,   nullable: true,  desc: "valor total da carteira" }
+  - { name: portfolio_return_pct,  type: number,   nullable: true,  desc: "retorno da carteira (%)" }
+  - { name: benchmark_value,       type: number,   nullable: true,  desc: "valor/nível do benchmark" }
+  - { name: benchmark_return_pct,  type: number,   nullable: true,  desc: "retorno do benchmark (%)" }
+
+ordering: [document_number, benchmark_code, date_reference]
+
+presentation:
+  # Importante (LGPD): não expor document_number em visualizações padrão.
+  columns:
+    benchmark_code:       { as: string }
+    date_reference:       { as: date }
+    portfolio_amount:     { as: currency }
+    portfolio_return_pct: { as: percent, multiply_by_100: false, precision: 4 }
+    benchmark_value:      { as: currency }
+    benchmark_return_pct: { as: percent, multiply_by_100: false, precision: 4 }
+
+  rules: {}
+
+sample_questions:
+  - "performance da minha carteira de fiis versus o IFIX"
+  - "minha carteira está melhor ou pior que o CDI"
+  - "comparar o retorno da minha carteira de fiis com o IFIL"
+  - "qual foi a rentabilidade da minha carteira versus o IFIX em 2024"
+
+parking_lot: {}
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

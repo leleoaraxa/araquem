@@ -1,0 +1,110 @@
+id: client_fiis_performance_vs_benchmark
+result_key: performance_vs_benchmark
+sql_view: client_fiis_performance_vs_benchmark
+private: true
+description: >
+  Série temporal da performance da carteira de FIIs do cliente versus um benchmark (PRIVADA; exige
+  document_number obtido de contexto seguro, nunca do texto livre do usuário).
+
+identifiers:
+  - name: document_number
+    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro.
+  - name: benchmark_code
+    description: Código do benchmark (por exemplo, IFIX, IFIL, IBOV, CDI).
+  - name: date_reference
+    description: Data de referência da observação (opcional para filtros).
+
+default_date_field: date_reference
+
+columns:
+  - name: document_number
+    alias: Documento
+    description: CPF/CNPJ do cliente (PII).
+  - name: benchmark_code
+    alias: Benchmark
+    description: Código do benchmark de comparação (IFIX, IFIL, IBOV, CDI).
+  - name: date_reference
+    alias: Data
+    description: Data de referência da observação de performance.
+  - name: portfolio_amount
+    alias: Valor da carteira (R$)
+    description: Valor total da carteira de FIIs do cliente na data de referência.
+  - name: portfolio_return_pct
+    alias: Retorno carteira (%)
+    description: Retorno da carteira no período de análise, em percentual.
+  - name: benchmark_value
+    alias: Valor benchmark
+    description: Valor/nível do benchmark na data de referência.
+  - name: benchmark_return_pct
+    alias: Retorno benchmark (%)
+    description: Retorno do benchmark no período de análise, em percentual.
+
+presentation:
+  kind: table
+  fields:
+    key: date_reference
+    value: portfolio_return_pct
+  empty_message: Sem histórico de performance para exibir.
+
+ask:
+  intents:
+    - client_fiis_performance_vs_benchmark
+  requires_identifiers:
+    - document_number
+  keywords:
+    - performance
+    - rentabilidade
+    - retorno
+    - comparacao
+    - benchmark
+    - ifix
+    - ifil
+    - ibov
+    - cdi
+    - carteira
+    - fiis
+  phrase_includes:
+    - "performance da minha carteira de fiis"
+    - "rentabilidade da minha carteira vs"
+    - "comparar minha carteira com"
+    - "minha carteira esta melhor que"
+    - "desempenho da minha carteira de fiis"
+  synonyms:
+    benchmark_code:
+      - benchmark
+      - indice
+      - cdi
+      - ifix
+      - ifil
+      - ibov
+    portfolio_return_pct:
+      - retorno da carteira
+      - rentabilidade da carteira
+      - ganho da carteira
+    benchmark_return_pct:
+      - retorno do ifix
+      - rentabilidade do cdi
+      - retorno do indice
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - "como foi a performance da minha carteira de fiis versus o IFIX nos ultimos 12 meses"
+    - "minha carteira esta melhor ou pior que o CDI"
+    - "comparar o retorno da minha carteira de fiis com o IFIL"
+    - "qual foi a rentabilidade da minha carteira versus o IFIX em 2024"
+
+params:
+  required: [document_number]
+
+order_by_whitelist:
+  - date_reference desc
+
+aggregations:
+  enabled: false
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

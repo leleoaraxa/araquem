@@ -1,0 +1,35 @@
+entity: client_fiis_dividends_evolution
+kind: view
+version: 1
+
+columns:
+  - { name: document_number, type: string,   nullable: false, desc: "documento do cliente (CPF/CNPJ)" }
+  - { name: year_reference,  type: integer,  nullable: false, desc: "ano de referência" }
+  - { name: month_number,    type: integer,  nullable: false, desc: "número do mês (1-12)" }
+  - { name: month_name,      type: string,   nullable: true,  desc: "nome do mês" }
+  - { name: total_dividends, type: number,   nullable: true,  desc: "total de dividendos no mês" }
+
+ordering: [document_number, year_reference, month_number]
+
+presentation:
+  # Importante (LGPD): não expor document_number em visualizações padrão.
+  columns:
+    year_reference:  { as: integer }
+    month_number:    { as: integer }
+    month_name:      { as: string }
+    total_dividends: { as: currency }
+
+  rules: {}
+
+sample_questions:
+  - "evolução dos dividendos da minha carteira"
+  - "renda mensal dos meus FIIs"
+  - "quanto minha carteira recebeu de dividendos em cada mês"
+  - "histórico de dividendos da minha carteira"
+
+parking_lot: {}
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

@@ -43,6 +43,66 @@ intents:
       exclude: []
     entities: [client_fiis_positions]
 
+  - name: client_fiis_dividends_evolution
+    tokens:
+      include:
+        - dividendos
+        - proventos
+        - renda
+        - evolucao
+        - historico
+        - mensal
+        - carteira
+        - minhas
+        - minha
+        - meu
+      exclude:
+        - cpf
+        - cnpj
+        - documento
+        - imovel
+        - imoveis
+    phrases:
+      include:
+        - evolucao dos dividendos
+        - historico de dividendos
+        - renda mensal dos meus fiis
+        - dividendos da minha carteira
+      exclude: []
+    entities: [client_fiis_dividends_evolution]
+
+  - name: client_fiis_performance_vs_benchmark
+    tokens:
+      include:
+        - performance
+        - rentabilidade
+        - retorno
+        - comparacao
+        - benchmark
+        - ifix
+        - ifil
+        - ibov
+        - cdi
+        - carteira
+        - minhas
+        - minha
+        - meu
+      exclude:
+        - cpf
+        - cnpj
+        - documento
+        - imovel
+        - imoveis
+    phrases:
+      include:
+        - desempenho da minha carteira
+        - performance da minha carteira de fiis
+        - rentabilidade da minha carteira vs
+        - comparar minha carteira com
+        - minha carteira esta melhor que
+      exclude: []
+    entities: [client_fiis_performance_vs_benchmark]
+
   - name: fiis_cadastro
     tokens:
       include:

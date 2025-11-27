@@ -35,6 +35,8 @@ profiles:
 routing:
   deny_intents:
     - client_fiis_positions          # carteira do cliente; fora do escopo de RAG
+    - client_fiis_dividends_evolution # carteira do cliente; fora do escopo de RAG
+    - client_fiis_performance_vs_benchmark # carteira do cliente; fora do escopo de RAG
     - fiis_cadastro                  # cadastro estatico; sem busca textual
     - fiis_precos                    # serie numerica; RAG nao se aplica
     - fiis_dividendos                # historico numerico; consultas via SQL

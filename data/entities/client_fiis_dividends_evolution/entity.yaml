@@ -1,0 +1,98 @@
+id: client_fiis_dividends_evolution
+result_key: dividends_evolution
+sql_view: client_fiis_dividends_evolution
+private: true
+description: >
+  Evolução mensal dos dividendos da carteira de FIIs do cliente (PRIVADA; exige
+  document_number obtido de contexto seguro, nunca do texto livre do usuário).
+
+options:
+  supports_multi_ticker: false
+
+identifiers:
+  - name: document_number
+    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro.
+  - name: year_reference
+    description: Ano de referência (opcional, para filtragem).
+  - name: month_number
+    description: Número do mês de referência (opcional, para filtragem).
+
+columns:
+  - name: document_number
+    alias: Documento
+    description: CPF/CNPJ do cliente (PII).
+  - name: year_reference
+    alias: Ano
+    description: Ano de referência dos proventos.
+  - name: month_number
+    alias: Mês
+    description: Número do mês (1–12).
+  - name: month_name
+    alias: Mês (nome)
+    description: Nome do mês de referência (por exemplo, "Janeiro").
+  - name: total_dividends
+    alias: Total de dividendos (R$)
+    description: Total de proventos de FIIs recebidos na carteira no mês (R$).
+
+presentation:
+  kind: table
+  fields:
+    key: year_reference
+    value: total_dividends
+  empty_message: Sem histórico de dividendos para exibir.
+
+ask:
+  intents:
+    - client_fiis_dividends_evolution
+  requires_identifiers:
+    - document_number
+  keywords:
+    - evolucao
+    - historico
+    - dividendos
+    - proventos
+    - renda
+    - renda mensal
+    - fiis
+    - carteira
+  phrase_includes:
+    - "evolucao dos meus dividendos"
+    - "historico de dividendos da minha carteira"
+    - "renda mensal dos meus fiis"
+    - "quanto minha carteira recebeu de dividendos"
+    - "dividendos mes a mes"
+  synonyms:
+    document_number:
+      - documento
+      - cpf
+      - cnpj
+    total_dividends:
+      - dividendos
+      - proventos
+      - renda
+      - rendimento
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - "evolucao dos meus dividendos em fiis"
+    - "quanto minha carteira de fiis recebeu de dividendos mes a mes"
+    - "renda mensal dos meus fiis"
+    - "historico de dividendos da minha carteira"
+    - "minha renda mensal com fiis esta crescendo"
+
+params:
+  required: [document_number]
+
+order_by_whitelist:
+  - year_reference desc
+  - month_number desc
+
+aggregations:
+  enabled: false
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2
