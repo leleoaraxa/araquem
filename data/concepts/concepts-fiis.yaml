@@ -105,7 +105,7 @@ sections:
       - unidades: "Número de unidades."
       - vacancia: "Vacância física e financeira."
       - inadimplencia: "Atrasos no pagamento."
-      - status: "Ocupado, em obras, vendido etc."
+      - status: "Ativo, Inativo, etc."
 
   noticias:
     title: "Notícias de FIIs"
