@@ -1,9 +1,15 @@
 {% if rows and rows|length > 0 -%}
-| {{ fields.key }} | {{ fields.value }} |
-|---|---|
-{%- for r in rows %}
-| {{ r[fields.key] }} | {{ r[fields.value] }} |
-{%- endfor %}
+  {%- set ns = namespace(current_date=None) -%}
+  {%- for r in rows %}
+    {%- if ns.current_date != r.position_date -%}
+      {%- if ns.current_date is not none %}
+
+      {%- endif -%}
+Posição de FIIs do documento {{ r.document_number }} em {{ r.position_date|date_br }}:
+      {%- set ns.current_date = r.position_date -%}
+    {%- endif %}
+- {{ r.ticker }} — {{ r.qty|int_br }} cotas (@ {{ r.average_price|currency_br }}), valor aproximado {{ (r.closing_price * r.qty)|currency_br }}; participante {{ r.participant_name }}.{% if r.available_quantity is defined %} {{ r.available_quantity|int_br }} cotas disponíveis para negociação.{% endif %}
+  {%- endfor %}
 {%- else -%}
-{{ empty_message or "Sem registros para exibir." }}
+{{ empty_message or "Sem posições disponíveis." }}
 {%- endif %}

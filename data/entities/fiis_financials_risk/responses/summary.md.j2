@@ -3,23 +3,20 @@
     {%- set r = rows[0] -%}
 Indicadores de risco do **{{ r.ticker }}** (base D-1):
 
-- **Volatilidade**: {{ r.volatility_ratio|number_br }} — quanto o preço oscila no tempo.
-- **Sharpe**: {{ r.sharpe_ratio|number_br }} — retorno excedente ao CDI em relação à volatilidade.
-- **Sortino**: {{ r.sortino_ratio|number_br }} — Sharpe focado apenas nas quedas.
-- **Treynor**: {{ r.treynor_ratio|number_br }} — retorno excedente por unidade de risco sistemático (beta).
-- **Alfa de Jensen**: {{ r.jensen_alpha|number_br }} — quanto o retorno ficou acima/abaixo do esperado pelo CAPM.
-- **Beta**: {{ r.beta_index|number_br }} — sensibilidade do fundo em relação ao IFIX (≈1 acompanha o índice).
-- **Max Drawdown (MDD)**: {{ r.max_drawdown|percent_br }} — pior queda acumulada no período analisado.
-- **R²**: {{ r.r_squared|number_br }} — quanto da variação do fundo é explicada pelo índice de referência.
-
-Lembre-se: Sharpe e Sortino próximos ou abaixo de zero indicam relação risco/retorno fraca,
-enquanto MDD mostra a profundidade das maiores quedas históricas.
+- Volatilidade: {{ r.volatility_ratio|number_br }} — mostra quanto o preço do fundo oscila ao longo do tempo.
+- Sharpe: {{ r.sharpe_ratio|number_br }} — retorno acima do CDI em relação ao risco total assumido.
+- Sortino: {{ r.sortino_ratio|number_br }} — semelhante ao Sharpe, mas considera apenas movimentos de queda.
+- Treynor: {{ r.treynor_ratio|number_br }} — retorno excedente ajustado pelo risco sistemático (beta).
+- Alfa de Jensen: {{ r.jensen_alpha|number_br }} — diferença entre o retorno obtido e o esperado pelo CAPM.
+- Beta: {{ r.beta_index|number_br }} — sensibilidade do fundo em comparação ao IFIX.
+- Max Drawdown (MDD): {{ r.max_drawdown|percent_br }} — maior queda acumulada no período avaliado.
+- R²: {{ r.r_squared|number_br }} — parcela da variação do fundo explicada pelo índice de referência.
 
   {%- else -%}
 Resumo comparativo de risco (base D-1):
 
 {%-   for r in rows %}
-- **{{ r.ticker }}** — Vol {{ r.volatility_ratio|number_br }}, Sharpe {{ r.sharpe_ratio|number_br }}, Sortino {{ r.sortino_ratio|number_br }}, Treynor {{ r.treynor_ratio|number_br }}, Beta {{ r.beta_index|number_br }}, MDD {{ r.max_drawdown|percent_br }}, R² {{ r.r_squared|number_br }}
+- **{{ r.ticker }}** — Vol {{ r.volatility_ratio|number_br }}, Sharpe {{ r.sharpe_ratio|number_br }}, Sortino {{ r.sortino_ratio|number_br }}, Treynor {{ r.treynor_ratio|number_br }}, Alfa {{ r.jensen_alpha|number_br }}, Beta {{ r.beta_index|number_br }}, MDD {{ r.max_drawdown|percent_br }}, R² {{ r.r_squared|number_br }}.
 {%-   endfor %}
 
   {%- endif -%}
