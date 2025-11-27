@@ -137,9 +137,8 @@ sections:
       - "qual a posição do HGLG11 no ranking de usuários?"
       - "qual a posição do HGLG11 no ranking da SIRIOS?"
       - "qual a posição do KNRI11 no IFIX?"
-      - "o FPAB11 já fez parte do IFIX? em quantos rebalanceamentos?"
+      - "o FPAB11 já fez parte do IFIX? qual a posição dele?"
       - "fiis com maior liquidez no IFIX"
-      - "fundos com maior dividend yield no IFIX"
 
   macro:
     title: "Contexto de Mercado e Macroeconomia"
