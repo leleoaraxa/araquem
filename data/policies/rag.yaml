@@ -44,6 +44,7 @@ routing:
     - fiis_processos                 # processos estruturados; RAG nao habilitado
     - fiis_financials_snapshot       # indicadores D-1; RAG desnecessario
     - fiis_financials_revenue_schedule # cronograma estruturado; sem RAG
+    - fii_overview                   # overview consolidado e determinístico
 
   allow_intents:
     - fiis_noticias

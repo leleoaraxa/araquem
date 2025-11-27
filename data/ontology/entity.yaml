@@ -118,6 +118,34 @@ intents:
         - dividendo do
     entities: [fiis_cadastro]
 
+  - name: fii_overview
+    tokens:
+      include:
+        - resumo
+        - overview
+        - situacao
+        - "como esta"
+        - "como ta"
+        - "visao geral"
+        - foto
+        - fotografia
+      exclude:
+        - noticia
+        - noticia
+        - noticias
+        - historico
+        - historia
+    phrases:
+      include:
+        - resumo do
+        - overview do
+        - como esta o
+        - situacao do
+        - visao geral do
+        - foto do fundo
+      exclude: []
+    entities: [fii_overview]
+
   - name: fiis_precos
     tokens:
       include:
