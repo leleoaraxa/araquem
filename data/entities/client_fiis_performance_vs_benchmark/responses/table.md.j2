@@ -1,0 +1,14 @@
+{% if rows and rows|length > 0 -%}
+| Data | Benchmark | Valor carteira (R$) | Retorno carteira (%) | Valor benchmark | Retorno benchmark (%) |
+|---|---|---|---|---|---|
+{%- for r in rows %}
+| {{ r.date_reference|date_br if r.date_reference is not none else '-' }}
+  | {{ r.benchmark_code or '-' }}
+  | {{ r.portfolio_amount|currency_br if r.portfolio_amount is not none else '-' }}
+  | {{ r.portfolio_return_pct|percent_br if r.portfolio_return_pct is not none else '-' }}
+  | {{ r.benchmark_value|currency_br if r.benchmark_value is not none else '-' }}
+  | {{ r.benchmark_return_pct|percent_br if r.benchmark_return_pct is not none else '-' }} |
+{%- endfor %}
+{%- else -%}
+{{ empty_message or "Sem histórico de performance para exibir." }}
+{%- endif %}

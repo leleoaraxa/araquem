@@ -137,6 +137,21 @@ datasets:
     freshness: { max_age_minutes: 30 }
     not_null: [document_number, position_date, ticker]
 
+  client_fiis_dividends_evolution:
+    freshness: { max_age_hours: 30 }
+    not_null: [document_number, year_reference, month_number]
+    accepted_range:
+      total_dividends: { min: 0.0 }
+
+  client_fiis_performance_vs_benchmark:
+    freshness: { max_age_hours: 30 }
+    not_null: [document_number, benchmark_code, date_reference]
+    accepted_range:
+      portfolio_amount:     { min: 0.0 }
+      portfolio_return_pct: { min: -1.0, max: 1.0 }
+      benchmark_value:      { min: 0.0 }
+      benchmark_return_pct: { min: -1.0, max: 1.0 }
+
   history_currency_rates:
     freshness: { max_age_hours: 30 }
     not_null: [rate_date]

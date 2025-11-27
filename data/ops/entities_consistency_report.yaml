@@ -11,6 +11,30 @@ entities:
     notes:
       - "entidade client; RAG bloqueado e narrator desligado"
       - "param_inference apenas para binding seguro do documento"
+  client_fiis_dividends_evolution:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade privada de carteira; consultas deterministicas via SQL; RAG/Narrator negados"
+      - "dados sensíveis por document_number; cache deve respeitar isolamento por cliente"
+  client_fiis_performance_vs_benchmark:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade privada de carteira; consultas deterministicas via SQL; RAG/Narrator negados"
+      - "dados sensíveis por document_number; cache deve respeitar isolamento por cliente"
   fiis_cadastro:
     has_schema: true
     has_quality_projection: true

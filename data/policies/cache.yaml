@@ -12,6 +12,18 @@ policies:
     scope: prv
     key_fields: [document_number, position_date, ticker]
 
+  client_fiis_dividends_evolution:
+    ttl_seconds: 900
+    refresh_at: "none"
+    scope: prv
+    key_fields: [document_number, year_reference, month_number]
+
+  client_fiis_performance_vs_benchmark:
+    ttl_seconds: 900
+    refresh_at: "none"
+    scope: prv
+    key_fields: [document_number, benchmark_code, date_reference]
+
   fiis_cadastro:
     ttl_seconds: 86400
     refresh_at: "07:00"
