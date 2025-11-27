@@ -161,9 +161,13 @@ intents:
         - dolar
         - eur
         - euro
+        - cambio
+        - câmbio
         - cdi
         - selic
         - ipca
+        - inflacao
+        - inflação
         - inpc
         - comercial
     phrases:
@@ -198,6 +202,11 @@ intents:
         - variacao diaria do usd
         - variacao diaria do dolar
         - variacao diaria do dólar
+        - historico do dolar
+        - historico do dólar
+        - historico do ipca
+        - historico da inflacao
+        - historico da inflação
         - variacao diaria do eur
         - variacao diaria do euro
         - variacao diaria do ibov
@@ -227,12 +236,13 @@ intents:
         - ultimos 12 meses
         - rendimento mensal
         - rendimento 12m
-      exclude:
         - dy
         - dy mensal
         - dy 12m
         - dividend yield
+        - yield mensal
         - yield
+      exclude:
     phrases:
       include:
         - dividendo do
@@ -244,12 +254,10 @@ intents:
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
+        - dy do
+        - dy mensal do
+        - dividend yield do
       exclude:
-        - dy
-        - dy mensal
-        - dy 12m
-        - dividend yield
-        - yield
     entities: [fiis_dividendos]
 
   - name: fiis_financials_snapshot
@@ -473,11 +481,25 @@ intents:
       include:
         - noticia
         - noticias
+        - notícia
+        - notícias
         - materia
+        - matéria
+        - manchete
         - reportagem
+        - fato relevante
+        - fatos relevantes
+        - boato
+        - boatos
+        - rumor
+        - rumores
         - atualizacao
         - ultimas
         - novidades
+        - negativa
+        - negativas
+        - ruim
+        - ruins
       exclude: []
     phrases:
       include:
@@ -485,6 +507,10 @@ intents:
         - ultimas noticias do
         - novidades do
         - as noticias do
+        - fato relevante do
+        - fato relevante sobre
+        - noticias negativas do
+        - noticia negativa do
       exclude: []
     entities: [fiis_noticias]
 
@@ -536,7 +562,6 @@ intents:
         - lista
       exclude:
         - preco
-        - dy
         - dividendo
         - dividendos
         - media do
@@ -560,6 +585,8 @@ intents:
         - se comportou
         - mdd
         - drawdown
+        - dy mensal
+        - yield mensal
     phrases:
       include:
         - ranking por dividend yield
@@ -595,6 +622,8 @@ intents:
         - preco hoje
         - preco ontem
         - dy do
+        - dy mensal do
+        - yield mensal do
     entities: [fiis_rankings]
 
   - name: history_b3_indexes
@@ -654,15 +683,24 @@ intents:
     tokens:
       include:
         - dolar
+        - dólar
         - usd
         - euro
         - eur
         - cambio
+        - câmbio
+        - moeda americana
+        - moeda estrangeira
         - cotacao
+        - cotação
         - compra
         - venda
         - variacao
         - variacao diaria
+        - historico
+        - histórico
+        - serie historica
+        - série histórica
         - hoje
         - d1
         - d-1
@@ -683,6 +721,17 @@ intents:
         - variacao da moeda no dia
         - cotacao do dolar
         - cotacao do euro
+        - historico do dolar
+        - historico do dólar
+        - historico do usd
+        - historico do cambio
+        - variacao do dolar nos ultimos
+        - variacao do dólar nos ultimos
+        - variacao do usd nos ultimos
+        - alta do dolar
+        - alta do dólar
+        - queda do dolar
+        - queda do dólar
         - dolar comercial
         - euro comercial
         - variacao do usd
@@ -696,6 +745,14 @@ intents:
     tokens:
       include:
         - ipca
+        - indice de preco
+        - indice de preços
+        - índice de preco
+        - índice de preços
+        - indice de inflacao
+        - índice de inflação
+        - inflacao historica
+        - inflação historica
         - cdi
         - selic
         - igpm
@@ -760,6 +817,14 @@ intents:
         - selic meta atualizada
         - ipca de outubro
         - ipca outubro
+        - historico do ipca
+        - historico do ipca nos ultimos
+        - historico da inflacao
+        - historico da inflação
+        - serie historica do ipca
+        - série histórica do ipca
+        - indice de inflacao nos ultimos
+        - histórico do indice de preços
       exclude: []
     entities: [history_market_indicators]
 
