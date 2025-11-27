@@ -1,0 +1,169 @@
+entities:
+  client_fiis_positions:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade client; RAG bloqueado e narrator desligado"
+      - "param_inference apenas para binding seguro do documento"
+  fiis_cadastro:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "entidade snapshot cadastral; RAG negado e sem narrator"
+      - "sem inferencia temporal por ser dado estatico"
+  fiis_dividendos:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical de proventos; consultas via SQL (RAG negado)"
+      - "janelas temporais definidas em param_inference"
+  fiis_financials_snapshot:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "snapshot D-1 de indicadores; RAG negado"
+      - "sem inferencia temporal; agregacoes tratadas no builder"
+  fiis_financials_revenue_schedule:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "snapshot de cronograma; RAG negado explicitamente"
+      - "narrator configurado mas LLM off"
+  fiis_financials_risk:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "snapshot de risco; RAG permitido com colecoes conceituais"
+      - "narrator configurado em modo deterministico"
+  fiis_imoveis:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "entidade snapshot de propriedades; RAG negado"
+      - "sem inferencia temporal (cadastro estatico)"
+  fiis_noticias:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "entidade historical textual; RAG permitido"
+      - "sem bloco de param_inference (janelas tratadas pelo buscador)"
+  fiis_precos:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical de precos; RAG negado"
+      - "param_inference define janelas padrao"
+  fiis_processos:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "snapshot de processos estruturados; RAG negado"
+      - "sem inferencia temporal"
+  fiis_rankings:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: false
+    notes:
+      - "entidade snapshot de ranking deterministico; RAG negado"
+      - "narrator desligado; sem inferencia temporal"
+  history_b3_indexes:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical macro; RAG permitido"
+      - "param_inference cobre janelas de meses e contagens"
+  history_currency_rates:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical de cambio; RAG permitido"
+      - "param_inference com janelas padrao 1-12 meses"
+  history_market_indicators:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: true
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical macro; RAG permitido"
+      - "param_inference cobre janelas curtas"

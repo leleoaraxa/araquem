@@ -7,6 +7,12 @@ description: >
   O payload do /ask é imutável; este arquivo define toda a lógica declarativa.
 
 intents:
+  # fiis_cadastro: snapshot cadastral; sem inferencia temporal
+  # fiis_financials_snapshot: D-1 sem janelas; agregacao tratada no builder
+  # fiis_imoveis: dados estaticos de propriedades; inferencia temporal nao aplicavel
+  # fiis_noticias: coletada via RAG/texto; janelas tratadas no backend de busca
+  # fiis_processos: processos judiciais estruturados; sem janelas inferidas
+  # fiis_rankings: ranking deterministico; sem necessidade de inferencia
   fiis_dividendos:
     default_agg: list
     default_window: "months:12"
@@ -139,7 +145,7 @@ intents:
       count:
         1:  [ultimo dia, último dia, ontem, cambio de ontem, cotacao de ontem, cotação de ontem]
         5:  [ultimos 5 dias, últimos 5 dias, ultima semana, última semana]
-        20:[ultimos 20 dias, últimos 20 dias, ultimo mes de pregão, último mes de pregão]
+        20: [ultimos 20 dias, últimos 20 dias, ultimo mes de pregão, último mes de pregão]
 
   history_b3_indexes:
     default_agg: list
