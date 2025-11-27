@@ -28,5 +28,95 @@
     "question": "me explique o risco do MXRF11 usando os indicadores quantitativos e o contexto de mercado",
     "expected_intent": "fiis_financials_risk",
     "expect_rag": true
+  },
+  {
+    "id": "fiis_o_que_sao_tipos",
+    "question": "o que é um fundo imobiliário e quais os tipos mais comuns, como tijolo, papel e híbrido?",
+    "expected_intent": "fiis_cadastro",
+    "expect_rag": true
+  },
+  {
+    "id": "fiis_dy_vs_preco",
+    "question": "como interpretar o dividend yield em relação ao preço da cota de um FII?",
+    "expected_intent": "fiis_financials_snapshot",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_sortino_significado",
+    "question": "o que indica um Sortino baixo em um fundo imobiliário?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_beta_r2_ifix",
+    "question": "beta acima de 1 e R² alto significam que o FII balança mais que o IFIX?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_mdd_preocupante",
+    "question": "quando um máximo drawdown passa a ser preocupante em FIIs?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_alfa_jensen_negativo",
+    "question": "o que significa um alfa de Jensen negativo para um FII?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_cdi_comparar_retorno",
+    "question": "por que o CDI é usado como referência para comparar o retorno dos FIIs?",
+    "expected_intent": "fiis_financials_snapshot",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_selic_fiis_papel",
+    "question": "como a alta da Selic mexe com FIIs de papel indexados ao IPCA?",
+    "expected_intent": "fiis_financials_revenue_schedule",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_ipca_renda_real",
+    "question": "meus dividendos de FIIs ganham da inflação medida pelo IPCA?",
+    "expected_intent": "fiis_financials_snapshot",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_ifix_benchmark",
+    "question": "faz sentido usar o IFIX como benchmark para avaliar minha carteira de FIIs?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "carteira_diversificacao_fiis",
+    "question": "quantos FIIs diferentes eu deveria ter para uma carteira diversificada?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "carteira_concentracao_setor",
+    "question": "ficar concentrado só em FIIs de logística aumenta muito o risco?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "carteira_risco_retorno_tradeoff",
+    "question": "como equilibrar risco e retorno ao escolher FIIs para a carteira?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "risk_sortino_vs_sharpe",
+    "question": "quando vale mais olhar o Sortino do que o Sharpe em FIIs?",
+    "expected_intent": "fiis_financials_risk",
+    "expect_rag": true
+  },
+  {
+    "id": "macro_indice_inflacao_recebiveis",
+    "question": "qual a diferença de ter contratos atrelados ao IGPM versus IPCA em FIIs de CRI?",
+    "expected_intent": "fiis_financials_revenue_schedule",
+    "expect_rag": true
   }
 ]
