@@ -53,6 +53,24 @@ entities:
         - payment_date
     notes: []
 
+  fiis_yield_history:
+    title: "FIIs – Dividend yield mensal"
+    kind: "historical"
+    paths:
+      entity_yaml: "data/entities/fiis_yield_history/entity.yaml"
+      schema: "data/contracts/entities/fiis_yield_history.schema.yaml"
+      quality_projection: "data/ops/quality/projection_fiis_yield_history.json"
+    coverage:
+      cache_policy: true
+      rag_policy: true
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+        - ticker
+        - ref_month
+    notes: []
+
   fiis_financials_snapshot:
     title: "FIIs – Indicadores financeiros (snapshot D-1)"
     kind: "snapshot"

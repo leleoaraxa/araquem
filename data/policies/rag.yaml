@@ -38,6 +38,7 @@ routing:
     - fiis_cadastro                  # cadastro estatico; sem busca textual
     - fiis_precos                    # serie numerica; RAG nao se aplica
     - fiis_dividendos                # historico numerico; consultas via SQL
+    - fiis_yield_history             # historico numerico de yield; consultas via SQL
     - fiis_imoveis                   # cadastro de ativos; fora de RAG
     - fiis_rankings                  # rankings deterministas; sem RAG
     - fiis_processos                 # processos estruturados; RAG nao habilitado

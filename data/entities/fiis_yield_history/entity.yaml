@@ -1,0 +1,124 @@
+id: fiis_yield_history
+result_key: yield_history
+sql_view: fiis_yield_history
+private: false
+description: Histórico mensal de dividendos, preço de referência e dividend yield (DY) por FII.
+
+options:
+  supports_multi_ticker: true
+
+identifiers:
+- name: ticker
+  description: Ticker do FII normalizado (AAAA11)
+
+default_date_field: ref_month
+columns:
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: ref_month
+  alias: Mês ref.
+  description: Mês de referência (primeiro dia do mês).
+- name: dividends_sum
+  alias: Dividendos (R$)
+  description: Soma dos dividendos pagos no mês (R$ por cota).
+- name: price_ref
+  alias: Preço ref. (R$)
+  description: Preço de referência da cota no mês (última cotação disponível no mês).
+- name: dy_monthly
+  alias: DY mensal
+  description: Dividend yield mensal (dividends_sum / price_ref).
+
+presentation:
+  kind: table
+  fields:
+    key: ref_month
+    value: dy_monthly
+  empty_message: Sem histórico de dividend yield para exibir.
+
+ask:
+  intents:
+    - fiis_yield_history
+  requires_identifiers:
+    - ticker
+  keywords:
+    - dy
+    - dividend yield
+    - yield
+    - rendimento mensal
+    - dividendos
+    - historico de yield
+    - historico de dividendos
+    - evolucao do dy
+    - retorno mensal
+    - yield mensal
+  phrase_includes:
+    - "dy do"
+    - "dividend yield do"
+    - "historico de dy do"
+    - "yield mensal do"
+    - "dividendos mensais do"
+    - "dy em"
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    ref_month:
+      - mes de referencia
+      - competencia
+      - mes base
+    dividends_sum:
+      - dividendos
+      - proventos
+      - rendimento
+      - soma de dividendos
+    price_ref:
+      - preco de referencia
+      - cotacao
+      - preco
+    dy_monthly:
+      - dy
+      - dividend yield
+      - yield mensal
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+
+sample_questions:
+  - dy mensal do HGLG11 em 2024-05
+  - historico de dividend yield do MXRF11 nos ultimos 12 meses
+  - evolução do dy do KNRI11
+  - quanto o CPTS11 pagou de dividendos e dy em 2023-08
+  - comparativo de dy mensal entre HGLG11 e VISC11
+
+order_by_whitelist:
+- ref_month desc
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 12
+      order: desc
+    avg:
+      window: months:6
+    sum:
+      window: months:12
+  windows_allowed:
+  - months:3
+  - months:6
+  - months:12
+  - months:24
+  - count:3
+  - count:6
+  - count:12
+  - count:24
+  - count:1
+
+responses:
+  default:
+    kind: table
+    template: responses/template.md.j2
