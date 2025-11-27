@@ -1,6 +1,6 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-### *(versão Sirius — atualizada com 14 entidades e melhorias estruturais)*
+### *(versão Sirius — 14 entidades auditadas, RAG/Narrator/Quality alinhados)*
 
 ---
 
@@ -27,25 +27,26 @@
 
 ---
 
-## **1. Entidades & Realidade dos Dados (D-1 vs Histórico)** 🆕
+## **1. Entidades & Realidade dos Dados (D-1 vs Histórico)**
 
-> 🟦 14 entidades auditadas hoje — **bloco 100% concluído**.
+> 🟩 14 entidades auditadas e documentadas no ARAQUEM_STATUS_2025.md.
 
 ### 🟩 **1.1 O que já foi feito**
 
 * ✔ Auditoria profunda das **14 entidades reais** do Araquem
 * ✔ Classificação de cada uma: D-1, histórica ou quase estática
 * ✔ Identificação de:
-
   * periodicidade real
   * cardinalidade
   * chaves naturais
   * riscos de interpretação
-  * aderência a RAG/Narrator/quality/cache
-* ✔ Discussão sobre lacunas essenciais (DY histórico, views compostas, macro sem quality)
-* ✔ Incorporado ao ARAQUEM_STATUS_2025.md
+  * aderência a RAG / Narrator / quality / cache
+* ✔ Registro consolidado em `docs/ARAQUEM_STATUS_2025.md`
+* ✔ Criação de `data/ops/entities_consistency_report.yaml` garantindo:
+  * `has_schema`, `has_quality_projection`, `in_quality_policy`
+  * participação (ou exclusão explícita) em cache, RAG, Narrator, param_inference, ontologia
 
-### 🟦 **1.2 Melhorias adicionadas ao checklist**
+### 🟦 **1.2 Backlog de modelagem (não implementado ainda)**
 
 * [ ] Criar entidade **fiis_yield_history** (DY histórico real)
 
@@ -64,20 +65,6 @@
   * “Qual o risco da minha carteira?”
   * “Quanto rendeu meu HGLG11 nos últimos 12 meses?”
 
-* [ ] Criar regras de quality para:
-
-  * history_currency_rates
-  * history_b3_indexes
-  * history_market_indicators
-
-* [ ] Criar janelas padrão em param_inference para:
-
-  * macro
-  * índices B3
-  * moedas
-
-* [ ] Documentar tudo no ARAQUEM_STATUS_2025.md (em andamento)
-
 ---
 
 ## **2. RAG – Conteúdo e Políticas**
@@ -85,59 +72,92 @@
 **✔️ Feito**
 
 * ✔ Collections validadas por entidade
-* ✔ Perfis risk/macro/default revisados
-* ✔ deny/allow_intents alinhado ao Guardrails
-* ✔ RAG isolado aos domínios permitidos
+* ✔ Perfis `default` / `risk` / `macro` revisados
+* ✔ `deny_intents` / `allow_intents` alinhados ao Guardrails
+* ✔ RAG isolado aos domínios permitidos:
+  * `fiis_noticias`
+  * conceitos de risco (`fiis_financials_risk`)
+  * macro / índices / moedas (`history_market_indicators`, `history_b3_indexes`, `history_currency_rates`)
+* ✔ Comentários explicando por que FIIs numéricos e `client_fiis_positions` ficam **fora de RAG**
 
 **🔵 Falta**
 
-* [ ] Validar **quantidade real** de chunks por entidade
-* [ ] Revisar **qualidade semântica** dos chunks
-* [ ] Regerar embeddings (batch 8)
-* [ ] Testar fusion/re-rank com perguntas reais
-* [ ] Validar top_k ideal por domínio
+* [ ] Validar **quantidade real** de chunks por entidade (macro, risco, notícias)
+* [ ] Revisar **qualidade semântica** dos chunks (noise, duplicidade, textos desatualizados)
+* [ ] Regerar embeddings (batch 8) com política final de collections
+* [ ] Testar fusion/re-rank com perguntas reais de risco e macro
+* [ ] Validar `top_k` ideal por domínio (notícias, risco, macro)
 
 ---
 
 ## **3. Planner – Thresholds e Calibração Final**
 
+**✔️ Feito**
+
+* ✔ Ontologia refinada (`data/ontology/entity.yaml`) para:
+  * separar claramente dividendos × DY (snapshot × ranking)
+  * ajustar roteamento de notícias negativas, dólar e IPCA (corrigir 5 misses de routing)
+* ✔ `quality_list_misses.py` agora retorna **“✅ Sem misses”** no conjunto atual
+
 **🔵 Falta**
 
-* [ ] Revisar thresholds por intent/entity
-* [ ] Ajustar intent_top2_gap e entity_top2_gap
-* [ ] Validar explain logs
-* [ ] Fixar baseline final após “Entidades D-1 vs Histórico”
+* [ ] Revisar thresholds finos por intent/entity (top1_min_score, min_gap)
+* [ ] Ajustar `intent_top2_gap` e `entity_top2_gap` com base no explain real
+* [ ] Validar explain logs / `decision_path` em perguntas de fronteira
+* [ ] Fixar baseline final após fechamento de entidades e quality
 
 ---
 
 ## **4. Narrator – Versão para Produção**
 
-**✔️ Políticas ok; LLM OFF**
+**✔️ Feito**
+
+* ✔ `narrator.yaml` revisado com:
+  * `llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`
+  * overrides explícitos para risco, cronograma de receita e notícias
+  * comentários por entidade explicando por que o Narrator está desligado
+* ✔ Presenter sempre retorna baseline determinístico (templates / md.j2)
 
 **🔵 Falta**
 
-* [ ] Ajustar narrator.yaml para prod
-* [ ] Decidir se max_llm_rows continua zero
-* [ ] Ajustar estilo final (executivo/objetivo)
-* [ ] Validar fallback seguro entidade a entidade
+* [ ] Desenhar política de produção (quais entidades poderão usar LLM no futuro)
+* [ ] Decidir se `max_llm_rows` continua zero em prod ou se ativa modo shadow controlado
+* [ ] Ajustar estilo final (executivo/objetivo) para quando LLM for ligado
+* [ ] Validar fallback seguro entidade a entidade (LLM falha ⇒ baseline)
 
 ---
 
 ## **5. RAG + Narrator – Integração Profissional**
 
-* [ ] Uso de RAG no prompt
-* [ ] Limitar snippets (250–350 chars)
-* [ ] Testar latência
-* [ ] Testar modos shadow
+**🔵 Falta**
+
+* [ ] Testar uso de RAG no prompt do Narrator (somente conceitos)
+* [ ] Limitar snippets (250–350 chars) em prompts de risco/macro/notícias
+* [ ] Testar latência ponta-a-ponta com RAG + Narrator (shadow)
+* [ ] Testar modos shadow em cenários reais sem impactar resposta do cliente
 
 ---
 
 ## **6. Quality – Baseline Final**
 
-* [ ] Curadoria dos 16 misses
-* [ ] Rodar testes sem RAG
-* [ ] Fixar baseline 2025.0-prod
-* [ ] Validar métricas no Grafana
+**✔️ Feito**
+
+* ✔ `quality.yaml` revisado com `targets` realistas (min_top1_accuracy 0.93, min_routed_rate 0.98)
+* ✔ Cobertura de datasets incluindo:
+  * FIIs: preços, dividendos, imóveis, processos, rankings, snapshot, cronograma, risco, notícias, cadastro, carteira
+  * Macro: `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`
+* ✔ Regras de faixa (`accepted_range`) adicionadas para:
+  * buckets de receita (`fiis_financials_revenue_schedule`)
+  * macro/índices/moedas (variações e taxas > 0, limites razoáveis)
+* ✔ `quality_list_misses.py` e `quality_diff_routing.py` rodando sem chamar Ollama
+* ✔ Última execução: **0 misses de roteamento** no conjunto de testes atual
+
+**🔵 Falta**
+
+* [ ] Rodar rotina de quality periodicamente e registrar histórico de baseline
+* [ ] Fixar baseline 2025.0-prod em README interno de quality
+* [ ] Validar e ajustar dashboards de qualidade no Grafana (top1, routed, gap)
+* [ ] Preparar check de qualidade para novos domínios (futuros compostos / yield histórico)
 
 ---
 
@@ -157,8 +177,9 @@ Checklist de segurança
 
 ## **9. Documentação Final**
 
-* [ ] Atualizar `ARAQUEM_STATUS_2025.md`
-* [ ] Documentar tudo (C4, RAG flows, narrator, context)
+* [ ] Manter `ARAQUEM_STATUS_2025.md` como fonte viva de estado
+* [ ] Atualizar C4, fluxos de RAG, Narrator, contexto e quality
+* [ ] Documentar entidades compostas planejadas (sem quebrar contratos atuais)
 
 ---
 

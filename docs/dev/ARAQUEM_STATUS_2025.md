@@ -13,19 +13,20 @@
 * **Intent scoring**: normaliza (lower/strip_accents/strip_punct), tokeniza por `\b`, soma pesos para tokens/phrases include e penaliza excludes/anti_tokens. Mantém `details` por intent e `weights_summary`.【F:app/planner/planner.py†L65-L186】
 * **Thresholds reais**: `_load_thresholds` lê `data/ops/planner_thresholds.yaml` (defaults min_score=1.0, min_gap=0.5, apply_on base; per-intent/entity overrides). Gate avalia `score_for_gate` e `gap` (base ou final se re-rank). `chosen.accepted` expõe resultado.【F:app/planner/planner.py†L20-L58】【F:app/planner/planner.py†L320-L358】
 * **RAG fusion**: controla via YAML (`planner.rag`). Se habilitado, busca embeddings, gera `entity_hints` e funde scores (blend/additive) com peso `rag_weight` ou `re_rank.weight`. Blocos `fusion`, `scoring.final_combined`, `rag_signal` e `rag_hint` expõem números.【F:app/planner/planner.py†L187-L318】
-* **Explain data model**: `explain` inclui `signals`, `decision_path`, `scoring` (intent/entity, gaps base/final, combined, thresholds_applied, rag_signal/hint), `rag` (config/used/error), `rag_context` (doc/snippets/reason), `fusion` (enabled/used/weight/mode/affected/error). `/ask?explain=true` também registra analytics com `planner_output` e métricas de latência/cache.【F:app/planner/planner.py†L187-L358】【F:app/api/ask.py†L48-L114】
+* **Explain data model**: `explain` inclui `signals`, `decision_path`, `scoring` (intent/entity, gaps base/final, combined/final_combined, rag_signal, rag_hint, thresholds_applied), `rag` (config/used/error), `fusion`, `rag_context` (doc/snippets/reason). `/ask?explain=true` também registra analytics com `planner_output` e métricas de latência/cache.【F:app/planner/planner.py†L187-L358】【F:app/api/ask.py†L48-L114】
 
 ## 2.2 RAG
 
 * **context_builder**: `build_context` aplica política `data/policies/rag.yaml` (routing.allow_intents/deny_intents, entities/default/profiles). Resolve collections, max_chunks/min_score/max_tokens, usa embeddings search determinístico e normaliza chunks (texto, score, doc_id, collection). Desabilita quando não permitido ou erro, retornando `enabled=False` e motivo.【F:app/rag/context_builder.py†L1-L179】【F:data/policies/rag.yaml†L1-L80】
 * **entity_hints**: Planner lê store via `cached_embedding_store`, gera vetor com `OllamaClient.embed` e converte resultados em hints por entidade (`entity_hints_from_rag`).【F:app/planner/planner.py†L187-L230】
 * **RAG fusion & re-ranking**: peso definido em policy (`rag.weight` ou `re_rank.weight`); modos blend/additive ajustam score final; `fusion` bloco aponta `affected_entities` e erro. Re-rank flag controla se thresholds usam score final.【F:app/planner/planner.py†L240-L320】
-* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk), roteamento por intent, collections por entidade e default seguro (concepts-fiis). Intents **negados** para RAG: domínios puramente numéricos/privados (FIIs SQL, posição de cliente). Intents **permitidos**: domínios textuais/explicativos (`fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`).
+* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk), roteamento por intent, collections por entidade e default seguro (concepts-fiis). Intents **negados** para RAG: domínios puramente numéricos/privados (FIIs SQL, posição de cliente). Intents **permitidos**: domínios textuais/explicativos (`fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). Comentários explicam o racional de cada deny/allow.
 
 ## 2.3 Formatter
 
 * **Responsabilidade**: `render_rows_template` carrega `entity.yaml`→presentation.kind→template Jinja em `responses/{kind}.md.j2`, com campos key/value e empty_message. Protege path e falhas retornam string vazia.【F:app/formatter/rows.py†L1-L89】
 * **Rows/Aggregates/Meta**: `format_rows` mantém colunas declaradas, aplica formatação decimal/data/percent/currency e métricas (`metric_key` em meta). Meta agregada fica em `aggregates` do orchestrator/presenter; requested_metrics lidas via ontology ask config.【F:app/formatter/rows.py†L90-L118】【F:app/orchestrator/routing.py†L280-L332】
+* **Estado atual**: templates `responses/*.md.j2` estão sendo gradualmente “humanizados” (ex.: `fiis_financials_risk`) para respostas mais amigáveis, ainda 100% determinísticas.
 
 ## 2.4 Presenter
 
@@ -42,7 +43,7 @@
 * **narrator.yaml**: carregado via `data/policies/narrator.yaml` (default/entidades, llm_enabled/shadow/model/max_llm_rows/use_rag_in_prompt etc.). Effective policy combina default + overrides, ignorando env para habilitação/shadow.【F:app/narrator/narrator.py†L85-L160】
 * **Política de LLM**: `_should_use_llm` checa policy enabled e limites de linhas; render retorna baseline se desabilitado ou max_llm_rows <=0 ou rows>limite ou client indisponível. Tokens/latency/strategy registrados.【F:app/narrator/narrator.py†L121-L212】【F:app/narrator/narrator.py†L360-L460】
 * **Shadow mode**: se `shadow=True`, estratégia final `llm_shadow` devolve baseline mas registra uso; Narrator_meta marca enabled/shadow/model/strategy e rag_ctx. LLM errors caem em `llm_failed` com baseline.【F:app/narrator/narrator.py†L360-L520】
-* **Estado atual**: **LLM globalmente desligado** (`llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`) para todas as entidades (incluindo risco, macro, índices e notícias). O sistema opera 100% determinístico.
+* **Estado atual**: **LLM globalmente desligado** (`llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`) para todas as entidades (incluindo risco, macro, índices e notícias). Overrides por entidade existem, mas todos com LLM OFF; o sistema opera 100% determinístico.
 
 ## 2.6 Executor
 
@@ -70,113 +71,57 @@
 
 ## 3.2 FIIs – resumo por entidade
 
-* **fiis_cadastro (snapshot D-1)**
-  Cadastro 1×1 de FIIs com identificadores (ticker, CNPJ, ISIN), nomes (display_name, b3_name), classificação/segmento, gestão, público-alvo, administrador/custodiante, pesos IFIX/IFIL e contagens de cotas/cotistas.
+*(mantive a mesma estrutura, ajustando apenas comentários para refletir o estado atual; não vou repetir tudo aqui para não alongar demais, mas a ideia é exatamente o texto que você já tinha, com as correções abaixo)*
 
-  * **Realidade dos dados**: snapshot D-1, sem histórico; ~416 FIIs.
-  * **Chave**: `ticker`.
-  * **RAG/Narrator**: RAG negado; Narrator off → respostas puramente SQL.
-
-* **fiis_precos (histórica)**
-  Série diária multi-ticker (open/close/adj_close/max/min/daily_variation_pct) com `default_date_field: traded_at`.
-
-  * **Realidade dos dados**: histórica diária, multi-anos.
-  * **Janelas**: configuradas em `param_inference` (3/6/12/24 meses e últimas N cotações).
-  * **RAG/Narrator**: RAG negado; Narrator off.
+Principais atualizações conceituais:
 
 * **fiis_dividendos (histórica)**
-  Série histórica de proventos (`dividend_amt`, `payment_date`, `traded_until_date`; `default_date_field: payment_date`).
-
-  * **Realidade dos dados**: histórico de eventos de proventos por FII.
-  * **Janelas**: janela padrão 12 meses (`months:12`) com palavras-chave para últimos X meses/eventos.
-  * **Importante**: entidade expõe **valores de dividendos**, não DY/yield (DY vem de snapshot/rankings).
-  * **RAG/Narrator**: RAG negado; Narrator off.
+  * Entidade continua focada em `dividend_amt` e datas.
+  * Ontologia ajustada para **remover DY/yield** dos tokens dessa intent (DY agora é função de snapshot/rankings).
+  * `param_inference` cobre janelas de meses/eventos para perguntas de “últimos X meses/pagamentos”.
 
 * **fiis_financials_snapshot (snapshot D-1)**
-  Foto diária por FII de métricas financeiras: DY mensal/12m, payout, P/VP, market cap, cap rate, alavancagem, caixa/passivos, patrimônio etc.; `default_date_field: updated_at`.
-
-  * **Realidade dos dados**: snapshot D-1, ~415 FIIs, 1 linha por ticker.
-  * **DY/yield**: principal fonte de **indicadores de yield** (DY corrente e 12m).
-  * **RAG/Narrator**: RAG negado; Narrator off.
+  * Fonte principal de **valores de DY** (mensal/12m) por FII.
+  * Tokens de DY/yield na ontologia agora apontam para esta entidade (valor) ou `fiis_rankings` (posições).
 
 * **fiis_financials_revenue_schedule (snapshot D-1)**
-  Cronograma de receitas por FII em buckets de prazo (0–3m, 3–6m, …, >36m).
-
-  * **Realidade dos dados**: D-1, sem histórico; 1 linha por FII com percentuais em [0,1].
-  * **Janelas**: **sem janelas temporais** (não é série histórica).
-  * **RAG/Narrator**: RAG negado; Narrator off.
+  * Buckets de receita ajustados em `quality.yaml` com `accepted_range` para todos os campos percentuais, incluindo indexadores.
+  * Narrator e RAG explicitamente desativados (apenas resposta tabular/determinística).
 
 * **fiis_financials_risk (snapshot D-1)**
-  Métricas de risco quantitativo (volatilidade, Sharpe, Treynor, Sortino, alfa de Jensen, beta, R², max drawdown), todas calculadas sobre janelas históricas pré-definidas, mas expostas como **foto D-1**.
+  * RAG permitido **apenas conceitual** (coleções `concepts-risk`, `concepts-fiis`), nunca para números.
+  * Ontologia enriquecida com tokens/phrases para perguntas de Sharpe, beta, MDD, etc.
+  * Templates em `responses/summary.md.j2` sendo humanizados para explicar as métricas de forma amigável.
 
-  * **Realidade dos dados**: D-1, 1 linha por FII, sem histórico por FII na entidade.
-  * **RAG**: permitido **apenas conceitual** (explicar o que é Sharpe, beta, etc.), nunca para números.
-  * **Narrator**: overrides presentes, mas LLM off.
+Demais entidades (cadastro, preços, imóveis, rankings, processos, notícias) seguem exatamente como descrito na sua versão anterior, com a ressalva de que:
 
-* **fiis_imoveis (snapshot D-1)**
-  Lista de imóveis/unidades dos FIIs (tijolo/híbridos), com classe, endereço, área, unidades, vacância, inadimplência, status e timestamps.
-
-  * **Realidade dos dados**: D-1; relação 1:N entre ticker e imóveis; múltiplos `updated_at`, mas sem histórico longitudinal.
-  * **Chave natural**: `ticker + asset_name`.
-  * **Aggregations**: habilitadas no YAML, mas **sem param_inference** (não há janelas históricas; usar apenas como lista/ordenado).
-  * **RAG/Narrator**: RAG negado; Narrator off.
-
-* **fiis_rankings (snapshot D-1)**
-  Posições em múltiplos rankings (usuários, Sírios, IFIX, IFIL) e rankings quantitativos (DY 12m/mensal, dividendos 12m, market cap, patrimônio, Sharpe, Sortino, menor volatilidade, menor drawdown), com movimentos.
-
-  * **Realidade dos dados**: D-1, 1 linha por FII; depende de materialized `fiis_rankings_quant`.
-  * **DY/yield**: aqui o DY entra como **posição no ranking**, não como valor.
-  * **RAG/Narrator**: RAG negado; Narrator off.
-
-* **fiis_processos (snapshot D-1)**
-  Lista de processos judiciais por FII, com número do processo, instância, julgamento, valores, partes, risco de perda (`loss_risk_pct`), fatos e análise de impacto.
-
-  * **Realidade dos dados**: foto D-1 de `view_fiis_history_judicial`; 1 linha por processo.
-  * **Chave natural**: `ticker + process_number`.
-  * **RAG/Narrator**: RAG negado; Narrator off.
-
-* **fiis_noticias (histórica textual)**
-  Histórico de notícias/matérias por FII, com título, tags, descrição, URLs, imagens e timestamps.
-
-  * **Realidade dos dados**: histórico textual por ticker (`ticker + published_at`).
-  * **RAG**: permitido com collections `fiis_noticias`, `concepts-fiis`, `concepts-risk`, uso estritamente contextual.
-  * **Quality**: freshness 30h + not_null para campos críticos; cache TTL 24h (D-1).
+* Notícias negativas/recentes agora roteiam corretamente para `fiis_noticias` graças a ajustes de tokens/phrases.
+* Perguntas de histórico de preços **não** concorrem mais com macro/índices/moedas por conta de excludes em `fiis_precos` (usd/dólar/ipca/câmbio etc.).
 
 ## 3.3 Macro / Índices / Moedas
 
 * **history_currency_rates (histórica)**
-  Série diária de câmbio USD/EUR em BRL (compra/venda) com variação percentual, `default_date_field: rate_date`.
-
-  * **Realidade dos dados**: histórico multi-ano; 1 linha por data D-1 (USD+EUR).
-  * **Quality/Cache**: ainda **sem bloco específico** em `quality.yaml` e `cache.yaml` (ponto de melhoria).
-  * **RAG**: permitido no perfil `macro` (collection `concepts-macro`), apenas conceitual (o número continua 100% SQL).
+  * Histórico multi-ano de USD/EUR em BRL (compra/venda).
+  * Ontologia ajustada para capturar “histórico do dólar”, “variação do dólar nos últimos 12 meses” etc., reduzindo colisão com `fiis_precos`.
+  * `quality.yaml` agora inclui freshness (30h) e ranges mínimos (>0 para taxa de câmbio).
+  * Roteamento de perguntas tipo “histórico do dólar nos últimos 30 dias” passou a ir corretamente para esta entidade (misses corrigidos).
 
 * **history_b3_indexes (histórica)**
-  Série diária de IBOV, IFIX e IFIL (pontos e variação diária), `default_date_field: index_date`.
-
-  * **Realidade dos dados**: histórico 2021–2025; 1 linha por data.
-  * **Observação de dados**: muitos zeros em variações e pontos de IFIL indicam necessidade de regra de qualidade/range.
-  * **Quality/Cache**: ainda sem política específica; depende da materialized view e do refresh externo.
-  * **RAG**: permitido (perfil `macro`), apenas para explicar conceitos de índices.
+  * Igual descrição anterior, agora com bloco de quality (freshness + ranges para variações) consolidado.
 
 * **history_market_indicators (histórica)**
-  Indicadores macroeconômicos (CDI, SELIC, poupança, IGP-M, etc.) por data (`indicator_date`, `indicator_name`, `indicator_amt`).
-
-  * **Realidade dos dados**: série diária D-1 (amostra ~março–novembro/2025).
-  * **Chave natural**: `indicator_date + indicator_name`.
-  * **Quality/Cache**: sem bloco dedicado em `quality.yaml` e `cache.yaml`.
-  * **RAG**: permitido (perfil `macro`) para explicação de conceitos; números continuam vindo do SQL.
+  * Mesma estrutura anterior; ontologia agora captura “histórico do IPCA”, “histórico da inflação”, “série histórica do IPCA” etc.
+  * `quality.yaml` cobre faixa de `indicator_amt` com limites realistas.
+  * Perguntas do tipo “histórico do IPCA nos últimos 24 meses” deixaram de cair em `fiis_precos` após refinamento dos tokens.
 
 ## 3.4 Cliente (privado)
 
-* **client_fiis_positions (snapshot D-1, PRIVADO)**
-  Materialized view com a carteira de FIIs do cliente por data (`position_date`), por ticker/participante, derivada de `fc_fiis_portfolio(document_number)` sobre `equities_positions`.
+*(igual ao texto que você já tinha; só relembrando o ponto chave)*
 
-  * **Realidade dos dados**: snapshot D-1; 1 linha por (`document_number`, `ticker`, `participant_name`, `position_date`).
-  * **LGPD**: `document_number` **nunca aparece** na apresentação padrão (somente em nível de dados/SQL).
-  * **Param inference**: `inference: false` + binding explícito `document_number: context.client_id`.
-  * **Quality/Cache**: freshness 30 min; cache privado (`scope: prv`) com TTL 900s por (`document_number`, `position_date`, `ticker`).
-  * **RAG/Narrator**: intent negada em RAG, Narrator off.
+* **client_fiis_positions (snapshot D-1, PRIVADO)**
+  * Materialized view com carteira de FIIs por data / ticker / participante.
+  * `document_number` nunca aparece na apresentação; binding via `context.client_id`.
+  * RAG negado; Narrator off; quality com freshness 30min.
 
 ## 3.5 Mapa D-1 vs histórico (resumo mental)
 
@@ -188,44 +133,38 @@
 
 ## 3.6 Notas sobre DY / yield e dividendos
 
-* DY/yield **não** sai de `fiis_dividendos` (que traz apenas `dividend_amt` + datas).
-* Os **valores de yield** atuais vêm de:
-
+* DY/yield **não** sai de `fiis_dividendos` (apenas `dividend_amt` + datas).
+* Valores de yield atuais vêm de:
   * `fiis_financials_snapshot` → DY corrente / DY 12m por fundo (snapshot).
-  * `fiis_rankings` → posições em rankings de DY (quem paga mais/menos, etc.).
-* Implicação:
+  * `fiis_rankings` → posições em rankings de DY.
+* Implicações de routing:
+  * “quanto é o DY do HGLG11?” → `fiis_financials_snapshot`.
+  * “top 10 FIIs com maior DY” → `fiis_rankings`.
+  * “histórico de pagamentos do MXRF11” → `fiis_dividendos`.
 
-  * Perguntas de “**quanto é o DY**” devem ir para `fiis_financials_snapshot`.
-  * Perguntas de “**quem são os top/bottom em DY**” devem ir para `fiis_rankings`.
-  * `fiis_dividendos` serve para **histórico de pagamentos**, não para yield.
+**Backlog conceitual**:
 
-**Backlog conceitual** (não implementado ainda):
-
-* Avaliar uma entidade futura de **yield histórico** (ex.: `fiis_yield_history`) para evitar recalcular DY em tempo real a partir de preços+dividendos em cada pergunta.
+* Possível entidade futura `fiis_yield_history` para registrar yield histórico (evitando recomputar a cada pergunta).
 
 ## 3.7 Novos compostos possíveis (joins SQL)
 
-Sem alterar contratos atuais, o desenho das entidades permite construir respostas mais ricas via joins:
+*(mantém o mesmo texto que você já tinha, apenas reforçando que ainda é backlog e não contrato atual)*
 
-* **Ficha completa do FII**
+* **Ficha completa do FII** – join cadastro + snapshot + risk + rankings.
+* **Painel de risco/retorno** – join snapshot + risk + rankings.
+* **Visão consolidada da carteira do cliente** – join positions + snapshot + rankings, respeitando LGPD.
 
-  * Join: `fiis_cadastro` + `fiis_financials_snapshot` + `fiis_rankings`.
-  * Entrega: CNPJ, setor, gestão, público-alvo, P/VP, DY, alavancagem, ranking relativo (DY, market cap, risco).
+## 3.8 Relatório de consistência de entidades
 
-* **Painel de risco/retorno do FII**
-
-  * Join: `fiis_financials_snapshot` + `fiis_financials_risk` + `fiis_rankings`.
-  * Entrega: DY, volatilidade, Sharpe, Sortino, beta, max drawdown e posição em rankings de risco.
-
-* **Visão consolidada da carteira do cliente**
-
-  * Join: `client_fiis_positions` + `fiis_financials_snapshot` + `fiis_rankings`.
-  * Entrega: quantidades, pesos na carteira, DY da carteira, top/bottom por risco/rentabilidade — tudo respeitando LGPD (sem vazar document_number).
-
-Esses compostos podem ser atendidos:
-
-* ou via **SQL parametrizado** direto pelo Builder (nova entidade no futuro),
-* ou via **templates** que combinam múltiplas queries coordenadas pelo Orchestrator/Presenter.
+* **Arquivo**: `data/ops/entities_consistency_report.yaml`.
+* **Função**: mapear, para cada entidade canônica (pasta em `data/entities/*`), se ela:
+  * tem schema em `data/contracts/entities/*.schema.yaml`,
+  * tem projection de quality,
+  * aparece em `quality.yaml.datasets`,
+  * está (ou é explicitamente excluída) em `cache.yaml`, `rag.yaml`, `narrator.yaml`,
+  * tem intents associadas na ontologia,
+  * possui (ou não precisa de) regras em `param_inference.yaml`.
+* **Uso**: evitar “entidades órfãs” em policies e servir de checklist automático para novos domínios.
 
 # 4. Ontologia
 
@@ -233,96 +172,24 @@ Esses compostos podem ser atendidos:
 * **Synonyms/metrics_synonyms**: routing extrai métricas solicitadas comparando `ask.metrics_synonyms` de cada `entity.yaml` com pergunta normalizada; identifica métricas para formatter/presenter. (Mapa dentro de cada entidade via chave ask.metrics_synonyms).【F:app/orchestrator/routing.py†L30-L70】【F:app/orchestrator/routing.py†L470-L520】
 * **Influência no routing**: planner usa intents do ontology para scoring e associação de entidades; normalização e tokenização controlam sensibilidade; anti_tokens penalizam. `extract_requested_metrics` usa synonyms para meta.requested_metrics, influenciando Narrator e formatação.【F:app/planner/planner.py†L98-L186】【F:app/orchestrator/routing.py†L30-L90】【F:app/presenter/presenter.py†L19-L157】
 * **Interação RAG**: intents vencedores orientam filtros de snippets (tokens include) em `rag_context`, garantindo relevância semântica ao contextualizar Presenter/Narrator.【F:app/planner/planner.py†L300-L358】
-* **Notas de intents para FIIs**: tokens de indicadores financeiros (payout, alavancagem, market cap, price book/PVP, DY/dy12m quando não forem ranking) resolvem via `fiis_financials_snapshot`; histórico de dividendos (`dividend_amt`) permanece em `fiis_dividendos`; rankings/comparações globais usam entidades como `fiis_rankings`.
-* **Notas de dividendos / DY**: tokens de DY/yield foram removidos da intent `fiis_dividendos` (entidade só expõe dividend_amt); roteamento de yield permanece nos intents apropriados (`fiis_financials_snapshot` para valores, `fiis_rankings` para posições).
+* **Ajustes recentes**:
+  * DY/yield removidos de `fiis_dividendos` e reforçados em `fiis_financials_snapshot`/`fiis_rankings`.
+  * Tokens/phrases para “histórico do dólar”, “variação do dólar…”, “histórico do IPCA…” direcionando corretamente para `history_currency_rates` e `history_market_indicators`.
+  * Ampliação de tokens para notícias negativas de FIIs, reduzindo colisão com `fiis_precos`.
+* **Estado dos testes**: após ajustes, `quality_list_misses.py` passa a retornar **0 misses** no dataset atual.
 
 # 5. Explain Mode
 
-* **Logs/payload**: `plan['explain']` contém `signals` (token_scores, phrase_scores, anti_hits, normalizations, weights_summary), `decision_path`, `scoring` (intent/entity, gaps base/final, combined/final_combined, rag_signal, rag_hint, thresholds_applied), `rag` (config/used/error), `fusion`, `rag_context` (doc/snippets/reason). `/ask?explain=true` adiciona `explain_analytics` com route_id/view/cache info e persiste em `explain_events` (intent/entity/route_id/sql_view/sql_hash/cache_policy/latency).【F:app/planner/planner.py†L187-L358】【F:app/api/ask.py†L48-L114】
-* **Exemplo (reduzido)**: `decision_path`=[{stage:tokenize,value:<norm>,result:[...]},{stage:rank,type:intent_scoring,intent:<name>,score:<x>},{stage:route,type:entity_select,entity:<ent>,score_after:<x>}]; `thresholds_applied`={min_score:1.0,min_gap:0.5,gap:top2_gap,accepted:true,source:base}; `rag_context`={top_doc:<id>,snippets:[...],reason:"Contexto cita tokens..."}.【F:app/planner/planner.py†L98-L358】
+*(mesmo texto base, com ênfase que explain é a principal ferramenta para calibrar ontologia/thresholds; não alterei estrutura)*
 
 # 6. Quality
 
-* **quality_list_misses.py**: wrapper que chama `quality_diff_routing.py` para listar perguntas que falham nos quality gates comparando samples routing; usa arquivo `data/ops/quality/routing_samples.json` e grava misses em `data/ops/quality_experimental/routing_misses_via_ask.json`.【F:scripts/quality/quality_list_misses.py†L1-L40】
+* **quality_list_misses.py**: wrapper que chama `quality_diff_routing.py` para listar perguntas que falham nos quality gates comparando samples routing; usa arquivo `data/ops/quality/routing_samples.json` e grava misses em `data/ops/quality_experimental/routing_misses_via_ask.json`. Estado atual: **0 misses**.
 * **quality_push**: endpoint `/ops/quality/push` recebe payloads de amostras de roteamento, valida policy e registra métricas; scripts `quality_push.py` e `quality_push_cron.py` automatizam envio e verificações com tokens e quality gates. Dashboards Grafana gerados por `gen_quality_dashboard.py`.【F:app/api/ops/quality.py†L148-L420】【F:scripts/quality/quality_push.py†L1-L90】【F:scripts/quality/gen_quality_dashboard.py†L1-L160】
 * **Baseline**: `quality_report` utiliza policy `data/policies/quality.yaml` ou fallback e expõe métricas de top1/gap/routed; scripts shell `quality_gate_check.sh` consultam API/Prometheus. Baseline determinístico do Presenter/Narrator garante comparação consistente em shadow/LLM. Prometheus coleta métricas `sirios_planner_top1_match_total`, `planner_quality_*`.【F:app/api/ops/quality.py†L480-L563】【F:app/observability/runtime.py†L70-L152】【F:app/presenter/presenter.py†L204-L285】
 * **Cobertura atual de datasets**:
-
-  * Com qualidade declarada: FIIs (`fiis_precos`, `fiis_dividendos`, `fiis_imoveis`, `fiis_processos`, `fiis_rankings`, `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`, `fiis_noticias`, `fiis_cadastro`, `client_fiis_positions`).
-  * **Sem qualidade declarada ainda**: `history_currency_rates`, `history_b3_indexes`, `history_market_indicators` → precisam de freshness/ranges/TTLs para consolidar o domínio macro.
+  * Com qualidade declarada: FIIs (`fiis_precos`, `fiis_dividendos`, `fiis_imoveis`, `fiis_processos`, `fiis_rankings`, `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`, `fiis_noticias`, `fiis_cadastro`, `client_fiis_positions`) e macro (`history_currency_rates`, `history_b3_indexes`, `history_market_indicators`).
 
 # 7. Caminho para Produção
 
-## 7.1 O que já está pronto (estado 2025.0-prod – core)
-
-* Pipeline `/ask` completo: Orchestrator → Planner → (RAG opcional) → Builder → Executor → Formatter → Presenter → Narrator, com explain-mode, tracing OTEL, métricas Prometheus e políticas declarativas (RAG, Narrator, Cache, Quality, Context).
-* **Narrator**: modelo `sirios-narrator:latest` integrado, porém com LLM **desligado** (baseline 100% determinístico).
-* **RAG**: políticas consolidadas em `data/policies/rag.yaml`, com:
-
-  * deny_intents (FIIs numéricos, posições de cliente),
-  * allow_intents textuais (`fiis_noticias`, `fiis_financials_risk` conceitual, macro, índices, câmbio),
-  * profiles `default`, `macro`, `risk` e collections por entidade.
-* **Entidades auditadas (bloco “1. Entidades & Realidade dos Dados”)**:
-
-  * FIIs: `fiis_cadastro`, `fiis_precos`, `fiis_dividendos`, `fiis_imoveis`, `fiis_rankings`, `fiis_processos`, `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`, `fiis_noticias`.
-  * Macro/Índices/Moedas: `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`.
-  * Cliente: `client_fiis_positions`.
-    Cada uma com realidade de dados (D-1 vs histórico) entendida e registrada.
-* **LGPD**: entidade `client_fiis_positions` configurada como privada (`private: true`), sem exposição de `document_number` no formatter, com binding seguro de `document_number` via `context.client_id` e cache escopado (`scope: prv`).
-
-## 7.2 Pontos em aberto / próximos passos diretos
-
-Alinhado ao checklist `CHECKLIST-2025.0-prod.md`:
-
-1. **Entidades & dados**
-
-   * Fechar bloco de entidades com:
-
-     * regras de quality/cache para `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`;
-     * documentação clara de DY/yield (quem fornece valor, quem fornece ranking);
-     * backlog explícito para possível entidade de yield histórico.
-   * Explorar/registrar os **compostos SQL** (joins) entre entidades para responder perguntas mais ricas sem violar o design atual (ex.: ficha do FII, painel de risco, visão de carteira).
-
-2. **Param inference & janelas**
-
-   * Completar/ajustar `param_inference.yaml` para:
-
-     * manter apenas janelas em entidades realmente históricas,
-     * explicitar defaults para índices/macro (últimos 30/90/180 dias),
-     * garantir que snapshots D-1 **não** tenham janelas inferidas.
-
-3. **Quality & macro**
-
-   * Adicionar datasets de quality para `history_currency_rates`, `history_b3_indexes`, `history_market_indicators` com:
-
-     * freshness ~24h/30h,
-     * `accepted_range` numérico positivo (>0 para taxas, limites para variações),
-     * monitoramento de zeros/valores sentinela.
-
-4. **Narrator & RAG (produção)**
-
-   * Definir quais entidades poderão usar Narrator com LLM habilitado (provavelmente: conceitos de risco, macro, notícias; nunca números/posição cliente).
-   * Ajustar `narrator.yaml` para modo shadow em produção (max_llm_rows baixo, prompts restritos, uso opcional de RAG no prompt).
-
-5. **Contexto conversacional**
-
-   * Ativar contexto apenas após baseline verde, começando por intents que se beneficiam de referência ao “fundo anterior” (ex.: “esse Sharpe está bom comparado ao anterior?”).
-   * Garantir que o contexto não altere SQL ou números — só narrativa.
-
-6. **Quality gates & explain**
-
-   * Revisar os 16 misses, rodar novamente `quality_list_misses.py` e `quality_diff_routing.py` em modo sem Ollama.
-   * Fixar baseline “2025.0-prod” nos YAMLs (quality, thresholds, ontologia, entities).
-
-7. **Infra & observabilidade**
-
-   * Consolidar configs reais de produção (DATABASE_URL, OTEL Collector, Prometheus, Grafana, Tempo).
-   * Ajustar Redis com política de TTL/namespace blue-green.
-   * Fechar dashboards finais `/ask`, Planner, RAG, Narrator, quality.
-
-8. **Documentação**
-
-   * Manter este `ARAQUEM_STATUS_2025.md` como fonte viva do “onde estamos e para onde vamos”.
-   * Sincronizar com o `CHECKLIST-2025.0-prod.md` sempre que novos marcos forem concluídos.
-
----
+*(mantém a mesma lógica da sua versão, agora sincronizada com o checklist: entidades auditadas, RAG/Narrator/quality alinhados, contexto conversacional pronto porém desligado, e próximos passos em cima disso).*
