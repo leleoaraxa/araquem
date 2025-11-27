@@ -178,6 +178,22 @@ include:
     path: data/ops/quality/projection_client_fiis_positions.json
     tags: [quality, projection, private]
 
+  - id: q-projection-client-dividends-evolution
+    path: data/ops/quality/projection_client_fiis_dividends_evolution.json
+    tags: [quality, projection, private]
+
+  - id: q-projection-client-performance-vs-benchmark
+    path: data/ops/quality/projection_client_fiis_performance_vs_benchmark.json
+    tags: [quality, projection, private]
+
+  - id: q-projection-fii-overview
+    path: data/ops/quality/projection_fii_overview_evolution.json
+    tags: [quality, projection, overview]
+
+  - id: q-projection-fiis-yield-history
+    path: data/ops/quality/projection_fiis_yield_history_evolution.json
+    tags: [quality, projection, yield]
+
   - id: q-m66-projection
     path: data/ops/quality_experimental/m66_projection.json
     tags: [quality, projection, m66]
