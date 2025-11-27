@@ -325,9 +325,20 @@ ask:
     max_drawdown:
       - drawdown
       - mdd
+  sample_questions:
+    - resumo do HGLG11
+    - como está o KNRI11 hoje?
+    - me dê um overview do MXRF11
+    - mostre os principais indicadores do CPTS11
+    - compare rapidamente HGLG11 e VISC11
 defaults:
   order_by:
     ticker: asc
     sirios_rank_position: asc
 notes:
   - "view composta D-1: cadastro + snapshot financeiro + risco + rankings"
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

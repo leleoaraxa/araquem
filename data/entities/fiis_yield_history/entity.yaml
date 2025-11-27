@@ -86,13 +86,12 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-
-sample_questions:
-  - dy mensal do HGLG11 em 2024-05
-  - historico de dividend yield do MXRF11 nos ultimos 12 meses
-  - evolução do dy do KNRI11
-  - quanto o CPTS11 pagou de dividendos e dy em 2023-08
-  - comparativo de dy mensal entre HGLG11 e VISC11
+  sample_questions:
+    - dy mensal do HGLG11 em 2024-05
+    - historico de dividend yield do MXRF11 nos ultimos 12 meses
+    - evolução do dy do KNRI11
+    - quanto o CPTS11 pagou de dividendos e dy em 2023-08
+    - comparativo de dy mensal entre HGLG11 e VISC11
 
 order_by_whitelist:
 - ref_month desc
@@ -121,4 +120,4 @@ aggregations:
 responses:
   default:
     kind: table
-    template: template.md
+    template: responses/table.md.j2
