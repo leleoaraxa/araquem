@@ -1,6 +1,7 @@
 -- =====================================================================
 -- DROP VIEW
 -- =====================================================================
+DROP VIEW IF EXISTS fii_overview;
 DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_cadastro;
@@ -1125,10 +1126,8 @@ SELECT
   i.updated_at
 FROM view_fiis_info i
 LEFT JOIN fiis_rankings_quant q USING (ticker);
-
-
 -- =====================================================================
--- VIEW: fiis_rankings
+-- VIEW: fiis_yield_history
 -- =====================================================================
 CREATE OR REPLACE VIEW fiis_yield_history AS
 WITH monthly_dividends AS (
@@ -1178,6 +1177,91 @@ LEFT JOIN monthly_prices mp
    AND mp.ref_month = m.ref_month;
 
 -- =====================================================================
+-- VIEW: fiis_yield_history
+-- =====================================================================
+CREATE OR REPLACE VIEW fii_overview AS
+SELECT
+    c.ticker,
+
+    -- Cadastro
+    c.display_name,
+    c.b3_name,
+    c.classification,
+    c.sector,
+    c.sub_sector,
+    c.management_type,
+    c.target_market,
+    c.is_exclusive,
+    c.ifil_weight_pct,
+    c.ifix_weight_pct,
+    c.shares_count,
+    c.shareholders_count,
+
+    -- Snapshot financeiro (D-1)
+    s.dy_monthly_pct,
+    s.dy_pct AS dy_12m_pct,
+    s.sum_anual_dy_amt    AS dividends_12m_amt,
+    s.last_dividend_amt,
+    s.last_payment_date,
+    s.market_cap_value,
+    s.enterprise_value,
+    s.price_book_ratio,
+    s.equity_per_share,
+    s.revenue_per_share,
+    s.dividend_payout_pct,
+    s.growth_rate,
+    s.cap_rate,
+    s.leverage_ratio,
+    s.equity_value,
+    s.variation_month_ratio,
+    s.variation_year_ratio,
+    s.equity_month_ratio,
+    s.dividend_reserve_amt,
+    s.admin_fee_due_amt,
+    s.perf_fee_due_amt,
+    s.total_cash_amt,
+    s.expected_revenue_amt,
+    s.liabilities_total_amt,
+    s.created_at  AS snapshot_created_at,
+    s.updated_at  AS snapshot_updated_at,
+
+    -- Risco quantitativo
+    r.volatility_ratio,
+    r.sharpe_ratio,
+    r.treynor_ratio,
+    r.jensen_alpha,
+    r.beta_index,
+    r.sortino_ratio,
+    r.max_drawdown,
+    r.r_squared,
+    r.created_at AS risk_created_at,
+    r.updated_at AS risk_updated_at,
+
+    -- Rankings
+    rk.users_rank_position,
+    rk.sirios_rank_position,
+    rk.ifix_rank_position,
+    rk.ifil_rank_position,
+    rk.rank_dy_12m,
+    rk.rank_dy_monthly,
+    rk.rank_dividends_12m,
+    rk.rank_market_cap,
+    rk.rank_equity,
+    rk.rank_sharpe,
+    rk.rank_sortino,
+    rk.rank_low_volatility,
+    rk.rank_low_drawdown,
+    rk.created_at AS rankings_created_at,
+    rk.updated_at AS rankings_updated_at
+
+FROM fiis_cadastro c
+LEFT JOIN fiis_financials_snapshot s
+       ON s.ticker = c.ticker
+LEFT JOIN fiis_financials_risk r
+       ON r.ticker = c.ticker
+LEFT JOIN fiis_rankings rk
+       ON rk.ticker = c.ticker;
+-- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
 REFRESH MATERIALIZED VIEW view_fiis_info;
@@ -1195,4 +1279,42 @@ REFRESH MATERIALIZED VIEW rf_daily_series_mat;
 REFRESH MATERIALIZED VIEW market_index_series;
 REFRESH MATERIALIZED VIEW fiis_rankings_quant;
 REFRESH MATERIALIZED VIEW client_fiis_positions;
--- ============================================================== --
+-- =====================================================================
+-- OWNER EDGE USER
+-- =====================================================================
+ALTER MATERIALIZED VIEW public.view_fiis_info OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_fiis_history_dividends OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_fiis_history_assets OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_fiis_history_judicial OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_fiis_history_prices OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_fiis_history_news OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.history_market_indicators OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_history_indexes OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.view_market_indicators OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.history_b3_indexes OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.history_currency_rates OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.rf_daily_series_mat OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.market_index_series OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.fiis_rankings_quant OWNER TO edge_user;
+ALTER MATERIALIZED VIEW public.client_fiis_positions OWNER TO edge_user;
+-- =====================================================================
+ALTER VIEW public.fii_overview OWNER TO edge_user;
+ALTER VIEW public.fiis_yield_history OWNER TO edge_user;
+ALTER VIEW public.fiis_markowitz_universe OWNER TO edge_user;
+ALTER VIEW public.fiis_cadastro OWNER TO edge_user;
+ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
+ALTER VIEW public.fiis_precos OWNER TO edge_user;
+ALTER VIEW public.fiis_rankings OWNER TO edge_user;
+ALTER VIEW public.fiis_imoveis OWNER TO edge_user;
+ALTER VIEW public.fiis_processos OWNER TO edge_user;
+ALTER VIEW public.fiis_noticias OWNER TO edge_user;
+ALTER VIEW public.fiis_financials_snapshot OWNER TO edge_user;
+ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
+ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;
+ALTER VIEW public.fiis_financials OWNER TO edge_user;
+ALTER VIEW public.financials_tickers_typed OWNER TO edge_user;
+ALTER VIEW public.view_markowitz_sirios_portfolios_latest OWNER TO edge_user;
+ALTER VIEW public.view_markowitz_sirios_portfolios OWNER TO edge_user;
+ALTER VIEW public.view_markowitz_frontier_best_sharpe OWNER TO edge_user;
+ALTER VIEW public.view_markowitz_universe_stats OWNER TO edge_user;
+ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
