@@ -34,15 +34,15 @@ profiles:
 # ------------------------------------------------------------------------------
 routing:
   deny_intents:
-    - client_fiis_positions
-    - fiis_cadastro
-    - fiis_precos
-    - fiis_dividendos
-    - fiis_imoveis
-    - fiis_rankings
-    - fiis_processos
-    - fiis_financials_snapshot
-    - fiis_financials_revenue_schedule
+    - client_fiis_positions          # carteira do cliente; fora do escopo de RAG
+    - fiis_cadastro                  # cadastro estatico; sem busca textual
+    - fiis_precos                    # serie numerica; RAG nao se aplica
+    - fiis_dividendos                # historico numerico; consultas via SQL
+    - fiis_imoveis                   # cadastro de ativos; fora de RAG
+    - fiis_rankings                  # rankings deterministas; sem RAG
+    - fiis_processos                 # processos estruturados; RAG nao habilitado
+    - fiis_financials_snapshot       # indicadores D-1; RAG desnecessario
+    - fiis_financials_revenue_schedule # cronograma estruturado; sem RAG
 
   allow_intents:
     - fiis_noticias

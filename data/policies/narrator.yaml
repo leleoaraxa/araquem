@@ -43,6 +43,15 @@ max_llm_rows: 0
 # ======================
 entities:
 
+  # client_fiis_positions: carteira deterministica; narrator desligado por design
+  # fiis_cadastro: cadastro estatico; narrativas nao aplicaveis
+  # fiis_dividendos: serie historica numerica; narrativas ficam desabilitadas
+  # fiis_financials_snapshot: indicadores D-1; resposta tabular
+  # fiis_imoveis: dados cadastrais; sem uso de narrator
+  # fiis_precos: serie historica; narrator nao habilitado
+  # fiis_processos: processos estruturados; narrativa nao requerida
+  # fiis_rankings: ranking deterministico; narrator fora de escopo
+
   fiis_financials_risk:
     llm_enabled: false
     strict_mode: true
