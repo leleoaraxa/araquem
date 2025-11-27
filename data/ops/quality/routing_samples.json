@@ -1170,6 +1170,96 @@
       "question": "trajetória da Selic desde 2020",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "evolucao dos dividendos da minha carteira de fiis",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "renda mensal dos meus fiis",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "quanto minha carteira de fiis recebeu de dividendos em cada mes",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "historico de dividendos da minha carteira",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "minha renda mensal com fiis esta crescendo",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "como foi a performance da minha carteira de fiis versus o IFIX nos ultimos 12 meses",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "question": "minha carteira de fiis esta melhor ou pior que o CDI",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "question": "comparar o retorno da minha carteira de fiis com o IFIL",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "question": "qual foi a rentabilidade da minha carteira de fiis versus o IFIX em 2024",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "question": "resumo do HGLG11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "overview do KNRI11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "como esta o MXRF11 hoje",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "quais os principais indicadores do CPTS11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "me de uma visao geral do VISC11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "historico de dividend yield do MXRF11 nos ultimos 12 meses",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "evolucao do dy do KNRI11",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "quanto o CPTS11 pagou de dividendos e dy em 2023-08",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "comparativo de dy mensal entre HGLG11 e VISC11",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
     }
   ]
 }

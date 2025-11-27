@@ -1,0 +1,20 @@
+{
+  "type": "projection",
+  "entity": "client_fiis_performance_vs_benchmark",
+  "result_key": "performance_vs_benchmark",
+  "must_have_columns": [
+    "document_number",
+    "benchmark_code",
+    "date_reference",
+    "portfolio_amount",
+    "portfolio_return_pct",
+    "benchmark_value",
+    "benchmark_return_pct"
+  ],
+  "samples": [
+    { "question": "como foi a performance da minha carteira de fiis versus o IFIX nos ultimos 12 meses" },
+    { "question": "minha carteira de fiis esta melhor ou pior que o CDI" },
+    { "question": "comparar o retorno da minha carteira de fiis com o IFIL" },
+    { "question": "qual foi a rentabilidade da minha carteira de fiis versus o IFIX em 2024" }
+  ]
+}
