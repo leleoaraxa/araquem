@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-27T12:24:06Z",
+  "generated_at": "2025-11-27T13:33:44Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -274,7 +274,7 @@
         "rag"
       ],
       "chunks": 3,
-      "sha_all": "166ee390c5a15f6e98e8494723c9db6cfb94396fb7ef8ee6ed33b47470f03338"
+      "sha_all": "b56a8f75e19541ec1e7792b27b34b7f07f5b67964749e0d03630478dbbade71e"
     },
     {
       "id": "ops-planner-thresholds",
@@ -500,5 +500,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764246386
+  "last_refresh_epoch": 1764250558
 }
