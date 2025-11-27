@@ -1,0 +1,35 @@
+entity: fiis_yield_history
+kind: view
+version: 1
+
+columns:
+  - { name: ticker,        type: string,   nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: ref_month,     type: date,     nullable: false, desc: "mês de referência (primeiro dia do mês)." }
+  - { name: dividends_sum, type: number,   nullable: false, desc: "soma dos dividendos pagos no mês (R$ por cota)." }
+  - { name: price_ref,     type: number,   nullable: true,  desc: "preço de referência da cota no mês (última cotação disponível)." }
+  - { name: dy_monthly,    type: number,   nullable: true,  desc: "dividend yield mensal (dividends_sum / price_ref)." }
+
+ordering: [ticker, ref_month DESC]
+
+presentation:
+  columns:
+    ticker:        { as: string }
+    ref_month:     { as: date }
+    dividends_sum: { as: currency }
+    price_ref:     { as: currency }
+    dy_monthly:    { as: percent, multiply_by_100: true, precision: 2 }
+
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "dividend yield mensal do HGLG11 em 2024-05"
+  - "DY do MXRF11 em fevereiro de 2023"
+  - "historico de dividendos e yield do KNRI11 nos ultimos 6 meses"
+  - "qual foi o dy mensal do CPTS11 nos ultimos 12 meses"
+  - "preco de referencia e dy do VISC11 em 2023-08"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: true

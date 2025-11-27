@@ -247,6 +247,33 @@ intents:
       exclude:
     entities: [fiis_dividendos]
 
+  - name: fiis_yield_history
+    tokens:
+      include:
+        - dy
+        - dy mensal
+        - dividend yield
+        - yield
+        - historico de dy
+        - historico de yield
+        - rendimento mensal
+        - retorno mensal
+        - evolucao do dy
+        - dy 12m
+        - dy 24m
+      exclude: []
+    phrases:
+      include:
+        - dy mensal do
+        - dividend yield do
+        - historico de dy do
+        - yield mensal do
+        - dy do
+        - evolucao do dy do
+        - dy medio dos
+      exclude: []
+    entities: [fiis_yield_history]
+
   - name: fiis_financials_snapshot
     tokens:
       include:

@@ -35,6 +35,18 @@ entities:
     notes:
       - "entidade historical de proventos; consultas via SQL (RAG negado)"
       - "janelas temporais definidas em param_inference"
+  fiis_yield_history:
+    has_schema: true
+    has_quality_projection: true
+    in_quality_policy: true
+    in_cache_policy: true
+    in_rag_policy: true
+    in_narrator_policy: false
+    has_ontology_intent: true
+    has_param_inference: true
+    notes:
+      - "entidade historical mensal de dividend yield; consultas via SQL (RAG negado)"
+      - "espera janelas temporais padrão via param_inference"
   fiis_financials_snapshot:
     has_schema: true
     has_quality_projection: true

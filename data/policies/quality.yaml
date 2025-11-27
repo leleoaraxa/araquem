@@ -43,6 +43,14 @@ datasets:
     accepted_range:
       dividend_amt: { min: 0.0 }
 
+  fiis_yield_history:
+    freshness: { max_age_hours: 30 }
+    not_null: [ticker, ref_month, dividends_sum]
+    accepted_range:
+      dividends_sum: { min: 0.0, max: 700.0 }
+      price_ref: { min: 0.01, max: 30000.0 }
+      dy_monthly: { min: 0.0, max: 0.2 }
+
   fiis_imoveis:
     not_null: [ticker, asset_name]
     accepted_range:
