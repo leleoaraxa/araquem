@@ -139,11 +139,10 @@ ask:
     keywords: 1.0
     synonyms: 0.5
   sample_questions:
-    - historico de dividendos e dy do MXRF11 nos ultimos 12 meses
-    - qual foi o dy mensal do HGLG11 em 2024-09
-    - dividend yield atual do CPTS11
-    - comparativo de dy mensal entre HGLG11 e VISC11
-    - quanto o VISC11 pagou em dividendos no mes de 2024-08
+  - historico de dividendos e DY do MXRF11 nos últimos 12 meses
+  - qual foi o DY mensal do HGLG11 em 09/2024?
+  - dividend yield atual do CPTS11
+  - comparativo de DY mensal entre HGLG11 e VISC11
 
 order_by_whitelist:
 - ref_month desc
