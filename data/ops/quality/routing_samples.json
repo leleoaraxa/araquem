@@ -1290,6 +1290,21 @@
       "question": "ifix e ibov do dia 2025-11-14",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "CNPJ do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Esse fundo tem Sharpe bom?",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "E o overview dele?",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
     }
   ]
 }

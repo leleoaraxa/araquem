@@ -7,11 +7,13 @@ import re, unicodedata
 from pathlib import Path
 
 from app.utils.filecache import load_yaml_cached
+from app.core.context import context_manager
 
 _DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
 _ALLOWED_AGGS = {"avg", "sum", "latest", "list"}
 _WINDOW_KINDS = {"months", "count"}
+_TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
 
 def _strip_accents(s: str) -> str:
@@ -193,6 +195,26 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                             f"param_inference.yaml inválido: defaults.list.order da intent '{intent_name}' deve ser 'asc' ou 'desc'"
                         )
 
+        params_cfg = cfg.get("params")
+        if params_cfg is not None:
+            params_map = _require_mapping(params_cfg, label=f"params da intent '{intent_name}'")
+            for param_name, spec in params_map.items():
+                _require_mapping(spec, label=f"params.{param_name} da intent '{intent_name}'")
+                if "source" in spec:
+                    source_list = _require_list(
+                        spec.get("source"), label=f"params.{param_name}.source da intent '{intent_name}'"
+                    )
+                    for src in source_list:
+                        if not isinstance(src, str):
+                            raise ValueError(
+                                "param_inference.yaml inválido: source de params deve ser lista de strings"
+                            )
+                if "context_key" in spec and spec.get("context_key") is not None:
+                    if not isinstance(spec.get("context_key"), str):
+                        raise ValueError(
+                            "param_inference.yaml inválido: context_key em params deve ser string"
+                        )
+
     return data
 
 
@@ -296,12 +318,51 @@ def _shift_months(base: dt.date, months: int) -> dt.date:
     return dt.date(year, month, day)
 
 
+def _ticker_from_identifiers(
+    identifiers: Optional[Dict[str, Any]], question: str
+) -> Optional[str]:
+    if identifiers and isinstance(identifiers, dict):
+        ticker = identifiers.get("ticker")
+        if isinstance(ticker, str) and ticker:
+            return ticker
+        tickers = identifiers.get("tickers")
+        if isinstance(tickers, list) and tickers:
+            first = tickers[0]
+            if isinstance(first, str) and first:
+                return first
+    match = _TICKER_RE.search((question or "").upper())
+    return match.group(1) if match else None
+
+
+def _ticker_from_context(
+    entity: Optional[str], client_id: Optional[str], conversation_id: Optional[str]
+) -> Optional[str]:
+    if not client_id or not conversation_id:
+        return None
+
+    policy = context_manager.last_reference_policy
+    allowed = policy.get("allowed_entities") or []
+    if not policy.get("enable_last_ticker"):
+        return None
+    if allowed and entity not in allowed:
+        return None
+
+    last_ref = context_manager.get_last_reference(client_id, conversation_id)
+    if not last_ref or not getattr(last_ref, "ticker", None):
+        return None
+
+    return last_ref.ticker
+
+
 def infer_params(
     question: str,
     intent: str,
     entity: Optional[str] = None,
     entity_yaml_path: Optional[str] = None,
     defaults_yaml_path: Optional[str] = None,
+    identifiers: Optional[Dict[str, Any]] = None,
+    client_id: Optional[str] = None,
+    conversation_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Retorna dict {"agg": ..., "window": ..., "limit": ..., "order": ...}
@@ -417,4 +478,17 @@ def infer_params(
         out["limit"] = limit
     if order is not None:
         out["order"] = order
+
+    params_section = icfg.get("params") if isinstance(icfg, dict) else {}
+    if isinstance(params_section, dict):
+        ticker_cfg = params_section.get("ticker") if isinstance(params_section, dict) else None
+        if isinstance(ticker_cfg, dict):
+            sources = ticker_cfg.get("source") or []
+            ticker_value: Optional[str] = None
+            if "text" in sources:
+                ticker_value = _ticker_from_identifiers(identifiers, question)
+            if not ticker_value and "context" in sources:
+                ticker_value = _ticker_from_context(entity, client_id, conversation_id)
+            if ticker_value:
+                out["ticker"] = ticker_value
     return out

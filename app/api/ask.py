@@ -216,6 +216,9 @@ def ask(
             entity=entity,
             entity_yaml_path=f"data/entities/{entity}/entity.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
+            identifiers=identifiers,
+            client_id=payload.client_id,
+            conversation_id=payload.conversation_id,
         )
     except Exception:
         LOGGER.warning(
@@ -226,7 +229,11 @@ def ask(
         agg_params = {}
 
     def _fetch():
-        return orchestrator.route_question(payload.question)
+        return orchestrator.route_question(
+            payload.question,
+            client_id=payload.client_id,
+            conversation_id=payload.conversation_id,
+        )
 
     policy = policies.get(entity) if policies else None
     strategy = str((policy or {}).get("strategy") or "read_through").lower()
@@ -431,6 +438,19 @@ def ask(
                 "status_reason": "ok",
             },
         )
+        ticker_for_context = None
+        if isinstance(agg_params, dict):
+            ticker_for_context = agg_params.get("ticker")
+        if not ticker_for_context and isinstance(identifiers, dict):
+            ticker_for_context = identifiers.get("ticker")
+        if ticker_for_context:
+            context_manager.update_last_reference(
+                client_id=payload.client_id,
+                conversation_id=payload.conversation_id,
+                ticker=ticker_for_context,
+                entity=entity,
+                intent=intent,
+            )
     except Exception:
         LOGGER.warning(
             "Falha ao registrar turno final do assistant no contexto",
