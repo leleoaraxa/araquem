@@ -298,15 +298,27 @@ class ContextManager:
         return merged
 
     def last_reference_allows_entity(self, entity: Optional[str]) -> bool:
+        """Verifica se o uso de last_reference é permitido para a entidade.
+
+        Regras globais:
+            - contexto precisa estar habilitado;
+            - last_reference.enable_last_ticker deve ser verdadeiro;
+            - se last_reference.allowed_entities estiver preenchido, a entidade
+              deve estar nela; caso contrário, qualquer entidade é aceita.
+        """
+
+        if not self.enabled:
+            return False
+
         policy = self.last_reference_policy
-        allowed = policy.get("allowed_entities") or []
         if not policy.get("enable_last_ticker"):
             return False
-        if not entity:
+
+        allowed = policy.get("allowed_entities") or []
+        if allowed and entity not in allowed:
             return False
-        if not allowed:
-            return False
-        return entity in allowed
+
+        return True
 
     def planner_allows_entity(self, entity: Optional[str]) -> bool:
         return _entity_allowed(entity, self.planner_policy)
@@ -548,6 +560,7 @@ def _entity_allowed(entity: Optional[str], scope_policy: Dict[str, Any]) -> bool
         return True
 
     return entity in allowed
+
 @dataclass
 class LastReference:
     """Representa a última referência explícita feita pelo usuário.

@@ -7,7 +7,6 @@ import re, unicodedata
 from pathlib import Path
 
 from app.utils.filecache import load_yaml_cached
-from app.core.context import context_manager
 
 _DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
@@ -337,14 +336,12 @@ def _ticker_from_identifiers(
 def _ticker_from_context(
     entity: Optional[str], client_id: Optional[str], conversation_id: Optional[str]
 ) -> Optional[str]:
+    from app.core.context import context_manager
+
     if not client_id or not conversation_id:
         return None
 
-    policy = context_manager.last_reference_policy
-    allowed = policy.get("allowed_entities") or []
-    if not policy.get("enable_last_ticker"):
-        return None
-    if allowed and entity not in allowed:
+    if not context_manager.last_reference_allows_entity(entity):
         return None
 
     last_ref = context_manager.get_last_reference(client_id, conversation_id)
