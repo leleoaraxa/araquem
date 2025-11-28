@@ -2,32 +2,36 @@
 
 ## 0. Visão Geral
 
-| Entidade | Domínio | Objetivo resumido | Perguntas típicas | Formato de resposta | Privada? | RAG/Narrator |
-|---|---|---|---|---|---|---|
-| client_fiis_positions | carteira | Posições do cliente em FIIs com quantidades, preços e peso na carteira | “quais FIIs da minha carteira estão dando lucro”, “qual o peso do HGLG11 na minha carteira” | Tabela por ticker com qty como valor | Sim | RAG: negado / Narrator: desabilitado |
-| client_fiis_dividends_evolution | dividendos | Evolução mensal de dividendos da carteira do cliente | “evolução dos meus dividendos”, “renda mensal dos meus FIIs” | Tabela com ano, mês e total de dividendos | Sim | RAG: negado / Narrator: desabilitado |
-| client_fiis_performance_vs_benchmark | performance | Série de performance da carteira vs benchmark (IFIX/IFIL/IBOV/CDI) | “performance da minha carteira vs IFIX”, “minha carteira está melhor que o CDI” | Tabela com data, valor e retornos carteira/benchmark | Sim | RAG: negado / Narrator: desabilitado |
-| fiis_cadastro | cadastro | Dados cadastrais 1×1 do FII (cnpj, admin, setor, site) | “segmento do HGLG11”, “qual o CNPJ do MXRF11” | Lista simples ticker → nome | Não | RAG: negado / Narrator: desabilitado |
-| fiis_dividendos | dividendos | Histórico de proventos pagos por FII | “quanto o MXRF11 distribuiu em 07/2024”, “média de dividendos do HGLG11” | Tabela/markdown com datas e valores; agregações habilitadas | Não | RAG: negado / Narrator: desabilitado |
-| fiis_yield_history | yield | Histórico mensal de dividendos, preço ref. e DY | “histórico de DY do MXRF11”, “evolução do DY do KNRI11” | Tabela com mês, dividendos, preço e DY; agregações | Não | RAG: negado / Narrator: desabilitado |
-| fiis_financials_snapshot | snapshot | Snapshot D-1 de indicadores financeiros (payout, EV, caixa, dívida) | “qual o market cap do MXRF11”, “payout do MCCI11” | Resumo/summary com métricas financeiras; agregações | Não | RAG: negado / Narrator: desabilitado |
-| fiis_financials_revenue_schedule | receitas | Estrutura de recebíveis por buckets de prazo e indexadores | “quanto do HGLG11 vence em 12 meses”, “exposição a IPCA/IGPM do XPML11” | Resumo detalhado em texto/tabela com percentuais por faixa; agregações | Não | RAG: negado / Narrator: desabilitado |
-| fiis_financials_risk | risco | Indicadores de risco (volatilidade, Sharpe, beta, MDD etc.) D-1 | “volatilidade do HGLG11”, “Sharpe do HGRU11” | Resumo narrativo/summary com métricas; agregações | Não | RAG: permitido / Narrator: desabilitado |
-| fiis_imoveis | propriedades | Imóveis/ativos do FII com área, vacância, inadimplência | “quais imóveis compõem o HGLG11”, “vacância do portfólio do VISC11” | Lista de ativos com classe, endereço, área, vacância | Não | RAG: negado / Narrator: desabilitado |
-| fiis_noticias | noticias | Notícias D-1 sobre FIIs com título, fonte e link | “notícias sobre VISC11”, “manchetes recentes do HGLG11” | Lista de manchetes com data/hora e link | Não | RAG: permitido / Narrator: desabilitado |
-| fiis_precos | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado |
-| fiis_processos | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado |
-| fiis_rankings | rankings | Posições dos FIIs em rankings (DY, valor de mercado, Sharpe etc.) | “posição do HGLG11 no IFIX”, “top FIIs por DY 12m” | Tabela com posições em múltiplos rankings | Não | RAG: negado / Narrator: desabilitado |
-| fii_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado |
-| history_b3_indexes | indices | Histórico D-1 de IBOV/IFIX/IFIL (pontos e variação) | “histórico do IFIX”, “variação do IBOV hoje” | Lista de datas com pontos e variações; agregações | Não | RAG: permitido / Narrator: desabilitado |
-| history_currency_rates | moedas | Câmbio D-1 USD/EUR em BRL com compra/venda e variação | “cotação do dólar”, “variação do euro hoje” | Lista de datas com taxas e variações; agregações | Não | RAG: permitido / Narrator: desabilitado |
-| history_market_indicators | macro | Indicadores macro (IPCA, CDI, SELIC, IGPM etc.) D-1 | “CDI de ontem”, “IPCA na última leitura” | Lista de indicadores com data e valor; agregações | Não | RAG: permitido / Narrator: desabilitado |
+| Entidade | Domínio | Objetivo resumido | Perguntas típicas | Formato de resposta | Privada? | RAG/Narrator | Tipo | default_date_field | Agregações |
+|---|---|---|---|---|---|---|---|---|---|
+| client_fiis_positions | carteira | Posições do cliente em FIIs com quantidades, preços e peso na carteira | “quais FIIs da minha carteira estão dando lucro”, “qual o peso do HGLG11 na minha carteira” | Tabela por ticker com qty como valor | Sim | RAG: negado / Narrator: desabilitado | D-1 | position_date | não |
+| client_fiis_dividends_evolution | dividendos | Evolução mensal de dividendos da carteira do cliente | “evolução dos meus dividendos”, “renda mensal dos meus FIIs” | Tabela com ano, mês e total de dividendos | Sim | RAG: negado / Narrator: desabilitado | histórico | - | não |
+| client_fiis_performance_vs_benchmark | performance | Série de performance da carteira vs benchmark (IFIX/IFIL/IBOV/CDI) | “performance da minha carteira vs IFIX”, “minha carteira está melhor que o CDI” | Tabela com data, valor e retornos carteira/benchmark | Sim | RAG: negado / Narrator: desabilitado | histórico | date_reference | não |
+| fiis_cadastro | cadastro | Dados cadastrais 1×1 do FII (cnpj, admin, setor, site) | “segmento do HGLG11”, “qual o CNPJ do MXRF11” | Lista simples ticker → nome | Não | RAG: negado / Narrator: desabilitado | D-1 | - | não |
+| fiis_dividendos | dividendos | Histórico de proventos pagos por FII | “quanto o MXRF11 distribuiu em 07/2024”, “média de dividendos do HGLG11” | Tabela/markdown com datas e valores; agregações habilitadas | Não | RAG: negado / Narrator: desabilitado | histórico | payment_date | sim |
+| fiis_yield_history | yield | Histórico mensal de dividendos, preço ref. e DY | “histórico de DY do MXRF11”, “evolução do DY do KNRI11” | Tabela com mês, dividendos, preço e DY; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | ref_month | sim |
+| fiis_financials_snapshot | snapshot | Snapshot D-1 de indicadores financeiros (payout, EV, caixa, dívida) | “qual o market cap do MXRF11”, “payout do MCCI11” | Resumo/summary com métricas financeiras; agregações | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
+| fiis_financials_revenue_schedule | receitas | Estrutura de recebíveis por buckets de prazo e indexadores | “quanto do HGLG11 vence em 12 meses”, “exposição a IPCA/IGPM do XPML11” | Resumo detalhado em texto/tabela com percentuais por faixa; agregações | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
+| fiis_financials_risk | risco | Indicadores de risco (volatilidade, Sharpe, beta, MDD etc.) D-1 | “volatilidade do HGLG11”, “Sharpe do HGRU11” | Resumo narrativo/summary com métricas; agregações | Não | RAG: permitido / Narrator: desabilitado | D-1 | - | sim |
+| fiis_imoveis | propriedades | Imóveis/ativos do FII com área, vacância, inadimplência | “quais imóveis compõem o HGLG11”, “vacância do portfólio do VISC11” | Lista de ativos com classe, endereço, área, vacância | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
+| fiis_noticias | noticias | Notícias D-1 sobre FIIs com título, fonte e link | “notícias sobre VISC11”, “manchetes recentes do HGLG11” | Lista de manchetes com data/hora e link | Não | RAG: permitido / Narrator: desabilitado | D-1 | published_at | lista apenas |
+| fiis_precos | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | traded_at | sim |
+| fiis_processos | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
+| fiis_rankings | rankings | Posições dos FIIs em rankings (DY, valor de mercado, Sharpe etc.) | “posição do HGLG11 no IFIX”, “top FIIs por DY 12m” | Tabela com posições em múltiplos rankings | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
+| fii_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | não |
+| history_b3_indexes | indices | Histórico D-1 de IBOV/IFIX/IFIL (pontos e variação) | “histórico do IFIX”, “variação do IBOV hoje” | Lista de datas com pontos e variações; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | index_date | sim |
+| history_currency_rates | moedas | Câmbio D-1 USD/EUR em BRL com compra/venda e variação | “cotação do dólar”, “variação do euro hoje” | Lista de datas com taxas e variações; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | rate_date | sim |
+| history_market_indicators | macro | Indicadores macro (IPCA, CDI, SELIC, IGPM etc.) D-1 | “CDI de ontem”, “IPCA na última leitura” | Lista de indicadores com data e valor; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | indicator_date | sim |
 
 ## 1. Detalhamento por entidade
 
 ### 1.1. client_fiis_positions
 
-**Nome e objetivo**  
+**Intent:** client_fiis_positions
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Posições privadas do cliente em FIIs, incluindo quantidades, preços, rentabilidade e peso na carteira, exigindo `document_number` seguro.
 
 **O que ela atende (perguntas comuns)**
@@ -50,7 +54,11 @@ Posições privadas do cliente em FIIs, incluindo quantidades, preços, rentabil
 
 ### 1.2. client_fiis_dividends_evolution
 
-**Nome e objetivo**  
+**Intent:** client_fiis_dividends_evolution
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Evolução mensal dos dividendos recebidos na carteira de FIIs do cliente (requer `document_number`).
 
 **O que ela atende (perguntas comuns)**
@@ -73,7 +81,11 @@ Evolução mensal dos dividendos recebidos na carteira de FIIs do cliente (reque
 
 ### 1.3. client_fiis_performance_vs_benchmark
 
-**Nome e objetivo**  
+**Intent:** client_fiis_performance_vs_benchmark
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Série temporal de performance da carteira de FIIs do cliente comparada a benchmarks (IFIX, IFIL, IBOV, CDI).
 
 **O que ela atende (perguntas comuns)**
@@ -95,7 +107,11 @@ Série temporal de performance da carteira de FIIs do cliente comparada a benchm
 
 ### 1.4. fiis_cadastro
 
-**Nome e objetivo**  
+**Intent:** fiis_cadastro
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Dados cadastrais estáticos de cada FII (CNPJ, administrador, classificação, setor, site, cotas e cotistas).
 
 **O que ela atende (perguntas comuns)**
@@ -118,7 +134,11 @@ Dados cadastrais estáticos de cada FII (CNPJ, administrador, classificação, s
 
 ### 1.5. fiis_dividendos
 
-**Nome e objetivo**  
+**Intent:** fiis_dividendos
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Histórico de proventos (dividendos) pagos por FII, com datas de pagamento e data-com.
 
 **O que ela atende (perguntas comuns)**
@@ -140,7 +160,11 @@ Histórico de proventos (dividendos) pagos por FII, com datas de pagamento e dat
 
 ### 1.6. fiis_yield_history
 
-**Nome e objetivo**  
+**Intent:** fiis_yield_history
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Histórico mensal de dividendos por cota, preço de referência e dividend yield (DY) de cada FII.
 
 **O que ela atende (perguntas comuns)**
@@ -161,7 +185,11 @@ Histórico mensal de dividendos por cota, preço de referência e dividend yield
 
 ### 1.7. fiis_financials_snapshot
 
-**Nome e objetivo**  
+**Intent:** fiis_financials_snapshot
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Snapshot D-1 de indicadores financeiros do FII (payout, alavancagem, EV, market cap, caixa, passivos, DY, variações).
 
 **O que ela atende (perguntas comuns)**
@@ -183,7 +211,11 @@ Snapshot D-1 de indicadores financeiros do FII (payout, alavancagem, EV, market 
 
 ### 1.8. fiis_financials_revenue_schedule
 
-**Nome e objetivo**  
+**Intent:** fiis_financials_revenue_schedule
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Estrutura temporal dos recebíveis do FII por buckets de vencimento e indexadores (IGPM, IPCA, INPC, INCC).
 
 **O que ela atende (perguntas comuns)**
@@ -205,7 +237,11 @@ Estrutura temporal dos recebíveis do FII por buckets de vencimento e indexadore
 
 ### 1.9. fiis_financials_risk
 
-**Nome e objetivo**  
+**Intent:** fiis_financials_risk
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Indicadores de risco quantitativo do FII (volatilidade, Sharpe, Treynor, Jensen, beta, Sortino, drawdown, R²) em base D-1.
 
 **O que ela atende (perguntas comuns)**
@@ -226,7 +262,11 @@ Indicadores de risco quantitativo do FII (volatilidade, Sharpe, Treynor, Jensen,
 
 ### 1.10. fiis_imoveis
 
-**Nome e objetivo**  
+**Intent:** fiis_imoveis
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Imóveis e ativos operacionais dos FIIs com classe, localização, área, unidades, vacância e inadimplência; base D-1.
 
 **O que ela atende (perguntas comuns)**
@@ -247,7 +287,11 @@ Imóveis e ativos operacionais dos FIIs com classe, localização, área, unidad
 
 ### 1.11. fiis_noticias
 
-**Nome e objetivo**  
+**Intent:** fiis_noticias
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Notícias e matérias D-1 sobre FIIs, consolidando fonte, título, tags e links.
 
 **O que ela atende (perguntas comuns)**
@@ -268,7 +312,11 @@ Notícias e matérias D-1 sobre FIIs, consolidando fonte, título, tags e links.
 
 ### 1.12. fiis_precos
 
-**Nome e objetivo**  
+**Intent:** fiis_precos
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Série diária de preços por FII (abertura, máxima, mínima, fechamento, variação).
 
 **O que ela atende (perguntas comuns)**
@@ -289,7 +337,11 @@ Série diária de preços por FII (abertura, máxima, mínima, fechamento, varia
 
 ### 1.13. fiis_processos
 
-**Nome e objetivo**  
+**Intent:** fiis_processos
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Processos judiciais associados a FIIs, com números, julgamento, instância, valores, risco de perda e fatos principais.
 
 **O que ela atende (perguntas comuns)**
@@ -310,7 +362,11 @@ Processos judiciais associados a FIIs, com números, julgamento, instância, val
 
 ### 1.14. fiis_rankings
 
-**Nome e objetivo**  
+**Intent:** fiis_rankings
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Rankings que posicionam FIIs por popularidade, índices IFIX/IFIL, dividend yield, dividendos, valor de mercado, patrimônio, Sharpe, Sortino, volatilidade e drawdown.
 
 **O que ela atende (perguntas comuns)**
@@ -331,7 +387,11 @@ Rankings que posicionam FIIs por popularidade, índices IFIX/IFIL, dividend yiel
 
 ### 1.15. fii_overview
 
-**Nome e objetivo**  
+**Intent:** fii_overview
+
+**Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
+
+**Nome e objetivo**
 Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros, risco e rankings.
 
 **O que ela atende (perguntas comuns)**
@@ -352,7 +412,11 @@ Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros, risc
 
 ### 1.16. history_b3_indexes
 
-**Nome e objetivo**  
+**Intent:** history_b3_indexes
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Histórico D-1 dos índices IBOV, IFIX e IFIL com pontos e variação diária.
 
 **O que ela atende (perguntas comuns)**
@@ -373,7 +437,11 @@ Histórico D-1 dos índices IBOV, IFIX e IFIL com pontos e variação diária.
 
 ### 1.17. history_currency_rates
 
-**Nome e objetivo**  
+**Intent:** history_currency_rates
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Taxas de câmbio D-1 de USD/EUR em BRL, com compra/venda e variação diária.
 
 **O que ela atende (perguntas comuns)**
@@ -394,7 +462,11 @@ Taxas de câmbio D-1 de USD/EUR em BRL, com compra/venda e variação diária.
 
 ### 1.18. history_market_indicators
 
-**Nome e objetivo**  
+**Intent:** history_market_indicators
+
+**Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
+
+**Nome e objetivo**
 Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 **O que ela atende (perguntas comuns)**
