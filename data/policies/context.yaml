@@ -25,10 +25,14 @@ context:
       - fiis_rankings
       - fiis_processos
       - fiis_noticias
+      - fii_overview
+      - fiis_yield_history
 
     # entidades administrativas / sistema (não herdam contexto)
     denied_entities:
       - client_fiis_positions
+      - client_fiis_dividends_evolution
+      - client_fiis_performance_vs_benchmark
       - history_b3_indexes
       - history_currency_rates
       - history_market_indicators
@@ -49,9 +53,13 @@ context:
       - fiis_rankings
       - fiis_processos
       - fiis_noticias
+      - fii_overview
+      - fiis_yield_history
 
     denied_entities:
       - client_fiis_positions
+      - client_fiis_dividends_evolution
+      - client_fiis_performance_vs_benchmark
       - history_b3_indexes
       - history_currency_rates
       - history_market_indicators
@@ -68,6 +76,11 @@ context:
       use_referenced_ticker: true
       use_last_entity: true
 
+    # Histórico de DY
+    fiis_yield_history:
+      use_referenced_ticker: true
+      use_last_entity: true
+
     # Risco quantitativo (Sharpe, Beta, MDD, etc.)
     fiis_financials_risk:
       use_referenced_ticker: true
@@ -75,6 +88,11 @@ context:
 
     # Snapshot fundamentalista (market cap, PL, payout, etc.)
     fiis_financials_snapshot:
+      use_referenced_ticker: true
+      use_last_entity: true
+
+    # Overview consolidado (foto do FII)
+    fii_overview:
       use_referenced_ticker: true
       use_last_entity: true
 
@@ -112,5 +130,13 @@ context:
       use_last_entity: false
 
     history_market_indicators:
+      use_referenced_ticker: false
+      use_last_entity: false
+
+    client_fiis_dividends_evolution:
+      use_referenced_ticker: false
+      use_last_entity: false
+
+    client_fiis_performance_vs_benchmark:
       use_referenced_ticker: false
       use_last_entity: false

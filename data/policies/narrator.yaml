@@ -43,7 +43,10 @@ max_llm_rows: 0
 # ======================
 entities:
 
-  # client_fiis_positions: carteira deterministica; narrator desligado por design
+  # client_fiis_positions: carteira; narrator desligado por design
+  # client_fiis_dividends_evolution: carteira; narrator desligado por design
+  # client_fiis_performance_vs_benchmark: carteira; narrator desligado por design
+
   # fiis_cadastro: cadastro estatico; narrativas nao aplicaveis
   # fiis_dividendos: serie historica numerica; narrativas ficam desabilitadas
   # fiis_financials_snapshot: indicadores D-1; resposta tabular
@@ -51,6 +54,8 @@ entities:
   # fiis_precos: serie historica; narrator nao habilitado
   # fiis_processos: processos estruturados; narrativa nao requerida
   # fiis_rankings: ranking deterministico; narrator fora de escopo
+  # fiis_yield_history: histórico numérico de DY; resposta tabular
+  # fii_overview: visão consolidada (DY, risco, rankings); narrativa opcional
 
   fiis_financials_risk:
     llm_enabled: false
@@ -98,6 +103,24 @@ entities:
     concept_with_data_when_rag: false
 
   history_currency_rates:
+    llm_enabled: false
+    strict_mode: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
+    use_conversation_context: false
+    rag_fallback_when_no_rows: false
+    concept_with_data_when_rag: false
+
+  fii_overview:
+    llm_enabled: false
+    strict_mode: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
+    use_conversation_context: false
+    rag_fallback_when_no_rows: false
+    concept_with_data_when_rag: false
+
+  fiis_yield_history:
     llm_enabled: false
     strict_mode: false
     max_llm_rows: 0
