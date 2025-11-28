@@ -1367,3 +1367,6 @@ ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
 ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
 -- =====================================================================
+
+select * from explain_events
+select * from narrator_events
