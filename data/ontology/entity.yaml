@@ -33,6 +33,19 @@ intents:
         - vacancia
         - sharpe
         - ifix
+        - ifil
+        - ibov
+        - cdi
+        - benchmark
+        - retorno
+        - performance
+        - rentabilidade
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - renda
+        - rendimento
     phrases:
       include:
         - minhas posicoes
@@ -56,6 +69,9 @@ intents:
         - minhas
         - minha
         - meu
+        - recebeu
+        - recebidos
+        - mes
       exclude:
         - cpf
         - cnpj
@@ -68,6 +84,7 @@ intents:
         - historico de dividendos
         - renda mensal dos meus fiis
         - dividendos da minha carteira
+        - quanto minha carteira de fiis recebeu de dividendos em cada mes
       exclude: []
     entities: [client_fiis_dividends_evolution]
 
@@ -93,6 +110,8 @@ intents:
         - documento
         - imovel
         - imoveis
+        - acumulo
+        - acumulado
     phrases:
       include:
         - desempenho da minha carteira
@@ -189,6 +208,7 @@ intents:
         - "visao geral"
         - foto
         - fotografia
+        - indicadores
       exclude:
         - noticia
         - noticias
@@ -206,6 +226,10 @@ intents:
         - futura
         - distribuida
         - distribuicao
+        - cdi
+        - selic
+        - ipca
+        - igpm
     phrases:
       include:
         - resumo do
@@ -214,6 +238,7 @@ intents:
         - situacao do
         - visao geral do
         - foto do fundo
+        - principais indicadores do
       exclude: []
     entities: [fii_overview]
 
@@ -322,13 +347,13 @@ intents:
         - ultimos 12 meses
         - rendimento mensal
         - rendimento 12m
+      exclude:
         - dy
         - dy mensal
         - dy 12m
         - dividend yield
         - yield mensal
         - yield
-      exclude:
     phrases:
       include:
         - dividendo do
@@ -340,9 +365,6 @@ intents:
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
-        - dy do
-        - dy mensal do
-        - dividend yield do
       exclude:
     entities: [fiis_dividendos]
 
@@ -370,6 +392,8 @@ intents:
         - dy do
         - evolucao do dy do
         - dy medio dos
+        - historico de dividend yield do
+        - comparativo de dy mensal entre
       exclude: []
     entities: [fiis_yield_history]
 
@@ -887,6 +911,8 @@ intents:
         - outubro
         - novembro
         - dezembro
+        - acumulo
+        - acumulado
       exclude:
         - ibov
         - ibovespa
@@ -923,6 +949,8 @@ intents:
         - serie historica do ipca
         - indice de inflacao nos ultimos
         - historico do indice de precos
+        - acumulo de cdi em 12 meses
+        - acumulo de selic em 12 meses
       exclude: []
     entities: [history_market_indicators]
 
