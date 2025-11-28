@@ -473,8 +473,8 @@
     },
     {
       "question": "DY mensal do MCCI11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
     },
     {
       "question": "top 10 FIIs por dividend yield 12m",
@@ -1273,8 +1273,8 @@
     },
     {
       "question": "peso do HGLG11 na minha carteira",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     },
     {
       "question": "dy mensal dos meus fiis",

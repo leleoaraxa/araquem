@@ -10,7 +10,6 @@
     "weight_pct"
   ],
   "samples": [
-    { "question": "peso do HGLG11 na minha carteira" },
     { "question": "valor investido em MXRF11 na carteira" },
     { "question": "dy mensal dos meus fiis" },
     { "question": "ranking de sharpe dos meus fiis na carteira" }

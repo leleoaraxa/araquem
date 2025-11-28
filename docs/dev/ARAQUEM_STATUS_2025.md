@@ -240,7 +240,6 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
   * Binding: `document_number: context.client_id` (nunca vem do texto).
   * Perguntas alvo:
 
-    * “peso do HGLG11 na minha carteira”;
     * “valor investido em MXRF11 na carteira”;
     * “DY mensal dos meus FIIs”;
     * “ranking de Sharpe dos meus FIIs na carteira”.

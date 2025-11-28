@@ -4,7 +4,6 @@ Cada linha representa um ativo na carteira do cliente em uma `position_date`, co
 DY, indicadores de risco e posições em rankings.
 
 ## Exemplos de perguntas
-- "peso do HGLG11 na minha carteira"
 - "valor investido em MXRF11 na carteira"
 - "DY mensal dos meus FIIs"
 - "ranking de Sharpe dos meus FIIs na carteira"

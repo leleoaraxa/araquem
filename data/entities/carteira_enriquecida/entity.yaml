@@ -169,7 +169,6 @@ ask:
     keywords: 1.0
     synonyms: 0.5
   sample_questions:
-    - peso do HGLG11 na minha carteira
     - valor investido em MXRF11 na carteira
     - dy mensal dos meus FIIs
     - ranking de sharpe dos meus FIIs na carteira

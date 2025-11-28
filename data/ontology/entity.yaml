@@ -100,6 +100,7 @@ intents:
     - rentabilidade
     - retorno
     - comparacao
+    - comparar
     - benchmark
     - ifix
     - ifil
@@ -119,6 +120,8 @@ intents:
     - acumulado
     - posicao
     - posicoes
+    - peso
+    - distribuicao
   phrases:
     include:
     - desempenho da minha carteira
@@ -128,9 +131,15 @@ intents:
     - rentabilidade da minha carteira versus
     - comparar minha carteira com
     - minha carteira esta melhor que
+    - minha carteira de fiis
+    - retorno da minha carteira de fiis
+    - minha carteira de fiis esta melhor ou pior que
+    - retorno da minha carteira de fiis comparado com
     exclude:
     - rentabilidade da minha posicao
     - minha posicao em
+    - peso do
+    - distribuicao da minha carteira
   entities:
   - client_fiis_performance_vs_benchmark
 - name: fiis_cadastro
@@ -982,7 +991,14 @@ intents:
     - dy mensal
     - dy 12m
     - comparativo
-    exclude: []
+    exclude:
+    - meus
+    - minha
+    - minhas
+    - carteira
+    - meus fiis
+    - minha carteira
+    - minha carteira de fiis
   phrases:
     include:
     - dividendos e dy do
@@ -998,26 +1014,19 @@ intents:
   tokens:
     include:
     - carteira
-    - minha carteira
     - posicao
     - posicoes
-    - peso
+    - valor
     - valor investido
     - dy mensal
     - dy 12m
-    - ranking
-    - sharpe
-    - beta
-    - risco
     exclude: []
   phrases:
     include:
-    - peso do
     - valor investido em
     - meus fiis
-    - minha carteira de fiis
     - dy dos meus fiis
-    - ranking de sharpe
+    - dy mensal dos meus fiis
     exclude: []
   entities:
   - carteira_enriquecida
@@ -1044,6 +1053,8 @@ intents:
     - ibov em
     - dolar em
     - euro em
+    - ifix e ibov
+    - ifix e ibov do dia
     exclude: []
   entities:
   - macro_consolidada
