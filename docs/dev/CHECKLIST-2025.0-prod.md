@@ -177,11 +177,8 @@
 **✔️ Feito**
 
 * ✔ `quality.yaml` revisado com `targets` realistas (min_top1_accuracy 0.93, min_routed_rate 0.98)
-
 * ✔ Cobertura de datasets incluindo:
-
   * FIIs:
-
     * preços (`fiis_precos`)
     * dividendos (`fiis_dividendos`)
     * histórico de DY (`fiis_yield_history`)
@@ -194,38 +191,30 @@
     * risco (`fiis_financials_risk`)
     * overview consolidado (`fii_overview`)
     * notícias (`fiis_noticias`)
-    * **composto de dividendos + DY** (`dividendos_yield`)
-
   * Cliente (privado):
-
     * posições de carteira (`client_fiis_positions`)
     * evolução de dividendos da carteira (`client_fiis_dividends_evolution`)
     * performance vs benchmark (`client_fiis_performance_vs_benchmark`)
-    * **carteira enriquecida (posições + risco + DY + rankings)** (`carteira_enriquecida`)
-
+    * carteira enriquecida (`carteira_enriquecida`)
   * Macro:
-
-    * `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`
-    * **macro consolidada** (`macro_consolidada`)
-
+    * `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`, `macro_consolidada`
 * ✔ Regras de faixa (`accepted_range`) adicionadas/ajustadas para:
-
   * buckets de receita (`fiis_financials_revenue_schedule`)
   * risco (`fiis_financials_risk`)
   * macro/índices/moedas (variações e taxas > 0, limites razoáveis)
-  * carteiras (`client_fiis_*` e `carteira_enriquecida` – retornos entre -1.0 e 1.0, valores >= 0)
-  * **DY e dividendos combinados** em `dividendos_yield` (faixas consistentes com snapshot/histórico)
-
+  * carteiras (`client_fiis_*` – retornos entre -1.0 e 1.0, valores >= 0)
 * ✔ `quality_list_misses.py` e `quality_diff_routing.py` rodando sem chamar Ollama
-
-* ✔ Última intenção de baseline: **0 misses de roteamento** no conjunto de testes atual (incluindo casos das três novas entidades)
+* ✔ Baseline **2025.0-prod** fixado:
+  * `python scripts/quality/quality_list_misses.py` → `✅ Sem misses.`
+  * `python scripts/quality/quality_diff_routing.py` → `✅ Sem misses.`
+  * routing_samples cobrindo também `dividendos_yield`, `carteira_enriquecida` e `macro_consolidada`.
 
 **🔵 Falta**
 
 * [ ] Rodar rotina de quality periodicamente e registrar histórico de baseline
-* [ ] Fixar baseline 2025.0-prod em README interno de quality
-* [ ] Validar e ajustar dashboards de qualidade no Grafana (top1, routed, gap) para as **21 entidades**
-* [ ] Preparar check de qualidade para novos domínios futuros (além das três compostas já entregues)
+* [ ] Documentar no README interno de quality o procedimento de atualização de baseline (quando houver mudança em ontologia/entities/policies)
+* [ ] Validar e ajustar dashboards de qualidade no Grafana (top1, routed, gap)
+* [ ] Preparar check de qualidade para novos domínios (futuros compostos / yield avançado)
 
 ---
 
