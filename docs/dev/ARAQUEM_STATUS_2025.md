@@ -20,7 +20,7 @@
 * **context_builder**: `build_context` aplica política `data/policies/rag.yaml` (routing.allow_intents/deny_intents, entities/default/profiles). Resolve collections, max_chunks/min_score/max_tokens, usa embeddings search determinístico e normaliza chunks (texto, score, doc_id, collection). Desabilita quando não permitido ou erro, retornando `enabled=False` e motivo.【F:app/rag/context_builder.py†L1-L179】【F:data/policies/rag.yaml†L1-L120】
 * **entity_hints**: Planner lê store via `cached_embedding_store`, gera vetor com `OllamaClient.embed` e converte resultados em hints por entidade (`entity_hints_from_rag`).【F:app/planner/planner.py†L187-L230】
 * **RAG fusion & re-ranking**: peso definido em policy (`rag.weight` ou `re_rank.weight`); modos blend/additive ajustam score final; `fusion` bloco aponta `affected_entities` e erro. Re-rank flag controla se thresholds usam score final.【F:app/planner/planner.py†L240-L320】
-* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk), roteamento por intent, collections por entidade e default seguro (concepts-fiis). Intents **negados** para RAG: domínios puramente numéricos/privados (FIIs SQL, posição de cliente, carteira privada e overview consolidado). Intents **permitidos**: domínios textuais/explicativos (`fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). Comentários explicam o racional de cada deny/allow.
+* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk), roteamento por intent, collections por entidade e default seguro (concepts-fiis). Intents **negados** para RAG: domínios puramente numéricos/privados (FIIs SQL, posição de cliente, carteira privada e overview consolidado, inclusive `dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`). Intents **permitidos**: domínios textuais/explicativos (`fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). Comentários explicam o racional de cada deny/allow.
 
 ## 2.3 Formatter
 
@@ -43,7 +43,7 @@
 * **narrator.yaml**: carregado via `data/policies/narrator.yaml` (default/entidades, llm_enabled/shadow/model/max_llm_rows/use_rag_in_prompt etc.). Effective policy combina default + overrides, ignorando env para habilitação/shadow.【F:app/narrator/narrator.py†L85-L160】
 * **Política de LLM**: `_should_use_llm` checa policy enabled e limites de linhas; render retorna baseline se desabilitado ou max_llm_rows <=0 ou rows>limite ou client indisponível. Tokens/latency/strategy registrados.【F:app/narrator/narrator.py†L121-L212】【F:app/narrator/narrator.py†L360-L460】
 * **Shadow mode**: se `shadow=True`, estratégia final `llm_shadow` devolve baseline mas registra uso; Narrator_meta marca enabled/shadow/model/strategy e rag_ctx. LLM errors caem em `llm_failed` com baseline.【F:app/narrator/narrator.py†L360-L520】
-* **Estado atual**: **LLM globalmente desligado** (`llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`) para todas as entidades (incluindo risco, macro, índices, notícias e as novas entidades de carteira). Overrides por entidade existem, mas todos com LLM OFF; o sistema opera 100% determinístico.
+* **Estado atual**: **LLM globalmente desligado** (`llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`) para todas as entidades (incluindo risco, macro, índices, notícias, compostas e entidades privadas de carteira). Overrides por entidade existem, mas todos com LLM OFF; o sistema opera 100% determinístico.
 
 ## 2.6 Executor
 
@@ -62,21 +62,24 @@
 
 ## 3.1 Visão geral
 
-Hoje o Araquem trabalha com **18 entidades canônicas**:
+Hoje o Araquem trabalha com **21 entidades canônicas**:
 
 * **FIIs (domínio público)**
   `fiis_cadastro`, `fiis_precos`, `fiis_dividendos`, `fiis_yield_history`, `fii_overview`,
   `fiis_imoveis`, `fiis_rankings`, `fiis_processos`,
   `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`,
-  `fiis_noticias`.
+  `fiis_noticias`,
+  `dividendos_yield` (composta, pública).
 
 * **Macro/Índices/Moedas (domínio público)**
-  `history_b3_indexes`, `history_currency_rates`, `history_market_indicators`.
+  `history_b3_indexes`, `history_currency_rates`, `history_market_indicators`,
+  `macro_consolidada` (composta, pública).
 
 * **Cliente (domínio privado)**
   `client_fiis_positions`,
   `client_fiis_dividends_evolution`,
-  `client_fiis_performance_vs_benchmark`.
+  `client_fiis_performance_vs_benchmark`,
+  `carteira_enriquecida` (composta, privada).
 
 Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths para `entity.yaml`, schema, projection de quality (quando existe) e flags de cobertura (cache, RAG, Narrator, param_inference, ontologia).
 
@@ -90,13 +93,31 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 
 ### fiis_yield_history (histórica)
 
-* **Nova entidade histórica** com evolução mensal de yield:
+* Entidade histórica com evolução mensal de yield:
+
   * `ref_month`, `dividends_sum`, `dy_monthly`, `price_ref` etc.
 * Alvo natural para perguntas:
+
   * “histórico de dividend yield do MXRF11 nos últimos 12 meses”
   * “evolução do DY do KNRI11”
   * “comparativo de DY mensal entre HGLG11 e VISC11”
 * Tem schema, projection de quality (`projection_fiis_yield_history_evolution.json`) e routing samples dedicados.
+
+### dividendos_yield (composta, histórica, pública)
+
+* **Nova entidade pública composta**: junta dividendos históricos + DY mensal/12m por FII.
+* View: `public.dividendos_yield`.
+* Colunas típicas: `ticker`, `ref_month`, `dividend_amt`, `dy_monthly`, `dy_12m_pct`.
+* Alvo natural para perguntas que pedem **“dividendos e DY” juntos**, por exemplo:
+
+  * “histórico de dividendos e DY do MXRF11 nos últimos 12 meses”
+  * “quanto o HGLG11 pagou de dividendos e qual foi o DY em 2024-08”
+* Políticas:
+
+  * **cache**: público;
+  * **RAG**: deny;
+  * **Narrator**: off;
+  * **inferência temporal**: habilitada (janelas históricas por mês / 12m).
 
 ### fiis_financials_snapshot (snapshot D-1)
 
@@ -121,19 +142,23 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 ### fiis_cadastro, fiis_imoveis, fiis_rankings, fiis_processos, fiis_noticias, fiis_precos
 
 * Mesma visão da versão anterior, com ajustes na ontologia para reduzir colisões:
+
   * Notícias negativas/recentes vão para `fiis_noticias` e não para preços.
   * Perguntas de “histórico do dólar” e “histórico do IPCA” não caem em `fiis_precos`.
 
 ### fii_overview (snapshot D-1)
 
-* **Nova visão consolidada** D-1 por FII:
+* Visão consolidada D-1 por FII:
+
   * Combina cadastro, snapshot financeiro, indicadores de risco e rankings em uma “ficha executiva”.
 * Indicadores-chave:
+
   * DY mensal/12m, dividendos 12m, último dividendo, datas de pagamento,
   * market cap, EV, P/BV, PL por cota, receita por cota, payout, cap rate, alavancagem,
   * métricas de risco (volatilidade, Sharpe, Sortino, MDD, beta, R²),
   * rankings (popularidade, IFIX/IFIL, DY, risco).
 * Alvo natural para:
+
   * “resumo do HGLG11”
   * “overview do KNRI11”
   * “como está o MXRF11 hoje?”
@@ -142,29 +167,51 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 ## 3.3 Macro / Índices / Moedas
 
 * **history_currency_rates (histórica)**
+
   * Histórico multi-ano de USD/EUR em BRL (compra/venda).
   * Ontologia cobre “histórico do dólar”, “variação do dólar nos últimos 12 meses” etc.
   * Quality: freshness 30h, taxas >0, faixas realistas.
 
 * **history_b3_indexes (histórica)**
+
   * Índices da B3 (IBOV, IFIX, IFIL) com pontos e variação.
   * Quality consolidado com faixas para variações diárias.
 
 * **history_market_indicators (histórica)**
+
   * IPCA, CDI, Selic, IGP-M, INCC, INPC etc.
   * Ontologia captura “histórico do IPCA”, “série histórica da inflação”.
   * Quality controla faixa de `indicator_amt`.
 
+* **macro_consolidada (composta, histórica, pública)**
+
+  * **Nova entidade macro consolidada** que une IPCA/SELIC/CDI, IFIX/IBOV e câmbio em uma mesma visão canônica.
+  * View: `public.macro_consolidada`.
+  * Uso típico:
+
+    * “IPCA e Selic em 2025-11-12”;
+    * “IFIX e IBOV do dia 2025-11-14”;
+    * consultas macro consolidadas por data/período.
+  * Políticas:
+
+    * **cache**: público;
+    * **RAG**: deny (somente números SQL);
+    * **Narrator**: off;
+    * **janelas históricas**: habilitadas (inferência temporal ligada no builder/param_inference).
+
 ## 3.4 Cliente (privado)
 
 * **client_fiis_positions (snapshot D-1, PRIVADO)**
+
   * Materialized view com carteira de FIIs do cliente (document_number, data, ticker, qty, PM, % carteira etc.).
   * `document_number` nunca aparece na apresentação; binding via `context.client_id`.
   * RAG negado; Narrator off; quality com freshness 30min.
 
 * **client_fiis_dividends_evolution (histórica agregada, PRIVADO)**
+
   * Evolução mensal dos dividendos da carteira (`year_reference`, `month_number`/`month_name`, `total_dividends`).
   * Perguntas típicas:
+
     * “evolução dos dividendos da minha carteira de FIIs”
     * “renda mensal dos meus FIIs”
     * “minha renda mensal com FIIs está crescendo?”
@@ -173,82 +220,121 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
   * Tem schema, projection (`projection_client_fiis_dividends_evolution.json`), quality dataset e routing samples.
 
 * **client_fiis_performance_vs_benchmark (histórica, PRIVADO)**
+
   * Série temporal de valor/retorno da carteira de FIIs vs. benchmark (IFIX, IFIL, IBOV, CDI).
   * Campos: `portfolio_amount`, `portfolio_return_pct`, `benchmark_value`, `benchmark_return_pct`, `benchmark_code`.
   * Perguntas típicas:
+
     * “minha carteira de FIIs está melhor ou pior que o CDI?”
     * “performance da minha carteira de FIIs versus o IFIX nos últimos 12 meses”
   * Mesmo modelo de segurança:
+
     * `document_number` bindado via `context.client_id`;
     * RAG/Narrator negados; SQL puro; LGPD respeitada.
   * Tem schema, projection (`projection_client_fiis_performance_vs_benchmark.json`), quality dataset e routing samples.
+
+* **carteira_enriquecida (composta, snapshot D-1, PRIVADO)**
+
+  * **Nova entidade privada composta** com posição enriquecida do cliente: junta posições, cadastro, risco, DY e rankings por FII da carteira.
+  * View: `public.carteira_enriquecida`.
+  * Binding: `document_number: context.client_id` (nunca vem do texto).
+  * Perguntas alvo:
+
+    * “peso do HGLG11 na minha carteira”;
+    * “valor investido em MXRF11 na carteira”;
+    * “DY mensal dos meus FIIs”;
+    * “ranking de Sharpe dos meus FIIs na carteira”.
+  * Políticas:
+
+    * **cache**: privado;
+    * **RAG**: deny;
+    * **Narrator**: off;
+    * **inferência temporal**: desabilitada (foto D-1 da carteira).
 
 ## 3.5 Mapa D-1 vs histórico (resumo mental)
 
 * **Históricas (linha do tempo explícita)**
   `fiis_precos`, `fiis_dividendos`, `fiis_yield_history`, `fiis_noticias`,
   `history_b3_indexes`, `history_currency_rates`, `history_market_indicators`,
-  `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`.
+  `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`,
+  `dividendos_yield`, `macro_consolidada`.
 
 * **Snapshots D-1 (foto do dia anterior, sem histórico na entidade)**
   `fiis_cadastro`, `fiis_imoveis`, `fiis_rankings`, `fiis_processos`,
   `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`,
-  `fii_overview`, `client_fiis_positions`.
+  `fii_overview`, `client_fiis_positions`, `carteira_enriquecida`.
 
 ## 3.6 Notas sobre DY / yield e dividendos
 
 * DY/yield **não** sai de `fiis_dividendos` (somente `dividend_amt` + datas).
+
 * Valores de yield atuais e históricos vêm de:
-  * `fiis_financials_snapshot` → DY corrente / DY 12m (foto D-1).
-  * `fiis_yield_history` → histórico mensal de DY e dividendos por mês.
-  * `fiis_rankings` → posições relativas em rankings de DY.
+
+  * `fiis_financials_snapshot` → DY corrente / DY 12m (foto D-1);
+  * `fiis_yield_history` → histórico mensal de DY e dividendos por mês;
+  * `fiis_rankings` → posições relativas em rankings de DY;
+  * `dividendos_yield` → visão composta de **dividendos + DY mensal/12m** por FII (entidade pública).
+
 * Implicações de routing:
+
   * “quanto é o DY do HGLG11?” → `fiis_financials_snapshot`.
   * “top 10 FIIs com maior DY” → `fiis_rankings`.
   * “histórico de dividend yield do MXRF11 nos últimos 12 meses” → `fiis_yield_history`.
   * “histórico de pagamentos do MXRF11” → `fiis_dividendos`.
+  * “histórico de dividendos **e DY** do MXRF11 nos últimos 12 meses” → `dividendos_yield`.
 
-**Backlog conceitual (DY e carteira)**:
+**Estado atual (DY, carteira e macro compostas)**:
 
-* Views compostas futuras (compute-on-read, sem quebrar contratos atuais):
-  * `dividendos_yield` (junção de `fiis_dividendos` + `fiis_yield_history` para análises mais ricas);
-  * `carteira_enriquecida` (positions + snapshot + risk + cadastro);
-  * `macro_consolidada` (moedas + índices + macro).
+* As views compostas que estavam em backlog agora estão implementadas, com contratos claros:
+
+  * ✅ `dividendos_yield` — entidade pública composta de dividendos + DY mensal/12m por FII; view `public.dividendos_yield`; políticas: cache pub, RAG deny, Narrator off, inferência temporal habilitada.
+  * ✅ `carteira_enriquecida` — entidade privada com posição enriquecida do cliente (cadastro, risco, DY, rankings); view `public.carteira_enriquecida`; binding `document_number: context.client_id`; cache prv; RAG/Narrator negados; inferência desabilitada.
+  * ✅ `macro_consolidada` — entidade macro histórica consolidada (IPCA, SELIC/CDI, IFIX/IBOV, câmbio); view `public.macro_consolidada`; cache pub; RAG deny; Narrator off; janelas históricas habilitadas.
+
+* Próximos compostos (backlog futuro) seguem o padrão compute-on-read/D-1 definido no Guardrails, mas **sem novos contratos quebrando as 21 entidades atuais**.
 
 ## 3.7 Novos compostos possíveis (joins SQL)
 
-*(Segue a mesma ideia anterior, agora tendo `fii_overview` e `fiis_yield_history` já implementados)*
+*(Segue a mesma ideia anterior, agora tendo `fii_overview`, `fiis_yield_history`, `dividendos_yield`, `carteira_enriquecida` e `macro_consolidada` já implementados)*
 
-* **Ficha completa do FII** – hoje coberta em grande parte por `fii_overview`. Possível extensão futura com históricos (DY, preço, risco).
+* **Ficha completa do FII** – hoje coberta em grande parte por `fii_overview`. Possível extensão futura com históricos adicionais (preço, risco detalhado).
 * **Painel de risco/retorno** – join snapshot + risk + rankings (backlog para entidade dedicada).
-* **Visão consolidada da carteira do cliente** – join positions + snapshot + risk + cadastro, respeitando LGPD (backlog).
+* **Visão consolidada da carteira do cliente** – hoje coberta por `carteira_enriquecida`, com possibilidade de versões temporais futuras seguindo compute-on-read e LGPD.
 
 ## 3.8 Relatório de consistência de entidades
 
 * **Arquivo**: `data/ops/entities_consistency_report.yaml`.
 * **Função**: mapear, para cada entidade canônica (pasta em `data/entities/*`), se ela:
+
   * tem schema em `data/contracts/entities/*.schema.yaml`,
   * tem projection de quality,
   * aparece em `quality.yaml.datasets`,
   * está (ou é explicitamente excluída) em `cache.yaml`, `rag.yaml`, `narrator.yaml`,
   * tem intents associadas na ontologia,
   * possui (ou não precisa de) regras em `param_inference.yaml`.
-* **Uso**: evitar “entidades órfãs” em policies e servir de checklist automático para novos domínios (incluindo as entidades privadas de carteira).
+* **Uso**: evitar “entidades órfãs” em policies e servir de checklist automático para novos domínios (incluindo as entidades privadas e compostas de carteira/macro).
 
 # 4. Ontologia
 
 * **Estrutura**: `data/ontology/entity.yaml` define normalize (lower/strip_accents/strip_punct), token_split `\b`, weights token/phrase e intents com tokens/phrases include/exclude, anti_tokens e entities associadas.【F:data/ontology/entity.yaml†L1-L120】
+
 * **Synonyms/metrics_synonyms**: routing extrai métricas solicitadas comparando `ask.metrics_synonyms` de cada `entity.yaml` com pergunta normalizada; identifica métricas para formatter/presenter. (Mapa dentro de cada entidade via chave ask.metrics_synonyms).【F:app/orchestrator/routing.py†L30-L70】【F:app/orchestrator/routing.py†L470-L520】
+
 * **Influência no routing**: planner usa intents do ontology para scoring e associação de entidades; normalização e tokenização controlam sensibilidade; anti_tokens penalizam. `extract_requested_metrics` usa synonyms para meta.requested_metrics, influenciando Narrator e formatação.【F:app/planner/planner.py†L98-L186】【F:app/orchestrator/routing.py†L30-L90】【F:app/presenter/presenter.py†L19-L157】
+
 * **Interação RAG**: intents vencedores orientam filtros de snippets (tokens include) em `rag_context`, garantindo relevância semântica ao contextualizar Presenter/Narrator.【F:app/planner/planner.py†L300-L358】
+
 * **Ajustes recentes**:
-  * DY/yield removidos de `fiis_dividendos` e reforçados em `fiis_financials_snapshot` / `fiis_yield_history` / `fiis_rankings`.
-  * Tokens/phrases para “histórico do dólar”, “variação do dólar…”, “histórico do IPCA…” direcionando corretamente para `history_currency_rates` e `history_market_indicators`.
+
+  * DY/yield removidos de `fiis_dividendos` e reforçados em `fiis_financials_snapshot` / `fiis_yield_history` / `fiis_rankings` / `dividendos_yield`.
+  * Tokens/phrases para “histórico do dólar”, “variação do dólar…”, “histórico do IPCA…” direcionando corretamente para `history_currency_rates` e `history_market_indicators`/`macro_consolidada`.
   * Ampliação de tokens para notícias negativas de FIIs, reduzindo colisão com `fiis_precos`.
   * Inclusão de intents privadas:
+
     * `client_fiis_dividends_evolution` (renda mensal de FIIs);
     * `client_fiis_performance_vs_benchmark` (carteira vs IFIX/IFIL/CDI/IBOV);
-    * e intent pública `fii_overview` (resumo consolidado do FII).
+    * intent pública `fii_overview` (resumo consolidado do FII);
+    * intents compostas para `dividendos_yield`, `carteira_enriquecida` e `macro_consolidada` com tokens/phrases bem delimitados.
 
 * **Estado dos testes**: após ajustes em ontologia + routing_samples, o alvo de baseline é `quality_list_misses.py` retornando **“✅ Sem misses”** no dataset atual.
 
@@ -262,7 +348,9 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 * **quality_push**: endpoint `/ops/quality/push` recebe payloads de amostras de roteamento, valida policy e registra métricas; scripts `quality_push.py` e `quality_push_cron.py` automatizam envio e verificações com tokens e quality gates. Dashboards Grafana gerados por `gen_quality_dashboard.py`.【F:app/api/ops/quality.py†L148-L420】【F:scripts/quality/quality_push.py†L1-L90】【F:scripts/quality/gen_quality_dashboard.py†L1-L160】
 * **Baseline**: `quality_report` utiliza policy `data/policies/quality.yaml` ou fallback e expõe métricas de top1/gap/routed; scripts shell `quality_gate_check.sh` consultam API/Prometheus. Baseline determinístico do Presenter/Narrator garante comparação consistente em shadow/LLM. Prometheus coleta métricas `sirios_planner_top1_match_total`, `planner_quality_*`.【F:app/api/ops/quality.py†L480-L563】【F:app/observability/runtime.py†L70-L152】【F:app/presenter/presenter.py†L204-L285】
 * **Cobertura atual de datasets**:
+
   * FIIs:
+
     * preços (`fiis_precos`),
     * dividendos (`fiis_dividendos`),
     * histórico de DY (`fiis_yield_history`),
@@ -274,13 +362,18 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
     * cronograma de receitas (`fiis_financials_revenue_schedule`),
     * risco (`fiis_financials_risk`),
     * overview consolidado (`fii_overview`),
-    * notícias (`fiis_noticias`).
+    * notícias (`fiis_noticias`),
+    * **composto de dividendos + DY** (`dividendos_yield`).
   * Cliente (privado):
+
     * posições de carteira (`client_fiis_positions`),
     * evolução de dividendos da carteira (`client_fiis_dividends_evolution`),
-    * performance vs benchmark (`client_fiis_performance_vs_benchmark`).
+    * performance vs benchmark (`client_fiis_performance_vs_benchmark`),
+    * **carteira enriquecida (posições + risco + DY + rankings)** (`carteira_enriquecida`).
   * Macro:
-    * `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`.
+
+    * `history_currency_rates`, `history_b3_indexes`, `history_market_indicators`,
+    * **macro consolidada** (`macro_consolidada`).
 
 # 7. Caminho para Produção
 
