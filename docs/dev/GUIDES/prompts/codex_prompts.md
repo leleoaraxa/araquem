@@ -23,7 +23,7 @@ Não modifique nada fora de prompts.py.
 O comportamento deve ser 100% determinístico.
 
 Saída: patch/diff Git pronto para commit.
-````
+```
 
 ---
 
@@ -220,7 +220,7 @@ Regras:
 Saída: patch Git estritamente determinístico.
 ```
 
-````
+```
 
 ---
 
@@ -338,7 +338,7 @@ modes:
       - "não inferir comportamentos não declarados"
       - "usar exclusivamente YAML como fonte de parâmetros"
     output: "git_diff"
-````
+```
 
 ---
 
