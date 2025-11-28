@@ -85,6 +85,12 @@ DEFAULT_POLICY: Dict[str, Any] = {
     "narrator": DEFAULT_NARRATOR_POLICY,
 }
 
+DEFAULT_LAST_REFERENCE_POLICY: Dict[str, Any] = {
+    "enable_last_ticker": False,
+    "allowed_entities": [],
+    "max_age_turns": 0,
+}
+
 
 def _load_policy(path: str = "data/policies/context.yaml") -> Tuple[Dict[str, Any], str, Optional[str]]:
     """
@@ -154,6 +160,11 @@ def _load_policy(path: str = "data/policies/context.yaml") -> Tuple[Dict[str, An
         merged["narrator"] = {
             **DEFAULT_NARRATOR_POLICY,
             **(narrator_raw or {}),
+        }
+        last_ref_raw = policy.get("last_reference") if isinstance(policy, dict) else None
+        merged["last_reference"] = {
+            **DEFAULT_LAST_REFERENCE_POLICY,
+            **(last_ref_raw or {}),
         }
         LOGGER.info("Context policy carregada de %s: %r", policy_path, merged)
         return merged, "ok", None
@@ -236,6 +247,8 @@ class ContextManager:
         policy: Optional[Dict[str, Any]] = None,
     ) -> None:
         self._backend: ContextBackend = backend or InMemoryBackend()
+        self._last_reference: Dict[str, LastReference] = {}
+        self._turn_counters: Dict[str, int] = {}
         if policy is not None:
             self._policy = policy
             self._policy_status = "ok"
@@ -270,6 +283,30 @@ class ContextManager:
     @property
     def narrator_policy(self) -> Dict[str, Any]:
         return self._policy.get("narrator", DEFAULT_NARRATOR_POLICY)
+
+    @property
+    def last_reference_policy(self) -> Dict[str, Any]:
+        raw = self._policy.get("last_reference") if isinstance(self._policy, dict) else None
+        merged = {**DEFAULT_LAST_REFERENCE_POLICY, **(raw or {})}
+        try:
+            merged["max_age_turns"] = int(merged.get("max_age_turns", 0))
+        except (TypeError, ValueError):
+            merged["max_age_turns"] = 0
+        allowed = merged.get("allowed_entities") or []
+        merged["allowed_entities"] = [str(e) for e in allowed if e]
+        merged["enable_last_ticker"] = bool(merged.get("enable_last_ticker", False))
+        return merged
+
+    def last_reference_allows_entity(self, entity: Optional[str]) -> bool:
+        policy = self.last_reference_policy
+        allowed = policy.get("allowed_entities") or []
+        if not policy.get("enable_last_ticker"):
+            return False
+        if not entity:
+            return False
+        if not allowed:
+            return False
+        return entity in allowed
 
     def planner_allows_entity(self, entity: Optional[str]) -> bool:
         return _entity_allowed(entity, self.planner_policy)
@@ -347,6 +384,21 @@ class ContextManager:
 
         return turns
 
+    def _conversation_key(self, client_id: str, conversation_id: str) -> str:
+        return f"{client_id}:{conversation_id}"
+
+    def _increment_turn_counter(self, client_id: str, conversation_id: str) -> int:
+        key = self._conversation_key(client_id, conversation_id)
+        current = self._turn_counters.get(key, 0) + 1
+        self._turn_counters[key] = current
+        return current
+
+    def current_turn_index(self, client_id: str, conversation_id: str) -> int:
+        """Retorna o contador lógico de turns já registrados para a conversa."""
+
+        key = self._conversation_key(client_id, conversation_id)
+        return int(self._turn_counters.get(key, 0))
+
     def max_chars(self) -> int:
         """
         Limite global (context.max_chars) para histórico em prompts.
@@ -380,6 +432,8 @@ class ContextManager:
         ts = created_at if created_at is not None else time.time()
         turn = ConversationTurn(role=role, content=content, created_at=ts, meta=meta)
 
+        self._increment_turn_counter(client_id, conversation_id)
+
         turns = self._backend.load(client_id, conversation_id)
         turns.append(turn)
 
@@ -395,6 +449,63 @@ class ContextManager:
             turns = turns[-max_turns:]
 
         self._backend.save(client_id, conversation_id, turns)
+
+    def update_last_reference(
+        self,
+        client_id: str,
+        conversation_id: str,
+        *,
+        ticker: Optional[str],
+        entity: Optional[str] = None,
+        intent: Optional[str] = None,
+    ) -> None:
+        """Atualiza a última referência explícita de ticker para a conversa."""
+
+        if not self.enabled:
+            return
+
+        policy = self.last_reference_policy
+        if not policy.get("enable_last_ticker"):
+            return
+
+        if not ticker:
+            return
+
+        key = self._conversation_key(client_id, conversation_id)
+        now = time.time()
+        turn_index = self._turn_counters.get(key, 0)
+        self._last_reference[key] = LastReference(
+            ticker=str(ticker),
+            entity=entity,
+            intent=intent,
+            updated_at=now,
+            turn_index=turn_index,
+        )
+
+    def get_last_reference(
+        self, client_id: str, conversation_id: str
+    ) -> Optional[LastReference]:
+        """Retorna a última referência respeitando as políticas de contexto."""
+
+        if not self.enabled:
+            return None
+
+        policy = self.last_reference_policy
+        if not policy.get("enable_last_ticker"):
+            return None
+
+        key = self._conversation_key(client_id, conversation_id)
+        last_ref = self._last_reference.get(key)
+        if not isinstance(last_ref, LastReference):
+            return None
+
+        max_age_turns = policy.get("max_age_turns") or 0
+        if max_age_turns > 0:
+            current_turn = self._turn_counters.get(key, 0)
+            if (current_turn - last_ref.turn_index) > max_age_turns:
+                return None
+
+        return last_ref
 
     @staticmethod
     def to_wire(turns: List[ConversationTurn]) -> List[Dict[str, Any]]:
@@ -437,3 +548,20 @@ def _entity_allowed(entity: Optional[str], scope_policy: Dict[str, Any]) -> bool
         return True
 
     return entity in allowed
+@dataclass
+class LastReference:
+    """Representa a última referência explícita feita pelo usuário.
+
+    Campos:
+        ticker:     ticker inferido/fornecido na última resposta bem-sucedida.
+        entity:     entidade associada ao ticker (quando aplicável).
+        intent:     intent que originou a referência.
+        updated_at: timestamp do turno em que foi registrada.
+        turn_index: contador lógico de turns no momento do registro.
+    """
+
+    ticker: Optional[str]
+    entity: Optional[str]
+    intent: Optional[str]
+    updated_at: float
+    turn_index: int

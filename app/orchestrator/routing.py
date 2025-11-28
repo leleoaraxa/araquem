@@ -349,7 +349,14 @@ class Orchestrator:
                 return True
         return False
 
-    def route_question(self, question: str, explain: bool = False) -> Dict[str, Any]:
+    def route_question(
+        self,
+        question: str,
+        explain: bool = False,
+        *,
+        client_id: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
         t0 = time.perf_counter()
         plan = self._planner.explain(question)
         chosen = plan.get("chosen") or {}
@@ -462,6 +469,9 @@ class Orchestrator:
                 entity=entity,
                 entity_yaml_path=f"data/entities/{entity}/entity.yaml",
                 defaults_yaml_path="data/ops/param_inference.yaml",
+                identifiers=identifiers,
+                client_id=client_id,
+                conversation_id=conversation_id,
             )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
         except Exception:
             LOGGER.warning(

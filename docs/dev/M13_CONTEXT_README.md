@@ -8,7 +8,7 @@
 
 ## 2. Fluxo Completo do Contexto no /ask
 1. **Criação do contexto (registro do usuário):** Assim que `/ask` recebe a requisição, registra um turno `user` com pergunta, `intent`, `entity` e `request_id` no `ContextManager`.【F:app/api/ask.py†L112-L146】
-2. **Planejamento (Planner) e orquestração:** O planner roda (`planner.explain`) e o Orchestrator (`route_question`) decide rota e monta `meta`, sem ler ou modificar contexto conversacional.【F:app/api/ask.py†L120-L198】【F:app/orchestrator/routing.py†L181-L368】【F:app/orchestrator/routing.py†L368-L598】
+2. **Planejamento (Planner) e orquestração:** O planner roda (`planner.explain`) e o Orchestrator (`route_question`) decide rota e monta `meta`; a inferência de parâmetros pode consultar `last_reference` para recuperar ticker quando configurado.【F:app/api/ask.py†L210-L236】【F:app/orchestrator/routing.py†L352-L520】
 3. **Executor:** O executor SQL é chamado dentro do Orchestrator conforme necessidade; nenhuma chamada ao contexto conversacional ocorre nessa camada.【F:app/orchestrator/routing.py†L368-L598】
 4. **Presenter (leitura do contexto):** Antes de acionar o Narrator, o Presenter carrega o histórico recente via `context_manager.load_recent` e converte para wire format, somente se o contexto estiver habilitado e permitido para a entidade. Esse histórico é adicionado ao `meta_for_narrator` sob a chave `history`.【F:app/presenter/presenter.py†L104-L158】【F:app/presenter/presenter.py†L203-L260】
 5. **Resposta / Narrator:** O Narrator recebe o meta (com `history` quando disponível) para gerar texto. Mesmo com Narrator desligado, o Presenter segue o fluxo determinístico usando `legacy_answer`.【F:app/presenter/presenter.py†L158-L260】
@@ -17,7 +17,7 @@
 ## 3. Estrutura Atual do Contexto
 - Cada turno é um `ConversationTurn` com campos: `role` ("user"/"assistant"/"system"), `content` (texto), `created_at` (timestamp), `meta` (dict opcional).【F:app/context/context_manager.py†L29-L64】
 - O histórico retornado por `ContextManager.to_wire` é uma lista de dicionários derivada dos atributos do dataclass.【F:app/context/context_manager.py†L247-L254】
-- Não há campos extras como `last_ticker` ou `last_entity`; apenas os atributos listados acima compõem o contexto atual.【F:app/context/context_manager.py†L29-L64】
+- Além da lista de turns, o `ContextManager` mantém `last_reference` (ticker, intent, entity, `updated_at`, `turn_index`) em memória para servir de fallback quando permitido por políticas.【F:app/context/context_manager.py†L244-L315】【F:app/context/context_manager.py†L453-L508】
 
 ## 4. Persistência e Carregamento
 - Backend atual: `InMemoryBackend`, que mantém os turns em um dicionário de processo; não há persistência entre processos e não usa Redis ou disco.【F:app/context/context_manager.py†L171-L213】
@@ -37,12 +37,17 @@
 - O histórico e metadados do contexto são usados apenas internamente (Planner/Presenter/Narrator) e não retornam ao cliente.【F:app/presenter/presenter.py†L138-L260】
 
 ## 7. Limitações Atuais
-- O Orchestrator, Planner e executor não consultam o contexto conversacional; decisões de rota e inferência de parâmetros não consideram turns anteriores.【F:app/orchestrator/routing.py†L181-L368】【F:app/orchestrator/routing.py†L368-L598】
 - O `ContextManager` usa somente backend in-memory; não há persistência compartilhada nem integração com Redis/DB.【F:app/context/context_manager.py†L171-L213】
-- O contexto não participa de `param_inference`, não altera thresholds ou gating, e não modifica o builder/formatter.【F:app/presenter/presenter.py†L158-L260】【F:app/orchestrator/routing.py†L181-L368】
-- O histórico não é usado para alterar rota do Planner nem para inferir ticker ou entidades automaticamente; apenas registro e fornecimento ao Narrator quando habilitado.【F:app/presenter/presenter.py†L104-L158】【F:app/api/ask.py†L112-L199】
+- A leitura de contexto ainda não altera roteamento ou thresholds de score; a única influência direta é o fallback de ticker em intents configuradas, sem impacto em outras camadas do Planner/Orchestrator.【F:app/planner/param_inference.py†L320-L423】【F:app/orchestrator/routing.py†L430-L520】
+- O histórico não é usado para alterar formatação no Presenter além do Narrator; o payload externo permanece inalterado.【F:app/presenter/presenter.py†L138-L260】【F:app/api/ask.py†L358-L409】
 
 ## 8. Possíveis Pontos de Integração para M13 (sem implementação)
 - `ContextManager` expõe `load_recent` e `to_wire`, já usados no Presenter; esses pontos podem receber novos campos como `last_reference` no futuro.【F:app/context/context_manager.py†L215-L254】【F:app/presenter/presenter.py†L104-L158】
 - `present` recebe `identifiers` e `aggregates` separados do contexto; o fluxo mostra onde `param_inference` poderia ler histórico se futuramente for conectado (hoje não lê).【F:app/presenter/presenter.py†L80-L157】
 - O Orchestrator roda antes do Presenter e poderia acessar o `context_manager` (a instância está disponível em `app/core/context.py`), mas atualmente não faz leitura; este é um ponto potencial para enriquecimento sem alterar o contrato externo.【F:app/core/context.py†L9-L35】【F:app/orchestrator/routing.py†L181-L368】
+
+## 9. Integração do `last_reference` na inferência de ticker
+- As intents `fiis_financials_risk`, `fii_overview` e `fiis_precos` agora possuem regras declarativas em `data/ops/param_inference.yaml` que priorizam extração de ticker pelo texto e recorrem ao `last_reference` do contexto como fallback quando configuradas para isso.【F:data/ops/param_inference.yaml†L90-L137】【F:data/ops/param_inference.yaml†L290-L309】
+- O `ContextManager` mantém `last_reference` com política dedicada (`last_reference.enable_last_ticker`, `allowed_entities`, `max_age_turns`) definida em `data/policies/context.yaml`; o uso é condicionado a contexto habilitado e entidade autorizada.【F:app/context/context_manager.py†L248-L315】【F:data/policies/context.yaml†L35-L59】
+- O Planner/param_inference consulta `context_manager.get_last_reference` quando o ticker não é encontrado no texto e a intent permite fonte `context`, respeitando a prioridade “texto primeiro, contexto depois” e TTL lógico de turnos.【F:app/planner/param_inference.py†L320-L423】
+- O payload externo do `/ask` permanece imutável; `client_id` e `conversation_id` são utilizados apenas internamente para resgatar contexto e registrar `last_reference` após respostas bem-sucedidas.【F:app/api/ask.py†L175-L248】【F:app/api/ask.py†L320-L369】

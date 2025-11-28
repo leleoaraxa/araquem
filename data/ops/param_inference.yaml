@@ -183,6 +183,19 @@ intents:
         - 24 ultimos
         - vinte e quatro ultimos
         - 24 últimas
+    params:
+      ticker:
+        source:
+        - text
+        - context
+        context_key: last_reference
+  fii_overview:
+    params:
+      ticker:
+        source:
+        - text
+        - context
+        context_key: last_reference
   client_fiis_positions:
     inference: false
     required:
@@ -305,6 +318,12 @@ intents:
       list:
         limit: 10
         order: desc
+    params:
+      ticker:
+        source:
+        - text
+        - context
+        context_key: last_reference
   history_currency_rates:
     default_agg: list
     default_window: months:6

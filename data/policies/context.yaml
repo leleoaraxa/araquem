@@ -58,6 +58,13 @@ context:
     - carteira_enriquecida
     - macro_consolidada
     - dividendos_yield
+  last_reference:
+    enable_last_ticker: true
+    allowed_entities:
+    - fiis_financials_risk
+    - fii_overview
+    - fiis_precos
+    max_age_turns: 3
   entities:
     fiis_precos:
       use_referenced_ticker: true
