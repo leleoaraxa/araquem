@@ -12,7 +12,7 @@ _DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
 _ALLOWED_AGGS = {"avg", "sum", "latest", "list"}
 _WINDOW_KINDS = {"months", "count"}
-_TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
+# Extração de tickers é responsabilidade do Orchestrator (extract_identifiers).
 
 
 def _strip_accents(s: str) -> str:
@@ -95,15 +95,19 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
 
         if "default_window" in cfg:
             cfg["default_window"] = _validate_window(
-                cfg["default_window"], context=f"default_window para intent '{intent_name}'"
+                cfg["default_window"],
+                context=f"default_window para intent '{intent_name}'",
             )
 
         if "windows_allowed" in cfg:
             windows_allowed = _require_list(
-                cfg.get("windows_allowed"), label=f"windows_allowed da intent '{intent_name}'"
+                cfg.get("windows_allowed"),
+                label=f"windows_allowed da intent '{intent_name}'",
             )
             cfg["windows_allowed"] = [
-                _validate_window(w, context=f"windows_allowed da intent '{intent_name}'")
+                _validate_window(
+                    w, context=f"windows_allowed da intent '{intent_name}'"
+                )
                 for w in windows_allowed
             ]
 
@@ -114,11 +118,14 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                 raise ValueError(
                     f"param_inference.yaml inválido: agg '{agg_name}' desconhecido na intent '{intent_name}'"
                 )
-            _require_mapping(spec, label=f"agg_keywords.{agg_name} da intent '{intent_name}'")
+            _require_mapping(
+                spec, label=f"agg_keywords.{agg_name} da intent '{intent_name}'"
+            )
             include = spec.get("include", [])
             if include is not None:
                 include_list = _require_list(
-                    include, label=f"include de agg '{agg_name}' na intent '{intent_name}'"
+                    include,
+                    label=f"include de agg '{agg_name}' na intent '{intent_name}'",
                 )
                 for kw in include_list:
                     if not isinstance(kw, str):
@@ -127,7 +134,8 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                         )
             if spec.get("window") is not None:
                 spec["window"] = _validate_window(
-                    spec["window"], context=f"window de agg '{agg_name}' na intent '{intent_name}'"
+                    spec["window"],
+                    context=f"window de agg '{agg_name}' na intent '{intent_name}'",
                 )
             if spec.get("window_defaults") is not None:
                 defaults = _require_list(
@@ -144,7 +152,9 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
 
         window_keywords = cfg.get("window_keywords")
         if window_keywords is not None:
-            _require_mapping(window_keywords, label=f"window_keywords da intent '{intent_name}'")
+            _require_mapping(
+                window_keywords, label=f"window_keywords da intent '{intent_name}'"
+            )
             for kind, mapping in window_keywords.items():
                 if kind not in _WINDOW_KINDS:
                     raise ValueError(
@@ -165,7 +175,8 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                             f"param_inference.yaml inválido: janela '{num}' deve ser > 0 em window_keywords da intent '{intent_name}'"
                         )
                     kws_list = _require_list(
-                        kws, label=f"window_keywords.{kind}.{num} da intent '{intent_name}'"
+                        kws,
+                        label=f"window_keywords.{kind}.{num} da intent '{intent_name}'",
                     )
                     for kw in kws_list:
                         if not isinstance(kw, str):
@@ -196,12 +207,17 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
 
         params_cfg = cfg.get("params")
         if params_cfg is not None:
-            params_map = _require_mapping(params_cfg, label=f"params da intent '{intent_name}'")
+            params_map = _require_mapping(
+                params_cfg, label=f"params da intent '{intent_name}'"
+            )
             for param_name, spec in params_map.items():
-                _require_mapping(spec, label=f"params.{param_name} da intent '{intent_name}'")
+                _require_mapping(
+                    spec, label=f"params.{param_name} da intent '{intent_name}'"
+                )
                 if "source" in spec:
                     source_list = _require_list(
-                        spec.get("source"), label=f"params.{param_name}.source da intent '{intent_name}'"
+                        spec.get("source"),
+                        label=f"params.{param_name}.source da intent '{intent_name}'",
                     )
                     for src in source_list:
                         if not isinstance(src, str):
@@ -267,7 +283,10 @@ def _entity_agg_defaults(entity_yaml_path: Optional[str]) -> Dict[str, Any]:
     limit = None
     order = None
     if isinstance(list_defaults, dict):
-        if isinstance(list_defaults.get("limit"), int) and list_defaults.get("limit") > 0:
+        if (
+            isinstance(list_defaults.get("limit"), int)
+            and list_defaults.get("limit") > 0
+        ):
             limit = list_defaults.get("limit")
         if list_defaults.get("order") in {"asc", "desc"}:
             order = list_defaults.get("order")
@@ -320,17 +339,28 @@ def _shift_months(base: dt.date, months: int) -> dt.date:
 def _ticker_from_identifiers(
     identifiers: Optional[Dict[str, Any]], question: str
 ) -> Optional[str]:
-    if identifiers and isinstance(identifiers, dict):
-        ticker = identifiers.get("ticker")
-        if isinstance(ticker, str) and ticker:
-            return ticker
-        tickers = identifiers.get("tickers")
-        if isinstance(tickers, list) and tickers:
-            first = tickers[0]
-            if isinstance(first, str) and first:
-                return first
-    match = _TICKER_RE.search((question or "").upper())
-    return match.group(1) if match else None
+    """
+    Resolve ticker a partir dos identifiers canônicos extraídos pelo Orchestrator.
+
+    Regras:
+        - Se houver 'ticker' string não vazia, usa esse.
+        - Se houver 'tickers' lista com exatamente 1 elemento string, usa esse.
+        - Em qualquer cenário ambíguo (0 ou >1 tickers), retorna None.
+        - NÃO faz regex em cima do texto cru (question).
+    """
+    if not identifiers or not isinstance(identifiers, dict):
+        return None
+
+    ticker = identifiers.get("ticker")
+    if isinstance(ticker, str) and ticker:
+        return ticker
+
+    tickers = identifiers.get("tickers")
+    if isinstance(tickers, list) and len(tickers) == 1:
+        first = tickers[0]
+        if isinstance(first, str) and first:
+            return first
+    return None
 
 
 def _ticker_from_context(
@@ -478,7 +508,9 @@ def infer_params(
 
     params_section = icfg.get("params") if isinstance(icfg, dict) else {}
     if isinstance(params_section, dict):
-        ticker_cfg = params_section.get("ticker") if isinstance(params_section, dict) else None
+        ticker_cfg = (
+            params_section.get("ticker") if isinstance(params_section, dict) else None
+        )
         if isinstance(ticker_cfg, dict):
             sources = ticker_cfg.get("source") or []
             ticker_value: Optional[str] = None

@@ -2,7 +2,6 @@
 import json
 import logging
 import os
-import re
 import time
 from pathlib import Path
 from decimal import Decimal
@@ -87,7 +86,6 @@ _NARRATOR_ENABLED = bool(_NARRATOR_FLAGS["enabled"])
 _NARRATOR_SHADOW = bool(_NARRATOR_FLAGS["shadow"])
 _NARRATOR_MODEL = str(_NARRATOR_FLAGS["model"])
 _NARR: Optional[Narrator] = Narrator(model=_NARRATOR_MODEL)
-_TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -440,15 +438,37 @@ def ask(
                 "status_reason": "ok",
             },
         )
-        ticker_for_context = None
+
+        # ------------------------------------------------------------------
+        # last_reference: grava apenas quando existe UM ticker não ambíguo
+        # e já resolvido pelas camadas canônicas (param_inference / orchestrator).
+        # Nada de regex local; sem heurística nova.
+        # ------------------------------------------------------------------
+        ticker_for_context: Optional[str] = None
+
+        # 1) Se o Planner/param_inference já resolveu um ticker explícito,
+        #    usamos ele como referência principal.
         if isinstance(agg_params, dict):
-            ticker_for_context = agg_params.get("ticker")
+            candidate = agg_params.get("ticker")
+            if isinstance(candidate, str) and candidate:
+                ticker_for_context = candidate
+
+        # 2) Caso contrário, usamos apenas casos NÃO ambíguos de identifiers:
+        #    - ticker único já normalizado
+        #    - OU lista de tickers com tamanho 1
         if not ticker_for_context and isinstance(identifiers, dict):
-            ticker_for_context = identifiers.get("ticker")
-        if not ticker_for_context:
-            match = _TICKER_RE.search((payload.question or "").upper())
-            if match:
-                ticker_for_context = match.group(1)
+            t = identifiers.get("ticker")
+            if isinstance(t, str) and t:
+                ticker_for_context = t
+            else:
+                tickers = identifiers.get("tickers")
+                if (
+                    isinstance(tickers, list)
+                    and len(tickers) == 1
+                    and isinstance(tickers[0], str)
+                ):
+                    ticker_for_context = tickers[0]
+
         if ticker_for_context:
             context_manager.update_last_reference(
                 client_id=payload.client_id,
