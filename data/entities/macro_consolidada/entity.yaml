@@ -1,0 +1,139 @@
+id: macro_consolidada
+result_key: ref_date
+sql_view: macro_consolidada
+private: false
+description: Histórico consolidado de indicadores macroeconômicos, índices de mercado e câmbio por data de referência.
+
+default_date_field: ref_date
+
+columns:
+- name: ref_date
+  alias: Data ref.
+  description: Data de referência dos indicadores.
+- name: ipca
+  alias: IPCA
+  description: Valor do IPCA na data.
+- name: selic
+  alias: SELIC
+  description: Taxa SELIC na data.
+- name: cdi
+  alias: CDI
+  description: Taxa CDI na data.
+- name: ifix_points
+  alias: IFIX (pts)
+  description: Pontuação do IFIX.
+- name: ifix_var_pct
+  alias: IFIX var. (%)
+  description: Variação percentual diária do IFIX.
+- name: ibov_points
+  alias: IBOV (pts)
+  description: Pontuação do Ibovespa.
+- name: ibov_var_pct
+  alias: IBOV var. (%)
+  description: Variação percentual diária do Ibovespa.
+- name: usd_buy_amt
+  alias: USD compra (R$)
+  description: Cotação de compra do dólar.
+- name: usd_sell_amt
+  alias: USD venda (R$)
+  description: Cotação de venda do dólar.
+- name: usd_var_pct
+  alias: USD var. (%)
+  description: Variação percentual do dólar.
+- name: eur_buy_amt
+  alias: EUR compra (R$)
+  description: Cotação de compra do euro.
+- name: eur_sell_amt
+  alias: EUR venda (R$)
+  description: Cotação de venda do euro.
+- name: eur_var_pct
+  alias: EUR var. (%)
+  description: Variação percentual do euro.
+
+presentation:
+  kind: table
+  fields:
+    key: ref_date
+    value: ibov_points
+  empty_message: Sem histórico macro para exibir.
+
+ask:
+  intents:
+    - macro_consolidada
+  requires_identifiers: []
+  keywords:
+    - macro
+    - ipca
+    - selic
+    - cdi
+    - ifix
+    - ibov
+    - dolar
+    - euro
+    - cambio
+    - indice
+    - variacao
+    - historico
+  phrase_includes:
+    - "historico macro"
+    - "ipca em"
+    - "selic em"
+    - "ifix em"
+    - "ibov em"
+    - "dolar em"
+    - "euro em"
+  synonyms:
+    ref_date:
+      - data
+      - data de referencia
+    ibov_points:
+      - ibovespa
+    usd_buy_amt:
+      - usd compra
+      - cotacao dolar
+    usd_sell_amt:
+      - usd venda
+    eur_buy_amt:
+      - euro compra
+    eur_sell_amt:
+      - euro venda
+  weights:
+    identifiers: 1.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - historico macro consolidado de outubro
+    - ipca e selic em 2025-11-12
+    - ifix e ibov do dia 2025-11-14
+    - dolar e euro no mesmo dia de referencia
+    - comparativo de cdi e selic na ultima semana
+
+order_by_whitelist:
+- ref_date desc
+- ibov_points desc
+- ifix_points desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 10
+      order: desc
+    avg:
+      window: months:6
+  windows_allowed:
+  - months:1
+  - months:3
+  - months:6
+  - months:12
+  - count:5
+  - count:10
+  - count:20
+  - count:30
+  - count:60
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

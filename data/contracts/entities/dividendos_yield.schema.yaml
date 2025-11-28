@@ -1,0 +1,51 @@
+version: 1
+name: dividendos_yield
+description: Histórico mensal de dividendos e dividend yield por FII.
+
+type: object
+properties:
+  ticker:
+    type: string
+  display_name:
+    type: string
+  sector:
+    type: string
+  sub_sector:
+    type: string
+  classification:
+    type: string
+  management_type:
+    type: string
+  target_market:
+    type: string
+  traded_until_date:
+    type: string
+    format: date-time
+  payment_date:
+    type: string
+    format: date-time
+  dividend_amt:
+    type: number
+  ref_month:
+    type: string
+    format: date
+  month_dividends_amt:
+    type: number
+  month_price_ref:
+    type: number
+  dy_monthly:
+    type: number
+  dy_12m_pct:
+    type: number
+  dy_current_monthly_pct:
+    type: number
+  dividends_12m_amt:
+    type: number
+  last_dividend_amt:
+    type: number
+  last_payment_date:
+    type: string
+    format: date-time
+required:
+  - ticker
+  - ref_month

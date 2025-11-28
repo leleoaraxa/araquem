@@ -1,0 +1,3 @@
+- [x] **dividendos_yield** — entidade pública composta de dividendos + DY mensal/12m por FII; view `public.dividendos_yield`; políticas: cache pub, RAG deny, Narrator off, inferência temporal habilitada.
+- [x] **carteira_enriquecida** — entidade privada com posição enriquecida do cliente (cadastro, risco, DY, rankings); view `public.carteira_enriquecida`; binding `document_number: context.client_id`; cache prv; RAG/Narrator negados; inferência desabilitada.
+- [x] **macro_consolidada** — entidade macro histórica consolidada (IPCA, SELIC/CDI, IFIX/IBOV, câmbio); view `public.macro_consolidada`; cache pub; RAG deny; Narrator off; janelas históricas habilitadas.

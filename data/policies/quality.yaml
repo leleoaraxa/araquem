@@ -1,179 +1,383 @@
 version: 20251122
-window: "rolling"
-
+window: rolling
 terms:
-  - name: "quality"
-    kind: "policy"
-    scope: "quality"
-    version: 1
-
-# ATENÇÃO (V2 provisório):
-# - Estes thresholds serão revisitados no marco M7 (RAG + Quality V3 + top2_gap fix).
-# - Assim que o intent_top2_gap estiver maduro, a expectativa é voltar para algo como:
-#     min_top1_accuracy: 0.95+
-#     min_top2_gap: 0.20–0.25
-#     max_misses_absolute / max_misses_ratio: mais apertados para produção
-# - O bloco `targets` é a fonte canônica; mantemos `quality_gates.thresholds`
-#   espelhado para compatibilidade com leituras antigas.
+- name: quality
+  kind: policy
+  scope: quality
+  version: 1
 targets:
-  min_top1_accuracy: 0.93     # temporário até o top2_gap fix / FIIs M7
-  min_top2_gap: 0.00          # <<< desliga o gate de gap enquanto o fix não chega
+  min_top1_accuracy: 0.93
+  min_top2_gap: 0.0
   min_routed_rate: 0.98
-  max_misses_absolute: 30     # tolerância provisória
-  max_misses_ratio: 0.10
-
+  max_misses_absolute: 30
+  max_misses_ratio: 0.1
 quality_gates:
-  thresholds:  # compat: manter alinhado com `targets` enquanto transição V2
+  thresholds:
     min_top1_accuracy: 0.93
-    min_top2_gap: 0.00
+    min_top2_gap: 0.0
     min_routed_rate: 0.98
     max_misses_absolute: 30
-    max_misses_ratio: 0.10
-
+    max_misses_ratio: 0.1
 datasets:
   fiis_precos:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker, traded_at, close_price, adj_close_price]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - traded_at
+    - close_price
+    - adj_close_price
     accepted_range:
-      daily_variation_pct: { min: -5.0, max: 5.0 }
-
+      daily_variation_pct:
+        min: -5.0
+        max: 5.0
   fiis_dividendos:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker, payment_date, dividend_amt]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - payment_date
+    - dividend_amt
     accepted_range:
-      dividend_amt: { min: 0.0 }
-
+      dividend_amt:
+        min: 0.0
   fiis_yield_history:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker, ref_month, dividends_sum]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - ref_month
+    - dividends_sum
     accepted_range:
-      dividends_sum: { min: 0.0, max: 700.0 }
-      price_ref: { min: 0.01, max: 30000.0 }
-      dy_monthly: { min: 0.0, max: 0.2 }
-
+      dividends_sum:
+        min: 0.0
+        max: 700.0
+      price_ref:
+        min: 0.01
+        max: 30000.0
+      dy_monthly:
+        min: 0.0
+        max: 0.2
   fiis_imoveis:
-    not_null: [ticker, asset_name]
+    not_null:
+    - ticker
+    - asset_name
     accepted_range:
-      vacancy_ratio: { min: 0.0, max: 1.0 }
-      non_compliant_ratio: { min: 0.0, max: 1.0 }
-
+      vacancy_ratio:
+        min: 0.0
+        max: 1.0
+      non_compliant_ratio:
+        min: 0.0
+        max: 1.0
   fiis_processos:
-    not_null: [ticker, process_number]
+    not_null:
+    - ticker
+    - process_number
     accepted_range:
-      loss_risk_pct: { min: 0.0, max: 1.0 }
-
+      loss_risk_pct:
+        min: 0.0
+        max: 1.0
   fiis_rankings:
-    not_null: [ticker]
+    not_null:
+    - ticker
     accepted_range:
-      users_rank_position: { min: 1 }
-      sirios_rank_position: { min: 1 }
-      ifix_rank_position: { min: 1 }
-      ifil_rank_position: { min: 1 }
-
+      users_rank_position:
+        min: 1
+      sirios_rank_position:
+        min: 1
+      ifix_rank_position:
+        min: 1
+      ifil_rank_position:
+        min: 1
   fiis_financials_snapshot:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
     accepted_range:
-      dividend_payout_pct: { min: 0.0 }
-      leverage_ratio: { min: 0.0 }
-
+      dividend_payout_pct:
+        min: 0.0
+      leverage_ratio:
+        min: 0.0
   fiis_financials_revenue_schedule:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
     accepted_range:
-      revenue_due_0_3m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_3_6m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_6_9m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_9_12m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_12_15m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_15_18m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_18_21m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_21_24m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_24_27m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_27_30m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_30_33m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_33_36m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_over_36m_pct: { min: 0.0, max: 1.0 }
-      revenue_due_undetermined_pct: { min: 0.0, max: 1.0 }
-      revenue_ipca_pct: { min: 0.0, max: 1.0 }
-      revenue_igpm_pct: { min: 0.0, max: 1.0 }
-      revenue_inpc_pct: { min: 0.0, max: 1.0 }
-      revenue_incc_pct: { min: 0.0, max: 1.0 }
-
+      revenue_due_0_3m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_3_6m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_6_9m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_9_12m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_12_15m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_15_18m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_18_21m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_21_24m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_24_27m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_27_30m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_30_33m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_33_36m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_over_36m_pct:
+        min: 0.0
+        max: 1.0
+      revenue_due_undetermined_pct:
+        min: 0.0
+        max: 1.0
+      revenue_ipca_pct:
+        min: 0.0
+        max: 1.0
+      revenue_igpm_pct:
+        min: 0.0
+        max: 1.0
+      revenue_inpc_pct:
+        min: 0.0
+        max: 1.0
+      revenue_incc_pct:
+        min: 0.0
+        max: 1.0
   fiis_financials_risk:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
     accepted_range:
-      max_drawdown: { min: 0.0, max: 1.0 }
-      r_squared: { min: 0.0, max: 1.0 }
-
+      max_drawdown:
+        min: 0.0
+        max: 1.0
+      r_squared:
+        min: 0.0
+        max: 1.0
   fii_overview:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker, display_name]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - display_name
     accepted_range:
-      dy_monthly_pct: { min: 0.0, max: 1.0 }
-      dy_12m_pct: { min: 0.0, max: 2.0 }
-      dividends_12m_amt: { min: 0.0 }
-      market_cap_value: { min: 0.0 }
-      equity_value: { min: 0.0 }
-      leverage_ratio: { min: 0.0, max: 5.0 }
-      volatility_ratio: { min: 0.0, max: 1.0 }
-      sharpe_ratio: { min: -5.0, max: 5.0 }
-      sortino_ratio: { min: -5.0, max: 10.0 }
-      max_drawdown: { min: 0.0, max: 1.0 }
-      sirios_rank_position: { min: 1 }
-      ifix_rank_position: { min: 1 }
-      ifil_rank_position: { min: 1 }
-      rank_dy_12m: { min: 1 }
-
+      dy_monthly_pct:
+        min: 0.0
+        max: 1.0
+      dy_12m_pct:
+        min: 0.0
+        max: 2.0
+      dividends_12m_amt:
+        min: 0.0
+      market_cap_value:
+        min: 0.0
+      equity_value:
+        min: 0.0
+      leverage_ratio:
+        min: 0.0
+        max: 5.0
+      volatility_ratio:
+        min: 0.0
+        max: 1.0
+      sharpe_ratio:
+        min: -5.0
+        max: 5.0
+      sortino_ratio:
+        min: -5.0
+        max: 10.0
+      max_drawdown:
+        min: 0.0
+        max: 1.0
+      sirios_rank_position:
+        min: 1
+      ifix_rank_position:
+        min: 1
+      ifil_rank_position:
+        min: 1
+      rank_dy_12m:
+        min: 1
   fiis_noticias:
-    freshness: { max_age_hours: 30 }
-    not_null: [ticker, title, url, published_at]
-
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - title
+    - url
+    - published_at
   fiis_cadastro:
-    not_null: [ticker, fii_cnpj, display_name]
-
+    not_null:
+    - ticker
+    - fii_cnpj
+    - display_name
   client_fiis_positions:
-    freshness: { max_age_minutes: 30 }
-    not_null: [document_number, position_date, ticker]
-
+    freshness:
+      max_age_minutes: 30
+    not_null:
+    - document_number
+    - position_date
+    - ticker
   client_fiis_dividends_evolution:
-    freshness: { max_age_hours: 30 }
-    not_null: [document_number, year_reference, month_number]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - document_number
+    - year_reference
+    - month_number
     accepted_range:
-      total_dividends: { min: 0.0 }
-
+      total_dividends:
+        min: 0.0
   client_fiis_performance_vs_benchmark:
-    freshness: { max_age_hours: 30 }
-    not_null: [document_number, benchmark_code, date_reference]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - document_number
+    - benchmark_code
+    - date_reference
     accepted_range:
-      portfolio_amount:     { min: 0.0 }
-      portfolio_return_pct: { min: -1.0, max: 1.0 }
-      benchmark_value:      { min: 0.0 }
-      benchmark_return_pct: { min: -1.0, max: 1.0 }
-
+      portfolio_amount:
+        min: 0.0
+      portfolio_return_pct:
+        min: -1.0
+        max: 1.0
+      benchmark_value:
+        min: 0.0
+      benchmark_return_pct:
+        min: -1.0
+        max: 1.0
   history_currency_rates:
-    freshness: { max_age_hours: 30 }
-    not_null: [rate_date]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - rate_date
     accepted_range:
-      usd_buy_amt:  { min: 0.0 }
-      usd_sell_amt: { min: 0.0 }
-      eur_buy_amt:  { min: 0.0 }
-      eur_sell_amt: { min: 0.0 }
-
+      usd_buy_amt:
+        min: 0.0
+      usd_sell_amt:
+        min: 0.0
+      eur_buy_amt:
+        min: 0.0
+      eur_sell_amt:
+        min: 0.0
   history_b3_indexes:
-    freshness: { max_age_hours: 30 }
-    not_null: [index_date]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - index_date
     accepted_range:
-      ibov_points_count: { min: 0.0 }
-      ifix_points_count: { min: 0.0 }
-      ifil_points_count: { min: 0.0 }
-      ibov_var_pct:      { min: -5.0, max: 5.0 }
-      ifix_var_pct:      { min: -5.0, max: 5.0 }
-      ifil_var_pct:      { min: -5.0, max: 5.0 }
-
+      ibov_points_count:
+        min: 0.0
+      ifix_points_count:
+        min: 0.0
+      ifil_points_count:
+        min: 0.0
+      ibov_var_pct:
+        min: -5.0
+        max: 5.0
+      ifix_var_pct:
+        min: -5.0
+        max: 5.0
+      ifil_var_pct:
+        min: -5.0
+        max: 5.0
   history_market_indicators:
-    freshness: { max_age_hours: 30 }
-    not_null: [indicator_date, indicator_name]
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - indicator_date
+    - indicator_name
     accepted_range:
-      indicator_amt: { min: -5.0, max: 30.0 }
+      indicator_amt:
+        min: -5.0
+        max: 30.0
+  dividendos_yield:
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ticker
+    - ref_month
+    - dividend_amt
+    accepted_range:
+      dividend_amt:
+        min: 0.0
+      dy_monthly:
+        min: 0.0
+        max: 0.2
+      dy_12m_pct:
+        min: 0.0
+        max: 2.0
+  carteira_enriquecida:
+    freshness:
+      max_age_minutes: 30
+    not_null:
+    - document_number
+    - position_date
+    - ticker
+    accepted_range:
+      position_value:
+        min: 0.0
+      portfolio_value:
+        min: 0.0
+      weight_pct:
+        min: 0.0
+        max: 1.0
+      dy_12m_pct:
+        min: 0.0
+        max: 2.0
+      dy_monthly_pct:
+        min: 0.0
+        max: 1.0
+      volatility_ratio:
+        min: 0.0
+        max: 5.0
+      sharpe_ratio:
+        min: -5.0
+        max: 5.0
+      sortino_ratio:
+        min: -5.0
+        max: 10.0
+      max_drawdown:
+        min: 0.0
+        max: 1.0
+  macro_consolidada:
+    freshness:
+      max_age_hours: 30
+    not_null:
+    - ref_date
+    accepted_range:
+      ifix_var_pct:
+        min: -5.0
+        max: 5.0
+      ibov_var_pct:
+        min: -5.0
+        max: 5.0
+      usd_var_pct:
+        min: -5.0
+        max: 5.0
+      eur_var_pct:
+        min: -5.0
+        max: 5.0
+      usd_buy_amt:
+        min: 0.0
+      usd_sell_amt:
+        min: 0.0
+      eur_buy_amt:
+        min: 0.0
+      eur_sell_amt:
+        min: 0.0

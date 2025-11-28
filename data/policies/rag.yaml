@@ -1,117 +1,102 @@
 terms:
-  - name: "rag"
-    kind: "policy"
-    scope: "rag"
-    version: 2
-
+- name: rag
+  kind: policy
+  scope: rag
+  version: 2
 version: 2
-
-# ------------------------------------------------------------------------------
-# 1) Perfis padrão para ranking híbrido (BM25 + semantic)
-# ------------------------------------------------------------------------------
 profiles:
   default:
     k: 6
-    min_score: 0.20
-    weight: { bm25: 0.70, semantic: 0.30 }
+    min_score: 0.2
+    weight:
+      bm25: 0.7
+      semantic: 0.3
     tie_break: semantic
     max_context_chars: 12000
-
   macro:
     k: 4
-    min_score: 0.10
-    weight: { bm25: 0.50, semantic: 0.50 }
+    min_score: 0.1
+    weight:
+      bm25: 0.5
+      semantic: 0.5
     tie_break: semantic
-
   risk:
     k: 6
     min_score: 0.15
-    weight: { bm25: 0.60, semantic: 0.40 }
-
-# ------------------------------------------------------------------------------
-# 2) Roteamento por INTENT (super importante)
-# Somente intents permitidas vão ativar RAG.
-# ------------------------------------------------------------------------------
+    weight:
+      bm25: 0.6
+      semantic: 0.4
 routing:
   deny_intents:
-    - client_fiis_positions          # carteira do cliente; fora do escopo de RAG
-    - client_fiis_dividends_evolution # carteira do cliente; fora do escopo de RAG
-    - client_fiis_performance_vs_benchmark # carteira do cliente; fora do escopo de RAG
-    - fiis_cadastro                  # cadastro estatico; sem busca textual
-    - fiis_precos                    # serie numerica; RAG nao se aplica
-    - fiis_dividendos                # historico numerico; consultas via SQL
-    - fiis_yield_history             # historico numerico de yield; consultas via SQL
-    - fiis_imoveis                   # cadastro de ativos; fora de RAG
-    - fiis_rankings                  # rankings deterministas; sem RAG
-    - fiis_processos                 # processos estruturados; RAG nao habilitado
-    - fiis_financials_snapshot       # indicadores D-1; RAG desnecessario
-    - fiis_financials_revenue_schedule # cronograma estruturado; sem RAG
-    - fii_overview                   # overview consolidado e determinístico
-
+  - client_fiis_positions
+  - client_fiis_dividends_evolution
+  - client_fiis_performance_vs_benchmark
+  - fiis_cadastro
+  - fiis_precos
+  - fiis_dividendos
+  - fiis_yield_history
+  - fiis_imoveis
+  - fiis_rankings
+  - fiis_processos
+  - fiis_financials_snapshot
+  - fiis_financials_revenue_schedule
+  - fii_overview
+  - dividendos_yield
+  - carteira_enriquecida
+  - macro_consolidada
   allow_intents:
-    - fiis_noticias
-    - fiis_financials_risk
-    - history_market_indicators
-    - history_b3_indexes
-    - history_currency_rates
+  - fiis_noticias
+  - fiis_financials_risk
+  - history_market_indicators
+  - history_b3_indexes
+  - history_currency_rates
+  notes: 'RAG é ativado somente para domínios textuais: notícias de FIIs, risco quantitativo
+    (explicações), macroeconomia, índices B3 e moedas. Dados numéricos continuam puramente
+    SQL.
 
-  notes: >
-    RAG é ativado somente para domínios textuais: notícias de FIIs,
-    risco quantitativo (explicações), macroeconomia, índices B3 e moedas.
-    Dados numéricos continuam puramente SQL.
-
-# ------------------------------------------------------------------------------
-# 3) Política por entidade
-# Evita misturar domínios e garante coerência semântica.
-# ------------------------------------------------------------------------------
+    '
 rag:
   entities:
-
     fiis_noticias:
       profile: default
       collections:
-        - fiis_noticias
-        - concepts-fiis
-        - concepts-risk
+      - fiis_noticias
+      - concepts-fiis
+      - concepts-risk
       max_chunks: 6
-      min_score: 0.20
-
+      min_score: 0.2
     fiis_financials_risk:
       profile: risk
       collections:
-        - concepts-risk
-        - concepts-fiis
+      - concepts-risk
+      - concepts-fiis
       max_chunks: 5
       min_score: 0.15
-      notes: >
-        Uso exclusivamente conceitual das métricas de risco; valores numéricos
+      notes: 'Uso exclusivamente conceitual das métricas de risco; valores numéricos
         devem sempre vir de SQL, nunca do RAG.
 
+        '
     history_market_indicators:
       profile: macro
       collections:
-        - concepts-macro
+      - concepts-macro
       max_chunks: 4
-      min_score: 0.10
-
+      min_score: 0.1
     history_b3_indexes:
       profile: macro
       collections:
-        - concepts-macro
+      - concepts-macro
       max_chunks: 4
-      min_score: 0.10
-
+      min_score: 0.1
     history_currency_rates:
       profile: macro
       collections:
-        - concepts-macro
+      - concepts-macro
       max_chunks: 4
-      min_score: 0.10
-
+      min_score: 0.1
   default:
-    # fallback seguro
     profile: default
     max_chunks: 3
     collections:
-      - concepts-fiis
+    - concepts-fiis
     min_score: 0.25

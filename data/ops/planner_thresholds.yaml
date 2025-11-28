@@ -1,62 +1,139 @@
 version: 20251108
-
-window: "rolling"
-
+window: rolling
 planner:
   thresholds:
     defaults:
-      # Padrão um pouco mais brando — usado só onde não há override
       min_score: 0.8
-      min_gap: 0.10
-
-    # Planner já está usando o gap "fused" (consolidado)
+      min_gap: 0.1
     apply_on: fused
-
     intents:
-      # Rotas objetivas (alta precisão)
-      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.20 }
-      fiis_precos:                      { min_score: 1.0, min_gap: 0.20 }
-      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.20 }
-      fiis_rankings:                    { min_score: 1.0, min_gap: 0.20 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.20 }
-      fii_overview:                     { min_score: 1.0, min_gap: 0.20 }
-
-      # Rotas com linguagem mais solta / overlap natural
-      fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
-      fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
-      fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
-      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.00 }
-      fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_dividends_evolution:  { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_performance_vs_benchmark: { min_score: 0.8, min_gap: 0.10 }
-      fiis_yield_history:               { min_score: 0.8, min_gap: 0.10 }
-      history_b3_indexes:               { min_score: 0.8, min_gap: 0.10 }
-      history_currency_rates:           { min_score: 0.8, min_gap: 0.10 }
-      history_market_indicators:        { min_score: 0.8, min_gap: 0.10 }
-
+      fiis_cadastro:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_precos:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_dividendos:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_rankings:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_financials_snapshot:
+        min_score: 1.0
+        min_gap: 0.2
+      fii_overview:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_imoveis:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_processos:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_noticias:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_financials_risk:
+        min_score: 0.8
+        min_gap: 0.0
+      fiis_financials_revenue_schedule:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_positions:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_dividends_evolution:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_performance_vs_benchmark:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_yield_history:
+        min_score: 0.8
+        min_gap: 0.1
+      history_b3_indexes:
+        min_score: 0.8
+        min_gap: 0.1
+      history_currency_rates:
+        min_score: 0.8
+        min_gap: 0.1
+      history_market_indicators:
+        min_score: 0.8
+        min_gap: 0.1
+      dividendos_yield:
+        min_score: 0.8
+        min_gap: 0.1
+      carteira_enriquecida:
+        min_score: 0.8
+        min_gap: 0.1
+      macro_consolidada:
+        min_score: 0.8
+        min_gap: 0.1
     entities:
-      # Mesma lógica, espelhada em entities (entity > intent > defaults)
-      fiis_cadastro:                    { min_score: 1.0, min_gap: 0.20 }
-      fiis_precos:                      { min_score: 1.0, min_gap: 0.20 }
-      fiis_dividendos:                  { min_score: 1.0, min_gap: 0.20 }
-      fiis_rankings:                    { min_score: 1.0, min_gap: 0.20 }
-      fiis_financials_snapshot:         { min_score: 1.0, min_gap: 0.20 }
-      fii_overview:                     { min_score: 1.0, min_gap: 0.20 }
-
-      fiis_imoveis:                     { min_score: 0.8, min_gap: 0.10 }
-      fiis_processos:                   { min_score: 0.8, min_gap: 0.10 }
-      fiis_noticias:                    { min_score: 0.8, min_gap: 0.10 }
-      fiis_financials_risk:             { min_score: 0.8, min_gap: 0.00 }
-      fiis_financials_revenue_schedule: { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_positions:            { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_dividends_evolution:  { min_score: 0.8, min_gap: 0.10 }
-      client_fiis_performance_vs_benchmark: { min_score: 0.8, min_gap: 0.10 }
-      fiis_yield_history:               { min_score: 0.8, min_gap: 0.10 }
-      history_b3_indexes:               { min_score: 0.8, min_gap: 0.10 }
-      history_currency_rates:           { min_score: 0.8, min_gap: 0.10 }
-      history_market_indicators:        { min_score: 0.8, min_gap: 0.10 }
-
+      fiis_cadastro:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_precos:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_dividendos:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_rankings:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_financials_snapshot:
+        min_score: 1.0
+        min_gap: 0.2
+      fii_overview:
+        min_score: 1.0
+        min_gap: 0.2
+      fiis_imoveis:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_processos:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_noticias:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_financials_risk:
+        min_score: 0.8
+        min_gap: 0.0
+      fiis_financials_revenue_schedule:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_positions:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_dividends_evolution:
+        min_score: 0.8
+        min_gap: 0.1
+      client_fiis_performance_vs_benchmark:
+        min_score: 0.8
+        min_gap: 0.1
+      fiis_yield_history:
+        min_score: 0.8
+        min_gap: 0.1
+      history_b3_indexes:
+        min_score: 0.8
+        min_gap: 0.1
+      history_currency_rates:
+        min_score: 0.8
+        min_gap: 0.1
+      history_market_indicators:
+        min_score: 0.8
+        min_gap: 0.1
+      dividendos_yield:
+        min_score: 0.8
+        min_gap: 0.1
+      carteira_enriquecida:
+        min_score: 0.8
+        min_gap: 0.1
+      macro_consolidada:
+        min_score: 0.8
+        min_gap: 0.1
   rag:
     enabled: true
     k: 5

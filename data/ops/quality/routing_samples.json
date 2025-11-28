@@ -1260,6 +1260,36 @@
       "question": "comparativo de dy mensal entre HGLG11 e VISC11",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "historico de dividendos e dy do MXRF11",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
+    },
+    {
+      "question": "quanto o HGLG11 pagou de dividendos no mes",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
+    },
+    {
+      "question": "peso do HGLG11 na minha carteira",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "dy mensal dos meus fiis",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "ipca e selic em 2025-11-12",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "ifix e ibov do dia 2025-11-14",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
     }
   ]
 }

@@ -1,0 +1,3 @@
+- [x] Adicionar entidade **dividendos_yield** (pública, multi-ticker) com entity/schema/templates, projeção de qualidade, catálogo, ontologia, políticas (quality/cache/rag/narrator/context), param_inference e thresholds atualizados.
+- [x] Adicionar entidade **carteira_enriquecida** (privada) com bindings seguros (`document_number: context.client_id`), templates, projeção de qualidade, catálogo, ontologia, políticas (quality/cache/rag/narrator/context), param_inference desabilitado e thresholds de privadas.
+- [x] Adicionar entidade **macro_consolidada** (macro histórica) com entity/schema/templates, projeção de qualidade, catálogo, ontologia, políticas (quality/cache/rag/narrator/context), param_inference histórico e thresholds ajustados.
