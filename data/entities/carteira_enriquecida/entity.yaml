@@ -55,7 +55,7 @@ columns:
   description: Segmento específico dentro do setor.
 - name: classification
   alias: Classificação
-  description: Tipo de portfólio do FII (ex.: Tijolo, Papel).
+  description: Tipo de portfólio do FII (ex. Tijolo, Papel).
 - name: management_type
   alias: Gestão
   description: Tipo de gestão do fundo (Ativa/Passiva).
