@@ -82,6 +82,9 @@ def call_ask(
     planner_intent = meta.get("planner_intent") or results.get("intent")
     aggregates = meta.get("aggregates") or {}
 
+    result_entity = results.get("entity") or meta.get("entity")
+    result_intent = results.get("intent") or meta.get("intent")
+
     ticker_from_agg = None
     if isinstance(aggregates, dict):
         ticker_from_agg = aggregates.get("ticker")
@@ -93,6 +96,7 @@ def call_ask(
     print(f"meta.rows_total      : {meta.get('rows_total')}")
     print(f"meta.aggregates      : {json.dumps(aggregates, ensure_ascii=False)}")
     print(f"meta.aggregates.ticker (if any): {ticker_from_agg}")
+    print(f"results.intent/entity: {result_intent} / {result_entity}")
 
     answer = data.get("answer")
     if answer:
@@ -145,13 +149,27 @@ def main() -> None:
         "E o overview dele?",
     ]
 
+    answers = []
     for q in scenarios:
-        _ = call_ask(
-            base_url=args.base_url,
-            question=q,
-            client_id=args.client_id,
-            conversation_id=conversation_id,
-            nickname=args.nickname,
+        answers.append(
+            call_ask(
+                base_url=args.base_url,
+                question=q,
+                client_id=args.client_id,
+                conversation_id=conversation_id,
+                nickname=args.nickname,
+            )
+        )
+
+    ticker_second = ((answers[1].get("meta") or {}).get("aggregates") or {}).get("ticker")
+    ticker_third = ((answers[2].get("meta") or {}).get("aggregates") or {}).get("ticker")
+
+    print("Resumo de herança de ticker:")
+    if ticker_second and ticker_second == ticker_third:
+        print(f"HERANÇA DE TICKER OK (ticker herdado: {ticker_second})")
+    else:
+        print(
+            "HERANÇA DE TICKER FALHOU (verifique meta.aggregates.ticker nas perguntas 2 e 3)"
         )
 
     print("Context sanity check finalizado.\n")

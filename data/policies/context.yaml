@@ -4,7 +4,7 @@ terms:
   scope: context
   version: 1
 context:
-  enabled: false
+  enabled: true
   max_turns: 4
   ttl_seconds: 3600
   max_chars: 4000
