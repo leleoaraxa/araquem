@@ -22,7 +22,6 @@ intents:
         - custodia
         - disponivel
         - quantidade
-        - rentabilidade
       exclude:
         - cpf
         - cnpj
@@ -122,6 +121,8 @@ intents:
         - desempenho da minha carteira
         - performance da minha carteira de fiis
         - rentabilidade da minha carteira vs
+        - rentabilidade da minha carteira de fiis versus
+        - rentabilidade da minha carteira versus
         - comparar minha carteira com
         - minha carteira esta melhor que
       exclude:
