@@ -1,319 +1,324 @@
 version: 1
 collection: araquem-core
-description: 'Regras de inferência de parâmetros temporais e agregações aplicadas
+description: >
+  Regras de inferência de parâmetros temporais e agregações aplicadas
   pelo Planner/Builder nas intents temporais (dividendos, preços). O payload do /ask
   é imutável; este arquivo define toda a lógica declarativa.
 
-  '
 intents:
   fiis_dividendos:
     default_agg: list
     default_window: months:12
     windows_allowed:
-    - months:3
-    - months:6
-    - months:12
-    - months:24
-    - count:1
-    - count:3
-    - count:6
-    - count:12
-    - count:24
+      - months:3
+      - months:6
+      - months:12
+      - months:24
+      - count:1
+      - count:3
+      - count:6
+      - count:12
+      - count:24
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - última
-        - mais recente
-        - agora
-        - hoje
-        - recente
-        - atual
+          - ultimo
+          - última
+          - mais recente
+          - agora
+          - hoje
+          - recente
+          - atual
         window: count:1
       list:
         include:
-        - ultimos
-        - últimas
-        - historico
-        - histórico
-        - lista
-        - listar
-        - traga
-        - quais
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
     window_keywords:
       months:
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
+          - trimestre
+          - 3 meses
+          - tres meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
+          - semestre
+          - 6 meses
+          - seis meses
         12:
-        - ano
-        - anual
-        - 12 meses
-        - doze meses
-        - ultimo ano
-        - últimos 12 meses
+          - ano
+          - anual
+          - 12 meses
+          - doze meses
+          - ultimo ano
+          - últimos 12 meses
         24:
-        - 2 anos
-        - dois anos
-        - 24 meses
+          - 2 anos
+          - dois anos
+          - 24 meses
       count:
         1:
-        - ultimo pagamento
-        - último pagamento
-        - ultimo dividendo
-        - último dividendo
+          - ultimo pagamento
+          - último pagamento
+          - ultimo dividendo
+          - último dividendo
         3:
-        - 3 ultimos
-        - tres ultimos
-        - tres últimas
-        - 3 últimos
+          - 3 ultimos
+          - tres ultimos
+          - tres últimas
+          - 3 últimos
         6:
-        - 6 ultimos
-        - seis ultimos
-        - 6 últimos
-        - seis últimos
+          - 6 ultimos
+          - seis ultimos
+          - 6 últimos
+          - seis últimos
         12:
-        - 12 ultimos
-        - doze ultimos
-        - 12 últimos
-        - doze últimos
+          - 12 ultimos
+          - doze ultimos
+          - 12 últimos
+          - doze últimos
         24:
-        - 24 ultimos
-        - vinte e quatro ultimos
-        - 24 últimos
-        - vinte e quatro últimos
+          - 24 ultimos
+          - vinte e quatro ultimos
+          - 24 últimos
+          - vinte e quatro últimos
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
   fiis_precos:
     default_agg: list
     default_window: months:12
     windows_allowed:
-    - months:3
-    - months:6
-    - months:12
-    - months:24
-    - count:1
-    - count:3
-    - count:6
-    - count:12
-    - count:24
+      - months:3
+      - months:6
+      - months:12
+      - months:24
+      - count:1
+      - count:3
+      - count:6
+      - count:12
+      - count:24
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - última
-        - mais recente
-        - agora
-        - hoje
-        - fechamento
-        - atual
+          - ultimo
+          - última
+          - mais recente
+          - agora
+          - hoje
+          - fechamento
+          - atual
         window: count:1
       list:
         include:
-        - ultimos
-        - últimas
-        - historico
-        - histórico
-        - lista
-        - listar
-        - traga
-        - quais
-        - historico de preco
-        - histórico de preço
-        - historico de precos
-        - histórico de preços
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
+          - historico de preco
+          - histórico de preço
+          - historico de precos
+          - histórico de preços
     window_keywords:
       months:
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
-        - ultimos 3 meses
-        - últimos 3 meses
+          - trimestre
+          - 3 meses
+          - tres meses
+          - ultimos 3 meses
+          - últimos 3 meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
-        - ultimos 6 meses
-        - últimos 6 meses
+          - semestre
+          - 6 meses
+          - seis meses
+          - ultimos 6 meses
+          - últimos 6 meses
         12:
-        - ano
-        - anual
-        - 12 meses
-        - doze meses
-        - ultimo ano
-        - último ano
-        - ultimos 12 meses
-        - últimos 12 meses
+          - ano
+          - anual
+          - 12 meses
+          - doze meses
+          - ultimo ano
+          - último ano
+          - ultimos 12 meses
+          - últimos 12 meses
         24:
-        - 2 anos
-        - dois anos
-        - 24 meses
-        - ultimos 24 meses
-        - últimos 24 meses
-        - ultimos 2 anos
-        - últimos 2 anos
+          - 2 anos
+          - dois anos
+          - 24 meses
+          - ultimos 24 meses
+          - últimos 24 meses
+          - ultimos 2 anos
+          - últimos 2 anos
       count:
         1:
-        - ultimo pregao
-        - último pregao
-        - ultimo pregão
-        - último pregão
-        - ultima cotacao
-        - última cotacao
-        - ultima cotação
-        - última cotação
+          - ultimo pregao
+          - último pregao
+          - ultimo pregão
+          - último pregão
+          - ultima cotacao
+          - última cotacao
+          - ultima cotação
+          - última cotação
         3:
-        - 3 ultimos
-        - tres ultimos
-        - tres últimas
-        - 3 últimas
+          - 3 ultimos
+          - tres ultimos
+          - tres últimas
+          - 3 últimas
         6:
-        - 6 ultimos
-        - seis ultimos
-        - 6 últimas
+          - 6 ultimos
+          - seis ultimos
+          - 6 últimas
         12:
-        - 12 ultimos
-        - doze ultimos
-        - 12 últimas
+          - 12 ultimos
+          - doze ultimos
+          - 12 últimas
         24:
-        - 24 ultimos
-        - vinte e quatro ultimos
-        - 24 últimas
+          - 24 ultimos
+          - vinte e quatro ultimos
+          - 24 últimas
     params:
       ticker:
         source:
-        - text
-        - context
+          - text
+          - context
         context_key: last_reference
+
   fii_overview:
     params:
       ticker:
         source:
-        - text
-        - context
+          - text
+          - context
         context_key: last_reference
+
   client_fiis_positions:
     inference: false
     required:
-    - document_number
+      - document_number
     bindings:
       document_number: context.client_id
+
   client_fiis_dividends_evolution:
     inference: false
     required:
-    - document_number
+      - document_number
     bindings:
       document_number: context.client_id
+
   client_fiis_performance_vs_benchmark:
     inference: false
     required:
-    - document_number
+      - document_number
     bindings:
       document_number: context.client_id
+
   fiis_yield_history:
     default_agg: list
     default_window: months:12
     windows_allowed:
-    - months:3
-    - months:6
-    - months:12
-    - months:24
-    - count:3
-    - count:6
-    - count:12
-    - count:24
+      - months:3
+      - months:6
+      - months:12
+      - months:24
+      - count:3
+      - count:6
+      - count:12
+      - count:24
     agg_keywords:
       latest:
         include:
-        - ultimo dy
-        - última dy
-        - dy mais recente
-        - dy atual
+          - ultimo dy
+          - última dy
+          - dy mais recente
+          - dy atual
         window: count:1
       list:
         include:
-        - historico de dy
-        - histórico de dy
-        - historico de dividend yield
-        - histórico de dividend yield
-        - ultimos dy
-        - últimos dy
-        - dy dos ultimos meses
-        - dy dos últimos meses
+          - historico de dy
+          - histórico de dy
+          - historico de dividend yield
+          - histórico de dividend yield
+          - ultimos dy
+          - últimos dy
+          - dy dos ultimos meses
+          - dy dos últimos meses
     window_keywords:
       months:
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
+          - trimestre
+          - 3 meses
+          - tres meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
+          - semestre
+          - 6 meses
+          - seis meses
         12:
-        - ano
-        - anual
-        - 12 meses
-        - doze meses
-        - ultimo ano
-        - último ano
-        - ultimos 12 meses
-        - últimos 12 meses
+          - ano
+          - anual
+          - 12 meses
+          - doze meses
+          - ultimo ano
+          - último ano
+          - ultimos 12 meses
+          - últimos 12 meses
         24:
-        - 2 anos
-        - dois anos
-        - 24 meses
+          - 2 anos
+          - dois anos
+          - 24 meses
       count:
         3:
-        - 3 ultimos
-        - tres ultimos
-        - 3 últimos
-        - tres últimos
+          - 3 ultimos
+          - tres ultimos
+          - 3 últimos
+          - tres últimos
         6:
-        - 6 ultimos
-        - seis ultimos
-        - 6 últimos
-        - seis últimos
+          - 6 ultimos
+          - seis ultimos
+          - 6 últimos
+          - seis últimos
         12:
-        - 12 ultimos
-        - doze ultimos
-        - 12 últimos
-        - doze últimos
+          - 12 ultimos
+          - doze ultimos
+          - 12 últimos
+          - doze últimos
         24:
-        - 24 ultimos
-        - vinte e quatro ultimos
-        - 24 últimos
-        - vinte e quatro últimos
+          - 24 ultimos
+          - vinte e quatro ultimos
+          - 24 últimos
+          - vinte e quatro últimos
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
   fiis_financials_revenue_schedule:
     default_agg: list
     agg_keywords:
       list:
         include:
-        - cronograma
-        - calendário
-        - agenda
-        - lista
-        - listar
-        - traga
-        - mostrar
-    defaults:
-      list:
-        limit: 10
-        order: desc
-  fiis_financials_risk:
-    default_agg: list
-    agg_keywords:
-      list:
-        include:
-        - lista
-        - listar
-        - traga
-        - quais
-        - mostrar
+          - cronograma
+          - calendário
+          - agenda
+          - lista
+          - listar
+          - traga
+          - mostrar
     defaults:
       list:
         limit: 10
@@ -321,393 +326,427 @@ intents:
     params:
       ticker:
         source:
-        - text
-        - context
+          - text
+          - context
         context_key: last_reference
+
+  fiis_financials_risk:
+    default_agg: list
+    agg_keywords:
+      list:
+        include:
+          - lista
+          - listar
+          - traga
+          - quais
+          - mostrar
+    defaults:
+      list:
+        limit: 10
+        order: desc
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
   history_currency_rates:
     default_agg: list
     default_window: months:6
     windows_allowed:
-    - months:1
-    - months:3
-    - months:6
-    - months:12
-    - count:1
-    - count:5
-    - count:20
+      - months:1
+      - months:3
+      - months:6
+      - months:12
+      - count:1
+      - count:5
+      - count:20
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - última
-        - hoje
-        - agora
-        - fechamento
-        - fechamento de ontem
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - fechamento
+          - fechamento de ontem
         window: count:1
       list:
         include:
-        - ultimos
-        - últimas
-        - historico
-        - histórico
-        - lista
-        - listar
-        - traga
-        - quais
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
     window_keywords:
       months:
         1:
-        - 1 mes
-        - um mes
-        - 1 mês
-        - um mês
-        - ultimo mes
-        - último mes
-        - ultimo mês
-        - último mês
+          - 1 mes
+          - um mes
+          - 1 mês
+          - um mês
+          - ultimo mes
+          - último mes
+          - ultimo mês
+          - último mês
         3:
-        - 3 meses
-        - tres meses
-        - trimestre
-        - ultimos 3 meses
-        - últimos 3 meses
+          - 3 meses
+          - tres meses
+          - trimestre
+          - ultimos 3 meses
+          - últimos 3 meses
         6:
-        - 6 meses
-        - seis meses
-        - ultimos 6 meses
-        - últimos 6 meses
+          - 6 meses
+          - seis meses
+          - ultimos 6 meses
+          - últimos 6 meses
         12:
-        - 12 meses
-        - doze meses
-        - ano
-        - anual
-        - ultimo ano
-        - último ano
+          - 12 meses
+          - doze meses
+          - ano
+          - anual
+          - ultimo ano
+          - último ano
       count:
         1:
-        - ultimo dia
-        - último dia
-        - ontem
-        - cambio de ontem
-        - cotacao de ontem
-        - cotação de ontem
+          - ultimo dia
+          - último dia
+          - ontem
+          - cambio de ontem
+          - cotacao de ontem
+          - cotação de ontem
         5:
-        - ultimos 5 dias
-        - últimos 5 dias
-        - ultima semana
-        - última semana
+          - ultimos 5 dias
+          - últimos 5 dias
+          - ultima semana
+          - última semana
         20:
-        - ultimos 20 dias
-        - últimos 20 dias
-        - ultimo mes de pregão
-        - último mes de pregão
+          - ultimos 20 dias
+          - últimos 20 dias
+          - ultimo mes de pregão
+          - último mes de pregão
+
   history_b3_indexes:
     default_agg: list
     default_window: months:6
     windows_allowed:
-    - months:3
-    - months:6
-    - months:12
-    - months:24
-    - count:1
-    - count:5
-    - count:20
-    - count:60
+      - months:3
+      - months:6
+      - months:12
+      - months:24
+      - count:1
+      - count:5
+      - count:20
+      - count:60
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - última
-        - hoje
-        - agora
-        - fechamento
-        - fechamento de ontem
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - fechamento
+          - fechamento de ontem
         window: count:1
       list:
         include:
-        - ultimos
-        - últimas
-        - historico
-        - histórico
-        - lista
-        - listar
-        - traga
-        - quais
-        - historico do ifix
-        - histórico do ifix
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
+          - historico do ifix
+          - histórico do ifix
     window_keywords:
       months:
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
-        - ultimos 3 meses
-        - últimos 3 meses
+          - trimestre
+          - 3 meses
+          - tres meses
+          - ultimos 3 meses
+          - últimos 3 meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
-        - ultimos 6 meses
-        - últimos 6 meses
+          - semestre
+          - 6 meses
+          - seis meses
+          - ultimos 6 meses
+          - últimos 6 meses
         12:
-        - ano
-        - anual
-        - 12 meses
-        - doze meses
-        - ultimo ano
-        - último ano
-        - ultimos 12 meses
-        - últimos 12 meses
+          - ano
+          - anual
+          - 12 meses
+          - doze meses
+          - ultimo ano
+          - último ano
+          - ultimos 12 meses
+          - últimos 12 meses
         24:
-        - 2 anos
-        - dois anos
-        - 24 meses
-        - ultimos 24 meses
-        - últimos 24 meses
+          - 2 anos
+          - dois anos
+          - 24 meses
+          - ultimos 24 meses
+          - últimos 24 meses
       count:
         1:
-        - ultimo dia
-        - último dia
-        - ontem
-        - fechamento de ontem
+          - ultimo dia
+          - último dia
+          - ontem
+          - fechamento de ontem
         5:
-        - ultimos 5 dias
-        - últimos 5 dias
-        - ultima semana
-        - última semana
+          - ultimos 5 dias
+          - últimos 5 dias
+          - ultima semana
+          - última semana
         20:
-        - ultimos 20 dias
-        - últimos 20 dias
-        - ultimos 20 pregoes
-        - últimos 20 pregoes
-        - ultimos 20 pregões
-        - últimos 20 pregões
+          - ultimos 20 dias
+          - últimos 20 dias
+          - ultimos 20 pregoes
+          - últimos 20 pregoes
+          - ultimos 20 pregões
+          - últimos 20 pregões
         60:
-        - ultimos 60 dias
-        - últimos 60 dias
+          - ultimos 60 dias
+          - últimos 60 dias
+
   history_market_indicators:
     default_agg: list
     default_window: months:6
     windows_allowed:
-    - months:1
-    - months:3
-    - months:6
-    - months:12
-    - count:1
-    - count:5
-    - count:20
+      - months:1
+      - months:3
+      - months:6
+      - months:12
+      - count:1
+      - count:5
+      - count:20
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - última
-        - hoje
-        - agora
-        - ontem
-        - indicador de ontem
-        - taxa de ontem
+          - ultimo
+          - última
+          - hoje
+          - agora
+          - ontem
+          - indicador de ontem
+          - taxa de ontem
         window: count:1
       list:
         include:
-        - ultimos
-        - últimas
-        - historico
-        - histórico
-        - lista
-        - listar
-        - traga
-        - quais
+          - ultimos
+          - últimas
+          - historico
+          - histórico
+          - lista
+          - listar
+          - traga
+          - quais
     window_keywords:
       months:
         1:
-        - 1 mes
-        - um mes
-        - 1 mês
-        - um mês
-        - ultimo mes
-        - último mes
-        - ultimo mês
-        - último mês
+          - 1 mes
+          - um mes
+          - 1 mês
+          - um mês
+          - ultimo mes
+          - último mes
+          - ultimo mês
+          - último mês
         3:
-        - 3 meses
-        - tres meses
-        - trimestre
-        - ultimos 3 meses
-        - últimos 3 meses
+          - 3 meses
+          - tres meses
+          - trimestre
+          - ultimos 3 meses
+          - últimos 3 meses
         6:
-        - 6 meses
-        - seis meses
-        - ultimos 6 meses
-        - últimos 6 meses
+          - 6 meses
+          - seis meses
+          - ultimos 6 meses
+          - últimos 6 meses
         12:
-        - 12 meses
-        - doze meses
-        - ano
-        - anual
-        - ultimo ano
-        - último ano
-        - ultimos 12 meses
-        - últimos 12 meses
+          - 12 meses
+          - doze meses
+          - ano
+          - anual
+          - ultimo ano
+          - último ano
+          - ultimos 12 meses
+          - últimos 12 meses
       count:
         1:
-        - ultimo dia
-        - último dia
-        - ontem
+          - ultimo dia
+          - último dia
+          - ontem
         5:
-        - ultimos 5 dias
-        - últimos 5 dias
-        - ultima semana
-        - última semana
+          - ultimos 5 dias
+          - últimos 5 dias
+          - ultima semana
+          - última semana
         20:
-        - ultimos 20 dias
-        - últimos 20 dias
+          - ultimos 20 dias
+          - últimos 20 dias
+
   dividendos_yield:
     default_agg: list
     default_window: months:12
     windows_allowed:
-    - months:3
-    - months:6
-    - months:12
-    - months:24
-    - count:1
-    - count:3
-    - count:6
-    - count:12
-    - count:24
+      - months:3
+      - months:6
+      - months:12
+      - months:24
+      - count:1
+      - count:3
+      - count:6
+      - count:12
+      - count:24
     agg_keywords:
       latest:
         include:
-        - ultimo dy
-        - dy atual
-        - ultimo pagamento
-        - último pagamento
+          - ultimo dy
+          - dy atual
+          - ultimo pagamento
+          - último pagamento
         window: count:1
       list:
         include:
-        - historico
-        - histórico
-        - ultimos
-        - últimos
-        - dy mensal
-        - dividendos
+          - historico
+          - histórico
+          - ultimos
+          - últimos
+          - dy mensal
+          - dividendos
     window_keywords:
       months:
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
+          - trimestre
+          - 3 meses
+          - tres meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
+          - semestre
+          - 6 meses
+          - seis meses
         12:
-        - ano
-        - 12 meses
-        - doze meses
-        - ultimo ano
-        - último ano
+          - ano
+          - 12 meses
+          - doze meses
+          - ultimo ano
+          - último ano
         24:
-        - 2 anos
-        - dois anos
-        - 24 meses
+          - 2 anos
+          - dois anos
+          - 24 meses
       count:
         1:
-        - ultimo mes
-        - último mes
-        - ultimo mês
-        - último mês
+          - ultimo mes
+          - último mes
+          - ultimo mês
+          - último mês
         3:
-        - 3 ultimos
-        - tres ultimos
-        - 3 últimos
-        - três últimos
+          - 3 ultimos
+          - tres ultimos
+          - 3 últimos
+          - três últimos
         6:
-        - 6 ultimos
-        - seis ultimos
-        - 6 últimos
-        - seis últimos
+          - 6 ultimos
+          - seis ultimos
+          - 6 últimos
+          - seis últimos
         12:
-        - 12 ultimos
-        - doze ultimos
-        - 12 últimos
-        - doze últimos
+          - 12 ultimos
+          - doze ultimos
+          - 12 últimos
+          - doze últimos
         24:
-        - 24 ultimos
-        - vinte e quatro ultimos
-        - 24 últimos
-        - vinte e quatro últimos
+          - 24 ultimos
+          - vinte e quatro ultimos
+          - 24 últimos
+          - vinte e quatro últimos
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
   carteira_enriquecida:
     inference: false
     required:
-    - document_number
+      - document_number
     bindings:
       document_number: context.client_id
+
   macro_consolidada:
     default_agg: list
     default_window: months:6
     windows_allowed:
-    - months:1
-    - months:3
-    - months:6
-    - months:12
-    - count:5
-    - count:10
-    - count:20
-    - count:30
-    - count:60
+      - months:1
+      - months:3
+      - months:6
+      - months:12
+      - count:5
+      - count:10
+      - count:20
+      - count:30
+      - count:60
     agg_keywords:
       latest:
         include:
-        - ultimo
-        - último
-        - hoje
-        - agora
+          - ultimo
+          - último
+          - hoje
+          - agora
         window: count:1
       list:
         include:
-        - historico
-        - histórico
-        - serie
-        - série
-        - lista
-        - ultimos
-        - últimos
+          - historico
+          - histórico
+          - serie
+          - série
+          - lista
+          - ultimos
+          - últimos
     window_keywords:
       months:
         1:
-        - ultimo mes
-        - último mes
-        - ultimo mês
-        - último mês
+          - ultimo mes
+          - último mes
+          - ultimo mês
+          - último mês
         3:
-        - trimestre
-        - 3 meses
-        - tres meses
+          - trimestre
+          - 3 meses
+          - tres meses
         6:
-        - semestre
-        - 6 meses
-        - seis meses
+          - semestre
+          - 6 meses
+          - seis meses
         12:
-        - ano
-        - 12 meses
-        - doze meses
+          - ano
+          - 12 meses
+          - doze meses
       count:
         5:
-        - 5 dias
-        - cinco dias
+          - 5 dias
+          - cinco dias
         10:
-        - 10 dias
-        - dez dias
+          - 10 dias
+          - dez dias
         20:
-        - 20 dias
-        - vinte dias
+          - 20 dias
+          - vinte dias
         30:
-        - 30 dias
-        - trinta dias
+          - 30 dias
+          - trinta dias
         60:
-        - 60 dias
-        - sessenta dias
+          - 60 dias
+          - sessenta dias
+
   fiis_processos:
     default_agg: list
     defaults:
@@ -719,3 +758,31 @@ intents:
         source:
           - text
           - context
+        context_key: last_reference
+
+  fiis_cadastro:
+    agg_keywords: {}
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
+  fiis_noticias:
+    agg_keywords: {}
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
+
+  fiis_imoveis:
+    agg_keywords: {}
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        context_key: last_reference
