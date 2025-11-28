@@ -1,377 +1,147 @@
-# PROMPT_NEW_ENTITY (GENÉRICO) — MODELO OFICIAL ARAQUEM M8.x
+# PROMPT_NEW_ENTITIES — Guia Operacional (Araquem M8.x, Guardrails v2.2.0)
 
-Você é um assistente técnico trabalhando **NO CÓDIGO**, com acesso completo ao repositório Araquem.
-
-Este prompt deve ser usado SEMPRE que uma nova entidade for criada, independentemente do tipo
-(snapshot D-1, histórica, compute-on-read, composta, macro, índices, risco, cadastro, mercado, etc.).
+Use este prompt **dentro do repositório** sempre que uma nova entidade precisar nascer ou sofrer ajustes estruturais. Ele deve instruir o Codex a produzir **arquivos completos** (ou patches) já prontos para commit, cobrindo 100% das peças declarativas do ecossistema Araquem.
 
 -------------------------------------------------------------------------------
-REGRAS GERAIS (OBRIGATÓRIAS)
+REGRAS ABSOLUTAS
 -------------------------------------------------------------------------------
-
-1. **NÃO invente estrutura de pastas nova.**
-   Use SEMPRE:
-   - `data/entities/<entity>/`
-   - `data/contracts/entities/<entity>.schema.yaml`
-   - `data/entities/catalog.yaml`
-   - `data/ontology/entity.yaml`
-   - `data/policies/*.yaml`
-   - `data/ops/entities_consistency_report.yaml`
-   - `docs/database/samples/*` (se houver amostra)
-
-2. **NÃO altere o payload do `/ask`.**
-   Guardrails Araquem v2.1.1 determina:
-   - `{question, conversation_id, nickname, client_id}` é imutável.
-   - Nenhum parâmetro novo pode ser criado.
-
-3. **NÃO coloque heurísticas ou hardcodes.**
-   Todo comportamento deve vir de:
-   - YAML
-   - SQL
-   - Ontologia
-   Nada de lógica nova escondida em Python.
-
-4. **SIGA OS PADRÕES EXISTENTES**
-   Baseie-se sempre em entidades reais:
-   - `fiis_cadastro`
-   - `fiis_financials_snapshot`
-   - `fiis_financials_risk`
-   - `fiis_financials_revenue_schedule`
-   - `fiis_precos`
-   - `fiis_rankings`
-   - e qualquer outra entidade relevante
-
-   Se algo não existir no padrão, **não invente**: copie a decisão mais próxima.
-
-5. **SAÍDA SEMPRE EM FORMA DE ARQUIVOS**
-   A resposta final do Codex deve conter:
-   - PATCHES (diffs) **ou**
-   - conteúdo completo de cada arquivo novo/editado.
-
-   **Nunca** descreva apenas “o que deveria ser feito”.
+- **Sem pastas novas.** Sempre usar a topologia já existente.
+- **Payload do `/ask` é imutável** (`question`, `conversation_id`, `nickname`, `client_id`). Nenhum parâmetro novo.
+- **Zero heurística/hardcode em código.** Toda lógica deve vir de YAML, ontologia ou SQL já disponível. Nada de try/catch em import.
+- **Compute-on-read e composições** seguem padrões existentes; não criar lógica Python.
+- **Guardrails v2.2.0:** respeitar políticas de RAG/Narrator, contexto, cache, privacidade (entidades `client_*` sempre usam `document_number` seguro), e negar LLM onde padrão é determinístico.
+- **Somente arquivos produzidos.** A resposta do Codex deve trazer o conteúdo integral ou diffs prontos para aplicar, sem texto solto.
 
 -------------------------------------------------------------------------------
-CONTEXTO DA NOVA ENTIDADE
+ESCOPO A SER ANALISADO (sempre)
 -------------------------------------------------------------------------------
+1) **Entidade base**
+- `data/entities/<entity>/entity.yaml`
+- `data/contracts/entities/<entity>.schema.yaml`
+- `data/entities/<entity>/template.md` (documentação, nunca .j2 nem Jinja)
+- `data/entities/<entity>/responses/*.md.j2` (tabelas/listas/summary com Jinja)
+- `data/entities/<entity>/hints.md` (se existir; criar se novo)
 
-A entidade será chamada:
+2) **Catálogo, ontologia e políticas**
+- `data/entities/catalog.yaml`
+- `data/ontology/entity.yaml`
+- `data/policies/*.yaml` (quality, rag, narrator, context, cache, etc.)
+- `data/ops/entities_consistency_report.yaml`
 
-**`<entity_name>`**
+3) **Quality, planner e parâmetros**
+- `data/ops/quality/routing_samples.json`
+- `data/ops/quality/projection_*.json`
+- `data/ops/param_inference.yaml`
+- `data/ops/planner_thresholds.yaml`
 
-E deve ser criada a partir de:
+4) **RAG e conceitos**
+- `data/rag/golden/rag_golden_set.json` (se for coleção textual)
+- `data/rag/concepts/concepts-*.yaml` (se precisar atrelar a coleção já existente)
 
-- uma VIEW existente **OU**
-- um SELECT compute-on-read **OU**
-- um modelo D-1 **OU**
-- um dataset histórico **OU**
-- uma fonte macro / índice / moedas **OU**
-- outra fonte combinada
-
-O arquivo de amostra (se existir) estará em:
-
-`docs/database/samples/<entity_name>.csv`
-
-Use o header e os tipos reais para derivar *todas* as colunas do `entity.yaml` e do schema.
-
--------------------------------------------------------------------------------
-1) ANALISAR ENTIDADES EXISTENTES
--------------------------------------------------------------------------------
-
-1. Leia as seguintes entidades como referência de estilo e padrões:
-   - `data/entities/fiis_*`
-   - `data/entities/history_*`
-   - `data/entities/client_*`
-   - qualquer entidade do mesmo domínio
-
-2. Observe cuidadosamente:
-   - Estrutura de `entity.yaml`
-   - Campos obrigatórios (`entity`, `kind`, `version`, `source`, `grain`, `columns`, `defaults`)
-   - Padrão REAL de templates:
-     - Template principal: **`data/entities/<entity>/template.md`** (documentação)
-     - Tabela Jinja: **`data/entities/<entity>/responses/table.md.j2`**
-   - Padrão de hints: `data/entities/<entity>/hints.md`
-   - Como contratos, ontologia, quality, catalog e consistency são referenciados.
-
-**IMPORTANTE:**
-`template.md` **NUNCA** deve ser `.j2` e **NUNCA** deve conter Jinja.
-Ele é uma **documentação descritiva**, igual às outras entidades.
+5) **Amostras e documentação**
+- `docs/database/samples/<entity>.csv` (se fornecido)
+- `docs/dev/ENTITIES_INVENTORY_2025.md`, `docs/ARAQUEM_STATUS_2025.md`, `docs/CHECKLIST-2025.0-prod.md`, `docs/GUARDRAILS_ARAQUEM_v2.2.0.md`
 
 -------------------------------------------------------------------------------
-2) CRIAR entity.yaml
+PASSO A PASSO PARA CRIAR/ATUALIZAR ENTIDADE
 -------------------------------------------------------------------------------
-
-Criar o arquivo:
-
-`data/entities/<entity_name>/entity.yaml`
-
-O YAML deve conter:
-
-- `entity: <entity_name>`
-- `kind:`
-  Use o padrão do projeto:
-  - `snapshot` para entidades D-1
-  - `metrics` para entidades históricas temporais
-  - `composite` ou `snapshot` para views compostas
-  - `macro`, `indexes`, `currency`, etc. conforme padrão existente
-
-- `version: 1`
-
-- `source:`
-  - `schema: public`
-  - `object: <entity_name>` (se view já existir)
-  - OU USAR padrão compute-on-read conforme outras entidades M8.x.
-
-- `grain:`
-  - lista das colunas que definem a granularidade
-  - exemplos:
-    - histórico: `[ticker, ref_month]`
-    - D-1: `[ticker]`
-    - macro diária: `[ref_date]`
-
-- `columns:`
-  Preencher **uma entrada por coluna real**, derivada do CSV ou da view:
-
-  ```yaml
-  - name: <column_name>
-    type: <string|numeric|boolean|date|datetime>
-    nullable: <true|false>
-    desc: "<descrição em PT-BR clara>"
-```
-
-* `defaults:`
-  Usar padrão existente:
-
-  ```yaml
-  order_by:
-    <col>: asc|desc
-  ```
-
-**NÃO invente seções novas.**
-Apenas copie padrões reais.
-
----
-
-3. CRIAR SCHEMA
-
----
-
-Criar:
-
-`data/contracts/entities/<entity_name>.schema.yaml`
-
-Deve refletir **exactamente** as colunas do `entity.yaml`:
-
-* tipos (`string`, `number`, `integer`, `boolean`, `string+format: date`, etc.)
-* `nullable`
-* `required`:
-
-  * chaves naturais
-  * demais campos essenciais
-
-Siga o padrão das entidades existentes.
-
----
-
-4. CRIAR TEMPLATES
-
----
-
-4.1. Criar diretório:
-
-`data/entities/<entity_name>/responses/`
-
-4.2. Criar:
-
-### a) `responses/table.md.j2`
-
-* Tabela padrão com cabeçalhos Markdown
-* Deve conter **somente Jinja**
-* Seguir filtros EXISTENTES no projeto:
-
-  * `date_br`
-  * `currency_br`
-  * `percentage_br`
-  * `int_br`
-  * `float_br`
-  * etc.
-* Tratar nulos com `"-"`
-* Exibir mensagem amigável para `rows` vazios.
-
-### b) `template.md`  (SEM `.j2`)
-
-* Documento descritivo, estilo das outras entidades:
-
-  * "## Descrição"
-  * "## Exemplos de perguntas"
-  * "## Respostas usando templates"
-
-NÃO COLOCAR JINJA AQUI.
-
----
-
-5. CRIAR HINTS
-
----
-
-Criar:
-
-`data/entities/<entity_name>/hints.md`
-
-Adicionar perguntas reais para o Planner entender quando essa entidade deve ser acionada.
-
-Use o estilo das outras entidades.
-
----
-
-6. ONTOLOGIA
-
----
-
-Modificar:
-
-`data/ontology/entity.yaml`
-
-Adicionar entrada para `<entity_name>`:
-
-* blocos `intents`
-* termos relevantes
-* tokens
-* entidades associadas
-* domínios corretos
-
-NÃO quebrar a ontologia atual.
-Apenas incluir bloco novo usando o mesmo estilo.
-
----
-
-7. QUALITY
-
----
-
-Modificar:
-
-`data/policies/quality.yaml`
-
-Adicionar `<entity_name>` com:
-
-* `not_null` (campos obrigatórios)
-* `accepted_range` para:
-
-  * percentuais
-  * valores monetários
-  * indicadores
-  * rankings
-  * datas
-  * etc.
-
-Usar arquivo CSV real para determinar limites plausíveis.
-
----
-
-8. ENTITIES CONSISTENCY REPORT
-
----
-
-Modificar:
-
-`data/ops/entities_consistency_report.yaml`
-
-Criar entrada:
-
-* `has_schema: true`
-* `has_hints: true`
-* `in_quality_policy: true`
-* `in_cache_policy:` copiar padrão de entidades equivalentes
-* `in_rag_policy:` apenas se houver deny-intents em `rag.yaml`
-* `in_narrator_policy:` normalmente `false` para entidades numéricas
-* `has_ontology_intent: true`
-
----
-
-9. CATALOG
-
----
-
-Modificar:
-
-`data/entities/catalog.yaml`
-
-Adicionar `<entity_name>` com:
-
-* `title:` descritivo em PT-BR
-* `kind:` alinhado com o `kind` da entidade (snapshot, historical, metrics, composite, macro, etc.)
-* `paths:` apontando para:
-
-  * `entity_yaml`
-  * `schema`
-  * `quality_projection` (ou `null`/ausente, se ainda não existir)
-* `coverage:` alinhado com:
-
-  * cache_policy
-  * rag_policy (true se houver alguma regra em `rag.yaml`, mesmo que seja deny)
-  * narrator_policy
-  * param_inference
-* `identifiers.natural_keys:` com as chaves naturais
-* `notes:` (pode ser vazio ou incluir anotações úteis)
-
-Copiar o padrão de uma entidade equivalente já existente.
-
----
-
-10. RAG E NARRATOR
-
----
-
-10.1. `data/policies/rag.yaml`
-
-* NÃO habilitar RAG para entidades numéricas/determinísticas.
-* Se necessário, adicionar sua intent em `routing.deny_intents`.
-
-10.2. `data/policies/narrator.yaml`
-
-* Deixar `<entity_name>` com `llm_enabled: false`
-* Ou simplesmente não incluir (seguir padrão real).
-
----
-
-11. VALIDAÇÃO
-
----
-
-Verificar:
-
-* YAMLs bem formados
-* caminhos corretos
-* sem Jinja em `template.md`
-* nenhum arquivo fora do padrão
-* schema consistente com entity
-* entidade registrada no `catalog.yaml`
-* tudo referenciado em `entities_consistency_report.yaml`
-* quality com limites plausíveis
-
----
-
-## SAÍDA ESPERADA DO CODEX
-
-Retorne **EXCLUSIVAMENTE**:
-
-* PATCHES completos **OU**
-* conteúdo completo para:
-
-  * `data/entities/<entity_name>/entity.yaml`
-  * `data/entities/<entity_name>/template.md`
-  * `data/entities/<entity_name>/responses/table.md.j2`
-  * `data/entities/<entity_name>/hints.md`
-  * `data/contracts/entities/<entity_name>.schema.yaml`
-  * trechos alterados de:
-
-    * `data/entities/catalog.yaml`
-    * `data/ontology/entity.yaml`
-    * `data/policies/quality.yaml`
-    * `data/ops/entities_consistency_report.yaml`
-    * `data/policies/rag.yaml` (se negar intent)
-    * `data/policies/narrator.yaml` (se necessário declarar disabled)
-
-Nenhuma explicação.
-Nenhum texto solto.
-Apenas arquivos prontos para commit.
+1) **Reconhecer o tipo**: snapshot D-1, histórico (metrics), compute-on-read, composite/view, macro/index/currency, risco, overview, client/privada, single-row, lista/tabela, agregações, multi-ticker ou single-ticker, janelas temporais.
+
+2) **Basear-se em padrões existentes equivalentes.** Referências canônicas: `fiis_*`, `history_*`, `fii_overview`, `client_*`. Copiar decisões (campos, estruturas, políticas) do tipo mais próximo.
+
+3) **Criar `data/entities/<entity>/entity.yaml`**
+- Campos mínimos reais observados no repo: `id`, `result_key` (quando necessário), `sql_view` ou `sql` compute-on-read, `private` (true para `client_*` ou entidades PII), `description` (PT-BR), `options` (ex.: `supports_multi_ticker`), `identifiers` (lista com nome/descrição), `default_date_field` (quando temporal), `columns` (nome, alias e descrição). Não inventar tipos aqui.
+- Blocos opcionais conforme padrões: `presentation` (kind summary/table e empty_message), `ask` (intents, requires_identifiers, keywords, phrase_includes, synonyms, weights, sample_questions), `params` (required/bindings para private), `order_by_whitelist`, `aggregations` (enabled + defaults), `responses` (mapa com kind/template). Use vocabulário e filtros já existentes (`currency_br`, `percent_br`, `number_br`, `int_br`, `float_br`, `date_br`, etc.).
+- Para entidades privadas com `document_number`: `private: true`, incluir identifier + binding seguro, e `requires_identifiers`/`params.required` mapeando `context.client_id` (LGPD: ignorar PII do texto livre).
+- Compute-on-read: usar bloco `sql` com parâmetros nomeados já usados em outras entidades; jamais criar Python.
+- Single-row/overview: manter `aggregations.enabled: false` e `presentation.kind` adequado.
+
+4) **Criar `data/contracts/entities/<entity>.schema.yaml`**
+- Espelhar todas as colunas do entity (nomes e cardinalidade). Tipos válidos: `string`, `number`, `integer`, `boolean`, `string` com `format: date|date-time`. Definir `required` para chaves naturais e campos essenciais. Seguir estilo dos schemas atuais.
+
+5) **Criar templates da entidade**
+- `data/entities/<entity>/template.md`: documento de referência (Descrição, Exemplos de perguntas, Respostas usando templates). **Nunca** usar Jinja nem extensão .j2.
+- `data/entities/<entity>/responses/`: criar pelo menos um template Jinja (`table.md.j2`, `summary.md.j2`, `list_basic.md.j2`, etc.) conforme o tipo da entidade. Tratar `rows` vazios com `empty_message` e preencher nulos com `"-"` ou filtros existentes. Multi-data por data: usar namespace para agrupar como em `client_fiis_positions`.
+- `data/entities/<entity>/hints.md`: perguntas reais para ajudar o Planner (inclua sempre para entidades novas).
+
+6) **Catalogar** (`data/entities/catalog.yaml`)
+- Adicionar entrada com `title` PT-BR, `kind` (snapshot/historical/metrics/composite/macro/index/currency/client/etc.), `paths` (`entity_yaml`, `schema`, `quality_projection` se existir ou `null`), `coverage` (`cache_policy`, `rag_policy`, `narrator_policy`, `param_inference`), `identifiers.natural_keys`, `notes` (explicitar privacidade, RAG deny, etc.). Cobertura de RAG/narrator deve refletir as políticas reais (deny também conta como presença na cobertura de RAG).
+
+7) **Ontologia** (`data/ontology/entity.yaml`)
+- Incluir bloco `intents` com tokens/phrases include/exclude, entities mapeadas e domínios coerentes. Seguir pesos/tokens existentes (`normalize`, `tokenization`, `weights` já declarados). Respeitar exclusões de PII (não mencionar CPF/CNPJ em tokens de entidades públicas).
+
+8) **Políticas**
+- `data/policies/quality.yaml`: adicionar dataset com `freshness` (se aplicável), `not_null`, `accepted_range` coerentes com dados reais. Basear-se em CSV amostra ou ranges de entidades similares.
+- `data/ops/quality/projection_<entity>.json`: criar projeção com `type: projection`, `entity`, `result_key` (quando usado), `must_have_columns`, `samples` de roteamento/QA.
+- `data/ops/quality/routing_samples.json`: adicionar perguntas de roteamento para a nova intent, especialmente para garantir Planner correto.
+- `data/ops/planner_thresholds.yaml`: incluir thresholds da intent e entity seguindo famílias (objetivas 1.0/0.20; soltas 0.8/0.10; risco com gap 0). Nunca afrouxar além dos padrões existentes.
+- `data/ops/param_inference.yaml`:
+  - Entidades históricas: definir `default_agg`, `default_window`, `windows_allowed`, `agg_keywords`, `window_keywords` conforme domínio.
+  - Snapshots/composite sem janela: `inference: false` ou apenas `default_agg` list com limites.
+  - Entidades privadas: `inference: false`, `required` e `bindings` (`document_number: context.client_id`).
+  - Agregações: `defaults.list.limit/order` quando necessário.
+
+9) **RAG e Narrator**
+- `data/policies/rag.yaml`: manter deny para intents determinísticas. Só habilitar se já houver coleção existente (não criar novas). Se negar, adicionar intent a `routing.deny_intents`; se habilitar, apontar para collections existentes (`concepts-*` ou coleções RAG já listadas) e perfil adequado (default/macro/risk).
+- `data/policies/narrator.yaml`: padrão é `llm_enabled: false`. Só adicionar override se já houver precedentes; manter `max_llm_rows: 0`, `strict_mode` conforme equivalente. Privadas e numéricas ficam desligadas.
+- `data/policies/context.yaml`: atualizar `planner.allowed_entities` / `denied_entities` e bloco `entities` se a nova entidade puder herdar contexto (ticker/ref_date) ou se deve ser bloqueada (privadas, macro). Respeitar compute-on-read seguro.
+- `data/policies/cache.yaml` (se aplicável): garantir inclusão/exclusão conforme análogo.
+
+10) **Consistência operacional**
+- `data/ops/entities_consistency_report.yaml`: marcar `has_schema`, `has_quality_projection`, `in_quality_policy`, `in_cache_policy`, `in_rag_policy` (true mesmo se deny), `in_narrator_policy`, `has_ontology_intent`, `has_param_inference`. Adicionar notas sobre privacidade, RAG negado, binding de documento, etc.
+
+11) **Amostras e documentação auxiliar**
+- `docs/database/samples/<entity>.csv`: criar se fornecida amostra; usar header/tipos reais para descrever colunas no entity e ranges de quality.
+- `data/rag/golden/rag_golden_set.json`: se entidade entrar em RAG textual, adicionar exemplos de perguntas/respostas canônicas.
+- `data/rag/concepts/concepts-*.yaml`: só usar coleções existentes; se precisar mapear para conceito, adicionar termos na coleção correspondente (macro/risk/fiis) sem criar novas.
+- `docs/dev/ENTITIES_INVENTORY_2025.md` e `docs/ARAQUEM_STATUS_2025.md`: atualizar listagem/estado da entidade se for obrigatória no inventário.
+- `docs/CHECKLIST-2025.0-prod.md`: marcar itens cumpridos para nova entidade.
+
+-------------------------------------------------------------------------------
+CASUÍSTICA ESPECÍFICA
+-------------------------------------------------------------------------------
+- **Entidade privada (`client_*` ou PII)**: `private: true`; identifiers incluem `document_number`; `ask.requires_identifiers` e `params.required` devem ter `document_number`; `param_inference` com `bindings.document_number: context.client_id`; RAG e Narrator negados (mantém cobertura com deny); notas no catalog e consistency explicando LGPD.
+- **Multi-ticker**: `options.supports_multi_ticker: true`; `ask.requires_identifiers` inclui `ticker`; considerar `aggregations.enabled: true` com defaults list limit/order.
+- **Single-row/overview**: `aggregations.enabled: false`; responses `summary` ou `list_basic`; `presentation.kind` summary.
+- **Lista/tabela**: responses `table.md.j2` com cabeçalho e mensagem de vazio; usar filtros BR; agrupar por datas se necessário.
+- **Agregações**: manter `aggregations.defaults.list.limit/order`; no param_inference, defina `default_agg`/keywords.
+- **Janelas temporais**: obrigatórias para históricos; definir `default_window` e keywords coerentes.
+- **RAG deny**: adicionar intent em `rag.routing.deny_intents`; catalog coverage.rag_policy: true; consistency `in_rag_policy: true` com nota.
+- **Narrator off**: não incluir em `narrator.entities` (usa default off) ou incluir explicitamente com `llm_enabled: false` se outras entradas similares assim o fazem.
+- **Contexto**: se entidade deve herdar último ticker/data, incluir em `context.planner.allowed_entities` e `context.entities.<entity>` com flags `use_referenced_ticker`/`use_last_entity`. Privadas/macros geralmente ficam em denied.
+- **`metrics_synonyms` / métricas de tracking**: se a entidade expõe métricas novas, adicionar sinônimos nas seções adequadas do `entity.yaml` e considerar ranges de quality.
+- **Golden set/roteamento**: adicionar exemplos que validem o intent e o template.
+
+-------------------------------------------------------------------------------
+VALIDAÇÃO FINAL (antes de responder)
+-------------------------------------------------------------------------------
+- Todos os YAMLs bem-formados; caminhos corretos.
+- `entity.yaml` ↔ `schema.yaml` ↔ `catalog.yaml` ↔ `entities_consistency_report.yaml` alinhados.
+- `param_inference` e `planner_thresholds` contemplam a intent.
+- `quality_projection` e `quality.yaml` coerentes com colunas/ranges reais.
+- Templates: `template.md` sem Jinja; responses .j2 com filtros corretos e tratamento de vazio.
+- RAG/Narrator/context/cache configurados (deny ou allow) seguindo precedentes.
+- Privacidade assegurada (`document_number` só via contexto seguro).
+- Amostras/golden/concepts atualizados quando aplicável.
+
+-------------------------------------------------------------------------------
+SAÍDA OBRIGATÓRIA DO CODEX
+-------------------------------------------------------------------------------
+Entregar apenas arquivos/diffs prontos para commit para todos os itens afetados, incluindo (quando aplicável):
+- `data/entities/<entity>/entity.yaml`
+- `data/entities/<entity>/template.md`
+- `data/entities/<entity>/responses/*.md.j2`
+- `data/entities/<entity>/hints.md`
+- `data/contracts/entities/<entity>.schema.yaml`
+- `data/entities/catalog.yaml`
+- `data/ontology/entity.yaml`
+- `data/policies/quality.yaml`
+- `data/ops/quality/projection_<entity>.json`
+- `data/ops/quality/routing_samples.json`
+- `data/ops/param_inference.yaml`
+- `data/ops/planner_thresholds.yaml`
+- `data/ops/entities_consistency_report.yaml`
+- `data/policies/rag.yaml` (deny/allow conforme padrão) e `data/policies/narrator.yaml` (override se necessário)
+- `data/policies/context.yaml` / `data/policies/cache.yaml` se houver impacto
+- `data/rag/golden/rag_golden_set.json` e `data/rag/concepts/concepts-*.yaml` quando aplicável
+- `docs/database/samples/<entity>.csv` e demais docs/inventário/checklist relevantes
