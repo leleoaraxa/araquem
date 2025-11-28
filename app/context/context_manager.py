@@ -499,25 +499,29 @@ class ContextManager:
     ) -> Optional[LastReference]:
         """Retorna a última referência respeitando as políticas de contexto."""
 
-        if not self.enabled:
-            return None
-
-        policy = self.last_reference_policy
-        if not policy.get("enable_last_ticker"):
-            return None
-
-        key = self._conversation_key(client_id, conversation_id)
-        last_ref = self._last_reference.get(key)
-        if not isinstance(last_ref, LastReference):
-            return None
-
-        max_age_turns = policy.get("max_age_turns") or 0
-        if max_age_turns > 0:
-            current_turn = self._turn_counters.get(key, 0)
-            if (current_turn - last_ref.turn_index) > max_age_turns:
+        try:
+            if not self.enabled:
                 return None
 
-        return last_ref
+            policy = self.last_reference_policy
+            if not policy.get("enable_last_ticker"):
+                return None
+
+            key = self._conversation_key(client_id, conversation_id)
+            last_ref = self._last_reference.get(key)
+            if not isinstance(last_ref, LastReference):
+                return None
+
+            max_age_turns = policy.get("max_age_turns") or 0
+            if max_age_turns > 0:
+                current_turn = self._turn_counters.get(key, 0)
+                if (current_turn - last_ref.turn_index) > max_age_turns:
+                    return None
+
+            return last_ref
+        except Exception:  # pragma: no cover - defensivo
+            LOGGER.warning("Falha ao recuperar last_reference", exc_info=True)
+            return None
 
     @staticmethod
     def to_wire(turns: List[ConversationTurn]) -> List[Dict[str, Any]]:

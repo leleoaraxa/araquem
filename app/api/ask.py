@@ -2,6 +2,7 @@
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from decimal import Decimal
@@ -86,6 +87,7 @@ _NARRATOR_ENABLED = bool(_NARRATOR_FLAGS["enabled"])
 _NARRATOR_SHADOW = bool(_NARRATOR_FLAGS["shadow"])
 _NARRATOR_MODEL = str(_NARRATOR_FLAGS["model"])
 _NARR: Optional[Narrator] = Narrator(model=_NARRATOR_MODEL)
+_TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 
 # ─────────────────────────────────────────────────────────────────────────────
 
@@ -443,6 +445,10 @@ def ask(
             ticker_for_context = agg_params.get("ticker")
         if not ticker_for_context and isinstance(identifiers, dict):
             ticker_for_context = identifiers.get("ticker")
+        if not ticker_for_context:
+            match = _TICKER_RE.search((payload.question or "").upper())
+            if match:
+                ticker_for_context = match.group(1)
         if ticker_for_context:
             context_manager.update_last_reference(
                 client_id=payload.client_id,
