@@ -1,62 +1,29 @@
 terms:
-  - name: "narrator"
-    kind: "policy"
-    scope: "narrator"
-    version: 1
-
-# ======================
-#  BLOCO CANÔNICO (USADO PELO LOADER ATUAL)
-# ======================
+- name: narrator
+  kind: policy
+  scope: narrator
+  version: 1
 narrator:
-  model: "sirios-narrator:latest"
+  model: sirios-narrator:latest
   llm_enabled: false
   shadow: false
-
-# ======================
-#  DEFAULT (LLM OFF)
-# ======================
 default:
-  llm_enabled: false           # <<< LLM desligado globalmente
-  shadow: false                # <<< nunca roda em shadow
+  llm_enabled: false
+  shadow: false
   model: sirios-narrator:latest
   style: executivo
-  max_llm_rows: 0              # <<< impossibilita chamadas ao LLM
+  max_llm_rows: 0
   max_prompt_tokens: 4000
   max_output_tokens: 700
-
   use_rag_in_prompt: false
-
   use_conversation_context: false
   prefer_concept_when_no_ticker: true
   rag_fallback_when_no_rows: false
   concept_with_data_when_rag: false
-
-# ======================
-#  OVERRIDES GLOBAIS
-# ======================
 llm_enabled: false
 shadow: false
 max_llm_rows: 0
-
-# ======================
-#  ENTIDADES (TODAS OFF)
-# ======================
 entities:
-
-  # client_fiis_positions: carteira; narrator desligado por design
-  # client_fiis_dividends_evolution: carteira; narrator desligado por design
-  # client_fiis_performance_vs_benchmark: carteira; narrator desligado por design
-
-  # fiis_cadastro: cadastro estatico; narrativas nao aplicaveis
-  # fiis_dividendos: serie historica numerica; narrativas ficam desabilitadas
-  # fiis_financials_snapshot: indicadores D-1; resposta tabular
-  # fiis_imoveis: dados cadastrais; sem uso de narrator
-  # fiis_precos: serie historica; narrator nao habilitado
-  # fiis_processos: processos estruturados; narrativa nao requerida
-  # fiis_rankings: ranking deterministico; narrator fora de escopo
-  # fiis_yield_history: histórico numérico de DY; resposta tabular
-  # fii_overview: visão consolidada (DY, risco, rankings); narrativa opcional
-
   fiis_financials_risk:
     llm_enabled: false
     strict_mode: true
@@ -65,7 +32,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   fiis_financials_revenue_schedule:
     llm_enabled: false
     strict_mode: false
@@ -74,7 +40,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   fiis_noticias:
     llm_enabled: false
     strict_mode: false
@@ -83,7 +48,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   history_market_indicators:
     llm_enabled: false
     strict_mode: false
@@ -92,7 +56,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   history_b3_indexes:
     llm_enabled: false
     strict_mode: false
@@ -101,7 +64,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   history_currency_rates:
     llm_enabled: false
     strict_mode: false
@@ -110,7 +72,6 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   fii_overview:
     llm_enabled: false
     strict_mode: false
@@ -119,8 +80,31 @@ entities:
     use_conversation_context: false
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-
   fiis_yield_history:
+    llm_enabled: false
+    strict_mode: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
+    use_conversation_context: false
+    rag_fallback_when_no_rows: false
+    concept_with_data_when_rag: false
+  dividendos_yield:
+    llm_enabled: false
+    strict_mode: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
+    use_conversation_context: false
+    rag_fallback_when_no_rows: false
+    concept_with_data_when_rag: false
+  carteira_enriquecida:
+    llm_enabled: false
+    strict_mode: false
+    max_llm_rows: 0
+    use_rag_in_prompt: false
+    use_conversation_context: false
+    rag_fallback_when_no_rows: false
+    concept_with_data_when_rag: false
+  macro_consolidada:
     llm_enabled: false
     strict_mode: false
     max_llm_rows: 0

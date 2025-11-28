@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "dividendos_yield",
+  "result_key": "ticker",
+  "must_have_columns": [
+    "ticker",
+    "ref_month",
+    "dividend_amt",
+    "dy_monthly",
+    "dy_12m_pct"
+  ],
+  "samples": [
+    { "question": "historico de dividendos e dy do MXRF11 nos ultimos 12 meses" },
+    { "question": "qual foi o dy mensal do HGLG11 em 2024-09" },
+    { "question": "dividend yield atual do CPTS11" },
+    { "question": "comparativo de dy mensal entre HGLG11 e VISC11" }
+  ]
+}

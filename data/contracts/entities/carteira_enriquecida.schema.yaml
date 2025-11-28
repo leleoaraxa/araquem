@@ -1,0 +1,69 @@
+version: 1
+name: carteira_enriquecida
+description: Carteira privada enriquecida com métricas financeiras, risco e rankings.
+
+type: object
+properties:
+  document_number:
+    type: string
+  position_date:
+    type: string
+    format: date
+  ticker:
+    type: string
+  fii_name:
+    type: string
+  qty:
+    type: integer
+  closing_price:
+    type: number
+  position_value:
+    type: number
+  portfolio_value:
+    type: number
+  weight_pct:
+    type: number
+  sector:
+    type: string
+  sub_sector:
+    type: string
+  classification:
+    type: string
+  management_type:
+    type: string
+  target_market:
+    type: string
+  fii_cnpj:
+    type: string
+  dy_12m_pct:
+    type: number
+  dy_monthly_pct:
+    type: number
+  dividends_12m_amt:
+    type: number
+  market_cap_value:
+    type: number
+  equity_value:
+    type: number
+  volatility_ratio:
+    type: number
+  sharpe_ratio:
+    type: number
+  sortino_ratio:
+    type: number
+  max_drawdown:
+    type: number
+  beta_index:
+    type: number
+  sirios_rank_position:
+    type: integer
+  ifix_rank_position:
+    type: integer
+  rank_dy_12m:
+    type: integer
+  rank_sharpe:
+    type: integer
+required:
+  - document_number
+  - position_date
+  - ticker

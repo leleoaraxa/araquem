@@ -1,0 +1,194 @@
+id: carteira_enriquecida
+result_key: document_number
+sql_view: carteira_enriquecida
+private: true
+description: >
+  Visão privada e composta da carteira do cliente, cruzando posição, cadastro do FII,
+  métricas financeiras, risco e rankings por ativo.
+
+options:
+  supports_multi_ticker: true
+
+identifiers:
+- name: document_number
+  description: Documento do cliente (CPF/CNPJ) – recebido do contexto seguro.
+- name: position_date
+  description: Data da posição da carteira.
+- name: ticker
+  description: Ticker do FII (AAAA11).
+
+default_date_field: position_date
+
+columns:
+- name: document_number
+  alias: Documento
+  description: CPF/CNPJ do cliente (PII, nunca capturado do texto livre).
+- name: position_date
+  alias: Data da posição
+  description: Data de referência da carteira.
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: fii_name
+  alias: Nome do FII
+  description: Nome completo do fundo imobiliário.
+- name: qty
+  alias: Quantidade
+  description: Quantidade de cotas na posição.
+- name: closing_price
+  alias: Preço fechamento
+  description: Preço de fechamento do ativo na data de posição.
+- name: position_value
+  alias: Valor da posição
+  description: Valor total da posição (R$).
+- name: portfolio_value
+  alias: Valor da carteira
+  description: Valor total da carteira (R$).
+- name: weight_pct
+  alias: Peso (%)
+  description: Percentual da posição em relação à carteira.
+- name: sector
+  alias: Setor
+  description: Setor do FII.
+- name: sub_sector
+  alias: Subsetor
+  description: Segmento específico dentro do setor.
+- name: classification
+  alias: Classificação
+  description: Tipo de portfólio do FII (ex.: Tijolo, Papel).
+- name: management_type
+  alias: Gestão
+  description: Tipo de gestão do fundo (Ativa/Passiva).
+- name: target_market
+  alias: Público-alvo
+  description: Público-alvo do FII.
+- name: fii_cnpj
+  alias: CNPJ do FII
+  description: CNPJ do fundo imobiliário.
+- name: dy_12m_pct
+  alias: DY 12m (%)
+  description: Dividend yield acumulado em 12 meses.
+- name: dy_monthly_pct
+  alias: DY mensal (%)
+  description: Dividend yield mensal corrente.
+- name: dividends_12m_amt
+  alias: Dividendos 12m (R$)
+  description: Soma de dividendos pagos nos últimos 12 meses.
+- name: market_cap_value
+  alias: Valor de mercado
+  description: Valor de mercado do fundo.
+- name: equity_value
+  alias: Patrimônio líquido
+  description: Patrimônio líquido do fundo.
+- name: volatility_ratio
+  alias: Volatilidade
+  description: Métrica de volatilidade do ativo.
+- name: sharpe_ratio
+  alias: Sharpe
+  description: Índice de Sharpe do FII.
+- name: sortino_ratio
+  alias: Sortino
+  description: Índice de Sortino do FII.
+- name: max_drawdown
+  alias: Máx. drawdown
+  description: Máxima queda histórica do ativo.
+- name: beta_index
+  alias: Beta
+  description: Beta do ativo contra índice de referência.
+- name: sirios_rank_position
+  alias: Posição ranking SIRIOS
+  description: Posição no ranking proprietário SIRIOS.
+- name: ifix_rank_position
+  alias: Posição ranking IFIX
+  description: Posição no ranking IFIX.
+- name: rank_dy_12m
+  alias: Ranking DY 12m
+  description: Posição no ranking por DY em 12 meses.
+- name: rank_sharpe
+  alias: Ranking Sharpe
+  description: Posição no ranking por Sharpe.
+
+presentation:
+  kind: table
+  fields:
+    key: ticker
+    value: position_value
+  empty_message: Sem posições disponíveis.
+
+ask:
+  intents:
+    - carteira_enriquecida
+  requires_identifiers:
+    - document_number
+  keywords:
+    - carteira
+    - posicao
+    - posicoes
+    - peso
+    - valor investido
+    - rentabilidade
+    - ranking
+    - sharpe
+    - dy
+    - dividendos
+    - risco
+  phrase_includes:
+    - "minha carteira"
+    - "posicoes da carteira"
+    - "peso do"
+    - "quanto tenho em"
+    - "ranking do meu fii"
+  synonyms:
+    document_number:
+      - cpf
+      - cnpj
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    position_value:
+      - valor da posicao
+      - valor investido
+      - saldo
+    weight_pct:
+      - peso na carteira
+      - percentual na carteira
+    sharpe_ratio:
+      - sharpe
+    sortino_ratio:
+      - sortino
+    dy_monthly_pct:
+      - dy mensal
+      - dividend yield mensal
+    dy_12m_pct:
+      - dy 12m
+      - dividend yield 12 meses
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - peso do HGLG11 na minha carteira
+    - valor investido em MXRF11 na carteira
+    - dy mensal dos meus FIIs
+    - ranking de sharpe dos meus FIIs na carteira
+
+order_by_whitelist:
+- position_value desc
+- weight_pct desc
+- dy_12m_pct desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: false
+    list:
+      limit: 50
+      order: desc
+  windows_allowed: []
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2

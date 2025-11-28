@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "macro_consolidada",
+  "result_key": "ref_date",
+  "must_have_columns": [
+    "ref_date",
+    "selic",
+    "cdi",
+    "ifix_points",
+    "ibov_points"
+  ],
+  "samples": [
+    { "question": "ipca e selic em 2025-11-12" },
+    { "question": "ifix e ibov do dia 2025-11-14" },
+    { "question": "dolar e euro no mesmo dia de referencia" },
+    { "question": "comparativo de cdi e selic na ultima semana" }
+  ]
+}

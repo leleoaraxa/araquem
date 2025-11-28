@@ -1,116 +1,148 @@
-
 terms:
-  - name: "cache"
-    kind: "policy"
-    scope: "cache"
-    version: 1
-
+- name: cache
+  kind: policy
+  scope: cache
+  version: 1
 policies:
   client_fiis_positions:
     ttl_seconds: 900
-    refresh_at: "none"
+    refresh_at: none
     scope: prv
-    key_fields: [document_number, position_date, ticker]
-
+    key_fields:
+    - document_number
+    - position_date
+    - ticker
   client_fiis_dividends_evolution:
     ttl_seconds: 900
-    refresh_at: "none"
+    refresh_at: none
     scope: prv
-    key_fields: [document_number, year_reference, month_number]
-
+    key_fields:
+    - document_number
+    - year_reference
+    - month_number
   client_fiis_performance_vs_benchmark:
     ttl_seconds: 900
-    refresh_at: "none"
+    refresh_at: none
     scope: prv
-    key_fields: [document_number, benchmark_code, date_reference]
-
+    key_fields:
+    - document_number
+    - benchmark_code
+    - date_reference
   fiis_cadastro:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   fiis_precos:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, traded_at]
-
+    key_fields:
+    - ticker
+    - traded_at
   fiis_dividendos:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, payment_date]
-
+    key_fields:
+    - ticker
+    - payment_date
   fiis_rankings:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   fiis_imoveis:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, asset_name]
-
+    key_fields:
+    - ticker
+    - asset_name
   fiis_noticias:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, published_at]
-
+    key_fields:
+    - ticker
+    - published_at
   fiis_processos:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, process_number]
-
+    key_fields:
+    - ticker
+    - process_number
   fiis_financials_snapshot:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   fiis_financials_revenue_schedule:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   fiis_financials_risk:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   history_currency_rates:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [rate_date]
-
+    key_fields:
+    - rate_date
   history_b3_indexes:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [index_date]
-
+    key_fields:
+    - index_date
   history_market_indicators:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [indicator_date, indicator_name]
-
-
+    key_fields:
+    - indicator_date
+    - indicator_name
   fii_overview:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker]
-
+    key_fields:
+    - ticker
   fiis_yield_history:
     ttl_seconds: 86400
-    refresh_at: "07:00"
+    refresh_at: 07:00
     scope: pub
-    key_fields: [ticker, ref_month]
+    key_fields:
+    - ticker
+    - ref_month
+  dividendos_yield:
+    ttl_seconds: 86400
+    refresh_at: 07:00
+    scope: pub
+    key_fields:
+    - ticker
+    - ref_month
+  carteira_enriquecida:
+    ttl_seconds: 900
+    refresh_at: none
+    scope: prv
+    key_fields:
+    - document_number
+    - position_date
+    - ticker
+  macro_consolidada:
+    ttl_seconds: 86400
+    refresh_at: 07:00
+    scope: pub
+    key_fields:
+    - ref_date

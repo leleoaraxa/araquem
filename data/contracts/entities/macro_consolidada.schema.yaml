@@ -1,0 +1,39 @@
+version: 1
+name: macro_consolidada
+description: Histórico consolidado de indicadores macro, índices e câmbio.
+
+type: object
+properties:
+  ref_date:
+    type: string
+    format: date
+  ipca:
+    type: number
+    nullable: true
+  selic:
+    type: number
+  cdi:
+    type: number
+    nullable: true
+  ifix_points:
+    type: number
+  ifix_var_pct:
+    type: number
+  ibov_points:
+    type: number
+  ibov_var_pct:
+    type: number
+  usd_buy_amt:
+    type: number
+  usd_sell_amt:
+    type: number
+  usd_var_pct:
+    type: number
+  eur_buy_amt:
+    type: number
+  eur_sell_amt:
+    type: number
+  eur_var_pct:
+    type: number
+required:
+  - ref_date

@@ -1,0 +1,9 @@
+{% if rows and rows|length > 0 -%}
+| Documento | Data da posição | Ticker | Nome | Quantidade | Preço fechamento | Valor da posição | Valor da carteira | Peso (%) | DY mensal (%) | DY 12m (%) | Dividendos 12m (R$) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Beta | Rank SIRIOS | Rank IFIX | Rank DY 12m | Rank Sharpe |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+{%- for r in rows %}
+| {{ r.document_number }} | {{ r.position_date|date_br }} | {{ r.ticker }} | {{ r.fii_name }} | {{ r.qty }} | {{ r.closing_price|currency_br }} | {{ r.position_value|currency_br }} | {{ r.portfolio_value|currency_br }} | {{ r.weight_pct|percent_br }} | {{ r.dy_monthly_pct|percent_br }} | {{ r.dy_12m_pct|percent_br }} | {{ r.dividends_12m_amt|currency_br }} | {{ r.volatility_ratio }} | {{ r.sharpe_ratio }} | {{ r.sortino_ratio }} | {{ r.max_drawdown }} | {{ r.beta_index }} | {{ r.sirios_rank_position }} | {{ r.ifix_rank_position }} | {{ r.rank_dy_12m }} | {{ r.rank_sharpe }} |
+{%- endfor %}
+{%- else -%}
+{{ empty_message or "Sem posições disponíveis." }}
+{%- endif %}

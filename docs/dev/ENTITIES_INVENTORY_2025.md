@@ -484,3 +484,60 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 - Pública; RAG permitido (macro); Narrator desabilitado.
 - Relatório: entidade macro histórica com RAG permitido e inferência de janelas curtas.
+
+---
+
+## dividendos_yield
+
+**Tipo:** histórica (métrica composta, pública, multi-ticker).  
+**Grão:** `{ticker, ref_month}`; `result_key: ticker`; `default_date_field: ref_month`.  
+**Fonte:** view `public.dividendos_yield` + CSV `docs/database/samples/dividendos_yield.csv`.  
+**Escopo:** dividendos pagos, DY mensal/12m, cadastro do FII, último pagamento.
+
+**O que retorna (colunas principais)**
+- `ticker`, `display_name`, `sector`, `sub_sector`, `classification`, `management_type`, `target_market`
+- `traded_until_date`, `payment_date`, `dividend_amt`, `ref_month`, `month_dividends_amt`, `month_price_ref`
+- `dy_monthly`, `dy_12m_pct`, `dy_current_monthly_pct`, `dividends_12m_amt`, `last_dividend_amt`, `last_payment_date`
+
+**Privacidade e políticas**
+- Pública; `requires_identifiers: [ticker]`; `supports_multi_ticker: true`.  
+- RAG negado; Narrator desabilitado; param_inference com janelas 3–24m e contagem.  
+- Qualidade: range para DY e dividendo; cache público diário.
+
+---
+
+## carteira_enriquecida
+
+**Tipo:** histórica (privada, multi-ticker).  
+**Grão:** `{document_number, position_date, ticker}`; `result_key: document_number`; `default_date_field: position_date`.  
+**Fonte:** view `public.carteira_enriquecida` + CSV `docs/database/samples/carteira_enriquecida.csv`.  
+**Escopo:** posição do cliente com cadastro do FII, métricas de risco, DY e rankings.
+
+**O que retorna (colunas principais)**
+- `document_number`, `position_date`, `ticker`, `fii_name`, `qty`, `closing_price`, `position_value`, `portfolio_value`, `weight_pct`
+- `sector`, `sub_sector`, `classification`, `management_type`, `target_market`, `fii_cnpj`
+- `dy_12m_pct`, `dy_monthly_pct`, `dividends_12m_amt`, `market_cap_value`, `equity_value`
+- `volatility_ratio`, `sharpe_ratio`, `sortino_ratio`, `max_drawdown`, `beta_index`, `sirios_rank_position`, `ifix_rank_position`, `rank_dy_12m`, `rank_sharpe`
+
+**Privacidade e políticas**
+- `private: true`; `requires_identifiers: [document_number]` com binding `context.client_id`; inferência desabilitada.  
+- RAG e Narrator negados; cache escopo `prv`; contexto proibido para ticker/data.  
+- Qualidade: frescor 30m, ranges para pesos, DY, risco.
+
+---
+
+## macro_consolidada
+
+**Tipo:** histórica (macro).  
+**Grão:** `{ref_date}`; `result_key: ref_date`; `default_date_field: ref_date`.  
+**Fonte:** view `public.macro_consolidada` + CSV `docs/database/samples/macro_consolidada.csv`.  
+**Escopo:** IPCA, SELIC/CDI, IFIX/IBOV, dólar/euro (compra, venda, variações) por data.
+
+**O que retorna (colunas principais)**
+- `ref_date`, `ipca`, `selic`, `cdi`, `ifix_points`, `ifix_var_pct`, `ibov_points`, `ibov_var_pct`
+- `usd_buy_amt`, `usd_sell_amt`, `usd_var_pct`, `eur_buy_amt`, `eur_sell_amt`, `eur_var_pct`
+
+**Privacidade e políticas**
+- Pública; sem identificadores; janelas padrão de histórico (1–12 meses e contagens).  
+- RAG e Narrator negados; cache público diário; qualidade com ranges para variações e câmbio.  
+- Param_inference habilitado com janelas curtas e contagens.

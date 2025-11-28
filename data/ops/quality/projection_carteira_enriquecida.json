@@ -1,0 +1,18 @@
+{
+  "type": "projection",
+  "entity": "carteira_enriquecida",
+  "result_key": "document_number",
+  "must_have_columns": [
+    "document_number",
+    "position_date",
+    "ticker",
+    "position_value",
+    "weight_pct"
+  ],
+  "samples": [
+    { "question": "peso do HGLG11 na minha carteira" },
+    { "question": "valor investido em MXRF11 na carteira" },
+    { "question": "dy mensal dos meus fiis" },
+    { "question": "ranking de sharpe dos meus fiis na carteira" }
+  ]
+}

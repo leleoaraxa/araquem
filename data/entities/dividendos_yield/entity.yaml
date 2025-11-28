@@ -1,0 +1,178 @@
+id: dividendos_yield
+result_key: ticker
+sql_view: dividendos_yield
+private: false
+description: Histórico mensal de dividendos, dividend yield (DY) e cadastro do FII em uma única visão composta.
+
+options:
+  supports_multi_ticker: true
+
+identifiers:
+- name: ticker
+  description: Ticker do FII normalizado (AAAA11)
+
+default_date_field: ref_month
+
+columns:
+- name: ticker
+  alias: Código FII
+  description: Código do fundo na B3 (AAAA11).
+- name: display_name
+  alias: Nome do FII
+  description: Nome completo do fundo imobiliário.
+- name: sector
+  alias: Setor
+  description: Setor de atuação do FII.
+- name: sub_sector
+  alias: Subsetor
+  description: Segmento específico dentro do setor do FII.
+- name: classification
+  alias: Classificação
+  description: Tipo de portfólio do FII (ex.: Tijolo, Papel).
+- name: management_type
+  alias: Gestão
+  description: Tipo de gestão do fundo (Ativa/Passiva).
+- name: target_market
+  alias: Público-alvo
+  description: Público para o qual o FII é destinado.
+- name: traded_until_date
+  alias: Data-com (cutoff)
+  description: Último dia com direito ao provento (data-com).
+- name: payment_date
+  alias: Data de pagamento
+  description: Data de pagamento do dividendo.
+- name: dividend_amt
+  alias: Dividendo (R$)
+  description: Valor do dividendo pago por cota.
+- name: ref_month
+  alias: Mês ref.
+  description: Mês de referência (primeiro dia do mês).
+- name: month_dividends_amt
+  alias: Dividendos mês (R$)
+  description: Soma dos dividendos pagos no mês.
+- name: month_price_ref
+  alias: Preço ref. (R$)
+  description: Preço de referência da cota no mês.
+- name: dy_monthly
+  alias: DY mensal
+  description: Dividend yield mensal calculado a partir do mês de referência.
+- name: dy_12m_pct
+  alias: DY 12m (%)
+  description: Dividend yield acumulado em 12 meses.
+- name: dy_current_monthly_pct
+  alias: DY mensal atual (%)
+  description: Dividend yield mensal do mês corrente.
+- name: dividends_12m_amt
+  alias: Dividendos 12m (R$)
+  description: Soma de dividendos pagos nos últimos 12 meses.
+- name: last_dividend_amt
+  alias: Último dividendo (R$)
+  description: Valor do último dividendo pago.
+- name: last_payment_date
+  alias: Último pagamento
+  description: Data do último pagamento de dividendo.
+
+presentation:
+  kind: table
+  fields:
+    key: ref_month
+    value: dy_monthly
+  empty_message: Sem histórico de dividendos e DY para exibir.
+
+ask:
+  intents:
+    - dividendos_yield
+  requires_identifiers:
+    - ticker
+  keywords:
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - rendimento
+    - dy
+    - dividend yield
+    - yield
+    - historico de dividendos
+    - historico de dy
+    - rendimento mensal
+    - dy mensal
+    - dy 12 meses
+    - dy atual
+  phrase_includes:
+    - "dividendos e dy do"
+    - "historico de dividendos do"
+    - "historico de dy do"
+    - "dy mensal do"
+    - "dividend yield do"
+    - "quanto o pagou em"
+  synonyms:
+    ticker:
+      - ativo
+      - papel
+      - fundo
+      - fii
+    ref_month:
+      - mes de referencia
+      - competencia
+      - mes base
+    dividend_amt:
+      - dividendo
+      - provento
+      - rendimento
+      - valor pago
+    dy_monthly:
+      - dy
+      - dividend yield
+      - yield mensal
+    dy_12m_pct:
+      - dy 12m
+      - dividend yield 12 meses
+    month_dividends_amt:
+      - dividendos do mes
+      - proventos do mes
+    month_price_ref:
+      - preco ref
+      - preco de referencia
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - historico de dividendos e dy do MXRF11 nos ultimos 12 meses
+    - qual foi o dy mensal do HGLG11 em 2024-09
+    - dividend yield atual do CPTS11
+    - comparativo de dy mensal entre HGLG11 e VISC11
+    - quanto o VISC11 pagou em dividendos no mes de 2024-08
+
+order_by_whitelist:
+- ref_month desc
+- payment_date desc
+- dy_monthly desc
+
+aggregations:
+  enabled: true
+  defaults:
+    inference: true
+    list:
+      limit: 12
+      order: desc
+    avg:
+      window: months:6
+    sum:
+      window: months:12
+  windows_allowed:
+  - months:3
+  - months:6
+  - months:12
+  - months:24
+  - count:3
+  - count:6
+  - count:12
+  - count:24
+  - count:1
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2
