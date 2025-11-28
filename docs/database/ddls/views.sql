@@ -1,6 +1,9 @@
 -- =====================================================================
 -- DROP VIEW
 -- =====================================================================
+DROP VIEW IF EXISTS dividendos_yield;
+DROP VIEW IF EXISTS carteira_enriquecida;
+DROP VIEW IF EXISTS macro_consolidada;
 DROP VIEW IF EXISTS client_fiis_dividends_evolution;
 DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
 DROP VIEW IF EXISTS fii_overview;
@@ -1308,6 +1311,188 @@ CROSS JOIN LATERAL public.calc_fiis_performance_vs_benchmark(
 ) AS perf;
 
 -- =====================================================================
+-- VIEW: dividendos_yield
+-- =====================================================================
+CREATE OR REPLACE VIEW dividendos_yield AS
+SELECT
+    d.ticker,
+
+    -- Cadastro básico
+    c.display_name,
+    c.sector,
+    c.sub_sector,
+    c.classification,
+    c.management_type as management_type,
+    c.target_market,
+
+    -- Evento de dividendo (histórico)
+    d.traded_until_date,                -- ex-date
+    d.payment_date,
+    d.dividend_amt,
+
+    -- Yield mensal histórico
+    y.ref_month,
+    y.dividends_sum      AS month_dividends_amt,
+    y.price_ref          AS month_price_ref,
+    y.dy_monthly,
+
+    -- Snapshot atual (D-1) para contexto
+    s.dy_pct             AS dy_12m_pct,
+    s.dy_monthly_pct     AS dy_current_monthly_pct,
+    s.sum_anual_dy_amt   AS dividends_12m_amt,
+    s.last_dividend_amt,
+    s.last_payment_date
+
+FROM fiis_dividendos d
+LEFT JOIN fiis_yield_history y
+       ON y.ticker    = d.ticker
+      AND y.ref_month = date_trunc('month', d.payment_date::timestamp)::date
+LEFT JOIN fiis_cadastro c
+       ON c.ticker    = d.ticker
+LEFT JOIN fiis_financials_snapshot s
+       ON s.ticker    = d.ticker
+ORDER BY
+    d.ticker,
+    d.payment_date DESC;
+
+-- =====================================================================
+-- VIEW: carteira_enriquecida
+-- =====================================================================
+CREATE OR REPLACE VIEW carteira_enriquecida AS
+WITH base AS (
+    SELECT
+        p.document_number,
+        p.position_date,
+        p.ticker,
+        p.fii_name,
+        p.qty,
+        p.closing_price,
+        (p.qty * p.closing_price) AS position_value
+    FROM client_fiis_positions p
+),
+with_totals AS (
+    SELECT
+        b.*,
+        SUM(b.position_value) OVER (PARTITION BY b.document_number) AS portfolio_value
+    FROM base b
+)
+SELECT
+    wt.document_number,
+    wt.position_date,
+    wt.ticker,
+    wt.fii_name,
+
+    -- Tamanho da posição
+    wt.qty,
+    wt.closing_price,
+    wt.position_value,
+    wt.portfolio_value,
+    CASE
+        WHEN wt.portfolio_value > 0
+            THEN wt.position_value / wt.portfolio_value
+        ELSE NULL
+    END AS weight_pct,
+
+    -- Cadastro
+    c.sector,
+    c.sub_sector,
+    c.classification,
+    c.management_type,
+    c.target_market,
+    c.fii_cnpj,
+
+    -- Snapshot financeiro
+    s.dy_pct              AS dy_12m_pct,
+    s.dy_monthly_pct,
+    s.sum_anual_dy_amt    AS dividends_12m_amt,
+    s.market_cap_value,
+    s.equity_value,
+
+    -- Risco quantitativo
+    r.volatility_ratio,
+    r.sharpe_ratio,
+    r.sortino_ratio,
+    r.max_drawdown,
+    r.beta_index,
+
+    -- Rankings
+    rk.sirios_rank_position,
+    rk.ifix_rank_position,
+    rk.rank_dy_12m,
+    rk.rank_sharpe
+
+FROM with_totals wt
+LEFT JOIN fiis_cadastro c
+       ON c.ticker = wt.ticker
+LEFT JOIN fiis_financials_snapshot s
+       ON s.ticker = wt.ticker
+LEFT JOIN fiis_financials_risk r
+       ON r.ticker = wt.ticker
+LEFT JOIN fiis_rankings rk
+       ON rk.ticker = wt.ticker;
+
+-- =====================================================================
+-- VIEW: macro_consolidada
+-- =====================================================================
+CREATE OR REPLACE VIEW macro_consolidada AS
+WITH ind AS (
+    SELECT
+        indicator_date::date AS ref_date,
+        MAX(CASE WHEN indicator_name = 'IPCA'  THEN indicator_amt END) AS ipca,
+        MAX(CASE WHEN indicator_name = 'SELIC' THEN indicator_amt END) AS selic,
+        MAX(CASE WHEN indicator_name = 'CDI'   THEN indicator_amt END) AS cdi
+    FROM history_market_indicators
+    GROUP BY indicator_date::date
+),
+idx AS (
+    SELECT
+        index_date::date AS ref_date,
+        ifix_points_count       AS ifix_points,
+        ifix_var_pct            AS ifix_var_pct,
+        ibov_points_count       AS ibov_points,
+        ibov_var_pct            AS ibov_var_pct
+    FROM history_b3_indexes
+),
+fx AS (
+    SELECT
+        rate_date::date AS ref_date,
+        usd_buy_amt,
+        usd_sell_amt,
+        usd_var_pct,
+        eur_buy_amt,
+        eur_sell_amt,
+        eur_var_pct
+    FROM history_currency_rates
+)
+SELECT
+    d.ref_date,
+
+    -- Indicadores macro
+    d.ipca,
+    d.selic,
+    d.cdi,
+
+    -- Índices de bolsa
+    i.ifix_points,
+    i.ifix_var_pct,
+    i.ibov_points,
+    i.ibov_var_pct,
+
+    -- Câmbio
+    f.usd_buy_amt,
+    f.usd_sell_amt,
+    f.usd_var_pct,
+    f.eur_buy_amt,
+    f.eur_sell_amt,
+    f.eur_var_pct
+
+FROM ind d
+LEFT JOIN idx i USING (ref_date)
+LEFT JOIN fx  f USING (ref_date)
+ORDER BY d.ref_date DESC;
+
+
+-- =====================================================================
 -- REFRESHS MATERIALIZED VIEW
 -- =====================================================================
 REFRESH MATERIALIZED VIEW view_fiis_info;
@@ -1366,7 +1551,7 @@ ALTER VIEW public.view_markowitz_universe_stats OWNER TO edge_user;
 ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
 ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
+ALTER VIEW public.dividendos_yield OWNER TO edge_user;
+ALTER VIEW public.carteira_enriquecida OWNER TO edge_user;
+ALTER VIEW public.macro_consolidada OWNER TO edge_user;
 -- =====================================================================
-
-select * from explain_events
-select * from narrator_events
