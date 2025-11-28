@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-28T00:06:35Z",
+  "generated_at": "2025-11-28T00:29:51Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -254,7 +254,7 @@
         "cache"
       ],
       "chunks": 2,
-      "sha_all": "c186878e3a2671b6bbca1674fd43e65c57054df4b1a2d96ee239abdae80c71cc"
+      "sha_all": "59d5aaf032722cdeef391e1b24312c2a86165b79e942abb3d5c12fe44e5e2115"
     },
     {
       "id": "policies-quality",
@@ -544,5 +544,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764288542
+  "last_refresh_epoch": 1764289937
 }
