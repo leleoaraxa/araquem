@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-11-28T01:18:48Z",
+  "generated_at": "2025-11-28T12:47:32Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -82,8 +82,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 14,
-      "sha_all": "8481abbb632f823d1b01c0607f9eb905927066a1bd0d9b31aa2e167fefa9da8a"
+      "chunks": 15,
+      "sha_all": "a4f612fd5972edf4cadf3f6ddf33986e6d883707e47bc532d468511061426782"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -253,8 +253,8 @@
         "policies",
         "cache"
       ],
-      "chunks": 2,
-      "sha_all": "59d5aaf032722cdeef391e1b24312c2a86165b79e942abb3d5c12fe44e5e2115"
+      "chunks": 3,
+      "sha_all": "b913c408e757b60d4c646819628684c664927230ecf99e1d0e0e618f1f19af47"
     },
     {
       "id": "policies-quality",
@@ -264,7 +264,7 @@
         "quality"
       ],
       "chunks": 5,
-      "sha_all": "c2ed4d0b7d97b67c739bba6eef35bb0a191819bd4f3db718132e17bff6626d1a"
+      "sha_all": "e1e255d6aa4f3886f312a492a62318861c30d190c30375ce3b275efa7a3143dd"
     },
     {
       "id": "policies-rag",
@@ -273,8 +273,8 @@
         "policies",
         "rag"
       ],
-      "chunks": 3,
-      "sha_all": "1a954b0e46104a033445a14954268fe13dbec80aeaa8e63025a0c479d9116559"
+      "chunks": 2,
+      "sha_all": "aaf8959205e128a8d91a67c4eaba8a43576f07c6ab7f21ef8ad2fb5408b0265c"
     },
     {
       "id": "ops-planner-thresholds",
@@ -283,8 +283,8 @@
         "quality",
         "thresholds"
       ],
-      "chunks": 2,
-      "sha_all": "3b51ac439c6acbaf1b3e94cd28c92d7ba094c4c82cd6432b66767607a4871bca"
+      "chunks": 3,
+      "sha_all": "1e0e34ade72c545464dba01130133e5c1b5e1fe8fc72028077016a09bc35d587"
     },
     {
       "id": "ops-observability",
@@ -326,8 +326,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 31,
-      "sha_all": "4a026c3eed4695345ca25f76078f51d05cd2d149f5633f5d1d6404b772e52112"
+      "chunks": 32,
+      "sha_all": "6baba7e6dc61bc54635d190afa0165e6a591bd27cbb211bd7c362b8be6a26a14"
     },
     {
       "id": "q-projection-cadastro",
@@ -495,6 +495,42 @@
       "sha_all": "f07e73e014c5087e1b489dd6562f91d0c76a56b30fbbb5d10208cac20012086b"
     },
     {
+      "id": "q-projection-dividendos-yield",
+      "path": "data/ops/quality/projection_dividendos_yield.json",
+      "tags": [
+        "quality",
+        "projection",
+        "dividendos",
+        "yield"
+      ],
+      "chunks": 1,
+      "sha_all": "37704acc5b61eaef2fb9210b01dc62dcf8fbcbfa5af80f5c04707dfe9bcbeecc"
+    },
+    {
+      "id": "q-projection-carteira-enriquecida",
+      "path": "data/ops/quality/projection_carteira_enriquecida.json",
+      "tags": [
+        "quality",
+        "projection",
+        "private",
+        "carteira"
+      ],
+      "chunks": 1,
+      "sha_all": "7393a2a177b35c4eac3bc903ce54a7a7432dd544ed47057bbadd2b9ab4f05237"
+    },
+    {
+      "id": "q-projection-macro-consolidada",
+      "path": "data/ops/quality/projection_macro_consolidada.json",
+      "tags": [
+        "quality",
+        "projection",
+        "macro",
+        "historical"
+      ],
+      "chunks": 1,
+      "sha_all": "47f558e1ba6140a2b5128129944369a8afd43616a65e9be2022e63dc9822e153"
+    },
+    {
       "id": "q-m66-projection",
       "path": "data/ops/quality_experimental/m66_projection.json",
       "tags": [
@@ -544,5 +580,5 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764292876
+  "last_refresh_epoch": 1764334199
 }

@@ -9,6 +9,16 @@ intents:
   fiis_dividendos:
     default_agg: list
     default_window: months:12
+    windows_allowed:
+    - months:3
+    - months:6
+    - months:12
+    - months:24
+    - count:1
+    - count:3
+    - count:6
+    - count:12
+    - count:24
     agg_keywords:
       latest:
         include:

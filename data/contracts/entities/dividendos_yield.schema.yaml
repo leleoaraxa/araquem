@@ -20,10 +20,10 @@ properties:
     type: string
   traded_until_date:
     type: string
-    format: date-time
+    format: date
   payment_date:
     type: string
-    format: date-time
+    format: date
   dividend_amt:
     type: number
   ref_month:
@@ -45,7 +45,7 @@ properties:
     type: number
   last_payment_date:
     type: string
-    format: date-time
+    format: date
 required:
   - ticker
   - ref_month

@@ -194,6 +194,18 @@ include:
     path: data/ops/quality/projection_fiis_yield_history_evolution.json
     tags: [quality, projection, yield]
 
+  - id: q-projection-dividendos-yield
+    path: data/ops/quality/projection_dividendos_yield.json
+    tags: [quality, projection, dividendos, yield]
+
+  - id: q-projection-carteira-enriquecida
+    path: data/ops/quality/projection_carteira_enriquecida.json
+    tags: [quality, projection, private, carteira]
+
+  - id: q-projection-macro-consolidada
+    path: data/ops/quality/projection_macro_consolidada.json
+    tags: [quality, projection, macro, historical]
+
   - id: q-m66-projection
     path: data/ops/quality_experimental/m66_projection.json
     tags: [quality, projection, m66]

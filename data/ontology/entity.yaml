@@ -40,6 +40,12 @@ intents:
     - proventos
     - renda
     - rendimento
+    - dy
+    - dy mensal
+    - sortino
+    - beta
+    - risco
+    - ranking
   phrases:
     include:
     - minhas posicoes
@@ -365,9 +371,9 @@ intents:
     - quanto o distribuiu
     - quanto o distribuiu em
     - media de dividendos do
-    - dy mensal do
     exclude:
     - dividendos e dy em
+    - dividend yield do
   entities:
   - fiis_dividendos
 - name: fiis_yield_history
@@ -384,7 +390,8 @@ intents:
     - evolucao do dy
     - dy 12m
     - dy 24m
-    exclude: []
+    exclude:
+    - dividendos e dy
   phrases:
     include:
     - dividend yield do
@@ -974,6 +981,7 @@ intents:
     - historico de dy
     - dy mensal
     - dy 12m
+    - comparativo
     exclude: []
   phrases:
     include:

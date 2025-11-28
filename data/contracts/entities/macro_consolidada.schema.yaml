@@ -17,8 +17,10 @@ properties:
     nullable: true
   ifix_points:
     type: number
+    nullable: true
   ifix_var_pct:
     type: number
+    nullable: true
   ibov_points:
     type: number
   ibov_var_pct:
