@@ -166,7 +166,9 @@ def _load_thresholds(path: str) -> Dict[str, Any]:
         return {}
 
     planner_block = planner_cfg.get("planner") if isinstance(planner_cfg, dict) else {}
-    thresholds = planner_block.get("thresholds") if isinstance(planner_block, dict) else {}
+    thresholds = (
+        planner_block.get("thresholds") if isinstance(planner_block, dict) else {}
+    )
     if not isinstance(thresholds, dict):
         LOGGER.error(
             "Configuração de thresholds do Orchestrator não é um mapeamento em %s; usando fallback vazio",
@@ -343,10 +345,28 @@ class Orchestrator:
             key = str(raw_key or "").strip()
             if not key:
                 continue
+            # 1) Checa identificadores canônicos extraídos do texto
             value = identifiers.get(key)
-            # Considera ausente se None ou coleção vazia
-            if value is None or (isinstance(value, (list, tuple, set)) and not value):
+            missing = (
+                value is None
+                or (isinstance(value, (list, tuple, set)) and not value)
+                or (isinstance(value, str) and not value.strip())
+            )
+
+            if missing:
+                # 2) Se não veio do texto, tenta resolver via inferência
+                #    declarativa (param_inference → contexto, YAML).
+                if isinstance(agg_params, dict):
+                    alt = agg_params.get(key)
+                    alt_missing = (
+                        alt is None
+                        or (isinstance(alt, (list, tuple, set)) and not alt)
+                        or (isinstance(alt, str) and not alt.strip())
+                    )
+                    if not alt_missing:
+                        continue  # requisito satisfeito por agg_params
                 return True
+
         return False
 
     def route_question(
@@ -502,9 +522,7 @@ class Orchestrator:
             try:
                 cached_payload = self._cache.get_json(metrics_cache_key)
             except Exception:
-                LOGGER.warning(
-                    "Falha ao consultar cache de métricas", exc_info=True
-                )
+                LOGGER.warning("Falha ao consultar cache de métricas", exc_info=True)
                 cache_lookup_error = True
                 cached_payload = None
             if not cache_lookup_error and isinstance(cached_payload, dict):

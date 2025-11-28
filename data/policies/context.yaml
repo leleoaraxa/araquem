@@ -63,7 +63,10 @@ context:
     allowed_entities:
     - fiis_financials_risk
     - fii_overview
+    - fiis_cadastro
     - fiis_precos
+    - fiis_processos
+    - fiis_noticias
     max_age_turns: 3
   entities:
     fiis_precos:

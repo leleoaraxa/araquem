@@ -389,6 +389,9 @@ def build_select_for_entity(
     params: Dict[str, Any] = {}
     where_terms: List[str] = []
 
+    # Normaliza parâmetros de agregação declarativos (pode conter ticker, janela, etc.)
+    agg_params = agg_params if isinstance(agg_params, dict) else {}
+
     identifiers = identifiers or {}
     identifier_specs = cfg.get("identifiers") or []
     identifier_names = [
@@ -413,7 +416,20 @@ def build_select_for_entity(
                 multi_ticker_values.append(normalized)
 
     for name in identifier_names:
+        # 1) Primeiro tenta o identificador canônico extraído do texto
         value = identifiers.get(name)
+
+        # 2) Se vier vazio, tenta resolver via parâmetros inferidos
+        #    (ex.: ticker herdado do contexto em agg_params).
+        if (value is None or value == "") and name in agg_params:
+            alt = agg_params.get(name)
+            if not (
+                alt is None
+                or alt == ""
+                or (isinstance(alt, (list, tuple, set)) and not alt)
+            ):
+                value = alt
+
         if name == "ticker" and multi_ticker_values:
             params["ticker"] = multi_ticker_values[0]
             if len(multi_ticker_values) == 1:
@@ -430,7 +446,6 @@ def build_select_for_entity(
         params[name] = value
         where_terms.append(f"{name} = %({name})s")
 
-    agg_params = agg_params if isinstance(agg_params, dict) else {}
     is_metrics_request = (agg_params.get("agg") or "").lower() == "metrics"
     period_start = _normalize_period_value(agg_params.get("period_start"))
     period_end = _normalize_period_value(agg_params.get("period_end"))

@@ -708,3 +708,14 @@ intents:
         60:
         - 60 dias
         - sessenta dias
+  fiis_processos:
+    default_agg: list
+    defaults:
+      list:
+        limit: 10
+        order: desc
+    params:
+      ticker:
+        source:
+          - text
+          - context

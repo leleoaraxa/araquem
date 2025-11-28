@@ -90,6 +90,16 @@ ask:
     - "alpha de jensen"
     - "r2"
     - "coeficiente de determinacao"
+    - "risco do"
+    - "risco dele"
+    - "risco desse fundo"
+    - "risco hoje"
+    - "risco do fundo"
+    - "risco do fii"
+    - "nivel de risco"
+    - "o risco dele"
+    - "risco desse fii"
+    - "risco desse papel"
   synonyms:
     ticker: [ativo, papel, fundo, fii]
   weights:
