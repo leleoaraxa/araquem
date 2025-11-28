@@ -22,6 +22,7 @@ intents:
         - custodia
         - disponivel
         - quantidade
+        - rentabilidade
       exclude:
         - cpf
         - cnpj
@@ -37,9 +38,6 @@ intents:
         - ibov
         - cdi
         - benchmark
-        - retorno
-        - performance
-        - rentabilidade
         - dividendo
         - dividendos
         - provento
@@ -53,6 +51,7 @@ intents:
         - posicoes da minha carteira
         - quantidade em custodia
         - quantidade disponivel
+        - rentabilidade da minha posicao
       exclude: []
     entities: [client_fiis_positions]
 
@@ -78,6 +77,10 @@ intents:
         - documento
         - imovel
         - imoveis
+        - receita
+        - receitas
+        - recebiveis
+        - previsao
     phrases:
       include:
         - evolucao dos dividendos
@@ -112,6 +115,8 @@ intents:
         - imoveis
         - acumulo
         - acumulado
+        - posicao
+        - posicoes
     phrases:
       include:
         - desempenho da minha carteira
@@ -119,7 +124,9 @@ intents:
         - rentabilidade da minha carteira vs
         - comparar minha carteira com
         - minha carteira esta melhor que
-      exclude: []
+      exclude:
+        - rentabilidade da minha posicao
+        - minha posicao em
     entities: [client_fiis_performance_vs_benchmark]
 
   - name: fiis_cadastro
@@ -348,12 +355,7 @@ intents:
         - rendimento mensal
         - rendimento 12m
       exclude:
-        - dy
-        - dy mensal
-        - dy 12m
-        - dividend yield
-        - yield mensal
-        - yield
+        - dy em
     phrases:
       include:
         - dividendo do
@@ -365,7 +367,9 @@ intents:
         - quanto o distribuiu
         - quanto o distribuiu em
         - media de dividendos do
+        - dy mensal do
       exclude:
+        - dividendos e dy em
     entities: [fiis_dividendos]
 
   - name: fiis_yield_history
@@ -385,7 +389,6 @@ intents:
       exclude: []
     phrases:
       include:
-        - dy mensal do
         - dividend yield do
         - historico de dy do
         - yield mensal do
@@ -394,6 +397,8 @@ intents:
         - dy medio dos
         - historico de dividend yield do
         - comparativo de dy mensal entre
+        - dividendos e dy em
+        - dy em
       exclude: []
     entities: [fiis_yield_history]
 
@@ -471,6 +476,7 @@ intents:
         - buckets
         - indexador
         - indexadores
+        - previsao
         - igpm
         - ipca
         - inpc
@@ -531,6 +537,8 @@ intents:
         - como esta distribuida a receita futura
         - distribuicao da receita futura
         - distribuicao da receita por indice
+        - previsao de receita do
+        - receita nos proximos
       exclude:
         - soma de dividendos
         - media de preco
