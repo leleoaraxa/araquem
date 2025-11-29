@@ -8,7 +8,7 @@ entities:
       quality_projection: data/ops/quality/projection_client_fiis_positions.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -26,7 +26,7 @@ entities:
       quality_projection: data/ops/quality/projection_client_fiis_dividends_evolution.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -46,7 +46,7 @@ entities:
       quality_projection: data/ops/quality/projection_client_fiis_performance_vs_benchmark.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -67,7 +67,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_cadastro.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -83,7 +83,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_dividendos.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -100,7 +100,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_yield_history.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -117,7 +117,7 @@ entities:
       quality_projection: data/ops/quality/projection_fii_overview_evolution.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -133,7 +133,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_financials_snapshot.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -150,7 +150,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_financials_revenue_schedule.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: true
       param_inference: true
     identifiers:
@@ -183,7 +183,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_imoveis.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -217,7 +217,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_precos.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: true
     identifiers:
@@ -234,7 +234,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_processos.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -251,7 +251,7 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_rankings.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: false
       param_inference: false
     identifiers:
@@ -307,55 +307,55 @@ entities:
       - indicator_date
       - indicator_name
     notes: []
-dividendos_yield:
-  title: FIIs – Dividendos + DY (composta)
-  kind: historical
-  paths:
-    entity_yaml: data/entities/dividendos_yield/entity.yaml
-    schema: data/contracts/entities/dividendos_yield.schema.yaml
-    quality_projection: data/ops/quality/projection_dividendos_yield.json
-  coverage:
-    cache_policy: true
-    rag_policy: true
-    narrator_policy: false
-    param_inference: true
-  identifiers:
-    natural_keys:
-    - ticker
-    - ref_month
-  notes: []
-carteira_enriquecida:
-  title: Carteira privada – posição enriquecida
-  kind: historical
-  paths:
-    entity_yaml: data/entities/carteira_enriquecida/entity.yaml
-    schema: data/contracts/entities/carteira_enriquecida.schema.yaml
-    quality_projection: data/ops/quality/projection_carteira_enriquecida.json
-  coverage:
-    cache_policy: true
-    rag_policy: true
-    narrator_policy: false
-    param_inference: true
-  identifiers:
-    natural_keys:
-    - document_number
-    - position_date
-    - ticker
-  notes:
-  - Entidade privada; requer document_number do contexto seguro.
-macro_consolidada:
-  title: Mercado – Macro consolidada
-  kind: historical
-  paths:
-    entity_yaml: data/entities/macro_consolidada/entity.yaml
-    schema: data/contracts/entities/macro_consolidada.schema.yaml
-    quality_projection: data/ops/quality/projection_macro_consolidada.json
-  coverage:
-    cache_policy: true
-    rag_policy: true
-    narrator_policy: false
-    param_inference: true
-  identifiers:
-    natural_keys:
-    - ref_date
-  notes: []
+  dividendos_yield:
+    title: FIIs – Dividendos + DY (composta)
+    kind: historical
+    paths:
+      entity_yaml: data/entities/dividendos_yield/entity.yaml
+      schema: data/contracts/entities/dividendos_yield.schema.yaml
+      quality_projection: data/ops/quality/projection_dividendos_yield.json
+    coverage:
+      cache_policy: true
+      rag_policy: false
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+      - ticker
+      - ref_month
+    notes: []
+  carteira_enriquecida:
+    title: Carteira privada – posição enriquecida
+    kind: historical
+    paths:
+      entity_yaml: data/entities/carteira_enriquecida/entity.yaml
+      schema: data/contracts/entities/carteira_enriquecida.schema.yaml
+      quality_projection: data/ops/quality/projection_carteira_enriquecida.json
+    coverage:
+      cache_policy: true
+      rag_policy: false
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+      - document_number
+      - position_date
+      - ticker
+    notes:
+    - Entidade privada; requer document_number do contexto seguro.
+  macro_consolidada:
+    title: Mercado – Macro consolidada
+    kind: historical
+    paths:
+      entity_yaml: data/entities/macro_consolidada/entity.yaml
+      schema: data/contracts/entities/macro_consolidada.schema.yaml
+      quality_projection: data/ops/quality/projection_macro_consolidada.json
+    coverage:
+      cache_policy: true
+      rag_policy: false
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+      - ref_date
+    notes: []
