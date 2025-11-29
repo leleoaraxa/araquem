@@ -207,7 +207,7 @@ include:
     tags: [quality, projection, macro, historical]
 
   - id: q-m66-projection
-    path: data/ops/quality_experimental/m66_projection.json
+    path: data/golden/m66_projection.json
     tags: [quality, projection, m66]
 
   - id: entity-history-b3-indexes

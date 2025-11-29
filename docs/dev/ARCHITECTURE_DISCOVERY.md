@@ -64,7 +64,6 @@ data/
         param_inference.yaml
         planner_thresholds.yaml
         quality_experimental/
-            m66_projection.json
             negatives_m65.json
             param_inference_samples.json
             planner_rag_integration.json
