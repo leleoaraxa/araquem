@@ -1,4 +1,4 @@
-version: 20251108
+version: 20251129
 window: rolling
 planner:
   thresholds:
@@ -18,7 +18,7 @@ planner:
         min_gap: 0.2
       fiis_rankings:
         min_score: 1.0
-        min_gap: 0.2
+        min_gap: 0.15
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
@@ -36,10 +36,10 @@ planner:
         min_gap: 0.1
       fiis_financials_risk:
         min_score: 0.8
-        min_gap: 0.0
+        min_gap: 0.2
       fiis_financials_revenue_schedule:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       client_fiis_positions:
         min_score: 0.8
         min_gap: 0.1
@@ -51,7 +51,7 @@ planner:
         min_gap: 0.1
       fiis_yield_history:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       history_b3_indexes:
         min_score: 0.8
         min_gap: 0.1
@@ -63,13 +63,13 @@ planner:
         min_gap: 0.1
       dividendos_yield:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       carteira_enriquecida:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       macro_consolidada:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
     entities:
       fiis_cadastro:
         min_score: 1.0
@@ -82,7 +82,7 @@ planner:
         min_gap: 0.2
       fiis_rankings:
         min_score: 1.0
-        min_gap: 0.2
+        min_gap: 0.15
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
@@ -100,10 +100,10 @@ planner:
         min_gap: 0.1
       fiis_financials_risk:
         min_score: 0.8
-        min_gap: 0.0
+        min_gap: 0.2
       fiis_financials_revenue_schedule:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       client_fiis_positions:
         min_score: 0.8
         min_gap: 0.1
@@ -115,7 +115,7 @@ planner:
         min_gap: 0.1
       fiis_yield_history:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       history_b3_indexes:
         min_score: 0.8
         min_gap: 0.1
@@ -127,13 +127,13 @@ planner:
         min_gap: 0.1
       dividendos_yield:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       carteira_enriquecida:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
       macro_consolidada:
         min_score: 0.8
-        min_gap: 0.1
+        min_gap: 0.15
   rag:
     enabled: true
     k: 5
