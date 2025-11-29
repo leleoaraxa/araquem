@@ -11,7 +11,7 @@
 ## 2.1 Planner
 
 * **Intent scoring**: normaliza (lower/strip_accents/strip_punct), tokeniza por `\b`, soma pesos para tokens/phrases include e penaliza excludes/anti_tokens. Mantém `details` por intent e `weights_summary`.【F:app/planner/planner.py†L65-L186】
-* **Thresholds reais**: `_load_thresholds` lê `data/ops/planner_thresholds.yaml` (defaults min_score=1.0, min_gap=0.5, apply_on base; per-intent/entity overrides). Gate avalia `score_for_gate` e `gap` (base ou final se re-rank). `chosen.accepted` expõe resultado.【F:app/planner/planner.py†L20-L58】【F:app/planner/planner.py†L320-L358】
+* **Thresholds reais**: `_load_thresholds` lê `data/ops/planner_thresholds.yaml` (defaults min_score=1.0, min_gap=0.5, apply_on base; overrides por família): compostas `dividendos_yield` / `carteira_enriquecida` / `macro_consolidada` usam **min_score 0.9 / min_gap 0.2**; risco `fiis_financials_risk` usa **0.85 / 0.2**; históricas numéricas `fiis_precos` / `fiis_dividendos` e `fiis_yield_history` usam **0.9 / 0.15**; snapshots numéricos `fiis_imoveis` / `fiis_processos` usam **0.85 / 0.1**. Gate avalia `score_for_gate` e `gap` (base ou final se re-rank). `chosen.accepted` expõe resultado.【F:app/planner/planner.py†L20-L58】【F:app/planner/planner.py†L320-L358】
 * **RAG fusion**: controla via YAML (`planner.rag`). Se habilitado, busca embeddings, gera `entity_hints` e funde scores (blend/additive) com peso `rag_weight` ou `re_rank.weight`. Blocos `fusion`, `scoring.final_combined`, `rag_signal` e `rag_hint` expõem números.【F:app/planner/planner.py†L187-L318】
 * **Explain data model**: `explain` inclui `signals`, `decision_path`, `scoring` (intent/entity, gaps base/final, combined/final_combined, rag_signal, rag_hint, thresholds_applied), `rag` (config/used/error), `fusion`, `rag_context` (doc/snippets/reason). `/ask?explain=true` também registra analytics com `planner_output` e métricas de latência/cache.【F:app/planner/planner.py†L187-L358】【F:app/api/ask.py†L48-L114】
 
@@ -20,7 +20,7 @@
 * **context_builder**: `build_context` aplica política `data/policies/rag.yaml` (routing.allow_intents/deny_intents, entities/default/profiles). Resolve collections, max_chunks/min_score/max_tokens, usa embeddings search determinístico e normaliza chunks (texto, score, doc_id, collection). Desabilita quando não permitido ou erro, retornando `enabled=False` e motivo.【F:app/rag/context_builder.py†L1-L179】【F:data/policies/rag.yaml†L1-L120】
 * **entity_hints**: Planner lê store via `cached_embedding_store`, gera vetor com `OllamaClient.embed` e converte resultados em hints por entidade (`entity_hints_from_rag`).【F:app/planner/planner.py†L187-L230】
 * **RAG fusion & re-ranking**: peso definido em policy (`rag.weight` ou `re_rank.weight`); modos blend/additive ajustam score final; `fusion` bloco aponta `affected_entities` e erro. Re-rank flag controla se thresholds usam score final.【F:app/planner/planner.py†L240-L320】
-* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk), roteamento por intent, collections por entidade e default seguro (concepts-fiis). Intents **negados** para RAG: domínios puramente numéricos/privados (FIIs SQL, posição de cliente, carteira privada e overview consolidado, inclusive `dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`). Intents **permitidos**: domínios textuais/explicativos (`fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). Comentários explicam o racional de cada deny/allow.
+* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk) com weights atualizados e roteamento por intent/entidade. RAG **permitido** somente para intents textuais/explicativos (`fiis_noticias`), risco conceitual (`fiis_financials_risk` com restrição estrita a explicações, sem números vindos do RAG) e domínios macro/índices/moedas (`history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). RAG **negado** para todas as entidades numéricas (históricas e snapshots), entidades privadas, overview consolidado e compostas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`). Comentários explicam o racional de cada deny/allow e o mapeamento de profiles default/macro/risk.
 
 ## 2.3 Formatter
 
@@ -263,7 +263,13 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
   `fiis_financials_snapshot`, `fiis_financials_revenue_schedule`, `fiis_financials_risk`,
   `fii_overview`, `client_fiis_positions`, `carteira_enriquecida`.
 
-## 3.6 Notas sobre DY / yield e dividendos
+## 3.6 Notas sobre perguntas conceituais “sem ticker”
+
+* Perguntas conceituais gerais (ex.: “o que significa Sharpe negativo?”, “o que é Max Drawdown?”) **não possuem dados associados** e retornam zero rows no baseline determinístico 100% SQL.
+* Esse comportamento é **correto**: não gera miss em `quality_list_misses.py` e respeita o baseline sem Narrator.
+* A resposta conceitual deverá vir futuramente do Narrator quando habilitado; por ora, o baseline retorna zero rows de forma intencional.
+
+## 3.7 Notas sobre DY / yield e dividendos
 
 * DY/yield **não** sai de `fiis_dividendos` (somente `dividend_amt` + datas).
 
@@ -292,7 +298,7 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 
 * Próximos compostos (backlog futuro) seguem o padrão compute-on-read/D-1 definido no Guardrails, mas **sem novos contratos quebrando as 21 entidades atuais**.
 
-## 3.7 Novos compostos possíveis (joins SQL)
+## 3.8 Novos compostos possíveis (joins SQL)
 
 *(Segue a mesma ideia anterior, agora tendo `fii_overview`, `fiis_yield_history`, `dividendos_yield`, `carteira_enriquecida` e `macro_consolidada` já implementados)*
 
@@ -300,7 +306,7 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 * **Painel de risco/retorno** – join snapshot + risk + rankings (backlog para entidade dedicada).
 * **Visão consolidada da carteira do cliente** – hoje coberta por `carteira_enriquecida`, com possibilidade de versões temporais futuras seguindo compute-on-read e LGPD.
 
-## 3.8 Relatório de consistência de entidades
+## 3.9 Relatório de consistência de entidades
 
 * **Arquivo**: `data/ops/entities_consistency_report.yaml`.
 * **Função**: mapear, para cada entidade canônica (pasta em `data/entities/*`), se ela:
@@ -335,7 +341,7 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
     * intent pública `fii_overview` (resumo consolidado do FII);
     * intents compostas para `dividendos_yield`, `carteira_enriquecida` e `macro_consolidada` com tokens/phrases bem delimitados.
 
-* **Estado dos testes**: após ajustes em ontologia + routing_samples, o alvo de baseline é `quality_list_misses.py` retornando **“✅ Sem misses”** no dataset atual.
+* **Estado dos testes**: após ajustes em ontologia + routing_samples, o baseline consolidado retorna **“✅ Sem misses”** no dataset atual via `quality_list_misses.py`.
 
 # 5. Explain Mode
 
@@ -343,7 +349,7 @@ Todas elas aparecem no catálogo em `data/ops/entities_catalog.yaml` com paths p
 
 # 6. Quality
 
-* **quality_list_misses.py**: wrapper que chama `quality_diff_routing.py` para listar perguntas que falham nos quality gates comparando samples routing; usa arquivo `data/ops/quality/routing_samples.json` e grava misses em `data/ops/quality_experimental/routing_misses_via_ask.json`. Objetivo operacional: **0 misses**.
+* **quality_list_misses.py**: wrapper que chama `quality_diff_routing.py` para listar perguntas que falham nos quality gates comparando samples routing; usa arquivo `data/ops/quality/routing_samples.json` e grava misses em `data/ops/quality_experimental/routing_misses_via_ask.json`. **Estado atual**: baseline fechado com **0 misses** após afinamento de thresholds, ajuste da ontologia para compostas, redirecionamento correto de `dividendos_yield` e correção do conflito `macro_consolidada` vs `history_market_indicators`. `python scripts/quality/quality_list_misses.py` → **“✅ Sem misses.”**.
 * **quality_push**: endpoint `/ops/quality/push` recebe payloads de amostras de roteamento, valida policy e registra métricas; scripts `quality_push.py` e `quality_push_cron.py` automatizam envio e verificações com tokens e quality gates. Dashboards Grafana gerados por `gen_quality_dashboard.py`.【F:app/api/ops/quality.py†L148-L420】【F:scripts/quality/quality_push.py†L1-L90】【F:scripts/quality/gen_quality_dashboard.py†L1-L160】
 * **Baseline**: `quality_report` utiliza policy `data/policies/quality.yaml` ou fallback e expõe métricas de top1/gap/routed; scripts shell `quality_gate_check.sh` consultam API/Prometheus. Baseline determinístico do Presenter/Narrator garante comparação consistente em shadow/LLM. Prometheus coleta métricas `sirios_planner_top1_match_total`, `planner_quality_*`.【F:app/api/ops/quality.py†L480-L563】【F:app/observability/runtime.py†L70-L152】【F:app/presenter/presenter.py†L204-L285】
 * **Cobertura atual de datasets**:
