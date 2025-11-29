@@ -61,12 +61,18 @@ context:
   last_reference:
     enable_last_ticker: true
     allowed_entities:
-    - fiis_financials_risk
-    - fii_overview
-    - fiis_cadastro
     - fiis_precos
+    - fiis_dividendos
+    - fiis_yield_history
+    - fiis_financials_risk
+    - fiis_financials_snapshot
+    - fii_overview
+    - fiis_imoveis
+    - fiis_rankings
     - fiis_processos
     - fiis_noticias
+    - fiis_cadastro
+    - dividendos_yield
     max_age_turns: 3
   entities:
     fiis_precos:

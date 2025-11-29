@@ -980,6 +980,8 @@ intents:
   tokens:
     include:
     - comparativo
+    - comparacao
+    - comparar
     exclude:
     - meus
     - minha
