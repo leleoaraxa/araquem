@@ -11,14 +11,14 @@ planner:
         min_score: 1.0
         min_gap: 0.2
       fiis_precos:
-        min_score: 1.0
-        min_gap: 0.2
+        min_score: 0.9
+        min_gap: 0.15
       fiis_dividendos:
-        min_score: 1.0
-        min_gap: 0.2
+        min_score: 0.9
+        min_gap: 0.15
       fiis_rankings:
         min_score: 1.0
-        min_gap: 0.15
+        min_gap: 0.2
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
@@ -26,16 +26,16 @@ planner:
         min_score: 1.0
         min_gap: 0.2
       fiis_imoveis:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.1
       fiis_processos:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.1
       fiis_noticias:
         min_score: 0.8
         min_gap: 0.1
       fiis_financials_risk:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.2
       fiis_financials_revenue_schedule:
         min_score: 0.8
@@ -50,7 +50,7 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       fiis_yield_history:
-        min_score: 0.8
+        min_score: 0.9
         min_gap: 0.15
       history_b3_indexes:
         min_score: 0.8
@@ -62,27 +62,27 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       dividendos_yield:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
       carteira_enriquecida:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
       macro_consolidada:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
     entities:
       fiis_cadastro:
         min_score: 1.0
         min_gap: 0.2
       fiis_precos:
-        min_score: 1.0
-        min_gap: 0.2
+        min_score: 0.9
+        min_gap: 0.15
       fiis_dividendos:
-        min_score: 1.0
-        min_gap: 0.2
+        min_score: 0.9
+        min_gap: 0.15
       fiis_rankings:
         min_score: 1.0
-        min_gap: 0.15
+        min_gap: 0.2
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
@@ -90,16 +90,16 @@ planner:
         min_score: 1.0
         min_gap: 0.2
       fiis_imoveis:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.1
       fiis_processos:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.1
       fiis_noticias:
         min_score: 0.8
         min_gap: 0.1
       fiis_financials_risk:
-        min_score: 0.8
+        min_score: 0.85
         min_gap: 0.2
       fiis_financials_revenue_schedule:
         min_score: 0.8
@@ -114,7 +114,7 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       fiis_yield_history:
-        min_score: 0.8
+        min_score: 0.9
         min_gap: 0.15
       history_b3_indexes:
         min_score: 0.8
@@ -126,14 +126,14 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       dividendos_yield:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
       carteira_enriquecida:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
       macro_consolidada:
-        min_score: 0.8
-        min_gap: 0.15
+        min_score: 0.9
+        min_gap: 0.2
   rag:
     enabled: true
     k: 5
