@@ -7,108 +7,121 @@ narrator:
   model: sirios-narrator:latest
   llm_enabled: false
   shadow: false
-default:
-  llm_enabled: false
-  shadow: false
-  model: sirios-narrator:latest
-  style: executivo
-  max_llm_rows: 0
-  max_prompt_tokens: 4000
-  max_output_tokens: 700
-  use_rag_in_prompt: false
-  use_conversation_context: false
-  prefer_concept_when_no_ticker: true
-  rag_fallback_when_no_rows: false
-  concept_with_data_when_rag: false
-llm_enabled: false
-shadow: false
-max_llm_rows: 0
-entities:
-  fiis_financials_risk:
+  default:
     llm_enabled: false
-    strict_mode: true
+    shadow: false
+    model: sirios-narrator:latest
+    style: executivo
     max_llm_rows: 0
+    max_prompt_tokens: 4000
+    max_output_tokens: 700
     use_rag_in_prompt: false
     use_conversation_context: false
+    prefer_concept_when_no_ticker: true
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
-  fiis_financials_revenue_schedule:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  fiis_noticias:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  history_market_indicators:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  history_b3_indexes:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  history_currency_rates:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  fii_overview:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  fiis_yield_history:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  dividendos_yield:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  carteira_enriquecida:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
-  macro_consolidada:
-    llm_enabled: false
-    strict_mode: false
-    max_llm_rows: 0
-    use_rag_in_prompt: false
-    use_conversation_context: false
-    rag_fallback_when_no_rows: false
-    concept_with_data_when_rag: false
+  entities:
+    fiis_financials_risk:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 3
+      use_rag_in_prompt: true
+      use_conversation_context: true
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: true
+      strict_mode: true
+    fiis_financials_revenue_schedule:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+    fiis_noticias:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      use_conversation_context: true
+      prefer_concept_when_no_ticker: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: true
+      strict_mode: false
+    history_market_indicators:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      use_conversation_context: false
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: true
+      strict_mode: false
+    history_b3_indexes:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      use_conversation_context: false
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: true
+      strict_mode: false
+    history_currency_rates:
+      llm_enabled: true
+      shadow: true
+      max_llm_rows: 5
+      use_rag_in_prompt: true
+      use_conversation_context: false
+      prefer_concept_when_no_ticker: true
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: true
+      strict_mode: false
+    fii_overview:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+    fiis_yield_history:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+    dividendos_yield:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+    carteira_enriquecida:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+    macro_consolidada:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false

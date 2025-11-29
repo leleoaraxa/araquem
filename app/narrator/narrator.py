@@ -11,6 +11,10 @@ from typing import Any, Dict, Iterable, Optional
 
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import build_prompt, render_narrative
+from app.observability.metrics import (
+    emit_counter as counter,
+    emit_histogram as histogram,
+)
 from app.utils.filecache import load_yaml_cached
 import yaml
 
@@ -752,6 +756,41 @@ class Narrator:
                 narrator_meta["strategy"] = strategy_override
 
             final_strategy = narrator_meta.get("strategy") or "deterministic"
+
+            if effective_enabled and effective_max_llm_rows > 0:
+                try:
+                    prompt_text = text or ""
+                    prompt_len_chars = len(prompt_text)
+                except Exception:
+                    prompt_len_chars = 0
+
+                entity_label = str(entity or "")
+                strategy_label = narrator_meta.get("strategy") or "deterministic"
+
+                counter(
+                    "sirios_narrator_tokens_in_total",
+                    entity=entity_label,
+                    strategy=strategy_label,
+                )
+                if computed_tokens_out > 0:
+                    counter(
+                        "sirios_narrator_tokens_out_total",
+                        entity=entity_label,
+                        strategy=strategy_label,
+                    )
+
+                histogram(
+                    "sirios_narrator_prompt_chars_total",
+                    float(prompt_len_chars),
+                    entity=entity_label,
+                    strategy=strategy_label,
+                )
+                histogram(
+                    "sirios_narrator_prompt_rows_total",
+                    float(rows_count),
+                    entity=entity_label,
+                    strategy=strategy_label,
+                )
 
             return {
                 "text": text,
