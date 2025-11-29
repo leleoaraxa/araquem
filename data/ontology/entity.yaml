@@ -979,17 +979,6 @@ intents:
 - name: dividendos_yield
   tokens:
     include:
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - dy
-    - dividend yield
-    - yield
-    - historico de dividendos
-    - historico de dy
-    - dy mensal
-    - dy 12m
     - comparativo
     exclude:
     - meus
@@ -1007,17 +996,18 @@ intents:
     - dy mensal do
     - dividend yield do
     - pagou de dividendos
+    - dividendos e dy
+    - historico de dividendos e dy
+    - dividendos e dividend yield
+    - historico de dividendos e dividend yield
+    - dividendos e yield
+    - historico de dividendos e yield
     exclude: []
   entities:
   - dividendos_yield
 - name: carteira_enriquecida
   tokens:
     include:
-    - carteira
-    - posicao
-    - posicoes
-    - valor
-    - valor investido
     - dy mensal
     - dy 12m
     exclude: []
@@ -1027,6 +1017,11 @@ intents:
     - meus fiis
     - dy dos meus fiis
     - dy mensal dos meus fiis
+    - renda e dy dos meus fiis
+    - visao consolidada da minha carteira de fiis
+    - carteira de fiis enriquecida
+    - minha carteira de fiis com dy
+    - ranking de sharpe dos meus fiis
     exclude: []
   entities:
   - carteira_enriquecida
@@ -1034,15 +1029,6 @@ intents:
   tokens:
     include:
     - macro
-    - ipca
-    - selic
-    - cdi
-    - ifix
-    - ibov
-    - ibovespa
-    - dolar
-    - euro
-    - cambio
     exclude: []
   phrases:
     include:
@@ -1055,6 +1041,12 @@ intents:
     - euro em
     - ifix e ibov
     - ifix e ibov do dia
+    - ipca e selic
+    - ipca e cdi
+    - ifix e ibovespa
+    - ipca e selic em
+    - indicadores macroeconomicos
+    - cenario macroeconomico
     exclude: []
   entities:
   - macro_consolidada
