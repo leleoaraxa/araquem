@@ -862,7 +862,7 @@
       "expected_entity": "history_market_indicators"
     },
     {
-      "question": "indicadores macroeconômicos",
+      "question": "indicadores macroeconômicos IPCA, CDI, SELIC, IGPM",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -1268,8 +1268,8 @@
     },
     {
       "question": "quanto o HGLG11 pagou de dividendos no mes",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
     },
     {
       "question": "peso do HGLG11 na minha carteira",

@@ -24,7 +24,6 @@ sample_questions:
   - "selic de ontem"
   - "cdi atual"
   - "taxa do igpm de ontem"
-  - "indicadores macroeconômicos de ontem"
 
 tolerance:
   extra_columns_allowed: false
