@@ -172,6 +172,8 @@ def ask(
             "meta": {
                 "planner": plan,
                 "result_key": None,
+                "intent": intent,
+                "entity": entity,
                 "planner_intent": intent,
                 "planner_entity": entity,
                 "planner_score": score,
