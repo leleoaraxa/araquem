@@ -1,62 +1,211 @@
 # 1. Arquitetura Geral do Araquem
 
-* **Pipeline**: o endpoint `/ask` aciona o **Orchestrator** para extrair identificadores e construir SQL; o **Planner** avalia intents e entidades com normalização/tokenização, aplica fusão com RAG e thresholds; o **Builder** gera SELECT determinístico a partir dos contratos YAML; o **Executor** (Postgres) executa a query com tracing/metrics; o **Formatter** aplica formatação declarativa e templates; o **Presenter** consolida facts, baseline determinístico e Narrator; o **Narrator** (opcional) decide uso de LLM ou modo determinístico; o retorno inclui meta e answer para o cliente.【F:app/api/ask.py†L38-L178】【F:app/orchestrator/routing.py†L90-L225】【F:app/builder/sql_builder.py†L1-L197】【F:app/executor/pg.py†L10-L52】【F:app/formatter/rows.py†L1-L118】【F:app/presenter/presenter.py†L19-L285】
+* **Pipeline**: o endpoint `/ask` aciona o **Orchestrator** para extrair identificadores e construir SQL; o **Planner** avalia intents e entidades com normalização/tokenização, aplica fusão com RAG e thresholds; o **Builder** gera SELECT determinístico a partir dos contratos YAML; o **Executor** (Postgres) executa a query com tracing/metrics; o **Formatter** aplica formatação declarativa e templates; o **Presenter** consolida facts, baseline determinístico e Narrator; o **Narrator** (opcional) recebe facts, meta, contexto RAG (quando habilitado) e decide uso de LLM ou modo determinístico. No estado atual, o LLM está **ativo apenas em shadow** para entidades textuais (risco, macro, notícias): o baseline determinístico continua sendo a resposta final para o cliente, e o LLM só é usado para observabilidade/tuning. O retorno inclui sempre `meta` e `answer` para o cliente.【F:app/api/ask.py†L38-L178】【F:app/orchestrator/routing.py†L90-L225】【F:app/builder/sql_builder.py†L1-L197】【F:app/executor/pg.py†L10-L52】【F:app/formatter/rows.py†L1-L118】【F:app/presenter/presenter.py†L19-L285】
+
 * **Explain-mode**: o Planner sempre monta `decision_path` (tokenize→rank→route) com `signals` (token/phrase/anti_hits, weights), `fusion` e `rag` (hints, re-rank, context). `thresholds_applied` registra min_score/min_gap/gap/source/accepted. Quando `/ask?explain=true` ativa, as métricas de explain são emitidas e o payload é persistido em `explain_events` com `request_id`.【F:app/planner/planner.py†L98-L358】【F:app/api/ask.py†L48-L114】【F:app/orchestrator/routing.py†L400-L475】
-* **RAG/decision signals**: fusão linear/re-rank combina score base e hints de entidades (`fusion.weight`, `rag_signal`, `combined`). `rag_context` guarda snippets filtrados por tokens do intent vencedor e é anexado ao explain e ao Presenter/Narrator. Thresholds podem operar em score base ou final (`apply_on`).【F:app/planner/planner.py†L187-L358】【F:app/presenter/presenter.py†L185-L285】
-* **Contexto conversacional (M12)**: o `context_manager.py` mantém histórico curto de turns e o Presenter injeta `history` no meta do Narrator. As policies em `data/policies/context.yaml` deixam o contexto **habilitado** (planner/narrator ON, max_turns e limites de tamanho) e controlam entidades permitidas, mantendo proteção para domínios privados/macros enquanto os quality gates não forem consolidados.
-* **Observabilidade**: runtime inicializa OTEL (OTLP gRPC), Prometheus exporters e schemas canônicos. Métricas cobrem HTTP, Planner, cache, SQL, RAG, Narrator e quality. Traces incluem atributos de rota/SQL/request_id; explain usa `trace_id` como `request_id`. Grafana/Prometheus/Tempo são previstos via configs em `data/ops/observability.yaml` e docker-compose stack (Prometheus, Grafana, Tempo, OTEL collector).【F:app/observability/runtime.py†L15-L118】【F:app/observability/metrics.py†L1-L112】【F:docker-compose.yml†L1-L90】
+
+* **RAG/decision signals**: fusão linear/re-rank combina score base e hints de entidades (`fusion.weight`, `rag_signal`, `combined`). `rag_context` guarda snippets já filtrados por intents/entidades vencedores, aplica política de `max_chunks` por entidade (via `rag.yaml`) e é anexado ao explain e ao Presenter/Narrator. No Narrator, esse contexto ainda passa por poda extra (escolha de chunks e truncamento de snippet) antes de ser enviado ao LLM. Thresholds podem operar em score base ou final (`apply_on`).【F:app/planner/planner.py†L187-L358】【F:app/presenter/presenter.py†L185-L285】
+
+* **Contexto conversacional (M12–M13)**: o `context_manager.py` mantém histórico curto de turns, com políticas em `data/policies/context.yaml` (enabled, max_turns, entidades permitidas, regras de `last_reference`). O Presenter injeta `history` no meta do Narrator para entidades habilitadas (contexto ON com escopo controlado). O `last_reference` permite herdar ticker/identificadores entre turns (ex.: CNPJ → Sharpe → overview), respeitando TTL em número de turns e uma lista explícita de entidades que podem usar essa herança.
+
+* **Observabilidade**: runtime inicializa OTEL (OTLP gRPC), Prometheus exporters e schemas canônicos. Métricas cobrem HTTP, Planner, cache, SQL, RAG, Narrator e quality. Traces incluem atributos de rota/SQL/request_id; explain usa `trace_id` como `request_id`. Grafana/Prometheus/Tempo são previstos via configs em `data/ops/observability.yaml` e docker-compose stack (Prometheus, Grafana, Tempo, OTEL collector). O Narrator adiciona métricas próprias de uso/latência/tamanho de prompt, permitindo acompanhar o shadow mode com segurança.【F:app/observability/runtime.py†L15-L118】【F:app/observability/metrics.py†L1-L112】【F:docker-compose.yml†L1-L90】
+
+---
 
 # 2. Estado Atual dos Módulos
 
 ## 2.1 Planner
 
 * **Intent scoring**: normaliza (lower/strip_accents/strip_punct), tokeniza por `\b`, soma pesos para tokens/phrases include e penaliza excludes/anti_tokens. Mantém `details` por intent e `weights_summary`.【F:app/planner/planner.py†L65-L186】
-* **Thresholds reais**: `_load_thresholds` lê `data/ops/planner_thresholds.yaml` (defaults min_score=0.8, min_gap=0.1, apply_on=fused; overrides por família): compostas `dividendos_yield` / `carteira_enriquecida` / `macro_consolidada` usam **min_score 0.9 / min_gap 0.2**; risco `fiis_financials_risk` usa **0.85 / 0.2**; históricas numéricas `fiis_precos` / `fiis_dividendos` e `fiis_yield_history` usam **0.9 / 0.15**; snapshots numéricos `fiis_imoveis` / `fiis_processos` usam **0.85 / 0.1**. Gate avalia `score_for_gate` e `gap` (base ou final se re-rank). `chosen.accepted` expõe resultado.【F:app/planner/planner.py†L20-L58】【F:app/planner/planner.py†L320-L358】
+
+* **Thresholds reais**: `_load_thresholds` lê `data/ops/planner_thresholds.yaml` (defaults min_score=0.8, min_gap=0.1, apply_on=fused; overrides por família): compostas `dividendos_yield` / `carteira_enriquecida` / `macro_consolidada` usam **min_score 0.9 / min_gap 0.2**; risco `fiis_financials_risk` usa **0.85 / 0.2**; históricas numéricas `fiis_precos` / `fiis_dividendos` e `fiis_yield_history` usam **0.9 / 0.15**; snapshots numéricos `fiis_imoveis` / `fiis_processos` usam **0.85 / 0.1**. O gate avalia `score_for_gate` e `gap` (base ou final se re-rank). `chosen.accepted` expõe resultado.【F:app/planner/planner.py†L20-L58】【F:app/planner/planner.py†L320-L358】
+
 * **RAG fusion**: controla via YAML (`planner.rag`). Se habilitado, busca embeddings, gera `entity_hints` e funde scores (blend/additive) com peso `rag_weight` ou `re_rank.weight`. Blocos `fusion`, `scoring.final_combined`, `rag_signal` e `rag_hint` expõem números.【F:app/planner/planner.py†L187-L318】
+
 * **Explain data model**: `explain` inclui `signals`, `decision_path`, `scoring` (intent/entity, gaps base/final, combined/final_combined, rag_signal, rag_hint, thresholds_applied), `rag` (config/used/error), `fusion`, `rag_context` (doc/snippets/reason). `/ask?explain=true` também registra analytics com `planner_output` e métricas de latência/cache.【F:app/planner/planner.py†L187-L358】【F:app/api/ask.py†L48-L114】
 
 ## 2.2 RAG
 
-* **context_builder**: `build_context` aplica política `data/policies/rag.yaml` (routing.allow_intents/deny_intents, entities/default/profiles). Resolve collections, max_chunks/min_score/max_tokens, usa embeddings search determinístico e normaliza chunks (texto, score, doc_id, collection). Desabilita quando não permitido ou erro, retornando `enabled=False` e motivo.【F:app/rag/context_builder.py†L1-L179】【F:data/policies/rag.yaml†L1-L120】
+* **context_builder**: `build_context` aplica política `data/policies/rag.yaml` (routing.allow_intents/deny_intents, entities/default/profiles). Resolve collections, `max_chunks`/`min_score`, usa embeddings search determinístico e normaliza chunks (texto, score, doc_id, collection). Desabilita quando não permitido ou erro, retornando `enabled=False` e motivo.【F:app/rag/context_builder.py†L1-L179】【F:data/policies/rag.yaml†L1-L120】
+
 * **entity_hints**: Planner lê store via `cached_embedding_store`, gera vetor com `OllamaClient.embed` e converte resultados em hints por entidade (`entity_hints_from_rag`).【F:app/planner/planner.py†L187-L230】
-* **RAG fusion & re-ranking**: peso definido em policy (`rag.weight` ou `re_rank.weight`); modos blend/additive ajustam score final; `fusion` bloco aponta `affected_entities` e erro. Re-rank flag controla se thresholds usam score final.【F:app/planner/planner.py†L240-L320】
-* **Políticas**: `data/policies/rag.yaml` define profiles (default/macro/risk) com weights atualizados e roteamento por intent/entidade. RAG **permitido** somente para intents textuais/explicativos (`fiis_noticias`), risco conceitual (`fiis_financials_risk` com restrição estrita a explicações, sem números vindos do RAG) e domínios macro/índices/moedas (`history_market_indicators`, `history_b3_indexes`, `history_currency_rates`). RAG **negado** para todas as entidades numéricas (históricas e snapshots), entidades privadas, overview consolidado e compostas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`). Comentários explicam o racional de cada deny/allow e o mapeamento de profiles default/macro/risk.
+
+* **RAG fusion & re-ranking**: peso definido em policy (`rag.weight` ou `re_rank.weight`); modos blend/additive ajustam score final; `fusion` aponta `affected_entities` e erro. A flag de re-rank controla se thresholds usam score final.【F:app/planner/planner.py†L240-L320】
+
+* **Políticas (versão 2)**: `data/policies/rag.yaml` define perfis:
+
+  * `profiles.default`: `k=6`, `min_score=0.2`, pesos `bm25=0.7`, `semantic=0.3`, `max_context_chars` 12000;
+  * `profiles.macro`: `k=4`, `min_score=0.1`, pesos `bm25=0.5`, `semantic=0.5`;
+  * `profiles.risk`: `k=6`, `min_score=0.15`, pesos `bm25=0.6`, `semantic=0.4`.
+
+  RAG é **permitido somente** para intents textuais/explicativos:
+
+  * `fiis_noticias`
+  * `fiis_financials_risk` (uso exclusivamente conceitual, sem números vindos do RAG)
+  * `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`
+
+  e **negado** para:
+
+  * todas as entidades puramente numéricas (históricas e snapshots),
+  * entidades privadas de cliente,
+  * overview consolidado (`fii_overview`),
+  * compostas numéricas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`).
+
+  Para cada entidade permitida, `rag.entities.*` define `profile`, `collections`, `max_chunks` e `min_score`. O bloco `rag.default` cobre fallback seguro para conceitos de FIIs (`concepts-fiis`) com `min_score` 0.25.
 
 ## 2.3 Formatter
 
-* **Responsabilidade**: `render_rows_template` carrega `entity.yaml`→presentation.kind→template Jinja em `responses/{kind}.md.j2`, com campos key/value e empty_message. Protege path e falhas retornam string vazia.【F:app/formatter/rows.py†L1-L89】
-* **Rows/Aggregates/Meta**: `format_rows` mantém colunas declaradas, aplica formatação decimal/data/percent/currency e métricas (`metric_key` em meta). Meta agregada fica em `aggregates` do orchestrator/presenter; requested_metrics lidas via ontology ask config.【F:app/formatter/rows.py†L90-L118】【F:app/orchestrator/routing.py†L280-L332】
-* **Estado atual**: templates `responses/*.md.j2` estão sendo gradualmente “humanizados” (ex.: `fiis_financials_risk`) para respostas mais amigáveis, ainda 100% determinísticas.
+* **Responsabilidade**: `render_rows_template` carrega `entity.yaml`→presentation.kind→template Jinja em `responses/{kind}.md.j2`, com campos key/value e empty_message. Protege path e, em falhas, retorna string vazia.【F:app/formatter/rows.py†L1-L89】
+
+* **Rows/Aggregates/Meta**: `format_rows` mantém colunas declaradas, aplica formatação decimal/data/percent/currency e métricas (`metric_key` em meta). Meta agregada fica em `aggregates` do orchestrator/presenter; requested_metrics são lidas via ontologia/ask config.【F:app/formatter/rows.py†L90-L118】【F:app/orchestrator/routing.py†L280-L332】
+
+* **Estado atual**: templates `responses/*.md.j2` vêm sendo “humanizados” (por exemplo, `fiis_financials_risk`) para respostas mais amigáveis, mantendo 100% determinismo.
 
 ## 2.4 Presenter
 
-* **FactsPayload**: estrutura canônica com question/intent/entity/score/result_key/rows/primary/aggregates/identifiers/requested_metrics/ticker/fund e planner_score.【F:app/presenter/presenter.py†L19-L157】
+* **FactsPayload**: estrutura canônica com question/intent/entity/score/result_key/rows/primary/aggregates/identifiers/requested_metrics/ticker/fund/planner_score.【F:app/presenter/presenter.py†L19-L157】
+
 * **PresentResult**: inclui answer, legacy_answer, rendered_template, narrator_meta, facts.【F:app/presenter/presenter.py†L59-L80】
-* **Workflow determinístico**: sempre constrói facts, renderiza baseline determinístico via `render_answer` e `render_rows_template`, monta narrator_info (enabled/shadow/model/latency/error/used/strategy) e final_answer inicia como baseline.【F:app/presenter/presenter.py†L162-L226】
-* **narrator_shadow/fallback/baseline/template**: quando Narrator retorna strategy `llm_shadow`, mantém baseline; erros retornam baseline com strategy `fallback_error`; template renderizado é retornado em PresentResult junto ao baseline.【F:app/presenter/presenter.py†L240-L285】
-* **render_rows_template integração**: chamada após legacy_answer para gerar Markdown tabular conforme entity presentation; resultado exposto em `rendered_template`.【F:app/presenter/presenter.py†L204-L212】
-* **render_answer integração**: baseline textual determinístico sempre computado e usado em fallback/shadow.【F:app/presenter/presenter.py†L204-L266】
-* **Contexto conversacional**: Presenter injeta o `history` produzido pelo `context_manager` em `meta.narrator_context`, respeitando policies habilitadas (planner/narrator ON, limites de turns/charset) e a lista de entidades permitidas, mantendo proteção para domínios privados/macros enquanto baseline/quality não forem fechados.
+
+* **Workflow determinístico**: sempre constrói facts, renderiza baseline determinístico via `render_answer` e `render_rows_template`, monta `narrator_info` (enabled/shadow/model/latency/error/used/strategy) e inicia `final_answer` a partir do baseline.【F:app/presenter/presenter.py†L162-L226】
+
+* **narrator_shadow/fallback/baseline/template**: quando o Narrator retorna `strategy="llm_shadow"`, o Presenter **mantém o baseline determinístico como resposta final**, mas registra meta do Narrator (tokens, latência, contexto). Erros de LLM resultam em estratégia `llm_failed` com fallback no baseline. O template renderizado é retornado em `rendered_template` junto ao baseline.【F:app/presenter/presenter.py†L240-L285】
+
+* **Contexto conversacional**: Presenter injeta o `history` produzido pelo `context_manager` em `meta.narrator_context`, respeitando policies (context.enabled, entidades liberadas, limites de turns/tamanho), priorizando segurança para domínios privados enquanto baseline/quality continuam verdes.
 
 ## 2.5 Narrator
 
-* **narrator.yaml**: carregado via `data/policies/narrator.yaml` (default/entidades, llm_enabled/shadow/model/max_llm_rows/use_rag_in_prompt etc.). Effective policy combina default + overrides, ignorando env para habilitação/shadow.【F:app/narrator/narrator.py†L85-L160】
-* **Política de LLM**: `_should_use_llm` checa policy enabled e limites de linhas; render retorna baseline se desabilitado ou max_llm_rows <=0 ou rows>limite ou client indisponível. Tokens/latency/strategy registrados.【F:app/narrator/narrator.py†L121-L212】【F:app/narrator/narrator.py†L360-L460】
-* **Shadow mode**: se `shadow=True`, estratégia final `llm_shadow` devolve baseline mas registra uso; Narrator_meta marca enabled/shadow/model/strategy e rag_ctx. LLM errors caem em `llm_failed` com baseline.【F:app/narrator/narrator.py†L360-L520】
-* **Estado atual**: **LLM globalmente desligado** (`llm_enabled: false`, `shadow: false`, `max_llm_rows: 0`) para todas as entidades (incluindo risco, macro, índices, notícias, compostas e entidades privadas de carteira). Overrides por entidade existem, mas todos com LLM OFF; o sistema opera 100% determinístico.
+* **narrator.yaml e policy efetiva**: `data/policies/narrator.yaml` define bloco `narrator` com `model`, `llm_enabled`, `shadow` globais, um `default` e overrides por entidade em `entities.*`. A política efetiva é a combinação de:
+
+  1. defaults globais (`narrator.default`);
+  2. campos no topo de `narrator` (sem `default`/`entities`);
+  3. override da entidade (se existir).
+
+  Habilitação/shadow são controlados **exclusivamente** pelo YAML (env é ignorado para essas flags).【F:app/narrator/narrator.py†L85-L160】
+
+* **Política de LLM**: `_should_use_llm` aplica regras:
+
+  * se `llm_enabled` for falso → nunca usa LLM;
+  * se `max_llm_rows <= 0` → nunca usa LLM;
+  * se `len(rows) > max_llm_rows` → não usa LLM.
+
+  Quando o LLM é desabilitado pela policy ou pelas condições acima, `render` devolve o baseline determinístico e marca a estratégia (`llm_disabled_by_policy` ou `llm_skipped_max_rows`).【F:app/narrator/narrator.py†L121-L212】【F:app/narrator/narrator.py†L360-L460】
+
+* **Modo concept/data**: o Narrator suporta:
+
+  * `concept_mode=True` (explicação conceitual, ignorando rows numéricos);
+  * `concept_mode=False` (explicação orientada a dados por fundo).
+
+  A decisão considera:
+
+  1. `meta.compute.mode` (quando presente: `concept`/`data`/`default`);
+  2. `prefer_concept_when_no_ticker` na policy da entidade, ativando modo conceitual quando a pergunta não contém tickers detectáveis.
+
+  Em `concept_mode`, `rows`/`primary` são esvaziados no `effective_facts` antes de montar o prompt, evitando que o LLM misture conceitos com números específicos. Esse modo é usado, por exemplo, para perguntas gerais sobre Sharpe/MDD sem ticker.
+
+* **Integração com RAG**:
+
+  * `meta.rag` é recebido do Planner/Presenter quando RAG está habilitado para a intent/entidade.
+  * Policy controla `use_rag_in_prompt` por entidade: se `False`, o RAG é completamente ignorado no prompt.
+  * Quando `use_rag_in_prompt=True`, o contexto passa por duas etapas:
+
+    1. `context_builder` limita `chunks` por `max_chunks` (por entidade) e `min_score` (por profile).
+    2. `prompts._prepare_rag_payload` corta a lista ao máximo permitido e ainda truncates cada snippet de texto (`rag_snippet_max_chars`) para manter o prompt enxuto.
+
+  Em modo conceitual, o Narrator ainda pode reduzir o RAG para **apenas o melhor chunk** (`_shrink_rag_for_concept`) com texto truncado, evitando prompts gigantes e dispersos.
+
+* **Truncamento de snippets de RAG (Seção 5 – RAG + Narrator)**:
+
+  * `app/narrator/prompts.py` introduz:
+
+    * `RAG_SNIPPET_MAX_CHARS = 320`
+    * `_truncate_snippet(text, max_chars)` para cortar cada snippet em ~N caracteres, respeitando quebra de palavra.
+    * `_prepare_rag_payload(rag, max_snippet_chars)` que monta `snippets` já truncados.
+
+  * `build_prompt(...)` lê a política efetiva da entidade (`effective_policy`) e, se existir, usa `rag_snippet_max_chars` como limite por snippet; caso contrário, cai no default de 320.
+
+  * Em YAML (`narrator.yaml`), estão definidos hoje:
+
+    ```yaml
+    narrator:
+      default:
+        rag_snippet_max_chars: 320
+
+      entities:
+        fiis_financials_risk:
+          rag_snippet_max_chars: 280
+        fiis_noticias:
+          rag_snippet_max_chars: 320
+        history_market_indicators:
+          rag_snippet_max_chars: 260
+        history_b3_indexes:
+          rag_snippet_max_chars: 260
+        history_currency_rates:
+          rag_snippet_max_chars: 260
+    ```
+
+  * Na prática, isso garante snippets curtos (~260–320 chars) por entidade textual, focados em explicação conceitual, não em textão.
+
+* **Shadow mode e fail-safes**:
+
+  * Se `shadow=True` para a entidade, a estratégia final `llm_shadow` sempre retorna **o baseline determinístico como texto**, registrando apenas meta de LLM (prompt, tokens, latência).
+  * Se não há evidência suficiente (sem rows e sem chunks de RAG), o LLM é ignorado e o Narrator aplica um texto de segurança padrão (`_FAILSAFE_TEXT`) na resposta do próprio Narrator. No modo shadow, isso não substitui o baseline entregue ao usuário.
+  * Erros de cliente/LLM resultam em `llm_failed` e uso exclusivo do baseline, sem tentar “remendar” resposta com texto possivelmente contaminado.
+
+* **Estado atual**:
+
+  * `narrator.default.llm_enabled: false` e `shadow: false` (baseline global OFF).
+
+  * **Overrides com LLM em shadow**:
+
+    * `fiis_financials_risk`
+    * `fiis_noticias`
+    * `history_market_indicators`
+    * `history_b3_indexes`
+    * `history_currency_rates`
+
+    Nessas entidades:
+
+    * `llm_enabled: true`
+    * `shadow: true`
+    * `use_rag_in_prompt: true`
+    * `max_llm_rows` pequeno (3 ou 5)
+    * `rag_snippet_max_chars` alinhado ao perfil (260–320 chars)
+    * contexto de conversa ativado quando faz sentido (notícias/risco).
+
+  * Todas as demais entidades (numéricas, compostas, privadas) permanecem com LLM/Narrator **desligados** (sem RAG no prompt e sem shadow), mantendo 100% determinismo.
 
 ## 2.6 Executor
 
+*(sem mudanças conceituais – permanece como antes)*
+
 * **SQL executor real**: `PgExecutor.query` usa psycopg, sanitiza SQL para tracing, abre trace span `executor.sql.execute`, seta atributos db.system/name/table/statement, executa com params e retorna dict rows. Emite métricas de duração e rows retornados; erros incrementam `sirios_sql_errors_total`. Usa DATABASE_URL.【F:app/executor/pg.py†L10-L52】
-* **Views/Materialized views**: builder lê `entity.yaml` (`sql_view`, `result_key`, `columns`) e gera SELECT. Suporta métricas (UNION de SQLs), agregações (avg/sum/list/latest), filtros de período/default_date_field, multi-ticker e window months/count. Materialized views seguem `sql_view` declarado nos contratos (não há geração dinâmica).【F:app/builder/sql_builder.py†L1-L332】【F:app/builder/sql_builder.py†L332-L520】
+
+* **Views/Materialized views**: builder lê `entity.yaml` (`sql_view`, `result_key`, `columns`) e gera SELECT. Suporta métricas (UNION de SQLs), agregações (avg/sum/list/latest), filtros de período/default_date_field, multi-ticker e window months/count. Materialized views seguem `sql_view` declarado nos contratos.【F:app/builder/sql_builder.py†L1-L332】【F:app/builder/sql_builder.py†L332-L520】
+
 * **Parâmetros inferidos**: `infer_params` fornece `agg_params` (agg/order/window/metric/limit/period); builder injeta em SQL (placeholders, window filters, metrics). Orchestrator normaliza janela e usa para cache key.【F:app/orchestrator/routing.py†L250-L332】【F:app/builder/sql_builder.py†L180-L332】
 
 ## 2.7 Observability
 
-* **Métricas existentes**: catálogo inclui HTTP, planner (routed, explain, gaps, thresholds), cache, SQL, RAG (search/hits/context/re-rank), Narrator, explain persistence, quality. Facade valida labels e exporta via Prometheus client.【F:app/observability/metrics.py†L1-L112】【F:app/observability/runtime.py†L70-L152】
-* **Counters/Histograms**: `emit_counter/emit_histogram/emit_gauge` normalizam labels; buckets padrão ms; exemplos: `sirios_planner_route_decisions_total`, `planner_rag_context_latency_ms`, `sirios_narrator_latency_ms`.【F:app/observability/metrics.py†L1-L112】【F:app/observability/runtime.py†L70-L152】
-* **request_id/tracing**: `/ask` gera `request_id`; explain analytics usa `trace_id` do span. Tracing OTEL inicializado com OTLP exporter; spans para planner.route e executor.sql.execute incluem atributos de rota/cache/SQL.【F:app/api/ask.py†L38-L178】【F:app/orchestrator/routing.py†L330-L420】【F:app/executor/pg.py†L18-L52】【F:app/observability/runtime.py†L31-L90】
-* **Integração OTEL**: `init_tracing` configura TracerProvider e BatchSpanProcessor para OTLP; docker-compose traz Tempo e otel-collector para backend de traces; Grafana dashboards previstos para quality e observability.【F:app/observability/runtime.py†L15-L90】【F:docker-compose.yml†L1-L90】【F:grafana/provisioning/dashboards/quality_dashboard.json†L1-L80】
+* **Métricas existentes**: catálogo inclui HTTP, planner (routed, explain, gaps, thresholds), cache, SQL, RAG (search/hits/context/re-rank), Narrator, explain persistence, quality. A facade normaliza labels e exporta via Prometheus client.【F:app/observability/metrics.py†L1-L112】【F:app/observability/runtime.py†L70-L152】
+
+* **Counters/Histograms**: `emit_counter/emit_histogram/emit_gauge` normalizam labels; buckets padrão em ms; exemplos:
+
+  * `sirios_planner_route_decisions_total`
+  * `planner_rag_context_latency_ms`
+  * `sirios_sql_query_latency_ms`
+  * **Narrator**:
+
+    * `sirios_narrator_tokens_in_total`
+    * `sirios_narrator_tokens_out_total`
+    * `sirios_narrator_prompt_chars_total`
+    * `sirios_narrator_prompt_rows_total`
+
+  Esses quatro últimos permitem observar o impacto do shadow mode (tamanho de prompt, número de linhas usadas, etc).【F:app/observability/metrics.py†L1-L112】【F:app/observability/runtime.py†L70-L152】
+
+* **request_id/tracing**: `/ask` gera `request_id`; explain analytics usa `trace_id` do span. Tracing OTEL inicializado com OTLP exporter; spans para `planner.route` e `executor.sql.execute` incluem atributos de rota/cache/SQL.【F:app/api/ask.py†L38-L178】【F:app/orchestrator/routing.py†L330-L420】【F:app/executor/pg.py†L18-L52】【F:app/observability/runtime.py†L31-L90】
+
+* **Integração OTEL**: `init_tracing` configura TracerProvider e BatchSpanProcessor para OTLP; docker-compose traz Tempo e otel-collector para backend de traces; Grafana dashboards previstos para quality/observability.【F:app/observability/runtime.py†L15-L90】【F:docker-compose.yml†L1-L90】【F:grafana/provisioning/dashboards/quality_dashboard.json†L1-L80】
 
 # 3. Entidades
 
