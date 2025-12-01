@@ -228,6 +228,10 @@ _METRIC_SCHEMAS = {
     "sirios_narrator_render_total": ("counter", ("outcome",)),
     "sirios_narrator_shadow_total": ("counter", ("outcome",)),
     "sirios_narrator_latency_ms": ("histogram", ()),
+    "sirios_narrator_tokens_in_total": ("counter", ("entity", "strategy")),
+    "sirios_narrator_tokens_out_total": ("counter", ("entity", "strategy")),
+    "sirios_narrator_prompt_chars_total": ("histogram", ("entity", "strategy")),
+    "sirios_narrator_prompt_rows_total": ("histogram", ("entity", "strategy")),
 }
 
 
