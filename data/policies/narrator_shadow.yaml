@@ -1,0 +1,85 @@
+# data/policies/narrator_shadow.yaml
+terms:
+  - name: narrator_shadow
+    kind: policy
+    scope: narrator_shadow
+    version: 1
+
+narrator_shadow:
+  # Liga/desliga globalmente a coleta de shadow
+  enabled: true
+
+  # Em quais ambientes o shadow pode rodar (segurança adicional)
+  environment_allowlist:
+    - dev
+
+  # Entidades que envolvem dados do cliente (não queremos logar bruto)
+  private_entities:
+    - client_fiis_positions
+    - client_fiis_dividends_evolution
+    - client_fiis_performance_vs_benchmark
+
+  # Política de amostragem
+  sampling:
+    # Padrão para qualquer entidade que não tenha override explícito
+    default:
+      rate: 0.2                  # 20% das requisições elegíveis
+      only_when_llm_used: true   # só loga quando o Narrator realmente chama LLM
+      only_when_answer_nonempty: true
+      always_on_llm_error: true  # sempre loga se der erro de LLM (independente do rate)
+
+    # Overrides por entidade
+    entities:
+      fiis_financials_risk:
+        rate: 0.5
+        only_when_llm_used: true
+        only_when_answer_nonempty: true
+        always_on_llm_error: true
+
+      fiis_noticias:
+        rate: 0.1
+        only_when_llm_used: true
+        only_when_answer_nonempty: true
+        always_on_llm_error: true
+
+      history_market_indicators:
+        rate: 0.3
+        only_when_llm_used: true
+        only_when_answer_nonempty: true
+        always_on_llm_error: true
+
+  # Regras de redaction / truncamento
+  redaction:
+    # Campos que devem ser mascarados se aparecerem no payload
+    mask_fields:
+      - document_number
+      - cpf
+      - cnpj
+      - email
+      - phone
+
+    # Quantidade máxima de linhas de dados que o shadow pode carregar
+    max_rows_sample: 3
+
+    # Limites de caracteres para trechos textuais
+    max_chars:
+      answer_final: 1500
+      answer_baseline: 1500
+      prompt_preview: 3000
+
+  # Configuração de armazenamento dos registros de shadow
+  storage:
+    sink: file
+    file:
+      # Pasta relativa ao root da app para guardar os JSONL de shadow
+      path: logs/narrator_shadow
+      rotation: daily
+      filename_template: "narrator_shadow_%Y%m%d.jsonl"
+
+    # Tamanho máximo do payload serializado (após redaction), em KB
+    max_shadow_payload_kb: 32
+
+  # Métricas específicas do shadow (além das métricas gerais do Narrator)
+  metrics:
+    enabled: true
+    namespace: sirios_narrator_shadow
