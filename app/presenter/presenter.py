@@ -1,6 +1,8 @@
 # app/presenter/presenter.py
 from __future__ import annotations
 
+import logging
+import os
 import time
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -12,9 +14,15 @@ from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
+from app.observability.narrator_shadow import (
+    NarratorShadowEvent,
+    collect_narrator_shadow,
+)
 from app.rag.context_builder import build_context, load_rag_policy
 from app.templates_answer import render_answer
 from app.core.context import context_manager
+
+LOGGER = logging.getLogger(__name__)
 
 
 class FactsPayload(BaseModel):
@@ -176,8 +184,9 @@ def present(
     narrator: Optional[Narrator],
     narrator_flags: Dict[str, Any],
     narrator_meta: Optional[Dict[str, Any]] = None,
-    client_id: str,
-    conversation_id: str,
+    client_id: Optional[str] = None,
+    conversation_id: Optional[str] = None,
+    nickname: Optional[str] = None,
     explain: bool = False,
 ) -> PresentResult:
     """
@@ -192,6 +201,8 @@ def present(
     """
     intent = plan["chosen"]["intent"]
     entity = plan["chosen"]["entity"]
+    client_id_safe = client_id or ""
+    conversation_id_safe = conversation_id or ""
 
     # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
     meta_dict = meta if isinstance(meta, dict) else {}
@@ -212,7 +223,7 @@ def present(
     context_history_wire: List[Dict[str, Any]] = []
     try:
         if context_manager.enabled and context_manager.narrator_allows_entity(entity):
-            turns = context_manager.load_recent(client_id, conversation_id)
+            turns = context_manager.load_recent(client_id_safe, conversation_id_safe)
             if turns:
                 context_history_wire = context_manager.to_wire(turns)
     except Exception:
@@ -334,6 +345,44 @@ def present(
             # fallback: mantém final_answer = legacy_answer
 
     narrator_info.setdefault("rag", narrator_rag_context)
+
+    try:
+        routing_thresholds = None
+        if isinstance(meta_dict.get("thresholds"), dict):
+            routing_thresholds = meta_dict.get("thresholds")
+        elif isinstance(plan.get("chosen", {}).get("thresholds"), dict):
+            routing_thresholds = plan.get("chosen", {}).get("thresholds")
+
+        shadow_event = NarratorShadowEvent(
+            environment=os.getenv("SIRIOS_ENV", os.getenv("ENVIRONMENT", "dev")),
+            request={
+                "question": question,
+                "conversation_id": conversation_id_safe,
+                "nickname": nickname,
+                "client_id": client_id_safe,
+            },
+            routing={
+                "intent": intent,
+                "entity": entity,
+                "planner_score": facts.score,
+                "tokens": meta_dict.get("tokens"),
+                "thresholds": routing_thresholds,
+            },
+            facts=facts.dict(),
+            rag=narrator_rag_context if isinstance(narrator_rag_context, dict) else None,
+            narrator=narrator_info,
+            presenter={
+                "answer_final": final_answer,
+                "answer_baseline": legacy_answer,
+                "rows_used": len(rows),
+                "style": narrator_flags.get("style")
+                if isinstance(narrator_flags, dict)
+                else None,
+            },
+        )
+        collect_narrator_shadow(shadow_event)
+    except Exception:  # pragma: no cover - best-effort observability
+        LOGGER.exception("Falha ao coletar Narrator Shadow", exc_info=True)
 
     return PresentResult(
         answer=final_answer,

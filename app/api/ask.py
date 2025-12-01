@@ -307,6 +307,7 @@ def ask(
         },
         client_id=payload.client_id,
         conversation_id=payload.conversation_id,
+        nickname=payload.nickname,
         explain=explain,
     )
 
