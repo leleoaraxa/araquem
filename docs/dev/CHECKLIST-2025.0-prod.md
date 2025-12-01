@@ -1,6 +1,6 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-### *(versão Sirius — 21 entidades auditadas, RAG limitado, Narrator em shadow, quality “✅ Sem misses”, contexto ligado, Shadow ligado em dev)*
+### *(versão Sirius — 21 entidades auditadas, RAG limitado, Narrator em shadow, quality “✅ Sem misses”, contexto ligado, Shadow ligado em dev, experimento v0 configurado)*
 
 ---
 
@@ -96,7 +96,7 @@
 * [✔] Ontologia consolidada (`data/ontology/entity.yaml`).
 * [✔] Conflitos resolvidos (macro, dy x dividendos, risk x snapshot).
 * [✔] `param_inference.yaml` calibrado.
-* [✔] Compute-on-read solidificado (D-1, jan/3/6/12m, etc.).
+* [✔] Compute-on-read solidificado (D-1, janelas 3/6/12m, etc.).
 * [✔] Thresholds finalizados por família (min_score, min_gap, por entidade).
 * [✔] `quality_list_misses.py` → **0 misses**.
 * [✔] `quality_diff_routing.py` limpo, sem regressões.
@@ -196,9 +196,13 @@
 * [✔] `data/policies/narrator_shadow.yaml` criado com:
 
   * [✔] `enabled`, `environment_allowlist`, `private_entities`.
-  * [✔] Bloco de `sampling` (rate, only_when_llm_used, only_when_answer_nonempty, always_on_llm_error).
+  * [✔] Bloco de `sampling`:
+
+    * [✔] `default` (rate=1.0, `only_when_llm_used`, `only_when_answer_nonempty`, `always_on_llm_error`).
+    * [✔] Overrides por entidade (`fiis_financials_risk`, `fiis_noticias`, `history_market_indicators`).
   * [✔] Bloco de `redaction` (mask_fields, max_rows_sample, max_chars).
   * [✔] Bloco de `storage` com sink `file` (`logs/narrator_shadow/*.jsonl`, payload limitado por KB).
+  * [✔] Bloco de `metrics` (`sirios_narrator_shadow_*`).
 * [✔] Novo módulo `app/observability/narrator_shadow.py`:
 
   * [✔] Estrutura `NarratorShadowEvent`.
@@ -231,19 +235,26 @@
   * [✔] Sampling em entidade pública (`fiis_noticias`).
   * [✔] Força de coleta em caso de erro de LLM.
   * [✔] Redação para entidade privada (`client_fiis_positions`).
+* [✔] Experimento v0 configurado:
+
+  * [✔] Arquivo de roteiro: `data/ops/quality_experimental/shadow_experiment_v0.yaml`.
+  * [✔] Script executor: `scripts/experiments/run_shadow_experiment_v0.py` (chama `/ask` respeitando `conversation_id`/`client_id`).
 
 **🟦 Falta**
 
-* [ ] Definir sampling efetivo por ambiente:
+* [ ] Rodar o script do experimento v0 em `dev`:
+
+  * [ ] `docker-compose exec api bash` + `python scripts/experiments/run_shadow_experiment_v0.py`.
+  * [ ] Verificar geração de `logs/narrator_shadow/narrator_shadow_*.jsonl`.
+* [ ] Ajustar sampling efetivo por ambiente:
 
   * [ ] `dev`: rate alto (ex: 0.5–1.0).
   * [ ] `staging`: rate moderado (ex: 0.2).
   * [ ] `prod`: rate baixo (ex: 0.01–0.05), sempre `always_on_llm_error=true`.
-* [ ] Rodar bateria de perguntas (usando `data/ops/quality*` e `data/golden`) para gerar alguns arquivos `narrator_shadow_*.jsonl`.
 * [ ] Desenhar plano de análise:
 
   * [ ] Como ler os JSONL (DuckDB / Python / outro).
-  * [ ] Quais KPIs de Narrator queremos ver (ex.: taxa de erros, entidades que mais usam LLM, média de latência, etc.).
+  * [ ] Quais KPIs de Narrator queremos ver (taxa de erros, entidades que mais usam LLM, média de latência, etc.).
 * [ ] Criar um pequeno `NARRATOR_SHADOW_README.md` com:
 
   * Estrutura do JSON.
@@ -343,10 +354,3 @@
 * [ ] CI/CD blue-green (rotina de deploy segura).
 * [ ] Smoke test pós-deploy (checklist objetivo).
 * [ ] Publicação e handover (interno SIRIOS).
-
----
-
-Se quiser, no **próximo passo prático**, eu posso montar contigo:
-
-1. Um mini-plano de “experimento Shadow” (quais perguntas rodar, quantas, em quais entidades).
-2. Um rascunho de como ler e interpretar o primeiro `narrator_shadow_*.jsonl` (sem código ainda, só o plano).
