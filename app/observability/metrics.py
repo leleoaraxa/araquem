@@ -21,6 +21,28 @@ STRICT = os.getenv("SIRIOS_METRICS_STRICT", "false").strip().lower() in (
     "yes",
 )
 
+NARRATOR_METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
+    "sirios_narrator_render_total": {"type": "counter", "labels": {"outcome"}},
+    "sirios_narrator_shadow_total": {"type": "counter", "labels": {"outcome"}},
+    "sirios_narrator_latency_ms": {"type": "histogram", "labels": set()},
+    "sirios_narrator_tokens_in_total": {
+        "type": "counter",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_tokens_out_total": {
+        "type": "counter",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_prompt_chars_total": {
+        "type": "histogram",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_prompt_rows_total": {
+        "type": "histogram",
+        "labels": {"entity", "strategy"},
+    },
+}
+
 # Catálogo canônico: nome -> {type, labels}
 _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     # HTTP
@@ -81,25 +103,7 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
     # Narrator
-    "sirios_narrator_render_total": {"type": "counter", "labels": {"outcome"}},
-    "sirios_narrator_shadow_total": {"type": "counter", "labels": {"outcome"}},
-    "sirios_narrator_latency_ms": {"type": "histogram", "labels": set()},
-    "sirios_narrator_tokens_in_total": {
-        "type": "counter",
-        "labels": {"entity", "strategy"},
-    },
-    "sirios_narrator_tokens_out_total": {
-        "type": "counter",
-        "labels": {"entity", "strategy"},
-    },
-    "sirios_narrator_prompt_chars_total": {
-        "type": "histogram",
-        "labels": {"entity", "strategy"},
-    },
-    "sirios_narrator_prompt_rows_total": {
-        "type": "histogram",
-        "labels": {"entity", "strategy"},
-    },
+    **NARRATOR_METRICS_SCHEMA,
 }
 
 RAG_INDEX_SIZE_TOTAL = Gauge(
