@@ -1,6 +1,6 @@
 # ✅ **CHECKLIST ARAQUEM — RUMO À PRODUÇÃO (2025.0-prod)**
 
-### *(versão Sirius — 21 entidades auditadas, RAG/Narrator/Quality alinhados, baseline de roteamento “✅ Sem misses”)*
+### *(versão Sirius — 21 entidades auditadas, RAG limitado, Narrator em shadow, quality “✅ Sem misses”, contexto ligado)*
 
 ---
 
@@ -24,7 +24,7 @@
 
   * [✔] `context_sanity_check.py` (CNPJ → Sharpe → overview, ticker herdado).
   * [✔] `context_sanity_check_news_processos_risk.py` (notícias → processos → risco, ticker herdado).
-* [✔] `context.last_reference.allowed_entities` alinhado com o uso real (preços, dividendos, yield, snapshot, overview, imóveis, rankings, processos, cadastro, notícias, dividendos_yield).
+* [✔] `context.last_reference.allowed_entities` alinhado com o uso real (preços, dividendos, yield, snapshot, overview, imóveis, rankings, processos, cadastro, notícias, `dividendos_yield`).
 
 **🟦 Falta (M13 — refinamento)**
 
@@ -159,48 +159,87 @@
 
 ---
 
-## 4. Narrator – Modelo & Policies
+## 4. Narrator – Modelo & Policies (shadow mode)
 
-> 🎯 Próxima grande frente funcional (após baseline determinístico consolidado).
+> 🟩 Narrator ativado em **shadow mode** para entidades textuais, sem impacto na resposta final.
 
 **✔️ Feito**
 
 * [✔] Políticas estruturais de Narrator definidas em `data/policies/narrator.yaml`.
 * [✔] Modelo `sirios-narrator:latest` criado e integrado (client funcionando).
-* [✔] Presenter sempre constrói baseline determinístico e integra Narrator em modo opcional.
-* [✔] Estado atual documentado: LLM globalmente OFF, inclusive para risco/macro/notícias.
+* [✔] Presenter sempre constrói baseline determinístico e integra Narrator em modo opcional; **answer final** continua 100% determinístico.
+* [✔] `llm_enabled: true` e `shadow: true` configurados para as entidades textuais piloto:
+
+  * [✔] `fiis_financials_risk`
+  * [✔] `fiis_noticias`
+  * [✔] `history_market_indicators`
+  * [✔] `history_b3_indexes`
+  * [✔] `history_currency_rates`
+* [✔] `use_rag_in_prompt: true` onde permitido por `rag.yaml` (risco, macro, notícias).
+* [✔] `max_llm_rows` reduzido (3–5) por entidade piloto, evitando prompts gigantes.
+* [✔] `prefer_concept_when_no_ticker` ativado onde faz sentido (risco, macro).
+* [✔] Estilo do Narrator ajustado para **executivo / objetivo / curto**, em linha com o Brand Book SIRIOS.
+* [✔] Fallback seguro garantido pelo Presenter: em shadow mode o output do Narrator é sempre ignorado para o `answer` final (apenas logado/analisado).
+* [✔] Métricas do Narrator instrumentadas:
+
+  * [✔] `sirios_narrator_tokens_in_total`
+  * [✔] `sirios_narrator_tokens_out_total`
+  * [✔] `sirios_narrator_prompt_chars_total`
+  * [✔] `sirios_narrator_prompt_rows_total`
+* [✔] Guardrails Araquem v2.2.0 respeitados:
+
+  * [✔] `/ask` imutável (sem campos extras).
+  * [✔] Zero hardcodes/heurísticas novas; tudo via `narrator.yaml` + `rag.yaml`.
+  * [✔] Orchestrator, Planner, Builder e Formatter inalterados.
 
 **🟦 Falta (Módulo Narrator)**
 
-* [ ] Definir plano de ativação:
+* [ ] Criar uma amostra fixa de perguntas reais para comparar:
 
-  * [ ] Habilitar `shadow` em subconjunto de entidades textuais (ex.: risco, macro, notícias).
-  * [ ] Manter `answer` sempre igual ao baseline neste primeiro ciclo.
-* [ ] Ajustar `narrator.yaml` para modo shadow:
+  * [ ] Baseline determinístico vs. textos shadow do Narrator (apenas análise offline).
+* [ ] Ajustar fino de `max_llm_rows` e estilo por entidade com base nessa amostra.
+* [ ] Documentar claramente em `ARAQUEM_STATUS_2025.md`:
 
-  * [ ] `llm_enabled: true` apenas para entidades piloto.
-  * [ ] `shadow: true` para essas entidades.
-  * [ ] `max_llm_rows` adequado por entidade (ex.: risco vs notícias).
-  * [ ] `style` (executivo/objetivo/curto) consistente com brand book SIRIOS.
-  * [ ] `use_rag_in_prompt` somente onde permitido por `rag.yaml`.
-* [ ] Validar fallback seguro por entidade (quando **NÃO** usar LLM).
-* [ ] Testar estilo final de resposta com amostras reais, sempre comparando baseline vs shadow.
+  * [ ] Lista de entidades com Narrator em shadow.
+  * [ ] Garantia de não-impacto no `answer`.
+  * [ ] Estratégia de leitura dos logs/metrics do shadow.
 
 ---
 
 ## 5. RAG + Narrator – Integração Profissional
 
-**🟦 Falta**
+> 🟦 Seção atual de foco: **refinar integração RAG → Narrator em shadow**.
 
-* [ ] Definir políticas de uso do RAG no prompt do Narrator (quando e como injetar contexto RAG).
-* [ ] Reduzir tamanho dos snippets (≈ 250–350 caracteres) focados em explicação, não em número.
-* [ ] Validar tempo de inferência com snippets menores e logs de shadow.
-* [ ] Testar shadow mode real do Narrator com RAG ligado apenas em:
+**✔️ Feito (setup inicial)**
 
-  * [ ] `fiis_noticias`.
-  * [ ] `fiis_financials_risk` (parte conceitual).
-  * [ ] Macro/índices/moedas.
+* [✔] Para as entidades textuais piloto, o Narrator já recebe:
+
+  * [✔] `facts` determinísticos do baseline.
+  * [✔] Contexto RAG limitado, via `use_rag_in_prompt: true` e `rag.entities`/`profiles` apropriados.
+* [✔] RAG + Narrator ligados **apenas** para:
+
+  * [✔] `fiis_noticias`.
+  * [✔] `fiis_financials_risk` (com foco em explicação conceitual).
+  * [✔] `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
+* [✔] `max_llm_rows` já reduzido (3–5) para conter o tamanho do prompt.
+
+**🟦 Falta (refino Seção 5)**
+
+* [ ] Definir políticas mais explícitas de uso do RAG no prompt do Narrator:
+
+  * [ ] Limitar tamanho dos snippets (~250–350 caracteres) focados em explicação, não em número.
+  * [ ] Normalizar formato dos trechos (ex.: bullet points curtos).
+* [ ] Validar tempo de inferência com snippets menores e logs de shadow (impacto em p95/p99).
+* [ ] Testar shadow mode com cenários reais:
+
+  * [ ] Perguntas de risco qualitativo.
+  * [ ] Notícias específicas de FII.
+  * [ ] Perguntas sobre dólar, IPCA e índices em contexto macro.
 * [ ] Ajustar tamanho final do prompt (≤ ~3800 tokens) com base nos experimentos.
+* [ ] Registrar uma estratégia de “prompts de validação” para ler se o Narrator está:
+
+  * [ ] Evitando criar números inexistentes.
+  * [ ] Explicando conceitos com base no contexto (facts + RAG), sem delírio.
 
 ---
 
@@ -282,7 +321,7 @@
 * [ ] Documentar:
 
   * [ ] RAG flows.
-  * [ ] Narrator.
+  * [ ] Narrator (incluindo shadow mode + métricas).
   * [ ] Context Manager.
   * [ ] `planner.explain()`.
   * [ ] Policies (RAG / Narrator / Cache / Context).
@@ -319,19 +358,17 @@
 
 ---
 
-## 12. 🎯 Próxima Etapa Prioritária
+## 12. 🎯 Próxima Etapa Prioritária (atualizada)
 
-> Com baseline determinístico fechado (RAG limitado, quality “✅ Sem misses”, contexto ligado), a **próxima etapa programada** é:
+> Com baseline determinístico fechado, RAG limitado, contexto ligado e Narrator em shadow nas entidades textuais, a **próxima etapa programada** é:
 
-1. **Seção 4 – Narrator (shadow mode)**
+1. **Seção 5 – RAG + Narrator (refino)**
 
-   * Ativar `sirios-narrator:latest` em shadow para entidades textuais (risco, macro, notícias), sem mudar a resposta final.
-   * Instrumentar bem métricas de uso, latência e tamanho de prompt.
+   * Refinar política de snippets (tamanho, formato, foco conceitual).
+   * Medir impacto em latência e tokens.
+   * Criar conjunto de perguntas “canônicas” de risco/macro/notícias para avaliar a qualidade do shadow.
 
-2. **Seção 5 – RAG + Narrator**
+2. **Em paralelo leve**
 
-   * Testar a integração RAG→Narrator em shadow, com snippets curtos e foco em explicação conceitual.
-
-3. **Paralelo leve**
-
-   * Avançar itens de documentação (Seção 9) e observabilidade (Seção 7) para apoiar esses testes em ambiente controlado.
+   * Avançar documentação (Seção 9) para RAG + Narrator + Contexto.
+   * Preparar observabilidade (Seção 7) específica para Narrator/RAG em shadow (dashboards e alertas básicos).
