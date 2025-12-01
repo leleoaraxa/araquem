@@ -3,7 +3,7 @@
 """
 Script: scripts/experiments/run_shadow_experiment_v0.py
 Purpose: Executar o experimento Shadow v0 do Narrator, disparando perguntas
-         declaradas em data/ops/experiments/shadow_experiment_v0.yaml
+         declaradas em data/ops/quality_experimental/shadow_experiment_v0.yaml
          contra o endpoint /ask.
 
 - Não altera payload do /ask (segue o contrato imutável).
@@ -47,7 +47,7 @@ def post_question(
     client_id: str,
     conversation_id: str,
     nickname: str,
-    timeout: float = 30.0,
+    timeout: float = 300.0,
 ) -> Dict[str, Any]:
     payload = {
         "question": question,
@@ -78,7 +78,7 @@ def main() -> None:
     )
     parser.add_argument(
         "--experiment",
-        default="data/ops/experiments/shadow_experiment_v0.yaml",
+        default="data/ops/quality_experimental/shadow_experiment_v0.yaml",
         help="Caminho para o YAML de experimento.",
     )
     parser.add_argument(
