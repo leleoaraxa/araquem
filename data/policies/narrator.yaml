@@ -17,6 +17,7 @@ narrator:
     max_output_tokens: 700
     use_rag_in_prompt: false
     use_conversation_context: false
+    rag_snippet_max_chars: 320
     prefer_concept_when_no_ticker: true
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
@@ -25,6 +26,7 @@ narrator:
       llm_enabled: true
       shadow: true
       max_llm_rows: 3
+      rag_snippet_max_chars: 280
       use_rag_in_prompt: true
       use_conversation_context: true
       prefer_concept_when_no_ticker: true
@@ -44,6 +46,7 @@ narrator:
       llm_enabled: true
       shadow: true
       max_llm_rows: 5
+      rag_snippet_max_chars: 320
       use_rag_in_prompt: true
       use_conversation_context: true
       prefer_concept_when_no_ticker: false
@@ -54,6 +57,7 @@ narrator:
       llm_enabled: true
       shadow: true
       max_llm_rows: 5
+      rag_snippet_max_chars: 260
       use_rag_in_prompt: true
       use_conversation_context: false
       prefer_concept_when_no_ticker: true
@@ -64,6 +68,7 @@ narrator:
       llm_enabled: true
       shadow: true
       max_llm_rows: 5
+      rag_snippet_max_chars: 260
       use_rag_in_prompt: true
       use_conversation_context: false
       prefer_concept_when_no_ticker: true
@@ -74,6 +79,7 @@ narrator:
       llm_enabled: true
       shadow: true
       max_llm_rows: 5
+      rag_snippet_max_chars: 260
       use_rag_in_prompt: true
       use_conversation_context: false
       prefer_concept_when_no_ticker: true
