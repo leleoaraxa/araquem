@@ -22,22 +22,18 @@
 * [✔] `routing_samples.json` com cenários multi-turno (CNPJ → Sharpe → overview; notícias → processos → risco).
 * [✔] Sanity checks de contexto verdes:
 
-  * [✔] `context_sanity_check.py` (CNPJ → Sharpe → overview, ticker herdado).
-  * [✔] `context_sanity_check_news_processos_risk.py` (notícias → processos → risco, ticker herdado).
-* [✔] `context.last_reference.allowed_entities` alinhado com o uso real (preços, dividendos, yield, snapshot, overview, imóveis, rankings, processos, cadastro, notícias, `dividendos_yield`).
+  * [✔] `context_sanity_check.py` (CNPJ → Sharpe → overview).
+  * [✔] `context_sanity_check_news_processos_risk.py` (notícias → processos → risco).
+* [✔] `context.last_reference.allowed_entities` alinhado com o uso real.
 
 **🟦 Falta (M13 — refinamento)**
 
-* [ ] Testar **LLM OFF** comparando respostas antes/depois de `context.enabled: true` (mesmo SQL / mesmas respostas).
-* [ ] Escrever apêndice `M13_CONTEXT_README.md`:
-
-  * [ ] Prioridades de ticker (texto → identifiers → contexto).
-  * [ ] Escopo atual das entidades que herdam contexto.
-  * [ ] Como evoluir `last_reference.allowed_entities` sem quebrar Guardrails.
+* [ ] Testar **LLM OFF** comparando respostas antes/depois de `context.enabled: true`.
+* [ ] Criar `M13_CONTEXT_README.md` (prioridades de ticker, escopo, evolução segura).
 * [ ] Monitorar em ambiente controlado:
 
-  * [ ] Métricas `planner_rag_context_*` + logs de contexto.
-  * [ ] Padrões reais de “ele / esse fundo / esse FII” para decidir próximas entidades a receber contexto.
+  * [ ] `planner_rag_context_*`
+  * [ ] Logs de padrão real de “esse fundo / ele”.
 
 ---
 
@@ -47,30 +43,23 @@
 
 **✔️ Feito**
 
-* [✔] Auditoria profunda das 21 entidades (FIIs, macro, cliente privado, compostas).
-* [✔] Classificação D-1 / histórica / quase estática com periodicidade, cardinalidade e chaves naturais mapeadas.
-* [✔] Riscos de interpretação e aderência a RAG / Narrator / quality / cache avaliados.
-* [✔] Relato consolidado em `docs/dev/ARAQUEM_STATUS_2025.md` (versão atualizada com notas sobre perguntas conceituais sem ticker, DY, compostas e macro).
-* [✔] `data/ops/entities_consistency_report.yaml` garantindo:
+* [✔] Auditoria profunda das 21 entidades.
+* [✔] Classificação D-1 / histórica / quase-estática.
+* [✔] Impactos sobre RAG, Narrator, Quality e cache mapeados.
+* [✔] Documentado em `ARAQUEM_STATUS_2025.md`.
+* [✔] `entities_consistency_report.yaml` garantindo integridade (schema, policies, quality).
+* [✔] Novos projections:
 
-  * [✔] `has_schema`, `has_quality_projection`, `in_quality_policy`.
-  * [✔] Participação (ou exclusão explícita) em cache, RAG, Narrator, param_inference, ontologia.
-* [✔] Novos projections de quality criados:
-
-  * [✔] `client_fiis_dividends_evolution`.
-  * [✔] `client_fiis_performance_vs_benchmark`.
-  * [✔] `fii_overview`, `fiis_yield_history`.
-  * [✔] Entidades compostas: `dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`.
-* [✔] `routing_samples.json` com:
-
-  * [✔] `fii_overview`, `fiis_yield_history`, `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`.
-  * [✔] Casos compostos (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`).
-  * [✔] Fluxos multi-turno com herança de ticker (HGLG11).
-* [✔] Entidades compostas totalmente integradas (entidade + schema + templates + quality + catálogo + ontologia + policies).
+  * [✔] `client_fiis_dividends_evolution`
+  * [✔] `client_fiis_performance_vs_benchmark`
+  * [✔] `fii_overview`
+  * [✔] `fiis_yield_history`
+  * [✔] Compostas: `dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`
+* [✔] `routing_samples.json` atualizado com compostas e multi-turno.
 
 **🟦 Falta**
 
-* [ ] Backlog de modelagem fina (novas entidades futuras, ajustes avançados) — seguir `docs/dev/ARAQUEM_STATUS_2025.md` como fonte.
+* [ ] Backlog de modelagem fina — seguir `ARAQUEM_STATUS_2025.md`.
 
 ---
 
@@ -80,193 +69,109 @@
 
 **✔️ Feito**
 
-* [✔] `data/policies/rag.yaml` revisado para **versão 2**, com:
+* [✔] `rag.yaml` revisto (versão 2): perfis `default`, `macro`, `risk`.
+* [✔] RAG permitido apenas para intents textuais:
 
-  * [✔] Perfis `default`, `macro`, `risk` (k, `min_score`, pesos `bm25`/`semantic`, `tie_break`, `max_context_chars`).
-  * [✔] `routing.deny_intents` e `routing.allow_intents` alinhados ao catálogo e ao Guardrails.
-* [✔] RAG **permitido apenas** para intents textuais/explicativas:
-
-  * [✔] `fiis_noticias`.
-  * [✔] `fiis_financials_risk` (apenas explicação conceitual, nunca números).
-  * [✔] `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
-* [✔] RAG **negado** para:
-
-  * [✔] Todas as entidades puramente numéricas (históricas e snapshots).
-  * [✔] Entidades privadas de cliente.
-  * [✔] Overview consolidado (`fii_overview`).
-  * [✔] Entidades compostas numéricas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`).
-* [✔] `rag.entities` alinhado com o catálogo, usando collections:
-
-  * [✔] `fiis_noticias` → `fiis_noticias`, `concepts-fiis`, `concepts-risk`.
-  * [✔] `fiis_financials_risk` → `concepts-risk`, `concepts-fiis`.
-  * [✔] macro/índices/moedas → `concepts-macro`.
-* [✔] `rag.default` configurado para fallback seguro (`concepts-fiis`, `min_score: 0.25`).
-* [✔] ARAQUEM_STATUS atualizado explicando claramente o escopo do RAG (onde entra e onde é explicitamente negado).
+  * `fiis_noticias`
+  * `fiis_financials_risk`
+  * macro / índices / moedas
+* [✔] RAG **negado** para tudo numérico e privado.
+* [✔] Collections alinhadas (`concepts-*`).
+* [✔] Fallback seguro (`default`).
+* [✔] Estado de RAG documentado em `ARAQUEM_STATUS_2025.md`.
 
 **🟦 Falta**
 
-* [ ] Monitorar em ambiente real:
-
-  * [ ] Latência e uso de RAG por intent.
-  * [ ] Relevância dos snippets (`rag_eval_*` em `data/ops/quality_experimental`).
-* [ ] Reabrir ajuste fino de `profiles.*.min_score`/pesos apenas com base em métricas reais.
+* [ ] Monitorar latência, uso, recall real.
+* [ ] Ajustar min_score/pesos com dados reais.
 
 ---
 
 ## 3. Planner – Thresholds e Calibração Final
 
-> 🟩 Planner calibrado com baseline de roteamento **“✅ Sem misses”**.
+> 🟩 Planner calibrado com baseline de roteamento **“Sem misses”**.
 
 **✔️ Feito**
 
-* [✔] Ontologia refinida em `data/ontology/entity.yaml` distinguindo dividendos × DY × rankings × compostas.
-* [✔] Roteamento de notícias negativas, dólar e IPCA ajustado (evitando colisão com preços).
-* [✔] Intents novas incluídas:
-
-  * [✔] `fii_overview`, `fiis_yield_history`.
-  * [✔] `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`.
-  * [✔] `dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`.
-* [✔] `param_inference.yaml` validado:
-
-  * [✔] Intents temporais (`fiis_dividendos`, `fiis_precos`, `fiis_yield_history`, etc.) com `windows_allowed`.
-  * [✔] `params.ticker` com `source: [text, context]` e `context_key: last_reference`.
-* [✔] `infer_params(...)`:
-
-  * [✔] Recebe `identifiers`, `client_id`, `conversation_id`.
-  * [✔] Aplica compute-on-read com agregações/janelas declarativas via YAML.
-  * [✔] Adiciona `ticker` em `agg_params` quando inferido.
-* [✔] Thresholds afinados em `data/ops/planner_thresholds.yaml` por família:
-
-  * [✔] Históricas numéricas (`fiis_precos`, `fiis_dividendos`, `fiis_yield_history`) com `min_score ≈ 0.9`, `min_gap ≈ 0.15`.
-  * [✔] Snapshot de risco (`fiis_financials_risk`) com `min_score ≈ 0.85`, `min_gap = 0.2`.
-  * [✔] Snapshots numéricos de contexto (`fiis_imoveis`, `fiis_processos`) com `min_score ≈ 0.85`.
-  * [✔] Compostas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`) mais rígidas (`min_score: 0.9`, `min_gap: 0.2`).
-  * [✔] Intents e entities com blocos separados, mantendo contrato `apply_on: fused`.
-* [✔] Conflitos resolvidos:
-
-  * [✔] `macro_consolidada` vs `history_market_indicators`.
-  * [✔] `dividendos_yield` vs `fiis_dividendos`.
-* [✔] `quality_list_misses.py`:
-
-  * [✔] Agora retorna **“✅ Sem misses.”** com o dataset atual.
-* [✔] `quality_diff_routing.py`:
-
-  * [✔] Confirmado sem divergências relevantes no roteamento.
+* [✔] Ontologia consolidada (`entity.yaml`).
+* [✔] Conflitos resolvidos (macro, dy x dividendos, risk x snapshot).
+* [✔] `param_inference.yaml` calibrado.
+* [✔] Compute-on-read solidificado.
+* [✔] Thresholds finalizados por família.
+* [✔] `quality_list_misses.py` → **0 misses**.
+* [✔] `quality_diff_routing.py` limpo.
 
 **🟦 Falta**
 
-* [ ] Usar `planner.explain()` em produção controlada para observar fronteiras reais (onde o usuário força ambiguidades) e, se necessário, reabrir micro-ajustes de thresholds.
+* [ ] Acompanhar `planner.explain()` em produção controlada.
 
 ---
 
 ## 4. Narrator – Modelo & Policies (shadow mode)
 
-> 🟩 Narrator ativado em **shadow mode** para entidades textuais, sem impacto na resposta final.
+> 🟩 Narrator ativado em shadow, 100% seguro (zero impacto no answer).
 
 **✔️ Feito**
 
-* [✔] Políticas estruturais de Narrator definidas em `data/policies/narrator.yaml`.
-* [✔] Modelo `sirios-narrator:latest` criado e integrado (client funcionando).
-* [✔] Presenter sempre constrói baseline determinístico e integra Narrator em modo opcional; **answer final** continua 100% determinístico.
-* [✔] `llm_enabled: true` e `shadow: true` configurados para as entidades textuais piloto:
+* [✔] `narrator.yaml` estruturado.
+* [✔] `sirios-narrator:latest` integrado.
+* [✔] Presenter integrando Narrator mas mantendo baseline determinístico final.
+* [✔] Shadow mode habilitado para 5 entidades textuais.
+* [✔] `use_rag_in_prompt: true` onde permitido.
+* [✔] `max_llm_rows` ajustado (3–5).
+* [✔] Estilo executivo curto.
+* [✔] Instrumentação completa:
 
-  * [✔] `fiis_financials_risk`
-  * [✔] `fiis_noticias`
-  * [✔] `history_market_indicators`
-  * [✔] `history_b3_indexes`
-  * [✔] `history_currency_rates`
-* [✔] `use_rag_in_prompt: true` onde permitido por `rag.yaml` (risco, macro, notícias).
-* [✔] `max_llm_rows` reduzido (3–5) por entidade piloto, evitando prompts gigantes.
-* [✔] `prefer_concept_when_no_ticker` ativado onde faz sentido (risco, macro).
-* [✔] Estilo do Narrator ajustado para **executivo / objetivo / curto**, em linha com o Brand Book SIRIOS.
-* [✔] Fallback seguro garantido pelo Presenter: em shadow mode o output do Narrator é sempre ignorado para o `answer` final (apenas logado/analisado).
-* [✔] Métricas do Narrator instrumentadas:
+  * tokens_in/out
+  * prompt_chars
+  * prompt_rows
+  * latency
+* [✔] Respeito total ao Guardrails v2.2.0.
 
-  * [✔] `sirios_narrator_tokens_in_total`
-  * [✔] `sirios_narrator_tokens_out_total`
-  * [✔] `sirios_narrator_prompt_chars_total`
-  * [✔] `sirios_narrator_prompt_rows_total`
-* [✔] Guardrails Araquem v2.2.0 respeitados:
+**🟦 Falta**
 
-  * [✔] `/ask` imutável (sem campos extras).
-  * [✔] Zero hardcodes/heurísticas novas; tudo via `narrator.yaml` + `rag.yaml`.
-  * [✔] Orchestrator, Planner, Builder e Formatter inalterados.
-
-**🟦 Falta (Módulo Narrator)**
-
-* [ ] Criar uma amostra fixa de perguntas reais para comparar:
-
-  * [ ] Baseline determinístico vs. textos shadow do Narrator (apenas análise offline).
-* [ ] Ajustar fino de `max_llm_rows` e estilo por entidade com base nessa amostra.
-* [ ] Documentar claramente em `ARAQUEM_STATUS_2025.md`:
-
-  * [ ] Lista de entidades com Narrator em shadow.
-  * [ ] Garantia de não-impacto no `answer`.
-  * [ ] Estratégia de leitura dos logs/metrics do shadow.
+* [ ] Criar amostra fixa de perguntas para comparação baseline vs shadow.
+* [ ] Ajustar estilo e `max_llm_rows`.
+* [ ] Documentar tudo em `ARAQUEM_STATUS_2025.md`.
 
 ---
 
 ## 5. RAG + Narrator – Integração Profissional
 
-> 🟦 Seção atual de foco: **refinar integração RAG → Narrator em shadow**.
+> 🟦 Seção atual de foco.
 
 **✔️ Feito (setup inicial)**
 
-* [✔] Para as entidades textuais piloto, o Narrator já recebe:
+* [✔] Narrator recebendo facts + snippets RAG limitados.
+* [✔] Shadow mode ligado só para entidades certas.
+* [✔] Prompts menores garantindo segurança.
 
-  * [✔] `facts` determinísticos do baseline.
-  * [✔] Contexto RAG limitado, via `use_rag_in_prompt: true` e `rag.entities`/`profiles` apropriados.
-* [✔] RAG + Narrator ligados **apenas** para:
+**🟦 Falta (refino)**
 
-  * [✔] `fiis_noticias`.
-  * [✔] `fiis_financials_risk` (com foco em explicação conceitual).
-  * [✔] `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
-* [✔] `max_llm_rows` já reduzido (3–5) para conter o tamanho do prompt.
-
-**🟦 Falta (refino Seção 5)**
-
-* [ ] Definir políticas mais explícitas de uso do RAG no prompt do Narrator:
-
-  * [ ] Limitar tamanho dos snippets (~250–350 caracteres) focados em explicação, não em número.
-  * [ ] Normalizar formato dos trechos (ex.: bullet points curtos).
-* [ ] Validar tempo de inferência com snippets menores e logs de shadow (impacto em p95/p99).
-* [ ] Testar shadow mode com cenários reais:
-
-  * [ ] Perguntas de risco qualitativo.
-  * [ ] Notícias específicas de FII.
-  * [ ] Perguntas sobre dólar, IPCA e índices em contexto macro.
-* [ ] Ajustar tamanho final do prompt (≤ ~3800 tokens) com base nos experimentos.
-* [ ] Registrar uma estratégia de “prompts de validação” para ler se o Narrator está:
-
-  * [ ] Evitando criar números inexistentes.
-  * [ ] Explicando conceitos com base no contexto (facts + RAG), sem delírio.
+* [ ] Limitar snippet RAG (~250–350 chars).
+* [ ] Normalizar formatação (bullets curtos).
+* [ ] Validar tempo de inferência real.
+* [ ] Testar cenários reais.
+* [ ] Ajustar prompt final ≤ 3800 tokens.
+* [ ] Criar prompts de verificação (anti-alucinação).
 
 ---
 
 ## 6. Quality – Baseline Final
 
-> 🟩 Baseline de roteamento consolidado, sem misses no dataset atual.
+> 🟩 Quality com **0 misses**.
 
 **✔️ Feito**
 
-* [✔] `data/policies/quality.yaml` revisado com `targets` realistas.
-* [✔] Cobertura de datasets: FIIs, Cliente (privado), Macro, Compostos.
-* [✔] `accepted_range` ajustado por entidade.
-* [✔] `quality_list_misses.py` e `quality_diff_routing.py` rodando em modo **sem Ollama** (via flag/env).
-* [✔] Baseline atual:
-
-  * [✔] `python scripts/quality/quality_list_misses.py` → **“✅ Sem misses.”**
-  * [✔] `quality_diff_routing.py` sem divergências relevantes.
-  * [✔] `routing_samples` cobrindo compostos e cenários multi-turno com contexto.
-* [✔] Estado consolidado descrito em `docs/dev/ARAQUEM_STATUS_2025.md`.
+* [✔] Policies realistas.
+* [✔] Datasets FIIs + Cliente + Macro + Compostos.
+* [✔] Scripts rodando sem RAG/Ollama.
+* [✔] Baseline **0 misses**, diff limpo.
 
 **🟦 Falta**
 
-* [ ] Expandir o dataset de qualidade de forma incremental (novos cenários reais dos usuários).
-* [ ] Conectar dashboards do Grafana para quality:
-
-  * [ ] `top1`, `top2_gap`, `routed_rate`.
-  * [ ] Métricas de erros e de misses corrigidos ao longo do tempo.
+* [ ] Expandir dataset com casos reais.
+* [ ] Criar dashboards de quality (later).
 
 ---
 
@@ -274,20 +179,11 @@
 
 **🟦 Falta**
 
-* [ ] Configurar `DATABASE_URL` de produção.
-* [ ] Configurar OTEL Collector + Tempo + Prometheus + Grafana.
-* [ ] Definir dashboards finais para:
-
-  * [ ] `/ask`.
-  * [ ] Planner.
-  * [ ] Narrator.
-  * [ ] RAG.
-* [ ] Ajustar Redis (TTL, namespaces, blue/green).
-* [ ] Criar alertas para:
-
-  * [ ] timeouts.
-  * [ ] picos de cache-miss.
-  * [ ] latência alta de RAG / Narrator.
+* [ ] Configurar DB prod.
+* [ ] Configurar OTEL/Tempo/Prometheus/Grafana.
+* [ ] Dashboards finais.
+* [ ] Ajustar Redis.
+* [ ] Alertas para timeouts, cache-miss, latência Narrator/RAG.
 
 ---
 
@@ -295,11 +191,11 @@
 
 **🟦 Falta**
 
-* [ ] Sanitizar PII no Presenter/Formatter (output final).
-* [ ] Reduzir exposição de metas sensíveis em `explain`.
-* [ ] Ajustar tokens e policies de acesso (quality ops, observabilidade).
-* [ ] Garantir que logs/traces **não** exibem payload completo.
-* [ ] Revisar roles do Postgres (`sirios_api`, `edge_user`).
+* [ ] Sanitizar PII no output.
+* [ ] Reduzir exposição do `explain`.
+* [ ] Policies de acesso (ops).
+* [ ] Logs sem payload completo.
+* [ ] Revisar roles do Postgres.
 
 ---
 
@@ -307,25 +203,12 @@
 
 **✔️ Feito**
 
-* [✔] `docs/dev/ARAQUEM_STATUS_2025.md` atualizado com:
-
-  * [✔] Calibração real de thresholds por família.
-  * [✔] Escopo real do RAG (allow/deny por intent).
-  * [✔] Estado das entidades compostas (`dividendos_yield`, `carteira_enriquecida`, `macro_consolidada`).
-  * [✔] Notas sobre perguntas conceituais “sem ticker” retornarem zero rows no baseline (aguardando Narrator).
-  * [✔] Estado consolidado de quality (**0 misses**).
+* [✔] `ARAQUEM_STATUS_2025.md` atualizado com todo estado real.
 
 **🟦 Falta**
 
-* [ ] Atualizar diagramas C4 (context, container, component).
-* [ ] Documentar:
-
-  * [ ] RAG flows.
-  * [ ] Narrator (incluindo shadow mode + métricas).
-  * [ ] Context Manager.
-  * [ ] `planner.explain()`.
-  * [ ] Policies (RAG / Narrator / Cache / Context).
-  * [ ] Rotas `/ask` e `/ops/*`.
+* [ ] Diagramas C4.
+* [ ] Documentar RAG / Narrator / Context Manager / explain / policies / rotas.
 
 ---
 
@@ -333,14 +216,10 @@
 
 **🟦 Falta**
 
-* [ ] Testar throughput com `sirios-narrator:latest` em modo shadow.
-* [ ] Testar embeddings sob carga (batches 8, 16, 32).
-* [ ] Validar latência p95 / p99 para:
-
-  * [ ] `/ask` puro SQL.
-  * [ ] `/ask` com RAG.
-  * [ ] `/ask` com Narrator em shadow.
-* [ ] Simular 200–500 perguntas simultâneas.
+* [ ] Testar Narrator under load.
+* [ ] Testar embeddings batches.
+* [ ] Validar p95/p99.
+* [ ] Simular 200–500 perguntas.
 
 ---
 
@@ -348,27 +227,8 @@
 
 **🟦 Falta**
 
-* [ ] Criar tag `2025.0-prod`.
-* [ ] Congelar embeddings.
-* [ ] Congelar ontologia.
-* [ ] Congelar thresholds do planner.
-* [ ] Ativar CI/CD com blue/green.
-* [ ] Rodar smoke test no ambiente final.
-* [ ] Publicar versão.
-
----
-
-## 12. 🎯 Próxima Etapa Prioritária (atualizada)
-
-> Com baseline determinístico fechado, RAG limitado, contexto ligado e Narrator em shadow nas entidades textuais, a **próxima etapa programada** é:
-
-1. **Seção 5 – RAG + Narrator (refino)**
-
-   * Refinar política de snippets (tamanho, formato, foco conceitual).
-   * Medir impacto em latência e tokens.
-   * Criar conjunto de perguntas “canônicas” de risco/macro/notícias para avaliar a qualidade do shadow.
-
-2. **Em paralelo leve**
-
-   * Avançar documentação (Seção 9) para RAG + Narrator + Contexto.
-   * Preparar observabilidade (Seção 7) específica para Narrator/RAG em shadow (dashboards e alertas básicos).
+* [ ] Tag.
+* [ ] Congelar embeddings / ontologia / thresholds.
+* [ ] CI/CD blue-green.
+* [ ] Smoke test.
+* [ ] Publicação.
