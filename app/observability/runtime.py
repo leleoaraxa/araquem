@@ -575,13 +575,17 @@ def init_sql_metrics(cfg: dict, registry=None):
 
 def init_narrator_metrics(cfg: dict, registry=None):
     ncfg = (cfg.get("services", {}).get("narrator", {}) or {}).get("metrics", {})
-    # counters (labels fixos)
-    if ncfg.get("sirios_narrator_render_total", {}).get("enabled", True):
-        _get_counter("sirios_narrator_render_total", ("outcome",))
-    if ncfg.get("sirios_narrator_shadow_total", {}).get("enabled", True):
-        _get_counter("sirios_narrator_shadow_total", ("outcome",))
-    # histogram (usa buckets do YAML se houver)
-    if ncfg.get("sirios_narrator_latency_ms", {}).get("enabled", True):
-        buckets = ncfg.get("sirios_narrator_latency_ms", {}).get("buckets")
-        _get_histogram("sirios_narrator_latency_ms", (), buckets=buckets)
+    for name, spec in NARRATOR_METRICS_SCHEMA.items():
+        mcfg = ncfg.get(name, {}) or {}
+        if not mcfg.get("enabled", True):
+            continue
+        kind = spec.get("type")
+        labels = tuple(sorted(spec.get("labels", ())))
+        if kind == "counter":
+            _get_counter(name, labels)
+        elif kind == "histogram":
+            buckets = mcfg.get("buckets")
+            _get_histogram(name, labels, buckets=buckets)
+        elif kind == "gauge":
+            _get_gauge(name, labels)
     return {"ok": True}
