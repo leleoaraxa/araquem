@@ -1,0 +1,118 @@
+{
+  "version": 1,
+  "notes": "Amostras para avaliar Narrator em shadow (risco, noticias, macro, indices, moedas). Nao impacta /ask nem quality baseline.",
+  "samples": [
+    {
+      "id": "risk_sharpe_concept_001",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "category": "risk_concept",
+      "question": "Sharpe negativo em um FII quer dizer que ele é ruim?",
+      "mode": "concept",
+      "expectations": {
+        "requires_ticker": false,
+        "forbid_numbers": true,
+        "focus_metric_key": "sharpe_ratio",
+        "notes": "Explicacao geral de Sharpe negativo, sem citar fundo especifico e sem inventar numeros."
+      }
+    },
+    {
+      "id": "risk_mdd_concept_001",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "category": "risk_concept",
+      "question": "O que significa Max Drawdown em fundos imobiliarios?",
+      "mode": "concept",
+      "expectations": {
+        "requires_ticker": false,
+        "forbid_numbers": true,
+        "focus_metric_key": "max_drawdown",
+        "notes": "Explicar o que e MDD, como ler valores altos/baixos, sem citar um FII especifico."
+      }
+    },
+    {
+      "id": "risk_metrics_with_ticker_001",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "category": "risk_with_ticker",
+      "question": "Explique as metricas de risco do HGLG11.",
+      "mode": "data",
+      "expectations": {
+        "requires_ticker": true,
+        "forbid_numbers": false,
+        "focus_metric_key": null,
+        "notes": "Narrator deve combinar dados do HGLG11 com contexto conceitual das metricas de risco."
+      }
+    },
+    {
+      "id": "news_recent_with_ticker_001",
+      "entity": "fiis_noticias",
+      "intent": "fiis_noticias",
+      "category": "news_with_ticker",
+      "question": "Resuma as ultimas noticias relevantes do MXRF11.",
+      "mode": "data",
+      "expectations": {
+        "requires_ticker": true,
+        "forbid_numbers": false,
+        "focus_metric_key": null,
+        "notes": "Resposta curta, 1–2 paragrafos, usando RAG apenas como apoio. Nao inventar fatos que nao estejam nas noticias."
+      }
+    },
+    {
+      "id": "news_negative_with_ticker_001",
+      "entity": "fiis_noticias",
+      "intent": "fiis_noticias",
+      "category": "news_with_ticker",
+      "question": "Teve alguma noticia negativa recente sobre HGLG11?",
+      "mode": "data",
+      "expectations": {
+        "requires_ticker": true,
+        "forbid_numbers": false,
+        "focus_metric_key": null,
+        "notes": "Testa se o Narrator consegue contextualizar noticias negativas sem exagerar ou dar opiniao de investimento."
+      }
+    },
+    {
+      "id": "macro_dollar_history_001",
+      "entity": "history_currency_rates",
+      "intent": "history_currency_rates",
+      "category": "macro_dollar",
+      "question": "O que aconteceu com o dolar em relacao ao real nos ultimos 12 meses?",
+      "mode": "data",
+      "expectations": {
+        "requires_ticker": false,
+        "forbid_numbers": false,
+        "focus_metric_key": null,
+        "notes": "Narrator deve falar em termos qualitativos (alta/queda/tendencias) com base em FACTS + RAG, sem inventar valores exatos."
+      }
+    },
+    {
+      "id": "macro_ipca_concept_001",
+      "entity": "history_market_indicators",
+      "intent": "history_market_indicators",
+      "category": "macro_ipca",
+      "question": "O que e IPCA acumulado e como isso impacta investimentos em FIIs?",
+      "mode": "concept",
+      "expectations": {
+        "requires_ticker": false,
+        "forbid_numbers": true,
+        "focus_metric_key": "IPCA",
+        "notes": "Explicacao conceitual, conectando IPCA e FIIs, sem citar FIIs especificos e sem inventar serie historica."
+      }
+    },
+    {
+      "id": "macro_ifix_indexes_001",
+      "entity": "history_b3_indexes",
+      "intent": "history_b3_indexes",
+      "category": "macro_indexes",
+      "question": "Como interpretar a variacao recente do IFIX para quem investe em fundos imobiliarios?",
+      "mode": "concept",
+      "expectations": {
+        "requires_ticker": false,
+        "forbid_numbers": true,
+        "focus_metric_key": "IFIX",
+        "notes": "Enfoque em interpretacao, nao em numero exato de pontos; usar RAG para apoio conceitual se tiver snippets macro."
+      }
+    }
+  ]
+}
