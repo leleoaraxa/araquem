@@ -84,6 +84,22 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     "sirios_narrator_render_total": {"type": "counter", "labels": {"outcome"}},
     "sirios_narrator_shadow_total": {"type": "counter", "labels": {"outcome"}},
     "sirios_narrator_latency_ms": {"type": "histogram", "labels": set()},
+    "sirios_narrator_tokens_in_total": {
+        "type": "counter",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_tokens_out_total": {
+        "type": "counter",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_prompt_chars_total": {
+        "type": "histogram",
+        "labels": {"entity", "strategy"},
+    },
+    "sirios_narrator_prompt_rows_total": {
+        "type": "histogram",
+        "labels": {"entity", "strategy"},
+    },
 }
 
 RAG_INDEX_SIZE_TOTAL = Gauge(
