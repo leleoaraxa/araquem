@@ -21,6 +21,7 @@ from opentelemetry.sdk.trace.export import BatchSpanProcessor
 from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
 
 from app.observability import instrumentation as obs
+from app.observability.metrics import NARRATOR_METRICS_SCHEMA
 
 # ---------------- Config -----------------------------------------------------
 
@@ -155,6 +156,11 @@ _REGISTERED_LABELS: Dict[str, Tuple[str, ...]] = {}
 
 _DEFAULT_BUCKETS_MS = (0.5, 1, 2, 5, 10, 25, 50, 100, 250, 500, 1000, 2500, 5000, 10000)
 
+_NARRATOR_METRIC_SCHEMAS = {
+    name: (spec.get("type"), tuple(sorted(spec.get("labels", set()))))
+    for name, spec in NARRATOR_METRICS_SCHEMA.items()
+}
+
 # Esquemas CANÔNICOS de métricas → força labelnames e tipo, evita cardinalidade acidental
 _METRIC_SCHEMAS = {
     # Explain (M6.6)
@@ -225,13 +231,7 @@ _METRIC_SCHEMAS = {
     "planner_quality_rerank_influence_rate": ("gauge", ()),
     "planner_quality_rag_context_rate": ("gauge", ()),
     # ---------- Narrator ----------
-    "sirios_narrator_render_total": ("counter", ("outcome",)),
-    "sirios_narrator_shadow_total": ("counter", ("outcome",)),
-    "sirios_narrator_latency_ms": ("histogram", ()),
-    "sirios_narrator_tokens_in_total": ("counter", ("entity", "strategy")),
-    "sirios_narrator_tokens_out_total": ("counter", ("entity", "strategy")),
-    "sirios_narrator_prompt_chars_total": ("histogram", ("entity", "strategy")),
-    "sirios_narrator_prompt_rows_total": ("histogram", ("entity", "strategy")),
+    **_NARRATOR_METRIC_SCHEMAS,
 }
 
 
