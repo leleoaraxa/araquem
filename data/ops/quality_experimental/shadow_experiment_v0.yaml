@@ -1,0 +1,72 @@
+# data/ops/quality_experimental/shadow_experiment_v0.yaml
+
+flows:
+  # 1) Macro / IPCA / juros – conceitual, sem ticker
+  - id: macro_ipca_sem_ticker
+    description: "Perguntas conceituais de IPCA/juros sem ticker"
+    client_id: "shadow-v0-macro"
+    conversation_id: "shadow-v0-macro-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "O que significa IPCA alto para FIIs?"
+      - "Como juros altos costumam afetar fundos imobiliários?"
+      - "IPCA acima da meta é bom ou ruim para quem vive de dividendos de FIIs?"
+      - "Quando o CDI está muito alto, os FIIs ficam menos atrativos?"
+
+  # 2) IPCA com ticker – receita indexada (dados)
+  - id: ipca_com_ticker
+    description: "Percentual de receita indexada ao IPCA por FII"
+    client_id: "shadow-v0-ipca"
+    conversation_id: "shadow-v0-ipca-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "Qual percentual da receita do HGLG11 está indexado ao IPCA?"
+      - "Quanto da receita do MXRF11 depende do IPCA?"
+      - "Entre HGLG11 e KNRI11, qual tem maior exposição ao IPCA?"
+
+  # 3) Notícias → processos → risco (news / contexto jurídico / risco)
+  - id: noticias_processos_risco
+    description: "Fluxo notícias → processos → risco de um FII"
+    client_id: "shadow-v0-news"
+    conversation_id: "shadow-v0-news-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "Quais as notícias mais recentes do MXRF11?"
+      - "Alguma dessas notícias é negativa para o fundo?"
+      - "Esse fundo tem processos judiciais relevantes?"
+      - "Como interpretar o impacto dessas notícias negativas no risco do MXRF11?"
+
+  # 4) Risco quantitativo – sharpe, drawdown, beta (concept + dados)
+  - id: risco_quantitativo
+    description: "Perguntas de Sharpe, drawdown, beta, etc."
+    client_id: "shadow-v0-risk"
+    conversation_id: "shadow-v0-risk-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "O que significa Sharpe negativo em um FII?"
+      - "Queda grande no preço sempre significa que o fundo é ruim?"
+      - "Como interpretar um drawdown muito alto em um fundo de tijolo?"
+      - "Um beta alto em relação ao IFIX é bom ou ruim para um FII de papel?"
+
+  # 5) Contexto multi-turno – CNPJ → Sharpe → overview
+  - id: contexto_multi_turno_risco_overview
+    description: "CNPJ do fundo → Sharpe → overview (testa contexto)"
+    client_id: "shadow-v0-context"
+    conversation_id: "shadow-v0-context-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "Qual o CNPJ do HGLG11?"
+      - "Esse fundo tem Sharpe bom?"
+      - "Me dá um overview dele."
+      - "Com base nisso tudo, esse FII parece adequado para renda mensal?"
+
+  # 6) Como interpretar notícias negativas (conceitual + fiis_noticias)
+  - id: interpretar_noticias_negativas
+    description: "Interpretação de notícia negativa sobre FIIs"
+    client_id: "shadow-v0-news-interpret"
+    conversation_id: "shadow-v0-news-interpret-1"
+    nickname: "shadow-experiment"
+    questions:
+      - "Como interpretar uma notícia negativa sobre um FII?"
+      - "Notícia ruim sempre significa que o fundo vai piorar?"
+      - "O que devo observar em uma matéria crítica antes de vender meu FII?"
