@@ -4,6 +4,10 @@ from __future__ import annotations
 import json
 from typing import Any, Dict, List
 
+# Limite padrão de caracteres por snippet de RAG enviado ao Narrator.
+# Ajuda a evitar prompts gigantes e manter o foco em trechos curtos.
+RAG_SNIPPET_MAX_CHARS = 320
+
 SYSTEM_PROMPT = """Você é o Narrator do Araquem.
 
 As regras principais de comportamento, estilo, segurança e uso de dados já estão
@@ -101,7 +105,31 @@ costuma ser avaliado em conjunto com outras métricas e em diferentes períodos.
 }
 
 
-def _prepare_rag_payload(rag: dict | None) -> dict | None:
+def _truncate_snippet(text: str, max_chars: int = RAG_SNIPPET_MAX_CHARS) -> str:
+    """Shortens long snippets to keep the prompt focused."""
+    if not isinstance(text, str):
+        return ""
+    stripped = text.strip()
+    if not stripped:
+        return ""
+    try:
+        limit = int(max_chars)
+    except (TypeError, ValueError):
+        limit = RAG_SNIPPET_MAX_CHARS
+    if limit <= 0:
+        return stripped
+    if len(stripped) <= limit:
+        return stripped
+    truncated = stripped[:limit]
+    if " " in truncated:
+        truncated = truncated.rsplit(" ", 1)[0]
+    return f"{truncated.strip()}..."
+
+
+def _prepare_rag_payload(
+    rag: dict | None,
+    max_snippet_chars: int | None = None,
+) -> dict | None:
     """
     Converte o contexto de RAG em um payload direto para o prompt do Narrator.
 
@@ -116,6 +144,15 @@ def _prepare_rag_payload(rag: dict | None) -> dict | None:
     chunks = rag.get("chunks") or []
     if not isinstance(chunks, list) or not chunks:
         return None
+
+    try:
+        effective_max_chars = (
+            RAG_SNIPPET_MAX_CHARS
+            if max_snippet_chars is None
+            else int(max_snippet_chars)
+        )
+    except (TypeError, ValueError):
+        effective_max_chars = RAG_SNIPPET_MAX_CHARS
 
     policy = rag.get("policy") or {}
     max_items: int | None = None
@@ -133,8 +170,8 @@ def _prepare_rag_payload(rag: dict | None) -> dict | None:
     for ch in limited_chunks:
         if not isinstance(ch, dict):
             continue
-        text = ch.get("text") or ""
-        snippet = text.strip()
+        raw_text = ch.get("text") or ""
+        snippet = _truncate_snippet(raw_text, max_chars=effective_max_chars)
         if not snippet:
             continue
         snippets.append(
@@ -202,6 +239,15 @@ def build_prompt(
     max_prompt_tokens = policy_cfg.get("max_prompt_tokens")
     max_output_tokens = policy_cfg.get("max_output_tokens")
 
+    snippet_max_chars = None
+    if isinstance(effective_policy, dict):
+        raw_limit = effective_policy.get("rag_snippet_max_chars")
+        try:
+            if raw_limit is not None:
+                snippet_max_chars = int(raw_limit)
+        except (TypeError, ValueError):
+            snippet_max_chars = None
+
     intent = (meta or {}).get("intent", "")
     entity = (meta or {}).get("entity", "")
     template_key = _pick_template(meta, facts)
@@ -221,7 +267,7 @@ def build_prompt(
     ):
         rag = None
 
-    rag_payload = _prepare_rag_payload(rag)
+    rag_payload = _prepare_rag_payload(rag, max_snippet_chars=snippet_max_chars)
     if rag_payload is not None:
         rag_json = json.dumps(rag_payload, ensure_ascii=False, indent=2)
     else:
