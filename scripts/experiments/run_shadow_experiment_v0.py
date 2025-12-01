@@ -102,8 +102,8 @@ def main() -> None:
     parser.add_argument(
         "--timeout",
         type=float,
-        default=60.0,
-        help="Timeout em segundos por chamada ao /ask (default: 60).",
+        default=90.0,
+        help="Timeout em segundos por chamada ao /ask (default: 90).",
     )
     args = parser.parse_args()
 
