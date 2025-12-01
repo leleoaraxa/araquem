@@ -15,12 +15,12 @@ Purpose: Executar o experimento Shadow v0 do Narrator, disparando perguntas
 from __future__ import annotations
 
 import argparse
-import json
 import time
 from pathlib import Path
 from typing import Any, Dict, List
 
 import requests
+from requests.exceptions import ReadTimeout
 import yaml
 
 
@@ -41,30 +41,42 @@ def iter_flows(exp: Dict[str, Any]) -> List[Dict[str, Any]]:
     return [f for f in flows if isinstance(f, dict)]
 
 
-def post_question(
-    api_url: str,
-    question: str,
-    client_id: str,
-    conversation_id: str,
-    nickname: str,
-    timeout: float = 300.0,
-) -> Dict[str, Any]:
-    payload = {
-        "question": question,
-        "conversation_id": conversation_id,
-        "nickname": nickname,
-        "client_id": client_id,
-    }
-    resp = requests.post(api_url, json=payload, timeout=timeout)
+def post_question(api_url: str, payload: dict, timeout: float = 60.0) -> Dict[str, Any]:
+    """
+    Dispara uma pergunta para o /ask respeitando o contrato imutável de payload.
+
+    Retorna um dict com:
+      - ok: bool
+      - status: int | None
+      - json: dict | None
+      - error: str | None
+      - timeout: bool
+    """
     try:
-        data = resp.json()
-    except Exception:
-        data = {}
-    return {
-        "status_code": resp.status_code,
-        "payload": payload,
-        "response": data,
-    }
+        resp = requests.post(api_url, json=payload, timeout=timeout)
+        return {
+            "ok": True,
+            "status": resp.status_code,
+            "json": resp.json(),
+            "error": None,
+            "timeout": False,
+        }
+    except ReadTimeout as e:
+        return {
+            "ok": False,
+            "status": None,
+            "json": None,
+            "error": f"read_timeout: {e}",
+            "timeout": True,
+        }
+    except Exception as e:
+        return {
+            "ok": False,
+            "status": None,
+            "json": None,
+            "error": f"error: {e}",
+            "timeout": False,
+        }
 
 
 def main() -> None:
@@ -86,6 +98,12 @@ def main() -> None:
         type=int,
         default=200,
         help="Intervalo em ms entre perguntas (default: 200).",
+    )
+    parser.add_argument(
+        "--timeout",
+        type=float,
+        default=60.0,
+        help="Timeout em segundos por chamada ao /ask (default: 60).",
     )
     args = parser.parse_args()
 
@@ -120,22 +138,40 @@ def main() -> None:
                 continue
 
             print(f"  [{idx}/{len(questions)}] Q: {q}")
+
+            # Payload imutável do /ask
+            payload = {
+                "question": q,
+                "conversation_id": conversation_id,
+                "nickname": nickname,
+                "client_id": client_id,
+            }
+
             result = post_question(
                 api_url=args.api_url,
-                question=q,
-                client_id=client_id,
-                conversation_id=conversation_id,
-                nickname=nickname,
+                payload=payload,
+                timeout=args.timeout,
             )
 
-            status = result["status_code"]
-            resp = result["response"] or {}
+            if not result["ok"]:
+                if result["timeout"]:
+                    print(
+                        "      -> [TIMEOUT] pergunta travou o /ask (sem resposta no limite definido)"
+                    )
+                else:
+                    print(f"      -> [ERRO] {result['error']}")
+                # Não derruba o experimento, segue para a próxima pergunta
+                time.sleep(sleep_s)
+                continue
+
+            status = result["status"]
+            resp = result["json"] or {}
             answer = resp.get("answer") or resp.get("legacy_answer") or ""
             meta = resp.get("meta") or {}
 
             print(f"      -> status={status}, answer[0:80]={answer[:80]!r}")
 
-            # Opcional: se quiser inspecionar rapidamente a rota escolhida:
+            # Opcional: inspeção rápida da rota escolhida
             intent = meta.get("intent") or meta.get("planner_intent")
             entity = meta.get("entity") or meta.get("planner_entity")
             if intent or entity:
