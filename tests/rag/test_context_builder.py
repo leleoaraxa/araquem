@@ -18,7 +18,7 @@ def rag_policy_base() -> Dict[str, Any]:
     """Policy de RAG equivalente ao rag.yaml atual, em forma de dict.
 
     Observação: Não incluímos a chave 'terms' aqui porque ela não é usada
-    por is_rag_enabled / build_context.
+    pelo context_builder.
     """
     return {
         "version": 1,
@@ -82,88 +82,96 @@ def rag_policy_with_entities(rag_policy_base: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Testes para is_rag_enabled
+# Testes para get_rag_policy
 # ---------------------------------------------------------------------------
 
 
-def test_is_rag_enabled_returns_false_when_no_policy(
+def test_get_rag_policy_returns_disabled_when_no_policy(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Sem policy carregada (load_rag_policy retorna {})-> RAG desabilitado."""
+    """Sem policy carregada (load_rag_policy retorna {})-> snapshot disabled."""
 
-    # Garante que load_rag_policy vai devolver {} dentro de is_rag_enabled
     monkeypatch.setattr(context_builder, "load_rag_policy", lambda: {})
 
-    assert context_builder.is_rag_enabled("fiis_noticias", "fiis_noticias") is False
+    snapshot = context_builder.get_rag_policy(
+        entity="fiis_noticias",
+        intent="fiis_noticias",
+        compute_mode=None,
+        has_ticker=False,
+        policy=None,
+    )
+
+    assert snapshot == {"enabled": False, "reason": "policy_missing"}
 
 
-def test_is_rag_enabled_denies_intents_in_deny_list(
+def test_get_rag_policy_denies_intents_in_deny_list(
     rag_policy_base: Dict[str, Any],
 ) -> None:
     """Intents listadas em deny_intents devem ter RAG desabilitado."""
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_cadastro", "fiis_cadastro", policy=rag_policy_base
-        )
-        is False
-    )
-    assert (
-        context_builder.is_rag_enabled(
-            "client_fiis_positions", "client_fiis_positions", policy=rag_policy_base
-        )
-        is False
+
+    snapshot = context_builder.get_rag_policy(
+        entity="fiis_cadastro",
+        intent="fiis_cadastro",
+        compute_mode=None,
+        has_ticker=False,
+        policy=rag_policy_base,
     )
 
+    assert snapshot == {"enabled": False, "reason": "intent_denied"}
 
-def test_is_rag_enabled_denies_intents_not_in_allow_list(
+
+def test_get_rag_policy_denies_intents_not_in_allow_list(
     rag_policy_base: Dict[str, Any],
 ) -> None:
     """Se há allow_intents, intents fora dessa lista devem ser negadas."""
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_rankings", "fiis_rankings", policy=rag_policy_base
-        )
-        is False
-    )
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_dividendos", "fiis_dividendos", policy=rag_policy_base
-        )
-        is False
+
+    snapshot = context_builder.get_rag_policy(
+        entity="fiis_rankings",
+        intent="alguma_coisa",
+        compute_mode=None,
+        has_ticker=False,
+        policy=rag_policy_base,
     )
 
+    assert snapshot == {"enabled": False, "reason": "intent_not_allowed"}
 
-def test_is_rag_enabled_allows_fiis_noticias_with_profiles(
+
+def test_get_rag_policy_allows_fiis_noticias_with_profiles(
     rag_policy_base: Dict[str, Any],
 ) -> None:
     """Com a policy atual, apenas fiis_noticias tem RAG habilitado."""
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_noticias", "fiis_noticias", policy=rag_policy_base
-        )
-        is True
+
+    snapshot = context_builder.get_rag_policy(
+        entity="fiis_noticias",
+        intent="fiis_noticias",
+        compute_mode=None,
+        has_ticker=True,
+        policy=rag_policy_base,
     )
 
+    assert snapshot["enabled"] is True
+    assert snapshot["collections"] == ["fiis_noticias"]
+    assert snapshot["has_ticker"] is True
 
-def test_is_rag_enabled_uses_entities_section_when_present(
-    rag_policy_with_entities: Dict[str, Any],
-) -> None:
-    """Quando entities_cfg contém a entity, deve habilitar RAG (após routing)."""
-    # Intent permitido em allow_intents e entity declarada em entities_cfg
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_noticias", "fiis_noticias", policy=rag_policy_with_entities
-        )
-        is True
+
+def test_get_rag_policy_entity_not_configured_returns_reason() -> None:
+    """Quando não há default nem profiles, a entity desconhecida deve ser negada."""
+
+    minimal_policy = {
+        "rag": {
+            "entities": {"known": {"collections": ["known"]}},
+        }
+    }
+
+    snapshot = context_builder.get_rag_policy(
+        entity="unknown",
+        intent="unknown",
+        compute_mode=None,
+        has_ticker=False,
+        policy=minimal_policy,
     )
 
-    # Se entity não está em entities_cfg, decisão cai para default/profiles (que existem)
-    assert (
-        context_builder.is_rag_enabled(
-            "fiis_noticias", "alguma_outra_entity", policy=rag_policy_with_entities
-        )
-        is True
-    )
+    assert snapshot == {"enabled": False, "reason": "entity_not_configured"}
 
 
 # ---------------------------------------------------------------------------
@@ -174,7 +182,7 @@ def test_is_rag_enabled_uses_entities_section_when_present(
 def test_build_context_returns_disabled_when_rag_not_enabled(
     rag_policy_base: Dict[str, Any],
 ) -> None:
-    """Quando is_rag_enabled retorna False, build_context deve devolver enabled=False
+    """Quando a policy desabilita RAG, build_context deve devolver enabled=False
     sem tentar acessar embeddings ou store.
     """
     ctx = context_builder.build_context(
@@ -189,6 +197,7 @@ def test_build_context_returns_disabled_when_rag_not_enabled(
     assert ctx["total_chunks"] == 0
     assert ctx["intent"] == "fiis_cadastro"
     assert ctx["entity"] == "fiis_cadastro"
+    assert ctx["policy"]["reason"] == "intent_denied"
 
 
 class _DummyStore:
@@ -293,3 +302,38 @@ def test_build_context_enabled_for_fiis_noticias(
     # Garante que o store recebeu os parâmetros esperados
     assert dummy_store.last_call["k"] == 5
     assert pytest.approx(dummy_store.last_call["min_score"], rel=1e-6) == 0.20
+
+
+def test_build_context_returns_policy_on_error(
+    monkeypatch: pytest.MonkeyPatch, rag_policy_base: Dict[str, Any]
+) -> None:
+    """Mesmo em erros de busca, o contexto deve incluir snapshot da policy."""
+
+    class _ErrorStore(_DummyStore):
+        def search_by_vector(
+            self, vector: List[float], k: int, min_score: float | None = None
+        ) -> List[Dict[str, Any]]:
+            raise RuntimeError("store-broke")
+
+    monkeypatch.setattr(context_builder.Path, "exists", lambda self: True)
+    monkeypatch.setattr(
+        context_builder,
+        "cached_embedding_store",
+        lambda path: _ErrorStore([]),
+    )
+    monkeypatch.setattr(context_builder, "OllamaClient", lambda: _DummyEmbedder())
+
+    ctx = context_builder.build_context(
+        question="quais são as últimas notícias do HGLG11?",
+        intent="fiis_noticias",
+        entity="fiis_noticias",
+        policy=rag_policy_base,
+    )
+
+    assert ctx["enabled"] is False
+    assert ctx["policy"]["reason"] == "error"
+    assert ctx["policy"]["collections"] == ["fiis_noticias"]
+    assert ctx["policy"]["max_chunks"] == 5
+    assert pytest.approx(ctx["policy"]["min_score"], rel=1e-6) == 0.20
+    assert ctx["policy"].get("max_tokens") in (None, 12000)
+    assert "store-broke" in (ctx["error"] or "")

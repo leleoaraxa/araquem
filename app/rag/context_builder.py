@@ -51,64 +51,24 @@ def _rag_section(policy: Dict[str, Any]) -> Dict[str, Any]:
     return policy
 
 
-def is_rag_enabled(
-    intent: str, entity: str, *, policy: Optional[Dict[str, Any]] = None
-) -> bool:
-    """Retorna True se RAG estiver habilitado para o par (intent, entity),
-    de acordo com a política de RAG.
-
-    Se não houver política específica, usa a seção default (se existir).
-    """
-
-    policy = policy or load_rag_policy()
-    if not policy:
-        return False
-
-    routing = policy.get("routing") if isinstance(policy, dict) else None
-    deny_intents = (
-        set(routing.get("deny_intents") or []) if isinstance(routing, dict) else set()
-    )
-    allow_intents = (
-        set(routing.get("allow_intents") or []) if isinstance(routing, dict) else set()
-    )
-
-    if intent and intent in deny_intents:
-        return False
-    if allow_intents and intent not in allow_intents:
-        return False
-
-    rag_policy = _rag_section(policy)
-    entities_cfg = rag_policy.get("entities") if isinstance(rag_policy, dict) else None
-    if isinstance(entities_cfg, dict):
-        if entity in entities_cfg:
-            return True
-        # se a entidade não estiver em entities_cfg, cai na default/profiles abaixo
-    default_cfg = rag_policy.get("default") if isinstance(rag_policy, dict) else None
-    profiles_cfg = rag_policy.get("profiles") if isinstance(rag_policy, dict) else None
-
-    if default_cfg or profiles_cfg:
-        return True
-    
-    return False
-
-
 def get_rag_policy(
     *,
     entity: str | None,
     intent: str | None,
     compute_mode: str | None,
     has_ticker: bool,
-    meta: Dict[str, Any] | None = None,
+    meta: Dict[str, Any] | None = None,  # reservado para uso futuro
     policy: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Aplica a política declarativa de RAG e retorna o snapshot efetivo.
 
     A decisão de autorização vem exclusivamente de YAML (rag.yaml + concepts
     referenciados nas coleções). O Narrator ou outras camadas apenas consomem
-    o resultado exposto aqui.
+    o resultado exposto aqui. O parâmetro ``meta`` está reservado para evoluções
+    futuras (mantido para compatibilidade) e não altera a decisão atual.
     """
 
-    applied_policy = policy or load_rag_policy()
+    applied_policy = policy if policy is not None else load_rag_policy()
     if not applied_policy:
         return {"enabled": False, "reason": "policy_missing"}
 
@@ -250,6 +210,12 @@ def build_context(
 
     Esta função é determinística e NÃO chama LLM.
 
+    A decisão de habilitar/desabilitar RAG vem toda de ``rag.yaml`` (ou da
+    policy previamente carregada passada via ``policy``). A mesma instância de
+    policy é usada em toda a função para evitar leituras duplicadas, e o
+    snapshot resultante sempre é incluído no retorno, inclusive em cenários de
+    erro.
+
     Retorna um dicionário com chaves do tipo:
       - 'enabled': bool
       - 'question': str
@@ -262,15 +228,14 @@ def build_context(
       - 'error': Optional[str]
     """
 
+    applied_policy = policy if policy is not None else load_rag_policy()
     policy_snapshot = get_rag_policy(
         entity=entity,
         intent=intent,
         compute_mode=compute_mode,
         has_ticker=has_ticker,
-        policy=policy,
+        policy=applied_policy,
     )
-
-    applied_policy = policy or load_rag_policy()
     if not policy_snapshot.get("enabled"):
         return {
             "enabled": False,
@@ -321,6 +286,20 @@ def build_context(
         )
     except Exception as exc:  # pragma: no cover - robust fallback
         LOGGER.warning("RAG search failed: %s", exc)
+        error_policy = dict(policy_snapshot)
+        error_policy.update(
+            {
+                "enabled": False,
+                "reason": "error",
+                "collections": collections,
+                "max_chunks": max_chunks_val,
+            }
+        )
+        if min_score_val is not None:
+            error_policy["min_score"] = min_score_val
+        if max_tokens is not None:
+            error_policy["max_tokens"] = max_tokens
+
         return {
             "enabled": False,
             "question": question,
@@ -329,6 +308,7 @@ def build_context(
             "used_collections": collections,
             "chunks": [],
             "total_chunks": 0,
+            "policy": error_policy,
             "error": str(exc),
         }
 
