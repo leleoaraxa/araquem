@@ -297,6 +297,24 @@ class ContextManager:
         merged["enable_last_ticker"] = bool(merged.get("enable_last_ticker", False))
         return merged
 
+    @staticmethod
+    def _ticker_from_identifiers(
+        identifiers: Optional[Dict[str, Any]],
+    ) -> Optional[str]:
+        if not identifiers or not isinstance(identifiers, dict):
+            return None
+
+        ticker = identifiers.get("ticker")
+        if isinstance(ticker, str) and ticker:
+            return ticker
+
+        tickers = identifiers.get("tickers")
+        if isinstance(tickers, list) and len(tickers) == 1:
+            first = tickers[0]
+            if isinstance(first, str) and first:
+                return first
+        return None
+
     def last_reference_allows_entity(self, entity: Optional[str]) -> bool:
         """Verifica se o uso de last_reference é permitido para a entidade.
 
@@ -483,6 +501,9 @@ class ContextManager:
         if not ticker:
             return
 
+        if entity and not self.last_reference_allows_entity(entity):
+            return
+
         key = self._conversation_key(client_id, conversation_id)
         now = time.time()
         turn_index = self._turn_counters.get(key, 0)
@@ -500,28 +521,117 @@ class ContextManager:
         """Retorna a última referência respeitando as políticas de contexto."""
 
         try:
-            if not self.enabled:
-                return None
-
-            policy = self.last_reference_policy
-            if not policy.get("enable_last_ticker"):
-                return None
-
-            key = self._conversation_key(client_id, conversation_id)
-            last_ref = self._last_reference.get(key)
-            if not isinstance(last_ref, LastReference):
-                return None
-
-            max_age_turns = policy.get("max_age_turns") or 0
-            if max_age_turns > 0:
-                current_turn = self._turn_counters.get(key, 0)
-                if (current_turn - last_ref.turn_index) > max_age_turns:
-                    return None
-
+            last_ref, _ = self._get_last_reference_with_status(client_id, conversation_id)
             return last_ref
         except Exception:  # pragma: no cover - defensivo
             LOGGER.warning("Falha ao recuperar last_reference", exc_info=True)
             return None
+
+    def _get_last_reference_with_status(
+        self, client_id: str, conversation_id: str
+    ) -> Tuple[Optional[LastReference], str]:
+        if not self.enabled:
+            return None, "context_disabled"
+
+        policy = self.last_reference_policy
+        if not policy.get("enable_last_ticker"):
+            return None, "last_reference_disabled"
+
+        key = self._conversation_key(client_id, conversation_id)
+        last_ref = self._last_reference.get(key)
+        if not isinstance(last_ref, LastReference):
+            return None, "no_candidate"
+
+        if not getattr(last_ref, "ticker", None):
+            return None, "no_candidate"
+
+        max_age_turns = policy.get("max_age_turns") or 0
+        if max_age_turns > 0:
+            current_turn = self._turn_counters.get(key, 0)
+            if (current_turn - last_ref.turn_index) > max_age_turns:
+                return None, "expired"
+
+        return last_ref, "ok"
+
+    def resolve_last_reference(
+        self,
+        *,
+        client_id: str,
+        conversation_id: str,
+        entity: Optional[str],
+        identifiers: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        """Resolve herança de ticker segundo políticas de contexto.
+
+        Retorna dict com:
+            - identifiers_resolved: identifiers possivelmente enriquecidos
+            - last_reference_used: bool indicando uso de herança
+            - last_reference_ticker: ticker herdado (ou None)
+            - reason: string com o caminho decisório
+        """
+
+        resolved_identifiers = dict(identifiers or {})
+        existing = self._ticker_from_identifiers(resolved_identifiers)
+
+        if not self.enabled:
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": "context_disabled",
+            }
+
+        policy = self.last_reference_policy
+        if not policy.get("enable_last_ticker"):
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": "last_reference_disabled",
+            }
+
+        if not entity:
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": "no_entity",
+            }
+
+        allowed_entities = policy.get("allowed_entities") or []
+        if allowed_entities and entity not in allowed_entities:
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": "entity_not_allowed",
+            }
+
+        if existing:
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": "input_has_ticker",
+            }
+
+        last_ref, status = self._get_last_reference_with_status(client_id, conversation_id)
+        if status != "ok" or not last_ref:
+            return {
+                "identifiers_resolved": resolved_identifiers,
+                "last_reference_used": False,
+                "last_reference_ticker": None,
+                "reason": status,
+            }
+
+        resolved_identifiers["ticker"] = last_ref.ticker
+
+        return {
+            "identifiers_resolved": resolved_identifiers,
+            "last_reference_used": True,
+            "last_reference_ticker": last_ref.ticker,
+            "reason": "last_reference_applied",
+        }
 
     @staticmethod
     def to_wire(turns: List[ConversationTurn]) -> List[Dict[str, Any]]:

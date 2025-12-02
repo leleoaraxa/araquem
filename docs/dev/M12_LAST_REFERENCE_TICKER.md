@@ -37,6 +37,9 @@ Definir **como o Araquem herda o último ticker mencionado** em uma conversa par
       * `intent`
       * `updated_at`
       * `turn_index`
+    * API canônica para herança:
+
+      * `resolve_last_reference(...)` aplica `context.yaml` para decidir se o ticker anterior pode ser herdado e devolve `identifiers` enriquecidos com meta (`reason`, `last_reference_used`).【F:app/context/context_manager.py†L353-L441】
   * Aplica políticas:
 
     * `context.enabled`
@@ -85,7 +88,13 @@ Definir **como o Araquem herda o último ticker mencionado** em uma conversa par
      )
      ```
 
-3. **Herança de ticker só acontece se 3 camadas concordarem**
+3. **Herança é resolvida exclusivamente pelo ContextManager**
+
+   * `/ask` chama `context_manager.resolve_last_reference(...)` logo após extrair `identifiers`.
+   * A função aplica o `context.yaml` (enable/allowed_entities/max_age_turns) e devolve `identifiers_resolved` + meta (`reason`, `last_reference_used`).【F:app/api/ask.py†L178-L201】【F:app/context/context_manager.py†L353-L441】
+   * Nenhuma heurística de herança fica no endpoint; o contrato externo do `/ask` permanece igual.
+
+4. **Herança de ticker só acontece se 3 camadas concordarem**
 
    * **Context policy** permitir:
 

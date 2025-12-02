@@ -162,7 +162,25 @@ def ask(
 
         return JSONResponse(json_sanitize(payload_out_unr))
 
-    identifiers = orchestrator.extract_identifiers(payload.question)
+    identifiers = orchestrator.extract_identifiers(payload.question) or {}
+    last_reference_resolution: Optional[Dict[str, Any]] = None
+    try:
+        last_reference_resolution = context_manager.resolve_last_reference(
+            client_id=payload.client_id,
+            conversation_id=payload.conversation_id,
+            entity=entity,
+            identifiers=identifiers,
+        )
+        identifiers = (
+            last_reference_resolution.get("identifiers_resolved")
+            if isinstance(last_reference_resolution, dict)
+            else identifiers
+        ) or identifiers
+    except Exception:
+        LOGGER.exception(
+            "Falha ao resolver last_reference; seguindo sem herança",
+            extra={"entity": entity, "intent": intent, "request_id": request_id},
+        )
 
     try:
         agg_params = infer_params(
@@ -372,6 +390,13 @@ def ask(
         },
         "answer": presenter_result.answer,
     }
+
+    if isinstance(last_reference_resolution, dict):
+        meta.setdefault("context", {})["last_reference"] = {
+            "used": bool(last_reference_resolution.get("last_reference_used")),
+            "ticker": last_reference_resolution.get("last_reference_ticker"),
+            "reason": last_reference_resolution.get("reason"),
+        }
 
     # ------------------------------------------------------------------
     # CONTEXTO CONVERSACIONAL — registro do turno do "assistant"
