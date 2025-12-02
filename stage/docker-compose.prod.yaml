@@ -1,0 +1,193 @@
+version: "3.9"
+
+name: araquem-prod
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: araquem-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env.prod
+    environment:
+      - PYTHONPATH=/app
+      - EXECUTOR_MODE=prod
+      - PROMETHEUS_URL=http://prometheus:9090
+      - GRAFANA_URL=http://grafana:3000
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
+      - RAG_INDEX_PATH=data/embeddings/store/embeddings.jsonl
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - OLLAMA_URL=http://ollama:11434
+    volumes:
+      # ⚠️ Simples para primeiro prod: bind do código.
+      # Quando tiver pipeline de build, você pode remover e usar só a imagem.
+      - ./:/app:ro
+    depends_on:
+      - redis
+      - prometheus
+      - grafana
+      - tempo
+      - ollama
+      - ollama-init
+      - otel-collector
+    networks: [araquem_network]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/healthz >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
+
+  redis:
+    image: redis:7
+    container_name: araquem-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks: [araquem_network]
+
+  ollama:
+    image: ollama/ollama:0.3.14
+    container_name: araquem-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama:/root/.ollama
+    environment:
+      - OLLAMA_NUM_PARALLEL=1
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - OLLAMA_CPU_THREADS=8
+      - OLLAMA_KEEP_ALIVE=600
+      - OLLAMA_KV_CACHE_TYPE=f16
+      - OLLAMA_LOG_LEVEL=warn
+    healthcheck:
+      test: ["CMD-SHELL", "ollama ps >/dev/null 2>&1 || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 15s
+    networks: [araquem_network]
+
+  ollama-init:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ollama-init
+    container_name: araquem-ollama-init
+    restart: "no"
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: "http://ollama:11434"
+      OLLAMA_MODELS: "nomic-embed-text"
+      SIRIOS_MODEFILE: "/app/docker/Modelfile.sirios-narrator"
+    volumes:
+      - ./:/app:ro
+    networks: [araquem_network]
+
+  # 🔸 Job de RAG (manual ou acionado pontualmente)
+  rag-indexer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-indexer
+    container_name: araquem-rag-indexer
+    restart: "no"
+    depends_on:
+      - ollama
+      - ollama-init
+    environment:
+      - PYTHONPATH=/app
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - TZ=America/Sao_Paulo
+      - OLLAMA_EMBED_MODEL=nomic-embed-text
+      - EMBED_BATCH_SIZE=8
+    volumes:
+      - ./:/app:ro
+    networks: [araquem_network]
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: araquem-prometheus
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/recording_rules.yml:/etc/prometheus/recording_rules.yml:ro
+      - ./prometheus/alerting_rules.yml:/etc/prometheus/alerting_rules.yml:ro
+      - prometheus-data:/prometheus
+    networks: [araquem_network]
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: araquem-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    restart: unless-stopped
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=false        # em prod, ideal forçar login/SSO
+      - GF_INSTALL_PLUGINS=marcusolsson-json-datasource
+      - GF_PLUGINS_ALLOW_LOADING_UNSIGNED_PLUGINS=marcusolsson-json-datasource
+    networks: [araquem_network]
+
+  tempo:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tempo
+    container_name: araquem-tempo
+    ports:
+      - "3200:3200"
+    volumes:
+      - tempo-data:/var/tempo
+      - ./tempo/tempo.yaml:/etc/tempo/tempo.yaml:ro
+    restart: unless-stopped
+    networks: [araquem_network]
+
+  otel-collector:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.otel-collector
+    container_name: araquem-otel
+    volumes:
+      - ./otel-collector/config.yaml:/etc/otel/config.yaml:ro
+    restart: unless-stopped
+    networks: [araquem_network]
+    depends_on:
+      - tempo
+
+  # 🔸 Opcional em prod: manter se quiser refresh automático de RAG.
+  rag-refresh-cron:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-refresh-cron
+    container_name: araquem-rag-refresh-cron
+    restart: unless-stopped
+    env_file:
+      - ./.env.prod
+    environment:
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
+      - TZ=America/Sao_Paulo
+    depends_on:
+      api:
+        condition: service_healthy
+    network_mode: "service:api"
+
+volumes:
+  grafana:
+  ollama:
+  tempo-data:
+  prometheus-data:
+
+networks:
+  araquem_network:
+    driver: bridge
