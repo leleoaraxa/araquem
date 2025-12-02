@@ -7,18 +7,23 @@ from pathlib import Path
 import redis
 import yaml
 
+from app.utils.filecache import load_yaml_cached
+
 from app.observability.instrumentation import counter, histogram
 
 LOGGER = logging.getLogger(__name__)
 
 # Fonte oficial (novo) e caminho legado (compat)
 POLICY_PATH = Path("data/policies/cache.yaml")
+ENTITY_ROOT = Path("data/entities")
 
 
 class CachePolicies:
     def __init__(self, path: Optional[Path] = None):
         self._status: str = "ok"
         self._error: Optional[str] = None
+        self._private_cache: Dict[str, bool] = {}
+        self._entity_root = ENTITY_ROOT
         # Escolhe automaticamente: novo caminho > legado
         selected = None
         if path:
@@ -61,6 +66,34 @@ class CachePolicies:
     def get(self, entity: str) -> Optional[Dict[str, Any]]:
         # Lê do bloco "policies" do YAML; None quando não houver
         return self._policies.get(entity)
+
+    def is_private_entity(self, entity: str) -> bool:
+        if not entity:
+            return False
+
+        if entity in self._private_cache:
+            return self._private_cache[entity]
+
+        private_flag = False
+
+        policy = self.get(entity)
+        if isinstance(policy, dict) and policy.get("private") is True:
+            private_flag = True
+
+        if not private_flag:
+            path = self._entity_root / str(entity) / "entity.yaml"
+            if path.exists():
+                try:
+                    data = load_yaml_cached(str(path))
+                    if isinstance(data, dict) and data.get("private") is True:
+                        private_flag = True
+                except Exception:
+                    LOGGER.warning(
+                        "Falha ao avaliar flag private em %s", path, exc_info=True
+                    )
+
+        self._private_cache[entity] = bool(private_flag)
+        return self._private_cache[entity]
 
 
 class RedisCache:
@@ -183,12 +216,23 @@ def read_through(
 ):
     """Aplica leitura com cache por entidade, respeitando TTL do YAML."""
     policy = policies.get(entity)
+    is_private = policies.is_private_entity(entity)
+    ttl: Optional[int] = None
+    if policy and "ttl_seconds" in policy:
+        try:
+            ttl = int(policy.get("ttl_seconds", 0) or 0)
+        except (TypeError, ValueError):
+            ttl = 0
+
+    if is_private:
+        val = fetch_fn()
+        return {"cached": False, "key": None, "value": val, "ttl": ttl}
+
     if not policy:
         # sem política → bypass cache
         val = fetch_fn()
-        return {"cached": False, "key": None, "value": val}
+        return {"cached": False, "key": None, "value": val, "ttl": ttl}
 
-    ttl = int(policy.get("ttl_seconds", 0) or 0)
     scope = str(policy.get("scope", "pub"))
     build_id = os.getenv("BUILD_ID", "dev")
     key = make_cache_key(build_id, scope, entity, identifiers or {})
@@ -234,5 +278,7 @@ def read_through(
     if _is_empty_payload(val):
         return {"cached": False, "key": key, "value": val, "ttl": ttl}
 
-    cache.set_json(key, val, ttl_seconds=ttl)
-    return {"cached": False, "key": key, "value": val, "ttl": ttl}
+    ttl_to_use = ttl if isinstance(ttl, int) else 0
+
+    cache.set_json(key, val, ttl_seconds=ttl_to_use)
+    return {"cached": False, "key": key, "value": val, "ttl": ttl_to_use}
