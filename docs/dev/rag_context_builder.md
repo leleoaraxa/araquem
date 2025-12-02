@@ -214,7 +214,7 @@ O módulo foi projetado segundo o **Guardrails Araquem v2.1.1**:
 
 Os testes oficiais do M12 cobrem:
 
-* `is_rag_enabled` com e sem `entities`
+* `get_rag_policy` com e sem `entities`
 * `routing.allow_intents` e `deny_intents`
 * `build_context` com RAG off (não chama embeddings)
 * `build_context` com RAG on usando mocks de:
@@ -247,7 +247,7 @@ Essas evoluções seguem o Guardrails Araquem e serão abordadas em milestones s
 Para integração:
 
 ```python
-from app.rag.context_builder import build_context, is_rag_enabled
+from app.rag.context_builder import build_context, get_rag_policy
 ```
 
 Chamado internamente pelo Orchestrator:
