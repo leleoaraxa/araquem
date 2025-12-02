@@ -64,11 +64,6 @@ def rag_debug(payload: RagDebugPayload):
         identifiers=identifiers,
         aggregates=aggregates if isinstance(aggregates, dict) else {},
         narrator=ask_api._NARR,
-        narrator_flags={
-            "enabled": ask_api._NARRATOR_ENABLED,
-            "shadow": ask_api._NARRATOR_SHADOW,
-            "model": ask_api._NARRATOR_MODEL,
-        },
         narrator_meta=narrator_meta,
         explain=False,
     )

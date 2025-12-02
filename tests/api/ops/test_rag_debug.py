@@ -74,9 +74,6 @@ def _patch_narrator(monkeypatch: pytest.MonkeyPatch) -> Narrator:
     narrator = Narrator(model="dummy-model", style="executivo")
     narrator.client = FakeClient()
     monkeypatch.setattr(rag_debug.ask_api, "_NARR", narrator)
-    monkeypatch.setattr(rag_debug.ask_api, "_NARRATOR_ENABLED", True)
-    monkeypatch.setattr(rag_debug.ask_api, "_NARRATOR_SHADOW", False)
-    monkeypatch.setattr(rag_debug.ask_api, "_NARRATOR_MODEL", "dummy-model")
     return narrator
 
 

@@ -3,6 +3,7 @@
 import importlib
 import importlib.util
 import logging
+import os
 from pathlib import Path
 from typing import List
 
@@ -29,110 +30,6 @@ def quality_module(monkeypatch):
     spec.loader.exec_module(module)
     monkeypatch.setattr(module, "_QUALITY_LOADER_ERRORS", [])
     return module
-
-
-@pytest.fixture
-def ask_module(monkeypatch, tmp_path):
-    import yaml
-
-    policy_path = tmp_path / "narrator_fixture.yaml"
-    policy_path.write_text(
-        yaml.safe_dump(
-            {
-                "narrator": {
-                    "model": "sirios-narrator:latest",
-                    "llm_enabled": False,
-                    "shadow": False,
-                }
-            }
-        )
-    )
-    monkeypatch.setattr(narrator_module, "_NARRATOR_POLICY_PATH", policy_path)
-
-    original_loader = narrator_module._load_narrator_policy
-
-    def _patched_loader(path: str = str(policy_path)):
-        return original_loader(path=str(policy_path))
-
-    monkeypatch.setattr(narrator_module, "_load_narrator_policy", _patched_loader)
-    module = importlib.import_module("app.api.ask")
-    return importlib.reload(module)
-
-
-class TestNarratorConfig:
-    def test_load_narrator_flags_missing_file_raises(self, tmp_path, ask_module):
-        missing_path = tmp_path / "narrator_missing.yaml"
-
-        with pytest.raises(RuntimeError, match="Narrator policy ausente"):
-            ask_module._load_narrator_flags(path=str(missing_path))
-
-    def test_load_narrator_flags_non_mapping_yaml_raises(self, tmp_path, ask_module):
-        yaml_path = tmp_path / "narrator_list.yaml"
-        yaml_path.write_text("- 1\n- 2\n")
-
-        with pytest.raises(RuntimeError, match="não é um dict"):
-            ask_module._load_narrator_flags(path=str(yaml_path))
-
-    @pytest.mark.parametrize(
-        "content",
-        [
-            {},
-            {"narrator": []},
-        ],
-    )
-    def test_load_narrator_flags_malformed_block_raises(
-        self, tmp_path, content, ask_module
-    ):
-        yaml_path = tmp_path / "narrator_invalid.yaml"
-        import yaml
-
-        yaml_path.write_text(yaml.safe_dump(content))
-
-        with pytest.raises(RuntimeError, match="policy malformada|model"):
-            ask_module._load_narrator_flags(path=str(yaml_path))
-
-    def test_load_narrator_flags_invalid_flag_types_raises(self, tmp_path, ask_module):
-        yaml_path = tmp_path / "narrator_flags.yaml"
-        import yaml
-
-        yaml_path.write_text(
-            yaml.safe_dump(
-                {
-                    "narrator": {
-                        "model": "meu-modelo",
-                        "llm_enabled": "true",
-                        "shadow": "false",
-                    }
-                }
-            )
-        )
-
-        with pytest.raises(RuntimeError, match="booleano"):
-            ask_module._load_narrator_flags(path=str(yaml_path))
-
-    def test_load_narrator_flags_happy_path(self, tmp_path, ask_module):
-        yaml_path = tmp_path / "narrator_valid.yaml"
-        import yaml
-
-        yaml_path.write_text(
-            yaml.safe_dump(
-                {
-                    "narrator": {
-                        "model": "meu-modelo",
-                        "llm_enabled": True,
-                        "shadow": False,
-                    }
-                }
-            )
-        )
-
-        result = ask_module._load_narrator_flags(path=str(yaml_path))
-
-        assert set(result.keys()) == {"enabled", "shadow", "model"}
-        assert isinstance(result["enabled"], bool)
-        assert isinstance(result["shadow"], bool)
-        assert isinstance(result["model"], str)
-        assert result == {"enabled": True, "shadow": False, "model": "meu-modelo"}
 
 
 class TestNarratorPolicyLoader:
@@ -280,6 +177,84 @@ class TestNarratorPolicyLoader:
             "llm_enabled": True,
             "shadow": False,
         }
+
+
+class TestNarratorShadowPolicy:
+    def _set_shadow_policy_path(self, monkeypatch, yaml_path: Path) -> None:
+        monkeypatch.setattr(narrator_module, "_NARRATOR_SHADOW_POLICY_PATH", yaml_path)
+        original_loader = narrator_module._load_narrator_shadow_policy
+
+        def _patched_loader(path: str = str(yaml_path)):
+            return original_loader(path=str(yaml_path))
+
+        monkeypatch.setattr(
+            narrator_module, "_load_narrator_shadow_policy", _patched_loader
+        )
+
+    def _set_narrator_policy(self, monkeypatch) -> None:
+        monkeypatch.setattr(
+            narrator_module,
+            "_load_narrator_policy",
+            lambda: {
+                "policy": {
+                    "default": {
+                        "model": "sirios-narrator:latest",
+                        "llm_enabled": True,
+                        "shadow": True,
+                        "max_llm_rows": 5,
+                    }
+                }
+            },
+        )
+
+    def test_load_narrator_shadow_policy_missing_file_raises(
+        self, tmp_path: Path, monkeypatch
+    ):
+        missing_path = tmp_path / "narrator_shadow_missing.yaml"
+        self._set_shadow_policy_path(monkeypatch, missing_path)
+
+        with pytest.raises(RuntimeError, match="Narrator shadow policy ausente"):
+            narrator_module._load_narrator_shadow_policy()
+
+    @pytest.mark.parametrize(
+        "env_label,env_override,expected_shadow",
+        [
+            ("dev", None, False),
+            ("prod", None, True),
+            ("prod", "0", False),
+            ("dev", "1", False),
+        ],
+    )
+    def test_narrator_shadow_policy_env_allowlist_and_override(
+        self, tmp_path: Path, monkeypatch, env_label: str, env_override: str | None, expected_shadow: bool
+    ):
+        import yaml
+
+        shadow_policy_path = tmp_path / "narrator_shadow.yaml"
+        shadow_policy_path.write_text(
+            yaml.safe_dump(
+                {
+                    "narrator_shadow": {
+                        "enabled": True,
+                        "environment_allowlist": ["prod"],
+                    }
+                }
+            )
+        )
+        self._set_shadow_policy_path(monkeypatch, shadow_policy_path)
+        self._set_narrator_policy(monkeypatch)
+
+        monkeypatch.setenv("SIRIOS_ENV", env_label)
+        if env_override is None:
+            monkeypatch.delenv("NARRATOR_SHADOW_GLOBAL", raising=False)
+        else:
+            monkeypatch.setenv("NARRATOR_SHADOW_GLOBAL", env_override)
+
+        narrator = narrator_module.Narrator()
+        effective = narrator.get_effective_policy("fiis_dividendos")
+
+        assert effective["shadow"] is expected_shadow
+        assert effective["shadow_global_enabled"] is expected_shadow
 
 
 class TestParamInferenceConfig:

@@ -31,6 +31,7 @@ _FAILSAFE_TEXT = (
 LOGGER = logging.getLogger(__name__)
 _ENTITY_ROOT = Path("data/entities")
 _NARRATOR_POLICY_PATH = Path("data/policies/narrator.yaml")
+_NARRATOR_SHADOW_POLICY_PATH = Path("data/policies/narrator_shadow.yaml")
 _TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
 _FILTER_FIELD_NAMES = ("filters", "filter")
 
@@ -388,6 +389,61 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
     return cfg
 
 
+def _coerce_env_flag(raw: str | None) -> Optional[bool]:
+    if raw is None:
+        return None
+    value = raw.strip().lower()
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off"}:
+        return False
+    return None
+
+
+def _load_narrator_shadow_policy(
+    path: str = str(_NARRATOR_SHADOW_POLICY_PATH),
+) -> Dict[str, Any]:
+    policy_path = Path(path)
+    if not policy_path.exists():
+        LOGGER.error("Narrator shadow policy ausente em %s", policy_path)
+        raise RuntimeError(f"Narrator shadow policy ausente: {policy_path}")
+
+    try:
+        data = load_yaml_cached(str(policy_path))
+    except (yaml.YAMLError, OSError, RuntimeError) as exc:
+        LOGGER.error(
+            "Erro ao carregar Narrator shadow policy de %s", policy_path, exc_info=True
+        )
+        raise ValueError(
+            f"Narrator shadow policy inválida: {policy_path}"
+        ) from exc
+    except Exception as exc:  # pragma: no cover - caminho excepcional
+        LOGGER.error(
+            "Erro inesperado ao carregar Narrator shadow policy de %s",
+            policy_path,
+            exc_info=True,
+        )
+        raise RuntimeError(
+            f"Erro ao carregar Narrator shadow policy: {policy_path}"
+        ) from exc
+
+    if not isinstance(data, dict):
+        LOGGER.error(
+            "Narrator shadow policy inválida (esperado mapeamento): %s", policy_path
+        )
+        raise ValueError(
+            f"Narrator shadow policy inválida: esperado mapeamento em {policy_path}"
+        )
+
+    cfg = (
+        data.get("narrator_shadow")
+        if isinstance(data.get("narrator_shadow"), dict)
+        else data
+    )
+
+    return cfg if isinstance(cfg, dict) else {}
+
+
 def _get_effective_policy(entity: str | None, policy: Dict[str, Any]) -> Dict[str, Any]:
     """Combina política global do Narrator com overrides específicos por entidade."""
 
@@ -450,6 +506,7 @@ class Narrator:
                 policy_content = policy_payload
 
         self.policy = policy_content
+        self.shadow_policy = _load_narrator_shadow_policy()
 
         default_policy = _get_effective_policy(None, self.policy)
 
@@ -474,7 +531,7 @@ class Narrator:
         # Flags: **apenas YAML** define habilitação e shadow;
         # env é ignorado para evitar heurísticas escondidas.
         self.enabled = bool(default_policy.get("llm_enabled", False))
-        self.shadow = bool(default_policy.get("shadow", False))
+        self.shadow = bool(default_policy.get("shadow", False)) and self._is_shadow_globally_enabled()
 
         # Limite de linhas para uso de LLM (0 = nunca usar LLM)
         max_rows = default_policy.get("max_llm_rows", 0)
@@ -489,6 +546,34 @@ class Narrator:
         self.max_output_tokens = int(self.policy.get("max_output_tokens", 0) or 0)
 
         self.client = OllamaClient() if OllamaClient else None
+
+    def _shadow_cfg(self) -> Dict[str, Any]:
+        return self.shadow_policy if isinstance(self.shadow_policy, dict) else {}
+
+    def _is_shadow_globally_enabled(self) -> bool:
+        shadow_cfg = self._shadow_cfg()
+        enabled = bool(shadow_cfg.get("enabled", False))
+        env_override = _coerce_env_flag(os.getenv("NARRATOR_SHADOW_GLOBAL"))
+        if env_override is not None:
+            enabled = env_override
+
+        env_label = os.getenv("SIRIOS_ENV", os.getenv("ENVIRONMENT", "dev"))
+        env_allowlist = shadow_cfg.get("environment_allowlist")
+        if isinstance(env_allowlist, list) and env_allowlist:
+            if env_label not in env_allowlist:
+                return False
+
+        return enabled
+
+    def get_effective_policy(self, entity: str | None) -> Dict[str, Any]:
+        base_policy = _get_effective_policy(entity, self.policy)
+        effective = dict(base_policy)
+        effective["model"] = effective.get("model") or self.model
+        effective["llm_enabled"] = bool(effective.get("llm_enabled", False))
+        shadow_allowed = bool(effective.get("shadow", False))
+        effective["shadow"] = shadow_allowed and self._is_shadow_globally_enabled()
+        effective["shadow_global_enabled"] = self._is_shadow_globally_enabled()
+        return effective
 
     # ---------------------------------------------------------------------
     # Decisão de uso de LLM — 100% baseada em policy (sem heurísticas fixas)
@@ -548,7 +633,7 @@ class Narrator:
                     compute_mode_meta = m
 
         # Política efetiva (global + overrides da entidade)
-        effective_policy = _get_effective_policy(entity, self.policy)
+        effective_policy = self.get_effective_policy(entity)
         effective_enabled = bool(effective_policy.get("llm_enabled", self.enabled))
         effective_shadow = bool(effective_policy.get("shadow", self.shadow))
         max_rows_policy = effective_policy.get("max_llm_rows", self.max_llm_rows)

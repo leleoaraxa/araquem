@@ -182,7 +182,6 @@ def present(
     identifiers: Dict[str, Any],
     aggregates: Dict[str, Any],
     narrator: Optional[Narrator],
-    narrator_flags: Dict[str, Any],
     narrator_meta: Optional[Dict[str, Any]] = None,
     client_id: Optional[str] = None,
     conversation_id: Optional[str] = None,
@@ -265,6 +264,16 @@ def present(
         ):
             compute_mode = "concept"
 
+    effective_narrator_policy: Dict[str, Any] = {}
+    if narrator is not None:
+        try:
+            effective_narrator_policy = narrator.get_effective_policy(facts.entity)
+        except Exception:
+            LOGGER.warning(
+                "Falha ao obter policy efetiva do Narrator", exc_info=True
+            )
+            effective_narrator_policy = {}
+
     # Baseline determinístico (sempre calculado)
     legacy_answer = render_answer(
         facts.entity,
@@ -275,14 +284,18 @@ def present(
     rendered_template = render_rows_template(facts.entity, rows)
 
     narrator_info: Dict[str, Any] = {
-        "enabled": bool(narrator_flags.get("enabled")),
-        "shadow": bool(narrator_flags.get("shadow")),
-        "model": str(narrator_flags.get("model") or ""),
+        "enabled": bool(effective_narrator_policy.get("llm_enabled")),
+        "shadow": bool(effective_narrator_policy.get("shadow")),
+        "model": str(
+            effective_narrator_policy.get("model")
+            or getattr(narrator, "model", "")
+        ),
         "latency_ms": None,
         "error": None,
         "used": False,
         "score": None,
         "strategy": "fallback",
+        "effective_policy": effective_narrator_policy or None,
     }
 
     final_answer = legacy_answer
@@ -375,9 +388,7 @@ def present(
                 "answer_final": final_answer,
                 "answer_baseline": legacy_answer,
                 "rows_used": len(rows),
-                "style": narrator_flags.get("style")
-                if isinstance(narrator_flags, dict)
-                else None,
+                "style": getattr(narrator, "style", None),
             },
         )
         collect_narrator_shadow(shadow_event)
