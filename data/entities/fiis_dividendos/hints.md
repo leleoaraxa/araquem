@@ -1,17 +1,17 @@
 O que é:
 - Histórico de dividendos distribuídos por FII, com datas de pagamento e data
-  com. Inclui valores por cota e somatórios em janelas padrão (3, 6, 12 meses).
+  com. Inclui valores por cota, sem métricas derivadas embutidas.
 
 Principais colunas:
 - ticker: identificador do fundo.
-- data_pagamento e data_com: determinam quem tem direito ao provento.
-- dividendo: valor por cota em reais.
-- acumulados_3m_6m_12m: somatório dos proventos nas janelas padrão.
-- dy: dividend yield calculado sobre preço de referência.
+- payment_date e traded_until_date: determinam quando ocorre o pagamento e o
+  último pregão com direito ao provento.
+- dividend_amt: valor por cota em reais.
+- created_at/updated_at: rastreabilidade do carregamento.
 
 Como o Araquem usa:
 - Responder perguntas sobre histórico de proventos e sazonalidade de pagamentos.
-- Contextualizar se o yield recente acompanha CDI/SELIC ou inflação, sem
-  prometer retornos futuros.
+- Calcular médias ou somatórios em janelas padrão via agregações (ex.: 3, 6 ou
+  12 meses) quando solicitado pelo usuário.
 - Apoiar comparações entre fundos ("quem pagou mais em 12m?") e análises de
   estabilidade de renda.
