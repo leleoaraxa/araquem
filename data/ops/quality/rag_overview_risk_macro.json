@@ -1,0 +1,260 @@
+{
+  "type": "rag_overview_risk_macro",
+  "version": "2025-12-02",
+  "description": "Bateria de perguntas focada em overview de FIIs, métricas de risco e contexto macro/índices/moedas para validar o uso de RAG com o índice araquem-core.",
+  "notes": [
+    "As perguntas são todas em PT-BR, voltadas para o contexto SIRIOS/FIIs.",
+    "O campo 'expected' não força texto exato, apenas rota/intenção/entidade e se RAG deve ser usado.",
+    "client_id/conversation_id são sugestões para rodadas de teste, podem ser sobrescritos pelo runner."
+  ],
+  "samples": [
+    {
+      "id": "overview_001",
+      "group": "overview",
+      "question": "Me dá um overview do HGLG11.",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "single_ticker", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "overview consolidado combina cadastro, preços, dividendos, risco e índices; hints e concepts foram enriquecidos."
+        }
+      }
+    },
+    {
+      "id": "overview_002",
+      "group": "overview",
+      "question": "Resumo completo do fundo KNRI11, por favor.",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "single_ticker", "natural_language", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+    {
+      "id": "overview_003",
+      "group": "overview",
+      "question": "Compare rapidamente HGLG11 e KNRI11 em termos de setor, renda e risco.",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "multi_ticker", "comparacao", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "pergunta pede comparação qualitativa usando vários blocos do overview e hints narrativos."
+        }
+      }
+    },
+    {
+      "id": "overview_004",
+      "group": "overview",
+      "question": "Que tipo de informação o Araquem traz no overview de um FII?",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "conceptual", "no_ticker", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "resposta deve se apoiar nos hints de fii_overview e concepts-fiis/concepts-risk."
+        }
+      }
+    },
+
+    {
+      "id": "risk_001",
+      "group": "risk",
+      "question": "Qual o Sharpe do HGRU11 e como eu devo interpretar esse número?",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "tags": ["risk", "sharpe", "single_ticker", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fiis_financials_risk",
+          "intent": "fiis_financials_risk"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "explicação semântica de Sharpe vem de concepts-risk e hints da entidade de risco."
+        }
+      }
+    },
+    {
+      "id": "risk_002",
+      "group": "risk",
+      "question": "O beta e o R² do KNRI11 em relação ao IFIX indicam um fundo mais defensivo ou mais agressivo?",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "tags": ["risk", "beta", "r2", "interpretacao", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fiis_financials_risk",
+          "intent": "fiis_financials_risk"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+    {
+      "id": "risk_003",
+      "group": "risk",
+      "question": "O que significa um max drawdown alto para um fundo como o MXRF11?",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "tags": ["risk", "max_drawdown", "conceptual", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fiis_financials_risk",
+          "intent": "fiis_financials_risk"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+    {
+      "id": "risk_004",
+      "group": "risk",
+      "question": "Como o Araquem usa CDI e SELIC para calcular retornos excedentes e métricas como Sharpe e Treynor?",
+      "entity": "fiis_financials_risk",
+      "intent": "fiis_financials_risk",
+      "tags": ["risk", "macro_link", "cdi", "selic", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fiis_financials_risk",
+          "intent": "fiis_financials_risk"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "resposta depende de concepts-risk-metrics-methodology e history_market_indicators."
+        }
+      }
+    },
+
+    {
+      "id": "macro_001",
+      "group": "macro",
+      "question": "Como o CDI dos últimos 12 meses se compara ao dividend yield médio dos FIIs no mesmo período?",
+      "entity": "history_market_indicators",
+      "intent": "history_market_indicators",
+      "tags": ["macro", "cdi", "comparacao_fiis", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "history_market_indicators",
+          "intent": "history_market_indicators"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "explicação deve usar conceitos de CDI e metodologia macro, sem inventar números."
+        }
+      }
+    },
+    {
+      "id": "macro_002",
+      "group": "macro",
+      "question": "O que significa IPCA alto para quem investe em FIIs de tijolo?",
+      "entity": "history_market_indicators",
+      "intent": "history_market_indicators",
+      "tags": ["macro", "ipca", "fiis_tijolo", "interpretacao", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "history_market_indicators",
+          "intent": "history_market_indicators"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+    {
+      "id": "macro_003",
+      "group": "macro",
+      "question": "Como movimentos do IFIX e do IFIL ajudam a entender o risco da minha carteira de FIIs?",
+      "entity": "history_b3_indexes",
+      "intent": "history_b3_indexes",
+      "tags": ["macro", "ifix", "ifil", "carteira", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "history_b3_indexes",
+          "intent": "history_b3_indexes"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+    {
+      "id": "macro_004",
+      "group": "macro",
+      "question": "De que forma a alta do dólar (USD/BRL) costuma impactar FIIs com receitas dolarizadas?",
+      "entity": "history_currency_rates",
+      "intent": "history_currency_rates",
+      "tags": ["macro", "fx", "usd_brl", "fiis", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "history_currency_rates",
+          "intent": "history_currency_rates"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    },
+
+    {
+      "id": "combo_001",
+      "group": "combo",
+      "question": "Juros em queda e IPCA controlado ajudam ou atrapalham fundos como HGLG11 e KNRI11? Explique usando risco e dividendos.",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "risk", "macro", "multi_ticker", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true,
+          "reason": "resposta ideal combina overview dos fundos com conceitos de macro e risco."
+        }
+      }
+    },
+    {
+      "id": "combo_002",
+      "group": "combo",
+      "question": "Quero uma visão integrada: como o Araquem cruza overview, métricas de risco e histórico macro para responder perguntas sobre FIIs?",
+      "entity": "fii_overview",
+      "intent": "fii_overview",
+      "tags": ["overview", "risk", "macro", "conceptual", "rag_expected"],
+      "expected": {
+        "route": {
+          "entity": "fii_overview",
+          "intent": "fii_overview"
+        },
+        "rag": {
+          "should_use": true
+        }
+      }
+    }
+  ]
+}

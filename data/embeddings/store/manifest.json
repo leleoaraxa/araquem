@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-02T22:13:47Z",
+  "generated_at": "2025-12-02T22:37:44Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -130,8 +130,8 @@
         "cadastro",
         "entity:fiis_cadastro"
       ],
-      "chunks": 1,
-      "sha_all": "477b3062760ed3916c6f3604f01af704abfc062969292dd55e7f76969bc28fdd"
+      "chunks": 2,
+      "sha_all": "9b17202b5212e511c26f5e7d38068f7bf7dce023d9fcc73b83e2823308c9137b"
     },
     {
       "id": "entity-fiis-dividendos",
@@ -678,7 +678,7 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764713784,
+  "last_refresh_epoch": 1764715225,
   "vector_dimension": 768,
-  "total_chunks": 198
+  "total_chunks": 199
 }
