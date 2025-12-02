@@ -3,9 +3,10 @@ O que é:
   diários de compra/venda e variação percentual.
 
 Principais colunas:
-- currency_pair: par de moedas, ex.: USD/BRL.
-- data e rate: data de referência e cotação de fechamento.
-- variation_pct: oscilação diária do par.
+- rate_date: data de referência (D-1) das cotações.
+- usd_buy_amt/usd_sell_amt e eur_buy_amt/eur_sell_amt: valores de compra e venda
+  em BRL para USD e EUR.
+- usd_var_pct e eur_var_pct: variação percentual diária de cada moeda.
 
 Como o Araquem usa:
 - Contextualizar movimentos de FIIs expostos a contratos dolarizados ou receitas

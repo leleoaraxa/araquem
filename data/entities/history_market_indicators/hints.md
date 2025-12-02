@@ -4,9 +4,9 @@ O que é:
   mensal conforme o indicador.
 
 Principais colunas:
-- indicador: nome curto do índice (cdi, selic, ipca etc.).
-- data e valor: ponto temporal da série, já normalizado.
-- periodicidade: frequência da coleta (diária ou mensal) para orientar respostas.
+- indicator_name: nome curto do índice (cdi, selic, ipca etc.).
+- indicator_date e indicator_amt: data de referência (D-1) e valor numérico já
+  normalizado.
 
 Como o Araquem usa:
 - Responder perguntas de histórico macro, comparar CDI/SELIC com dividendos de

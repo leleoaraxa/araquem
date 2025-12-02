@@ -3,9 +3,10 @@ O que é:
   Inclui pontos do índice, variações e datas de referência.
 
 Principais colunas:
-- index e data: identificam qual índice e o dia consultado.
-- close e variation_pct: pontos de fechamento e variação percentual.
-- fonte: referência da coleta para rastreabilidade.
+- index_date: data de referência (D-1) para todos os índices.
+- ibov_points_count/ifix_points_count/ifil_points_count: pontos de cada índice.
+- ibov_var_pct/ifix_var_pct/ifil_var_pct: variação percentual diária de cada
+  série.
 
 Como o Araquem usa:
 - Calcular beta, R² e alfa de FIIs com base no IFIX/IFIL.
