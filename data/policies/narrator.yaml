@@ -6,23 +6,21 @@ terms:
 
 narrator:
   model: sirios-narrator:latest
-
-  # 🔴 Antes:
-  # llm_enabled: false
-  # shadow: false
-  # 🔵 Agora (Caminho A: LLM ligado em shadow globalmente)
   llm_enabled: true
   shadow: true
 
   default:
-    # Default: ninguém usa LLM/shadow a menos que a entidade explicitamente ligue
     llm_enabled: false
     shadow: false
     model: sirios-narrator:latest
     style: executivo
+
+    # Limites de uso do LLM
     max_llm_rows: 0
     max_prompt_tokens: 4000
     max_output_tokens: 700
+
+    # RAG / contexto
     use_rag_in_prompt: false
     use_conversation_context: false
     rag_snippet_max_chars: 320
@@ -31,6 +29,9 @@ narrator:
     concept_with_data_when_rag: false
 
   entities:
+    # ──────────────────
+    # Núcleo de RISCO
+    # ──────────────────
     fiis_financials_risk:
       llm_enabled: true
       shadow: true
@@ -43,6 +44,7 @@ narrator:
       concept_with_data_when_rag: true
       strict_mode: true
 
+    # Receita indexada (IPCA/CDI etc.) – por enquanto sem LLM
     fiis_financials_revenue_schedule:
       llm_enabled: false
       shadow: false
@@ -53,6 +55,7 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
 
+    # Notícias (LLM conceitual + RAG)
     fiis_noticias:
       llm_enabled: true
       shadow: true
@@ -65,6 +68,9 @@ narrator:
       concept_with_data_when_rag: true
       strict_mode: false
 
+    # ──────────────────
+    # Série histórica de mercado / macro
+    # ──────────────────
     history_market_indicators:
       llm_enabled: true
       shadow: true
@@ -101,6 +107,9 @@ narrator:
       concept_with_data_when_rag: true
       strict_mode: false
 
+    # ──────────────────
+    # Overview / yield / carteira
+    # ──────────────────
     fii_overview:
       llm_enabled: false
       shadow: false
@@ -142,6 +151,112 @@ narrator:
       strict_mode: false
 
     macro_consolidada:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    # ──────────────────
+    # Cadastro / preços / processos / rankings
+    # ──────────────────
+    fiis_cadastro:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_dividendos:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_financials_snapshot:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_imoveis:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_precos:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_processos:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_rankings:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    # ──────────────────
+    # Entidades do cliente (posições / desempenho / dividendos evol.)
+    # ──────────────────
+    client_fiis_positions:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    client_fiis_dividends_evolution:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    client_fiis_performance_vs_benchmark:
       llm_enabled: false
       shadow: false
       max_llm_rows: 0

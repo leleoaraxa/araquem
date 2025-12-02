@@ -145,7 +145,6 @@ services:
         enabled: true
         # outcome: ok | error
         labels: [outcome]
-
       sirios_narrator_shadow_total:
         enabled: true
         # outcome: ok | error
