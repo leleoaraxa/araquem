@@ -4,7 +4,6 @@
 
 ---
 
-<br>
 
 # **0. Propósito**
 
@@ -22,7 +21,6 @@ Este documento define oficialmente:
 
 ---
 
-<br>
 
 # **1. As 5 Jornadas Canônicas**
 
@@ -193,7 +191,6 @@ Clareza + confiança + segurança.
 
 ---
 
-<br>
 
 # **2. Relacionando Jornadas x Entidades**
 
@@ -207,7 +204,6 @@ Clareza + confiança + segurança.
 
 ---
 
-<br>
 
 # **3. Como o usuário descobre que o Araquem faz tudo isso?**
 
@@ -245,7 +241,6 @@ Nenhuma instrução explícita.
 
 ---
 
-<br>
 
 # **4. Diretrizes para Comportamento Inteligente**
 
@@ -277,7 +272,6 @@ Encerramento sempre com:
 
 ---
 
-<br>
 
 # **5. Erros de UX que o Araquem nunca pode cometer**
 
@@ -292,7 +286,6 @@ Encerramento sempre com:
 
 ---
 
-<br>
 
 # **6. Exemplos Oficiais de Jornadas (com fluxo completo)**
 
@@ -355,7 +348,6 @@ Encerramento sempre com:
 
 ---
 
-<br>
 
 # **7. Final — Como este documento será usado**
 
