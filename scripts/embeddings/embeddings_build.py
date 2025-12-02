@@ -7,10 +7,13 @@ Compliance: Guardrails Araquem v2.1.1
 """
 
 from __future__ import annotations
-import os, sys, re, json, argparse, hashlib, yaml, time
+import os, sys, re, json, argparse, hashlib, yaml, time, logging, datetime
 from pathlib import Path
 from typing import Iterable, List, Dict, Any
 from app.rag.ollama_client import OllamaClient
+
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+logger = logging.getLogger("embeddings_build")
 
 _ENTITY_TAG_PREFIXES = ("entity:", "entity=")
 
@@ -80,7 +83,8 @@ def _sha(s: str) -> str:
 
 
 def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str, Any]:
-    idx = yaml.safe_load(Path(index_path).read_text(encoding="utf-8"))
+    idx_path = Path(index_path)
+    idx = yaml.safe_load(idx_path.read_text(encoding="utf-8"))
     version = idx.get("version", 1)
     collection = idx.get("collection", "default")
     model = idx.get("embedding_model", "nomic-embed-text")
@@ -92,16 +96,27 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
     outp = Path(out_dir)
     outp.mkdir(parents=True, exist_ok=True)
     out_jsonl = outp / "embeddings.jsonl"
+    now = datetime.datetime.utcnow().replace(microsecond=0)
     manifest = {
         "version": version,
         "collection": collection,
         "embedding_model": model,
-        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "source": str(index_path),
+        "generated_at": now.isoformat() + "Z",
+        "source": str(idx_path),
         "docs": [],
     }
 
+    logger.info(
+        "embeddings_build: index=%s, out=%s, model=%s, chunk=%s/%s",
+        idx_path,
+        out_dir,
+        model,
+        max_chars,
+        overlap,
+    )
+
     total_chunks = 0
+    vector_dim: int | None = None
     B = int(os.getenv("EMBED_BATCH_SIZE", "8"))
     with out_jsonl.open("w", encoding="utf-8") as fw:
         for item in include:
@@ -158,6 +173,10 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
                         embs = embs[: len(batch)]
                 vectors.extend(embs)
 
+            for emb in vectors:
+                if isinstance(emb, list) and emb and vector_dim is None:
+                    vector_dim = len(emb)
+
             assert len(vectors) == len(chunks)
             for k, (c, v) in enumerate(zip(chunks, vectors)):
                 entity_name = _extract_entity_from_tags(tags)
@@ -195,12 +214,24 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
             )
 
     manifest_path = Path(out_dir) / "manifest.json"
-    manifest["last_refresh_epoch"] = int(time.time())
+    refresh_epoch = int(time.time())
+    manifest["last_refresh_epoch"] = refresh_epoch
+    if vector_dim is not None:
+        manifest["vector_dimension"] = vector_dim
+    manifest["total_chunks"] = total_chunks
+    logger.info(
+        "embeddings_build: index=%s, vectors=%d, dim=%s, generated_at=%s, last_refresh_epoch=%d",
+        idx_path,
+        total_chunks,
+        vector_dim if vector_dim is not None else "unknown",
+        manifest["generated_at"],
+        refresh_epoch,
+    )
     manifest_path.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8"
     )
-    print(f"[manifest] updated {manifest_path}")
-    print(f"[done] {total_chunks} chunks → {out_jsonl}")
+    logger.info("[manifest] updated %s", manifest_path)
+    logger.info("[done] %d chunks → %s", total_chunks, out_jsonl)
     return {"chunks": total_chunks, "out": str(out_jsonl)}
 
 
