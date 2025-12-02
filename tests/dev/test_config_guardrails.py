@@ -1278,6 +1278,23 @@ class TestCachePrivacyPolicies:
                 ), f"Hardcode proibido encontrado em {file_path}: {token}"
 
 
+class TestPlannerGuardrails:
+    def test_param_inference_does_not_access_context_manager(self):
+        src = Path("app/planner/param_inference.py").read_text(encoding="utf-8")
+        forbidden = [
+            "get_last_reference",
+            "last_reference_allows_entity",
+            "context_manager",
+            "enable_last_ticker",
+            "last_reference_policy",
+        ]
+
+        for token in forbidden:
+            assert (
+                token not in src
+            ), f"Token proibido encontrado em param_inference.py: {token}"
+
+
 class TestContextManagerPolicy:
     def _patch_loader(self, monkeypatch, path: Path):
         original = cm._load_policy
