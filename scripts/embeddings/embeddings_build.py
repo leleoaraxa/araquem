@@ -7,10 +7,11 @@ Compliance: Guardrails Araquem v2.1.1
 """
 
 from __future__ import annotations
-import os, sys, re, json, argparse, hashlib, yaml, time, logging, datetime
+import os, sys, re, json, argparse, hashlib, yaml, time, logging
 from pathlib import Path
 from typing import Iterable, List, Dict, Any
 from app.rag.ollama_client import OllamaClient
+from datetime import datetime, timezone
 
 logger = logging.getLogger("embeddings_build")
 
@@ -95,12 +96,13 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
     outp = Path(out_dir)
     outp.mkdir(parents=True, exist_ok=True)
     out_jsonl = outp / "embeddings.jsonl"
-    now = datetime.datetime.utcnow().replace(microsecond=0)
+    now = datetime.now(timezone.utc).replace(microsecond=0)
+
     manifest = {
         "version": version,
         "collection": collection,
         "embedding_model": model,
-        "generated_at": now.isoformat() + "Z",
+        "generated_at": now.isoformat().replace("+00:00", "Z"),
         "source": str(idx_path),
         "docs": [],
     }
