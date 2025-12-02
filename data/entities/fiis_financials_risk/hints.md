@@ -1,13 +1,24 @@
-Use os conceitos de risco detalhados em `data/concepts/concepts-risk.yaml` para explicar o significado das métricas e qual benchmark foi usado.
-- Sempre deixe claro que o retorno excedente considera CDI/SELIC como ativo livre de risco.
-- R² indica aderência ao índice de referência (IFIX), não qualidade absoluta do fundo.
+O que é:
+- View com métricas quantitativas de risco para FIIs, calculadas sobre séries
+  históricas de preços, dividendos, IFIX e CDI/SELIC.
+- Inclui volatilidade, Sharpe, Sortino, Treynor, alfa de Jensen, beta, R² e
+  máximo drawdown em diferentes janelas.
 
-Exemplos de pedidos esperados:
-- volatilidade do HGLG11
-- Índice de Treynor do HGLG11
-- Sharpe do HGRU11
-- beta do HGLG11
-- sortino do KNRI11
-- drawdown do VISC11
-- r2 do HGRU11
-- coeficiente de determinacao do MXRF11
+Como interpretar:
+- Retornos excedentes usam CDI/SELIC como linha de base de ativo livre de risco.
+- Beta e R² comparam o fundo ao IFIX; beta > 1 indica maior sensibilidade ao
+  mercado, beta < 1 indica postura mais defensiva.
+- MDD mostra a pior queda acumulada na janela; não é previsão de nova queda.
+
+Boas respostas no Araquem:
+- Sempre citar a janela de cálculo (ex.: 12m, 36m) e o benchmark utilizado.
+- Explicar qualitativamente o que o número representa sem recomendar compra ou
+  venda.
+- Relacionar métricas de risco com contexto macro (juros, inflação) quando
+  pertinente, usando conceitos de `data/concepts/concepts-risk*.yaml`.
+
+Perguntas esperadas:
+- "qual o Sharpe do HGRU11?"
+- "beta e R² do KNRI11 em relação ao IFIX"
+- "qual foi o máximo drawdown do MXRF11 nos últimos 12 meses?"
+- "esse FII oscilou mais que o IFIX?"
