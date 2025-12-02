@@ -270,7 +270,7 @@ sequenceDiagram
     participant Executor
     participant Presenter
     participant Narrator
-    participant LLM as Ollama/Mistral
+    participant LLM as Ollama/sirios-narrator:latest
 
     User ->> API: pergunta "explique as métricas de risco do HGLG11"
     API ->> Planner: normalize → tokenize → score → choose intent/entity

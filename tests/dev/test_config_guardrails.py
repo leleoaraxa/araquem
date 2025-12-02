@@ -80,7 +80,9 @@ class TestNarratorConfig:
             {"narrator": []},
         ],
     )
-    def test_load_narrator_flags_malformed_block_raises(self, tmp_path, content, ask_module):
+    def test_load_narrator_flags_malformed_block_raises(
+        self, tmp_path, content, ask_module
+    ):
         yaml_path = tmp_path / "narrator_invalid.yaml"
         import yaml
 
@@ -143,7 +145,9 @@ class TestNarratorPolicyLoader:
 
         monkeypatch.setattr(narrator_module, "_load_narrator_policy", _patched_loader)
 
-    def test_load_narrator_policy_missing_file_raises(self, tmp_path, caplog, monkeypatch):
+    def test_load_narrator_policy_missing_file_raises(
+        self, tmp_path, caplog, monkeypatch
+    ):
         caplog.set_level(logging.ERROR)
         missing_path = tmp_path / "narrator_missing.yaml"
         self._set_policy_path(monkeypatch, missing_path)
@@ -151,9 +155,13 @@ class TestNarratorPolicyLoader:
         with pytest.raises(RuntimeError, match="Narrator policy ausente"):
             narrator_module._load_narrator_policy()
 
-        assert any("Narrator policy ausente" in rec.getMessage() for rec in caplog.records)
+        assert any(
+            "Narrator policy ausente" in rec.getMessage() for rec in caplog.records
+        )
 
-    def test_load_narrator_policy_non_mapping_yaml_raises(self, tmp_path, caplog, monkeypatch):
+    def test_load_narrator_policy_non_mapping_yaml_raises(
+        self, tmp_path, caplog, monkeypatch
+    ):
         caplog.set_level(logging.ERROR)
         yaml_path = tmp_path / "narrator_list.yaml"
         yaml_path.write_text("- 1\n- 2\n")
@@ -256,7 +264,7 @@ class TestNarratorPolicyLoader:
             yaml.safe_dump(
                 {
                     "narrator": {
-                        "model": "mistral:instruct",
+                        "model": "sirios-narrator:latest:instruct",
                         "llm_enabled": True,
                         "shadow": False,
                     }
@@ -268,7 +276,7 @@ class TestNarratorPolicyLoader:
         result = narrator_module._load_narrator_policy()
 
         assert result == {
-            "model": "mistral:instruct",
+            "model": "sirios-narrator:latest:instruct",
             "llm_enabled": True,
             "shadow": False,
         }
@@ -303,9 +311,7 @@ class TestParamInferenceConfig:
 
         yaml_path = tmp_path / "param_inference_invalid_agg.yaml"
         yaml_path.write_text(
-            yaml.safe_dump(
-                {"intents": {"fiis_precos": {"default_agg": "median"}}}
-            )
+            yaml.safe_dump({"intents": {"fiis_precos": {"default_agg": "median"}}})
         )
 
         with pytest.raises(ValueError, match="default_agg.*desconhecido"):
@@ -410,9 +416,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
-                            "agg_keywords": {"list": {"include": "listar"}}
-                        }
+                        "fiis_precos": {"agg_keywords": {"list": {"include": "listar"}}}
                     }
                 }
             )
@@ -426,7 +430,9 @@ class TestParamInferenceConfig:
     ):
         import yaml
 
-        yaml_path = tmp_path / "param_inference_invalid_agg_keywords_include_non_string.yaml"
+        yaml_path = (
+            tmp_path / "param_inference_invalid_agg_keywords_include_non_string.yaml"
+        )
         yaml_path.write_text(
             yaml.safe_dump(
                 {
@@ -442,9 +448,7 @@ class TestParamInferenceConfig:
         with pytest.raises(ValueError, match="keywords de agg 'list'.*strings"):
             param_inference._load_yaml(yaml_path)
 
-    def test_param_inference_invalid_window_keywords_kind_raises(
-        self, tmp_path: Path
-    ):
+    def test_param_inference_invalid_window_keywords_kind_raises(self, tmp_path: Path):
         import yaml
 
         yaml_path = tmp_path / "param_inference_invalid_window_keywords_kind.yaml"
@@ -468,7 +472,9 @@ class TestParamInferenceConfig:
     ):
         import yaml
 
-        yaml_path = tmp_path / "param_inference_invalid_window_keywords_key_not_int.yaml"
+        yaml_path = (
+            tmp_path / "param_inference_invalid_window_keywords_key_not_int.yaml"
+        )
         yaml_path.write_text(
             yaml.safe_dump(
                 {
@@ -489,7 +495,9 @@ class TestParamInferenceConfig:
     ):
         import yaml
 
-        yaml_path = tmp_path / "param_inference_invalid_window_keywords_key_non_positive.yaml"
+        yaml_path = (
+            tmp_path / "param_inference_invalid_window_keywords_key_non_positive.yaml"
+        )
         yaml_path.write_text(
             yaml.safe_dump(
                 {
@@ -510,14 +518,14 @@ class TestParamInferenceConfig:
     ):
         import yaml
 
-        yaml_path = tmp_path / "param_inference_invalid_window_keywords_values_type.yaml"
+        yaml_path = (
+            tmp_path / "param_inference_invalid_window_keywords_values_type.yaml"
+        )
         yaml_path.write_text(
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
-                            "window_keywords": {"months": {6: "texto"}}
-                        }
+                        "fiis_precos": {"window_keywords": {"months": {6: "texto"}}}
                     }
                 }
             )
@@ -531,20 +539,22 @@ class TestParamInferenceConfig:
     ):
         import yaml
 
-        yaml_path = tmp_path / "param_inference_invalid_window_keywords_values_non_string.yaml"
+        yaml_path = (
+            tmp_path / "param_inference_invalid_window_keywords_values_non_string.yaml"
+        )
         yaml_path.write_text(
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
-                            "window_keywords": {"months": {6: ["ok", 123]}}
-                        }
+                        "fiis_precos": {"window_keywords": {"months": {6: ["ok", 123]}}}
                     }
                 }
             )
         )
 
-        with pytest.raises(ValueError, match="keywords em window_keywords.months.6.*strings"):
+        with pytest.raises(
+            ValueError, match="keywords em window_keywords.months.6.*strings"
+        ):
             param_inference._load_yaml(yaml_path)
 
     def test_param_inference_invalid_list_limit_raises(self, tmp_path: Path):
@@ -553,11 +563,7 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_list_limit.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {
-                    "intents": {
-                        "fiis_precos": {"defaults": {"list": {"limit": -5}}}
-                    }
-                }
+                {"intents": {"fiis_precos": {"defaults": {"list": {"limit": -5}}}}}
             )
         )
 
@@ -570,11 +576,7 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_list_order.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {
-                    "intents": {
-                        "fiis_precos": {"defaults": {"list": {"order": "down"}}}
-                    }
-                }
+                {"intents": {"fiis_precos": {"defaults": {"list": {"order": "down"}}}}}
             )
         )
 
@@ -738,7 +740,9 @@ class TestOntologyLoader:
     def test_load_ontology_missing_intents_raises(self, tmp_path: Path):
         data = self._base_ontology()
         data.pop("intents")
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_missing_intents.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_missing_intents.yaml"
+        )
 
         with pytest.raises(ValueError) as exc:
             load_ontology(str(yaml_path))
@@ -748,7 +752,9 @@ class TestOntologyLoader:
     def test_load_ontology_intents_not_list_raises(self, tmp_path: Path):
         data = self._base_ontology()
         data["intents"] = {"name": "fiis_precos"}
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_intents_not_list.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_intents_not_list.yaml"
+        )
 
         with pytest.raises(ValueError) as exc:
             load_ontology(str(yaml_path))
@@ -774,10 +780,14 @@ class TestOntologyLoader:
             ),
         ],
     )
-    def test_load_ontology_invalid_intents_raise(self, tmp_path: Path, caplog, modifier, expected):
+    def test_load_ontology_invalid_intents_raise(
+        self, tmp_path: Path, caplog, modifier, expected
+    ):
         data = self._base_ontology()
         modifier(data)
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_intents.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_invalid_intents.yaml"
+        )
 
         caplog.set_level(logging.ERROR)
 
@@ -789,7 +799,9 @@ class TestOntologyLoader:
     def test_load_ontology_invalid_anti_tokens_type(self, tmp_path: Path, caplog):
         data = self._base_ontology()
         data["anti_tokens"] = ["should", "be", "dict"]
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_anti_tokens.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_invalid_anti_tokens.yaml"
+        )
 
         caplog.set_level(logging.ERROR)
 
@@ -807,10 +819,14 @@ class TestOntologyLoader:
             ({"split": "   "}, "split"),
         ],
     )
-    def test_load_ontology_invalid_tokenization(self, tmp_path: Path, tokenization, expected):
+    def test_load_ontology_invalid_tokenization(
+        self, tmp_path: Path, tokenization, expected
+    ):
         data = self._base_ontology()
         data["tokenization"] = tokenization
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_tokenization.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_invalid_tokenization.yaml"
+        )
 
         with pytest.raises(ValueError) as exc:
             load_ontology(str(yaml_path))
@@ -832,7 +848,9 @@ class TestOntologyLoader:
     def test_load_ontology_invalid_weights(self, tmp_path: Path, weights, expected):
         data = self._base_ontology()
         data["weights"] = weights
-        yaml_path = self._write_ontology(tmp_path, data, "ontology_invalid_weights.yaml")
+        yaml_path = self._write_ontology(
+            tmp_path, data, "ontology_invalid_weights.yaml"
+        )
 
         with pytest.raises(ValueError) as exc:
             load_ontology(str(yaml_path))
@@ -1075,7 +1093,9 @@ class TestQualityConfigLoader:
         assert any("mapeamento" in rec.message for rec in caplog.records)
         assert any("mapeamento" in err for err in errors)
 
-    def test_load_candidate_malformed_schema(self, tmp_path, caplog, quality_module, monkeypatch):
+    def test_load_candidate_malformed_schema(
+        self, tmp_path, caplog, quality_module, monkeypatch
+    ):
         caplog.set_level(logging.ERROR)
         errors = self._set_error_sink(quality_module, monkeypatch)
 
@@ -1097,7 +1117,9 @@ class TestQualityConfigLoader:
         assert any("malformada" in err for err in errors)
         assert any("malformada" in rec.message for rec in caplog.records)
 
-    def test_load_candidate_happy_path(self, tmp_path, caplog, quality_module, monkeypatch):
+    def test_load_candidate_happy_path(
+        self, tmp_path, caplog, quality_module, monkeypatch
+    ):
         caplog.set_level(logging.ERROR)
         errors = self._set_error_sink(quality_module, monkeypatch)
 
@@ -1173,7 +1195,9 @@ class TestContextPolicy:
 
 
 class TestEntityConfigLoader:
-    def test_load_entity_config_missing_logs_warning(self, tmp_path, caplog, monkeypatch):
+    def test_load_entity_config_missing_logs_warning(
+        self, tmp_path, caplog, monkeypatch
+    ):
         monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
         caplog.set_level(logging.WARNING)
 
@@ -1182,7 +1206,9 @@ class TestEntityConfigLoader:
         assert result == {}
         assert any("entity.yaml ausente" in rec.message for rec in caplog.records)
 
-    def test_load_entity_config_invalid_yaml_logs_error(self, tmp_path, caplog, monkeypatch):
+    def test_load_entity_config_invalid_yaml_logs_error(
+        self, tmp_path, caplog, monkeypatch
+    ):
         entity_dir = tmp_path / "bar"
         entity_dir.mkdir(parents=True)
         yaml_path = entity_dir / "entity.yaml"
@@ -1309,7 +1335,10 @@ class TestContextManagerPolicy:
         assert manager.policy_error is None
         assert manager.planner_policy.get("enabled") is False
         assert manager.narrator_policy.get("max_turns") == 5
-        assert manager.narrator_policy.get("max_chars") == DEFAULT_POLICY["narrator"]["max_chars"]
+        assert (
+            manager.narrator_policy.get("max_chars")
+            == DEFAULT_POLICY["narrator"]["max_chars"]
+        )
 
 
 class TestRagPolicyAndIndex:

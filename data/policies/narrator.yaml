@@ -3,11 +3,19 @@ terms:
   kind: policy
   scope: narrator
   version: 1
+
 narrator:
   model: sirios-narrator:latest
-  llm_enabled: false
-  shadow: false
+
+  # 🔴 Antes:
+  # llm_enabled: false
+  # shadow: false
+  # 🔵 Agora (Caminho A: LLM ligado em shadow globalmente)
+  llm_enabled: true
+  shadow: true
+
   default:
+    # Default: ninguém usa LLM/shadow a menos que a entidade explicitamente ligue
     llm_enabled: false
     shadow: false
     model: sirios-narrator:latest
@@ -21,6 +29,7 @@ narrator:
     prefer_concept_when_no_ticker: true
     rag_fallback_when_no_rows: false
     concept_with_data_when_rag: false
+
   entities:
     fiis_financials_risk:
       llm_enabled: true
@@ -33,6 +42,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: true
       strict_mode: true
+
     fiis_financials_revenue_schedule:
       llm_enabled: false
       shadow: false
@@ -42,6 +52,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+
     fiis_noticias:
       llm_enabled: true
       shadow: true
@@ -53,6 +64,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: true
       strict_mode: false
+
     history_market_indicators:
       llm_enabled: true
       shadow: true
@@ -64,6 +76,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: true
       strict_mode: false
+
     history_b3_indexes:
       llm_enabled: true
       shadow: true
@@ -75,6 +88,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: true
       strict_mode: false
+
     history_currency_rates:
       llm_enabled: true
       shadow: true
@@ -86,6 +100,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: true
       strict_mode: false
+
     fii_overview:
       llm_enabled: false
       shadow: false
@@ -95,6 +110,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+
     fiis_yield_history:
       llm_enabled: false
       shadow: false
@@ -104,6 +120,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+
     dividendos_yield:
       llm_enabled: false
       shadow: false
@@ -113,6 +130,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+
     carteira_enriquecida:
       llm_enabled: false
       shadow: false
@@ -122,6 +140,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+
     macro_consolidada:
       llm_enabled: false
       shadow: false
