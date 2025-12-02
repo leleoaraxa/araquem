@@ -75,6 +75,7 @@ def rag_debug(payload: RagDebugPayload):
         rag_with_policy = dict(rag_ctx)
         rag_with_policy.setdefault("policy", rag_policy_snapshot)
         narrator_meta["rag"] = rag_with_policy
+        meta["rag"] = rag_with_policy
 
     if payload.disable_rag:
         meta["rag_debug_disable"] = True

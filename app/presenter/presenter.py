@@ -18,7 +18,7 @@ from app.observability.narrator_shadow import (
     NarratorShadowEvent,
     collect_narrator_shadow,
 )
-from app.rag.context_builder import build_context, load_rag_policy
+from app.rag.context_builder import build_context, get_rag_policy, load_rag_policy
 from app.templates_answer import render_answer
 from app.core.context import context_manager
 
@@ -215,8 +215,19 @@ def present(
                 compute_mode_meta = m
 
     # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
-    if isinstance(meta_dict.get("rag"), dict):
-        narrator_rag_context = meta_dict["rag"]
+    rag_policy: Optional[Dict[str, Any]] = None
+    meta_rag_raw = meta_dict.get("rag") if isinstance(meta_dict.get("rag"), dict) else None
+    if isinstance(meta_rag_raw, dict):
+        narrator_rag_context = dict(meta_rag_raw)
+        if not isinstance(narrator_rag_context.get("policy"), dict):
+            rag_policy = load_rag_policy()
+            narrator_rag_context["policy"] = get_rag_policy(
+                entity=entity,
+                intent=intent,
+                compute_mode=compute_mode_meta,
+                has_ticker=has_ticker_in_question,
+                policy=rag_policy,
+            )
     else:
         rag_policy = load_rag_policy()
         narrator_rag_context = build_context(
