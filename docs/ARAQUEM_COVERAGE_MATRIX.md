@@ -1,26 +1,3 @@
-# **👉 ARAQUEM_COVERAGE_MATRIX.md**
-
-**“Mapa completo do que o Araquem sabe responder, como responde, quando responde e o que NÃO deve responder.”**
-
-Esse arquivo vira:
-
-* base dos testes (quality)
-* base de revisão do Planner
-* base do Narrator
-* base de UX
-* base de auditoria contínua
-* base para roadmap de expansão
-
-E serve também para entender riscos, lacunas, métricas e abrangência do produto.
-
-Ele ficará em:
-
-`docs/ARAQUEM_COVERAGE_MATRIX.md`
-
-Abaixo está a **versão completa e finalizada**, pronta para commit.
-
----
-
 # 🟦 **ARAQUEM — COVERAGE MATRIX (v1.0)**
 
 ## *Mapeamento oficial de cobertura: perguntas → entidades → comportamento → modo Narrator*

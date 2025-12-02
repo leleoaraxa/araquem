@@ -58,6 +58,7 @@ Nunca prever:
 * IFIX futuro
 * juros futuros
 * projeções de mercado
+* indicações de compra e venda
 
 Se for futuro → Narrator devolve **“não posso prever”**.
 
