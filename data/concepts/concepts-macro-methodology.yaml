@@ -1,0 +1,74 @@
+# data/concepts/concepts-macro-methodology.yaml
+version: 1
+domain: macro
+owner: research
+
+methodology:
+  proposito: >-
+    Explicar como a SIRIOS acompanha indicadores macroeconômicos usados no contexto
+    de FIIs: quais séries entram no sistema, como são coletadas e que limitações
+    existem. O objetivo é oferecer contexto textual para RAG, sem prometer
+    recomendações ou retornos financeiros.
+  principios:
+    - "Usar fontes públicas e rastreáveis (B3, Banco Central, IBGE, FGV)."
+    - "Registrar periodicidade e defasagem de cada série antes de qualquer cálculo."
+    - "Evitar inferir tendências; focar em histórico e referência para comparar FIIs."
+
+series:
+  ipca:
+    descricao: >-
+      IPCA mede a inflação oficial e é usado para entender o efeito da alta de
+      preços em contratos de locação e CRIs de FIIs. Os valores são mensais,
+      publicados pelo IBGE, e incorporados com defasagem típica de alguns dias
+      após o fechamento do mês.
+    uso_no_produto: >-
+      Serve como referência para ajustar dividendos reais, avaliar indexadores de
+      recebíveis e contextualizar perguntas sobre proteção contra inflação.
+    cuidados: >-
+      Mudanças metodológicas do IBGE e revisões podem alterar dados passados; a
+      SIRIOS sempre mantém a última versão disponível sem fazer ajustes próprios.
+  igpm_inpc_incc:
+    descricao: >-
+      IGPM, INPC e INCC aparecem em CRIs e contratos de aluguel. São tratados como
+      indexadores alternativos ao IPCA para medir a sensibilidade da receita dos
+      fundos a diferentes índices de preço.
+    uso_no_produto: >-
+      Permitem responder quais fundos têm receitas atreladas a cada indexador e
+      comparar desempenho real considerando a inflação específica de cada fluxo.
+  cdi_selic:
+    descricao: >-
+      CDI e SELIC representam ativo livre de risco para cálculos de Sharpe,
+      Treynor e retorno excedente. As séries vêm do Banco Central e são diárias.
+    uso_no_produto: >-
+      Funcionam como linha de base para avaliar se um FII entregou retorno
+      compatível com o custo de oportunidade. Também são usados para comparar
+      dividendos com alternativas de renda fixa.
+    cuidados: >-
+      A SIRIOS não projeta CDI ou SELIC; apenas relata histórico consolidado e
+      evita extrapolações.
+  indices_b3:
+    descricao: >-
+      IFIX, IFIL e IBOV são índices de referência para medir o comportamento de
+      mercado. As séries diárias são obtidas a partir da B3 e formam a base para
+      cálculos de beta, alfa e comparação de performance.
+    uso_no_produto: >-
+      Apoiam respostas sobre correlação de FIIs com o mercado e evolução de
+      índices em janelas específicas.
+  moedas:
+    descricao: >-
+      Dólar e euro são acompanhados para identificar efeitos cambiais em FIIs
+      dolarizados ou com contratos atrelados ao câmbio. As taxas vêm de fontes
+      públicas e são atualizadas diariamente.
+    uso_no_produto: >-
+      Ajudam a explicar variações de preço ou receita de fundos expostos ao
+      câmbio, sem sugerir operações especulativas.
+
+periodicidade_e_janelas:
+  - "IPCA/IGPM/INPC/INCC: atualização mensal; respostas devem citar que são séries encerradas no mês de referência."
+  - "CDI/SELIC: atualização diária; cálculos de excedente consideram acumulado na janela solicitada."
+  - "IFIX/IFIL/IBOV e moedas: atualização diária; comparações típicas usam 1m, 3m, 6m, 12m."
+
+limitacoes:
+  - "RAG não substitui dados operacionais em SQL; respostas macro são textuais e históricas."
+  - "Oscilações de curto prazo não implicam recomendação; o sistema apenas contextualiza movimentos."
+  - "Fontes podem sofrer revisões; a SIRIOS preserva a versão mais recente publicada sem ajustes manuais."

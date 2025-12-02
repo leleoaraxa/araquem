@@ -32,9 +32,17 @@ include:
     path: data/concepts/concepts-macro.yaml
     tags: [concepts, macro, market, fiis]
 
+  - id: concepts-macro-methodology
+    path: data/concepts/concepts-macro-methodology.yaml
+    tags: [concepts, macro, methodology, fiis]
+
   - id: concepts-carteira
     path: data/concepts/concepts-carteira.yaml
     tags: [concepts, carteira, private, fiis]
+
+  - id: concepts-risk-metrics-methodology
+    path: data/concepts/concepts-risk-metrics-methodology.yaml
+    tags: [concepts, risk, metrics, fiis]
 
   - id: indicators-catalog
     path: data/raw/indicators/catalog.md
@@ -50,12 +58,24 @@ include:
     path: data/entities/fiis_cadastro/entity.yaml
     tags: [entities, fiis, cadastro, "entity:fiis_cadastro"]
 
+  - id: entity-fiis-cadastro-hints
+    path: data/entities/fiis_cadastro/hints.md
+    tags: [entities, fiis, cadastro, "entity:fiis_cadastro"]
+
   - id: entity-fiis-dividendos
     path: data/entities/fiis_dividendos/entity.yaml
     tags: [entities, fiis, dividendos, "entity:fiis_dividendos"]
 
+  - id: entity-fiis-dividendos-hints
+    path: data/entities/fiis_dividendos/hints.md
+    tags: [entities, fiis, dividendos, "entity:fiis_dividendos"]
+
   - id: entity-fiis-precos
     path: data/entities/fiis_precos/entity.yaml
+    tags: [entities, fiis, precos, "entity:fiis_precos"]
+
+  - id: entity-fiis-precos-hints
+    path: data/entities/fiis_precos/hints.md
     tags: [entities, fiis, precos, "entity:fiis_precos"]
 
   - id: entity-fiis-rankings
@@ -97,6 +117,18 @@ include:
   - id: entity-client-fiis-positions
     path: data/entities/client_fiis_positions/entity.yaml
     tags: [entities, private, positions, "entity:client_fiis_positions"]
+
+  - id: entity-history-b3-indexes-hints
+    path: data/entities/history_b3_indexes/hints.md
+    tags: [entities, market, indexes, b3, "entity:history_b3_indexes"]
+
+  - id: entity-history-currency-rates-hints
+    path: data/entities/history_currency_rates/hints.md
+    tags: [entities, fx, currency, "entity:history_currency_rates"]
+
+  - id: entity-history-market-indicators-hints
+    path: data/entities/history_market_indicators/hints.md
+    tags: [entities, market, macro, indicators, "entity:history_market_indicators"]
 
   # ── Policies (paths corrigidos) ────────────────────────────────────────────
   - id: policies-cache
