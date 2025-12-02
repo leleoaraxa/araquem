@@ -1,4 +1,7 @@
 # app/planner/param_inference.py
+# Contexto não é consultado diretamente pelo Planner.
+# O endpoint /ask resolve contexto via ContextManager.resolve_last_reference()
+# e injeta identifiers já enriquecidos.
 from __future__ import annotations
 from typing import Dict, Any, Optional, List
 import calendar
@@ -363,24 +366,6 @@ def _ticker_from_identifiers(
     return None
 
 
-def _ticker_from_context(
-    entity: Optional[str], client_id: Optional[str], conversation_id: Optional[str]
-) -> Optional[str]:
-    from app.core.context import context_manager
-
-    if not client_id or not conversation_id:
-        return None
-
-    if not context_manager.last_reference_allows_entity(entity):
-        return None
-
-    last_ref = context_manager.get_last_reference(client_id, conversation_id)
-    if not last_ref or not getattr(last_ref, "ticker", None):
-        return None
-
-    return last_ref.ticker
-
-
 def infer_params(
     question: str,
     intent: str,
@@ -517,7 +502,7 @@ def infer_params(
             if "text" in sources:
                 ticker_value = _ticker_from_identifiers(identifiers, question)
             if not ticker_value and "context" in sources:
-                ticker_value = _ticker_from_context(entity, client_id, conversation_id)
+                ticker_value = _ticker_from_identifiers(identifiers, question)
             if ticker_value:
                 out["ticker"] = ticker_value
     return out
