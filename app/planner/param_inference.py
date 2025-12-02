@@ -79,6 +79,26 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
     for intent_name, cfg in intents.items():
         _require_mapping(cfg, label=f"intent '{intent_name}'")
 
+        if "required" in cfg:
+            req_list = _require_list(
+                cfg.get("required"), label=f"required da intent '{intent_name}'"
+            )
+            for item in req_list:
+                if not isinstance(item, str):
+                    raise ValueError(
+                        "param_inference.yaml inválido: itens de 'required' devem ser strings"
+                    )
+
+        if "bindings" in cfg:
+            bindings = _require_mapping(
+                cfg.get("bindings"), label=f"bindings da intent '{intent_name}'"
+            )
+            for key, value in bindings.items():
+                if not isinstance(key, str) or not isinstance(value, str):
+                    raise ValueError(
+                        "param_inference.yaml inválido: 'bindings' deve mapear strings para strings"
+                    )
+
         if "default_agg" in cfg:
             default_agg = cfg["default_agg"]
             if default_agg not in _ALLOWED_AGGS:
@@ -397,6 +417,13 @@ def infer_params(
     window = icfg.get("default_window")
     limit: Optional[int] = None
     order: Optional[str] = None
+    required_fields: List[str] = []
+    bindings: Dict[str, str] = {}
+
+    if isinstance(icfg.get("required"), list):
+        required_fields = [str(r) for r in icfg.get("required") if isinstance(r, str)]
+    if isinstance(icfg.get("bindings"), dict):
+        bindings = {str(k): str(v) for k, v in icfg.get("bindings", {}).items() if isinstance(k, str) and isinstance(v, str)}
 
     # Defaults da ENTIDADE (limit/order e windows_allowed adicionais)
     ent_def = _entity_agg_defaults(entity_yaml_path)
@@ -490,6 +517,21 @@ def infer_params(
         out["limit"] = limit
     if order is not None:
         out["order"] = order
+
+    # Bindings declarativos (ex: document_number <- context.client_id)
+    def _binding_value(target: str) -> Optional[str]:
+        if target == "context.client_id":
+            return str(client_id) if client_id is not None else None
+        if target == "context.conversation_id":
+            return str(conversation_id) if conversation_id is not None else None
+        return None
+
+    for field in required_fields:
+        bound_target = bindings.get(field)
+        if bound_target:
+            value = _binding_value(bound_target)
+            if value is not None:
+                out[field] = value
 
     params_section = icfg.get("params") if isinstance(icfg, dict) else {}
     if isinstance(params_section, dict):
