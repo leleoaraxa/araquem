@@ -7,7 +7,7 @@ terms:
 narrator:
   model: sirios-narrator:latest
   llm_enabled: true
-  shadow: true
+  shadow: false
 
   default:
     llm_enabled: false
@@ -16,9 +16,9 @@ narrator:
     style: executivo
 
     # Limites de uso do LLM
-    max_llm_rows: 0
-    max_prompt_tokens: 4000
-    max_output_tokens: 700
+    max_llm_rows: 999
+    max_prompt_tokens: 2000
+    max_output_tokens: 400
 
     # RAG / contexto
     use_rag_in_prompt: false
@@ -34,9 +34,9 @@ narrator:
     # ──────────────────
     fiis_financials_risk:
       llm_enabled: true
-      shadow: true
+      shadow: false
       max_llm_rows: 3
-      rag_snippet_max_chars: 280
+      rag_snippet_max_chars: 220
       use_rag_in_prompt: true
       use_conversation_context: true
       prefer_concept_when_no_ticker: true
@@ -58,7 +58,7 @@ narrator:
     # Notícias (LLM conceitual + RAG)
     fiis_noticias:
       llm_enabled: true
-      shadow: true
+      shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 320
       use_rag_in_prompt: true
@@ -73,7 +73,7 @@ narrator:
     # ──────────────────
     history_market_indicators:
       llm_enabled: true
-      shadow: true
+      shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true
@@ -85,7 +85,7 @@ narrator:
 
     history_b3_indexes:
       llm_enabled: true
-      shadow: true
+      shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true
@@ -97,7 +97,7 @@ narrator:
 
     history_currency_rates:
       llm_enabled: true
-      shadow: true
+      shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true

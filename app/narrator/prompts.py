@@ -262,6 +262,13 @@ def build_prompt(
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
     facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
 
+    # Modo conceitual: não precisa de RAG, reduzimos o prompt ao essencial
+    compute_block = (meta or {}).get("compute") or {}
+    if isinstance(compute_block, dict):
+        mode = compute_block.get("mode")
+        if isinstance(mode, str) and mode.strip().lower() == "concept":
+            rag = None
+
     if isinstance(effective_policy, dict) and not effective_policy.get(
         "use_rag_in_prompt", False
     ):

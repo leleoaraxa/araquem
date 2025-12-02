@@ -146,6 +146,11 @@
   * quando o Narrator entra,
   * o que ele pode ou não alterar,
   * como interpretar métricas.
+* [ ] **Ajuste dirigido de prompt para casos de Sharpe negativo em `fiis_financials_risk`**, garantindo:
+
+  * interpretação correta (“retorno pior que ativo livre de risco”, sem falar “positivo e alto” com valor negativo),
+  * nenhuma mudança em dados/pipeline — **apenas prompt/policy YAML**.
+* [ ] Validar exemplos concretos (como o caso `VINO11`, Sharpe -27,45%) usando apenas shadow / logs.
 
 ---
 
@@ -184,6 +189,12 @@
   * [ ] Interpretação de notícia negativa/neutra/positiva.
 * [ ] Ajustar prompt final para ficar sempre ≤ ~3800 tokens (contando contexto, RAG, facts).
 * [ ] Criar prompts de verificação (anti-alucinação) no lado do Narrator (ex: “não inventar números; se não houver dados, dizer explicitamente”).
+* [ ] **Garantir que todos os refinamentos sejam feitos apenas em YAML/prompt/policies**, sem alterar:
+
+  * código do Planner,
+  * código do Builder/Executor,
+  * contrato do `/ask`,
+  * ontologia ou views de dados.
 
 ---
 
@@ -260,6 +271,14 @@
   * Estrutura do JSON.
   * Campos importantes.
   * Como amostrar casos para revisão manual.
+* [ ] **Definir um fluxo “humanamente possível” para revisar respostas enormes (~3 mil linhas)**:
+
+  * [ ] Filtro de campos relevantes (esconder blobs gigantes no `explain`).
+  * [ ] Scripts auxiliares para:
+
+    * resumir o `explain`,
+    * destacar só: intent/entity/aggregates/answer_final/narrator.
+  * [ ] Documentar esse fluxo no `NARRATOR_SHADOW_README.md`.
 
 ---
 
@@ -354,3 +373,38 @@
 * [ ] CI/CD blue-green (rotina de deploy segura).
 * [ ] Smoke test pós-deploy (checklist objetivo).
 * [ ] Publicação e handover (interno SIRIOS).
+
+---
+
+## 13. Plano de Trabalho de Amanhã — **Modo Safe (só concluir, sem quebrar nada)**
+
+> 🎯 Objetivo: **apenas concluir o Araquem**, refinando Narrator/prompt e auditoria, **sem alterar pipeline/core/contratos**.
+
+**Escopo POSITIVO (pode mexer)**
+
+* [ ] Ajustes **somente em YAML/policies/prompts**, especialmente:
+
+  * [ ] `data/policies/narrator.yaml` – texto e regras para:
+
+    * casos de **Sharpe negativo** em `fiis_financials_risk`,
+    * linguagem mais segura (“não inventar número”).
+  * [ ] `data/concepts/concepts-risk.yaml` – reforçar explicação de Sharpe negativo, Sortino etc, se necessário.
+* [ ] Uso de **shadow logs e explain analytics** apenas para observar:
+
+  * [ ] Casos como `VINO11` (Sharpe -27,45%).
+  * [ ] Outras respostas suspeitas do Narrator (sem mexer em dados).
+* [ ] Documentação leve:
+
+  * [ ] Atualizar `NARRATOR_README.md` / `NARRATOR_SHADOW_README.md` com lições aprendidas (Sharpe, casos limites).
+  * [ ] Pequeno guia de “como revisar respostas enormes” (scripts auxiliares, filtros).
+
+**Escopo NEGATIVO (proibido mexer amanhã)**
+
+* [ ] ❌ Não alterar código core:
+
+  * `planner`, `builder/sql_builder`, `executor/pg`, `presenter`, `context_manager`, `cache`.
+* [ ] ❌ Não alterar contrato do `/ask` nem payload.
+* [ ] ❌ Não criar novas entidades, projections ou views SQL.
+* [ ] ❌ Não mudar thresholds de planner nem políticas de roteamento.
+* [ ] ❌ Não mudar políticas de RAG para incluir novas entidades numéricas.
+* [ ] ❌ Não mudar ontologia estrutural (`data/ontology/entity.yaml`), apenas, no máximo, textos conceituais relacionados ao Narrator.
