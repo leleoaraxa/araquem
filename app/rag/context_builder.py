@@ -88,8 +88,93 @@ def is_rag_enabled(
 
     if default_cfg or profiles_cfg:
         return True
-
+    
     return False
+
+
+def get_rag_policy(
+    *,
+    entity: str | None,
+    intent: str | None,
+    compute_mode: str | None,
+    has_ticker: bool,
+    meta: Dict[str, Any] | None = None,
+    policy: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Aplica a política declarativa de RAG e retorna o snapshot efetivo.
+
+    A decisão de autorização vem exclusivamente de YAML (rag.yaml + concepts
+    referenciados nas coleções). O Narrator ou outras camadas apenas consomem
+    o resultado exposto aqui.
+    """
+
+    applied_policy = policy or load_rag_policy()
+    if not applied_policy:
+        return {"enabled": False, "reason": "policy_missing"}
+
+    current_intent = intent or ""
+    current_entity = entity or ""
+    routing_cfg = applied_policy.get("routing") if isinstance(applied_policy, dict) else {}
+
+    deny_intents = set(routing_cfg.get("deny_intents") or []) if isinstance(routing_cfg, dict) else set()
+    allow_intents = set(routing_cfg.get("allow_intents") or []) if isinstance(routing_cfg, dict) else set()
+
+    if current_intent and current_intent in deny_intents:
+        return {"enabled": False, "reason": "intent_denied"}
+    if allow_intents and current_intent not in allow_intents:
+        return {"enabled": False, "reason": "intent_not_allowed"}
+
+    resolved_policy = _resolve_policy(current_entity, applied_policy)
+    if not resolved_policy:
+        return {"enabled": False, "reason": "entity_not_configured"}
+
+    collections: list[str] = []
+    if isinstance(resolved_policy.get("collections"), list):
+        collections = [str(c) for c in resolved_policy.get("collections") if c]
+
+    k_value = resolved_policy.get("max_chunks")
+    if k_value is None:
+        k_value = resolved_policy.get("k")
+    max_chunks_val = _clamp_max_chunks(k_value, default=5)
+
+    min_score_raw = resolved_policy.get("min_score")
+    try:
+        min_score_val = float(min_score_raw)
+    except (TypeError, ValueError):
+        min_score_val = None
+
+    resolved_mode = None
+    if isinstance(resolved_policy.get("mode"), str):
+        resolved_mode = resolved_policy.get("mode")
+    if isinstance(compute_mode, str) and compute_mode.strip():
+        resolved_mode = compute_mode.strip()
+
+    snapshot: Dict[str, Any] = {
+        "enabled": True,
+        "entity": current_entity,
+        "intent": current_intent,
+        "mode": resolved_mode or "data_augmented",
+        "profile": resolved_policy.get("profile"),
+        "collections": collections,
+        "max_chunks": max_chunks_val,
+        "min_score": min_score_val,
+        "has_ticker": bool(has_ticker),
+    }
+
+    # Metadados opcionais para debug, mantendo rastreabilidade da origem.
+    routing_snapshot: Dict[str, Any] = {}
+    if deny_intents:
+        routing_snapshot["deny_intents"] = sorted(list(deny_intents))
+    if allow_intents:
+        routing_snapshot["allow_intents"] = sorted(list(allow_intents))
+    if routing_snapshot:
+        snapshot["routing"] = routing_snapshot
+
+    policy_raw = resolved_policy.get("policy") if isinstance(resolved_policy, dict) else None
+    if isinstance(policy_raw, dict):
+        snapshot["raw"] = policy_raw
+
+    return snapshot
 
 
 def _extract_text(item: Dict[str, Any]) -> str:
@@ -157,6 +242,8 @@ def build_context(
     entity: str,
     *,
     max_tokens: Optional[int] = None,
+    compute_mode: Optional[str] = None,
+    has_ticker: bool = False,
     policy: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """Monta o contexto de RAG para uma pergunta.
@@ -175,8 +262,16 @@ def build_context(
       - 'error': Optional[str]
     """
 
+    policy_snapshot = get_rag_policy(
+        entity=entity,
+        intent=intent,
+        compute_mode=compute_mode,
+        has_ticker=has_ticker,
+        policy=policy,
+    )
+
     applied_policy = policy or load_rag_policy()
-    if not is_rag_enabled(intent, entity, policy=applied_policy):
+    if not policy_snapshot.get("enabled"):
         return {
             "enabled": False,
             "question": question,
@@ -185,30 +280,22 @@ def build_context(
             "used_collections": [],
             "chunks": [],
             "total_chunks": 0,
+            "policy": policy_snapshot,
             "error": None,
         }
 
     resolved_policy = _resolve_policy(entity, applied_policy)
 
-    collections = []
-    if isinstance(resolved_policy.get("collections"), list):
-        collections = [str(c) for c in resolved_policy.get("collections") if c]
-
-    k_value = resolved_policy.get("max_chunks")
-    if k_value is None:
-        k_value = resolved_policy.get("k")
-    max_chunks_val = _clamp_max_chunks(k_value, default=5)
-
-    min_score_raw = resolved_policy.get("min_score")
-    try:
-        min_score_val = float(min_score_raw)
-    except (TypeError, ValueError):
-        min_score_val = None
+    collections = policy_snapshot.get("collections") or []
+    max_chunks_val = _clamp_max_chunks(policy_snapshot.get("max_chunks"), default=5)
+    min_score_val = policy_snapshot.get("min_score")
 
     if max_tokens is None:
-        max_tokens_policy = resolved_policy.get("max_tokens")
-        if max_tokens_policy is None:
-            max_tokens_policy = resolved_policy.get("max_context_chars")
+        max_tokens_policy = None
+        if isinstance(resolved_policy, dict):
+            max_tokens_policy = resolved_policy.get("max_tokens")
+            if max_tokens_policy is None:
+                max_tokens_policy = resolved_policy.get("max_context_chars")
         try:
             max_tokens = (
                 int(max_tokens_policy) if max_tokens_policy is not None else None
@@ -247,10 +334,13 @@ def build_context(
 
     chunks = [_normalize_chunk(item) for item in results]
 
-    snapshot_policy = {
-        "max_chunks": max_chunks_val,
-        "collections": collections,
-    }
+    snapshot_policy = dict(policy_snapshot)
+    snapshot_policy.update(
+        {
+            "max_chunks": max_chunks_val,
+            "collections": collections,
+        }
+    )
     if min_score_val is not None:
         snapshot_policy["min_score"] = min_score_val
     if max_tokens is not None:

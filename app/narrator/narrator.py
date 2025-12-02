@@ -643,6 +643,11 @@ class Narrator:
             effective_max_llm_rows = 0
 
         use_rag_in_prompt = bool(effective_policy.get("use_rag_in_prompt", False))
+        rag_snippet_max_chars = effective_policy.get("rag_snippet_max_chars", 900)
+        try:
+            rag_snippet_max_chars = int(rag_snippet_max_chars)
+        except (TypeError, ValueError):
+            rag_snippet_max_chars = 900
         effective_model = effective_policy.get("model") or self.model
 
         narrator_meta: Dict[str, Any] = {
@@ -755,16 +760,19 @@ class Narrator:
 
         narrator_meta["rag"] = _json_sanitise(rag_ctx)
 
-        rag_ctx_for_prompt = rag_ctx
-        if not use_rag_in_prompt:
-            rag_ctx_for_prompt = None
-            rag_best_text = ""
-            if narrator_meta["strategy"] == "deterministic":
-                narrator_meta["strategy"] = "rag_forbidden_by_policy"
-        elif concept_mode and rag_ctx_for_prompt is not None:
-            # Em modo conceitual, usamos apenas um chunk enxuto de RAG
-            shrunk = _shrink_rag_for_concept(rag_ctx_for_prompt, max_chars=900)
-            rag_ctx_for_prompt = shrunk if shrunk is not None else None
+        rag_ctx_for_prompt = rag_ctx if rag_enabled else None
+        if rag_ctx_for_prompt is not None:
+            if not use_rag_in_prompt:
+                shrunk = _shrink_rag_for_concept(
+                    rag_ctx_for_prompt, max_chars=rag_snippet_max_chars
+                )
+                rag_ctx_for_prompt = shrunk if shrunk is not None else rag_ctx_for_prompt
+            elif concept_mode:
+                # Em modo conceitual, usamos apenas um chunk enxuto de RAG
+                shrunk = _shrink_rag_for_concept(
+                    rag_ctx_for_prompt, max_chars=rag_snippet_max_chars
+                )
+                rag_ctx_for_prompt = shrunk if shrunk is not None else None
 
         LOGGER.info(
             "narrator_render entity=%s intent=%s rows_count=%s template_id=%s "
