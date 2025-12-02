@@ -635,8 +635,8 @@ class TestParamInferenceConfig:
 
         assert result == {
             "agg": "list",
-            "window": "count:6",
-            "limit": 6,
+            "window": "months:12",
+            "limit": 10,
             "order": "desc",
         }
 
@@ -651,7 +651,7 @@ class TestParamInferenceConfig:
 
         assert result == {
             "agg": "list",
-            "window": "months:12",
+            "window": None,
             "limit": 10,
             "order": "desc",
         }
@@ -667,7 +667,7 @@ class TestParamInferenceConfig:
 
         assert result == {
             "agg": "list",
-            "window": "months:6",
+            "window": None,
             "limit": 10,
             "order": "desc",
         }
@@ -1314,6 +1314,21 @@ class TestContextManagerPolicy:
             manager.narrator_policy.get("max_chars")
             == DEFAULT_POLICY["narrator"]["max_chars"]
         )
+
+    def test_context_policy_default_file_loaded(self):
+        policy, status, error = cm._load_policy()
+
+        assert status == "ok"
+        assert error is None
+        assert policy.get("last_reference", {}).get("enable_last_ticker") is True
+
+
+def test_ask_endpoint_does_not_bypass_context_manager():
+    source = Path("app/api/ask.py").read_text(encoding="utf-8")
+
+    assert "last_reference_policy" not in source
+    assert "get_last_reference(" not in source
+    assert "last_reference_allows_entity" not in source
 
 
 class TestRagPolicyAndIndex:

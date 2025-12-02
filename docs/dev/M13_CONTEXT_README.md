@@ -1,23 +1,24 @@
 # M13 – Mapeamento Técnico do Contexto Atual
 
 ## 1. Visão Geral do Contexto no Araquem
-- O "contexto" corresponde à memória conversacional mantida por `ContextManager`, que encapsula a lista de `ConversationTurn` (papel, conteúdo, timestamp e `meta`).【F:app/context/context_manager.py†L29-L64】【F:app/context/context_manager.py†L114-L189】
+- O "contexto" corresponde à memória conversacional mantida por `ContextManager`, que encapsula a lista de `ConversationTurn` (papel, conteúdo, timestamp e `meta`) e a resolução de `last_reference` guiada pelo `context.yaml`.【F:app/context/context_manager.py†L29-L64】【F:app/context/context_manager.py†L353-L441】
 - A instância canônica fica em `app/core/context.py` como `context_manager`, inicializada com backend in-memory e política carregada de `data/policies/context.yaml`. O recurso só surte efeito se `context.enabled` estiver ativo.【F:app/core/context.py†L9-L35】
 - O payload externo do `/ask` não carrega contexto: o cliente fornece apenas `{question, conversation_id, nickname, client_id}` e nenhum campo de contexto é aceito ou retornado ao cliente.【F:app/api/ask.py†L107-L137】【F:app/api/ask.py†L358-L409】
 - O servidor mantém o contexto por par `(client_id, conversation_id)`; cada turno é armazenado com essa chave e usado apenas internamente.【F:app/context/context_manager.py†L205-L246】
 
 ## 2. Fluxo Completo do Contexto no /ask
 1. **Criação do contexto (registro do usuário):** Assim que `/ask` recebe a requisição, registra um turno `user` com pergunta, `intent`, `entity` e `request_id` no `ContextManager`.【F:app/api/ask.py†L112-L146】
-2. **Planejamento (Planner) e orquestração:** O planner roda (`planner.explain`) e o Orchestrator (`route_question`) decide rota e monta `meta`; a inferência de parâmetros pode consultar `last_reference` para recuperar ticker quando configurado.【F:app/api/ask.py†L210-L236】【F:app/orchestrator/routing.py†L352-L520】
+2. **Resolução de last_reference canônica:** Após extrair `identifiers`, o endpoint delega a herança de ticker para `context_manager.resolve_last_reference(...)`, que aplica `context.yaml` e devolve `identifiers_resolved` + meta (`used`, `reason`). Nenhuma heurística de herança fica no endpoint.【F:app/api/ask.py†L178-L201】【F:app/context/context_manager.py†L353-L441】
+3. **Planejamento (Planner) e orquestração:** O planner roda (`planner.explain`) e o Orchestrator (`route_question`) decide rota e monta `meta`; a inferência de parâmetros continua podendo consultar `last_reference` quando configurada em `param_inference`.【F:app/api/ask.py†L203-L236】【F:app/planner/param_inference.py†L348-L375】
 3. **Executor:** O executor SQL é chamado dentro do Orchestrator conforme necessidade; nenhuma chamada ao contexto conversacional ocorre nessa camada.【F:app/orchestrator/routing.py†L368-L598】
 4. **Presenter (leitura do contexto):** Antes de acionar o Narrator, o Presenter carrega o histórico recente via `context_manager.load_recent` e converte para wire format, somente se o contexto estiver habilitado e permitido para a entidade. Esse histórico é adicionado ao `meta_for_narrator` sob a chave `history`.【F:app/presenter/presenter.py†L104-L158】【F:app/presenter/presenter.py†L203-L260】
 5. **Resposta / Narrator:** O Narrator recebe o meta (com `history` quando disponível) para gerar texto. Mesmo com Narrator desligado, o Presenter segue o fluxo determinístico usando `legacy_answer`.【F:app/presenter/presenter.py†L158-L260】
-6. **Registro do turno do assistant:** Após gerar a resposta (ou vazio quando unroutable), o `/ask` registra um turno `assistant` com a resposta final e metadados no `ContextManager`.【F:app/api/ask.py†L146-L199】【F:app/api/ask.py†L409-L439】
+6. **Registro do turno do assistant:** Após gerar a resposta (ou vazio quando unroutable), o `/ask` registra um turno `assistant` com a resposta final e metadados no `ContextManager` e mantém o `last_reference` atualizado quando há ticker resolvido. O registro não implementa heurísticas de herança; apenas persiste o turno e o ticker final. 【F:app/api/ask.py†L146-L199】【F:app/api/ask.py†L409-L439】
 
 ## 3. Estrutura Atual do Contexto
 - Cada turno é um `ConversationTurn` com campos: `role` ("user"/"assistant"/"system"), `content` (texto), `created_at` (timestamp), `meta` (dict opcional).【F:app/context/context_manager.py†L29-L64】
 - O histórico retornado por `ContextManager.to_wire` é uma lista de dicionários derivada dos atributos do dataclass.【F:app/context/context_manager.py†L247-L254】
-- Além da lista de turns, o `ContextManager` mantém `last_reference` (ticker, intent, entity, `updated_at`, `turn_index`) em memória para servir de fallback quando permitido por políticas.【F:app/context/context_manager.py†L244-L315】【F:app/context/context_manager.py†L453-L508】
+- Além da lista de turns, o `ContextManager` mantém `last_reference` (ticker, intent, entity, `updated_at`, `turn_index`) em memória e resolve herança via `resolve_last_reference`, sempre guiado pelo `context.yaml`.【F:app/context/context_manager.py†L244-L315】【F:app/context/context_manager.py†L353-L441】
 
 ## 4. Persistência e Carregamento
 - Backend atual: `InMemoryBackend`, que mantém os turns em um dicionário de processo; não há persistência entre processos e não usa Redis ou disco.【F:app/context/context_manager.py†L171-L213】
@@ -48,6 +49,6 @@
 
 ## 9. Integração do `last_reference` na inferência de ticker
 - As intents `fiis_financials_risk`, `fii_overview` e `fiis_precos` agora possuem regras declarativas em `data/ops/param_inference.yaml` que priorizam extração de ticker pelo texto e recorrem ao `last_reference` do contexto como fallback quando configuradas para isso.【F:data/ops/param_inference.yaml†L90-L137】【F:data/ops/param_inference.yaml†L290-L309】
-- O `ContextManager` mantém `last_reference` com política dedicada (`last_reference.enable_last_ticker`, `allowed_entities`, `max_age_turns`) definida em `data/policies/context.yaml`; o uso é condicionado a contexto habilitado e entidade autorizada.【F:app/context/context_manager.py†L248-L315】【F:data/policies/context.yaml†L35-L59】
-- O Planner/param_inference consulta `context_manager.get_last_reference` quando o ticker não é encontrado no texto e a intent permite fonte `context`, respeitando a prioridade “texto primeiro, contexto depois” e TTL lógico de turnos.【F:app/planner/param_inference.py†L320-L423】
+- O `ContextManager` mantém `last_reference` com política dedicada (`last_reference.enable_last_ticker`, `allowed_entities`, `max_age_turns`) definida em `data/policies/context.yaml` e aplica essas regras em `resolve_last_reference`.【F:app/context/context_manager.py†L244-L315】【F:app/context/context_manager.py†L353-L441】【F:data/policies/context.yaml†L35-L59】
+- O Planner/param_inference continua podendo consultar `context_manager.get_last_reference` quando configurado, mas `/ask` já chega ao planner com `identifiers` enriquecidos pelo `ContextManager`, mantendo a prioridade “texto primeiro, contexto depois” e respeitando a janela de turns.【F:app/api/ask.py†L178-L201】【F:app/planner/param_inference.py†L348-L375】
 - O payload externo do `/ask` permanece imutável; `client_id` e `conversation_id` são utilizados apenas internamente para resgatar contexto e registrar `last_reference` após respostas bem-sucedidas.【F:app/api/ask.py†L175-L248】【F:app/api/ask.py†L320-L369】
