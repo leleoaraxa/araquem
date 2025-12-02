@@ -5,6 +5,8 @@ terms:
   version: 1
 policies:
   client_fiis_positions:
+    # Entidades privadas não devem usar cache compartilhado entre clientes.
+    private: true
     ttl_seconds: 900
     refresh_at: none
     scope: prv

@@ -283,6 +283,15 @@ proibição de heurística em código
 
 ---
 
+6. 🧠 Cache runtime — políticas e privacidade
+
+- Fonte de verdade: `data/policies/cache.yaml` (bloco `policies`) e `data/entities/<entity>/entity.yaml`.
+- `CachePolicies` centraliza a leitura da política e expõe `is_private_entity(entity)` sem heurísticas de prefixo.
+- Privacidade: entidades com `private: true` não usam cache compartilhado (`read_through` bypassa leitura e escrita).
+- Entidades públicas continuam obedecendo `ttl_seconds`/`scope` declarados no YAML, sem alterar o contrato de `/ask`.
+
+---
+
 7. 📦 Referências cruzadas
 
 app/api/ask.py – _load_narrator_flags

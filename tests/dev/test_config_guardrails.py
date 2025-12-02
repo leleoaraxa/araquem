@@ -1251,6 +1251,33 @@ class TestCachePoliciesConfig:
         assert not any(rec.levelno >= logging.ERROR for rec in caplog.records)
 
 
+class TestCachePrivacyPolicies:
+    def test_default_policy_marks_private_entity(self):
+        policies = CachePolicies()
+
+        private_policy = policies.get("client_fiis_positions")
+
+        assert isinstance(private_policy, dict)
+        assert private_policy.get("private") is True
+
+    def test_is_private_entity_uses_yaml(self):
+        policies = CachePolicies()
+
+        assert policies.is_private_entity("client_fiis_positions") is True
+        assert policies.is_private_entity("fiis_noticias") is False
+
+    def test_no_private_hardcode_in_cache_entrypoints(self):
+        files = [Path("app/cache/rt_cache.py"), Path("app/api/ask.py")]
+        forbidden = [".startswith(\"client_\"", "client_fiis_positions", "client_fiis_dividends_evolution"]
+
+        for file_path in files:
+            content = file_path.read_text(encoding="utf-8")
+            for token in forbidden:
+                assert (
+                    token not in content
+                ), f"Hardcode proibido encontrado em {file_path}: {token}"
+
+
 class TestContextManagerPolicy:
     def _patch_loader(self, monkeypatch, path: Path):
         original = cm._load_policy
