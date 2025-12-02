@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-02T21:21:42Z",
+  "generated_at": "2025-12-02T22:13:47Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -50,6 +50,18 @@
       "sha_all": "4d9d5c1d2eba52314db6e9aeab5395c46420321af975c8083d438976331729c5"
     },
     {
+      "id": "concepts-macro-methodology",
+      "path": "data/concepts/concepts-macro-methodology.yaml",
+      "tags": [
+        "concepts",
+        "macro",
+        "methodology",
+        "fiis"
+      ],
+      "chunks": 4,
+      "sha_all": "4cbff044eae36a74ec285ab1b1a97c957ea882644b63f35bbc6d6f2fbd9ddfbd"
+    },
+    {
       "id": "concepts-carteira",
       "path": "data/concepts/concepts-carteira.yaml",
       "tags": [
@@ -60,6 +72,18 @@
       ],
       "chunks": 4,
       "sha_all": "ce2bdc0422de25d17ac932dc0a87cab450aa5a311cd4dabec2afdb18a3812078"
+    },
+    {
+      "id": "concepts-risk-metrics-methodology",
+      "path": "data/concepts/concepts-risk-metrics-methodology.yaml",
+      "tags": [
+        "concepts",
+        "risk",
+        "metrics",
+        "fiis"
+      ],
+      "chunks": 3,
+      "sha_all": "74ad600af50e6cb62135282f86d5526483a9a38ab8f13a0f66a91fc155779602"
     },
     {
       "id": "indicators-catalog",
@@ -98,6 +122,18 @@
       "sha_all": "c1f242ead4302fb254ae435c9bf10a8dc66834f804117084f8c618826ff53f42"
     },
     {
+      "id": "entity-fiis-cadastro-hints",
+      "path": "data/entities/fiis_cadastro/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "cadastro",
+        "entity:fiis_cadastro"
+      ],
+      "chunks": 1,
+      "sha_all": "477b3062760ed3916c6f3604f01af704abfc062969292dd55e7f76969bc28fdd"
+    },
+    {
       "id": "entity-fiis-dividendos",
       "path": "data/entities/fiis_dividendos/entity.yaml",
       "tags": [
@@ -110,6 +146,18 @@
       "sha_all": "33bb80d2fe5524fa5f7975910209495e3df64d0bfa193f0cb3951a8082d3a8a9"
     },
     {
+      "id": "entity-fiis-dividendos-hints",
+      "path": "data/entities/fiis_dividendos/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos",
+        "entity:fiis_dividendos"
+      ],
+      "chunks": 1,
+      "sha_all": "6ec231ece8a9e90bedbff90ea3c2cb1480671bce7b42f9a799335cd7f4e1cb38"
+    },
+    {
       "id": "entity-fiis-precos",
       "path": "data/entities/fiis_precos/entity.yaml",
       "tags": [
@@ -120,6 +168,18 @@
       ],
       "chunks": 3,
       "sha_all": "b1bf00a8c7fb67027ddc8c32a8673363a745856eecec4bb9965dec3f07712e83"
+    },
+    {
+      "id": "entity-fiis-precos-hints",
+      "path": "data/entities/fiis_precos/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "precos",
+        "entity:fiis_precos"
+      ],
+      "chunks": 1,
+      "sha_all": "800f3d487ea5edbb2e0f3cce6366cdde7c2460c7474b7297f846804d7931eeb4"
     },
     {
       "id": "entity-fiis-rankings",
@@ -218,8 +278,8 @@
         "risk",
         "entity:fiis_financials_risk"
       ],
-      "chunks": 1,
-      "sha_all": "9c297e3680bc344563ed0d55b5a4103412626668a33cce4deb40e3eeee339e78"
+      "chunks": 2,
+      "sha_all": "2dc289c0e8c48a7367ba66a2c4b9e32314e2d991b4a0555879232fff2a1ee6a6"
     },
     {
       "id": "entity-fiis-financials-revenue-hints",
@@ -245,6 +305,44 @@
       ],
       "chunks": 4,
       "sha_all": "57063f3a3588e99ef275dca7984c0c6206319ef07c6af54b817bd42968e5fb49"
+    },
+    {
+      "id": "entity-history-b3-indexes-hints",
+      "path": "data/entities/history_b3_indexes/hints.md",
+      "tags": [
+        "entities",
+        "market",
+        "indexes",
+        "b3",
+        "entity:history_b3_indexes"
+      ],
+      "chunks": 1,
+      "sha_all": "4c1dcbb85726c7e26f24f71069e79ea737e1d3693c0c7e4f46d3c3eef9b4025b"
+    },
+    {
+      "id": "entity-history-currency-rates-hints",
+      "path": "data/entities/history_currency_rates/hints.md",
+      "tags": [
+        "entities",
+        "fx",
+        "currency",
+        "entity:history_currency_rates"
+      ],
+      "chunks": 1,
+      "sha_all": "9d2480caf1a271c5b2381a36f0496cb5db8642044f911de3f3ea644c2457e0df"
+    },
+    {
+      "id": "entity-history-market-indicators-hints",
+      "path": "data/entities/history_market_indicators/hints.md",
+      "tags": [
+        "entities",
+        "market",
+        "macro",
+        "indicators",
+        "entity:history_market_indicators"
+      ],
+      "chunks": 1,
+      "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     },
     {
       "id": "policies-cache",
@@ -274,7 +372,7 @@
         "rag"
       ],
       "chunks": 2,
-      "sha_all": "568bf15f0761722207b2ecce227fbcce4737e27434d4b0a4f9c49ad283519fb2"
+      "sha_all": "bf311030e6afd8abbb37a1e886c21f6dc15b2cde50683c6f08be984c1ad4fe24"
     },
     {
       "id": "ops-planner-thresholds",
@@ -580,7 +678,7 @@
       "sha_all": "b9f300d00480862c1a75bcf56d2af8db942d2c8c916c009f4a436db8dd7a1bfb"
     }
   ],
-  "last_refresh_epoch": 1764710651,
+  "last_refresh_epoch": 1764713784,
   "vector_dimension": 768,
-  "total_chunks": 184
+  "total_chunks": 198
 }

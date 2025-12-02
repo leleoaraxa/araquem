@@ -13,9 +13,9 @@ Principais colunas:
   indica fundos exclusivos.
 - documentos e governança: admin_name/admin_cnpj, custodian_name, isin,
   ipo_date, website_url.
-- pesos e escala: presença de campos com pesos em índices (IFIX/IFIL) e
-  contagem de cotas/cotistas (shares_count, shareholders_count) para dar
-  dimensão do fundo.
+- escala: quando disponível em outras entidades (como o overview), campos de
+  pesos em índices (IFIX/IFIL) e contagem de cotas/cotistas ajudam a dar
+  dimensão do fundo, mas não fazem parte do núcleo cadastral.
 
 Como o Araquem usa:
 - Resolver ambiguidades de ticker e validar a identidade do fundo antes de
