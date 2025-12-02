@@ -122,24 +122,50 @@ intents:
     - posicoes
     - peso
     - distribuicao
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - renda
+    - historico
+    - evolucao
+    - dy
+    - yield
   phrases:
     include:
     - desempenho da minha carteira
+    - desempenho da minha carteira de fiis
     - performance da minha carteira de fiis
     - rentabilidade da minha carteira vs
     - rentabilidade da minha carteira de fiis versus
     - rentabilidade da minha carteira versus
+    - retorno da minha carteira vs
+    - retorno da minha carteira de fiis versus
     - comparar minha carteira com
     - minha carteira esta melhor que
+    - minha carteira esta pior que
     - minha carteira de fiis
     - retorno da minha carteira de fiis
     - minha carteira de fiis esta melhor ou pior que
     - retorno da minha carteira de fiis comparado com
+    - desempenho da minha carteira vs ifix
+    - desempenho da minha carteira vs ifil
+    - desempenho da minha carteira vs ibov
+    - desempenho da minha carteira vs cdi
+    - rentabilidade da minha carteira vs ifix
+    - rentabilidade da minha carteira vs ifil
+    - rentabilidade da minha carteira vs ibov
+    - rentabilidade da minha carteira vs cdi
+    - minha carteira de fiis esta melhor que o ifix
+    - minha carteira de fiis esta melhor que o cdi
     exclude:
     - rentabilidade da minha posicao
     - minha posicao em
     - peso do
     - distribuicao da minha carteira
+    - evolucao dos dividendos
+    - historico de dividendos
+    - renda mensal dos meus fiis
   entities:
   - client_fiis_performance_vs_benchmark
 - name: fiis_cadastro

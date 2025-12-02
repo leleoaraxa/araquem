@@ -3,8 +3,8 @@ result_key: performance_vs_benchmark
 sql_view: client_fiis_performance_vs_benchmark
 private: true
 description: >
-  Série temporal da performance da carteira de FIIs do cliente versus um benchmark (PRIVADA; exige
-  document_number obtido de contexto seguro, nunca do texto livre do usuário).
+  Série temporal da performance da carteira de FIIs do cliente versus um benchmark (PRIVADA;
+  exige document_number obtido de contexto seguro, nunca do texto livre do usuário). Cada linha representa a performance da carteira e do benchmark em uma data de referência.
 
 identifiers:
   - name: document_number
@@ -65,10 +65,13 @@ ask:
     - fiis
   phrase_includes:
     - "performance da minha carteira de fiis"
+    - "desempenho da minha carteira de fiis"
     - "rentabilidade da minha carteira vs"
+    - "rentabilidade da minha carteira de fiis versus"
     - "comparar minha carteira com"
     - "minha carteira esta melhor que"
-    - "desempenho da minha carteira de fiis"
+    - "minha carteira de fiis esta melhor ou pior que"
+    - "retorno da minha carteira de fiis comparado com"
   synonyms:
     benchmark_code:
       - benchmark
@@ -94,9 +97,11 @@ ask:
     - "minha carteira esta melhor ou pior que o CDI"
     - "comparar o retorno da minha carteira de fiis com o IFIL"
     - "qual foi a rentabilidade da minha carteira versus o IFIX em 2024"
+    - "retorno da minha carteira de fiis comparado com o ibov neste ano"
 
 params:
   required: [document_number]
+  optional: [benchmark_code]
 
 order_by_whitelist:
   - date_reference desc
