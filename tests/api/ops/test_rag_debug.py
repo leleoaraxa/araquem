@@ -102,6 +102,7 @@ def test_rag_debug_with_rag_enabled(
     assert response.status_code == 200
     payload = response.json()
     assert payload["meta"]["rag"]["enabled"] is True
+    assert payload["meta"]["rag"].get("policy") == payload["meta"].get("rag_policy")
     assert "rag_enabled=True" in caplog.text
     assert meta.get("rag") is not None
 
@@ -137,5 +138,6 @@ def test_rag_debug_with_rag_disabled(monkeypatch: pytest.MonkeyPatch):
 
     assert payload["meta"].get("rag_debug_disable") is True
     assert payload["meta"]["rag"]["enabled"] is True
+    assert payload["meta"]["rag"].get("policy") == payload["meta"].get("rag_policy")
     assert captured.get("rag") is None
     assert narrator.client.last_model == "dummy-model"
