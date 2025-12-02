@@ -7,7 +7,7 @@ terms:
 narrator:
   model: sirios-narrator:latest
   llm_enabled: true
-  shadow: false
+  shadow: true
 
   default:
     llm_enabled: false
