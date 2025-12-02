@@ -202,9 +202,19 @@ def present(
     entity = plan["chosen"]["entity"]
     client_id_safe = client_id or ""
     conversation_id_safe = conversation_id or ""
+    has_ticker_in_question = bool(identifiers.get("ticker"))
+
+    compute_mode_meta: Optional[str] = None
+    meta_dict = meta if isinstance(meta, dict) else {}
+    compute_block = meta_dict.get("compute") if isinstance(meta_dict, dict) else None
+    if isinstance(compute_block, dict):
+        raw_mode = compute_block.get("mode")
+        if isinstance(raw_mode, str):
+            m = raw_mode.strip().lower()
+            if m in ("concept", "data", "default"):
+                compute_mode_meta = m
 
     # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
-    meta_dict = meta if isinstance(meta, dict) else {}
     if isinstance(meta_dict.get("rag"), dict):
         narrator_rag_context = meta_dict["rag"]
     else:
@@ -213,6 +223,8 @@ def present(
             question=question,
             intent=intent,
             entity=entity,
+            compute_mode=compute_mode_meta,
+            has_ticker=has_ticker_in_question,
             policy=rag_policy,
         )
 
@@ -250,7 +262,6 @@ def present(
     # que ele é ruim?" sejam tratadas como conceituais, mesmo que exista
     # uma view tabular por trás da entidade.
     compute_mode = "data"
-    has_ticker_in_question = bool(identifiers.get("ticker"))
     if narrator is not None and hasattr(narrator, "policy"):
         policy = getattr(narrator, "policy", {}) or {}
         entities_cfg = policy.get("entities") if isinstance(policy, dict) else {}

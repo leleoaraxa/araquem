@@ -11,6 +11,7 @@ from app.api import ask as ask_api
 from app.common.http import json_sanitize
 from app.core.context import orchestrator
 from app.presenter.presenter import present
+from app.rag.context_builder import get_rag_policy
 
 router = APIRouter(prefix="/ops/rag_debug", tags=["ops"])
 
@@ -48,10 +49,32 @@ def rag_debug(payload: RagDebugPayload):
     aggregates = meta.get("aggregates") or {}
     identifiers = orchestrator.extract_identifiers(payload.question)
 
+    compute_mode_meta = None
+    compute_block = meta.get("compute") if isinstance(meta, dict) else None
+    if isinstance(compute_block, dict):
+        raw_mode = compute_block.get("mode")
+        if isinstance(raw_mode, str) and raw_mode.strip().lower() in {
+            "concept",
+            "data",
+            "default",
+        }:
+            compute_mode_meta = raw_mode.strip().lower()
+
+    rag_policy_snapshot = get_rag_policy(
+        entity=plan.get("entity") or plan.get("chosen", {}).get("entity"),
+        intent=plan.get("intent") or plan.get("chosen", {}).get("intent"),
+        compute_mode=compute_mode_meta,
+        has_ticker=bool(identifiers.get("ticker")),
+        meta=meta,
+        policy=None,
+    )
+
     narrator_meta: Dict[str, Any] = {}
     rag_ctx = meta.get("rag")
     if isinstance(rag_ctx, dict):
-        narrator_meta["rag"] = rag_ctx
+        rag_with_policy = dict(rag_ctx)
+        rag_with_policy.setdefault("policy", rag_policy_snapshot)
+        narrator_meta["rag"] = rag_with_policy
 
     if payload.disable_rag:
         meta["rag_debug_disable"] = True
@@ -70,6 +93,7 @@ def rag_debug(payload: RagDebugPayload):
 
     meta_out = dict(meta)
     meta_out["narrator"] = presenter_result.narrator_meta
+    meta_out["rag_policy"] = rag_policy_snapshot
 
     payload_out = {
         "status": status,
