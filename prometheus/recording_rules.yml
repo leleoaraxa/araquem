@@ -21,11 +21,16 @@ groups:
     interval: 5m
     rules:
       - record: job:cache_hits_per_s:rate
-        expr: sum(rate(cache_hits_total[5m]))
+        expr: sum(rate(cache_hits_total[5m])) by (job)
+
       - record: job:cache_misses_per_s:rate
-        expr: sum(rate(cache_misses_total[5m]))
-      - record: job:cache_hit_ratio:pct
-        expr: 100 * job:cache_hits_per_s:rate / clamp_min(job:cache_hits_per_s:rate + job:cache_misses_per_s:rate, 1)
+        expr: sum(rate(cache_misses_total[5m])) by (job)
+
+      # Fração 0–1 (não em %). Deixa o *100 para o painel do Grafana.
+      - record: job:cache_hit_ratio:ratio
+        expr: job:cache_hits_per_s:rate
+              / clamp_min(job:cache_hits_per_s:rate + job:cache_misses_per_s:rate, 1e-6)
+
 
   - name: sirios_recording_rag
     interval: 5m
