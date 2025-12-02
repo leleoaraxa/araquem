@@ -1,5 +1,5 @@
 {% if rows and rows|length > 0 -%}
-| Ticker | Mês ref. | Dividendos (R$) | Preço ref. (R$) | DY mensal |
+| Ticker | Mês ref. | Dividendos (R$) | Preço ref. (R$) | DY mensal (%) |
 | --- | --- | --- | --- | --- |
 {%- for r in rows %}
 {%- set price = r.price_ref if r.price_ref is not none else None %}

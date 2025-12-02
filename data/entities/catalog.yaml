@@ -167,8 +167,8 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_financials_risk.json
     coverage:
       cache_policy: true
-      rag_policy: true
-      narrator_policy: true
+      rag_policy: false
+      narrator_policy: false
       param_inference: true
     identifiers:
       natural_keys:
@@ -200,9 +200,9 @@ entities:
       quality_projection: data/ops/quality/projection_fiis_noticias.json
     coverage:
       cache_policy: true
-      rag_policy: true
-      narrator_policy: true
-      param_inference: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: true
     identifiers:
       natural_keys:
       - ticker

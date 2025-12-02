@@ -32,18 +32,6 @@ narrator:
     # ──────────────────
     # Núcleo de RISCO
     # ──────────────────
-    fiis_financials_risk:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 3
-      rag_snippet_max_chars: 220
-      use_rag_in_prompt: true
-      use_conversation_context: true
-      prefer_concept_when_no_ticker: true
-      rag_fallback_when_no_rows: false
-      concept_with_data_when_rag: true
-      strict_mode: true
-
     # Receita indexada (IPCA/CDI etc.) – por enquanto sem LLM
     fiis_financials_revenue_schedule:
       llm_enabled: false
@@ -53,19 +41,6 @@ narrator:
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
-      strict_mode: false
-
-    # Notícias (LLM conceitual + RAG)
-    fiis_noticias:
-      llm_enabled: true
-      shadow: false
-      max_llm_rows: 5
-      rag_snippet_max_chars: 320
-      use_rag_in_prompt: true
-      use_conversation_context: true
-      prefer_concept_when_no_ticker: false
-      rag_fallback_when_no_rows: false
-      concept_with_data_when_rag: true
       strict_mode: false
 
     # ──────────────────
@@ -161,8 +136,28 @@ narrator:
       strict_mode: false
 
     # ──────────────────
-    # Cadastro / preços / processos / rankings
+    # Cadastro / preços / processos / rankings / notícias / riscos
     # ──────────────────
+    fiis_financials_risk:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    fiis_noticias:
+      llm_enabled: false
+      shadow: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
     fiis_cadastro:
       llm_enabled: false
       shadow: false

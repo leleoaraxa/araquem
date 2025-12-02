@@ -30,19 +30,19 @@ narrator_shadow:
 
     # Overrides por entidade
     entities:
-      fiis_financials_risk:
-        rate: 0.5
-        only_when_llm_used: true
-        only_when_answer_nonempty: true
-        always_on_llm_error: true
-
-      fiis_noticias:
-        rate: 0.1
-        only_when_llm_used: true
-        only_when_answer_nonempty: true
-        always_on_llm_error: true
-
       history_market_indicators:
+        rate: 0.3
+        only_when_llm_used: true
+        only_when_answer_nonempty: true
+        always_on_llm_error: true
+
+      history_b3_indexes:
+        rate: 0.3
+        only_when_llm_used: true
+        only_when_answer_nonempty: true
+        always_on_llm_error: true
+
+      history_currency_rates:
         rate: 0.3
         only_when_llm_used: true
         only_when_answer_nonempty: true
