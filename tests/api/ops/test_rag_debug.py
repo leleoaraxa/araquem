@@ -1,3 +1,4 @@
+# tests/api/ops/test_rag_debug.py
 import logging
 from typing import Any, Dict
 
@@ -43,7 +44,13 @@ def _build_app() -> FastAPI:
 
 def _patch_orchestrator(monkeypatch: pytest.MonkeyPatch) -> Dict[str, Any]:
     meta = {
-        "planner": {"chosen": {"entity": "fiis_noticias", "intent": "fiis_noticias", "score": 1.0}},
+        "planner": {
+            "chosen": {
+                "entity": "fiis_noticias",
+                "intent": "fiis_noticias",
+                "score": 1.0,
+            }
+        },
         "result_key": "dummy",
         "aggregates": {},
         "rag": {
@@ -77,7 +84,9 @@ def _patch_narrator(monkeypatch: pytest.MonkeyPatch) -> Narrator:
     return narrator
 
 
-def test_rag_debug_with_rag_enabled(monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture):
+def test_rag_debug_with_rag_enabled(
+    monkeypatch: pytest.MonkeyPatch, caplog: pytest.LogCaptureFixture
+):
     meta = _patch_orchestrator(monkeypatch)
     _patch_narrator(monkeypatch)
 

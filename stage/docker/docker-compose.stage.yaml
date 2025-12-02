@@ -1,0 +1,222 @@
+version: "3.9"
+
+name: araquem-stage
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    container_name: araquem_api
+    restart: always
+    env_file:
+      - .env.stage
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - ollama
+      - prometheus
+      - grafana
+      - tempo
+      - otel-collector
+    # Se você quiser evitar bind de código em stage, remova o volume abaixo.
+    volumes:
+      - ./:/app:ro
+    networks:
+      - araquem_network
+
+  redis:
+    image: redis:7
+    container_name: araquem_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - araquem_network
+
+  ollama:
+    image: ollama/ollama:0.3.14
+    container_name: araquem_ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    environment:
+      # Ajuste conforme seu tunning atual
+      - OLLAMA_MAX_LOADED_MODELS=2
+      - OLLAMA_NUM_PARALLEL=1
+      - OLLAMA_NUM_THREADS=4
+    volumes:
+      - ollama:/root/.ollama
+    networks:
+      - araquem_network
+
+  ollama-init:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.ollama-init
+    container_name: araquem_ollama_init
+    restart: "no"
+    depends_on:
+      - ollama
+    env_file:
+      - .env.stage
+    environment:
+      # Exemplos – ajuste para bater com seu script
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODELS=${OLLAMA_MODELS:-llama3}
+      - SIRIOS_MODEFILE=${SIRIOS_MODEFILE:-docker/Modelfile.sirios-narrator}
+    volumes:
+      - ./:/app:ro
+    networks:
+      - araquem_network
+
+  rag-indexer:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-indexer
+    container_name: araquem_rag_indexer
+    restart: "no"
+    depends_on:
+      - ollama
+      - api
+    env_file:
+      - .env.stage
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - TZ=America/Sao_Paulo
+      - OLLAMA_EMBED_MODEL=${OLLAMA_EMBED_MODEL:-nomic-embed-text}
+      - EMBED_BATCH_SIZE=${EMBED_BATCH_SIZE:-64}
+    volumes:
+      - ./:/app:ro
+    networks:
+      - araquem_network
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: araquem_prometheus
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      # Ajuste paths para bater com seu repo/config real
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - araquem_network
+
+  grafana:
+    image: grafana/grafana:11.2.0
+    container_name: araquem_grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      - GF_INSTALL_PLUGINS=grafana-json-datasource
+    volumes:
+      - grafana:/var/lib/grafana
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - araquem_network
+
+  tempo:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.tempo
+    container_name: araquem_tempo
+    restart: always
+    ports:
+      - "3200:3200"
+    volumes:
+      - ./docker/tempo/tempo.yaml:/etc/tempo.yaml:ro
+      - tempo-data:/var/tempo
+    networks:
+      - araquem_network
+
+  otel-collector:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.otel-collector
+    container_name: araquem_otel_collector
+    restart: always
+    # Portas OTLP / métricas, ajuste conforme seu config
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+      - "8888:8888"
+    volumes:
+      - ./docker/otel-collector/otel-collector-config.yaml:/etc/otel-collector-config.yaml:ro
+    networks:
+      - araquem_network
+
+  quality-cron:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.quality-cron
+    container_name: araquem_quality_cron
+    restart: always
+    depends_on:
+      - api
+    env_file:
+      - .env.stage
+    environment:
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN}
+      - QUALITY_SAMPLES_GLOB=${QUALITY_SAMPLES_GLOB:-data/ops/quality/*.json}
+      - QUALITY_PUSH_SLEEP=${QUALITY_PUSH_SLEEP:-5}
+      - QUALITY_AUTH_BEARER=${QUALITY_AUTH_BEARER:-true}
+      - QUALITY_TOKEN_HEADER=${QUALITY_TOKEN_HEADER:-Authorization}
+      - QUALITY_REPORT_WAIT_MAX=${QUALITY_REPORT_WAIT_MAX:-600}
+      - QUALITY_REPORT_WAIT_SLEEP=${QUALITY_REPORT_WAIT_SLEEP:-10}
+      - QUALITY_API_URL=${QUALITY_API_URL:-http://api:8000}
+      - QUALITY_CRON_INTERVAL=${QUALITY_CRON_INTERVAL:-3600}
+    # Usa rede da API para enxergar localhost:8000 se você usar essa abordagem
+    network_mode: "service:api"
+
+  rag-refresh-cron:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.rag-refresh-cron
+    container_name: araquem_rag_refresh_cron
+    restart: always
+    depends_on:
+      - api
+    env_file:
+      - .env.stage
+    environment:
+      - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN}
+      - TZ=America/Sao_Paulo
+    network_mode: "service:api"
+
+networks:
+  araquem_network:
+    driver: bridge
+
+volumes:
+  ollama:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/ollama
+      o: bind
+  prometheus-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/prometheus
+      o: bind
+  grafana:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/grafana
+      o: bind
+  tempo-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /data/tempo
+      o: bind
