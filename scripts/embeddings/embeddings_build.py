@@ -12,7 +12,6 @@ from pathlib import Path
 from typing import Iterable, List, Dict, Any
 from app.rag.ollama_client import OllamaClient
 
-logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger("embeddings_build")
 
 _ENTITY_TAG_PREFIXES = ("entity:", "entity=")
@@ -236,6 +235,8 @@ def build_index(index_path: str, out_dir: str, client: OllamaClient) -> Dict[str
 
 
 if __name__ == "__main__":
+    # Configura logging apenas quando rodar como script CLI
+    logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--index", required=True)
     ap.add_argument("--out", required=True)
