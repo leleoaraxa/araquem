@@ -41,6 +41,14 @@ NARRATOR_METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
         "type": "histogram",
         "labels": {"entity", "strategy"},
     },
+    "services_narrator_llm_requests_total": {
+        "type": "counter",
+        "labels": {"bucket", "entity", "outcome"},
+    },
+    "services_narrator_llm_latency_seconds": {
+        "type": "histogram",
+        "labels": {"bucket", "entity"},
+    },
 }
 
 # Catálogo canônico: nome -> {type, labels}

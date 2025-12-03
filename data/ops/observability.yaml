@@ -165,6 +165,12 @@ services:
       sirios_narrator_prompt_rows_total:
         enabled: true
         labels: [entity, strategy]
+      services_narrator_llm_requests_total:
+        enabled: true
+        labels: [bucket, entity, outcome]
+      services_narrator_llm_latency_seconds:
+        enabled: true
+        labels: [bucket, entity]
 global:
   grafana:
     dashboards:

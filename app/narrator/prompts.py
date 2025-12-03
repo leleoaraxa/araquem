@@ -370,3 +370,46 @@ def render_narrative(
         return _fallback_render(entity_key, facts)
 
     return ""
+
+
+def build_bucket_d_global_prompt(
+    *,
+    question: str,
+    entity: str,
+    bucket: str,
+    facts_payload: dict,
+    policy: dict | None = None,
+    meta: dict | None = None,
+) -> str:
+    """Prompt seguro para narrativas globais (bucket D, pós-SQL)."""
+
+    facts_json = json.dumps(facts_payload or {}, ensure_ascii=False, indent=2)
+    temperature = None
+    max_tokens = None
+    if isinstance(policy, dict):
+        temperature = policy.get("temperature")
+        max_tokens = policy.get("max_tokens")
+
+    context_block = meta if isinstance(meta, dict) else {}
+    context_json = json.dumps(context_block or {}, ensure_ascii=False, indent=2)
+
+    return f"""Você é o Narrator do Araquem, especializado em análises macro.
+
+Você recebeu fatos já consolidados via SQL (bucket={bucket}, entidade={entity}).
+Gere uma narrativa global em português do Brasil, com tom executivo e acessível.
+
+Regras obrigatórias:
+- Use APENAS os valores presentes em [DADOS_FACTUAIS]. Não invente números.
+- Se algum dado estiver ausente ou inconclusivo, apenas informe isso de forma clara.
+- Não recomende compra/venda. Foque em explicar tendências e contexto macro.
+- Priorize clareza: frases curtas, sem jargão desnecessário.
+
+Parâmetros do LLM: temperatura={temperature} | max_tokens={max_tokens}
+Pergunta original: {question}
+
+[DADOS_FACTUAIS]:
+{facts_json}
+
+[META_CONTEXTO]:
+{context_json}
+"""

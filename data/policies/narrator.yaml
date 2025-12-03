@@ -12,6 +12,20 @@ narrator:
   # Buckets:
   # - A/B/C → SQL-only (llm_enabled=false via entities)
   # - D     → conceitual/chitchat (usa default.llm_enabled=true quando não há entidade)
+  buckets:
+    A:
+      llm_enabled: false
+    B:
+      llm_enabled: false
+    C:
+      llm_enabled: false
+    D:
+      llm_enabled: true
+      mode: global_post_sql
+      max_tokens: 512
+      temperature: 0.1
+      entities:
+        - macro_consolidada
   default:
     llm_enabled: true
     shadow: false
