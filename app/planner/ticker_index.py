@@ -42,25 +42,51 @@ class TickerIndex:
                     canonical_candidates.append(ticker.strip().upper())
 
         self._canonical: Set[str] = set(canonical_candidates)
+        self._enable_exact = False
+        self._enable_prefix4 = False
+
+        if isinstance(raw.get("rules"), list):
+            for rule in raw["rules"]:
+                if not isinstance(rule, dict) or not rule.get("enabled"):
+                    continue
+                transforms = rule.get("transforms")
+                if not isinstance(transforms, list):
+                    continue
+                for transform in transforms:
+                    if not isinstance(transform, dict):
+                        continue
+                    transform_type = transform.get("type")
+                    target = transform.get("target")
+                    if target != "canonical":
+                        continue
+                    if transform_type == "exact":
+                        self._enable_exact = True
+                    if transform_type == "prefix4":
+                        self._enable_prefix4 = True
 
         prefix_map: Dict[str, List[str]] = {}
-        for ticker in self._canonical:
-            prefix = ticker[:4]
-            if len(prefix) != 4:
-                continue
-            prefix_map.setdefault(prefix, []).append(ticker)
+        if self._enable_prefix4:
+            for ticker in self._canonical:
+                prefix = ticker[:4]
+                if len(prefix) != 4:
+                    continue
+                prefix_map.setdefault(prefix, []).append(ticker)
 
-        self._by_prefix4: Dict[str, str] = {
-            prefix: values[0] for prefix, values in prefix_map.items() if len(values) == 1
-        }
+        self._by_prefix4: Dict[str, str] = {}
+        if self._enable_prefix4:
+            self._by_prefix4 = {
+                prefix: values[0]
+                for prefix, values in prefix_map.items()
+                if len(values) == 1
+            }
 
     def resolve(self, token: str) -> Optional[str]:
-        token_norm = (token or "").upper()
+        token_norm = _normalize_token(token)
         if not token_norm:
             return None
-        if token_norm in self._canonical:
+        if self._enable_exact and token_norm in self._canonical:
             return token_norm
-        if len(token_norm) == 4:
+        if self._enable_prefix4 and len(token_norm) == 4:
             return self._by_prefix4.get(token_norm)
         return None
 
