@@ -26,7 +26,7 @@ def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str
     a função e retornamos um bucket canônico sem aplicar heurísticas.
     """
 
-    return "D"
+    return ""
 
 
 def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
@@ -190,20 +190,25 @@ def _any_in(text: str, candidates: List[str]) -> bool:
 def _entities_for_bucket(ontology: Any, bucket: str) -> List[str]:
     """Retorna entidades elegíveis para o bucket, sem lógica de negócio inline."""
 
-    buckets_map = getattr(ontology, "buckets", None)
-    if isinstance(buckets_map, dict) and bucket in buckets_map:
-        entities = buckets_map.get(bucket) or []
-        if isinstance(entities, list):
-            return [str(e) for e in entities if e]
-
-    # Fallback atual: todos os entities definidos na ontologia competem.
     all_entities: List[str] = []
     for it in getattr(ontology, "intents", []) or []:
         ents = getattr(it, "entities", None) or []
         for ent in ents:
             if ent and ent not in all_entities:
                 all_entities.append(ent)
-    return all_entities
+
+    buckets_map = getattr(ontology, "buckets", None)
+    if not isinstance(buckets_map, dict):
+        return all_entities
+
+    if not bucket:
+        return all_entities
+
+    entities = buckets_map.get(bucket) or []
+    if not isinstance(entities, list) or not entities:
+        return all_entities
+
+    return [str(e) for e in entities if e]
 
 
 class Planner:
