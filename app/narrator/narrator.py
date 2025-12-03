@@ -10,7 +10,11 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
 from app.narrator.formatter import build_narrator_text
-from app.narrator.prompts import build_prompt, render_narrative
+from app.narrator.prompts import (
+    build_bucket_d_global_prompt,
+    build_prompt,
+    render_narrative,
+)
 from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
@@ -125,6 +129,55 @@ def _rows_to_lines(
         if parts:
             lines.append("- " + "; ".join(parts))
     return "\n".join(lines).strip()
+
+
+def _compact_facts_payload(
+    results: Dict[str, Any] | None,
+    meta: Dict[str, Any] | None,
+    *,
+    max_rows: int = 5,
+    max_columns: int = 6,
+) -> Dict[str, Any]:
+    """Reduz resultados SQL para um payload compacto e seguro para prompts."""
+
+    payload: Dict[str, Any] = {}
+
+    def _truncate_rows(rows: Iterable[Dict[str, Any]]) -> list[Dict[str, Any]]:
+        trimmed: list[Dict[str, Any]] = []
+        for row in list(rows)[: max_rows if max_rows > 0 else None]:
+            if not isinstance(row, dict):
+                continue
+            compact: Dict[str, Any] = {}
+            for idx, (key, value) in enumerate(row.items()):
+                if key == "meta":
+                    continue
+                if max_columns > 0 and idx >= max_columns:
+                    break
+                compact[key] = value
+            if compact:
+                trimmed.append(compact)
+        return trimmed
+
+    if isinstance(results, dict):
+        rows = results.get("rows") or results.get("data") or []
+        if isinstance(rows, list):
+            compact_rows = _truncate_rows(rows)
+            if compact_rows:
+                payload["rows"] = compact_rows
+
+        for key in ("summary", "totals", "labels"):
+            if key in results:
+                payload[key] = results.get(key)
+
+    if isinstance(meta, dict):
+        meta_fields = {}
+        for key in ("window", "aggregation", "period"):
+            if key in meta:
+                meta_fields[key] = meta.get(key)
+        if meta_fields:
+            payload["meta"] = meta_fields
+
+    return _json_sanitise(payload)
 
 
 def _default_text(entity: str, facts: Dict[str, Any]) -> str:
@@ -507,6 +560,9 @@ class Narrator:
 
         self.policy = policy_content
         self.shadow_policy = _load_narrator_shadow_policy()
+        self.bucket_policy: Dict[str, Any] = (
+            policy_content.get("buckets") if isinstance(policy_content, dict) else {}
+        )
 
         default_policy = _get_effective_policy(None, self.policy)
 
@@ -564,6 +620,108 @@ class Narrator:
                 return False
 
         return enabled
+
+    # ------------------------------------------------------------------
+    # Narrativa pós-SQL para buckets globais (D)
+    # ------------------------------------------------------------------
+
+    def render_global_post_sql(
+        self,
+        *,
+        question: str,
+        entity: str,
+        bucket: str,
+        results: Dict[str, Any] | None,
+        meta: Dict[str, Any] | None,
+        context: Dict[str, Any] | None = None,
+    ) -> Dict[str, Any]:
+        """Gera narrativa global usando LLM, preservando resultados."""
+
+        effective_meta = dict(meta) if isinstance(meta, dict) else {}
+        policy_dict = self.policy if isinstance(self.policy, dict) else {}
+        if not bool(policy_dict.get("llm_enabled", False)):
+            return effective_meta
+
+        bucket_cfg = (
+            self.bucket_policy.get(bucket, {}) if isinstance(self.bucket_policy, dict) else {}
+        )
+        if not isinstance(bucket_cfg, dict) or not bucket_cfg.get("llm_enabled"):
+            return effective_meta
+
+        if bucket_cfg.get("mode") != "global_post_sql":
+            return effective_meta
+
+        entities_allowed = bucket_cfg.get("entities")
+        if isinstance(entities_allowed, list) and entities_allowed:
+            if entity not in entities_allowed:
+                return effective_meta
+
+        max_rows = bucket_cfg.get("max_rows", 5)
+        max_columns = bucket_cfg.get("max_columns", 6)
+        try:
+            max_rows = int(max_rows)
+        except (TypeError, ValueError):
+            max_rows = 5
+        try:
+            max_columns = int(max_columns)
+        except (TypeError, ValueError):
+            max_columns = 6
+
+        facts_payload = _compact_facts_payload(
+            results, effective_meta, max_rows=max_rows, max_columns=max_columns
+        )
+
+        model = bucket_cfg.get("model") or self.model
+        temperature = bucket_cfg.get("temperature")
+        max_tokens = bucket_cfg.get("max_tokens")
+
+        prompt = build_bucket_d_global_prompt(
+            question=question,
+            entity=entity,
+            bucket=bucket,
+            facts_payload=facts_payload,
+            policy=bucket_cfg,
+            meta=context or {},
+        )
+
+        client = self.client
+        if client is None:
+            return effective_meta
+
+        t0 = time.perf_counter()
+        outcome = "ok"
+        try:
+            response = client.generate(
+                prompt,
+                model=model,
+                stream=False,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            narrative = (response or "").strip()
+            if narrative:
+                effective_meta["narrative"] = narrative
+        except Exception as exc:  # pragma: no cover - caminho excepcional
+            effective_meta["narrative_error"] = str(exc)
+            outcome = "error"
+        latency_s = time.perf_counter() - t0
+
+        entity_label = str(entity or "")
+        bucket_label = str(bucket or "")
+        counter(
+            "services_narrator_llm_requests_total",
+            outcome=outcome,
+            bucket=bucket_label,
+            entity=entity_label,
+        )
+        histogram(
+            "services_narrator_llm_latency_seconds",
+            latency_s,
+            bucket=bucket_label,
+            entity=entity_label,
+        )
+
+        return effective_meta
 
     def get_effective_policy(self, entity: str | None) -> Dict[str, Any]:
         base_policy = _get_effective_policy(entity, self.policy)
