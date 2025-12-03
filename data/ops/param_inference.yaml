@@ -7,6 +7,21 @@ description: >
 
 intents:
   fiis_dividendos:
+    compute_on_read:
+      window:
+        allowed:
+          - "months:3"
+          - "months:6"
+          - "months:12"
+          - "months:24"
+        default: "months:12"
+      agg:
+        allowed:
+          - "list"
+          - "avg"
+          - "sum"
+          - "latest"
+        default: "list"
     default_agg: list
     default_window: months:12
     windows_allowed:
@@ -20,6 +35,18 @@ intents:
       - count:12
       - count:24
     agg_keywords:
+      avg:
+        include:
+          - medio
+          - média
+          - media
+          - medio do dy
+          - média do dy
+      sum:
+        include:
+          - acumulado
+          - soma
+          - total
       latest:
         include:
           - ultimo
@@ -92,9 +119,25 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_precos:
+    compute_on_read:
+      window:
+        allowed:
+          - "months:3"
+          - "months:6"
+          - "months:12"
+          - "months:24"
+        default: "months:12"
+      agg:
+        allowed:
+          - "list"
+          - "avg"
+          - "sum"
+          - "latest"
+        default: "list"
     default_agg: list
     default_window: months:12
     windows_allowed:
@@ -108,6 +151,17 @@ intents:
       - count:12
       - count:24
     agg_keywords:
+      avg:
+        include:
+          - medio
+          - média
+          - media
+          - preco medio
+      sum:
+        include:
+          - acumulado
+          - soma
+          - total
       latest:
         include:
           - ultimo
@@ -195,6 +249,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fii_overview:
@@ -227,6 +282,21 @@ intents:
       document_number: context.client_id
 
   fiis_yield_history:
+    compute_on_read:
+      window:
+        allowed:
+          - "months:3"
+          - "months:6"
+          - "months:12"
+          - "months:24"
+        default: "months:12"
+      agg:
+        allowed:
+          - "list"
+          - "avg"
+          - "sum"
+          - "latest"
+        default: "list"
     default_agg: list
     default_window: months:12
     windows_allowed:
@@ -239,6 +309,20 @@ intents:
       - count:12
       - count:24
     agg_keywords:
+      avg:
+        include:
+          - medio
+          - média
+          - media
+          - dy medio
+          - dy médio
+          - dy media
+      sum:
+        include:
+          - acumulado
+          - soma
+          - total
+          - somado
       latest:
         include:
           - ultimo dy
@@ -305,6 +389,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_financials_revenue_schedule:
