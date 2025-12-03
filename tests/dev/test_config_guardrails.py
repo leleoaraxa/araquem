@@ -622,6 +622,7 @@ class TestParamInferenceConfig:
             "window": "months:6",
             "limit": 10,
             "order": "desc",
+            "ticker": "MXRF11",
         }
 
     def test_param_inference_canonical_intent_fiis_dividendos(self):
@@ -638,6 +639,7 @@ class TestParamInferenceConfig:
             "window": "months:12",
             "limit": 10,
             "order": "desc",
+            "ticker": "MXRF11",
         }
 
     def test_param_inference_canonical_intent_fiis_financials_revenue_schedule(self):
@@ -654,6 +656,7 @@ class TestParamInferenceConfig:
             "window": None,
             "limit": 10,
             "order": "desc",
+            "ticker": "MXRF11",
         }
 
     def test_param_inference_fiis_financials_revenue_schedule_semestre(self):
@@ -670,6 +673,7 @@ class TestParamInferenceConfig:
             "window": None,
             "limit": 10,
             "order": "desc",
+            "ticker": "HCTR11",
         }
 
 
