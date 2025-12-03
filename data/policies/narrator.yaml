@@ -9,8 +9,11 @@ narrator:
   llm_enabled: true
   shadow: true
 
+  # Buckets:
+  # - A/B/C → SQL-only (llm_enabled=false via entities)
+  # - D     → conceitual/chitchat (usa default.llm_enabled=true quando não há entidade)
   default:
-    llm_enabled: false
+    llm_enabled: true
     shadow: false
     model: sirios-narrator:latest
     style: executivo
@@ -47,7 +50,7 @@ narrator:
     # Série histórica de mercado / macro
     # ──────────────────
     history_market_indicators:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
@@ -59,7 +62,7 @@ narrator:
       strict_mode: false
 
     history_b3_indexes:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
@@ -71,7 +74,7 @@ narrator:
       strict_mode: false
 
     history_currency_rates:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260

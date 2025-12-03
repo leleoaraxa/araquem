@@ -287,6 +287,20 @@
      2. Código passa a ler essas configs;
      3. Somente depois remover a lógica “mágica” embutida.
 
+### 7.4 Buckets e uso de LLM (Regra Dura)
+
+- Buckets **A, B e C** são sempre **SQL-only**:
+  - `llm_enabled: false` em todas as entidades desses buckets.
+  - Mesmo que o Narrator esteja habilitado globalmente, ele não pode chamar LLM para essas entidades.
+
+- Bucket **D** é reservado para:
+  - perguntas conceituais, chitchat, saudações e explicações gerais;
+  - casos em que não há entidade SQL clara no Planner (`entity = null`).
+
+- Implementação:
+  - `narrator.default.llm_enabled: true` → só entra em jogo quando não há entidade (caso típico de Bucket D).
+  - Entidades mapeadas em A/B/C possuem override explícito com `llm_enabled: false`.
+
 ---
 
 ## 8. Presenter & FactsPayload
@@ -403,6 +417,16 @@ Quando nenhuma das regras acima define A/B/C.
    * Buckets A/B/C **não podem pular para LLM** sem tentar SQL.
    * `client_id` não define bucket.
 
-4. **Integridade com Narrator:**
+4. **LLM/RAG por bucket**
+
+- **A/B/C** → SQL-only:
+  - `llm_enabled: false` em todas as entidades mapeadas nesses buckets.
+  - RAG desabilitado via `data/policies/rag.yaml` (`allow_intents: []` para intents SQL).
+
+- **D** → Conceitual / LLM:
+  - Uso de LLM controlado por `narrator.default.llm_enabled: true`.
+  - RAG será ligado futuramente apenas para intents declaradas como Bucket D.
+
+5. **Integridade com Narrator:**
    Flags como `prefer_concept_when_no_ticker` **não podem sobrescrever a bucketização**.
    Buckets A/B/C priorizam sempre dados SQL.

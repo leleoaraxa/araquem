@@ -46,14 +46,13 @@ routing:
   - dividendos_yield
   - carteira_enriquecida
   - macro_consolidada
-  allow_intents:
-  - history_market_indicators
-  - history_b3_indexes
-  - history_currency_rates
+  allow_intents: []
   notes: >
     RAG é ativado somente para domínios textuais do Bucket D.
     Buckets A, B e C permanecem puramente SQL; dados numéricos
-    continuam sem RAG.
+    continuam sem RAG. No estado atual ainda não há intents
+    específicas configuradas para o Bucket D, então o RAG
+    permanece efetivamente desligado até criarmos essas intents.
 rag:
   entities:
     history_market_indicators:
