@@ -93,7 +93,9 @@ DEFAULT_LAST_REFERENCE_POLICY: Dict[str, Any] = {
 }
 
 
-def _load_policy(path: str = "data/policies/context.yaml") -> Tuple[Dict[str, Any], str, Optional[str]]:
+def _load_policy(
+    path: str = "data/policies/context.yaml",
+) -> Tuple[Dict[str, Any], str, Optional[str]]:
     """
     Carrega política de contexto de data/policies/context.yaml, se existir.
 
@@ -162,7 +164,9 @@ def _load_policy(path: str = "data/policies/context.yaml") -> Tuple[Dict[str, An
             **DEFAULT_NARRATOR_POLICY,
             **(narrator_raw or {}),
         }
-        last_ref_raw = policy.get("last_reference") if isinstance(policy, dict) else None
+        last_ref_raw = (
+            policy.get("last_reference") if isinstance(policy, dict) else None
+        )
         merged["last_reference"] = {
             **DEFAULT_LAST_REFERENCE_POLICY,
             **(last_ref_raw or {}),
@@ -288,7 +292,11 @@ class ContextManager:
 
     @property
     def last_reference_policy(self) -> Dict[str, Any]:
-        raw = self._policy.get("last_reference") if isinstance(self._policy, dict) else None
+        raw = (
+            self._policy.get("last_reference")
+            if isinstance(self._policy, dict)
+            else None
+        )
         merged = {**DEFAULT_LAST_REFERENCE_POLICY, **(raw or {})}
         try:
             merged["max_age_turns"] = int(merged.get("max_age_turns", 0))
@@ -497,6 +505,8 @@ class ContextManager:
         if max_turns > 0 and len(turns) > max_turns:
             turns = turns[-max_turns:]
 
+        self._backend.save(client_id, conversation_id, turns)
+
     def update_last_reference(
         self,
         client_id: str,
@@ -547,7 +557,6 @@ class ContextManager:
         if key not in self._last_reference_by_bucket:
             self._last_reference_by_bucket[key] = {}
         self._last_reference_by_bucket[key][bucket_key] = last_ref
-
 
     def get_last_reference(
         self, client_id: str, conversation_id: str, bucket: Optional[str] = None
@@ -731,6 +740,7 @@ def _entity_allowed(entity: Optional[str], scope_policy: Dict[str, Any]) -> bool
         return True
 
     return entity in allowed
+
 
 @dataclass
 class LastReference:
