@@ -130,6 +130,10 @@ intents:
     - documento
     - imovel
     - imoveis
+    - processo
+    - processos
+    - judicial
+    - judiciais
     - receita
     - receitas
     - recebiveis
@@ -550,6 +554,7 @@ intents:
   entities:
   - fiis_financials_snapshot
 - name: fiis_financials_revenue_schedule
+  weight: 2
   tokens:
     include:
     - receita
@@ -572,6 +577,8 @@ intents:
     - ipca
     - inpc
     - incc
+    - percentual
+    - indexada
     - 0 3m
     - 3 6m
     - 6 12m
@@ -630,9 +637,16 @@ intents:
     - distribuicao da receita por indice
     - previsao de receita do
     - receita nos proximos
+    - percentual da receita do
+    - receita indexada ao
+    - percentual de receita indexada ao
+    - receita ipca do
+    - receita cdi do
     exclude:
     - soma de dividendos
     - media de preco
+    - o que significa
+    - impacto do ipca
   entities:
   - fiis_financials_revenue_schedule
 - name: fiis_financials_risk
@@ -708,6 +722,9 @@ intents:
     exclude: []
   phrases:
     include:
+    - quantos imoveis o
+    - quantos imoveis possui o
+    - quantos imoveis tem o
     - vacancia fisica do fii
     - vacancia fisica do fundo
     - vacancia fisica do
@@ -776,6 +793,8 @@ intents:
     exclude: []
   phrases:
     include:
+    - fiis da carteira com mais processos
+    - quais fiis tem mais processos
     - processos do
     - status dos processos do
     - andamento dos processos do
@@ -785,6 +804,7 @@ intents:
   entities:
   - fiis_processos
 - name: fiis_rankings
+  weight: 2
   tokens:
     include:
     - dy
@@ -796,6 +816,12 @@ intents:
     - rank
     - posicao
     - posicoes
+    - peso
+    - pesos
+    - participacao
+    - composicao
+    - ifix
+    - ifil
     - top
     - melhores
     - maiores
@@ -806,8 +832,6 @@ intents:
     - lista
     exclude:
     - preco
-    - dividendo
-    - dividendos
     - media do
     - variacao diaria
     - pontos
@@ -854,9 +878,17 @@ intents:
     - maiores fiis em patrimonio liquido
     - ranking dos fiis com melhor
     - ranking dos fiis com menor
+    - peso do
+    - peso no ifix do
+    - peso no ifil do
+    - posicao do
+    - posicao no ifix do
+    - posicao no ifil do
+    - participacao do
+    - participacao no ifix do
+    - participacao no ifil do
     exclude:
     - preco do
-    - dividendo do
     - vacancia do
     - rendimento do
     - rendimento do fii
@@ -888,6 +920,9 @@ intents:
     - d-1
     - ontem
     exclude:
+    - peso
+    - posicao
+    - ranking
     - usd
     - dolar
     - eur
@@ -1045,6 +1080,9 @@ intents:
     - selic meta atualizada
     - ipca de outubro
     - ipca outubro
+    - o que significa ipca alto
+    - ipca alto para fiis
+    - impacto do ipca alto
     - historico do ipca
     - historico do ipca nos ultimos
     - historico da inflacao
@@ -1053,7 +1091,13 @@ intents:
     - historico do indice de precos
     - acumulo de cdi em 12 meses
     - acumulo de selic em 12 meses
-    exclude: []
+    exclude:
+    - receita do
+    - receita do fii
+    - receita do fundo
+    - receita ipca do
+    - receita cdi do
+    - percentual da receita
   entities:
   - history_market_indicators
 - name: dividendos_yield
