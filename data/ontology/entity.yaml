@@ -37,6 +37,28 @@ buckets:
 
   D: []
 intents:
+- name: ticker_query
+  bucket: A
+  tokens:
+    include:
+    - "[A-Za-z]{4}11"
+    exclude: []
+  phrases:
+    include: []
+    exclude: []
+  entities:
+  - fiis_precos
+  - fiis_dividendos
+  - fii_overview
+  - fiis_financials_risk
+  - fiis_financials_snapshot
+  - fiis_financials_revenue_schedule
+  - fiis_rankings
+  - fiis_yield_history
+  - fiis_processos
+  - fiis_imoveis
+  - dividendos_yield
+  weight: 10
 - name: client_fiis_positions
   tokens:
     include:
@@ -847,6 +869,7 @@ intents:
   entities:
   - fiis_rankings
 - name: history_b3_indexes
+  weight: 2
   tokens:
     include:
     - ibovespa
@@ -899,6 +922,7 @@ intents:
   entities:
   - history_b3_indexes
 - name: history_currency_rates
+  weight: 2
   tokens:
     include:
     - dolar
@@ -950,6 +974,7 @@ intents:
   entities:
   - history_currency_rates
 - name: history_market_indicators
+  weight: 2
   tokens:
     include:
     - ipca
@@ -1083,6 +1108,7 @@ intents:
   entities:
   - carteira_enriquecida
 - name: macro_consolidada
+  weight: 2
   tokens:
     include:
     - macro
@@ -1108,6 +1134,12 @@ intents:
   entities:
   - macro_consolidada
 anti_tokens:
+  generic:
+  - macro
+  - ipca
+  - selic
+  - ifix
+  - cdi
   fiis_noticias:
   - noticia
   - noticias
