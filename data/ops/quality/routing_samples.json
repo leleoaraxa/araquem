@@ -1317,6 +1317,21 @@
       "expected_entity": "history_market_indicators"
     },
     {
+      "question": "quanto está o HGLG hoje",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "dividendos do hglg",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "overview do mxrf",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
       "question": "O que é dividend yield em FIIs?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"

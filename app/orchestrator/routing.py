@@ -12,6 +12,7 @@ from uuid import uuid4
 from app.cache.rt_cache import make_cache_key
 from app.planner import planner as planner_module
 from app.planner.planner import Planner
+from app.planner.ticker_index import extract_tickers_from_text
 from app.builder.sql_builder import build_select_for_entity
 from app.executor.pg import PgExecutor
 from app.formatter.rows import format_rows
@@ -34,8 +35,6 @@ LOGGER = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from app.cache.rt_cache import CachePolicies, RedisCache
 
-# Normalização de ticker na camada de ENTRADA (contrato Araquem)
-TICKER_RE = re.compile(r"\b([A-Za-z]{4}11)\b")
 _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _ENTITY_ROOT = Path("data/entities")
 
@@ -124,16 +123,7 @@ def extract_requested_metrics(question: str, entity_conf: Dict[str, Any]) -> Lis
 
 def _extract_ticker_identifiers(question: str) -> List[str]:
     """Extrai todos os tickers normalizados a partir da pergunta."""
-    normalized = (question or "").upper()
-    tickers: List[str] = []
-    seen = set()
-    for match in TICKER_RE.finditer(normalized):
-        ticker = match.group(1)
-        if ticker in seen:
-            continue
-        seen.add(ticker)
-        tickers.append(ticker)
-    return tickers
+    return extract_tickers_from_text(question)
 
 
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")

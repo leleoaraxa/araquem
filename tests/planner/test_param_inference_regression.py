@@ -65,6 +65,7 @@ class TestIdentifierTicker:
             "window": "months:12",
             "limit": 10,
             "order": "desc",
+            "ticker": "HGLG11",
         }
 
     @pytest.mark.parametrize("identifiers", [{}, None])
@@ -88,7 +89,7 @@ class TestIdentifierTicker:
 
 class TestContextIsolation:
     def test_context_source_is_ignored(self):
-        # Mesmo com source: ["text", "context"], ticker só vem dos identifiers.
+        # Mesmo com source: ["text", "context"], ticker só aparece quando presente no texto.
         result = infer_params(
             "dividendos",
             intent="fiis_dividendos",
@@ -141,6 +142,7 @@ class TestYamlDefaults:
             "window": "months:12",
             "limit": 10,
             "order": "desc",
+            "ticker": "HGLG11",
         }
 
     def test_invalid_window_uses_yaml_fallback(self):
@@ -158,6 +160,7 @@ class TestYamlDefaults:
             "window": "months:12",
             "limit": 10,
             "order": "desc",
+            "ticker": "HGLG11",
         }
 
     def test_limit_and_order_only_when_allowed(self):

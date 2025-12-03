@@ -10,6 +10,7 @@ import re, unicodedata
 from pathlib import Path
 
 from app.utils.filecache import load_yaml_cached
+from app.planner.ticker_index import resolve_ticker_from_text
 
 _DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
@@ -542,7 +543,7 @@ def infer_params(
             sources = ticker_cfg.get("source") or []
             ticker_value: Optional[str] = None
             if "text" in sources:
-                ticker_value = _ticker_from_identifiers(identifiers, question)
+                ticker_value = resolve_ticker_from_text(question)
             if not ticker_value and "context" in sources:
                 ticker_value = _ticker_from_identifiers(identifiers, question)
             if ticker_value:
