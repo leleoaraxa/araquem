@@ -366,3 +366,43 @@
      * SELECT em views necessárias;
      * REFRESH de matviews apenas por roles autorizados;
      * nunca expor dados de cliente indevidamente em rotas públicas.
+
+---
+
+## 11. Buckets do Planner (A/B/C/D)
+
+> **Objetivo:** separar claramente *tipo de pergunta* (bucket) de *entidade específica*, evitando competição indesejada entre domínios diferentes.
+
+**Bucket A — SQL com ticker (FIIs)**
+Sinais: ticker explícito (AAAA11) ou herdado via contexto.
+Entidades: todas `fiis_*`, `fii_overview`, `dividendos_yield`.
+
+**Bucket B — SQL cliente (privadas)**
+Sinais: “minha carteira”, “meus FIIs”, “quanto EU recebi de dividendos” etc.
+`client_id` é obrigatório para acesso, MAS NÃO define o bucket.
+Entidades: `carteira_enriquecida`, `client_fiis_*`.
+
+**Bucket C — SQL macro/índices/moedas**
+Sinais: IPCA, CDI, SELIC, IFIX, IFIL, IBOV, dólar, USD/BRL, “quanto foi X”, “como evoluiu X”, etc.
+Entidades: `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`, `macro_consolidada`.
+
+**Bucket D — Conceitual / LLM / chitchat**
+Quando nenhuma das regras acima define A/B/C.
+
+### Regras:
+
+1. **Fase 1 — Bucketização**
+   O Planner decide primeiro o bucket com base no texto e no contexto permitidos.
+
+2. **Fase 2 — Seleção de entidade**
+   A escolha da entidade só pode ocorrer ENTRE entidades do bucket escolhido.
+
+3. **Proibições:**
+
+   * Entidades de buckets diferentes **não competem entre si**.
+   * Buckets A/B/C **não podem pular para LLM** sem tentar SQL.
+   * `client_id` não define bucket.
+
+4. **Integridade com Narrator:**
+   Flags como `prefer_concept_when_no_ticker` **não podem sobrescrever a bucketização**.
+   Buckets A/B/C priorizam sempre dados SQL.

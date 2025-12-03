@@ -19,6 +19,16 @@ PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
 
 
+def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str:
+    """Resolve o bucket (A/B/C/D) para a pergunta.
+
+    Importante: a lógica real virá de YAML/ontologia. Aqui apenas expomos
+    a função e retornamos um bucket canônico sem aplicar heurísticas.
+    """
+
+    return "D"
+
+
 def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
     if key not in cfg:
         raise ValueError(f"Configuração ausente: {path}.{key}")
@@ -177,6 +187,25 @@ def _any_in(text: str, candidates: List[str]) -> bool:
     return any(c for c in candidates if c and c in text)
 
 
+def _entities_for_bucket(ontology: Any, bucket: str) -> List[str]:
+    """Retorna entidades elegíveis para o bucket, sem lógica de negócio inline."""
+
+    buckets_map = getattr(ontology, "buckets", None)
+    if isinstance(buckets_map, dict) and bucket in buckets_map:
+        entities = buckets_map.get(bucket) or []
+        if isinstance(entities, list):
+            return [str(e) for e in entities if e]
+
+    # Fallback atual: todos os entities definidos na ontologia competem.
+    all_entities: List[str] = []
+    for it in getattr(ontology, "intents", []) or []:
+        ents = getattr(it, "entities", None) or []
+        for ent in ents:
+            if ent and ent not in all_entities:
+                all_entities.append(ent)
+    return all_entities
+
+
 class Planner:
     def __init__(self, ontology_path: str):
         self.ontology_path = ontology_path
@@ -188,6 +217,9 @@ class Planner:
     def explain(self, question: str):
         norm = _normalize(question, self.onto.normalize)
         tokens = _tokenize(norm, self.onto.token_split)
+
+        bucket = resolve_bucket(question, {}, self.onto)
+        bucket_entities = set(_entities_for_bucket(self.onto, bucket))
 
         # pesos vêm 100% da ontologia validada (sem defaults embutidos no código)
         token_weight = float(self.onto.weights["token"])
@@ -203,6 +235,7 @@ class Planner:
                 "result": tokens[:],
             }
         ]
+        decision_path.append({"stage": "bucketize", "type": "planner_bucket", "bucket": bucket})
         token_score_items: List[Dict[str, Any]] = []
         phrase_score_items: List[Dict[str, Any]] = []
         anti_hits_items: List[Dict[str, Any]] = []
@@ -272,7 +305,7 @@ class Planner:
                 "phrase_includes": phrase_incl_hits,
                 "phrase_excludes": phrase_excl_hits,
                 "anti_penalty": anti_penalty,
-                "entities": it.entities,
+                "entities": [e for e in it.entities if e in bucket_entities],
             }
 
         # --- configurações RAG ---
@@ -355,7 +388,7 @@ class Planner:
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
             # Intents podem ter N entidades; todas devem competir
-            ents = list(it.entities or [])
+            ents = [e for e in (it.entities or []) if e in bucket_entities]
             # Se não houver entidades, mantemos None (compat)
             intent_entities[it.name] = ents[0] if ents else None
 
@@ -629,6 +662,10 @@ class Planner:
                 "intent_top2_gap_base": gap_base,
                 "intent_top2_gap_final": gap_final,
             },
+        }
+        meta_explain["bucket"] = {
+            "selected": bucket,
+            "entities": sorted(bucket_entities),
         }
         combined_block = {
             "intent": ordered_combined,
