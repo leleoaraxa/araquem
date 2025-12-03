@@ -163,13 +163,13 @@
     },
     {
       "question": "peso do MCCI11 no IFIL",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
     },
     {
       "question": "peso do MCCI11 no IFIX",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
     },
     {
       "question": "público-alvo do MCCI11",
@@ -1055,6 +1055,11 @@
       "question": "percentual da receita do XPML11 indexada ao IPCA",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "quantos imóveis o HGLG11 possui na carteira",
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
     },
     {
       "question": "como está distribuída a receita futura do MXRF11 por índice",
