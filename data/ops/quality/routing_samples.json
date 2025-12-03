@@ -1305,6 +1305,21 @@
       "question": "E o overview dele?",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
+    },
+    {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "O que é dividend yield em FIIs?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
     }
   ]
 }

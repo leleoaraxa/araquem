@@ -27,7 +27,7 @@ rules:
 
   - name: "bucket_B_cliente"
     bucket: "B"
-    enabled: false
+    enabled: true
     min_score: 1.0
     tokens_include:
       - minha
@@ -47,7 +47,7 @@ rules:
 
   - name: "bucket_C_macro_indices_moedas"
     bucket: "C"
-    enabled: false
+    enabled: true
     min_score: 1.0
     tokens_include:
       - ipca
@@ -74,7 +74,7 @@ rules:
 
   - name: "bucket_D_fallback"
     bucket: "D"
-    enabled: false
+    enabled: true
     min_score: 0.0
     tokens_include: []
     phrases_include: []
