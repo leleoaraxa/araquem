@@ -18,9 +18,11 @@ defaults:
 rules:
   - name: "bucket_A_ticker"
     bucket: "A"
-    enabled: false
+    enabled: true
     min_score: 1.0
-    tokens_include: []
+    tokens_include:
+      - AAAA11
+      - aaaa11
     phrases_include: []
     tokens_exclude: []
     phrases_exclude: []

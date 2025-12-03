@@ -1335,6 +1335,71 @@
       "question": "O que é dividend yield em FIIs?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "preço do HGLG11",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos",
+      "identifiers": {"tickers": ["HGLG11"]}
+    },
+    {
+      "question": "dividendos do MXRF11",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos",
+      "identifiers": {"tickers": ["MXRF11"]}
+    },
+    {
+      "question": "processos do TRXF11",
+      "expected_intent": "fiis_processos",
+      "expected_entity": "fiis_processos",
+      "identifiers": {"tickers": ["TRXF11"]}
+    },
+    {
+      "question": "overview do HCTR11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview",
+      "identifiers": {"tickers": ["HCTR11"]}
+    },
+    {
+      "question": "yield do HGRE11",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history",
+      "identifiers": {"tickers": ["HGRE11"]}
+    },
+    {
+      "question": "compare HGLG11 e MXRF11",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos",
+      "identifiers": {"tickers": ["HGLG11", "MXRF11"]}
+    },
+    {
+      "question": "dividendos de HGLG11, MXRF11 e HGRE11",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos",
+      "identifiers": {"tickers": ["HGLG11", "MXRF11", "HGRE11"]}
+    },
+    {
+      "question": "preço do HGLG11 ou HCTR11",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos",
+      "identifiers": {"tickers": ["HGLG11", "HCTR11"]}
+    },
+    {
+      "question": "overview de HGLG11 e RBRF11",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview",
+      "identifiers": {"tickers": ["HGLG11", "RBRF11"]}
+    },
+    {
+      "question": "IPCA do mês e preço do HGLG11",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos",
+      "identifiers": {"tickers": ["HGLG11"]}
+    },
+    {
+      "question": "qual a selic do mês?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
     }
   ]
 }
