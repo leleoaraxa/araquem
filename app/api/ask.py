@@ -4,7 +4,7 @@ import logging
 import os
 import time
 from decimal import Decimal
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 import psycopg
 from fastapi import APIRouter, Query
@@ -71,6 +71,11 @@ def ask(
     entity = plan["chosen"]["entity"]
     intent = plan["chosen"]["intent"]
     score = plan["chosen"]["score"]
+    exp_safe = plan.get("explain") if isinstance(plan, dict) else {}
+    bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
+    if not isinstance(bucket_info, dict):
+        bucket_info = {}
+    bucket_selected = str(bucket_info.get("selected") or "")
 
     # ------------------------------------------------------------------
     # CONTEXTO CONVERSACIONAL (M12) — registro do turno do usuário
@@ -85,6 +90,7 @@ def ask(
                 "request_id": request_id,
                 "intent": intent,
                 "entity": entity,
+                "bucket": bucket_selected,
             },
         )
     except Exception:
@@ -150,6 +156,7 @@ def ask(
                     "request_id": request_id,
                     "intent": intent,
                     "entity": entity,
+                    "bucket": bucket_selected,
                     "status_reason": "unroutable",
                 },
             )
@@ -169,6 +176,7 @@ def ask(
             client_id=payload.client_id,
             conversation_id=payload.conversation_id,
             entity=entity,
+            bucket=bucket_selected,
             identifiers=identifiers,
         )
         identifiers = (
@@ -411,6 +419,7 @@ def ask(
                 "request_id": request_id,
                 "intent": intent,
                 "entity": entity,
+                "bucket": bucket_selected,
                 "status_reason": "ok",
             },
         )
@@ -419,39 +428,42 @@ def ask(
         # last_reference: grava apenas quando existe UM ticker não ambíguo
         # e já resolvido pelas camadas canônicas (param_inference / orchestrator).
         # Nada de regex local; sem heurística nova.
-        # ------------------------------------------------------------------
-        ticker_for_context: Optional[str] = None
+        tickers_for_context: List[str] = []
 
         # 1) Se o Planner/param_inference já resolveu um ticker explícito,
         #    usamos ele como referência principal.
         if isinstance(agg_params, dict):
             candidate = agg_params.get("ticker")
             if isinstance(candidate, str) and candidate:
-                ticker_for_context = candidate
+                tickers_for_context.append(candidate)
 
-        # 2) Caso contrário, usamos apenas casos NÃO ambíguos de identifiers:
-        #    - ticker único já normalizado
-        #    - OU lista de tickers com tamanho 1
-        if not ticker_for_context and isinstance(identifiers, dict):
+        # 2) Inclui tickers presentes nos identifiers (já resolvidos/normatizados).
+        if isinstance(identifiers, dict):
             t = identifiers.get("ticker")
             if isinstance(t, str) and t:
-                ticker_for_context = t
-            else:
-                tickers = identifiers.get("tickers")
-                if (
-                    isinstance(tickers, list)
-                    and len(tickers) == 1
-                    and isinstance(tickers[0], str)
-                ):
-                    ticker_for_context = tickers[0]
+                tickers_for_context.append(t)
+            tickers = identifiers.get("tickers")
+            if isinstance(tickers, list):
+                tickers_for_context.extend(
+                    [tk for tk in tickers if isinstance(tk, str) and tk]
+                )
 
-        if ticker_for_context:
+        deduped: List[str] = []
+        seen = set()
+        for tk in tickers_for_context:
+            if tk not in seen:
+                deduped.append(tk)
+                seen.add(tk)
+
+        if deduped:
             context_manager.update_last_reference(
                 client_id=payload.client_id,
                 conversation_id=payload.conversation_id,
-                ticker=ticker_for_context,
+                ticker=deduped[0],
+                tickers=deduped,
                 entity=entity,
                 intent=intent,
+                bucket=bucket_selected,
             )
     except Exception:
         LOGGER.warning(

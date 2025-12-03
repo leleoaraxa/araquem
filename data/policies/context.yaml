@@ -74,6 +74,11 @@ context:
     - fiis_cadastro
     - dividendos_yield
     max_age_turns: 3
+    bucket_ttl:
+      A: 4
+      B: 2
+      C: 3
+      D: 1
   entities:
     fiis_precos:
       use_referenced_ticker: true

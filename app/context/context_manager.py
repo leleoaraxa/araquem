@@ -89,6 +89,7 @@ DEFAULT_LAST_REFERENCE_POLICY: Dict[str, Any] = {
     "enable_last_ticker": False,
     "allowed_entities": [],
     "max_age_turns": 0,
+    "bucket_ttl": {},
 }
 
 
@@ -248,6 +249,7 @@ class ContextManager:
     ) -> None:
         self._backend: ContextBackend = backend or InMemoryBackend()
         self._last_reference: Dict[str, LastReference] = {}
+        self._last_reference_by_bucket: Dict[str, Dict[str, LastReference]] = {}
         self._turn_counters: Dict[str, int] = {}
         if policy is not None:
             self._policy = policy
@@ -295,25 +297,42 @@ class ContextManager:
         allowed = merged.get("allowed_entities") or []
         merged["allowed_entities"] = [str(e) for e in allowed if e]
         merged["enable_last_ticker"] = bool(merged.get("enable_last_ticker", False))
+        bucket_ttl = merged.get("bucket_ttl") if isinstance(merged, dict) else None
+        parsed_bucket_ttl: Dict[str, int] = {}
+        if isinstance(bucket_ttl, dict):
+            for bucket, ttl in bucket_ttl.items():
+                try:
+                    parsed_bucket_ttl[str(bucket)] = int(ttl)
+                except (TypeError, ValueError):
+                    continue
+        merged["bucket_ttl"] = parsed_bucket_ttl
         return merged
 
     @staticmethod
-    def _ticker_from_identifiers(
+    def _tickers_from_identifiers(
         identifiers: Optional[Dict[str, Any]],
-    ) -> Optional[str]:
+    ) -> List[str]:
         if not identifiers or not isinstance(identifiers, dict):
-            return None
+            return []
 
+        resolved: List[str] = []
         ticker = identifiers.get("ticker")
         if isinstance(ticker, str) and ticker:
-            return ticker
+            resolved.append(ticker)
 
         tickers = identifiers.get("tickers")
-        if isinstance(tickers, list) and len(tickers) == 1:
-            first = tickers[0]
-            if isinstance(first, str) and first:
-                return first
-        return None
+        if isinstance(tickers, list):
+            for item in tickers:
+                if isinstance(item, str) and item:
+                    resolved.append(item)
+
+        deduped: List[str] = []
+        seen = set()
+        for t in resolved:
+            if t not in seen:
+                deduped.append(t)
+                seen.add(t)
+        return deduped
 
     def last_reference_allows_entity(self, entity: Optional[str]) -> bool:
         """Verifica se o uso de last_reference é permitido para a entidade.
@@ -478,16 +497,16 @@ class ContextManager:
         if max_turns > 0 and len(turns) > max_turns:
             turns = turns[-max_turns:]
 
-        self._backend.save(client_id, conversation_id, turns)
-
     def update_last_reference(
         self,
         client_id: str,
         conversation_id: str,
         *,
-        ticker: Optional[str],
+        ticker: Optional[str] = None,
+        tickers: Optional[List[str]] = None,
         entity: Optional[str] = None,
         intent: Optional[str] = None,
+        bucket: Optional[str] = None,
     ) -> None:
         """Atualiza a última referência explícita de ticker para a conversa."""
 
@@ -498,7 +517,15 @@ class ContextManager:
         if not policy.get("enable_last_ticker"):
             return
 
-        if not ticker:
+        tickers_list: List[str] = []
+        if tickers and isinstance(tickers, list):
+            tickers_list.extend([str(t) for t in tickers if isinstance(t, str) and t])
+        if ticker and isinstance(ticker, str):
+            tickers_list.append(ticker)
+        tickers_list = [
+            t for i, t in enumerate(tickers_list) if t and t not in tickers_list[:i]
+        ]
+        if not tickers_list:
             return
 
         if entity and not self.last_reference_allows_entity(entity):
@@ -507,28 +534,37 @@ class ContextManager:
         key = self._conversation_key(client_id, conversation_id)
         now = time.time()
         turn_index = self._turn_counters.get(key, 0)
-        self._last_reference[key] = LastReference(
-            ticker=str(ticker),
+        bucket_key = str(bucket) if bucket is not None else ""
+        last_ref = LastReference(
+            tickers=tickers_list,
             entity=entity,
             intent=intent,
             updated_at=now,
             turn_index=turn_index,
+            bucket=bucket,
         )
+        self._last_reference[key] = last_ref
+        if key not in self._last_reference_by_bucket:
+            self._last_reference_by_bucket[key] = {}
+        self._last_reference_by_bucket[key][bucket_key] = last_ref
+
 
     def get_last_reference(
-        self, client_id: str, conversation_id: str
+        self, client_id: str, conversation_id: str, bucket: Optional[str] = None
     ) -> Optional[LastReference]:
         """Retorna a última referência respeitando as políticas de contexto."""
 
         try:
-            last_ref, _ = self._get_last_reference_with_status(client_id, conversation_id)
+            last_ref, _ = self._get_last_reference_with_status(
+                client_id, conversation_id, bucket=bucket
+            )
             return last_ref
         except Exception:  # pragma: no cover - defensivo
             LOGGER.warning("Falha ao recuperar last_reference", exc_info=True)
             return None
 
     def _get_last_reference_with_status(
-        self, client_id: str, conversation_id: str
+        self, client_id: str, conversation_id: str, bucket: Optional[str] = None
     ) -> Tuple[Optional[LastReference], str]:
         if not self.enabled:
             return None, "context_disabled"
@@ -538,14 +574,28 @@ class ContextManager:
             return None, "last_reference_disabled"
 
         key = self._conversation_key(client_id, conversation_id)
-        last_ref = self._last_reference.get(key)
+        bucket_key = str(bucket) if bucket is not None else ""
+        last_ref = None
+        if key in self._last_reference_by_bucket:
+            last_ref = self._last_reference_by_bucket[key].get(bucket_key)
+        if not isinstance(last_ref, LastReference) and bucket is None:
+            legacy_ref = self._last_reference.get(key)
+            if isinstance(legacy_ref, LastReference):
+                last_ref = legacy_ref
         if not isinstance(last_ref, LastReference):
             return None, "no_candidate"
 
-        if not getattr(last_ref, "ticker", None):
+        if not getattr(last_ref, "tickers", None):
             return None, "no_candidate"
 
-        max_age_turns = policy.get("max_age_turns") or 0
+        bucket_ttl = policy.get("bucket_ttl") or {}
+        max_age_turns = bucket_ttl.get(bucket_key, bucket_ttl.get(bucket or ""))
+        if max_age_turns is None:
+            max_age_turns = policy.get("max_age_turns") or 0
+        try:
+            max_age_turns = int(max_age_turns)
+        except (TypeError, ValueError):
+            max_age_turns = policy.get("max_age_turns") or 0
         if max_age_turns > 0:
             current_turn = self._turn_counters.get(key, 0)
             if (current_turn - last_ref.turn_index) > max_age_turns:
@@ -559,9 +609,10 @@ class ContextManager:
         client_id: str,
         conversation_id: str,
         entity: Optional[str],
+        bucket: Optional[str] = None,
         identifiers: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
-        """Resolve herança de ticker segundo políticas de contexto.
+        """Resolve herança de ticker(s) segundo políticas de contexto.
 
         Retorna dict com:
             - identifiers_resolved: identifiers possivelmente enriquecidos
@@ -571,7 +622,7 @@ class ContextManager:
         """
 
         resolved_identifiers = dict(identifiers or {})
-        existing = self._ticker_from_identifiers(resolved_identifiers)
+        existing = self._tickers_from_identifiers(resolved_identifiers)
 
         if not self.enabled:
             return {
@@ -615,7 +666,9 @@ class ContextManager:
                 "reason": "input_has_ticker",
             }
 
-        last_ref, status = self._get_last_reference_with_status(client_id, conversation_id)
+        last_ref, status = self._get_last_reference_with_status(
+            client_id, conversation_id, bucket=bucket
+        )
         if status != "ok" or not last_ref:
             return {
                 "identifiers_resolved": resolved_identifiers,
@@ -624,12 +677,16 @@ class ContextManager:
                 "reason": status,
             }
 
-        resolved_identifiers["ticker"] = last_ref.ticker
+        tickers = last_ref.tickers or []
+        if tickers:
+            resolved_identifiers["tickers"] = tickers
+            if len(tickers) == 1:
+                resolved_identifiers["ticker"] = tickers[0]
 
         return {
             "identifiers_resolved": resolved_identifiers,
             "last_reference_used": True,
-            "last_reference_ticker": last_ref.ticker,
+            "last_reference_ticker": (tickers[0] if tickers else None),
             "reason": "last_reference_applied",
         }
 
@@ -687,8 +744,9 @@ class LastReference:
         turn_index: contador lógico de turns no momento do registro.
     """
 
-    ticker: Optional[str]
+    tickers: List[str]
     entity: Optional[str]
     intent: Optional[str]
     updated_at: float
     turn_index: int
+    bucket: Optional[str]
