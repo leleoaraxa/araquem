@@ -468,7 +468,24 @@ class Orchestrator:
             }
 
         identifiers = self.extract_identifiers(question)
+        provided_tickers = identifiers.get("tickers")
+        tickers_list = (
+            provided_tickers
+            if isinstance(provided_tickers, list) and provided_tickers
+            else extract_tickers_from_text(question)
+        )
+        if tickers_list:
+            identifiers = {
+                **identifiers,
+                "tickers": tickers_list,
+                "ticker": identifiers.get("ticker") or tickers_list[0],
+            }
         entity_conf = _load_entity_config(str(entity) if entity else None)
+
+        bucket_info = exp.get("bucket") if isinstance(exp, dict) else {}
+        bucket_selected = ""
+        if isinstance(bucket_info, dict):
+            bucket_selected = str(bucket_info.get("selected") or "")
 
         # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
         # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
@@ -499,7 +516,12 @@ class Orchestrator:
             agg_params=agg_params,
         )
 
-        cache_ctx = self._prepare_metrics_cache_context(entity, identifiers, agg_params)
+        multi_ticker_enabled = bucket_selected == "A" and len(tickers_list) > 1
+        cache_ctx = None
+        if not multi_ticker_enabled:
+            cache_ctx = self._prepare_metrics_cache_context(
+                entity, identifiers, agg_params
+            )
         metrics_cache_hit = False
         metrics_cache_key: Optional[str] = None
         metrics_cache_ttl: Optional[int] = None
@@ -584,16 +606,35 @@ class Orchestrator:
                 set_trace_attribute(span, "sql.skipped", True)
             else:
                 # Caminho determinístico normal: gera SELECT + executa no Postgres
-                sql, params, result_key, return_columns = build_select_for_entity(
-                    entity=entity,
-                    identifiers=identifiers,
-                    agg_params=agg_params,  # <- passa inferência para o builder
-                )
-                if isinstance(params, dict):
-                    params = {**params, "entity": entity}  # etiqueta para métricas SQL
-                rows_raw = self._exec.query(sql, params)
-                set_trace_attribute(span, "cache.hit", False)
-                set_trace_attribute(span, "sql.skipped", False)
+                if multi_ticker_enabled:
+                    rows_raw = []
+                    result_key = None
+                    return_columns = None
+                    for ticker in tickers_list:
+                        ticker_identifiers = {**identifiers, "ticker": ticker}
+                        sql, params, rk, columns = build_select_for_entity(
+                            entity=entity,
+                            identifiers=ticker_identifiers,
+                            agg_params=agg_params,
+                        )
+                        if isinstance(params, dict):
+                            params = {**params, "entity": entity}
+                        rows_raw.extend(self._exec.query(sql, params))
+                        result_key = result_key or rk
+                        return_columns = return_columns or columns
+                    set_trace_attribute(span, "cache.hit", False)
+                    set_trace_attribute(span, "sql.skipped", False)
+                else:
+                    sql, params, result_key, return_columns = build_select_for_entity(
+                        entity=entity,
+                        identifiers=identifiers,
+                        agg_params=agg_params,  # <- passa inferência para o builder
+                    )
+                    if isinstance(params, dict):
+                        params = {**params, "entity": entity}  # etiqueta para métricas SQL
+                    rows_raw = self._exec.query(sql, params)
+                    set_trace_attribute(span, "cache.hit", False)
+                    set_trace_attribute(span, "sql.skipped", False)
 
         # elapsed consolidado para reutilização (meta e explain analytics)
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
