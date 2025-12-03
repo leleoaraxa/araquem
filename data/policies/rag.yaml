@@ -50,8 +50,10 @@ routing:
   - history_market_indicators
   - history_b3_indexes
   - history_currency_rates
-  notes: 'RAG é ativado somente para domínios textuais: macroeconomia, índices B3 e moedas. Dados numéricos continuam puramente SQL.
-    '
+  notes: >
+    RAG é ativado somente para domínios textuais do Bucket C
+    (macroeconomia, índices B3 e moedas). Buckets A e B permanecem
+    puramente SQL; dados numéricos continuam sem RAG.
 rag:
   entities:
     history_market_indicators:
