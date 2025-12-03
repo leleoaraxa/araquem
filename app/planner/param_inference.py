@@ -107,6 +107,53 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                     f"param_inference.yaml inválido: default_agg para intent '{intent_name}' é desconhecido"
                 )
 
+        compute_on_read = cfg.get("compute_on_read") or {}
+        if compute_on_read:
+            _require_mapping(
+                compute_on_read,
+                label=f"compute_on_read da intent '{intent_name}'",
+            )
+            agg_cfg = compute_on_read.get("agg") or {}
+            _require_mapping(
+                agg_cfg, label=f"compute_on_read.agg da intent '{intent_name}'"
+            )
+            allowed_aggs = agg_cfg.get("allowed") or []
+            _require_list(
+                allowed_aggs, label=f"compute_on_read.agg.allowed da intent '{intent_name}'"
+            )
+            for agg_name in allowed_aggs:
+                if agg_name not in _ALLOWED_AGGS:
+                    raise ValueError(
+                        f"param_inference.yaml inválido: agg '{agg_name}' desconhecido em compute_on_read.agg.allowed da intent '{intent_name}'"
+                    )
+            default_agg_cor = agg_cfg.get("default")
+            if default_agg_cor is not None and default_agg_cor not in _ALLOWED_AGGS:
+                raise ValueError(
+                    f"param_inference.yaml inválido: compute_on_read.agg.default da intent '{intent_name}' é desconhecido"
+                )
+
+            window_cfg = compute_on_read.get("window") or {}
+            _require_mapping(
+                window_cfg, label=f"compute_on_read.window da intent '{intent_name}'"
+            )
+            allowed_windows = window_cfg.get("allowed") or []
+            _require_list(
+                allowed_windows,
+                label=f"compute_on_read.window.allowed da intent '{intent_name}'",
+            )
+            window_cfg["allowed"] = [
+                _validate_window(
+                    w,
+                    context=f"compute_on_read.window.allowed da intent '{intent_name}'",
+                )
+                for w in allowed_windows
+            ]
+            if window_cfg.get("default") is not None:
+                window_cfg["default"] = _validate_window(
+                    window_cfg.get("default"),
+                    context=f"compute_on_read.window.default da intent '{intent_name}'",
+                )
+
         if "agg_priority" in cfg:
             agg_priority = cfg["agg_priority"]
             if not isinstance(agg_priority, list) or any(
@@ -248,6 +295,11 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                             raise ValueError(
                                 "param_inference.yaml inválido: source de params deve ser lista de strings"
                             )
+                if "allow_multi_ticker" in spec and spec.get("allow_multi_ticker") is not None:
+                    if not isinstance(spec.get("allow_multi_ticker"), bool):
+                        raise ValueError(
+                            "param_inference.yaml inválido: allow_multi_ticker em params.ticker deve ser boolean"
+                        )
                 if "context_key" in spec and spec.get("context_key") is not None:
                     if not isinstance(spec.get("context_key"), str):
                         raise ValueError(
@@ -387,6 +439,21 @@ def _ticker_from_identifiers(
     return None
 
 
+def _tickers_from_identifiers(
+    identifiers: Optional[Dict[str, Any]],
+) -> List[str]:
+    if not identifiers or not isinstance(identifiers, dict):
+        return []
+    tickers: List[str] = []
+    direct = identifiers.get("ticker")
+    if isinstance(direct, str) and direct:
+        tickers.append(direct)
+    tickers_list = identifiers.get("tickers")
+    if isinstance(tickers_list, list):
+        tickers.extend([t for t in tickers_list if isinstance(t, str) and t])
+    return tickers
+
+
 def infer_params(
     question: str,
     intent: str,
@@ -413,9 +480,16 @@ def infer_params(
     icfg = intents.get(intent, {})
     text = _norm(question)
 
+    cor_cfg = icfg.get("compute_on_read") or {}
+    agg_defaults = cor_cfg.get("agg") or {}
+    window_defaults = cor_cfg.get("window") or {}
+
     # defaults
-    agg = icfg.get("default_agg")
-    window = icfg.get("default_window")
+    agg_allowed = set(
+        a for a in agg_defaults.get("allowed", []) if a in _ALLOWED_AGGS
+    )
+    agg = agg_defaults.get("default") or icfg.get("default_agg")
+    window = window_defaults.get("default") or icfg.get("default_window")
     limit: Optional[int] = None
     order: Optional[str] = None
     required_fields: List[str] = []
@@ -440,12 +514,22 @@ def infer_params(
     if candidates:
         priority = icfg.get("agg_priority", ["avg", "sum", "latest", "list"])
         priority_order = {name: i for i, name in enumerate(priority)}
-        agg, spec = sorted(candidates, key=lambda t: priority_order.get(t[0], 1_000))[0]
+        agg_candidate, spec = sorted(
+            candidates, key=lambda t: priority_order.get(t[0], 1_000)
+        )[0]
+        if not agg_allowed or agg_candidate in agg_allowed:
+            agg = agg_candidate
+        else:
+            agg = agg_defaults.get("default") or icfg.get("default_agg") or agg
 
-        if spec.get("window"):
-            window = spec["window"]
-        elif spec.get("window_defaults"):
-            window = spec["window_defaults"][0]
+        if agg_candidate == agg:
+            if spec.get("window"):
+                window = spec["window"]
+            elif spec.get("window_defaults"):
+                window = spec["window_defaults"][0]
+
+    if not agg:
+        agg = agg_defaults.get("default") or icfg.get("default_agg")
 
     # 2) detectar janela (months:X ou count:Y)
     wkw = icfg.get("window_keywords") or {}
@@ -489,6 +573,8 @@ def infer_params(
 
     # 4) validar janela contra windows_allowed (intent + entidade)
     intent_allowed = set(str(w) for w in (icfg.get("windows_allowed") or []))
+    if window_defaults.get("allowed"):
+        intent_allowed = set(window_defaults.get("allowed"))
     allowed = (
         intent_allowed.union(ent_windows_allowed)
         if intent_allowed or ent_windows_allowed
@@ -541,9 +627,22 @@ def infer_params(
         )
         if isinstance(ticker_cfg, dict):
             sources = ticker_cfg.get("source") or []
+            allow_multi_ticker = ticker_cfg.get("allow_multi_ticker", True)
             ticker_value: Optional[str] = None
-            if "text" in sources:
-                ticker_value = resolve_ticker_from_text(question)
+
+            identifier_tickers = _tickers_from_identifiers(identifiers)
+            allow_text_resolution = True
+            if identifier_tickers:
+                if allow_multi_ticker and len(identifier_tickers) > 1:
+                    ticker_value = None
+                    allow_text_resolution = False
+                else:
+                    ticker_value = identifier_tickers[0]
+
+            if not ticker_value and "text" in sources and allow_text_resolution:
+                resolved = resolve_ticker_from_text(question)
+                if resolved:
+                    ticker_value = resolved
             if not ticker_value and "context" in sources:
                 ticker_value = _ticker_from_identifiers(identifiers, question)
             if ticker_value:

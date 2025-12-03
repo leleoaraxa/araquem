@@ -5,6 +5,7 @@ from app.planner.param_inference import infer_params
 
 DEFAULTS_PATH = "data/ops/param_inference.yaml"
 ENTITY_PATH = "data/entities/fiis_dividendos/entity.yaml"
+YIELD_ENTITY_PATH = "data/entities/fiis_yield_history/entity.yaml"
 
 
 class TestIdentifierTicker:
@@ -65,7 +66,6 @@ class TestIdentifierTicker:
             "window": "months:12",
             "limit": 10,
             "order": "desc",
-            "ticker": "HGLG11",
         }
 
     @pytest.mark.parametrize("identifiers", [{}, None])
@@ -177,5 +177,59 @@ class TestYamlDefaults:
             "agg": "latest",
             "window": "count:1",
             "ticker": "HGLG11",
+        }
+
+
+class TestComputeOnReadMultiTicker:
+    def test_multi_ticker_compute_on_read(self):
+        identifiers = {"tickers": ["HGLG11", "MXRF11"]}
+
+        result = infer_params(
+            "compare o DY medio de HGLG11 e MXRF11 nos ultimos 12 meses",
+            intent="fiis_yield_history",
+            entity="fiis_yield_history",
+            entity_yaml_path=YIELD_ENTITY_PATH,
+            defaults_yaml_path=DEFAULTS_PATH,
+            identifiers=identifiers,
+        )
+
+        assert result == {
+            "agg": "avg",
+            "window": "months:12",
+        }
+
+    def test_single_ticker_compute_on_read(self):
+        identifiers = {"tickers": ["HGLG11"]}
+
+        result = infer_params(
+            "DY acumulado do HGLG11 em 24 meses",
+            intent="fiis_yield_history",
+            entity="fiis_yield_history",
+            entity_yaml_path=YIELD_ENTITY_PATH,
+            defaults_yaml_path=DEFAULTS_PATH,
+            identifiers=identifiers,
+        )
+
+        assert result == {
+            "agg": "sum",
+            "window": "months:24",
+            "ticker": "HGLG11",
+        }
+
+    def test_no_ticker_compute_on_read(self):
+        identifiers = {"tickers": []}
+
+        result = infer_params(
+            "DY medio dos meus FIIs nos ultimos 12 meses",
+            intent="fiis_yield_history",
+            entity="fiis_yield_history",
+            entity_yaml_path=YIELD_ENTITY_PATH,
+            defaults_yaml_path=DEFAULTS_PATH,
+            identifiers=identifiers,
+        )
+
+        assert result == {
+            "agg": "avg",
+            "window": "months:12",
         }
 
