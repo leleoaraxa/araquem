@@ -6,6 +6,7 @@ import logging
 import os
 import time
 from pathlib import Path
+from functools import lru_cache
 
 from .ontology_loader import load_ontology
 
@@ -19,14 +20,84 @@ PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
 
 
-def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str:
-    """Resolve o bucket (A/B/C/D) para a pergunta.
-
-    Importante: a lógica real virá de YAML/ontologia. Aqui apenas expomos
-    a função e retornamos um bucket canônico sem aplicar heurísticas.
+@lru_cache(maxsize=1)
+def _load_bucket_rules(path: str = "data/ontology/bucket_rules.yaml") -> Dict[str, Any]:
     """
+    Carrega as regras de bucket a partir de YAML.
 
-    return ""
+    Não aplica lógica de negócio; apenas retorna o dicionário cru com:
+    - defaults
+    - rules
+    """
+    try:
+        return load_yaml_cached(path) or {}
+    except Exception:
+        _LOG.exception("Falha ao carregar bucket_rules de %s", path)
+        return {}
+
+
+def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str:
+    """
+    Resolve o bucket (A/B/C/D) de forma 100% declarativa via YAML (bucket_rules).
+    Quando nenhuma regra habilitada casa com a pergunta, retorna string vazia (modo neutro).
+    """
+    cfg = _load_bucket_rules()
+    defaults = cfg.get("defaults") or {}
+    rules = cfg.get("rules") or []
+
+    if not isinstance(rules, list) or not rules:
+        return ""
+
+    # Normalização e tokenização consistentes com o Planner
+    normalize_steps = defaults.get("normalize") or getattr(ontology, "normalize", [])
+    split_pat = defaults.get("token_split") or getattr(ontology, "token_split", r"\b")
+
+    norm = _normalize(question, normalize_steps)
+    tokens = _tokenize(norm, split_pat)
+
+    token_weight = float(defaults.get("token_weight", 1.0))
+    phrase_weight = float(defaults.get("phrase_weight", 3.0))
+    default_min_score = float(defaults.get("min_score", 1.0))
+
+    best_bucket = ""
+    best_score = 0.0
+
+    for rule in rules:
+        if not isinstance(rule, dict):
+            continue
+
+        if not rule.get("enabled", False):
+            continue
+
+        bucket = str(rule.get("bucket", "")).strip()
+        if not bucket:
+            continue
+
+        min_score = float(rule.get("min_score", default_min_score))
+
+        tokens_inc = rule.get("tokens_include") or []
+        tokens_exc = rule.get("tokens_exclude") or []
+        phrases_inc = rule.get("phrases_include") or []
+        phrases_exc = rule.get("phrases_exclude") or []
+
+        # Contagem de hits
+        token_hits_inc = [t for t in tokens_inc if t in tokens or t in norm]
+        token_hits_exc = [t for t in tokens_exc if t in tokens or t in norm]
+        phrase_hits_inc = [p for p in phrases_inc if _phrase_present(norm, p)]
+        phrase_hits_exc = [p for p in phrases_exc if _phrase_present(norm, p)]
+
+        score = (
+            token_weight * len(token_hits_inc)
+            - token_weight * len(token_hits_exc)
+            + phrase_weight * len(phrase_hits_inc)
+            - phrase_weight * len(phrase_hits_exc)
+        )
+
+        if score >= min_score and score >= best_score:
+            best_score = score
+            best_bucket = bucket
+
+    return best_bucket
 
 
 def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
