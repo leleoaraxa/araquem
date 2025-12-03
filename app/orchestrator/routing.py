@@ -475,17 +475,16 @@ class Orchestrator:
             else extract_tickers_from_text(question)
         )
         if tickers_list:
-            identifiers = {
-                **identifiers,
-                "tickers": tickers_list,
-                "ticker": identifiers.get("ticker") or tickers_list[0],
-            }
+            identifiers = {**identifiers, "tickers": tickers_list}
+            if len(tickers_list) == 1:
+                identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
         entity_conf = _load_entity_config(str(entity) if entity else None)
 
-        bucket_info = exp.get("bucket") if isinstance(exp, dict) else {}
-        bucket_selected = ""
-        if isinstance(bucket_info, dict):
-            bucket_selected = str(bucket_info.get("selected") or "")
+        exp_safe = exp if isinstance(exp, dict) else {}
+        bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
+        if not isinstance(bucket_info, dict):
+            bucket_info = {}
+        bucket_selected = str(bucket_info.get("selected") or "")
 
         # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
         # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
@@ -635,6 +634,13 @@ class Orchestrator:
                     rows_raw = self._exec.query(sql, params)
                     set_trace_attribute(span, "cache.hit", False)
                     set_trace_attribute(span, "sql.skipped", False)
+
+            set_trace_attribute(span, "multi_ticker.enabled", multi_ticker_enabled)
+            set_trace_attribute(
+                span,
+                "multi_ticker.count",
+                len(tickers_list) if multi_ticker_enabled else 0,
+            )
 
         # elapsed consolidado para reutilização (meta e explain analytics)
         elapsed_ms = int((time.perf_counter() - t0) * 1000)
