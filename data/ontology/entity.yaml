@@ -7,6 +7,35 @@ tokenization:
 weights:
   token: 1.1
   phrase: 3.3
+buckets:
+  A:
+    - dividendos_yield
+    - fii_overview
+    - fiis_cadastro
+    - fiis_dividendos
+    - fiis_financials_revenue_schedule
+    - fiis_financials_risk
+    - fiis_financials_snapshot
+    - fiis_imoveis
+    - fiis_noticias
+    - fiis_precos
+    - fiis_processos
+    - fiis_rankings
+    - fiis_yield_history
+
+  B:
+    - carteira_enriquecida
+    - client_fiis_dividends_evolution
+    - client_fiis_performance_vs_benchmark
+    - client_fiis_positions
+
+  C:
+    - history_market_indicators
+    - history_b3_indexes
+    - history_currency_rates
+    - macro_consolidada
+
+  D: []
 intents:
 - name: client_fiis_positions
   tokens:

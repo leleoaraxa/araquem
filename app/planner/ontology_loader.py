@@ -28,6 +28,7 @@ class Ontology:
     weights: Dict[str, float]
     intents: List[IntentDef]
     anti_tokens: Dict[str, List[str]]
+    buckets: Dict[str, List[str]]
 
 
 def _get(d: Dict[str, Any], path: List[str], default=None):
@@ -212,10 +213,25 @@ def load_ontology(path: str) -> Ontology:
             )
         weights[key] = float(val)
 
+    buckets_cfg = raw.get("buckets") or {}
+    buckets: Dict[str, List[str]] = {}
+    if isinstance(buckets_cfg, dict):
+        valid_buckets = True
+        tmp_buckets: Dict[str, List[str]] = {}
+        for bucket, entities in buckets_cfg.items():
+            entities_list = entities or []
+            if not isinstance(entities_list, list):
+                valid_buckets = False
+                break
+            tmp_buckets[str(bucket)] = list(entities_list)
+        if valid_buckets:
+            buckets = tmp_buckets
+
     return Ontology(
         normalize=normalize_raw,
         token_split=token_split,
         weights=weights,
         intents=intents,
         anti_tokens=anti_tokens,
+        buckets=buckets,
     )
