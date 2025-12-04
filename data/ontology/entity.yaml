@@ -20,7 +20,6 @@ buckets:
     - fiis_noticias
     - fiis_precos
     - fiis_processos
-    - fiis_rankings
     - fiis_yield_history
 
   B:
@@ -28,6 +27,7 @@ buckets:
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
     - client_fiis_positions
+    - fiis_rankings
 
   C:
     - history_market_indicators
@@ -87,6 +87,13 @@ intents:
     - benchmark
     - dividendo
     - dividendos
+    - ranking
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
     - provento
     - proventos
     - renda
@@ -506,6 +513,12 @@ intents:
     - inflacao
     - inpc
     - comercial
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
   phrases:
     include:
     - preco do <ticker>
@@ -604,6 +617,13 @@ intents:
     - imprensa
     - fato
     - comunicado
+    - ranking
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
   phrases:
     include:
     - dividendo do
@@ -667,6 +687,13 @@ intents:
     - ipca
     - curva
     - cambio
+    - ranking
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
   phrases:
     include:
     - dividend yield do
@@ -788,6 +815,13 @@ intents:
     - cambio
     - cronograma
     - calendario
+    - ranking
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
   phrases:
     include:
     - payout do
@@ -1021,6 +1055,13 @@ intents:
     - pl
     - vacancia
     - contratos
+    - ranking
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
   phrases:
     include:
     - indicador de risco do
@@ -1353,7 +1394,7 @@ intents:
   entities:
   - fiis_processos
 - name: fiis_rankings
-  weight: 2
+  weight: 5
   tokens:
     include:
     - dy
@@ -1371,20 +1412,37 @@ intents:
     - composicao
     - ifix
     - ifil
-    - ifix
-    - ifil
-    - ranking
-    - peso
     - movimentos
     - top
     - melhores
     - maiores
     - menores
     - piores
-    - usuarios
-    - sirios
-    - lista
-    exclude:
+    - destaques
+    - campeoes
+    - lanternas
+    - comparacao
+    - comparar
+    - performou
+    - performance
+    - rendimento
+    - variacao
+    - alta
+    - baixa
+    - crescimento
+    - queda
+    - aumento
+    - reducao
+    - superou
+    - acima da media
+    - acima do ifix
+    - acima do setor
+    - vacancia
+    - setor
+    - setores
+    - segmento
+    - patrimonio
+  exclude:
     - preco
     - media do
     - variacao diaria
@@ -1392,14 +1450,10 @@ intents:
     - fechamento
     - hoje
     - ontem
-    - vacancia
     - beta
-    - noticia
     - noticia do
     - r2
     - r²
-    - ifix
-    - ifil
     - indice
     - historico
     - se comportou
@@ -1413,6 +1467,12 @@ intents:
     - judiciais
     - acao
     - acoes
+    - cotacao
+    - preco hoje
+    - preco agora
+    - noticia
+    - imprensa
+    - comunicado
   phrases:
     include:
     - ranking por dividend yield
@@ -1423,6 +1483,29 @@ intents:
     - top fiis por dy
     - top 5 fiis por dy
     - top 10 fiis por dy
+    - top fiis do mes
+    - ranking de fiis
+    - ranking de fiis por
+    - ranquear fiis por dy
+    - melhores fiis para renda
+    - maiores altas dos fiis
+    - maiores quedas dos fiis
+    - fiis que mais subiram
+    - fiis que mais cairam
+    - fiis destaque do mes
+    - melhor setor de fiis
+    - pior setor de fiis
+    - comparar desempenho de fiis
+    - performou acima do ifix
+    - quais setores estao performando melhor
+    - fiis que mais subiram no mes
+    - fiis que mais cairam na semana
+    - fiis com maior patrimonio
+    - fiis com maior peso no ifix
+    - fiis com maior participacao
+    - destaques do mes
+    - campeoes do mes
+    - lanternas do mes
     - fiis com maior dividend yield
     - fiis com maior dy
     - fiis com maior rendimento
