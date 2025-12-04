@@ -1,3 +1,4 @@
+# scripts/planner/planner_regression_audit.py
 import json
 import os
 import sys
@@ -54,12 +55,7 @@ def _load_manifest_entities() -> List[str]:
 def _collect_ascii_issues(ontology: Any) -> List[Dict[str, Any]]:
     issues: List[Dict[str, Any]] = []
     for intent in getattr(ontology, "intents", []) or []:
-        for token in (getattr(intent, "tokens_include", []) or []):
-            if not _is_ascii(token):
-                issues.append(
-                    {"intent": intent.name, "issue": "token_ascii_invalid", "token": token}
-                )
-        for token in (getattr(intent, "tokens_exclude", []) or []):
+        for token in getattr(intent, "tokens_include", []) or []:
             if not _is_ascii(token):
                 issues.append(
                     {
@@ -68,7 +64,16 @@ def _collect_ascii_issues(ontology: Any) -> List[Dict[str, Any]]:
                         "token": token,
                     }
                 )
-        for phrase in (getattr(intent, "phrases_include", []) or []):
+        for token in getattr(intent, "tokens_exclude", []) or []:
+            if not _is_ascii(token):
+                issues.append(
+                    {
+                        "intent": intent.name,
+                        "issue": "token_ascii_invalid",
+                        "token": token,
+                    }
+                )
+        for phrase in getattr(intent, "phrases_include", []) or []:
             if not _is_ascii(phrase):
                 issues.append(
                     {
@@ -77,7 +82,7 @@ def _collect_ascii_issues(ontology: Any) -> List[Dict[str, Any]]:
                         "token": phrase,
                     }
                 )
-        for phrase in (getattr(intent, "phrases_exclude", []) or []):
+        for phrase in getattr(intent, "phrases_exclude", []) or []:
             if not _is_ascii(phrase):
                 issues.append(
                     {
@@ -90,12 +95,18 @@ def _collect_ascii_issues(ontology: Any) -> List[Dict[str, Any]]:
         for token in tokens or []:
             if not _is_ascii(token):
                 issues.append(
-                    {"intent": group, "issue": "anti_token_ascii_invalid", "token": token}
+                    {
+                        "intent": group,
+                        "issue": "anti_token_ascii_invalid",
+                        "token": token,
+                    }
                 )
     return issues
 
 
-def _validate_entities(ontology: Any, valid_entities: List[str]) -> List[Dict[str, Any]]:
+def _validate_entities(
+    ontology: Any, valid_entities: List[str]
+) -> List[Dict[str, Any]]:
     if not valid_entities:
         return []
     issues: List[Dict[str, Any]] = []
@@ -123,9 +134,9 @@ def _detect_collisions(ontology: Any) -> List[Dict[str, Any]]:
             anti_tokens.add(tok)
 
     for intent in getattr(ontology, "intents", []) or []:
-        for token in (getattr(intent, "tokens_include", []) or []):
+        for token in getattr(intent, "tokens_include", []) or []:
             token_map.setdefault(token, set()).add(intent.name)
-        for phrase in (getattr(intent, "phrases_include", []) or []):
+        for phrase in getattr(intent, "phrases_include", []) or []:
             phrase_map.setdefault(phrase, set()).add(intent.name)
 
     for token, intents in token_map.items():
@@ -229,8 +240,12 @@ def run_catalog(planner: Planner) -> Dict[str, Any]:
     passed = 0
     for idx, item in enumerate(catalog):
         question = item.get("question") if isinstance(item, dict) else None
-        expected_entities = item.get("expected_entities") if isinstance(item, dict) else None
-        expected_params = item.get("expected_params") if isinstance(item, dict) else None
+        expected_entities = (
+            item.get("expected_entities") if isinstance(item, dict) else None
+        )
+        expected_params = (
+            item.get("expected_params") if isinstance(item, dict) else None
+        )
         plan = planner.explain(question or "")
         chosen = plan.get("chosen") or {}
         got_entity = chosen.get("entity")
@@ -242,7 +257,9 @@ def run_catalog(planner: Planner) -> Dict[str, Any]:
                 question=question or "",
                 intent=chosen.get("intent"),
                 entity=got_entity,
-                entity_yaml_path=f"data/entities/{got_entity}/entity.yaml" if got_entity else "",
+                entity_yaml_path=(
+                    f"data/entities/{got_entity}/entity.yaml" if got_entity else ""
+                ),
                 defaults_yaml_path="data/ops/param_inference.yaml",
                 identifiers=identifiers,
                 client_id=None,
@@ -252,7 +269,11 @@ def run_catalog(planner: Planner) -> Dict[str, Any]:
             agg_params = {"error": str(exc)}
 
         reason = _compare_expected(
-            expected_entities if isinstance(expected_entities, list) else (expected_entities and [expected_entities]),
+            (
+                expected_entities
+                if isinstance(expected_entities, list)
+                else (expected_entities and [expected_entities])
+            ),
             got_entity,
             expected_params,
             agg_params,

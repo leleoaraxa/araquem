@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 """Narrator/RAG conformance audit for Araquem.
-
 This script validates narrator and RAG configurations against Guardrails Araquem
 v2.2.0 without executing LLMs or mutating runtime assets. It inspects policies,
 entity definitions, and templates to ensure deterministic compliance and emits a
@@ -74,13 +73,17 @@ def extract_template_fields(template_text: str) -> Set[str]:
         if ch.isalpha() or ch == "_":
             token = ch
             i += 1
-            while i < length and (template_text[i].isalnum() or template_text[i] == "_"):
+            while i < length and (
+                template_text[i].isalnum() or template_text[i] == "_"
+            ):
                 token += template_text[i]
                 i += 1
             if i < length and template_text[i] == ".":
                 i += 1
                 attr = ""
-                while i < length and (template_text[i].isalnum() or template_text[i] == "_"):
+                while i < length and (
+                    template_text[i].isalnum() or template_text[i] == "_"
+                ):
                     attr += template_text[i]
                     i += 1
                 if attr:
@@ -101,7 +104,9 @@ def load_entities(entity_root: Path) -> Dict[str, dict]:
             continue
         entity_id = data.get("id") or entity_dir.name
         columns = {c.get("name") for c in data.get("columns", []) if c.get("name")}
-        identifiers = {i.get("name") for i in data.get("identifiers", []) if i.get("name")}
+        identifiers = {
+            i.get("name") for i in data.get("identifiers", []) if i.get("name")
+        }
         requires_identifiers = set()
         ask = data.get("ask") or {}
         if isinstance(ask, dict):
@@ -122,7 +127,9 @@ def load_entities(entity_root: Path) -> Dict[str, dict]:
     return entities
 
 
-def audit_context_entities(context_policy: dict, entities: Dict[str, dict]) -> List[Issue]:
+def audit_context_entities(
+    context_policy: dict, entities: Dict[str, dict]
+) -> List[Issue]:
     issues: List[Issue] = []
     narrator_cfg = (context_policy.get("context") or {}).get("narrator") or {}
     allowed_entities = narrator_cfg.get("allowed_entities") or []
@@ -183,7 +190,7 @@ def audit_concept_mode(prompts_path: Path) -> List[Issue]:
     if prompts_py.is_file():
         try:
             content = prompts_py.read_text(encoding="utf-8")
-            marker = "\"concept\": "
+            marker = '"concept": '
             if marker in content:
                 concept_start = content.split(marker, 1)[1]
                 concept_template = concept_start
@@ -224,7 +231,9 @@ def audit_concept_mode(prompts_path: Path) -> List[Issue]:
     return issues
 
 
-def audit_entity_mode_requirements(context_policy: dict, entities: Dict[str, dict]) -> List[Issue]:
+def audit_entity_mode_requirements(
+    context_policy: dict, entities: Dict[str, dict]
+) -> List[Issue]:
     issues: List[Issue] = []
     narrator_cfg = (context_policy.get("context") or {}).get("narrator") or {}
     allowed_entities = narrator_cfg.get("allowed_entities") or []
@@ -246,11 +255,15 @@ def audit_entity_mode_requirements(context_policy: dict, entities: Dict[str, dic
     return issues
 
 
-def audit_shadow(narrator_policy: dict, shadow_policy: dict, entities: Dict[str, dict]) -> List[Issue]:
+def audit_shadow(
+    narrator_policy: dict, shadow_policy: dict, entities: Dict[str, dict]
+) -> List[Issue]:
     issues: List[Issue] = []
     narrator_cfg = narrator_policy.get("narrator") or {}
     if narrator_cfg.get("shadow"):
-        redaction_cfg = (shadow_policy.get("narrator_shadow") or {}).get("redaction") or {}
+        redaction_cfg = (shadow_policy.get("narrator_shadow") or {}).get(
+            "redaction"
+        ) or {}
         mask_fields = redaction_cfg.get("mask_fields") or []
         if not mask_fields:
             issues.append(
@@ -260,7 +273,9 @@ def audit_shadow(narrator_policy: dict, shadow_policy: dict, entities: Dict[str,
                     detail="Shadow enabled but no redaction mask fields configured",
                 )
             )
-        shadow_private = (shadow_policy.get("narrator_shadow") or {}).get("private_entities") or []
+        shadow_private = (shadow_policy.get("narrator_shadow") or {}).get(
+            "private_entities"
+        ) or []
         for entity, info in entities.items():
             if info.get("private") and entity not in shadow_private:
                 issues.append(
@@ -271,7 +286,14 @@ def audit_shadow(narrator_policy: dict, shadow_policy: dict, entities: Dict[str,
                         detail="Private entity missing from shadow redaction allowlist",
                     )
                 )
-        sensitive_fields = {"cpf", "cnpj", "document_number", "document", "email", "phone"}
+        sensitive_fields = {
+            "cpf",
+            "cnpj",
+            "document_number",
+            "document",
+            "email",
+            "phone",
+        }
         for entity, info in entities.items():
             templates = info.get("templates") or []
             for template_path in templates:
@@ -294,7 +316,12 @@ def audit_shadow(narrator_policy: dict, shadow_policy: dict, entities: Dict[str,
     return issues
 
 
-def audit_llm_enabled(narrator_policy: dict, context_policy: dict, shadow_policy: dict, entities: Dict[str, dict]) -> List[Issue]:
+def audit_llm_enabled(
+    narrator_policy: dict,
+    context_policy: dict,
+    shadow_policy: dict,
+    entities: Dict[str, dict],
+) -> List[Issue]:
     issues: List[Issue] = []
     narrator_cfg = narrator_policy.get("narrator") or {}
     if narrator_cfg.get("llm_enabled"):
@@ -557,7 +584,9 @@ def audit_rag_policy(rag_policy: dict, entities: Dict[str, dict]) -> List[Issue]
                 )
             )
         max_chunks = ent_cfg.get("max_chunks")
-        if max_chunks is not None and (not isinstance(max_chunks, int) or max_chunks <= 0):
+        if max_chunks is not None and (
+            not isinstance(max_chunks, int) or max_chunks <= 0
+        ):
             issues.append(
                 Issue(
                     type="rag_entity_max_chunks_invalid",
@@ -582,7 +611,9 @@ def audit_rag_chunk_overrides(index_path: Path) -> List[Issue]:
     if not index_path.is_file():
         return issues
     try:
-        for idx, line in enumerate(index_path.read_text(encoding="utf-8").splitlines(), start=1):
+        for idx, line in enumerate(
+            index_path.read_text(encoding="utf-8").splitlines(), start=1
+        ):
             if not line.strip():
                 continue
             try:
@@ -603,7 +634,9 @@ def audit_rag_chunk_overrides(index_path: Path) -> List[Issue]:
     return issues
 
 
-def generate_report(narrator_ok: bool, rag_ok: bool, issues: List[Issue], report_path: Path) -> None:
+def generate_report(
+    narrator_ok: bool, rag_ok: bool, issues: List[Issue], report_path: Path
+) -> None:
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report = {
         "timestamp": datetime.utcnow().isoformat() + "Z",
@@ -636,7 +669,9 @@ def main() -> int:
     issues.extend(audit_concept_mode(ROOT / "app" / "narrator"))
     issues.extend(audit_entity_mode_requirements(context_policy, entities))
     issues.extend(audit_shadow(narrator_policy, shadow_policy, entities))
-    issues.extend(audit_llm_enabled(narrator_policy, context_policy, shadow_policy, entities))
+    issues.extend(
+        audit_llm_enabled(narrator_policy, context_policy, shadow_policy, entities)
+    )
 
     issues.extend(audit_rag_policy(rag_policy, entities))
     issues.extend(audit_rag_index(rag_index_path))
