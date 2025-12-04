@@ -4,6 +4,11 @@ sql_view: fiis_yield_history
 private: false
 description: Histórico mensal de dividendos, preço de referência e dividend yield (DY) por FII.
 
+intent:
+  name: fiis_yield_history
+  focus: historico
+  description: "Serie historica do dividend yield por mes/ano."
+
 options:
   supports_multi_ticker: true
 
