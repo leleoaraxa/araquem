@@ -378,6 +378,10 @@ intents:
     - ibovespa
     - ifix
     - ifil
+    - dy
+    - yield
+    - dividendos
+    - rendimentos
     - usd
     - dolar
     - eur
@@ -434,6 +438,11 @@ intents:
     - provento
     - proventos
     - rendimento
+    - distribuicao
+    - acumulado
+    - mensal
+    - rendimento mensal
+    - historico
     - rendimentos
     - pagamento
     - paga
@@ -449,11 +458,33 @@ intents:
     - rendimento mensal
     - rendimento 12m
     exclude:
+    - ipca
+    - juros
+    - selic
+    - inflacao
     - dy em
   phrases:
     include:
     - dividendo do
     - dividendos do
+    - dividendos do fundo
+    - dividendos do <ticker>
+    - dividendos mensais
+    - dividendos pagos
+    - historico de dividendos
+    - pagamentos de dividendos
+    - rendimento mensal
+    - proventos
+    - proventos do <ticker>
+    - ultimo dividendo
+    - proximo dividendo
+    - dividendos acumulados
+    - quanto pagou de dividendos
+    - total de dividendos
+    - dividendos nos ultimos meses
+    - dividendos nos ultimos 12 meses
+    - distribuicao de rendimentos
+    - yield distribuido
     - proventos do
     - rendimento do
     - pagamento do
@@ -480,6 +511,8 @@ intents:
     - evolucao do dy
     - dy 12m
     - dy 24m
+    - dy_historico
+    - dy_evolucao
     exclude:
     - dividendos e dy
   phrases:
@@ -494,6 +527,12 @@ intents:
     - comparativo de dy mensal entre
     - dividendos e dy em
     - dy em
+    - historico de dy
+    - dy historico
+    - dy ao longo do tempo
+    - dy nos ultimos meses
+    - evolucao do dy
+    - como evoluiu o dy
     exclude: []
   entities:
   - fiis_yield_history
@@ -1158,6 +1197,10 @@ intents:
 - name: dividendos_yield
   tokens:
     include:
+    - dy
+    - yield
+    - dividend_yield
+    - rendimento_percentual
     - comparativo
     - comparacao
     - comparar
@@ -1171,6 +1214,16 @@ intents:
     - minha carteira de fiis
   phrases:
     include:
+    - dy do fundo
+    - dy do <ticker>
+    - dividend yield
+    - yield de dividendos
+    - yield mensal
+    - yield acumulado
+    - retorno em dividendos
+    - retorno do fundo em dividendos
+    - rendimento percentual
+    - rentabilidade via dividendos
     - dividendos e dy do
     - historico de dividendos do
     - historico de dy do
