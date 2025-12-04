@@ -1,0 +1,430 @@
+{
+  "timestamp": "2025-12-04T13:07:13.104199+00:00",
+  "entities": {
+    "fiis_precos": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "history_b3_indexes": [
+          "fechamento",
+          "variacao"
+        ],
+        "history_currency_rates": [
+          "cotacao",
+          "variacao"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "cotacao",
+        "fechamento",
+        "variacao"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_dividendos": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "dividendos_yield": [
+          "dividendos"
+        ],
+        "fiis_financials_revenue_schedule": [
+          "distribuicao"
+        ],
+        "history_currency_rates": [
+          "historico"
+        ],
+        "history_market_indicators": [
+          "acumulado"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "acumulado",
+        "distribuicao",
+        "dividendos",
+        "historico"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_yield_history": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "carteira_enriquecida": [
+          "dy 12m",
+          "dy mensal"
+        ],
+        "dividendos_yield": [
+          "dividend yield",
+          "dy",
+          "yield"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "dividend yield",
+        "dy",
+        "dy 12m",
+        "dy mensal",
+        "yield"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_financials_risk": {
+      "invalid_tokens": [],
+      "conflicts_with": {},
+      "accent_violations": [],
+      "missing_anti_tokens": [],
+      "prohibited_tokens": []
+    },
+    "fiis_financials_revenue_schedule": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_dividendos": [
+          "distribuicao"
+        ],
+        "fiis_financials_snapshot": [
+          "receita"
+        ],
+        "history_b3_indexes": [
+          "indice",
+          "indices"
+        ],
+        "history_market_indicators": [
+          "igpm",
+          "incc",
+          "inpc",
+          "ipca"
+        ],
+        "macro_consolidada": [
+          "ipca"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "distribuicao",
+        "igpm",
+        "incc",
+        "indice",
+        "indices",
+        "inpc",
+        "receita"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_financials_snapshot": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_financials_revenue_schedule": [
+          "receita"
+        ],
+        "fiis_imoveis": [
+          "imoveis",
+          "imoveis do <ticker>",
+          "ocupacao"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "imoveis",
+        "imoveis do <ticker>",
+        "ocupacao",
+        "receita"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_rankings": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "dividendos_yield": [
+          "comparacao",
+          "comparar"
+        ],
+        "history_b3_indexes": [
+          "ifil",
+          "ifix"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "comparacao",
+        "comparar",
+        "ifil"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_imoveis": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_financials_snapshot": [
+          "imoveis",
+          "imoveis do <ticker>",
+          "ocupacao"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "imoveis",
+        "imoveis do <ticker>",
+        "ocupacao"
+      ],
+      "prohibited_tokens": []
+    },
+    "fiis_noticias": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "history_b3_indexes": [
+          "hoje"
+        ],
+        "history_currency_rates": [
+          "hoje"
+        ],
+        "history_market_indicators": [
+          "atualizacao",
+          "hoje"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "atualizacao",
+        "hoje"
+      ],
+      "prohibited_tokens": []
+    },
+    "fii_overview": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "history_market_indicators": [
+          "indicadores"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "indicadores"
+      ],
+      "prohibited_tokens": []
+    },
+    "dividendos_yield": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_dividendos": [
+          "dividendos"
+        ],
+        "fiis_rankings": [
+          "comparacao",
+          "comparar"
+        ],
+        "fiis_yield_history": [
+          "dividend yield",
+          "dy",
+          "yield"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "comparacao",
+        "comparar",
+        "dividend yield",
+        "dividendos",
+        "dy",
+        "yield"
+      ],
+      "prohibited_tokens": []
+    },
+    "carteira_enriquecida": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_yield_history": [
+          "dy 12m",
+          "dy mensal"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "dy 12m",
+        "dy mensal"
+      ],
+      "prohibited_tokens": []
+    },
+    "macro_consolidada": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_financials_revenue_schedule": [
+          "ipca"
+        ],
+        "history_currency_rates": [
+          "cambio",
+          "dolar"
+        ],
+        "history_market_indicators": [
+          "inflacao",
+          "ipca",
+          "juros",
+          "selic"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "cambio",
+        "dolar",
+        "inflacao",
+        "juros"
+      ],
+      "prohibited_tokens": []
+    },
+    "history_market_indicators": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fii_overview": [
+          "indicadores"
+        ],
+        "fiis_dividendos": [
+          "acumulado"
+        ],
+        "fiis_financials_revenue_schedule": [
+          "igpm",
+          "incc",
+          "inpc",
+          "ipca"
+        ],
+        "fiis_noticias": [
+          "atualizacao",
+          "hoje"
+        ],
+        "history_b3_indexes": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem"
+        ],
+        "history_currency_rates": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem"
+        ],
+        "macro_consolidada": [
+          "inflacao",
+          "ipca",
+          "juros",
+          "selic"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "acumulado",
+        "atualizacao",
+        "d-1",
+        "d1",
+        "hoje",
+        "igpm",
+        "incc",
+        "indicadores",
+        "inflacao",
+        "inpc",
+        "juros",
+        "ontem"
+      ],
+      "prohibited_tokens": []
+    },
+    "history_b3_indexes": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_financials_revenue_schedule": [
+          "indice",
+          "indices"
+        ],
+        "fiis_noticias": [
+          "hoje"
+        ],
+        "fiis_precos": [
+          "fechamento",
+          "variacao"
+        ],
+        "fiis_rankings": [
+          "ifil",
+          "ifix"
+        ],
+        "history_currency_rates": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem",
+          "variacao",
+          "variacao diaria"
+        ],
+        "history_market_indicators": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "d-1",
+        "d1",
+        "fechamento",
+        "hoje",
+        "ifil",
+        "indice",
+        "indices",
+        "ontem",
+        "variacao",
+        "variacao diaria"
+      ],
+      "prohibited_tokens": []
+    },
+    "history_currency_rates": {
+      "invalid_tokens": [],
+      "conflicts_with": {
+        "fiis_dividendos": [
+          "historico"
+        ],
+        "fiis_noticias": [
+          "hoje"
+        ],
+        "fiis_precos": [
+          "cotacao",
+          "variacao"
+        ],
+        "history_b3_indexes": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem",
+          "variacao",
+          "variacao diaria"
+        ],
+        "history_market_indicators": [
+          "d-1",
+          "d1",
+          "hoje",
+          "ontem"
+        ],
+        "macro_consolidada": [
+          "cambio",
+          "dolar"
+        ]
+      },
+      "accent_violations": [],
+      "missing_anti_tokens": [
+        "cambio",
+        "cotacao",
+        "d-1",
+        "d1",
+        "dolar",
+        "historico",
+        "hoje",
+        "ontem",
+        "variacao",
+        "variacao diaria"
+      ],
+      "prohibited_tokens": []
+    }
+  },
+  "summary": {
+    "total_entities": 16,
+    "total_conflicts": 53,
+    "needs_fix": true
+  }
+}
