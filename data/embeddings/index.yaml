@@ -211,7 +211,7 @@ include:
     tags: [quality, projection, private]
 
   - id: q-projection-client-dividends-evolution
-    path: data/ops/quality/projection_client_fiis_dividends_evolution.json
+    path: data/ops/quality/projection_client_fiis_dividends.json
     tags: [quality, projection, private]
 
   - id: q-projection-client-performance-vs-benchmark

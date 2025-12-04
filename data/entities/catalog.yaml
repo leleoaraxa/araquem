@@ -23,7 +23,7 @@ entities:
     paths:
       entity_yaml: data/entities/client_fiis_dividends_evolution/entity.yaml
       schema: data/contracts/entities/client_fiis_dividends_evolution.schema.yaml
-      quality_projection: data/ops/quality/projection_client_fiis_dividends_evolution.json
+      quality_projection: data/ops/quality/projection_client_fiis_dividends.json
     coverage:
       cache_policy: true
       rag_policy: false
@@ -114,7 +114,7 @@ entities:
     paths:
       entity_yaml: data/entities/fii_overview/entity.yaml
       schema: data/contracts/entities/fii_overview.schema.yaml
-      quality_projection: data/ops/quality/projection_fii_overview_evolution.json
+      quality_projection: data/ops/quality/projection_fii_overview.json
     coverage:
       cache_policy: true
       rag_policy: false

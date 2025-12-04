@@ -550,7 +550,7 @@
     },
     {
       "id": "q-projection-client-dividends-evolution",
-      "path": "data/ops/quality/projection_client_fiis_dividends_evolution.json",
+      "path": "data/ops/quality/projection_client_fiis_dividends.json",
       "tags": [
         "quality",
         "projection",
@@ -572,7 +572,7 @@
     },
     {
       "id": "q-projection-fii-overview",
-      "path": "data/ops/quality/projection_fii_overview_evolution.json",
+      "path": "data/ops/quality/projection_fii_overview.json",
       "tags": [
         "quality",
         "projection",

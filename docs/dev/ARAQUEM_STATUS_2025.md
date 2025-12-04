@@ -366,7 +366,7 @@ Todas elas aparecem no catálogo em `data/entities/catalog.yaml` com paths para 
     * “minha renda mensal com FIIs está crescendo?”
   * `document_number` vem **exclusivamente** de contexto seguro (`context.client_id` via `param_inference`); nunca do texto.
   * RAG e Narrator negados; resposta determinística.
-  * Tem schema, projection (`projection_client_fiis_dividends_evolution.json`), quality dataset e routing samples.
+  * Tem schema, projection (`projection_client_fiis_dividends.json`), quality dataset e routing samples.
 
 * **client_fiis_performance_vs_benchmark (histórica, PRIVADO)**
 

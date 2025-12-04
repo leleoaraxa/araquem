@@ -107,7 +107,7 @@
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_client_fiis_dividends_evolution.json"
+          "data/ops/quality/projection_client_fiis_dividends.json"
         ]
       },
       "tags": [
