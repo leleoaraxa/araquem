@@ -583,7 +583,7 @@
     },
     {
       "id": "q-projection-fiis-yield-history",
-      "path": "data/ops/quality/projection_fiis_yield_history_evolution.json",
+      "path": "data/ops/quality/projection_fiis_yield_history.json",
       "tags": [
         "quality",
         "projection",

@@ -1919,7 +1919,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_yield_history_evolution.json",
+              "data/ops/quality/projection_fiis_yield_history.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

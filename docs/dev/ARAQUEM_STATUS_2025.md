@@ -250,7 +250,7 @@ Todas elas aparecem no catálogo em `data/entities/catalog.yaml` com paths para 
   * “histórico de dividend yield do MXRF11 nos últimos 12 meses”
   * “evolução do DY do KNRI11”
   * “comparativo de DY mensal entre HGLG11 e VISC11”
-* Tem schema, projection de quality (`projection_fiis_yield_history_evolution.json`) e routing samples dedicados.
+* Tem schema, projection de quality (`projection_fiis_yield_history.json`) e routing samples dedicados.
 
 ### dividendos_yield (composta, histórica, pública)
 
