@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-04T16:04:15Z",
+  "generated_at": "2025-12-04T17:11:31Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -118,8 +118,8 @@
         "cadastro",
         "entity:fiis_cadastro"
       ],
-      "chunks": 3,
-      "sha_all": "23f04a3a296f8f9fa62059e7852e861a3b5ca6b42eeac34f8559e62cc7c71834"
+      "chunks": 4,
+      "sha_all": "32026f2065737953997359cde75981243457394954ff564f78c9a0d65cdf35c4"
     },
     {
       "id": "entity-fiis-cadastro-hints",
@@ -143,7 +143,7 @@
         "entity:fiis_dividendos"
       ],
       "chunks": 3,
-      "sha_all": "516f84d677ea735a7866426e56c7b27dc95bfe7a8e85dd02da2186ccb30a4b06"
+      "sha_all": "4f816a37837e071167a8303d60608596af4ba2e4deae52be5a68c2f4eced270f"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -166,8 +166,8 @@
         "precos",
         "entity:fiis_precos"
       ],
-      "chunks": 3,
-      "sha_all": "d2dffeab1da6fec6d49a3ae0baf8de090fbf5bfb3830e508a8618c8d91da550e"
+      "chunks": 4,
+      "sha_all": "74de251ccaa833c83b491d56cb2a3e6a8c2647f476a1148965910403bc6536c6"
     },
     {
       "id": "entity-fiis-precos-hints",
@@ -191,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 6,
-      "sha_all": "1bd4c8bd3ef99c14f2bd01991382238fba176c17b237bf4d93235c3b27258ed3"
+      "sha_all": "c721c76771efd4ea0bd12dad76cfb60c5df870a1040c443b2f5c3943e642300d"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -203,7 +203,7 @@
         "entity:fiis_imoveis"
       ],
       "chunks": 3,
-      "sha_all": "aabf5453ef563c69c715ed0f3629bb23dce254831f2629c2f394663c88f24839"
+      "sha_all": "1162e3f59b4ac549c90300f37a17fcaf42573c7f012927f2e7bd367e1445c95c"
     },
     {
       "id": "entity-fiis-noticias",
@@ -214,8 +214,8 @@
         "noticias",
         "entity:fiis_noticias"
       ],
-      "chunks": 2,
-      "sha_all": "776b342a2c12c4c3a41ccfaef6be1e1caeaac4dbf51b1c5f77c29703fcff3573"
+      "chunks": 4,
+      "sha_all": "0dbed1c94ac0caa73732492fb170a72242b04117d611244f18e632598ec33ecd"
     },
     {
       "id": "entity-fiis-processos",
@@ -239,8 +239,8 @@
         "snapshot",
         "entity:fiis_financials_snapshot"
       ],
-      "chunks": 4,
-      "sha_all": "94f202299c2d3e9a3424062677325635f927f3ffcdc5b7abfb16c4bd6e5c89f9"
+      "chunks": 5,
+      "sha_all": "57d9c8d482fe888d6243f9caa3ea95153633fc2a11b5c98644a2c3aa214eaf51"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -252,8 +252,8 @@
         "revenue",
         "entity:fiis_financials_revenue_schedule"
       ],
-      "chunks": 5,
-      "sha_all": "64fde7d1dc046bf35d296a8e6db9d0cd2b56ecd4d2a1d04727e8e4080cbbd555"
+      "chunks": 6,
+      "sha_all": "0f508040e76c4df9c6a94ed7d589ea136f12721f0ea5ad636d6c5d744f895a4e"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -266,7 +266,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 4,
-      "sha_all": "ccfb38ed060c4566fb08e27c33e91881deef0ae5a6bea200c6304ae86723290d"
+      "sha_all": "01731725e21e44415d7ec0ca2cf476e879f39cd78013390f3837c7760b5764c4"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -649,8 +649,8 @@
         "b3",
         "entity:history_b3_indexes"
       ],
-      "chunks": 2,
-      "sha_all": "470fbee0ace00a3310b6295c088d9d6c0e9723df1d27ef168dc1937953081183"
+      "chunks": 3,
+      "sha_all": "384fb88fd6e56583866367cb0122b25c0701424b4c3cef91c7d5ff55d2e1dbb5"
     },
     {
       "id": "entity-history-currency-rates",
@@ -662,7 +662,7 @@
         "entity:history_currency_rates"
       ],
       "chunks": 2,
-      "sha_all": "711c9f8a4244358987684fccd473b25ec27b897ca0bc4ba0ad1669e6c369f76e"
+      "sha_all": "ccb45e35d55e91cb0358273cb651e79229787a67e2eca92689c48aba9abf0544"
     },
     {
       "id": "entity-history-market-indicators",
@@ -675,10 +675,10 @@
         "entity:history_market_indicators"
       ],
       "chunks": 2,
-      "sha_all": "ae633f86ae3f2f4d82d0044a551b14a29141a2d937958c60292fd185d960be8c"
+      "sha_all": "79427b6bd815df654eb4ba9365ce81234884d2212a8a79100e83f69fb177dd27"
     }
   ],
-  "last_refresh_epoch": 1764864483,
+  "last_refresh_epoch": 1764868531,
   "vector_dimension": 768,
-  "total_chunks": 218
+  "total_chunks": 225
 }

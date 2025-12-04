@@ -756,7 +756,7 @@
     "expected_entity": "dividendos_yield",
     "got_intent": "fiis_yield_history",
     "got_entity": "fiis_yield_history",
-    "score": 4.675,
+    "score": 5.5,
     "status": {
       "reason": "ok",
       "message": "ok"
@@ -784,7 +784,7 @@
       "fiis_imoveis": 0.0,
       "fiis_noticias": -1.1,
       "fiis_processos": -1.1,
-      "fiis_rankings": -2.1999999999999997,
+      "fiis_rankings": -3.3,
       "history_b3_indexes": 0.0,
       "history_currency_rates": 0.0,
       "history_market_indicators": 0.0,
@@ -795,7 +795,7 @@
     "thresholds": {
       "min_score": 0.9,
       "min_gap": 0.15,
-      "gap": 3.7399999999999998,
+      "gap": 4.4,
       "accepted": true,
       "source": "final"
     }
@@ -1041,13 +1041,13 @@
       "fiis_precos": -1.1,
       "fiis_dividendos": 0.0,
       "fiis_yield_history": -1.1,
-      "fiis_financials_snapshot": 1.1,
+      "fiis_financials_snapshot": 0.0,
       "fiis_financials_revenue_schedule": 0.0,
       "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
       "fiis_noticias": -1.1,
       "fiis_processos": 0.0,
-      "fiis_rankings": 1.1,
+      "fiis_rankings": 0.0,
       "history_b3_indexes": 0.0,
       "history_currency_rates": 0.0,
       "history_market_indicators": 0.0,
@@ -1317,7 +1317,7 @@
       "fiis_imoveis": 0.0,
       "fiis_noticias": -1.1,
       "fiis_processos": 0.0,
-      "fiis_rankings": 1.1,
+      "fiis_rankings": 0.0,
       "history_b3_indexes": 0.0,
       "history_currency_rates": 0.0,
       "history_market_indicators": 0.0,
@@ -1443,42 +1443,38 @@
     }
   },
   {
-    "idx": 214,
-    "question": "receita contratada vs receita potencial do HGLG11",
-    "expected_intent": "fiis_financials_revenue_schedule",
-    "expected_entity": "fiis_financials_revenue_schedule",
-    "got_intent": "fiis_financials_snapshot",
-    "got_entity": "fiis_financials_snapshot",
-    "score": 1.1,
+    "idx": 219,
+    "question": "r² do HGLG11",
+    "expected_intent": "fiis_financials_risk",
+    "expected_entity": "fiis_financials_risk",
+    "got_intent": "ticker_query",
+    "got_entity": "fiis_precos",
+    "score": 0.0,
     "status": {
       "reason": "ok",
       "message": "ok"
     },
-    "normalized": "receita contratada vs receita potencial do hglg11",
+    "normalized": "r² do hglg11",
     "tokens": [
-      "receita",
-      "contratada",
-      "vs",
-      "receita",
-      "potencial",
+      "r²",
       "do",
       "hglg11"
     ],
     "intent_scores": {
       "ticker_query": 0.0,
       "client_fiis_positions": 0.0,
-      "client_fiis_dividends_evolution": -1.1,
+      "client_fiis_dividends_evolution": 0.0,
       "client_fiis_performance_vs_benchmark": 0.0,
       "fiis_cadastro": 0.0,
-      "fii_overview": -1.1,
+      "fii_overview": 0.0,
       "fiis_precos": 0.0,
       "fiis_dividendos": 0.0,
       "fiis_yield_history": 0.0,
-      "fiis_financials_snapshot": 1.1,
-      "fiis_financials_revenue_schedule": 1.1,
+      "fiis_financials_snapshot": 0.0,
+      "fiis_financials_revenue_schedule": 0.0,
       "fiis_financials_risk": 0.0,
       "fiis_imoveis": 0.0,
-      "fiis_noticias": -1.1,
+      "fiis_noticias": 0.0,
       "fiis_processos": 0.0,
       "fiis_rankings": 0.0,
       "history_b3_indexes": 0.0,
@@ -1486,11 +1482,11 @@
       "history_market_indicators": 0.0,
       "dividendos_yield": 0.0,
       "carteira_enriquecida": 0.0,
-      "macro_consolidada": -3.3
+      "macro_consolidada": 0.0
     },
     "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
+      "min_score": 0.9,
+      "min_gap": 0.15,
       "gap": 0.0,
       "accepted": false,
       "source": "final"
@@ -1610,9 +1606,9 @@
     "question": "quanto o CPTS11 pagou de dividendos e dy em 2023-08",
     "expected_intent": "fiis_yield_history",
     "expected_entity": "fiis_yield_history",
-    "got_intent": "fiis_rankings",
-    "got_entity": "fiis_rankings",
-    "score": 2.3375,
+    "got_intent": "dividendos_yield",
+    "got_entity": "dividendos_yield",
+    "score": 1.4025,
     "status": {
       "reason": "ok",
       "message": "ok"
@@ -1647,7 +1643,7 @@
       "fiis_imoveis": -0.55,
       "fiis_noticias": -3.8500000000000005,
       "fiis_processos": -2.75,
-      "fiis_rankings": 2.75,
+      "fiis_rankings": -0.55,
       "history_b3_indexes": -0.55,
       "history_currency_rates": -0.55,
       "history_market_indicators": -0.55,
@@ -1656,63 +1652,10 @@
       "macro_consolidada": -10.450000000000001
     },
     "thresholds": {
-      "min_score": 1.0,
+      "min_score": 0.9,
       "min_gap": 0.2,
-      "gap": 0.9349999999999998,
+      "gap": 0.935,
       "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 256,
-    "question": "peso do HGLG11 na minha carteira",
-    "expected_intent": "client_fiis_positions",
-    "expected_entity": "client_fiis_positions",
-    "got_intent": "client_fiis_positions",
-    "got_entity": "fiis_rankings",
-    "score": 4.4,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "peso do hglg11 na minha carteira",
-    "tokens": [
-      "peso",
-      "do",
-      "hglg11",
-      "na",
-      "minha",
-      "carteira"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": 4.4,
-      "client_fiis_dividends_evolution": 2.2,
-      "client_fiis_performance_vs_benchmark": -2.1999999999999997,
-      "fiis_cadastro": 1.1,
-      "fii_overview": 0.0,
-      "fiis_precos": 0.0,
-      "fiis_dividendos": 0.0,
-      "fiis_yield_history": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 0.0,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": -3.3000000000000003,
-      "fiis_processos": -2.2,
-      "fiis_rankings": 4.4,
-      "history_b3_indexes": -1.1,
-      "history_currency_rates": 0.0,
-      "history_market_indicators": 0.0,
-      "dividendos_yield": -3.3000000000000003,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.0,
-      "accepted": false,
       "source": "final"
     }
   },
@@ -1915,7 +1858,7 @@
       "fiis_imoveis": 0.0,
       "fiis_noticias": -1.1,
       "fiis_processos": -1.1,
-      "fiis_rankings": 2.2,
+      "fiis_rankings": 0.0,
       "history_b3_indexes": 0.0,
       "history_currency_rates": -1.1,
       "history_market_indicators": 0.0,
@@ -1928,56 +1871,6 @@
       "min_gap": 0.2,
       "gap": 2.2,
       "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 273,
-    "question": "yield do HGRE11",
-    "expected_intent": "fiis_yield_history",
-    "expected_entity": "fiis_yield_history",
-    "got_intent": "fiis_yield_history",
-    "got_entity": "fiis_rankings",
-    "score": 1.1,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "yield do hgre11",
-    "tokens": [
-      "yield",
-      "do",
-      "hgre11"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": 0.0,
-      "client_fiis_dividends_evolution": 0.0,
-      "client_fiis_performance_vs_benchmark": -1.1,
-      "fiis_cadastro": -1.1,
-      "fii_overview": -1.1,
-      "fiis_precos": -1.1,
-      "fiis_dividendos": -1.1,
-      "fiis_yield_history": 1.1,
-      "fiis_financials_snapshot": -4.4,
-      "fiis_financials_revenue_schedule": -1.1,
-      "fiis_financials_risk": -1.1,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": -1.1,
-      "fiis_processos": 0.0,
-      "fiis_rankings": 1.1,
-      "history_b3_indexes": 0.0,
-      "history_currency_rates": 0.0,
-      "history_market_indicators": 0.0,
-      "dividendos_yield": 1.1,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": -4.4
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.0,
-      "accepted": false,
       "source": "final"
     }
   },

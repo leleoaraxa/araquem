@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-04T16:59:17.904764",
+  "timestamp": "2025-12-04T17:17:20.744729+00:00",
   "total_tests": 0,
   "passed": 0,
   "failed": 0,
@@ -9,7 +9,7 @@
       "question": null,
       "expected": null,
       "got": null,
-      "reason": "catalog_error:Catálogo não encontrado em docs\\catalog\\tests_catalog.json"
+      "reason": "catalog_error:Catálogo não encontrado em docs/catalog/tests_catalog.json"
     }
   ],
   "ontology_issues": [
