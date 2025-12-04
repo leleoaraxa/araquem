@@ -85,18 +85,17 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - dividend yield
-    - dividendos
-    - dy
-    - dy 12 meses
+    - dividend yield atual
     - dy atual
-    - dy mensal
-    - historico de dividendos
-    - historico de dy
-    - proventos
-    - rendimento
-    - rendimento mensal
-    - yield
+    - dy hoje
+    - dy na data de hoje
+    - dy atual do fundo
+    - dy corrente
+    - ultimo dy
+    - ultimo dividend yield
+    - ultimo rendimento por cota
+    - yield atual
+    - yield corrente
   anti_tokens:
     - minha
     - minhas
@@ -110,11 +109,14 @@ ask:
     - performance
   phrase_includes:
     - "dividend yield do"
-    - "dividendos e dy do"
-    - "dy mensal do"
-    - "historico de dividendos do"
-    - "historico de dy do"
-    - "quanto o pagou em"
+    - "dividend yield atual do"
+    - "dy do"
+    - "dy atual do"
+    - "dy hoje do"
+    - "qual o dy do"
+    - "qual o yield do"
+    - "ultimo dy do"
+    - "ultimo rendimento do"
   synonyms:
     ticker:
       - ativo
