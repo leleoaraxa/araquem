@@ -445,167 +445,47 @@ intents:
   tokens:
     include:
     - preco
-    - precos
     - cotacao
-    - cotacoes
     - variacao
-    - oscilacao
+    - historico
+    - fechamento
+    - abertura
     - alta
     - baixa
-    - intradia
-    - intradiario
-    - maximo
-    - min
-    - minima
-    - maxima
-    - historico_preco
-    - hoje
-    - ontem
-    - abertura
-    - abrir
-    - fechamento
-    - fechar
-    - diaria
-    - pregao
-    - pregoes
-    - data de pregao
-    - data do pregao
-    - ultimo pregao
-    - fechamento do dia
-    - ultimo fechamento
-    - historico
-    - ultimos
-    - periodo
     exclude:
+    - dy
+    - dividendos
+    - dividendo
+    - acumulado
+    - rendimento
+    - yield
     - snapshot
-    - indicadores
-    - payout
-    - alavancagem
-    - leverage
-    - patrimonio
-    - patrimonio_liquido
-    - vp
-    - valor_patrimonial
-    - valor_patrimonial_cota
     - vacancia
-    - ocupacao
     - setor
     - segmento
-    - contratos
-    - imoveis
-    - portfolio
+    - overview
     - administrador
-    - administradora
-    - gestora
-    - gestor
-    - razao
-    - razao_social
-    - classe
-    - tipo_de_fundo
-    - categoria
     - mandato
-    - publico
-    - publico_alvo
-    - resumo
-    - sharpe
-    - sortino
-    - beta
-    - risco
-    - volatilidade
-    - r2
-    - treynor
-    - max_drawdown
-    - mdd
-    - indice_risco
-    - indicador_risco
-    - dividendo
-    - media
-    - proventos
-    - pagamento
-    - soma
-    - ranking
-    - ibov
-    - ibovespa
-    - ifix
-    - ifil
-    - dy
-    - yield
-    - dividendos
-    - vacancia
-    - receita
-    - receita_mensal
-    - pl
-    - cnpj
-    - contratos
-    - locatarios
-    - rendimentos
-    - usd
-    - dolar
-    - eur
-    - euro
-    - cambio
-    - cdi
-    - selic
-    - ipca
-    - inflacao
-    - inpc
+    - patrimonio
+    - processos
     - noticia
     - noticias
-    - fato
-    - fatos
-    - relevante
-    - comunicacao
-    - imprensa
-    - comercial
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
+    - ranking
+    - ifix
+    - ifil
   phrases:
     include:
-    - preco do <ticker>
-    - preco atual do <ticker>
-    - cotacao do <ticker>
-    - quanto esta o <ticker>
-    - valor da cota do <ticker>
-    - quanto esta valendo o <ticker>
-    - qual o preco do <ticker> hoje
-    - preco agora do <ticker>
-    - preco de fechamento do <ticker>
-    - preco de abertura do <ticker>
-    - alta do <ticker>
-    - baixa do <ticker>
-    - variacao do <ticker>
-    - retorno diario do <ticker>
-    - oscilacao do <ticker>
-    - quanto subiu o <ticker>
-    - quanto caiu o <ticker>
-    - preco maximo do dia
-    - preco minimo do dia
-    - preco medio
-    - preco historico do <ticker>
-    - comparar preco de <ticker> e <ticker>
-    - preco do
+    - preco
+    - cotacao
+    - variacao
     - preco atual
-    - preco do dia
-    - cotacao do
-    - abertura do
-    - fechamento do
-    - maxima do
-    - minima do
-    - variacao diaria
-    - variacao diaria do
-    - variacao diaria do ticker
-    - variacao do ticker nos ultimos
+    - cotacao hoje
+    - valor da cota
     - historico de preco
-    - historico de precos
     - historico de cotacao
-    - historico de cotacoes
-    - preco nos ultimos
-    - cotacao nos ultimos
-    - historico de preco nos ultimos 12 meses
+    - preco por mes
+    - preco ultimo mes
+    - preco ultimo ano
     exclude:
     - media de preco
     - retorno no periodo
