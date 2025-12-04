@@ -59,24 +59,61 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - alfa
     - beta
+    - beta do fundo
+    - beta index
     - coeficiente de determinacao
-    - desvio padrao
-    - drawdown
-    - jensen
     - mdd
-    - performance ajustada
+    - max drawdown
+    - queda maxima
     - r2
     - risco
-    - risco ajustado
+    - risco anual
+    - risco consolidado
+    - risco do fii
+    - risco do fundo
+    - risco historico
+    - risco mensal
     - risco vs retorno
+    - risco 12m
+    - risco 24m
+    - risco 36m
     - sharpe
     - sharpe ratio
     - sortino
-    - treynor
+    - sortino ratio
     - volatilidade
+    - alfa
+    - desvio padrao
+    - drawdown
+    - jensen
+    - performance ajustada
+    - risco ajustado
+    - treynor
   anti_tokens:
+    - cnpj
+    - dividendo
+    - cotacao
+    - cliente
+    - d-1
+    - dividendos
+    - administrador
+    - dy
+    - hoje
+    - minha carteira
+    - noticia
+    - noticias
+    - overview
+    - posicao
+    - preco
+    - provento
+    - proventos
+    - resumo
+    - rendimento
+    - setor
+    - segmento
+    - variacao
+    - yield
     - cambio
     - dolar
     - inflacao
@@ -84,9 +121,18 @@ ask:
     - juros
     - selic
   phrase_includes:
-    - "alfa de jensen"
-    - "alpha de jensen"
     - "beta do"
+    - "beta do fundo"
+    - "max drawdown do"
+    - "mdd do"
+    - "risco do"
+    - "risco do fii"
+    - "risco do fundo"
+    - "sharpe do"
+    - "sortino do"
+    - "volatilidade do"
+    - "alpha de jensen"
+    - "alfa de jensen"
     - "beta em relacao ao ifix"
     - "coeficiente de determinacao"
     - "indice de sharpe"
@@ -96,15 +142,11 @@ ask:
     - "nivel de risco"
     - "o risco dele"
     - "r2"
+    - "risco dele"
     - "risco desse fii"
     - "risco desse fundo"
     - "risco desse papel"
-    - "risco do"
-    - "risco do fii"
-    - "risco do fundo"
     - "risco hoje"
-    - "risco dele"
-    - "sharpe do"
     - "sharpe ratio do"
     - "treynor do"
   synonyms:
