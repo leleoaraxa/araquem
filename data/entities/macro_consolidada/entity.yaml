@@ -62,6 +62,7 @@ ask:
     - macro_consolidada
   requires_identifiers: []
   keywords:
+    - ano
     - cambio
     - cdi
     - dolar
@@ -72,10 +73,13 @@ ask:
     - indice
     - ipca
     - macro
+    - passado
     - selic
-    - variacao
+    - serie historica
+    - serie longa
   anti_tokens:
     - beta
+    - bolsa
     - risco
     - sharpe
     - sortino
@@ -90,12 +94,39 @@ ask:
     - posicoes
     - performance
     - retorno
+    - noticia
+    - noticias
+    - valor
     - hoje
     - cotacao
     - preco
     - d-1
+    - diaria
+    - variacao
+    - atual
+    - fii
+    - fiis
+    - fundo
+    - fundos
+    - fundo imobiliario
+    - fundo de investimento imobiliario
+    - yield
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - cotacao de fii
+    - preco de fii
   phrase_includes:
     - "historico macro"
+    - "historico de macro"
+    - "serie historica"
+    - "serie historica macro"
+    - "serie historica de"
+    - "serie historica do"
+    - "em 20"
+    - "no ano de"
+    - "como estava"
     - "ipca em"
     - "selic em"
     - "ifix em"
