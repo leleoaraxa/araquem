@@ -37,15 +37,15 @@ buckets:
 
   D: []
 intents:
-  - name: ticker_query
-    bucket: A
-    tokens:
-      include:
-      - "[A-Za-z]{4}11"
-      exclude: []
-    phrases:
-      include: []
-      exclude: []
+- name: ticker_query
+  bucket: A
+  tokens:
+    include:
+    - "[A-Za-z]{4}11"
+    exclude: []
+  phrases:
+    include: []
+    exclude: []
   entities:
   - fiis_precos
   - fiis_dividendos
