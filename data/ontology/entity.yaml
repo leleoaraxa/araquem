@@ -309,6 +309,7 @@ intents:
   entities:
   - fiis_cadastro
 - name: fii_overview
+  weight: 3
   tokens:
     include:
     - cnpj
@@ -361,6 +362,14 @@ intents:
     - variacao
     - alta
     - baixa
+    - ranking
+    - rank
+    - top
+    - melhores
+    - piores
+    - campeoes
+    - lanternas
+    - destaques
     - dy
     - yield
     - dividendo
@@ -432,6 +441,7 @@ intents:
   entities:
   - fii_overview
 - name: fiis_precos
+  weight: 2
   tokens:
     include:
     - preco
@@ -467,6 +477,36 @@ intents:
     - ultimos
     - periodo
     exclude:
+    - snapshot
+    - indicadores
+    - payout
+    - alavancagem
+    - leverage
+    - patrimonio
+    - patrimonio_liquido
+    - vp
+    - valor_patrimonial
+    - valor_patrimonial_cota
+    - vacancia
+    - ocupacao
+    - setor
+    - segmento
+    - contratos
+    - imoveis
+    - portfolio
+    - administrador
+    - administradora
+    - gestora
+    - gestor
+    - razao
+    - razao_social
+    - classe
+    - tipo_de_fundo
+    - categoria
+    - mandato
+    - publico
+    - publico_alvo
+    - resumo
     - sharpe
     - sortino
     - beta
@@ -494,11 +534,8 @@ intents:
     - vacancia
     - receita
     - receita_mensal
-    - patrimonio
-    - patrimonio_liquido
     - pl
     - cnpj
-    - setor
     - contratos
     - locatarios
     - rendimentos
@@ -512,6 +549,13 @@ intents:
     - ipca
     - inflacao
     - inpc
+    - noticia
+    - noticias
+    - fato
+    - fatos
+    - relevante
+    - comunicacao
+    - imprensa
     - comercial
     - top
     - melhores
@@ -578,6 +622,7 @@ intents:
   entities:
   - fiis_precos
 - name: fiis_dividendos
+  weight: 1.5
   tokens:
     include:
     - dividendo
@@ -605,6 +650,35 @@ intents:
     - rendimento mensal
     - rendimento 12m
     exclude:
+    - dy
+    - dividend yield
+    - yield
+    - preco
+    - precos
+    - cotacao
+    - cotacoes
+    - variacao
+    - oscilacao
+    - alta
+    - baixa
+    - abertura
+    - fechamento
+    - intradia
+    - intradiario
+    - maximo
+    - minimo
+    - historico_preco
+    - risco
+    - volatilidade
+    - sharpe
+    - sortino
+    - treynor
+    - beta
+    - mdd
+    - drawdown
+    - r2
+    - r²
+    - coeficiente de determinacao
     - ipca
     - juros
     - selic
@@ -659,6 +733,7 @@ intents:
   entities:
   - fiis_dividendos
 - name: fiis_yield_history
+  weight: 2
   tokens:
     include:
     - dy
@@ -675,6 +750,39 @@ intents:
     - dy_historico
     - dy_evolucao
     exclude:
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - snapshot
+    - indicadores
+    - payout
+    - alavancagem
+    - patrimonio
+    - patrimonio_liquido
+    - vp
+    - valor_patrimonial
+    - valor_patrimonial_cota
+    - vacancia
+    - ocupacao
+    - contratos
+    - setor
+    - segmento
+    - imoveis
+    - cnpj
+    - administrador
+    - gestora
+    - gestor
+    - overview
+    - resumo
+    - preco
+    - precos
+    - cotacao
+    - cotacoes
+    - variacao
+    - oscilacao
+    - alta
+    - baixa
     - dividendos e dy
     - noticia
     - imprensa
@@ -716,6 +824,7 @@ intents:
   entities:
   - fiis_yield_history
 - name: fiis_financials_snapshot
+  weight: 4
   tokens:
     include:
     - snapshot
@@ -768,6 +877,11 @@ intents:
     - processo
     - acao
     - judicial
+    - noticia
+    - noticias
+    - fato
+    - fatos
+    - relevante
     - cnpj
     - administrador
     - gestora
@@ -993,14 +1107,23 @@ intents:
     - o que significa
     - impacto do ipca
     - juros
+    - juros altos
+    - juros futuros
     - selic
+    - selic alta
     - inflacao
     - macro
+    - macroeconomia
+    - politica monetaria
+    - politica fiscal
     - cambio
     - curva
+    - cenario
+    - ambiente
   entities:
   - fiis_financials_revenue_schedule
 - name: fiis_financials_risk
+  weight: 5
   tokens:
     include:
     - risco
@@ -1043,6 +1166,14 @@ intents:
     - valor da cota
     - alta
     - baixa
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - dy
+    - yield
+    - rendimento
+    - pagamento
     - significado
     - definicao
     - conceito
@@ -1055,6 +1186,8 @@ intents:
     - pl
     - vacancia
     - contratos
+    - snapshot
+    - overview
     - ranking
     - top
     - melhores
@@ -1220,6 +1353,9 @@ intents:
     - ruim
     - ruins
     exclude:
+    - snapshot
+    - overview
+    - indicadores
     - cnpj
     - classe
     - segmento
@@ -1394,7 +1530,7 @@ intents:
   entities:
   - fiis_processos
 - name: fiis_rankings
-  weight: 5
+  weight: 6
   tokens:
     include:
     - dy
@@ -1553,6 +1689,12 @@ intents:
     - dy do
     - dy mensal do
     - yield mensal do
+    - variacao do <ticker>
+    - variacao mensal do <ticker>
+    - oscilacao do <ticker>
+    - alta do <ticker>
+    - baixa do <ticker>
+    - quanto esta o <ticker>
   entities:
   - fiis_rankings
 - name: history_b3_indexes
@@ -1854,6 +1996,27 @@ intents:
     - fundo imobiliario
     - fundos imobiliarios
     - ticker
+    - preco
+    - precos
+    - cotacao
+    - cotacoes
+    - variacao
+    - alta
+    - baixa
+    - patrimonio
+    - patrimonio_liquido
+    - vp
+    - valor_patrimonial
+    - valor_patrimonial_cota
+    - administrador
+    - gestora
+    - gestor
+    - cnpj
+    - segmento
+    - setor
+    - mandato
+    - classe
+    - categoria
   phrases:
     include:
     - como juros altos afetam fiis
