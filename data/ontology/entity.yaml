@@ -749,6 +749,12 @@ intents:
     - dy 24m
     - dy_historico
     - dy_evolucao
+    - meses
+    - historico
+    - anual
+    - periodo
+    - historico completo
+    - ano a ano
     exclude:
     - dividendo
     - dividendos
@@ -804,22 +810,19 @@ intents:
     - destaques
   phrases:
     include:
-    - dividend yield do
-    - historico de dy do
-    - yield mensal do
-    - dy do
-    - evolucao do dy do
-    - dy medio dos
-    - historico de dividend yield do
-    - comparativo de dy mensal entre
-    - dividendos e dy em
-    - dy em
-    - historico de dy
     - dy historico
+    - historico de dy
+    - dy por mes
+    - dy mensal
+    - serie historica de dy
     - dy ao longo do tempo
-    - dy nos ultimos meses
+    - dy meses
+    - dy ultimo ano
+    - historico de dy do
+    - historico de dividend yield do
     - evolucao do dy
-    - como evoluiu o dy
+    - evolucao do dy do
+    - dy em
     exclude: []
   entities:
   - fiis_yield_history
@@ -2055,6 +2058,16 @@ anti_tokens:
   - selic
   - ifix
   - cdi
+  fiis_yield_history:
+  - dy atual
+  - ultimo dy
+  - provento
+  - proventos
+  - dividendos
+  - dividendo
+  - acumulado
+  - rendimento atual
+  - yield atual
   fiis_noticias:
   - noticia
   - noticias
