@@ -56,6 +56,13 @@ ask:
   - usd
   - variacao
   - venda
+  phrase_includes:
+  - "cotacao do dolar"
+  - "cotacao do euro"
+  - "variacao do dolar"
+  - "variacao do euro"
+  - "dolar d-1"
+  - "euro d-1"
   synonyms:
     rate_date:
     - data

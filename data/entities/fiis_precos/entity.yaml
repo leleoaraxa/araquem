@@ -67,6 +67,12 @@ ask:
     - variacao
     - variacao diaria
 
+  anti_tokens:
+    - noticia
+    - noticias
+    - materia
+    - ultimas
+
   phrase_includes:
     - "cotacao do"
     - "preco do"
