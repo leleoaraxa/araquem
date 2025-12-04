@@ -816,12 +816,18 @@ intents:
     - rank
     - posicao
     - posicoes
+    - posição
     - peso
     - pesos
     - participacao
     - composicao
     - ifix
     - ifil
+    - ifix
+    - ifil
+    - ranking
+    - peso
+    - movimentos
     - top
     - melhores
     - maiores
@@ -869,6 +875,18 @@ intents:
     - ranking do
     - ranking dos fiis
     - ranking de fiis
+    - posicao no IFIX
+    - posicao no IFIL
+    - ranking no IFIX
+    - ranking no IFIL
+    - peso no IFIX
+    - peso no IFIL
+    - movimentos no IFIX
+    - movimentos no IFIL
+    - posicao do <ticker> no IFIX
+    - posicao do <ticker> no IFIL
+    - ranking do <ticker> no IFIX
+    - ranking do <ticker> no IFIL
     - posicao do
     - top fiis por
     - top 5 fiis por
@@ -1190,3 +1208,6 @@ anti_tokens:
   - materia
   - reportagem
   - manchete
+  history_b3_indexes:
+  - ranking
+  - posição
