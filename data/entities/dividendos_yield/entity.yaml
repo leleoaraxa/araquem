@@ -84,13 +84,23 @@ ask:
     - dividendos_yield
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - cotacao
+    - macro
+    - patrimonio
+    - pl
+    - preco
+    - processo
+    - risco
+    - selic
+    - vacancia
   keywords:
+    - dividend yield
+    - dividendos
     - dy
     - dy 12 meses
     - dy atual
     - dy mensal
-    - dividend yield
-    - dividendos
     - historico de dividendos
     - historico de dy
     - proventos
@@ -107,9 +117,9 @@ ask:
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     ref_month:
       - competencia
       - mes base
@@ -137,10 +147,10 @@ ask:
     keywords: 1.0
     synonyms: 0.5
   sample_questions:
-  - historico de dividendos e DY do MXRF11 nos últimos 12 meses
-  - qual foi o DY mensal do HGLG11 em 09/2024?
+  - historico de dividendos e dy do MXRF11 nos ultimos 12 meses
+  - qual foi o dy mensal do HGLG11 em 09/2024
   - dividend yield atual do CPTS11
-  - comparativo de DY mensal entre HGLG11 e VISC11
+  - comparativo de dy mensal entre HGLG11 e VISC11
 
 order_by_whitelist:
 - ref_month desc

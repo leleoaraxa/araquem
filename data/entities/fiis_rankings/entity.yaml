@@ -98,6 +98,15 @@ ask:
     - fiis_rankings
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - ipca
+    - noticia
+    - preco
+    - processo
+    - selic
   keywords:
     - carteira recomendada
     - classificacao
@@ -119,9 +128,9 @@ ask:
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     users_rank_position:
       - usuarios
       - ranking de usuarios

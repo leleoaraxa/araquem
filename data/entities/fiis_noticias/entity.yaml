@@ -39,20 +39,32 @@ ask:
     - fiis_noticias
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - cnpj
+    - cotacao
+    - dividendos
+    - dy
+    - patrimonio
+    - pl
+    - preco
+    - processo
+    - ranking
+    - vacancia
+    - yield
   keywords:
+    - atualizacao
+    - materia
     - noticia
     - noticias
-    - materia
-    - reportagem
-    - atualizacao
-    - ultimas
     - novidades
+    - reportagem
+    - ultimas
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
   weights:
     identifiers: 2.0
     keywords: 1.0

@@ -59,40 +59,56 @@ ask:
     - fiis_imoveis
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - dividendos
+    - dy
+    - ipca
+    - macro
+    - noticia
+    - pl
+    - preco
+    - processo
+    - ranking
+    - risco
+    - selic
+    - yield
   keywords:
-    - imovel
-    - imoveis
-    - propriedades
-    - propriedade
-    - ativos
-    - portfolio
-    - ocupacao
-    - unidades
     - area
-    - metragem
+    - ativos
     - endereco
-    - localizacao
     - galpao
     - galpoes
+    - imovel
+    - imoveis
+    - localizacao
+    - metragem
+    - ocupacao
     - onde ficam
+    - portfolio
+    - propriedades
+    - propriedade
     - status operacional
+    - unidades
   phrase_includes:
-    - vacancia dos imoveis
-    - vacancia do imovel
     - onde ficam os imoveis
+    - vacancia do imovel
+    - vacancia dos imoveis
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
   weights:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
 sample_questions:
-  - quantos imóveis o HGLG11 possui na carteira
-  - onde ficam os galpões do XPLG11
+  - quantos imoveis o HGLG11 possui na carteira
+  - onde ficam os galpoes do XPLG11
 order_by_whitelist:
   - asset_name asc
   - total_area desc

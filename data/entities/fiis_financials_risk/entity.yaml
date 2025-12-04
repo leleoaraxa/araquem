@@ -58,6 +58,24 @@ ask:
     - fiis_financials_risk
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - dividendos
+    - dy
+    - inflacao
+    - ipca
+    - juros
+    - macro
+    - noticia
+    - pl
+    - preco
+    - processo
+    - ranking
+    - selic
+    - vacancia
+    - yield
   keywords:
     - alfa
     - beta
@@ -77,31 +95,31 @@ ask:
     - treynor
     - volatilidade
   phrase_includes:
-    - "indice de treynor"
-    - "treynor do"
-    - "indice de sharpe"
-    - "sharpe do"
-    - "sharpe ratio do"
-    - "beta do"
-    - "beta em relacao ao ifix"
-    - "max drawdown"
-    - "mdd"
     - "alfa de jensen"
     - "alpha de jensen"
-    - "r2"
+    - "beta do"
+    - "beta em relacao ao ifix"
     - "coeficiente de determinacao"
-    - "risco do"
-    - "risco dele"
-    - "risco desse fundo"
-    - "risco hoje"
-    - "risco do fundo"
-    - "risco do fii"
+    - "indice de sharpe"
+    - "indice de treynor"
+    - "max drawdown"
+    - "mdd"
     - "nivel de risco"
     - "o risco dele"
+    - "r2"
     - "risco desse fii"
+    - "risco desse fundo"
     - "risco desse papel"
+    - "risco do"
+    - "risco do fii"
+    - "risco do fundo"
+    - "risco hoje"
+    - "risco dele"
+    - "sharpe do"
+    - "sharpe ratio do"
+    - "treynor do"
   synonyms:
-    ticker: [ativo, papel, fundo, fii]
+    ticker: [ativo, fii, fundo, papel]
   weights:
     identifiers: 2.0
     keywords: 1.0

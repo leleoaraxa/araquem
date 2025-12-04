@@ -41,39 +41,50 @@ ask:
     - fiis_yield_history
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - cotacao
+    - dividendo
+    - dividendos
+    - dy atual
+    - macro
+    - noticia
+    - pl
+    - preco
+    - provento
+    - proventos
+    - processo
+    - risco
+    - vacancia
   keywords:
     - dy
-    - dividend yield
+    - dy 12m
+    - dy 24m
+    - dy historico
+    - dy medio
+    - dy mensal
     - evolucao do dy
-    - historico de yield
-    - rendimento mensal
-    - retorno mensal
-    - yield
+    - historico de dividend yield
+    - historico de dy
+    - serie historica de dy
     - yield mensal
   phrase_includes:
-    - "dividend yield do"
-    - "dy do"
-    - "dy em"
+    - "dy historico do"
+    - "dy mensal do"
+    - "evolucao do dy do"
+    - "historico de dividend yield do"
     - "historico de dy do"
+    - "serie historica de dy do"
     - "yield mensal do"
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     ref_month:
-      - mes de referencia
       - competencia
       - mes base
-    dividends_sum:
-      - proventos
-      - rendimento
-      - soma de dividendos
-    price_ref:
-      - preco de referencia
-      - cotacao
-      - preco
+      - mes de referencia
     dy_monthly:
       - dy
       - dividend yield
@@ -83,10 +94,10 @@ ask:
     keywords: 1.0
     synonyms: 0.5
   sample_questions:
-  - historico de dividendos e DY do MXRF11 nos últimos 12 meses
-  - qual foi o DY mensal do HGLG11 em 09/2024?
-  - dividend yield atual do CPTS11
-  - quanto o VISC11 pagou em dividendos no mês de 08/2024?
+  - dy historico do MXRF11 nos ultimos 12 meses
+  - evolucao do dy do CPTS11 por mes
+  - qual foi o dy mensal do HGLG11 em 09/2024
+  - serie historica de dy do VISC11
 
 order_by_whitelist:
 - ref_month desc

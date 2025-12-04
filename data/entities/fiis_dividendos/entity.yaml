@@ -41,14 +41,31 @@ ask:
   - fiis_dividendos
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - dividend yield
+    - dy
+    - ipca
+    - macro
+    - noticia
+    - pl
+    - preco
+    - processo
+    - ranking
+    - risco
+    - selic
+    - vacancia
+    - yield
   keywords:
     - distribuiu
     - dividendo pago
     - dividendos
     - media de dividendos
+    - pagamento
     - pagou
     - pagou em
-    - pagamento
     - proventos
     - quanto distribuiu
     - rendimento
@@ -61,9 +78,9 @@ ask:
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     dividend_amt:
       - valor
       - dividendo

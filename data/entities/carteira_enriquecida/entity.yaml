@@ -120,18 +120,24 @@ ask:
     - carteira_enriquecida
   requires_identifiers:
     - document_number
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - preco
+    - processo
   keywords:
     - carteira
+    - dividendos
+    - dy
+    - peso
     - posicao
     - posicoes
-    - peso
-    - valor investido
-    - rentabilidade
     - ranking
-    - sharpe
-    - dy
-    - dividendos
+    - rentabilidade
     - risco
+    - sharpe
+    - valor investido
   phrase_includes:
     - "minha carteira"
     - "posicoes da carteira"
