@@ -95,23 +95,44 @@ ask:
     - ticker
   keywords:
     - administrador
+    - anbima
     - cadastro
+    - classe cadastrada
     - cnpj
     - cotas emitidas
     - custodiante
     - fundo exclusivo
     - gestao
+    - gestora
     - ipo
     - isin
+    - mandato
     - nome de exibicao
     - nome de pregao
-    - peso ifil
-    - peso ifix
     - publico alvo
+    - regulamento
     - segmento
+    - segmento institucional
     - setor
     - site
     - subsetor
+  anti_tokens:
+    - ranking
+    - posicao
+    - top
+    - melhores
+    - piores
+    - sharpe
+    - sortino
+    - variacao
+    - dy
+    - dividendos
+    - risco
+    - yield
+    - carteira
+    - overview
+    - resumo
+    - visao geral
   phrase_includes:
     - segmento do
     - nome de pregao do
@@ -120,6 +141,7 @@ ask:
     - custodiante do
     - codigo isin do
     - data do ipo do
+    - mandato do fundo
   synonyms:
     ticker:
       - ativo
