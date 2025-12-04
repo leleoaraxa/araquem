@@ -301,6 +301,28 @@ intents:
 - name: fii_overview
   tokens:
     include:
+    - cnpj
+    - administrador
+    - administradora
+    - gestora
+    - gestor
+    - nome
+    - razao
+    - razao_social
+    - classe
+    - tipo
+    - tipo_de_fundo
+    - categoria
+    - segmento
+    - mandato
+    - objetivo
+    - descricao
+    - identidade
+    - informacoes
+    - basicas
+    - regulamento
+    - publico_alvo
+    - politica
     - resumo
     - overview
     - situacao
@@ -310,24 +332,41 @@ intents:
     - foto
     - fotografia
     - indicadores
-    - cnpj
-    - nome
-    - razao_social
-    - administrador
-    - gestora
-    - objetivo
-    - mandato
-    - classe
-    - tipo_de_fundo
-    - segmento
     exclude:
+    - pl
+    - patrimonio
+    - patrimonio_liquido
+    - vp
+    - valor_patrimonial
+    - vacancia
+    - ocupacao
+    - contratos
+    - imoveis
+    - abl
+    - receita
+    - receitas
+    - recebiveis
+    - preco
+    - cotacao
+    - variacao
+    - alta
+    - baixa
+    - dy
+    - yield
+    - dividendo
+    - dividendos
+    - proventos
+    - sharpe
+    - risco
+    - sortino
+    - beta
+    - volatilidade
+    - mdd
+    - processo
     - noticia
     - noticias
     - historico
     - historia
-    - receita
-    - receitas
-    - recebiveis
     - cronograma
     - calendario
     - indexador
@@ -341,15 +380,27 @@ intents:
     - selic
     - ipca
     - igpm
-    - pl
-    - patrimonio
-    - vacancia
-    - contratos
-    - vp
-    - valor_patrimonial
-    - abl
   phrases:
     include:
+    - cnpj do <ticker>
+    - qual o cnpj do <ticker>
+    - administrador do <ticker>
+    - gestora do <ticker>
+    - quem administra o <ticker>
+    - quem gere o <ticker>
+    - nome do fundo <ticker>
+    - razao social do <ticker>
+    - classe do <ticker>
+    - segmento do <ticker>
+    - setor do <ticker> (institucional)
+    - tipo de fundo do <ticker>
+    - mandato do <ticker>
+    - objetivo do <ticker>
+    - qual o objetivo do fundo
+    - informacoes basicas do <ticker>
+    - identidade do fundo <ticker>
+    - descricao do fundo <ticker>
+    - o que e o <ticker>
     - resumo do
     - overview do
     - como esta o
@@ -656,6 +707,13 @@ intents:
     - imoveis
     - portfolio_imoveis
     exclude:
+    - cnpj
+    - administrador
+    - gestora
+    - nome
+    - razao
+    - objetivo
+    - mandato
     - soma
     - media
     - nos
