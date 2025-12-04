@@ -147,6 +147,7 @@ intents:
       - months:24
       - count:1
       - count:3
+      - count:5
       - count:6
       - count:12
       - count:24
@@ -171,6 +172,9 @@ intents:
           - hoje
           - fechamento
           - atual
+          - fechou
+          - fechou a quanto
+          - quanto fechou
         window: count:1
       list:
         include:
@@ -194,6 +198,11 @@ intents:
           - tres meses
           - ultimos 3 meses
           - últimos 3 meses
+        5:
+          - 5 pregoes
+          - 5 pregões
+          - cinco pregoes
+          - cinco pregões
         6:
           - semestre
           - 6 meses
