@@ -53,6 +53,17 @@ ask:
     - quanto distribuiu
     - rendimento
     - ultimos 12 meses
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - renda
+    - performance
   phrase_includes:
     - dividendo pago em
     - media de dividendos do

@@ -114,6 +114,17 @@ ask:
     - sirios
     - top
     - usuarios
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - renda
+    - performance
   phrase_includes:
     - melhores fiis no ranking
   synonyms:

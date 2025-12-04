@@ -47,6 +47,11 @@ ask:
   requires_identifiers:
     - document_number
   keywords:
+    - minha
+    - minhas
+    - meu
+    - meus dividendos
+    - meus recebidos
     - evolucao
     - historico
     - dividendos
@@ -55,6 +60,12 @@ ask:
     - renda mensal
     - fiis
     - carteira
+  anti_tokens:
+    - custodia
+    - posicao
+    - posicoes
+    - performance
+    - retorno
   phrase_includes:
     - "evolucao dos meus dividendos"
     - "historico de dividendos da minha carteira"

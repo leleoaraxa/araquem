@@ -126,6 +126,17 @@ ask:
     - receita
     - renda
     - vacancia
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - performance
+    - renda da carteira
   phrase_includes:
     - caixa do
     - cap rate do
