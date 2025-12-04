@@ -1,7 +1,8 @@
 # app/cache/rt_cache.py
 import logging
 import os, json, hashlib, time, datetime as dt
-from typing import Any, Dict, Optional
+from functools import lru_cache
+from typing import Any, Dict, Iterable, Optional
 from pathlib import Path
 
 import redis
@@ -16,6 +17,12 @@ LOGGER = logging.getLogger(__name__)
 # Fonte oficial (novo) e caminho legado (compat)
 POLICY_PATH = Path("data/policies/cache.yaml")
 ENTITY_ROOT = Path("data/entities")
+CONFIG_VERSION_PATHS = [
+    Path("data/ontology"),
+    Path("data/entities"),
+    Path("data/policies"),
+    Path("data/embeddings"),
+]
 
 
 class CachePolicies:
@@ -148,10 +155,69 @@ def _stable_hash(obj: Any) -> str:
     return hashlib.sha1(s.encode("utf-8")).hexdigest()  # curto e suficiente
 
 
+def _iter_config_files() -> Iterable[Path]:
+    for base in CONFIG_VERSION_PATHS:
+        if not base.exists():
+            LOGGER.warning("Caminho de configuração ausente: %s", base)
+            continue
+        if base.is_file():
+            yield base
+            continue
+        for path in sorted(base.rglob("*.yaml")):
+            if path.is_file():
+                yield path
+
+
+def _compute_config_version() -> str:
+    hasher = hashlib.sha1()
+    found_any = False
+    for file_path in _iter_config_files():
+        found_any = True
+        rel = file_path.as_posix()
+        try:
+            content = file_path.read_text(encoding="utf-8")
+        except FileNotFoundError:
+            LOGGER.warning(
+                "Arquivo de configuração ausente durante cálculo de versão: %s",
+                file_path,
+            )
+            continue
+        except Exception:
+            LOGGER.warning(
+                "Falha ao ler arquivo de configuração %s; ignorando",
+                file_path,
+                exc_info=True,
+            )
+            continue
+        hasher.update(rel.encode("utf-8"))
+        hasher.update(content.encode("utf-8"))
+
+    if not found_any:
+        LOGGER.warning(
+            "Nenhum arquivo de configuração encontrado; usando versão baseada em hash vazio"
+        )
+
+    digest = hasher.hexdigest()
+    return f"cfg-{digest[:8]}" if digest else "cfg-fallback"
+
+
+@lru_cache(maxsize=1)
+def get_config_version() -> str:
+    try:
+        return _compute_config_version()
+    except Exception:
+        LOGGER.error(
+            "Erro ao calcular versão de configuração; usando fallback estável",
+            exc_info=True,
+        )
+        return "cfg-fallback"
+
+
 def make_cache_key(
     build_id: str, scope: str, entity: str, identifiers: Dict[str, Any]
 ) -> str:
-    return f"araquem:{build_id}:{scope}:{entity}:{_stable_hash(identifiers or {})}"
+    cfg_version = get_config_version()
+    return f"araquem:{build_id}:{cfg_version}:{scope}:{entity}:{_stable_hash(identifiers or {})}"
 
 
 def _mk_hit_guard(key: str) -> str:
