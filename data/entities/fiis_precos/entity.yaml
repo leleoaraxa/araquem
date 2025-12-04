@@ -2,7 +2,7 @@ id: fiis_precos
 result_key: precos_fii
 sql_view: fiis_precos
 private: false
-description: "Consulta de preco/cotacao/variacao das cotas de FIIs (historico ou atual)."
+description: Consulta de preço/cotação/variação das cotas de FIIs (histórico ou atual)."
 
 options:
   supports_multi_ticker: true
