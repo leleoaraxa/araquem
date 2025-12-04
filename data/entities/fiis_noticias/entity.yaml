@@ -60,6 +60,8 @@ ask:
     - reportagem
     - ultima
     - ultimas
+    - comunicado ao mercado
+    - fato relevante do fundo
   phrase_includes:
     - atualizacoes do
     - fatos relevantes do
@@ -156,6 +158,10 @@ ask:
     - vol
     - volatilidade
     - yield
+    - dy12
+    - dy12m
+    - "cotacao do fii"
+    - "preco do fii"
   synonyms:
     ticker:
       - ativo
