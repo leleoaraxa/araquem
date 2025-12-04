@@ -47,26 +47,64 @@ ask:
   intents:
   - history_currency_rates
   keywords:
+  - atual
   - cambio
   - compra
   - cotacao
+  - d-1
   - dolar
   - euro
   - eur
+  - hoje
   - usd
   - variacao
   - venda
   phrase_includes:
-  - "cotacao do dolar"
-  - "cotacao do euro"
-  - "variacao do dolar"
-  - "variacao do euro"
-  - "dolar d-1"
-  - "euro d-1"
+    - "cotacao do dolar"
+    - "cotacao do euro"
+    - "variacao do dolar"
+    - "variacao do euro"
+    - "dolar d-1"
+    - "euro d-1"
+    - "dolar hoje"
+    - "euro hoje"
+    - "dolar atual"
+    - "euro atual"
+    - "cotacao do dolar hoje"
+    - "cotacao do euro hoje"
   synonyms:
     rate_date:
     - data
     - dia
+  anti_tokens:
+    - fii
+    - fiis
+    - fundo
+    - fundos
+    - fundo imobiliario
+    - fundo de investimento imobiliario
+    - cotacao de fii
+    - preco de fii
+    - yield
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - carteira
+    - posicao
+    - posicoes
+    - cliente
+    - noticia
+    - noticias
+    - ifix
+    - ibov
+    - ifil
+    - indice
+    - indice b3
+    - selic
+    - cdi
+    - ipca
+    - inflacao
   weights:
     identifiers: 1.0
     keywords: 1.5

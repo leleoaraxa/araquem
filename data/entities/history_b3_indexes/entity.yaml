@@ -48,6 +48,10 @@ ask:
   - history_b3_indexes
   keywords:
     - fechamento
+    - hoje
+    - d-1
+    - do dia
+    - atual
     - historico
     - ibov
     - ibovespa
@@ -67,20 +71,46 @@ ask:
     - custodia
     - posicao
     - posicoes
+    - dolar
+    - euro
+    - usd
+    - eur
+    - cambio
+    - selic
+    - cdi
+    - ipca
+    - inflacao
+    - juros
+    - fii
+    - fiis
+    - fundo
+    - fundos
+    - fundo imobiliario
+    - fundo de investimento imobiliario
+    - cotacao de fii
+    - preco de fii
+    - cliente
+    - noticia
+    - noticias
   phrase_includes:
-  - variacao diaria do ifix
-  - variacao diaria do ifil
-  - variacao do ibov
-  - historico do ifix
-  - historico do ifix nos ultimos
-  - como o ifix se comportou
-  - como o ifix se comportou em
-  - "ifix d-1"
-  - "ibov d-1"
-  - "ifil d-1"
-  - "ifix hoje"
-  - "ifil hoje"
-  - "ibov hoje"
+    - variacao diaria do ifix
+    - variacao diaria do ifil
+    - variacao do ibov
+    - historico do ifix
+    - historico do ifix nos ultimos
+    - como o ifix se comportou
+    - como o ifix se comportou em
+    - "ifix d-1"
+    - "ibov d-1"
+    - "ifil d-1"
+    - "ifix hoje"
+    - "ifil hoje"
+    - "ibov hoje"
+    - "ifix do dia"
+    - "ifil do dia"
+    - "ibov do dia"
+    - "pontos do ifix"
+    - "pontos do ibov"
   synonyms:
     index_date:
     - data

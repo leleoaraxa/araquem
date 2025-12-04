@@ -35,23 +35,35 @@ ask:
   intents:
     - history_market_indicators
   keywords:
+    - atual
     - cdi
+    - d-1
+    - dia
+    - diario
+    - hoje
     - igpm
     - incc
+    - indicador
     - indicadores
     - inflacao
     - inpc
     - ipca
     - juros
+    - mensal
     - selic
     - taxa
   phrase_includes:
-  - "selic hoje"
-  - "cdi hoje"
-  - "ipca hoje"
-  - "selic d-1"
-  - "cdi d-1"
-  - "ipca d-1"
+    - "selic hoje"
+    - "cdi hoje"
+    - "ipca hoje"
+    - "selic d-1"
+    - "cdi d-1"
+    - "ipca d-1"
+    - "inflacao do mes"
+    - "ipca do dia"
+    - "cdi do dia"
+    - "selic do dia"
+    - "indicadores de hoje"
   anti_tokens:
     - minha
     - minhas
@@ -63,6 +75,30 @@ ask:
     - posicoes
     - performance
     - retorno
+    - risco
+    - sharpe
+    - sortino
+    - volatilidade
+    - beta
+    - fii
+    - fiis
+    - fundo
+    - fundos
+    - fundo imobiliario
+    - fundo de investimento imobiliario
+    - cotacao de fii
+    - preco de fii
+    - yield
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - noticia
+    - noticias
+    - posicao de fii
+    - carteira de fii
+    - preco
+    - cotacao
   synonyms:
     indicator_name:
     - indicador
