@@ -220,23 +220,30 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - administrador
-    - classe
-    - cnpj
-    - gestao
-    - mandato
-    - nome
     - overview
-    - resumo
-    - segmento
+    - descricao
     - setor
-    - tipo de gestao
-    - visao geral
+    - segmento
+    - classe
+    - tipo de fundo
+    - perfil
+    - mandato
+    - categoria
+  anti_tokens:
+    - cnpj
+    - administrador
+    - regulamento
+    - ranking
+    - posicao
+    - variacao
+    - dy
+    - dividendos
+    - sharpe
+    - sortino
   phrase_includes:
-    - "cnpj do"
     - "overview do"
-    - "resumo do"
-    - "visao geral do"
+    - "resumo do fundo"
+    - "o que e o"
   synonyms:
     ticker:
       - ativo
@@ -252,11 +259,11 @@ ask:
     keywords: 1.0
     synonyms: 0.5
   sample_questions:
-    - resumo do HGLG11
+    - resumo do fundo HGLG11
     - overview do KNRI11
-    - qual o cnpj do MXRF11
-    - quem e o administrador do CPTS11
     - me de uma visao geral do VISC11
+    - qual o setor do VRTA11
+    - o que e o CPTS11
 
 order_by_whitelist:
 - sirios_rank_position asc

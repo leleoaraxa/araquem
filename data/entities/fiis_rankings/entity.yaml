@@ -99,29 +99,35 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - carteira recomendada
-    - classificacao
-    - lista
-    - maiores
-    - melhores
-    - menores
-    - ordem
-    - piores
-    - posicao
-    - posicoes
-    - rank
     - ranking
-    - sirios
+    - posicao
     - top
+    - melhores
+    - piores
+    - classificacao
     - usuarios
+    - sirios
+    - ifix
+    - ifil
   anti_tokens:
     - minha
     - minhas
     - meu
     - meus
     - custodia
+    - cnpj
+    - administrador
+    - overview
+    - setor
+    - segmento
+    - dy
+    - dividendos
+    - preco
+    - variacao
   phrase_includes:
     - melhores fiis no ranking
+    - posicao no ranking
+    - ranking do fii
   synonyms:
     ticker:
       - ativo
