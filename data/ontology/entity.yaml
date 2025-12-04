@@ -310,6 +310,16 @@ intents:
     - foto
     - fotografia
     - indicadores
+    - cnpj
+    - nome
+    - razao_social
+    - administrador
+    - gestora
+    - objetivo
+    - mandato
+    - classe
+    - tipo_de_fundo
+    - segmento
     exclude:
     - noticia
     - noticias
@@ -331,6 +341,13 @@ intents:
     - selic
     - ipca
     - igpm
+    - pl
+    - patrimonio
+    - vacancia
+    - contratos
+    - vp
+    - valor_patrimonial
+    - abl
   phrases:
     include:
     - resumo do
@@ -606,6 +623,11 @@ intents:
     - patrimonio por cota
     - price book
     - preco patrimonio
+    - pl
+    - patrimonio_liquido
+    - vp
+    - valor_patrimonial
+    - valor_patrimonial_cota
     - caixa
     - caixa total
     - passivos
@@ -613,10 +635,26 @@ intents:
     - cap rate
     - crescimento
     - receita por cota
+    - receita
+    - receita_total
+    - receita_ativos
+    - renda
     - reserva de dividendos
     - taxa de adm
     - taxa de administracao
     - taxa de performance
+    - abl
+    - area_bruta_locavel
+    - vacancia
+    - ocupacao
+    - setor
+    - segmento
+    - contratos
+    - contratos_vigentes
+    - tipicos
+    - atipicos
+    - imoveis
+    - portfolio_imoveis
     exclude:
     - soma
     - media
@@ -625,6 +663,30 @@ intents:
     - sharpe
     - sortino
     - treynor
+    - preco
+    - cotacao
+    - variacao
+    - oscilacao
+    - alta
+    - baixa
+    - dividendo
+    - dividendos
+    - dy
+    - yield
+    - proventos
+    - pagamento
+    - beta
+    - volatilidade
+    - risco
+    - mdd
+    - max_drawdown
+    - indexacao
+    - indexado
+    - ipca
+    - igpm
+    - cdi
+    - cronograma
+    - calendario
   phrases:
     include:
     - payout do
@@ -636,6 +698,30 @@ intents:
     - caixa disponivel do
     - passivos totais do
     - cap rate do
+    - patrimonio liquido do <ticker>
+    - pl do <ticker>
+    - valor patrimonial do <ticker>
+    - vp do <ticker>
+    - valor patrimonial da cota do <ticker>
+    - vacancia do <ticker>
+    - taxa de vacancia do <ticker>
+    - setor do <ticker>
+    - qual o setor do <ticker>
+    - renda do <ticker>
+    - rendimento dos ativos do <ticker>
+    - renda por ativo do <ticker>
+    - receita por ativo
+    - receita do fundo
+    - receita total do <ticker>
+    - contratos do <ticker>
+    - quantos contratos tem o <ticker>
+    - contratos vigentes do <ticker>
+    - percentual de receita por contrato
+    - imoveis do <ticker>
+    - quantos imoveis tem o <ticker>
+    - tamanho do portfolio do <ticker>
+    - area bruta locavel
+    - abl do <ticker>
     - reserva de dividendos do
     - taxa de adm do
     - taxa de performance do
@@ -643,6 +729,32 @@ intents:
     - nos ultimos
     - soma de
     - media de
+    - preco
+    - cotacao
+    - variacao
+    - oscilacao
+    - alta
+    - baixa
+    - dividendo
+    - dividendos
+    - dy
+    - yield
+    - proventos
+    - pagamento
+    - sharpe
+    - sortino
+    - beta
+    - volatilidade
+    - risco
+    - mdd
+    - max_drawdown
+    - indexacao
+    - indexado
+    - ipca
+    - igpm
+    - cdi
+    - cronograma
+    - calendario
   entities:
   - fiis_financials_snapshot
 - name: fiis_financials_revenue_schedule
