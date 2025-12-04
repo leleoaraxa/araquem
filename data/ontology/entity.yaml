@@ -675,6 +675,8 @@ intents:
     - selic
     - ipca
     - inpc
+    - "imóvel"
+    - "imóveis"
   phrases:
     include:
     - indicador de risco do
@@ -701,6 +703,20 @@ intents:
 - name: fiis_imoveis
   tokens:
     include:
+    - imóvel
+    - imóveis
+    - propriedade
+    - propriedades
+    - ativo
+    - ativos
+    - ocupação
+    - vacância
+    - laudo
+    - avaliação
+    - metragem
+    - região
+    - endereço
+    - localização
     - imovel
     - imoveis
     - propriedade
@@ -719,7 +735,9 @@ intents:
     - vacancia
     - vacancia fisica
     - vacancia financeira
-    exclude: []
+    exclude:
+    - "preço"
+    - "cotação"
   phrases:
     include:
     - quantos imoveis o
@@ -737,6 +755,29 @@ intents:
     - vacancia do imovel
     - status do
     - status dos imoveis do
+    - "imóveis do fundo"
+    - "imóveis do <ticker>"
+    - "ativos físicos"
+    - "ativos imobiliários"
+    - "endereços dos imóveis"
+    - "localização dos imóveis"
+    - "região dos imóveis"
+    - "características dos imóveis"
+    - "metragem do imóvel"
+    - "laudo de avaliação"
+    - "valor do imóvel"
+    - "vacância do imóvel"
+    - "vacância física"
+    - "vacância financeira"
+    - "ocupação do imóvel"
+    - "taxa de ocupação"
+    - "propriedades do fundo"
+    - "quantos imóveis"
+    - "lista de imóveis"
+    - "tipo do imóvel"
+    - "região onde o fundo possui imóveis"
+    - "endereço do ativo"
+    - "dados dos imóveis"
     exclude: []
   entities:
   - fiis_imoveis
