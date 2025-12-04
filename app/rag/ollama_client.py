@@ -184,7 +184,11 @@ class OllamaClient:
         return out
 
     def generate(
-        self, prompt: str, model: str | None = None, stream: bool = False
+        self,
+        prompt: str,
+        model: str | None = None,
+        stream: bool = False,
+        **options: Any,
     ) -> str:
         """
         Chama /api/generate do Ollama para respostas de linguagem.
@@ -192,6 +196,14 @@ class OllamaClient:
         """
         gen_model = model or os.getenv("LLM_MODEL", "qwen2.5:7b")
         payload = {"model": gen_model, "prompt": prompt, "stream": bool(stream)}
+        llm_options: Dict[str, Any] = {}
+        if options:
+            if options.get("temperature") is not None:
+                llm_options["temperature"] = options.get("temperature")
+            if options.get("max_tokens") is not None:
+                llm_options["num_predict"] = options.get("max_tokens")
+            if llm_options:
+                payload["options"] = llm_options
         data = self._post("/api/generate", payload)
         if "error" in data:
             raise RuntimeError(f"Ollama generate error: {data['error']}")
