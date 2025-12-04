@@ -1,3 +1,4 @@
+# app/planner/ticker_index.py
 from __future__ import annotations
 
 import re
@@ -12,7 +13,9 @@ _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
 
 def _strip_accents(value: str) -> str:
     return "".join(
-        c for c in unicodedata.normalize("NFD", value) if unicodedata.category(c) != "Mn"
+        c
+        for c in unicodedata.normalize("NFD", value)
+        if unicodedata.category(c) != "Mn"
     )
 
 
