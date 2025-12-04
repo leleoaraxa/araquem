@@ -219,6 +219,19 @@ ask:
     - fii_overview
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - cotacao
+    - dividendos
+    - dy
+    - macro
+    - patrimonio
+    - pl
+    - preco
+    - receita
+    - rendimento
+    - risco
+    - selic
+    - vacancia
   keywords:
     - administrador
     - classe
@@ -230,14 +243,12 @@ ask:
     - resumo
     - segmento
     - setor
-    - situacao
     - tipo de gestao
     - visao geral
   phrase_includes:
-    - "resumo do"
+    - "cnpj do"
     - "overview do"
-    - "como esta o"
-    - "situacao do"
+    - "resumo do"
     - "visao geral do"
   synonyms:
     ticker:
@@ -256,8 +267,8 @@ ask:
   sample_questions:
     - resumo do HGLG11
     - overview do KNRI11
-    - como esta o MXRF11 hoje?
-    - quais os principais indicadores do CPTS11?
+    - qual o cnpj do MXRF11
+    - quem e o administrador do CPTS11
     - me de uma visao geral do VISC11
 
 order_by_whitelist:

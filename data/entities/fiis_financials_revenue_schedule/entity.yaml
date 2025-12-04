@@ -87,13 +87,28 @@ ask:
   - fiis_financials_revenue_schedule
   requires_identifiers:
     - ticker
+  anti_keywords:
+  - administrador
+  - cnpj
+  - cotacao
+  - dividendos
+  - dy
+  - macro
+  - noticia
+  - pl
+  - preco
+  - processo
+  - ranking
+  - risco
+  - selic
+  - vacancia
+  - yield
   keywords:
   - buckets
   - cronograma de receita futura
   - cronograma de recebiveis
   - cronograma de receitas
   - distribuicao da receita
-  - distribuida por indice
   - duration da receita
   - estrutura de recebiveis
   - igpm
@@ -110,18 +125,18 @@ ask:
   - receitas
   - vencimento
   phrase_includes:
-    - "receita futura do"
     - "como esta distribuida a receita do"
     - "como esta distribuida a receita futura do"
-    - "cronograma de receitas do"
     - "cronograma de receita futura do"
+    - "cronograma de receitas do"
+    - "receita futura do"
     - "receita futura do mxrf11 por indice"
   synonyms:
     ticker:
     - ativo
-    - papel
-    - fundo
     - fii
+    - fundo
+    - papel
     revenue_ipca_pct:
     - ipca
     revenue_igpm_pct:

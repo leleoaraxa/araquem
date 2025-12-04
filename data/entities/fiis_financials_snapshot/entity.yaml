@@ -108,6 +108,21 @@ ask:
     - fiis_financials_snapshot
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - cotacao
+    - dividendo
+    - dividendos
+    - dy
+    - ipca
+    - macro
+    - noticia
+    - preco
+    - processo
+    - ranking
+    - selic
+    - yield
   keywords:
     - alavancagem
     - caixa
@@ -149,7 +164,7 @@ ask:
 
   sample_questions:
     - qual o market cap do MXRF11
-    - quanto foi o ultimo dividendo do HGLG11
+    - qual o patrimonio liquido do HGLG11
     - qual o payout do MCCI11
 
 order_by_whitelist:

@@ -54,6 +54,23 @@ ask:
     - fiis_precos
   requires_identifiers:
     - ticker
+  anti_keywords:
+    - administrador
+    - cnpj
+    - dividend yield
+    - dividendos
+    - dy
+    - ipca
+    - macro
+    - noticia
+    - patrimonio
+    - pl
+    - processo
+    - ranking
+    - risco
+    - selic
+    - vacancia
+    - yield
   keywords:
     - abertura
     - cotacao
@@ -83,9 +100,9 @@ ask:
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     traded_at:
       - negociacao
       - pregao
@@ -119,7 +136,7 @@ ask:
     synonyms: 0.5
 
 sample_questions:
-- variação diária do XPML11 nos últimos 5 pregões
+- variacao diaria do XPML11 nos ultimos 5 pregoes
 
 order_by_whitelist:
 - traded_at desc
