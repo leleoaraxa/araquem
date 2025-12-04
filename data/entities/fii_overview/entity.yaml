@@ -220,20 +220,19 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
+    - administrador
+    - classe
+    - cnpj
+    - gestao
+    - mandato
+    - nome
     - overview
     - resumo
+    - segmento
+    - setor
     - situacao
-    - foto
+    - tipo de gestao
     - visao geral
-    - indicadores
-    - dy
-    - dividendos
-    - market cap
-    - risco
-    - sharpe
-    - sortino
-    - volatilidade
-    - ranking
   phrase_includes:
     - "resumo do"
     - "overview do"
@@ -243,31 +242,13 @@ ask:
   synonyms:
     ticker:
       - ativo
-      - papel
-      - fundo
       - fii
+      - fundo
+      - papel
     display_name:
       - nome
-      - nome de exibicao
       - nome b3
-    dy_12m_pct:
-      - dy 12 meses
-      - dividend yield 12m
-    dy_monthly_pct:
-      - dy mensal
-      - dividend yield mensal
-    market_cap_value:
-      - valor de mercado
-      - marketcap
-    sharpe_ratio:
-      - sharpe
-    sortino_ratio:
-      - sortino
-    volatility_ratio:
-      - volatilidade
-    max_drawdown:
-      - drawdown
-      - mdd
+      - nome de exibicao
   weights:
     identifiers: 2.0
     keywords: 1.0
@@ -275,9 +256,9 @@ ask:
   sample_questions:
     - resumo do HGLG11
     - overview do KNRI11
-    - como está o MXRF11 hoje?
+    - como esta o MXRF11 hoje?
     - quais os principais indicadores do CPTS11?
-    - me dê uma visão geral do VISC11
+    - me de uma visao geral do VISC11
 
 order_by_whitelist:
 - sirios_rank_position asc
