@@ -33,18 +33,29 @@ presentation:
 
 ask:
   intents:
-  - history_market_indicators
+    - history_market_indicators
   keywords:
-  - cdi
-  - igpm
-  - incc
-  - indicadores
-  - inflacao
-  - inpc
-  - ipca
-  - juros
-  - selic
-  - taxa
+    - cdi
+    - igpm
+    - incc
+    - indicadores
+    - inflacao
+    - inpc
+    - ipca
+    - juros
+    - selic
+    - taxa
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - performance
+    - retorno
   synonyms:
     indicator_name:
     - indicador

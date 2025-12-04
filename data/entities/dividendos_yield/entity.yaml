@@ -97,6 +97,17 @@ ask:
     - rendimento
     - rendimento mensal
     - yield
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - renda
+    - performance
   phrase_includes:
     - "dividend yield do"
     - "dividendos e dy do"

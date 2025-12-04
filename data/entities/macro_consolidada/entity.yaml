@@ -80,6 +80,16 @@ ask:
     - sharpe
     - sortino
     - volatilidade
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - performance
+    - retorno
   phrase_includes:
     - "historico macro"
     - "ipca em"

@@ -47,6 +47,17 @@ ask:
     - novidades
     - reportagem
     - ultimas
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - renda
+    - performance
   synonyms:
     ticker:
       - ativo

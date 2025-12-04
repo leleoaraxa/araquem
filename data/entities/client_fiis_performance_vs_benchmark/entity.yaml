@@ -52,6 +52,11 @@ ask:
   requires_identifiers:
     - document_number
   keywords:
+    - minha
+    - minhas
+    - meu
+    - performance da carteira
+    - desempenho da carteira
     - performance
     - rentabilidade
     - retorno
@@ -63,6 +68,13 @@ ask:
     - cdi
     - carteira
     - fiis
+  anti_tokens:
+    - custodia
+    - dividendos
+    - proventos
+    - renda
+    - posicao
+    - posicoes
   phrase_includes:
     - "performance da minha carteira de fiis"
     - "desempenho da minha carteira de fiis"

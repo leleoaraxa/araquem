@@ -74,6 +74,10 @@ ask:
     - document_number
   # Observação: PII no texto do usuário deve ser ignorado (compliance LGPD).
   keywords:
+    - minha
+    - minhas
+    - meu
+    - carteira
     - minhas posicoes
     - posicao
     - quantidade
@@ -94,6 +98,12 @@ ask:
     - corretora
     - participante
     - custodiado
+  anti_tokens:
+    - dividendos
+    - proventos
+    - renda
+    - performance
+    - retorno
 
   phrase_includes:
     - "minhas posicoes"

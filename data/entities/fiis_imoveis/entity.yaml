@@ -76,6 +76,17 @@ ask:
     - propriedade
     - status operacional
     - unidades
+  anti_tokens:
+    - minha
+    - minhas
+    - meu
+    - meus
+    - carteira
+    - custodia
+    - posicao
+    - posicoes
+    - renda
+    - performance
   phrase_includes:
     - onde ficam os imoveis
     - vacancia do imovel
