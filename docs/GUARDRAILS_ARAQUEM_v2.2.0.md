@@ -430,3 +430,84 @@ Quando nenhuma das regras acima define A/B/C.
 5. **Integridade com Narrator:**
    Flags como `prefer_concept_when_no_ticker` **não podem sobrescrever a bucketização**.
    Buckets A/B/C priorizam sempre dados SQL.
+
+## 12. Cache em tempo real (rt_cache)
+
+> Objetivo: garantir que qualquer mudança em YAML/ontologia/policies **nunca** reutilize respostas antigas com contrato diferente.
+
+### 12.1 Fonte de verdade e proibições
+
+- Configurações canônicas:
+  - `data/policies/cache.yaml`
+  - `app/cache/rt_cache.py`
+  - Backend: Redis
+
+- É **proibido**:
+  - criar chaves manualmente em outros módulos;
+  - montar prefixos de cache fora do `rt_cache.py`;
+  - depender de cache para comportamento de negócio.
+
+---
+
+### 12.2 Formato canônico de chave
+
+Toda chave segue o padrão:
+
+```
+araquem:{BUILD_ID}:{CFG_VERSION}:{SCOPE}:{ENTITY}:{HASH_IDENTIFIERS}
+```
+
+Onde:
+- `{BUILD_ID}` é a versão da aplicação (ex.: `dev-20251030`);
+- `{CFG_VERSION}` é um hash estável do conteúdo de:
+  - `data/ontology/`
+  - `data/entities/`
+  - `data/policies/`
+  - `data/embeddings/`
+- `{SCOPE}` identifica o escopo lógico do cache (`pub`, `client`, etc.);
+- `{ENTITY}` é o nome da entidade;
+- `{HASH_IDENTIFIERS}` é o SHA1 determinístico dos identifiers do request.
+
+Regras:
+- Mudanças em YAML/ontologia/policies **geram nova `CFG_VERSION`**.
+- Cada par `{BUILD_ID}:{CFG_VERSION}` define um namespace isolado no Redis.
+
+---
+
+### 12.3 Cálculo da `CFG_VERSION`
+
+Implementado em `rt_cache.py` por meio de:
+- varredura recursiva dos diretórios listados;
+- leitura de todos os `*.yaml`;
+- montagem do SHA1 com `json.dumps(sort_keys=True)` e memoização (`lru_cache`).
+
+Se ocorrer erro:
+- fallback para `"cfg-fallback"`,
+- log explícito,
+- cache não quebra o fluxo de execução.
+
+---
+
+### 12.4 Política oficial de flush
+
+Ferramenta canônica:
+
+```
+scripts/cache/flush_all.py
+```
+
+Comportamento:
+- remove todas as chaves do padrão `araquem:{BUILD_ID}:*`;
+- limpa todas as versões do cache daquele build.
+
+Uso:
+
+```
+BUILD_ID=dev-20251030 python scripts/cache/flush_all.py
+```
+
+Proibições:
+- Não usar `FLUSHALL` em Redis de ambientes compartilhados.
+- Limpeza sempre via `{BUILD_ID}` ou invalidação automática por `CFG_VERSION`.
+
+---
