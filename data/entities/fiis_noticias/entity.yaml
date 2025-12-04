@@ -58,6 +58,12 @@ ask:
     - posicoes
     - renda
     - performance
+    - preco
+    - cotacao
+    - variacao
+    - hoje
+    - d-1
+    - ontem
   synonyms:
     ticker:
       - ativo

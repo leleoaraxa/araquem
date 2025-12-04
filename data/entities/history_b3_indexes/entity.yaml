@@ -75,6 +75,12 @@ ask:
   - historico do ifix nos ultimos
   - como o ifix se comportou
   - como o ifix se comportou em
+  - "ifix d-1"
+  - "ibov d-1"
+  - "ifil d-1"
+  - "ifix hoje"
+  - "ifil hoje"
+  - "ibov hoje"
   synonyms:
     index_date:
     - data

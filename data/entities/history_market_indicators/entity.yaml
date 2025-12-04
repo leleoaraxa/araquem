@@ -45,6 +45,13 @@ ask:
     - juros
     - selic
     - taxa
+  phrase_includes:
+  - "selic hoje"
+  - "cdi hoje"
+  - "ipca hoje"
+  - "selic d-1"
+  - "cdi d-1"
+  - "ipca d-1"
   anti_tokens:
     - minha
     - minhas

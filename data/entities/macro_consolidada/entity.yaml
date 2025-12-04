@@ -90,6 +90,10 @@ ask:
     - posicoes
     - performance
     - retorno
+    - hoje
+    - cotacao
+    - preco
+    - d-1
   phrase_includes:
     - "historico macro"
     - "ipca em"
