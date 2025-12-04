@@ -37,15 +37,15 @@ buckets:
 
   D: []
 intents:
-- name: ticker_query
-  bucket: A
-  tokens:
-    include:
-    - "[A-Za-z]{4}11"
-    exclude: []
-  phrases:
-    include: []
-    exclude: []
+  - name: ticker_query
+    bucket: A
+    tokens:
+      include:
+      - "[A-Za-z]{4}11"
+      exclude: []
+    phrases:
+      include: []
+      exclude: []
   entities:
   - fiis_precos
   - fiis_dividendos
@@ -97,6 +97,9 @@ intents:
     - beta
     - risco
     - ranking
+    - processo
+    - processos
+    - judicial
   phrases:
     include:
     - minhas posicoes
@@ -707,6 +710,9 @@ intents:
     - imoveis
     - portfolio_imoveis
     exclude:
+    - processo
+    - acao
+    - judicial
     - cnpj
     - administrador
     - gestora
@@ -1036,6 +1042,9 @@ intents:
     exclude:
     - preco
     - cotacao
+    - processo
+    - judicial
+    - acao
   phrases:
     include:
     - quantos imoveis o
@@ -1121,24 +1130,91 @@ intents:
     - processos
     - judicial
     - judiciais
+    - acao
+    - acoes
     - andamento
     - status
     - litigio
     - litgio
     - causa
-    - risco
-    - acao
-    - acoes
-    exclude: []
+    - causas
+    - autor
+    - reu
+    - re
+    - parte
+    - partes
+    - valor
+    - valores
+    - distribuicao
+    - distribuido
+    - vara
+    - tribunal
+    - comarca
+    - processo_numero
+    - classificada
+    - classe_processual
+    - numero
+    - quantidade_processos
+    - disputas
+    - demandas
+    exclude:
+    - pl
+    - patrimonio
+    - vacancia
+    - ocupacao
+    - imoveis
+    - abl
+    - receita
+    - contratos
+    - ifix
+    - ifil
+    - ranking
+    - posicao
+    - movimentos
+    - peso
+    - carteira
+    - posicoes
+    - performance
+    - rendimento
+    - evolucao
+    - dy
+    - yield
+    - dividendos
+    - proventos
+    - sharpe
+    - volatilidade
+    - beta
+    - sortino
+    - mdd
+    - noticia
+    - noticias
+    - reportagem
+    - preco
+    - cotacao
+    - variacao
+    - alta
+    - baixa
   phrases:
     include:
     - fiis da carteira com mais processos
     - quais fiis tem mais processos
     - processos do
+    - acoes judiciais do
+    - acoes contra o
+    - processos contra o
+    - quantos processos o
+    - ha processos contra o
+    - quais processos o
+    - qual o valor das acoes do
+    - processos envolvendo o
+    - quem move acao contra o
+    - parte autora do processo do
+    - parte re do processo do
+    - valor das causas do
     - status dos processos do
+    - resumo das acoes judiciais do
     - andamento dos processos do
     - processos judiciais do
-    - acoes judiciais do
     exclude: []
   entities:
   - fiis_processos
@@ -1197,6 +1273,12 @@ intents:
     - drawdown
     - dy mensal
     - yield mensal
+    - processo
+    - processos
+    - judicial
+    - judiciais
+    - acao
+    - acoes
   phrases:
     include:
     - ranking por dividend yield
