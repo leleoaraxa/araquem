@@ -47,10 +47,13 @@ ask:
     - dy historico
     - dy mensal historico
     - evolucao do dy
+    - evolucoes do dy
     - historico de dividend yield
     - historico de dy
     - serie historica de dy
     - yield mensal historico
+    - historico de dy mensal
+    - dy historico mensal
   anti_tokens:
     - acumulado de dividendos
     - dividendos
@@ -66,7 +69,27 @@ ask:
     - custodia
     - posicao
     - posicoes
+    - posicoes
     - renda
+    - dy atual
+    - dy de hoje
+    - preco
+    - precos
+    - cotacao
+    - cotacoes
+    - cotacaoo
+    - cotaco
+    - noticia
+    - noticias
+    - macro
+    - risco
+    - riscos
+    - nao
+    - nao tem
+    - nao existe
+    - sem
+    - sem dados
+    - nao encontrei
   phrase_includes:
     - "dy historico do"
     - "dy mensal do"
@@ -76,6 +99,9 @@ ask:
     - "historico de dy do"
     - "serie historica de dy do"
     - "yield mensal do"
+    - "dy historico do fundo"
+    - "evolucao do dy"
+    - "evolucao do dy do"
   synonyms:
     ticker:
       - ativo
