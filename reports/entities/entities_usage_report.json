@@ -1,0 +1,2402 @@
+{
+  "generated_at": "2025-12-04T19:11:51.678452+00:00",
+  "entities": [
+    {
+      "entity_id": "carteira_enriquecida",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_carteira_enriquecida.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "client_fiis_dividends_evolution",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_client_fiis_dividends_evolution.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "client_fiis_performance_vs_benchmark",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_client_fiis_performance_vs_benchmark.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "client_fiis_positions",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_client_fiis_positions.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "dividendos_yield",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_dividendos_yield.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "entities",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": true,
+          "files": [
+            "app/planner/ontology_loader.py",
+            "app/planner/planner.py"
+          ]
+        },
+        "orchestrator": {
+          "referenced": true,
+          "files": [
+            "app/orchestrator/routing.py"
+          ]
+        },
+        "builder": {
+          "referenced": true,
+          "files": [
+            "app/builder/sql_builder.py"
+          ]
+        },
+        "presenter": {
+          "referenced": true,
+          "files": [
+            "app/presenter/presenter.py"
+          ]
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "app/narrator/narrator.py",
+            "app/narrator/prompts.py",
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-macro.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": true,
+          "files": [
+            "app/rag/context_builder.py"
+          ]
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "app/context/context_manager.py",
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": false,
+            "files": []
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": false,
+            "files": []
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology, planner, orchestrator, builder, presenter"
+      }
+    },
+    {
+      "entity_id": "fii_overview",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fii_overview_evolution.json",
+              "data/ops/quality/rag_overview_risk_macro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_cadastro",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": true,
+          "files": [
+            "app/rag/hints.py"
+          ]
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_cadastro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json",
+              "data/golden/rag_golden_set.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/planner_rag_integration.json",
+              "data/ops/quality_experimental/rag_eval_set.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_dividendos",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_dividendos.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/param_inference_samples.json",
+              "data/ops/quality_experimental/planner_rag_integration.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_financials_revenue_schedule",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-macro.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": false,
+          "files": []
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": false,
+            "files": []
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_financials_revenue_schedule.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json",
+              "data/golden/rag_golden_set.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_financials_risk",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-macro.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_financials_risk.json",
+              "data/ops/quality/rag_overview_risk_macro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json",
+              "data/golden/rag_golden_set.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/narrator_shadow_samples.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_financials_snapshot",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-macro.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_financials_snapshot.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json",
+              "data/golden/rag_golden_set.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_imoveis",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_imoveis.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json",
+              "data/golden/rag_golden_set.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_noticias",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_noticias.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/narrator_shadow_samples.json",
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json",
+              "data/ops/quality_experimental/shadow_experiment_v0.yaml"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_precos",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "app/context/context_manager.py",
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_precos.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/param_inference_samples.json",
+              "data/ops/quality_experimental/planner_rag_integration.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_processos",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_processos.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/negatives_m65.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_rankings",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_rankings.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/planner_rag_integration.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "fiis_yield_history",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_fiis_yield_history_evolution.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "history_b3_indexes",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-macro.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_history_b3_indexes.json",
+              "data/ops/quality/rag_overview_risk_macro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/narrator_shadow_samples.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "history_currency_rates",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-macro.yaml",
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_history_currency_rates.json",
+              "data/ops/quality/rag_overview_risk_macro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/narrator_shadow_samples.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "history_market_indicators",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/concepts/concepts-carteira.yaml",
+            "data/concepts/concepts-macro.yaml",
+            "data/concepts/concepts-risk.yaml",
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_history_market_indicators.json",
+              "data/ops/quality/rag_overview_risk_macro.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": true,
+            "files": [
+              "data/golden/m65_quality.json"
+            ]
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/narrator_shadow_samples.json",
+              "data/ops/quality_experimental/rag_eval_fiis_v1.json",
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md",
+            "docs/dev/DOMAIN_FIIS_INVENTORY.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "macro_consolidada",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml",
+            "data/ontology/ontology_manifest.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/projection_macro_consolidada.json",
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": true,
+          "files": [
+            "docs/dev/ENTITIES_INVENTORY_2025.md"
+          ]
+        }
+      },
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    }
+  ]
+}
