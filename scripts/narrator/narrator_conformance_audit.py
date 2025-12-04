@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import sys
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 from typing import Dict, List, Optional, Set
 
@@ -638,8 +638,9 @@ def generate_report(
     narrator_ok: bool, rag_ok: bool, issues: List[Issue], report_path: Path
 ) -> None:
     report_path.parent.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.now(UTC).isoformat()
     report = {
-        "timestamp": datetime.utcnow().isoformat() + "Z",
+        "timestamp": timestamp,
         "narrator_ok": narrator_ok,
         "rag_ok": rag_ok,
         "issues": [issue.to_dict() for issue in issues],

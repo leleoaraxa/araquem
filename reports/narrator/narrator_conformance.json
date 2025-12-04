@@ -1,86 +1,86 @@
 {
-  "timestamp": "2025-12-04T16:02:24.977073Z",
+  "timestamp": "2025-12-04T16:59:21.573019Z",
   "narrator_ok": false,
   "rag_ok": false,
   "issues": [
     {
       "type": "template_directory_missing",
-      "path": "app/narrator/prompts",
+      "path": "app\\narrator\\prompts",
       "component": "narrator"
     },
     {
       "type": "template_directory_missing",
-      "path": "app/narrator/formatter",
+      "path": "app\\narrator\\formatter",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_dividendos",
       "field": "current",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data\\entities\\fiis_dividendos\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_dividendos",
       "field": "first",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data\\entities\\fiis_dividendos\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_dividendos",
       "field": "multi",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data\\entities\\fiis_dividendos\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_imoveis",
       "field": "key",
-      "path": "data/entities/fiis_imoveis/responses/list.md.j2",
+      "path": "data\\entities\\fiis_imoveis\\responses\\list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_imoveis",
       "field": "value",
-      "path": "data/entities/fiis_imoveis/responses/list.md.j2",
+      "path": "data\\entities\\fiis_imoveis\\responses\\list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_rankings",
       "field": "columns",
-      "path": "data/entities/fiis_rankings/responses/table.md.j2",
+      "path": "data\\entities\\fiis_rankings\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_rankings",
       "field": "key",
-      "path": "data/entities/fiis_rankings/responses/table.md.j2",
+      "path": "data\\entities\\fiis_rankings\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_processos",
       "field": "key",
-      "path": "data/entities/fiis_processos/responses/list.md.j2",
+      "path": "data\\entities\\fiis_processos\\responses\\list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_processos",
       "field": "value",
-      "path": "data/entities/fiis_processos/responses/list.md.j2",
+      "path": "data\\entities\\fiis_processos\\responses\\list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
       "entity": "fiis_noticias",
       "field": "md",
-      "path": "data/entities/fiis_noticias/responses/list.md.j2",
+      "path": "data\\entities\\fiis_noticias\\responses\\list.md.j2",
       "component": "narrator"
     },
     {
@@ -98,7 +98,7 @@
       "type": "shadow_sensitive_field_referenced",
       "entity": "carteira_enriquecida",
       "field": "document_number",
-      "path": "data/entities/carteira_enriquecida/responses/table.md.j2",
+      "path": "data\\entities\\carteira_enriquecida\\responses\\table.md.j2",
       "component": "narrator"
     },
     {
@@ -108,12 +108,12 @@
     },
     {
       "type": "rag_index_missing",
-      "path": "data/rag/index.jsonl",
+      "path": "data\\rag\\index.jsonl",
       "component": "rag"
     },
     {
       "type": "rag_hints_missing",
-      "path": "data/rag/hints",
+      "path": "data\\rag\\hints",
       "component": "rag"
     }
   ]

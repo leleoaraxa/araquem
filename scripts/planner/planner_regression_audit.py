@@ -2,7 +2,7 @@
 import json
 import os
 import sys
-from datetime import datetime
+from datetime import datetime, UTC
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -314,7 +314,7 @@ def main() -> int:
     planner = Planner(ONTOLOGY_PATH)
     catalog_result = run_catalog(planner)
 
-    timestamp = datetime.utcnow().isoformat()
+    timestamp = datetime.now(UTC).isoformat()
     report = {
         "timestamp": timestamp,
         "total_tests": catalog_result.get("total_tests", 0),
