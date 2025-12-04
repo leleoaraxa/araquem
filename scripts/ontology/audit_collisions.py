@@ -1,4 +1,4 @@
-# scripts/planner/planner_regression_audit.py
+# scripts/ontology/audit_collisions.py
 
 import json
 import sys
