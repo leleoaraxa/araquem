@@ -1790,6 +1790,15 @@ intents:
     - comparativo
     - comparacao
     - comparar
+    - dividendos
+    - dividendos dy
+    - dividendos yield
+    - dividendos e dy
+    - dividendos e yield
+    - dy e dividendos
+    - yield e dividendos
+    - comparacao de dividendos
+    - comparativo de dividendos e dy
     exclude:
     - meus
     - minha
@@ -1798,6 +1807,16 @@ intents:
     - meus fiis
     - minha carteira
     - minha carteira de fiis
+    - meu
+    - carteiras
+    - carteira de fiis
+    - dy historico
+    - dy 12m
+    - serie historica de dy
+    - historico de dy
+    - somente dividendos
+    - quanto pagou de dividendos
+    - pagou de dividendos
   phrases:
     include:
     - dy do fundo
@@ -1811,17 +1830,28 @@ intents:
     - rendimento percentual
     - rentabilidade via dividendos
     - dividendos e dy do
-    - historico de dividendos do
-    - historico de dy do
-    - dy mensal do
-    - dividend yield do
-    - pagou de dividendos
-    - dividendos e dy
-    - historico de dividendos e dy
-    - dividendos e dividend yield
-    - historico de dividendos e dividend yield
-    - dividendos e yield
-    - historico de dividendos e yield
+    - dividendos e dividend yield do
+    - dividendos e yield do
+    - historico de dividendos e dy do
+    - historico de dividendos e dividend yield do
+    - historico de dividendos e yield do
+    - dividendos e dy de <ticker>
+    - dividendos e dividend yield de <ticker>
+    - dividendos e yield de <ticker>
+    - historico de dividendos e dy de <ticker>
+    - historico de dividendos e dividend yield de <ticker>
+    - historico de dividendos e yield de <ticker>
+    - dividendos e yield acumulado do <ticker>
+    - dividendos e dy acumulado do <ticker>
+    - comparar dividendos e dy do <ticker> e <ticker>
+    - comparacao de dividendos e dy entre fiis
+    - comparativo de dividendos e dy
+    - dy e dividendos do
+    - dy e dividendos do <ticker>
+    - dy e dividendos de <ticker>
+    - dy e dividendos do fundo
+    - dy e dividendos do fundo <ticker>
+    - dy e dividendos do fii <ticker>
     exclude: []
   entities:
   - dividendos_yield
@@ -1957,3 +1987,10 @@ anti_tokens:
   history_b3_indexes:
   - ranking
   - posicao
+  dividendos_yield:
+  - dy historico
+  - dy 12m
+  - serie historica de dy
+  - historico de dy
+  - somente dividendos
+  - apenas dividendos
