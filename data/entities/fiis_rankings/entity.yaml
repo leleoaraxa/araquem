@@ -124,6 +124,12 @@ ask:
     - dividendos
     - preco
     - variacao
+    - beta
+    - mdd
+    - risco
+    - sharpe
+    - sortino
+    - volatilidade
   phrase_includes:
     - melhores fiis no ranking
     - posicao no ranking

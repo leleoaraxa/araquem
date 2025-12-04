@@ -232,14 +232,19 @@ ask:
   anti_tokens:
     - cnpj
     - administrador
+    - beta
+    - drawdown
     - regulamento
     - ranking
     - posicao
     - variacao
     - dy
     - dividendos
+    - mdd
+    - risco
     - sharpe
     - sortino
+    - volatilidade
   phrase_includes:
     - "overview do"
     - "resumo do fundo"
