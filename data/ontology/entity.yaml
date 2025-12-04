@@ -350,15 +350,23 @@ intents:
     - precos
     - cotacao
     - cotacoes
+    - variacao
+    - oscilacao
+    - alta
+    - baixa
+    - intradia
+    - intradiario
+    - maximo
+    - min
+    - minima
+    - maxima
+    - historico_preco
     - hoje
     - ontem
     - abertura
     - abrir
     - fechamento
     - fechar
-    - maxima
-    - minima
-    - variacao
     - diaria
     - pregao
     - pregoes
@@ -371,7 +379,21 @@ intents:
     - ultimos
     - periodo
     exclude:
+    - sharpe
+    - sortino
+    - beta
+    - risco
+    - volatilidade
+    - r2
+    - treynor
+    - max_drawdown
+    - mdd
+    - indice_risco
+    - indicador_risco
+    - dividendo
     - media
+    - proventos
+    - pagamento
     - soma
     - ranking
     - ibov
@@ -381,6 +403,16 @@ intents:
     - dy
     - yield
     - dividendos
+    - vacancia
+    - receita
+    - receita_mensal
+    - patrimonio
+    - patrimonio_liquido
+    - pl
+    - cnpj
+    - setor
+    - contratos
+    - locatarios
     - rendimentos
     - usd
     - dolar
@@ -395,6 +427,28 @@ intents:
     - comercial
   phrases:
     include:
+    - preco do <ticker>
+    - preco atual do <ticker>
+    - cotacao do <ticker>
+    - quanto esta o <ticker>
+    - valor da cota do <ticker>
+    - quanto esta valendo o <ticker>
+    - qual o preco do <ticker> hoje
+    - preco agora do <ticker>
+    - preco de fechamento do <ticker>
+    - preco de abertura do <ticker>
+    - alta do <ticker>
+    - baixa do <ticker>
+    - variacao do <ticker>
+    - retorno diario do <ticker>
+    - oscilacao do <ticker>
+    - quanto subiu o <ticker>
+    - quanto caiu o <ticker>
+    - preco maximo do dia
+    - preco minimo do dia
+    - preco medio
+    - preco historico do <ticker>
+    - comparar preco de <ticker> e <ticker>
     - preco do
     - preco atual
     - preco do dia
@@ -415,7 +469,6 @@ intents:
     - cotacao nos ultimos
     - historico de preco nos ultimos 12 meses
     exclude:
-    - preco medio
     - media de preco
     - retorno no periodo
     - variacao diaria do usd
@@ -1307,6 +1360,9 @@ intents:
     - conceito_sharpe
     - conceito_beta
     - conceito_volatilidade
+    - conceito_preco
+    - variacao_mercado
+    - oscilacao_mercado
     exclude: []
   phrases:
     include:
@@ -1331,6 +1387,12 @@ intents:
     - como interpretar beta
     - como interpretar volatilidade
     - como interpretar mdd
+    - por que o ifix subiu
+    - por que o ifix caiu
+    - por que as cotas de fii sobem
+    - por que as cotas de fii caem
+    - fatores que influenciam preco
+    - o que impacta o preco dos fiis
     exclude: []
   entities:
   - macro_consolidada
