@@ -62,18 +62,24 @@ ask:
     - macro_consolidada
   requires_identifiers: []
   keywords:
-    - macro
-    - ipca
-    - selic
+    - cambio
     - cdi
-    - ifix
-    - ibov
     - dolar
     - euro
-    - cambio
-    - indice
-    - variacao
     - historico
+    - ibov
+    - ifix
+    - indice
+    - ipca
+    - macro
+    - selic
+    - variacao
+  anti_tokens:
+    - beta
+    - risco
+    - sharpe
+    - sortino
+    - volatilidade
   phrase_includes:
     - "historico macro"
     - "ipca em"

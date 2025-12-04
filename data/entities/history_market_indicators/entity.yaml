@@ -35,16 +35,16 @@ ask:
   intents:
   - history_market_indicators
   keywords:
-  - ipca
   - cdi
-  - selic
   - igpm
   - incc
-  - inpc
   - indicadores
-  - taxa
-  - juros
   - inflacao
+  - inpc
+  - ipca
+  - juros
+  - selic
+  - taxa
   synonyms:
     indicator_name:
     - indicador

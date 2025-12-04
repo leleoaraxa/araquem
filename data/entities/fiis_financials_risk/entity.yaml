@@ -76,6 +76,13 @@ ask:
     - sortino
     - treynor
     - volatilidade
+  anti_tokens:
+    - cambio
+    - dolar
+    - inflacao
+    - ipca
+    - juros
+    - selic
   phrase_includes:
     - "alfa de jensen"
     - "alpha de jensen"

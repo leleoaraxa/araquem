@@ -47,15 +47,15 @@ ask:
   intents:
   - history_currency_rates
   keywords:
+  - cambio
+  - compra
+  - cotacao
   - dolar
-  - usd
   - euro
   - eur
-  - cambio
-  - cotacao
-  - compra
-  - venda
+  - usd
   - variacao
+  - venda
   synonyms:
     rate_date:
     - data
