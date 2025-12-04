@@ -816,7 +816,6 @@ intents:
     - rank
     - posicao
     - posicoes
-    - posição
     - peso
     - pesos
     - participacao
@@ -1210,4 +1209,4 @@ anti_tokens:
   - manchete
   history_b3_indexes:
   - ranking
-  - posição
+  - posicao
