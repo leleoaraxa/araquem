@@ -1,0 +1,509 @@
+{
+  "timestamp": "2025-12-04T13:21:24.144776",
+  "total_tests": 0,
+  "passed": 0,
+  "failed": 0,
+  "failures": [
+    {
+      "idx": -1,
+      "question": null,
+      "expected": null,
+      "got": null,
+      "reason": "catalog_error:Catálogo não encontrado em docs/catalog/tests_catalog.json"
+    }
+  ],
+  "ontology_issues": [
+    {
+      "intent": "client_fiis_positions",
+      "issue": "token_collision",
+      "token": "posicoes",
+      "conflicts": [
+        "client_fiis_positions",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "minhas",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "client_fiis_performance_vs_benchmark",
+        "client_fiis_positions"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "minha",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "client_fiis_performance_vs_benchmark",
+        "client_fiis_positions"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "meu",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "client_fiis_performance_vs_benchmark",
+        "client_fiis_positions"
+      ]
+    },
+    {
+      "intent": "client_fiis_positions",
+      "issue": "token_collision",
+      "token": "custodia",
+      "conflicts": [
+        "client_fiis_positions",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "renda",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "fiis_financials_snapshot"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "historico",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "fiis_dividendos",
+        "history_currency_rates"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "mensal",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "fiis_dividendos"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "carteira",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "client_fiis_performance_vs_benchmark"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "token_collision",
+      "token": "mes",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "fiis_noticias"
+      ]
+    },
+    {
+      "intent": "client_fiis_performance_vs_benchmark",
+      "issue": "token_collision",
+      "token": "performance",
+      "conflicts": [
+        "client_fiis_performance_vs_benchmark",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "client_fiis_performance_vs_benchmark",
+      "issue": "token_collision",
+      "token": "comparacao",
+      "conflicts": [
+        "client_fiis_performance_vs_benchmark",
+        "dividendos_yield",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "client_fiis_performance_vs_benchmark",
+      "issue": "token_collision",
+      "token": "comparar",
+      "conflicts": [
+        "client_fiis_performance_vs_benchmark",
+        "dividendos_yield",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "client_fiis_performance_vs_benchmark",
+      "issue": "token_collision",
+      "token": "ifil",
+      "conflicts": [
+        "client_fiis_performance_vs_benchmark",
+        "fiis_cadastro",
+        "fiis_rankings",
+        "history_b3_indexes"
+      ]
+    },
+    {
+      "intent": "client_fiis_performance_vs_benchmark",
+      "issue": "token_collision",
+      "token": "ibov",
+      "conflicts": [
+        "client_fiis_performance_vs_benchmark",
+        "history_b3_indexes"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "cnpj",
+      "conflicts": [
+        "fii_overview",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "administrador",
+      "conflicts": [
+        "fii_overview",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "administradora",
+      "conflicts": [
+        "fii_overview",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "nome",
+      "conflicts": [
+        "fii_overview",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "fiis_cadastro",
+      "issue": "token_collision",
+      "token": "setor",
+      "conflicts": [
+        "fiis_cadastro",
+        "fiis_financials_snapshot"
+      ]
+    },
+    {
+      "intent": "fiis_cadastro",
+      "issue": "token_collision",
+      "token": "peso",
+      "conflicts": [
+        "fiis_cadastro",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "segmento",
+      "conflicts": [
+        "fii_overview",
+        "fiis_cadastro"
+      ]
+    },
+    {
+      "intent": "fii_overview",
+      "issue": "token_collision",
+      "token": "indicadores",
+      "conflicts": [
+        "fii_overview",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_precos",
+      "issue": "token_collision",
+      "token": "cotacao",
+      "conflicts": [
+        "fiis_precos",
+        "history_currency_rates"
+      ]
+    },
+    {
+      "intent": "fiis_precos",
+      "issue": "token_collision",
+      "token": "variacao",
+      "conflicts": [
+        "fiis_precos",
+        "history_b3_indexes",
+        "history_currency_rates"
+      ]
+    },
+    {
+      "intent": "fiis_precos",
+      "issue": "token_collision",
+      "token": "fechamento",
+      "conflicts": [
+        "fiis_precos",
+        "history_b3_indexes"
+      ]
+    },
+    {
+      "intent": "fiis_dividendos",
+      "issue": "token_collision",
+      "token": "distribuicao",
+      "conflicts": [
+        "fiis_dividendos",
+        "fiis_financials_revenue_schedule",
+        "fiis_processos"
+      ]
+    },
+    {
+      "intent": "dividendos_yield",
+      "issue": "token_collision",
+      "token": "dy",
+      "conflicts": [
+        "dividendos_yield",
+        "fiis_yield_history"
+      ]
+    },
+    {
+      "intent": "carteira_enriquecida",
+      "issue": "token_collision",
+      "token": "dy mensal",
+      "conflicts": [
+        "carteira_enriquecida",
+        "fiis_yield_history"
+      ]
+    },
+    {
+      "intent": "dividendos_yield",
+      "issue": "token_collision",
+      "token": "yield",
+      "conflicts": [
+        "dividendos_yield",
+        "fiis_yield_history"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "receita",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "fiis_financials_snapshot"
+      ]
+    },
+    {
+      "intent": "fiis_financials_snapshot",
+      "issue": "token_collision",
+      "token": "ocupacao",
+      "conflicts": [
+        "fiis_financials_snapshot",
+        "fiis_imoveis"
+      ]
+    },
+    {
+      "intent": "fiis_financials_snapshot",
+      "issue": "token_collision",
+      "token": "imoveis",
+      "conflicts": [
+        "fiis_financials_snapshot",
+        "fiis_imoveis"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "indice",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "history_b3_indexes"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "indices",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "history_b3_indexes"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "igpm",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "inpc",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_financials_revenue_schedule",
+      "issue": "token_collision",
+      "token": "incc",
+      "conflicts": [
+        "fiis_financials_revenue_schedule",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_noticias",
+      "issue": "token_collision",
+      "token": "atualizacao",
+      "conflicts": [
+        "fiis_noticias",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_noticias",
+      "issue": "token_collision",
+      "token": "hoje",
+      "conflicts": [
+        "fiis_noticias",
+        "history_b3_indexes",
+        "history_currency_rates",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "fiis_processos",
+      "issue": "token_collision",
+      "token": "valor",
+      "conflicts": [
+        "fiis_processos",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "history_b3_indexes",
+      "issue": "token_collision",
+      "token": "variacao diaria",
+      "conflicts": [
+        "history_b3_indexes",
+        "history_currency_rates"
+      ]
+    },
+    {
+      "intent": "history_b3_indexes",
+      "issue": "token_collision",
+      "token": "d1",
+      "conflicts": [
+        "history_b3_indexes",
+        "history_currency_rates",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "history_b3_indexes",
+      "issue": "token_collision",
+      "token": "d-1",
+      "conflicts": [
+        "history_b3_indexes",
+        "history_currency_rates",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "history_b3_indexes",
+      "issue": "token_collision",
+      "token": "ontem",
+      "conflicts": [
+        "history_b3_indexes",
+        "history_currency_rates",
+        "history_market_indicators"
+      ]
+    },
+    {
+      "intent": "history_currency_rates",
+      "issue": "token_collision",
+      "token": "dolar",
+      "conflicts": [
+        "history_currency_rates",
+        "macro_consolidada"
+      ]
+    },
+    {
+      "intent": "history_currency_rates",
+      "issue": "token_collision",
+      "token": "cambio",
+      "conflicts": [
+        "history_currency_rates",
+        "macro_consolidada"
+      ]
+    },
+    {
+      "intent": "history_market_indicators",
+      "issue": "token_collision",
+      "token": "juros",
+      "conflicts": [
+        "history_market_indicators",
+        "macro_consolidada"
+      ]
+    },
+    {
+      "intent": "history_market_indicators",
+      "issue": "token_collision",
+      "token": "inflacao",
+      "conflicts": [
+        "history_market_indicators",
+        "macro_consolidada"
+      ]
+    },
+    {
+      "intent": "client_fiis_dividends_evolution",
+      "issue": "phrase_collision",
+      "token": "historico de dividendos",
+      "conflicts": [
+        "client_fiis_dividends_evolution",
+        "fiis_dividendos"
+      ]
+    },
+    {
+      "intent": "fiis_cadastro",
+      "issue": "phrase_collision",
+      "token": "peso no ifix do",
+      "conflicts": [
+        "fiis_cadastro",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "fiis_cadastro",
+      "issue": "phrase_collision",
+      "token": "peso no ifil do",
+      "conflicts": [
+        "fiis_cadastro",
+        "fiis_rankings"
+      ]
+    },
+    {
+      "intent": "fiis_financials_snapshot",
+      "issue": "phrase_collision",
+      "token": "imoveis do <ticker>",
+      "conflicts": [
+        "fiis_financials_snapshot",
+        "fiis_imoveis"
+      ]
+    }
+  ]
+}
