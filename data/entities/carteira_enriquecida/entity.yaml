@@ -122,8 +122,13 @@ ask:
     - document_number
   keywords:
     - carteira
-    - dividendos
-    - dy
+    - dy da carteira
+    - dy 12m da carteira
+    - dy mensal da carteira
+    - dividend yield da carteira
+    - dividend yield consolidado
+    - rendimento da carteira
+    - rendimento consolidado
     - peso
     - posicao
     - posicoes
@@ -132,12 +137,22 @@ ask:
     - risco
     - sharpe
     - valor investido
+  anti_tokens:
+    - dividendos recebidos
+    - proventos recebidos
+    - renda recebida
+    - minha renda
+    - meus dividendos
+    - minha renda mensal
   phrase_includes:
     - "minha carteira"
     - "posicoes da carteira"
     - "peso do"
     - "quanto tenho em"
     - "ranking do meu fii"
+    - "dy da carteira"
+    - "dy 12m da carteira"
+    - "dy mensal da carteira"
   synonyms:
     document_number:
       - cpf
