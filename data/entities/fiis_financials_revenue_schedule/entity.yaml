@@ -133,6 +133,11 @@ ask:
   - sortino
   - vacancia
   - volatilidade
+  - aluguel
+  - alugueis
+  - renda contratada
+  - renda garantida
+  - recebimento
   phrase_includes:
     - "como esta distribuida a receita do"
     - "como esta distribuida a receita futura do"

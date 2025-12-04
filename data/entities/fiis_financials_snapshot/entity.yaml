@@ -122,7 +122,6 @@ ask:
     - patrimonio
     - patrimonio liquido
     - payout
-    - receita
     - receita atual
     - renda
   anti_tokens:
@@ -157,6 +156,12 @@ ask:
     - sortino
     - vacancia
     - volatilidade
+    - aluguel
+    - receita por cota
+    - rendimento por cota
+    - numeros operacionais
+    - area
+    - imovel
   phrase_includes:
     - caixa do
     - cap rate do
