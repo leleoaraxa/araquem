@@ -40,30 +40,122 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
+    - anuncio
+    - anunciou
     - atualizacao
+    - atualizacoes
+    - comunicado
+    - comunicados
+    - divulgacao
+    - divulgou
+    - fato relevante
+    - fatos relevantes
+    - informacao
+    - informou
     - materia
     - noticia
     - noticias
+    - novidade
     - novidades
     - reportagem
+    - ultima
     - ultimas
+  phrase_includes:
+    - atualizacoes do
+    - fatos relevantes do
+    - noticias do
+    - novidades do fundo
+    - ultimas noticias do
   anti_tokens:
-    - minha
-    - minhas
+    - abertura
+    - administrador
+    - area
+    - beta
+    - bucket
+    - caixa
+    - cadastro
+    - "cadastro do fundo"
+    - carteira
+    - "cap rate"
+    - cdi
+    - classe
+    - cliente
+    - cnpj
+    - contrato
+    - contratos
+    - cotacao
+    - custodia
+    - d-1
+    - dividendo
+    - "dividend payout"
+    - dividendos
+    - dolar
+    - dy
+    - euro
+    - fechamento
+    - fundamento
+    - fundamental
+    - fundamentos
+    - hoje
+    - historico
+    - imovel
+    - imoveis
+    - inflacao
+    - indexador
+    - indexadores
+    - investimento
+    - ipca
+    - localizacao
+    - macro
+    - mandato
+    - "market cap"
+    - metragem
     - meu
     - meus
-    - carteira
-    - custodia
+    - minha
+    - "minha carteira"
+    - "minha custodia"
+    - "minha posicao"
+    - "minha renda"
+    - minhas
+    - "minhas carteiras"
+    - "minhas posicoes"
+    - "minhas rendas"
+    - movimentacao
+    - negociacao
+    - ocupacao
+    - ontem
+    - overview
+    - pagamento
+    - patrimonio
+    - payout
+    - performance
     - posicao
     - posicoes
-    - renda
-    - performance
     - preco
-    - cotacao
+    - precos
+    - provento
+    - proventos
+    - r2
+    - receita
+    - "receita futura"
+    - renda
+    - risco
+    - selic
+    - segmento
+    - setor
+    - sharpe
+    - snapshot
+    - sortino
+    - treynor
+    - mdd
+    - unidade
+    - unidades
+    - vacancia
     - variacao
-    - hoje
-    - d-1
-    - ontem
+    - vol
+    - volatilidade
+    - yield
   synonyms:
     ticker:
       - ativo
