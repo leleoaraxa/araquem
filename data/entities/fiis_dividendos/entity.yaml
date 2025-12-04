@@ -47,6 +47,10 @@ ask:
     - dividendos pagos
     - dividendos por mes
     - dividendos por meses
+    - esse mes
+    - mes atual
+    - nesse mes
+    - neste mes
     - distribuiu dividendos
     - historico de dividendos
     - pagamento de dividendos
@@ -97,6 +101,10 @@ ask:
   phrase_includes:
     - "dividendos do"
     - "proventos do"
+    - "dividendos de <ticker> esse mes"
+    - "dividendos do <ticker> esse mes"
+    - "proventos de <ticker> esse mes"
+    - "quais os dividendos de <ticker> esse mes"
     - "distribuicao de dividendos do"
     - "historico de dividendos do"
     - "dividendo pago em"

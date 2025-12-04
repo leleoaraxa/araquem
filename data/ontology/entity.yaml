@@ -155,7 +155,13 @@ intents:
     - renda mensal dos meus fiis
     - dividendos da minha carteira
     - quanto minha carteira de fiis recebeu de dividendos em cada mes
-    exclude: []
+    exclude:
+    - dividendos de <ticker>
+    - dividendos do <ticker>
+    - proventos de <ticker>
+    - proventos do <ticker>
+    - rendimento de <ticker>
+    - rendimento do <ticker>
   entities:
   - client_fiis_dividends_evolution
 - name: client_fiis_performance_vs_benchmark
@@ -539,7 +545,7 @@ intents:
   entities:
   - fiis_precos
 - name: fiis_dividendos
-  weight: 1.5
+  weight: 2.5
   tokens:
     include:
     - dividendo
@@ -549,10 +555,13 @@ intents:
     - rendimento
     - distribuicao
     - acumulado
+    - esse mes
+    - mes
     - mensal
     - rendimento mensal
     - historico
     - rendimentos
+    - quais os dividendos
     - pagamento
     - paga
     - pagou
@@ -621,13 +630,17 @@ intents:
     - dividendos do
     - dividendos do fundo
     - dividendos do <ticker>
+    - dividendos de <ticker> esse mes
+    - dividendos do <ticker> esse mes
     - dividendos mensais
     - dividendos pagos
+    - quais os dividendos de <ticker> esse mes
     - historico de dividendos
     - pagamentos de dividendos
     - rendimento mensal
     - proventos
     - proventos do <ticker>
+    - proventos de <ticker> esse mes
     - ultimo dividendo
     - proximo dividendo
     - dividendos acumulados
