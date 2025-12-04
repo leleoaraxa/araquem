@@ -55,26 +55,26 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - preco
-    - cotacao
     - abertura
+    - cotacao
+    - diaria
     - fechar
     - fechamento
     - maxima
     - minima
-    - variacao
-    - diaria
     - pregao
+    - preco
+    - variacao
     - variacao diaria
 
   phrase_includes:
-    - "preco do"
     - "cotacao do"
+    - "preco do"
     - "preco historico do"
-    - "qual o preco do"
     - "qual a cotacao do"
-    - "quanto ta o"
+    - "qual o preco do"
     - "quanto esta o"
+    - "quanto ta o"
     - "variacao diaria do"
     - "variacao diaria do nos ultimos"
     - "variacao diaria do ticker"

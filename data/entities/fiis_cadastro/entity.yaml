@@ -94,26 +94,24 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
+    - administrador
     - cadastro
     - cnpj
-    - administrador
-    - administradora
-    - site
+    - cotas emitidas
     - custodiante
-    - segmento
-    - setores
-    - setor
-    - subsetor
+    - fundo exclusivo
     - gestao
-    - publico alvo
-    - isin
     - ipo
+    - isin
     - nome de exibicao
     - nome de pregao
-    - peso ifix
     - peso ifil
-    - cotas emitidas
-    - fundo exclusivo
+    - peso ifix
+    - publico alvo
+    - segmento
+    - setor
+    - site
+    - subsetor
   phrase_includes:
     - segmento do
     - nome de pregao do

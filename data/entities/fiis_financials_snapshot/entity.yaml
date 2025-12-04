@@ -109,21 +109,21 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - payout
     - alavancagem
     - caixa
+    - cap rate
+    - crescimento
+    - dividas
     - endividamento
-    - ev
     - enterprise value
+    - ev
+    - leverage
     - market cap
     - patrimonio
     - patrimonio liquido
-    - preco patrimonio
+    - payout
     - price book
-    - cap rate
-    - crescimento
-    - leverage
-    - dividas
+    - preco patrimonio
   phrase_includes:
     - market cap do
     - enterprise value do

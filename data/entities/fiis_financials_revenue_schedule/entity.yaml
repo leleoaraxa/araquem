@@ -88,27 +88,27 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-  - receitas
-  - recebiveis
-  - vencimento
-  - estrutura de recebiveis
-  - prazo
   - buckets
-  - indexador
-  - igpm
-  - ipca
-  - inpc
-  - incc
-  - duration da receita
-  - cronograma de receitas
-  - receita futura
-  - receita esperada
-  - receita projetada
-  - receita por indice
-  - distribuicao da receita
-  - distribuida por indice
   - cronograma de receita futura
   - cronograma de recebiveis
+  - cronograma de receitas
+  - distribuicao da receita
+  - distribuida por indice
+  - duration da receita
+  - estrutura de recebiveis
+  - igpm
+  - incc
+  - indexador
+  - inpc
+  - ipca
+  - prazo
+  - receita esperada
+  - receita futura
+  - receita por indice
+  - receita projetada
+  - recebiveis
+  - receitas
+  - vencimento
   phrase_includes:
     - "receita futura do"
     - "como esta distribuida a receita do"
