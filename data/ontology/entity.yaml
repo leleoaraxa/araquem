@@ -933,7 +933,10 @@ intents:
     include:
     - receita
     - receitas
+    - receita futura
+    - receitas futuras
     - recebiveis
+    - estrutura de recebiveis
     - futuro
     - futura
     - distribuida
@@ -946,6 +949,8 @@ intents:
     - buckets
     - indexador
     - indexadores
+    - indice
+    - indices
     - previsao
     - igpm
     - ipca
@@ -956,15 +961,10 @@ intents:
     - 0 3m
     - 3 6m
     - 6 12m
-    - 9 12m
-    - 12 15m
-    - 15 18m
-    - 18 21m
-    - 21 24m
-    - 24 27m
-    - 27 30m
-    - 30 33m
-    - 33 36m
+    - 12 18m
+    - 18 24m
+    - 24 30m
+    - 30 36m
     - maior 36m
     - acima 36m
     - indeterminado
@@ -996,13 +996,30 @@ intents:
     - juros
     - selic
     - inflacao
+    - politica monetaria
     - cambio
     - curva
+    - dividendo
+    - dividendos
+    - provento
+    - proventos
+    - rendimento
+    - rendimento mensal
+    - yield
+    - vacancia
+    - pl
+    - patrimonio
+    - vp
+    - valor patrimonial
+    - contratos
   phrases:
     include:
     - estrutura de recebiveis do
     - receitas por prazo do
-    - quanto vence em
+    - quanto vence em 0 3m do
+    - quanto vence em 3 6m do
+    - quanto vence em 6 12m do
+    - quanto vence acima 36m do
     - vencimento em
     - indexadores de receita do
     - receitas 0 3m do
@@ -1010,6 +1027,7 @@ intents:
     - receitas 6 12m do
     - receitas acima 36m do
     - receita futura do
+    - receita futura do fundo
     - receita futura por indice
     - receita futura por indice do
     - como esta distribuida a receita futura
@@ -1022,11 +1040,23 @@ intents:
     - percentual de receita indexada ao
     - receita ipca do
     - receita cdi do
+    - percentual de receita indexada ao ipca do
+    - percentual de receita indexada ao cdi do
+    - receita indexada ao ipca do
+    - receita indexada ao cdi do
+    - distribuicao da receita futura por indice do
     exclude:
     - soma de dividendos
     - media de preco
     - o que significa
     - impacto do ipca
+    - impacto da selic
+    - impacto dos juros
+    - impacto da inflacao
+    - impacto do cdi
+    - impacto do igpm
+    - impacto do ipca nos fiis
+    - impacto da selic nos fiis
     - juros
     - juros altos
     - juros futuros
@@ -1041,6 +1071,11 @@ intents:
     - curva
     - cenario
     - ambiente
+    - quanto pagou de dividendos
+    - dividendos nos ultimos
+    - dividendos pagos
+    - distribuicao de dividendos
+    - proventos pagos
   entities:
   - fiis_financials_revenue_schedule
 - name: fiis_financials_risk
