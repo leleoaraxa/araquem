@@ -59,23 +59,23 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - risco
-    - volatilidade
-    - sharpe
-    - treynor
-    - jensen
     - alfa
     - beta
-    - sortino
-    - drawdown
-    - mdd
-    - r2
     - coeficiente de determinacao
     - desvio padrao
-    - risco ajustado
+    - drawdown
+    - jensen
+    - mdd
     - performance ajustada
+    - r2
+    - risco
+    - risco ajustado
     - risco vs retorno
+    - sharpe
     - sharpe ratio
+    - sortino
+    - treynor
+    - volatilidade
   phrase_includes:
     - "indice de treynor"
     - "treynor do"

@@ -42,28 +42,22 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - rendimento
-    - rendimentos
-    - pagamento
-    - paga
-    - pagou
     - distribuiu
-    - distribuiu em
-    - quanto distribuiu
-    - media de dividendos
-    - media de rendimentos
-    - ultimos 12 meses
-    - pagou em
     - dividendo pago
+    - dividendos
+    - media de dividendos
+    - pagou
+    - pagou em
+    - pagamento
+    - proventos
+    - quanto distribuiu
+    - rendimento
+    - ultimos 12 meses
   phrase_includes:
+    - dividendo pago em
+    - media de dividendos do
     - quanto o distribuiu
     - quanto o distribuiu em
-    - media de dividendos do
-    - dividendo pago em
   synonyms:
     ticker:
       - ativo
@@ -71,15 +65,15 @@ ask:
       - fundo
       - fii
     dividend_amt:
+      - valor
       - dividendo
       - provento
       - rendimento
-      - valor
     payment_date:
-      - pagamento
       - data de pagamento
       - paga
       - pagou
+      - pagamento
   weights:
     identifiers: 2.0
     keywords: 1.0

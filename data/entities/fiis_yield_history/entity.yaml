@@ -44,21 +44,18 @@ ask:
   keywords:
     - dy
     - dividend yield
-    - yield
-    - rendimento mensal
-    - dividendos
-    - historico de yield
-    - historico de dividendos
     - evolucao do dy
+    - historico de yield
+    - rendimento mensal
     - retorno mensal
+    - yield
     - yield mensal
   phrase_includes:
-    - "dy do"
     - "dividend yield do"
+    - "dy do"
+    - "dy em"
     - "historico de dy do"
     - "yield mensal do"
-    - "dividendos mensais do"
-    - "dy em"
   synonyms:
     ticker:
       - ativo
@@ -70,7 +67,6 @@ ask:
       - competencia
       - mes base
     dividends_sum:
-      - dividendos
       - proventos
       - rendimento
       - soma de dividendos

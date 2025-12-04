@@ -85,26 +85,24 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - rendimento
     - dy
-    - dividend yield
-    - yield
-    - historico de dividendos
-    - historico de dy
-    - rendimento mensal
-    - dy mensal
     - dy 12 meses
     - dy atual
+    - dy mensal
+    - dividend yield
+    - dividendos
+    - historico de dividendos
+    - historico de dy
+    - proventos
+    - rendimento
+    - rendimento mensal
+    - yield
   phrase_includes:
+    - "dividend yield do"
     - "dividendos e dy do"
+    - "dy mensal do"
     - "historico de dividendos do"
     - "historico de dy do"
-    - "dy mensal do"
-    - "dividend yield do"
     - "quanto o pagou em"
   synonyms:
     ticker:
@@ -113,17 +111,17 @@ ask:
       - fundo
       - fii
     ref_month:
-      - mes de referencia
       - competencia
       - mes base
+      - mes de referencia
     dividend_amt:
+      - valor pago
       - dividendo
       - provento
       - rendimento
-      - valor pago
     dy_monthly:
-      - dy
       - dividend yield
+      - dy
       - yield mensal
     dy_12m_pct:
       - dy 12m
