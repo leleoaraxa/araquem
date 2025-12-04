@@ -67,6 +67,7 @@ ask:
     - galpoes
     - imovel
     - imoveis
+    - local
     - localizacao
     - metragem
     - ocupacao
@@ -77,20 +78,39 @@ ask:
     - status operacional
     - unidades
   anti_tokens:
+    - cap
+    - cap rate
+    - caixa
+    - contratos
+    - custodia
+    - dy
+    - finance
+    - financeiro
+    - igpm
+    - indexador
+    - ipca
     - minha
     - minhas
     - meu
     - meus
     - carteira
-    - custodia
     - posicao
     - posicoes
+    - proventos
+    - receita
+    - receita futura
+    - receita prevista
     - renda
+    - risco
+    - sharpe
+    - snapshot
+    - sortino
     - performance
   phrase_includes:
     - onde ficam os imoveis
     - vacancia do imovel
     - vacancia dos imoveis
+    - metragem do ativo
   synonyms:
     ticker:
       - ativo

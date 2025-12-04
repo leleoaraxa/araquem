@@ -112,7 +112,6 @@ ask:
     - alavancagem
     - caixa
     - cap rate
-    - contratos
     - crescimento
     - dividas
     - endividamento
@@ -124,22 +123,44 @@ ask:
     - patrimonio liquido
     - payout
     - receita
+    - receita atual
     - renda
-    - vacancia
   anti_tokens:
+    - aluguel futuro
+    - beta
+    - bucket
+    - ocupacao
+    - carteira
+    - contratos futuros
+    - custodia
+    - dividendos
+    - dy
+    - igpm
+    - imovel
+    - imoveis
+    - indexador
+    - ipca
+    - metragem
     - minha
     - minhas
     - meu
     - meus
-    - carteira
-    - custodia
+    - performance
     - posicao
     - posicoes
-    - performance
-    - renda da carteira
+    - proventos
+    - receita contratada
+    - receita futura
+    - receita projetada
+    - risco
+    - sharpe
+    - sortino
+    - vacancia
+    - volatilidade
   phrase_includes:
     - caixa do
     - cap rate do
+    - alavancagem do
     - enterprise value do
     - market cap do
     - passivos totais do
