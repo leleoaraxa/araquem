@@ -368,6 +368,11 @@ intents:
     - processo
     - noticia
     - noticias
+    - fato
+    - fatos
+    - relevante
+    - comunicacao
+    - imprensa
     - historico
     - historia
     - cronograma
@@ -587,6 +592,10 @@ intents:
     - selic
     - inflacao
     - dy em
+    - noticia
+    - imprensa
+    - fato
+    - comunicado
   phrases:
     include:
     - dividendo do
@@ -639,6 +648,10 @@ intents:
     - dy_evolucao
     exclude:
     - dividendos e dy
+    - noticia
+    - imprensa
+    - fato
+    - comunicado
   phrases:
     include:
     - dividend yield do
@@ -744,6 +757,9 @@ intents:
     - risco
     - mdd
     - max_drawdown
+    - noticia
+    - relevante
+    - imprensa
     - indexacao
     - indexado
     - ipca
@@ -1093,6 +1109,23 @@ intents:
     include:
     - noticia
     - noticias
+    - relevante
+    - fato
+    - fatos
+    - imprensa
+    - midia
+    - divulgado
+    - divulgacao
+    - comunicado
+    - anuncio
+    - nota
+    - atualizacao
+    - recente
+    - hoje
+    - semana
+    - mes
+    - ultimo
+    - novidade
     - materia
     - manchete
     - reportagem
@@ -1102,19 +1135,82 @@ intents:
     - boatos
     - rumor
     - rumores
-    - atualizacao
     - ultimas
-    - novidades
     - negativa
     - negativas
     - ruim
     - ruins
-    exclude: []
+    exclude:
+    - cnpj
+    - classe
+    - segmento
+    - setor
+    - administrador
+    - gestao
+    - mandato
+    - nome
+    - vacancia
+    - ocupacao
+    - contratos
+    - prazo
+    - vencimento
+    - receita
+    - renda
+    - pl
+    - patrimonio
+    - preco
+    - cotacao
+    - variacao
+    - alta
+    - baixa
+    - oscilacao
+    - dy
+    - yield
+    - dividendo
+    - dividendos
+    - proventos
+    - rendimento
+    - sharpe
+    - sortino
+    - volatilidade
+    - beta
+    - mdd
+    - risco
+    - imoveis
+    - abl
+    - propriedades
+    - ifix
+    - ifil
+    - posicao
+    - ranking
+    - peso
+    - movimentos
+    - carteira
+    - posicoes
+    - minha carteira
+    - meus fiis
+    - minha renda
   phrases:
     include:
     - noticias do
     - ultimas noticias do
+    - ultimas do
+    - noticias recentes do
+    - tem novidade sobre o
+    - fatos relevantes do
     - novidades do
+    - me atualize sobre o
+    - atualizacao do
+    - o que saiu na midia sobre o
+    - o que saiu na imprensa sobre o
+    - o que aconteceu com o
+    - resumo das noticias do
+    - noticias sobre fundos imobiliarios
+    - ultima noticia de fii
+    - houve alguma noticia sobre o
+    - qual foi a noticia mais recente do
+    - noticias da semana do
+    - noticias do mes do
     - as noticias do
     - fato relevante do
     - fato relevante sobre
