@@ -219,19 +219,6 @@ ask:
     - fii_overview
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - cotacao
-    - dividendos
-    - dy
-    - macro
-    - patrimonio
-    - pl
-    - preco
-    - receita
-    - rendimento
-    - risco
-    - selic
-    - vacancia
   keywords:
     - administrador
     - classe

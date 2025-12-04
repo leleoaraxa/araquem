@@ -87,22 +87,6 @@ ask:
   - fiis_financials_revenue_schedule
   requires_identifiers:
     - ticker
-  anti_keywords:
-  - administrador
-  - cnpj
-  - cotacao
-  - dividendos
-  - dy
-  - macro
-  - noticia
-  - pl
-  - preco
-  - processo
-  - ranking
-  - risco
-  - selic
-  - vacancia
-  - yield
   keywords:
   - buckets
   - cronograma de receita futura

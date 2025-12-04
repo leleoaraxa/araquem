@@ -39,18 +39,6 @@ ask:
     - fiis_noticias
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - cnpj
-    - cotacao
-    - dividendos
-    - dy
-    - patrimonio
-    - pl
-    - preco
-    - processo
-    - ranking
-    - vacancia
-    - yield
   keywords:
     - atualizacao
     - materia

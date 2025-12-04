@@ -41,20 +41,6 @@ ask:
     - fiis_yield_history
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - cotacao
-    - dividendo
-    - dividendos
-    - dy atual
-    - macro
-    - noticia
-    - pl
-    - preco
-    - provento
-    - proventos
-    - processo
-    - risco
-    - vacancia
   keywords:
     - dy
     - dy 12m

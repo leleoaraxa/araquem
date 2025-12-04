@@ -84,16 +84,6 @@ ask:
     - dividendos_yield
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - cotacao
-    - macro
-    - patrimonio
-    - pl
-    - preco
-    - processo
-    - risco
-    - selic
-    - vacancia
   keywords:
     - dividend yield
     - dividendos

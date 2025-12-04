@@ -108,21 +108,6 @@ ask:
     - fiis_financials_snapshot
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - administrador
-    - cnpj
-    - cotacao
-    - dividendo
-    - dividendos
-    - dy
-    - ipca
-    - macro
-    - noticia
-    - preco
-    - processo
-    - ranking
-    - selic
-    - yield
   keywords:
     - alavancagem
     - caixa

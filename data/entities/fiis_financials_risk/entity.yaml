@@ -58,24 +58,6 @@ ask:
     - fiis_financials_risk
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - administrador
-    - cnpj
-    - cotacao
-    - dividendos
-    - dy
-    - inflacao
-    - ipca
-    - juros
-    - macro
-    - noticia
-    - pl
-    - preco
-    - processo
-    - ranking
-    - selic
-    - vacancia
-    - yield
   keywords:
     - alfa
     - beta

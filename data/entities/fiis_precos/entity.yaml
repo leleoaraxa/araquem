@@ -54,23 +54,6 @@ ask:
     - fiis_precos
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - administrador
-    - cnpj
-    - dividend yield
-    - dividendos
-    - dy
-    - ipca
-    - macro
-    - noticia
-    - patrimonio
-    - pl
-    - processo
-    - ranking
-    - risco
-    - selic
-    - vacancia
-    - yield
   keywords:
     - abertura
     - cotacao
