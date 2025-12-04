@@ -242,10 +242,13 @@ intents:
     - administradora
     - custodia
     - custodiante
-    - assembleia
     - site
+    - url
+    - assembleia
     - nome
     - exibicao
+    - nome de exibicao
+    - nome de pregao
     - b3
     - classificacao
     - setor
@@ -253,6 +256,7 @@ intents:
     - gestao
     - publico
     - alvo
+    - publico alvo
     - isin
     - ipo
     - peso
@@ -260,21 +264,42 @@ intents:
     - ifil
     - cotas
     - cotistas
-    - url
+    - numero de cotas
+    - numero de cotistas
+    - peso no ifix
+    - peso no ifil
     - exclusivo
     - oficial
     - segmento
     - segmentos
     exclude:
+    - abl
+    - alavancagem
+    - alta
+    - baixa
+    - contratos
+    - cotacao
+    - cotacoes
+    - variacao
     - preco
     - precos
-    - cotacao
+    - dividendos
     - dividendo
+    - dy
+    - yield
     - ranking
+    - risco
+    - volatilidade
+    - mdd
+    - renda
+    - vacancia
     - media
     - patrimonio
     - patrimonio liquido
-    - numero de cotistas
+    - payout
+    - pl
+    - provento
+    - proventos
     - sharpe
     - sortino
     - treynor
@@ -282,11 +307,19 @@ intents:
     - r2
     - r²
     - coeficiente de determinacao
+    - noticia
+    - noticias
+    - fato relevante
   phrases:
     include:
     - cnpj do
+    - qual o cnpj do
     - administrador do
+    - administradora do
+    - quem administra o
+    - custodiante do
     - site do
+    - url oficial do
     - nome de pregao do
     - nome de exibicao do
     - classificacao do
@@ -299,13 +332,18 @@ intents:
     - peso no ifix do
     - peso no ifil do
     - numero de cotas emitidas do
+    - numero de cotistas do
     - quantos cotistas tem o
-    - url oficial do
+    - quantas cotas tem o
     - fundo exclusivo
     exclude:
-    - preco do
     - cotacao do
     - dividendo do
+    - dividendos do
+    - dy do
+    - preco do
+    - preco historico do
+    - vacancia do
   entities:
   - fiis_cadastro
 - name: fii_overview
