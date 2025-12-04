@@ -86,27 +86,57 @@ ask:
     - ticker
   keywords:
     - dividend yield atual
+    - dividend yields atuais
     - dy atual
     - dy hoje
     - dy na data de hoje
     - dy atual do fundo
     - dy corrente
+    - dy corrente do fii
     - ultimo dy
+    - ultimo dy do fundo
     - ultimo dividend yield
     - ultimo rendimento por cota
     - yield atual
     - yield corrente
+    - yield de hoje
+    - dy atualizado
   anti_tokens:
     - minha
     - minhas
     - meu
     - meus
     - carteira
+    - minha carteira
+    - minhas carteiras
     - custodia
     - posicao
+    - posicaos
     - posicoes
     - renda
+    - renda recebida
+    - dividendos recebidos
+    - proventos recebidos
     - performance
+    - variacao
+    - variacoes
+    - preco
+    - precos
+    - cotacao
+    - cotacoes
+    - cotacaoo
+    - cotaco
+    - noticia
+    - noticias
+    - macro
+    - risco
+    - riscos
+    - nao
+    - nao tem
+    - nao existe
+    - sem
+    - sem dados
+    - nao encontrei
   phrase_includes:
     - "dividend yield do"
     - "dividend yield atual do"
@@ -117,6 +147,10 @@ ask:
     - "qual o yield do"
     - "ultimo dy do"
     - "ultimo rendimento do"
+    - "dy atual do"
+    - "dy atual do fundo"
+    - "yield de hoje"
+    - "dy atual do ticker"
   synonyms:
     ticker:
       - ativo

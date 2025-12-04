@@ -46,18 +46,26 @@ ask:
     - dividendo pago
     - dividendos pagos
     - dividendos por mes
+    - dividendos por meses
     - distribuiu dividendos
     - historico de dividendos
     - pagamento de dividendos
     - pagou em
     - proventos pagos
     - quanto distribuiu
+    - quanto distribuiu em
     - rendimento pago
     - ultimos 12 meses de dividendos
+    - ultimos doze meses de dividendos
+    - provento do mes
+    - proventos do mes
+    - distribuiu proventos
   anti_tokens:
     - minha
     - minhas
+    - minhas
     - meu
+    - meus
     - meus
     - carteira
     - custodia
@@ -66,17 +74,39 @@ ask:
     - renda
     - performance
     - dy
+    - d y
+    - d.y
     - yield
     - dividend yield
+    - dividend yields
+    - nao
+    - nao tem
+    - nao existe
+    - sem
+    - sem dados
+    - nao encontrei
+    - preco
+    - precos
+    - variacao
+    - variacoes
+    - noticia
+    - noticias
+    - macro
+    - risco
+    - riscos
   phrase_includes:
     - "dividendos do"
     - "proventos do"
     - "distribuicao de dividendos do"
     - "historico de dividendos do"
     - "dividendo pago em"
+    - "pagou em"
+    - "quanto distribuiu"
     - "media de dividendos do"
     - "quanto o distribuiu"
     - "quanto o distribuiu em"
+    - "historico de proventos"
+    - "historia de proventos"
   synonyms:
     ticker:
       - ativo

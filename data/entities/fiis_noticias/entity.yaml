@@ -41,6 +41,7 @@ ask:
     - ticker
   keywords:
     - anuncio
+    - anuncios
     - anunciou
     - atualizacao
     - atualizacoes
@@ -51,6 +52,7 @@ ask:
     - fato relevante
     - fatos relevantes
     - informacao
+    - informacoes
     - informou
     - materia
     - noticia
@@ -70,9 +72,11 @@ ask:
     - ultimas noticias do
   anti_tokens:
     - abertura
+    - aberturas
     - administrador
     - area
     - beta
+    - betaa
     - bucket
     - caixa
     - cadastro
@@ -86,15 +90,26 @@ ask:
     - contrato
     - contratos
     - cotacao
+    - cotacoes
+    - cotacaoo
+    - cotaco
+    - cotacap
     - custodia
     - d-1
     - dividendo
-    - "dividend payout"
     - dividendos
+    - dividendoos
+    - dvdndos
+    - "dividend payout"
     - dolar
+    - dolares
     - dy
+    - d y
+    - d.y
     - euro
+    - euros
     - fechamento
+    - fechamentos
     - fundamento
     - fundamental
     - fundamentos
@@ -103,6 +118,7 @@ ask:
     - imovel
     - imoveis
     - inflacao
+    - inflacoes
     - indexador
     - indexadores
     - investimento
@@ -112,6 +128,7 @@ ask:
     - mandato
     - "market cap"
     - metragem
+    - metragens
     - meu
     - meus
     - minha
@@ -125,6 +142,7 @@ ask:
     - "minhas rendas"
     - movimentacao
     - negociacao
+    - negociacoes
     - ocupacao
     - ontem
     - overview
@@ -134,9 +152,16 @@ ask:
     - performance
     - posicao
     - posicoes
+    - posicaos
+    - posicoes
     - preco
     - precos
+    - precoo
+    - prco
+    - precos
     - provento
+    - proventos
+    - proventos pagos
     - proventos
     - r2
     - receita
@@ -154,7 +179,9 @@ ask:
     - unidade
     - unidades
     - vacancia
+    - vacancias
     - variacao
+    - variacoes
     - vol
     - volatilidade
     - yield

@@ -56,22 +56,117 @@ ask:
     - ticker
   keywords:
     - abertura
+    - aberturas
+    - abrir
     - cotacao
+    - cotacoes
+    - cotacaoo
+    - cotaco
+    - cotacaos
     - diaria
+    - diarias
     - fechar
+    - fechamento do dia
     - fechamento
+    - fechamentos
     - maxima
+    - maximas
     - minima
+    - minimas
     - pregao
+    - pregoes
     - preco
+    - precos
+    - precoo
+    - prco
     - variacao
     - variacao diaria
+    - variacoes
+    - variacoes diarias
+    - oscilacao diaria
 
   anti_tokens:
+    - abertura de conta
+    - administradores
+    - administrador
+    - alavancagem
+    - analise
+    - area
+    - beta
+    - betaa
+    - bucket
+    - cadastro
+    - carteira
+    - carteira consolidada
+    - carteira do cliente
+    - cliente
+    - cnpj
+    - contrato
+    - contratos
     - noticia
     - noticias
     - materia
     - ultimas
+    - dy
+    - d y
+    - d.y
+    - dividend
+    - dividendo
+    - dividendos
+    - dividendoos
+    - dvdndos
+    - provento
+    - proventos
+    - risco
+    - riscos
+    - sharpe
+    - sortino
+    - volatilidade
+    - vacancia
+    - metragem
+    - imovel
+    - imoveis
+    - receita
+    - receita futura
+    - contratos futuros
+    - indexador
+    - bucket macro
+    - macro
+    - selic
+    - cdi
+    - ipca
+    - inflacao
+    - dolar
+    - euro
+    - snapshot
+    - overview
+    - cadastro do fii
+    - risco do fii
+    - ranking
+    - mandato
+    - setor
+    - segmentos
+    - segmento
+    - noticia macro
+    - minha carteira
+    - minha posicao
+    - minhas posicoes
+    - custodia
+    - naos
+    - nao
+    - nao tem
+    - nao existe
+    - sem
+    - sem dados
+    - nao encontrei
+    - ontem
+    - hoje
+    - d-1
+    - fechamento ajustado
+    - yield
+    - variacao de dy
+    - vacancias
+    - precos alvo
 
   phrase_includes:
     - "cotacao do"
@@ -80,11 +175,16 @@ ask:
     - "qual a cotacao do"
     - "qual o preco do"
     - "quanto esta o"
+    - "quanto esta a"
+    - "quanto esta custando o"
     - "quanto ta o"
     - "variacao diaria do"
     - "variacao diaria do nos ultimos"
     - "variacao diaria do ticker"
     - "variacao do ticker nos ultimos"
+    - "cotacao historica do"
+    - "fechou a quanto"
+    - "quanto fechou"
 
   synonyms:
     ticker:
