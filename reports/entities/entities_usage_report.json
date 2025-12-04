@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-04T19:11:51.678452+00:00",
+  "generated_at": "2025-12-04T19:21:45.626361+00:00",
   "entities": [
     {
       "entity_id": "carteira_enriquecida",
@@ -1919,7 +1919,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_yield_history.json",
+              "data/ops/quality/projection_fiis_yield_history_evolution.json",
               "data/ops/quality/routing_samples.json"
             ]
           },
