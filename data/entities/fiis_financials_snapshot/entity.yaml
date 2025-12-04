@@ -112,6 +112,7 @@ ask:
     - alavancagem
     - caixa
     - cap rate
+    - contratos
     - crescimento
     - dividas
     - endividamento
@@ -122,26 +123,25 @@ ask:
     - patrimonio
     - patrimonio liquido
     - payout
-    - price book
-    - preco patrimonio
+    - receita
+    - renda
+    - vacancia
   phrase_includes:
-    - market cap do
-    - enterprise value do
-    - price book do
     - caixa do
-    - passivos totais do
     - cap rate do
+    - enterprise value do
+    - market cap do
+    - passivos totais do
   synonyms:
-    ticker: [ativo, papel, fundo, fii]
-    dividend_payout_pct: [payout, distribuicao]
+    ticker: [ativo, fii, fundo, papel]
+    dividend_payout_pct: [distribuicao, payout]
     leverage_ratio: [alavancagem, endividamento]
-    enterprise_value: [ev, enterprise]
+    enterprise_value: [enterprise, ev]
     market_cap_value: [market cap, valor de mercado]
-    price_book_ratio: [preco patrimonio, p bv]
     total_cash_amt: [caixa, caixa total]
     growth_rate: [crescimento estimado, expectativa de crescimento]
-    variation_month_ratio: [variacao no mes, desempenho mensal]
-    variation_year_ratio: [variacao no ano, desempenho anual]
+    variation_month_ratio: [desempenho mensal, variacao no mes]
+    variation_year_ratio: [desempenho anual, variacao no ano]
   weights:
     identifiers: 2.0
     keywords: 1.0

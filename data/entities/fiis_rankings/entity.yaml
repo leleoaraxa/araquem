@@ -99,36 +99,23 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
-    - ranking
-    - rank
+    - carteira recomendada
+    - classificacao
+    - lista
+    - maiores
+    - melhores
+    - menores
+    - ordem
+    - piores
     - posicao
     - posicoes
-    - top
-    - melhores
-    - maiores
-    - menores
-    - piores
-    - lista
-    - usuarios
+    - rank
+    - ranking
     - sirios
-    - dy
-    - dividend yield
-    - dividendo
-    - patrimonio
-    - patrimonio liquido
-    - maiores fiis em patrimonio
-    - maiores fiis em patrimonio liquido
-    - equity
-    - sharpe
-    - sortino
-    - volatilidade
-    - risco
-    - menor risco
-    - drawdown
-    - menor drawdown
-    - mdd
+    - top
+    - usuarios
   phrase_includes:
-    - maiores fiis em patrimonio liquido
+    - melhores fiis no ranking
   synonyms:
     ticker:
       - ativo
@@ -177,10 +164,6 @@ ask:
     rank_market_cap:
       - valor de mercado
       - market cap
-    rank_equity:
-      - patrimonio liquido
-      - patrimonio
-      - equity
     rank_sharpe:
       - sharpe
       - sharpe ratio
@@ -243,10 +226,6 @@ ask:
     rank_market_cap:
       - ranking valor de mercado
       - ranking market cap
-    rank_equity:
-      - ranking patrimonio liquido
-      - ranking patrimonio
-      - ranking equity
     rank_sharpe:
       - ranking sharpe
       - ranking sharpe ratio
@@ -260,7 +239,7 @@ ask:
       - ranking menor drawdown
       - ranking mdd
   sample_questions:
-    - quais são os maiores fiis em patrimonio liquido
+    - quais sao os top fiis no ranking de dy
 
 responses:
   default:
