@@ -388,6 +388,11 @@ intents:
     - selic
     - ipca
     - igpm
+    - macro
+    - juros
+    - inflacao
+    - cambio
+    - curva
   phrases:
     include:
     - cnpj do <ticker>
@@ -591,6 +596,9 @@ intents:
     - juros
     - selic
     - inflacao
+    - macro
+    - curva
+    - cambio
     - dy em
     - noticia
     - imprensa
@@ -652,6 +660,13 @@ intents:
     - imprensa
     - fato
     - comunicado
+    - macro
+    - juros
+    - selic
+    - inflacao
+    - ipca
+    - curva
+    - cambio
   phrases:
     include:
     - dividend yield do
@@ -765,6 +780,12 @@ intents:
     - ipca
     - igpm
     - cdi
+    - macro
+    - juros
+    - inflacao
+    - selic
+    - curva
+    - cambio
     - cronograma
     - calendario
   phrases:
@@ -902,6 +923,12 @@ intents:
     - outubro
     - novembro
     - dezembro
+    - macro
+    - juros
+    - selic
+    - inflacao
+    - cambio
+    - curva
   phrases:
     include:
     - estrutura de recebiveis do
@@ -931,6 +958,12 @@ intents:
     - media de preco
     - o que significa
     - impacto do ipca
+    - juros
+    - selic
+    - inflacao
+    - macro
+    - cambio
+    - curva
   entities:
   - fiis_financials_revenue_schedule
 - name: fiis_financials_risk
@@ -962,6 +995,11 @@ intents:
     - cdi
     - selic
     - ipca
+    - macro
+    - juros
+    - inflacao
+    - cambio
+    - curva
     - inpc
     - imovel
     - imoveis
@@ -1700,48 +1738,68 @@ intents:
   entities:
   - carteira_enriquecida
 - name: macro_consolidada
-  weight: 2
+  weight: alto
+  allow_tickerless: true
   tokens:
     include:
     - macro
-    - conceito_risco
-    - conceito_sharpe
-    - conceito_beta
-    - conceito_volatilidade
-    - conceito_preco
-    - variacao_mercado
-    - oscilacao_mercado
-    exclude: []
+    - selic
+    - juros
+    - juros_altos
+    - juros_futuros
+    - juros_reais
+    - inflacao
+    - ipca
+    - curva
+    - curva_de_juros
+    - cambio
+    - dolar
+    - politica_monetaria
+    - politica_fiscal
+    - cenario_macro
+    - tendencia
+    exclude:
+    - vacancia
+    - dy
+    - dividendos
+    - dividendo
+    - yield
+    - provento
+    - proventos
+    - fii
+    - fiis
+    - fundo imobiliario
+    - fundos imobiliarios
+    - ticker
   phrases:
     include:
-    - historico macro
-    - ipca em
-    - selic em
-    - ifix em
-    - ibov em
-    - dolar em
-    - euro em
-    - ifix e ibov
-    - ifix e ibov do dia
-    - ipca e selic
-    - ipca e cdi
-    - ifix e ibovespa
-    - ipca e selic em
-    - indicadores macroeconomicos
-    - cenario macroeconomico
-    - o que e sharpe
-    - o que significa sharpe negativo
-    - como interpretar sharpe
-    - como interpretar beta
-    - como interpretar volatilidade
-    - como interpretar mdd
-    - por que o ifix subiu
-    - por que o ifix caiu
-    - por que as cotas de fii sobem
-    - por que as cotas de fii caem
-    - fatores que influenciam preco
-    - o que impacta o preco dos fiis
-    exclude: []
+    - como juros altos afetam fiis
+    - impacto da selic nos fiis
+    - ipca alto e ruim para fiis
+    - como funciona a inflacao no brasil
+    - tendencia da curva de juros
+    - ipca acumulado dos ultimos meses
+    - juros x mercado imobiliario
+    - por que o ipca subiu
+    - a selic vai cair
+    - impacto da inflacao no mercado
+    - juros futuros e renda fixa
+    - efeito do cambio nas empresas
+    - efeito do ipca nos fundos imobiliarios
+    - juros reais
+    - ambiente de juros altos
+    - como esta o ipca acumulado
+    - impacto da selic no mercado
+    - efeito da inflacao nos fiis
+    - impacto da selic na economia
+    - impacto do ipca na economia
+    exclude:
+    - dividendos
+    - dy
+    - yield
+    - vacancia
+    - receita
+    - cronograma
   entities:
   - macro_consolidada
 anti_tokens:
