@@ -305,7 +305,7 @@ intents:
     - treynor
     - beta
     - r2
-    - r²
+    - r2
     - coeficiente de determinacao
     - noticia
     - noticias
@@ -485,7 +485,6 @@ intents:
     - preco
     - cotacao
     - variacao
-    - historico
     - fechamento
     - abertura
     - alta
@@ -595,7 +594,7 @@ intents:
     - mdd
     - drawdown
     - r2
-    - r²
+    - r2
     - coeficiente de determinacao
     - ipca
     - juros
@@ -660,7 +659,6 @@ intents:
     - yield
     - historico de dy
     - historico de yield
-    - rendimento mensal
     - retorno mensal
     - evolucao do dy
     - dy 12m
@@ -668,7 +666,6 @@ intents:
     - dy_historico
     - dy_evolucao
     - meses
-    - historico
     - anual
     - periodo
     - historico completo
@@ -749,7 +746,6 @@ intents:
   tokens:
     include:
     - snapshot
-    - indicadores
     - payout
     - alavancagem
     - leverage
@@ -772,7 +768,6 @@ intents:
     - passivos
     - passivos totais
     - cap rate
-    - crescimento
     - receita por cota
     - receita
     - receita_total
@@ -784,10 +779,8 @@ intents:
     - taxa de performance
     - abl
     - area_bruta_locavel
-    - vacancia
     - ocupacao
     - setor
-    - segmento
     - contratos
     - contratos_vigentes
     - tipicos
@@ -1097,7 +1090,7 @@ intents:
     - drawdown
     - mdd
     - r2
-    - r²
+    - r2
     - coeficiente de determinacao
     - coeficiente_determinacao
     - vr
@@ -1176,10 +1169,10 @@ intents:
     - indicadores de risco
     - indicadores quantitativos do fundo
     - r2 do
-    - r² do
+    - r2 do
     - coeficiente de determinacao do
     - r2 do fundo
-    - r² do fundo
+    - r2 do fundo
     - fiis com menor drawdown
     - fiis com menor mdd
     - fundos com menor drawdown
@@ -1489,11 +1482,6 @@ intents:
   weight: 6
   tokens:
     include:
-    - dy
-    - dividend
-    - yield
-    - rendimento
-    - dividendos
     - ranking
     - rank
     - posicao
@@ -1517,11 +1505,6 @@ intents:
     - comparar
     - performou
     - performance
-    - rendimento
-    - variacao
-    - alta
-    - baixa
-    - crescimento
     - queda
     - aumento
     - reducao
@@ -1529,11 +1512,6 @@ intents:
     - acima da media
     - acima do ifix
     - acima do setor
-    - vacancia
-    - setor
-    - setores
-    - segmento
-    - patrimonio
   exclude:
     - preco
     - media do
@@ -1545,7 +1523,7 @@ intents:
     - beta
     - noticia do
     - r2
-    - r²
+    - r2
     - indice
     - historico
     - se comportou
