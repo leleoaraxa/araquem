@@ -1,3 +1,5 @@
+---
+# OBS: buckets temporariamente desativados. Para reativar, ajustar enabled: true nas regras abaixo.
 terms:
   - name: "bucket_rules"
     kind: "planner"
@@ -18,7 +20,7 @@ defaults:
 rules:
   - name: "bucket_A_ticker"
     bucket: "A"
-    enabled: true
+    enabled: false
     min_score: 1.0
     tokens_include:
       - AAAA11
@@ -29,7 +31,7 @@ rules:
 
   - name: "bucket_B_cliente"
     bucket: "B"
-    enabled: true
+    enabled: false
     min_score: 1.0
     tokens_include:
       - minha
@@ -49,7 +51,7 @@ rules:
 
   - name: "bucket_C_macro_indices_moedas"
     bucket: "C"
-    enabled: true
+    enabled: false
     min_score: 1.0
     tokens_include:
       - ipca
@@ -76,7 +78,7 @@ rules:
 
   - name: "bucket_D_fallback"
     bucket: "D"
-    enabled: true
+    enabled: false
     min_score: 0.0
     tokens_include: []
     phrases_include: []
