@@ -694,10 +694,13 @@ intents:
     - risco
     - volatilidade
     - sharpe
+    - sharpe_negativo
     - sortino
+    - sortino_negativo
     - treynor
     - jensen
     - alfa
+    - alfa_jensen
     - beta
     - max drawdown
     - drawdown
@@ -705,6 +708,7 @@ intents:
     - r2
     - r²
     - coeficiente de determinacao
+    - coeficiente_determinacao
     - vr
     - indice de risco
     - sharpe ratio
@@ -716,26 +720,61 @@ intents:
     - inpc
     - imovel
     - imoveis
+    - preco
+    - variacao
+    - cotacao
+    - valor da cota
+    - alta
+    - baixa
+    - significado
+    - definicao
+    - conceito
+    - explicar
+    - cnpj
+    - gestor
+    - administradora
+    - patrimonio
+    - patrimonio_liquido
+    - pl
+    - vacancia
+    - contratos
   phrases:
     include:
     - indicador de risco do
     - risco atual do
     - volatilidade do
     - sharpe do
+    - sharpe negativo do
+    - o que significa o sharpe do
     - sharpe ratio do
     - sortino do
+    - sortino negativo
     - treynor do
     - jensen do
     - alfa de jensen do
     - beta do
+    - sensibilidade ao ifix
+    - volatilidade do fundo
     - drawdown do
+    - mdd do
+    - max drawdown do
+    - maior queda acumulada
+    - mensurar risco
+    - indicadores de risco
+    - indicadores quantitativos do fundo
     - r2 do
     - r² do
     - coeficiente de determinacao do
+    - r2 do fundo
+    - r² do fundo
     - fiis com menor drawdown
     - fiis com menor mdd
     - fundos com menor drawdown
     - fundos com menor risco de queda
+    - premio de risco do fundo
+    - retorno ajustado ao risco
+    - interpretar sharpe
+    - interpretar risco
     exclude: []
   entities:
   - fiis_financials_risk
@@ -1264,6 +1303,10 @@ intents:
   tokens:
     include:
     - macro
+    - conceito_risco
+    - conceito_sharpe
+    - conceito_beta
+    - conceito_volatilidade
     exclude: []
   phrases:
     include:
@@ -1282,6 +1325,12 @@ intents:
     - ipca e selic em
     - indicadores macroeconomicos
     - cenario macroeconomico
+    - o que e sharpe
+    - o que significa sharpe negativo
+    - como interpretar sharpe
+    - como interpretar beta
+    - como interpretar volatilidade
+    - como interpretar mdd
     exclude: []
   entities:
   - macro_consolidada
