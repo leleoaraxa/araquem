@@ -88,7 +88,10 @@ ask:
   requires_identifiers:
     - ticker
   keywords:
+  - bucket
   - buckets
+  - contrato
+  - contratos
   - cronograma de receita futura
   - cronograma de recebiveis
   - cronograma de receitas
@@ -101,19 +104,44 @@ ask:
   - inpc
   - ipca
   - prazo
+  - projecao
+  - receita contratada
   - receita esperada
   - receita futura
   - receita por indice
+  - receita prevista
   - receita projetada
+  - reajuste
   - recebiveis
   - receitas
   - vencimento
+  anti_tokens:
+  - caixa
+  - cap rate
+  - dividendos
+  - dy
+  - proventos
+  - imovel
+  - imoveis
+  - market cap
+  - metragem
+  - ocupacao
+  - patrimonio
+  - rendimento
+  - risco
+  - sharpe
+  - sortino
+  - vacancia
+  - volatilidade
   phrase_includes:
     - "como esta distribuida a receita do"
     - "como esta distribuida a receita futura do"
     - "cronograma de receita futura do"
     - "cronograma de receitas do"
+    - "contratos futuros do"
+    - "indexador do contrato"
     - "receita futura do"
+    - "receita prevista do"
     - "receita futura do mxrf11 por indice"
   synonyms:
     ticker:
