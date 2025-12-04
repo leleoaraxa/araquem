@@ -59,22 +59,6 @@ ask:
     - fiis_imoveis
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - administrador
-    - cnpj
-    - cotacao
-    - dividendos
-    - dy
-    - ipca
-    - macro
-    - noticia
-    - pl
-    - preco
-    - processo
-    - ranking
-    - risco
-    - selic
-    - yield
   keywords:
     - area
     - ativos

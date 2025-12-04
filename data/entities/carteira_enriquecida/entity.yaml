@@ -120,12 +120,6 @@ ask:
     - carteira_enriquecida
   requires_identifiers:
     - document_number
-  anti_keywords:
-    - administrador
-    - cnpj
-    - cotacao
-    - preco
-    - processo
   keywords:
     - carteira
     - dividendos

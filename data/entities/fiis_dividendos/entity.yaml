@@ -41,23 +41,6 @@ ask:
   - fiis_dividendos
   requires_identifiers:
     - ticker
-  anti_keywords:
-    - administrador
-    - cnpj
-    - cotacao
-    - dividend yield
-    - dy
-    - ipca
-    - macro
-    - noticia
-    - pl
-    - preco
-    - processo
-    - ranking
-    - risco
-    - selic
-    - vacancia
-    - yield
   keywords:
     - distribuiu
     - dividendo pago
