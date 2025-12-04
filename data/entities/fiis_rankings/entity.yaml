@@ -119,12 +119,7 @@ ask:
     - minhas
     - meu
     - meus
-    - carteira
     - custodia
-    - posicao
-    - posicoes
-    - renda
-    - performance
   phrase_includes:
     - melhores fiis no ranking
   synonyms:

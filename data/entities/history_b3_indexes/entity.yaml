@@ -67,8 +67,6 @@ ask:
     - custodia
     - posicao
     - posicoes
-    - performance
-    - retorno
   phrase_includes:
   - variacao diaria do ifix
   - variacao diaria do ifil
