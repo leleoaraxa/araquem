@@ -675,8 +675,8 @@ intents:
     - selic
     - ipca
     - inpc
-    - "imóvel"
-    - "imóveis"
+    - imovel
+    - imoveis
   phrases:
     include:
     - indicador de risco do
@@ -703,22 +703,19 @@ intents:
 - name: fiis_imoveis
   tokens:
     include:
-    - imóvel
-    - imóveis
+    - imovel
+    - imoveis
     - propriedade
     - propriedades
     - ativo
     - ativos
-    - ocupação
-    - vacância
+    - ocupacao
     - laudo
-    - avaliação
+    - avaliacao
     - metragem
-    - região
-    - endereço
-    - localização
-    - imovel
-    - imoveis
+    - regiao
+    - endereco
+    - localizacao
     - propriedade
     - propriedades
     - ativo
@@ -736,8 +733,8 @@ intents:
     - vacancia fisica
     - vacancia financeira
     exclude:
-    - "preço"
-    - "cotação"
+    - preco
+    - cotacao
   phrases:
     include:
     - quantos imoveis o
@@ -755,29 +752,29 @@ intents:
     - vacancia do imovel
     - status do
     - status dos imoveis do
-    - "imóveis do fundo"
-    - "imóveis do <ticker>"
-    - "ativos físicos"
-    - "ativos imobiliários"
-    - "endereços dos imóveis"
-    - "localização dos imóveis"
-    - "região dos imóveis"
-    - "características dos imóveis"
-    - "metragem do imóvel"
-    - "laudo de avaliação"
-    - "valor do imóvel"
-    - "vacância do imóvel"
-    - "vacância física"
-    - "vacância financeira"
-    - "ocupação do imóvel"
-    - "taxa de ocupação"
-    - "propriedades do fundo"
-    - "quantos imóveis"
-    - "lista de imóveis"
-    - "tipo do imóvel"
-    - "região onde o fundo possui imóveis"
-    - "endereço do ativo"
-    - "dados dos imóveis"
+    - imoveis do fundo
+    - imoveis do <ticker>
+    - ativos fisicos
+    - ativos imobiliarios
+    - enderecos dos imoveis
+    - localizacao dos imoveis
+    - regiao dos imoveis
+    - caracteristicas dos imoveis
+    - metragem do imovel
+    - laudo de avaliacao
+    - valor do imovel
+    - vacancia do imovel
+    - vacancia fisica
+    - vacancia financeira
+    - ocupacao do imovel
+    - taxa de ocupacao
+    - propriedades do fundo
+    - quantos imoveis
+    - lista de imoveis
+    - tipo do imovel
+    - regiao onde o fundo possui imoveis
+    - endereco do ativo
+    - dados dos imoveis
     exclude: []
   entities:
   - fiis_imoveis
