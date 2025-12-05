@@ -234,6 +234,7 @@ sample_questions:
 
 order_by_whitelist:
 - traded_at desc
+
 aggregations:
   enabled: true
   defaults:
@@ -242,19 +243,20 @@ aggregations:
       limit: 10
       order: desc
     avg:
-      window: months:6
+      window: "months:6"
     sum:
-      window: months:12
+      window: "months:12"
   windows_allowed:
-  - months:3
-  - months:6
-  - months:12
-  - months:24
-  - count:3
-  - count:6
-  - count:12
-  - count:24
-  - count:1
+    - "months:3"
+    - "months:6"
+    - "months:12"
+    - "months:24"
+    - "count:1"
+    - "count:3"
+    - "count:5"
+    - "count:6"
+    - "count:12"
+    - "count:24"
 
 responses:
   default:
