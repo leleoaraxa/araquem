@@ -1702,6 +1702,8 @@ intents:
   - fiis_rankings
 - name: history_b3_indexes
   weight: 2
+  options:
+    ignore_tickers: true
   tokens:
     include:
     - ibovespa
@@ -1758,6 +1760,8 @@ intents:
   - history_b3_indexes
 - name: history_currency_rates
   weight: 2
+  options:
+    ignore_tickers: true
   tokens:
     include:
     - dolar
@@ -1812,6 +1816,8 @@ intents:
   - history_currency_rates
 - name: history_market_indicators
   weight: 2
+  options:
+    ignore_tickers: true
   tokens:
     include:
     - ipca
@@ -2003,7 +2009,9 @@ intents:
   entities:
   - carteira_enriquecida
 - name: macro_consolidada
-  weight: alto
+  weight: 5
+  options:
+    ignore_tickers: true
   allow_tickerless: true
   tokens:
     include:
@@ -2128,19 +2136,6 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
-  fiis_precos:
-  - preco
-  - cotacao
-  - variacao
-  - fechamento
-  - abertura
-  - quanto esta
-  - quanto esta o
-  - quanto ta
-  - quanto ta o
-  - maxima
-  - minima
-  - maxima e minima
   history_currency_rates:
   - dolar
   - euro

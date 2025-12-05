@@ -2,7 +2,7 @@ id: fiis_precos
 result_key: precos_fii
 sql_view: fiis_precos
 private: false
-description: Consulta de preço/cotação/variação das cotas de FIIs (histórico ou atual)."
+description: Consulta de preço/cotação/variação das cotas de FIIs (histórico ou atual).
 
 options:
   supports_multi_ticker: true
@@ -84,6 +84,9 @@ ask:
     - variacoes
     - variacoes diarias
     - oscilacao diaria
+    - hoje
+    - ontem
+    - d-1
 
   anti_tokens:
     - abertura de conta
@@ -123,6 +126,7 @@ ask:
     - sortino
     - volatilidade
     - vacancia
+    - vacancias
     - metragem
     - imovel
     - imoveis
@@ -152,20 +156,8 @@ ask:
     - minha posicao
     - minhas posicoes
     - custodia
-    - naos
-    - nao
-    - nao tem
-    - nao existe
-    - sem
-    - sem dados
-    - nao encontrei
-    - ontem
-    - hoje
-    - d-1
-    - fechamento ajustado
     - yield
     - variacao de dy
-    - vacancias
     - precos alvo
 
   phrase_includes:
@@ -185,6 +177,16 @@ ask:
     - "cotacao historica do"
     - "fechou a quanto"
     - "quanto fechou"
+    - "preco de fechamento de ontem do"
+    - "preco de fechamento de hoje do"
+    - "preco de hoje do"
+    - "preco de ontem do"
+    - "maxima do"
+    - "minima do"
+    - "maxima e minima do"
+    - "maxima e minima do nos ultimos"
+    - "quanto variou hoje o"
+    - "quanto variou ontem o"
 
   synonyms:
     ticker:
@@ -225,7 +227,10 @@ ask:
     synonyms: 0.5
 
 sample_questions:
-- variacao diaria do XPML11 nos ultimos 5 pregoes
+  - variacao diaria do XPML11 nos ultimos 5 pregoes
+  - quanto esta o HGLG11 hoje
+  - maxima e minima do VISC11 no ultimo pregao
+  - quanto fechou o KNRI11 ontem
 
 order_by_whitelist:
 - traded_at desc
