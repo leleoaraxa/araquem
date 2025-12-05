@@ -1085,7 +1085,6 @@ intents:
     - patrimonio
     - vp
     - valor patrimonial
-    - contratos
   phrases:
     include:
     - estrutura de recebiveis do
@@ -1094,7 +1093,7 @@ intents:
     - quanto vence em 3 6m do
     - quanto vence em 6 12m do
     - quanto vence acima 36m do
-     - quanto vence em
+    - quanto vence em
     - quanto vence em 12 meses
     - vencimento em
     - indexadores de receita do
@@ -1283,18 +1282,10 @@ intents:
     - regiao
     - endereco
     - localizacao
-    - propriedade
-    - propriedades
-    - ativo
-    - ativos
     - portfolio
     - galpao
     - galpoes
-    - ocupacao
     - unidades
-    - metragem
-    - endereco
-    - localizacao
     - onde ficam
     - vacancia
     - vacancia fisica
@@ -2135,11 +2126,6 @@ intents:
   - macro_consolidada
 anti_tokens:
   generic:
-  - macro
-  - ipca
-  - selic
-  - ifix
-  - cdi
   - dolar
   - euro
   - usd
@@ -2173,9 +2159,4 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
-  history_currency_rates:
-  - dolar
-  - euro
-  - usd
-  - eur
-  - cambio
+

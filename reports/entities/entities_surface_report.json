@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-04T19:21:45.434816+00:00",
+  "generated_at": "2025-12-05T14:55:47.014207+00:00",
   "root": "data/entities",
   "entities": [
     {
@@ -105,15 +105,12 @@
         "path": "docs/database/samples/client_fiis_dividends_evolution.csv"
       },
       "golden": {
-        "in_projection_quality": true,
-        "projection_files": [
-          "data/ops/quality/projection_client_fiis_dividends.json"
-        ]
+        "in_projection_quality": false,
+        "projection_files": []
       },
       "tags": [
         "has_contract_schema",
-        "has_db_sample",
-        "has_projection"
+        "has_db_sample"
       ]
     },
     {
@@ -380,12 +377,15 @@
         "path": "docs/database/samples/fii_overview.csv"
       },
       "golden": {
-        "in_projection_quality": false,
-        "projection_files": []
+        "in_projection_quality": true,
+        "projection_files": [
+          "data/ops/quality/projection_fii_overview.json"
+        ]
       },
       "tags": [
         "has_contract_schema",
-        "has_db_sample"
+        "has_db_sample",
+        "has_projection"
       ]
     },
     {
@@ -1004,12 +1004,15 @@
         "path": "docs/database/samples/fiis_yield_history.csv"
       },
       "golden": {
-        "in_projection_quality": false,
-        "projection_files": []
+        "in_projection_quality": true,
+        "projection_files": [
+          "data/ops/quality/projection_fiis_yield_history.json"
+        ]
       },
       "tags": [
         "has_contract_schema",
-        "has_db_sample"
+        "has_db_sample",
+        "has_projection"
       ]
     },
     {

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-04T19:21:45.626361+00:00",
+  "generated_at": "2025-12-05T14:56:00.224398+00:00",
   "entities": [
     {
       "entity_id": "carteira_enriquecida",
@@ -189,10 +189,8 @@
         },
         "embeddings": {
           "index": {
-            "referenced": true,
-            "files": [
-              "data/embeddings/index.yaml"
-            ]
+            "referenced": false,
+            "files": []
           }
         },
         "docs": {
@@ -202,9 +200,7 @@
           ]
         }
       },
-      "suspicious_signals": [
-        "entity_has_projection_but_not_in_planner"
-      ],
+      "suspicious_signals": [],
       "classification": {
         "lifecycle": "core",
         "notes": "entity appears in ontology"
@@ -742,7 +738,9 @@
           ]
         }
       },
-      "suspicious_signals": [],
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
       "classification": {
         "lifecycle": "core",
         "notes": "entity appears in ontology"
@@ -1949,7 +1947,9 @@
           ]
         }
       },
-      "suspicious_signals": [],
+      "suspicious_signals": [
+        "entity_has_projection_but_not_in_planner"
+      ],
       "classification": {
         "lifecycle": "core",
         "notes": "entity appears in ontology"
@@ -2360,8 +2360,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_macro_consolidada.json",
-              "data/ops/quality/routing_samples.json"
+              "data/ops/quality/projection_macro_consolidada.json"
             ]
           },
           "golden_sets": {
