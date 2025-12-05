@@ -383,6 +383,9 @@ intents:
     - situacao
     - como esta
     - como ta
+    - situacao geral
+    - perfil
+    - caracteristicas
     - visao geral
     - foto
     - fotografia
@@ -479,6 +482,12 @@ intents:
     - como esta o
     - situacao do
     - visao geral do
+    - resumo do fundo
+    - overview do fundo
+    - resumo do <ticker>
+    - overview do <ticker>
+    - visao geral do fundo
+    - situacao geral do fundo
     - foto do fundo
     - principais indicadores do
     exclude: []
@@ -495,6 +504,20 @@ intents:
     - abertura
     - alta
     - baixa
+    - maxima
+    - maxima e minima
+    - maximo
+    - minima
+    - minimo
+    - pregao
+    - hoje
+    - ontem
+    - agora
+    - quanto esta
+    - quanto esta o
+    - quanto ta
+    - quanto ta o
+    - como esta na b3
     exclude:
     - dy
     - dividendos
@@ -516,6 +539,17 @@ intents:
     - ranking
     - ifix
     - ifil
+    - dolar
+    - usd
+    - euro
+    - eur
+    - cdi
+    - selic
+    - ipca
+    - inflacao
+    - cambio
+    - ibov
+    - ibovespa
   phrases:
     include:
     - preco
@@ -529,6 +563,23 @@ intents:
     - preco por mes
     - preco ultimo mes
     - preco ultimo ano
+    - quanto esta o <ticker>
+    - quanto esta <ticker>
+    - quanto ta o <ticker>
+    - quanto ta <ticker>
+    - como esta o <ticker> hoje
+    - como esta <ticker> hoje
+    - como esta o <ticker> na b3
+    - como esta <ticker> na b3
+    - fechamento de hoje do <ticker>
+    - fechamento de ontem do <ticker>
+    - quanto fechou o <ticker> ontem
+    - como o <ticker> fechou ontem
+    - maxima do <ticker>
+    - minima do <ticker>
+    - maxima e minima do <ticker>
+    - maxima e minima do <ticker> em
+    - maxima e minima do <ticker> em <data>
     exclude:
     - media de preco
     - retorno no periodo
@@ -1367,6 +1418,11 @@ intents:
     - minha carteira
     - meus fiis
     - minha renda
+    - preco
+    - cotacao
+    - variacao
+    - alta
+    - baixa
   phrases:
     include:
     - noticias do
@@ -1736,6 +1792,8 @@ intents:
     - variacao da moeda no dia
     - cotacao do dolar
     - cotacao do euro
+    - cotacao media do euro
+    - cotacao media do dolar
     - historico do dolar
     - historico do usd
     - historico do cambio
@@ -1835,6 +1893,11 @@ intents:
     - historico do indice de precos
     - acumulo de cdi em 12 meses
     - acumulo de selic em 12 meses
+    - variacao do cdi este mes
+    - variacao do cdi no mes
+    - variacao do cdi em
+    - acumulado do cdi neste mes
+    - acumulado do cdi nos ultimos meses
     exclude:
     - receita do
     - receita do fii
@@ -2032,6 +2095,10 @@ anti_tokens:
   - selic
   - ifix
   - cdi
+  - dolar
+  - euro
+  - usd
+  - eur
   fiis_yield_history:
   - dy atual
   - ultimo dy
@@ -2048,6 +2115,9 @@ anti_tokens:
   - materia
   - reportagem
   - manchete
+  - fato relevante
+  - fatos relevantes
+  - comunicado
   history_b3_indexes:
   - ranking
   - posicao
@@ -2058,3 +2128,22 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
+  fiis_precos:
+  - preco
+  - cotacao
+  - variacao
+  - fechamento
+  - abertura
+  - quanto esta
+  - quanto esta o
+  - quanto ta
+  - quanto ta o
+  - maxima
+  - minima
+  - maxima e minima
+  history_currency_rates:
+  - dolar
+  - euro
+  - usd
+  - eur
+  - cambio
