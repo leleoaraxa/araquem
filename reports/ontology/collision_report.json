@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-12-04T17:17:16.898770+00:00",
+  "timestamp": "2025-12-05T11:00:50.201955+00:00",
   "entities": {
     "fiis_precos": {
       "invalid_tokens": [],
@@ -30,6 +30,9 @@
         "fiis_financials_revenue_schedule": [
           "distribuicao"
         ],
+        "fiis_noticias": [
+          "mes"
+        ],
         "history_currency_rates": [
           "historico"
         ],
@@ -42,7 +45,8 @@
         "acumulado",
         "distribuicao",
         "dividendos",
-        "historico"
+        "historico",
+        "mes"
       ],
       "prohibited_tokens": []
     },
@@ -172,6 +176,9 @@
     "fiis_noticias": {
       "invalid_tokens": [],
       "conflicts_with": {
+        "fiis_dividendos": [
+          "mes"
+        ],
         "history_b3_indexes": [
           "hoje"
         ],
@@ -186,7 +193,8 @@
       "accent_violations": [],
       "missing_anti_tokens": [
         "atualizacao",
-        "hoje"
+        "hoje",
+        "mes"
       ],
       "prohibited_tokens": []
     },
@@ -424,7 +432,7 @@
   },
   "summary": {
     "total_entities": 16,
-    "total_conflicts": 53,
+    "total_conflicts": 54,
     "needs_fix": true
   }
 }

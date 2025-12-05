@@ -604,6 +604,7 @@ class Orchestrator:
                 set_trace_attribute(span, "cache.hit", False)
                 set_trace_attribute(span, "sql.skipped", True)
             else:
+
                 # Caminho determinístico normal: gera SELECT + executa no Postgres
                 if multi_ticker_enabled:
                     rows_raw = []
@@ -618,6 +619,7 @@ class Orchestrator:
                         )
                         if isinstance(params, dict):
                             params = {**params, "entity": entity}
+
                         rows_raw.extend(self._exec.query(sql, params))
                         result_key = result_key or rk
                         return_columns = return_columns or columns
@@ -630,7 +632,11 @@ class Orchestrator:
                         agg_params=agg_params,  # <- passa inferência para o builder
                     )
                     if isinstance(params, dict):
-                        params = {**params, "entity": entity}  # etiqueta para métricas SQL
+                        params = {
+                            **params,
+                            "entity": entity,
+                        }  # etiqueta para métricas SQL
+
                     rows_raw = self._exec.query(sql, params)
                     set_trace_attribute(span, "cache.hit", False)
                     set_trace_attribute(span, "sql.skipped", False)
