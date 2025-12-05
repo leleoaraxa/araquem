@@ -1,11 +1,12 @@
 version: 1
 collection: araquem-core
 description: >
-  Regras de inferência de parâmetros temporais e agregações aplicadas
-  pelo Planner/Builder nas intents temporais (dividendos, preços). O payload do /ask
-  é imutável; este arquivo define toda a lógica declarativa.
+  Regras de inferencia de parametros temporais e agregacoes aplicadas
+  pelo Planner/Builder nas intents temporais (dividendos, precos). O payload do /ask
+  eh imutavel; este arquivo define toda a logica declarativa.
 
 intents:
+
   fiis_dividendos:
     compute_on_read:
       window:
@@ -34,14 +35,14 @@ intents:
       - count:6
       - count:12
       - count:24
+
     agg_keywords:
       avg:
         include:
           - medio
-          - média
           - media
           - medio do dy
-          - média do dy
+          - media do dy
       sum:
         include:
           - acumulado
@@ -50,7 +51,6 @@ intents:
       latest:
         include:
           - ultimo
-          - última
           - mais recente
           - agora
           - hoje
@@ -60,13 +60,12 @@ intents:
       list:
         include:
           - ultimos
-          - últimas
           - historico
-          - histórico
           - lista
           - listar
           - traga
           - quais
+
     window_keywords:
       months:
         3:
@@ -83,7 +82,6 @@ intents:
           - 12 meses
           - doze meses
           - ultimo ano
-          - últimos 12 meses
         24:
           - 2 anos
           - dois anos
@@ -91,29 +89,20 @@ intents:
       count:
         1:
           - ultimo pagamento
-          - último pagamento
           - ultimo dividendo
-          - último dividendo
         3:
           - 3 ultimos
           - tres ultimos
-          - tres últimas
-          - 3 últimos
         6:
           - 6 ultimos
           - seis ultimos
-          - 6 últimos
-          - seis últimos
         12:
           - 12 ultimos
           - doze ultimos
-          - 12 últimos
-          - doze últimos
         24:
           - 24 ultimos
           - vinte e quatro ultimos
-          - 24 últimos
-          - vinte e quatro últimos
+
     params:
       ticker:
         source:
@@ -138,6 +127,7 @@ intents:
           - "sum"
           - "latest"
         default: "list"
+
     default_agg: list
     default_window: months:12
     windows_allowed:
@@ -151,11 +141,11 @@ intents:
       - count:6
       - count:12
       - count:24
+
     agg_keywords:
       avg:
         include:
           - medio
-          - média
           - media
           - preco medio
       sum:
@@ -166,7 +156,6 @@ intents:
       latest:
         include:
           - ultimo
-          - última
           - mais recente
           - agora
           - hoje
@@ -179,17 +168,14 @@ intents:
       list:
         include:
           - ultimos
-          - últimas
           - historico
-          - histórico
           - lista
           - listar
           - traga
           - quais
           - historico de preco
-          - histórico de preço
           - historico de precos
-          - histórico de preços
+
     window_keywords:
       months:
         3:
@@ -197,62 +183,45 @@ intents:
           - 3 meses
           - tres meses
           - ultimos 3 meses
-          - últimos 3 meses
         5:
           - 5 pregoes
-          - 5 pregões
           - cinco pregoes
-          - cinco pregões
+          - ultimos 5 pregoes
         6:
           - semestre
           - 6 meses
           - seis meses
           - ultimos 6 meses
-          - últimos 6 meses
         12:
           - ano
           - anual
           - 12 meses
           - doze meses
           - ultimo ano
-          - último ano
           - ultimos 12 meses
-          - últimos 12 meses
         24:
           - 2 anos
           - dois anos
           - 24 meses
           - ultimos 24 meses
-          - últimos 24 meses
           - ultimos 2 anos
-          - últimos 2 anos
       count:
         1:
           - ultimo pregao
-          - último pregao
-          - ultimo pregão
-          - último pregão
           - ultima cotacao
-          - última cotacao
-          - ultima cotação
-          - última cotação
         3:
           - 3 ultimos
           - tres ultimos
-          - tres últimas
-          - 3 últimas
         6:
           - 6 ultimos
           - seis ultimos
-          - 6 últimas
         12:
           - 12 ultimos
           - doze ultimos
-          - 12 últimas
         24:
           - 24 ultimos
           - vinte e quatro ultimos
-          - 24 últimas
+
     params:
       ticker:
         source:
@@ -306,6 +275,7 @@ intents:
           - "sum"
           - "latest"
         default: "list"
+
     default_agg: list
     default_window: months:12
     windows_allowed:
@@ -317,14 +287,13 @@ intents:
       - count:6
       - count:12
       - count:24
+
     agg_keywords:
       avg:
         include:
           - medio
-          - média
           - media
           - dy medio
-          - dy médio
           - dy media
       sum:
         include:
@@ -335,20 +304,16 @@ intents:
       latest:
         include:
           - ultimo dy
-          - última dy
           - dy mais recente
           - dy atual
         window: count:1
       list:
         include:
           - historico de dy
-          - histórico de dy
           - historico de dividend yield
-          - histórico de dividend yield
           - ultimos dy
-          - últimos dy
           - dy dos ultimos meses
-          - dy dos últimos meses
+
     window_keywords:
       months:
         3:
@@ -365,9 +330,7 @@ intents:
           - 12 meses
           - doze meses
           - ultimo ano
-          - último ano
           - ultimos 12 meses
-          - últimos 12 meses
         24:
           - 2 anos
           - dois anos
@@ -376,23 +339,16 @@ intents:
         3:
           - 3 ultimos
           - tres ultimos
-          - 3 últimos
-          - tres últimos
         6:
           - 6 ultimos
           - seis ultimos
-          - 6 últimos
-          - seis últimos
         12:
           - 12 ultimos
           - doze ultimos
-          - 12 últimos
-          - doze últimos
         24:
           - 24 ultimos
           - vinte e quatro ultimos
-          - 24 últimos
-          - vinte e quatro últimos
+
     params:
       ticker:
         source:
@@ -407,7 +363,7 @@ intents:
       list:
         include:
           - cronograma
-          - calendário
+          - calendario
           - agenda
           - lista
           - listar
@@ -460,7 +416,6 @@ intents:
       latest:
         include:
           - ultimo
-          - última
           - hoje
           - agora
           - fechamento
@@ -469,60 +424,46 @@ intents:
       list:
         include:
           - ultimos
-          - últimas
           - historico
-          - histórico
           - lista
           - listar
           - traga
           - quais
+
     window_keywords:
       months:
         1:
           - 1 mes
           - um mes
-          - 1 mês
-          - um mês
           - ultimo mes
-          - último mes
-          - ultimo mês
-          - último mês
         3:
           - 3 meses
           - tres meses
           - trimestre
           - ultimos 3 meses
-          - últimos 3 meses
         6:
+          - semestre
           - 6 meses
           - seis meses
           - ultimos 6 meses
-          - últimos 6 meses
         12:
           - 12 meses
           - doze meses
           - ano
           - anual
           - ultimo ano
-          - último ano
       count:
         1:
           - ultimo dia
-          - último dia
           - ontem
           - cambio de ontem
           - cotacao de ontem
-          - cotação de ontem
         5:
           - ultimos 5 dias
-          - últimos 5 dias
           - ultima semana
-          - última semana
         20:
           - ultimos 20 dias
-          - últimos 20 dias
-          - ultimo mes de pregão
-          - último mes de pregão
+          - ultimo mes de pregao
 
   history_b3_indexes:
     default_agg: list
@@ -536,11 +477,11 @@ intents:
       - count:5
       - count:20
       - count:60
+
     agg_keywords:
       latest:
         include:
           - ultimo
-          - última
           - hoje
           - agora
           - fechamento
@@ -549,15 +490,13 @@ intents:
       list:
         include:
           - ultimos
-          - últimas
           - historico
-          - histórico
           - lista
           - listar
           - traga
           - quais
           - historico do ifix
-          - histórico do ifix
+
     window_keywords:
       months:
         3:
@@ -565,49 +504,36 @@ intents:
           - 3 meses
           - tres meses
           - ultimos 3 meses
-          - últimos 3 meses
         6:
           - semestre
           - 6 meses
           - seis meses
           - ultimos 6 meses
-          - últimos 6 meses
         12:
           - ano
           - anual
           - 12 meses
           - doze meses
           - ultimo ano
-          - último ano
           - ultimos 12 meses
-          - últimos 12 meses
         24:
           - 2 anos
           - dois anos
           - 24 meses
           - ultimos 24 meses
-          - últimos 24 meses
       count:
         1:
           - ultimo dia
-          - último dia
           - ontem
           - fechamento de ontem
         5:
           - ultimos 5 dias
-          - últimos 5 dias
           - ultima semana
-          - última semana
         20:
           - ultimos 20 dias
-          - últimos 20 dias
           - ultimos 20 pregoes
-          - últimos 20 pregoes
-          - ultimos 20 pregões
-          - últimos 20 pregões
         60:
           - ultimos 60 dias
-          - últimos 60 dias
 
   history_market_indicators:
     default_agg: list
@@ -620,11 +546,11 @@ intents:
       - count:1
       - count:5
       - count:20
+
     agg_keywords:
       latest:
         include:
           - ultimo
-          - última
           - hoje
           - agora
           - ontem
@@ -634,57 +560,42 @@ intents:
       list:
         include:
           - ultimos
-          - últimas
           - historico
-          - histórico
           - lista
           - listar
           - traga
           - quais
+
     window_keywords:
       months:
         1:
           - 1 mes
           - um mes
-          - 1 mês
-          - um mês
           - ultimo mes
-          - último mes
-          - ultimo mês
-          - último mês
         3:
+          - trimestre
           - 3 meses
           - tres meses
-          - trimestre
           - ultimos 3 meses
-          - últimos 3 meses
         6:
+          - semestre
           - 6 meses
           - seis meses
           - ultimos 6 meses
-          - últimos 6 meses
         12:
+          - ano
           - 12 meses
           - doze meses
-          - ano
-          - anual
           - ultimo ano
-          - último ano
-          - ultimos 12 meses
-          - últimos 12 meses
       count:
         1:
           - ultimo dia
-          - último dia
           - ontem
         5:
           - ultimos 5 dias
-          - últimos 5 dias
           - ultima semana
-          - última semana
         20:
           - ultimos 20 dias
-          - últimos 20 dias
 
   dividendos_yield:
     default_agg: list
@@ -699,22 +610,21 @@ intents:
       - count:6
       - count:12
       - count:24
+
     agg_keywords:
       latest:
         include:
           - ultimo dy
           - dy atual
           - ultimo pagamento
-          - último pagamento
         window: count:1
       list:
         include:
           - historico
-          - histórico
           - ultimos
-          - últimos
           - dy mensal
           - dividendos
+
     window_keywords:
       months:
         3:
@@ -730,7 +640,6 @@ intents:
           - 12 meses
           - doze meses
           - ultimo ano
-          - último ano
         24:
           - 2 anos
           - dois anos
@@ -738,29 +647,19 @@ intents:
       count:
         1:
           - ultimo mes
-          - último mes
-          - ultimo mês
-          - último mês
         3:
           - 3 ultimos
           - tres ultimos
-          - 3 últimos
-          - três últimos
         6:
           - 6 ultimos
           - seis ultimos
-          - 6 últimos
-          - seis últimos
         12:
           - 12 ultimos
           - doze ultimos
-          - 12 últimos
-          - doze últimos
         24:
           - 24 ultimos
           - vinte e quatro ultimos
-          - 24 últimos
-          - vinte e quatro últimos
+
     params:
       ticker:
         source:
@@ -788,30 +687,25 @@ intents:
       - count:20
       - count:30
       - count:60
+
     agg_keywords:
       latest:
         include:
           - ultimo
-          - último
           - hoje
           - agora
         window: count:1
       list:
         include:
           - historico
-          - histórico
           - serie
-          - série
           - lista
           - ultimos
-          - últimos
+
     window_keywords:
       months:
         1:
           - ultimo mes
-          - último mes
-          - ultimo mês
-          - último mês
         3:
           - trimestre
           - 3 meses
