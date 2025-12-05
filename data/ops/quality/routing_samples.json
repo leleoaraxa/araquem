@@ -1755,6 +1755,67 @@
       "question": "Historico de dividend yield do VISC11 nos ultimos 18 meses.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Quero um resumo completo do HGLG11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Me mostre um panorama geral do HGLG11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Resumo geral do MXRF11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Panorama do fundo MXRF11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Visao geral do VISC11 como investimento.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Resumo dos principais indicadores de HGLG11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Principais pontos do fundo MXRF11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Quais os destaques do VISC11 hoje?",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Apresenta um overview detalhado do HGLG11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Ficha resumo do fundo MXRF11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Ficha tecnica resumida do VISC11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
+    },
+    {
+      "question": "Comparativo de overview entre HGLG11, MXRF11 e VISC11.",
+      "expected_intent": "fii_overview",
+      "expected_entity": "fii_overview"
     }
+
   ]
 }
