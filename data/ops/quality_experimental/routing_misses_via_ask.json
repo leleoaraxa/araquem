@@ -1,55 +1,5 @@
 [
   {
-    "idx": 217,
-    "question": "r² do HGLG11",
-    "expected_intent": "fiis_financials_risk",
-    "expected_entity": "fiis_financials_risk",
-    "got_intent": "ticker_query",
-    "got_entity": "fiis_precos",
-    "score": 0.0,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "r² do hglg11",
-    "tokens": [
-      "r²",
-      "do",
-      "hglg11"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": 0.0,
-      "client_fiis_dividends_evolution": 0.0,
-      "client_fiis_performance_vs_benchmark": 0.0,
-      "fiis_cadastro": 0.0,
-      "fii_overview": 0.0,
-      "fiis_precos": 0.0,
-      "fiis_dividendos": 0.0,
-      "fiis_yield_history": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 0.0,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": 0.0,
-      "fiis_processos": 0.0,
-      "fiis_rankings": 0.0,
-      "history_b3_indexes": 0.0,
-      "history_currency_rates": 0.0,
-      "history_market_indicators": 0.0,
-      "dividendos_yield": 0.0,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": 0.0
-    },
-    "thresholds": {
-      "min_score": 0.9,
-      "min_gap": 0.0,
-      "gap": 0.0,
-      "accepted": false,
-      "source": "final"
-    }
-  },
-  {
     "idx": 282,
     "question": "Como está o VISC11 hoje na B3?",
     "expected_intent": "fiis_precos",
