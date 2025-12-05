@@ -1405,6 +1405,96 @@
       "question": "qual a selic do mês?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "Quanto está o HGLG11 hoje?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Qual a cotação atual do KNRI11?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Me mostra o preço do VINO11 agora",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Qual foi o último preço negociado de XPLG11?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Como está o VISC11 hoje na B3?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Como está VINO agora?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Quanto fechou o HGLG11 ontem?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Preço de fechamento de ontem do KNRI11",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Qual foi a cotação de ontem do VISC11?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Como o XPLG11 fechou no pregão de ontem?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Qual foi a máxima do HGLG11 em 27/10/2025?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Mínima do HGLG11 no dia 27/10/2025",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Preço máximo do KNRI11 em 01/08/2024",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Preço mínimo do VINO11 em 10/09/2023",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "O HGLG11 subiu ou caiu hoje?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Quanto o KNRI11 variou hoje em porcentagem?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Alta ou baixa do VINO11 no pregão de hoje?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Qual foi a variação em reais do XPLG11 hoje?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
     }
   ]
 }
