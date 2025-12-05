@@ -1,114 +1,12 @@
 [
   {
-    "idx": 182,
-    "question": "segmento do HGLG11",
-    "expected_intent": "fiis_cadastro",
-    "expected_entity": "fiis_cadastro",
-    "got_intent": "fiis_cadastro",
-    "got_entity": "fii_overview",
-    "score": 1.1,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "segmento do hglg11",
-    "tokens": [
-      "segmento",
-      "do",
-      "hglg11"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": 0.0,
-      "client_fiis_dividends_evolution": 0.0,
-      "client_fiis_performance_vs_benchmark": 0.0,
-      "fiis_cadastro": 1.1,
-      "fii_overview": 1.1,
-      "fiis_precos": -1.1,
-      "fiis_dividendos": 0.0,
-      "fiis_yield_history": -1.1,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": 0.0,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": -1.1,
-      "fiis_processos": 0.0,
-      "fiis_rankings": 0.0,
-      "history_b3_indexes": 0.0,
-      "history_currency_rates": 0.0,
-      "history_market_indicators": 0.0,
-      "dividendos_yield": 0.0,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": -1.1
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.0,
-      "accepted": false,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 245,
-    "question": "como esta o MXRF11 hoje",
-    "expected_intent": "fiis_precos",
-    "expected_entity": "fiis_precos",
-    "got_intent": "fii_overview",
-    "got_entity": "fii_overview",
-    "score": 2.8049999999999997,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "como esta o mxrf11 hoje",
-    "tokens": [
-      "como",
-      "esta",
-      "o",
-      "mxrf11",
-      "hoje"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": 0.0,
-      "client_fiis_dividends_evolution": 0.0,
-      "client_fiis_performance_vs_benchmark": 0.0,
-      "fiis_cadastro": 0.0,
-      "fii_overview": 3.3,
-      "fiis_precos": 1.1,
-      "fiis_dividendos": 0.0,
-      "fiis_yield_history": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": -1.1,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": 1.1,
-      "fiis_processos": 0.0,
-      "fiis_rankings": 0.0,
-      "history_b3_indexes": 1.1,
-      "history_currency_rates": 1.1,
-      "history_market_indicators": 1.1,
-      "dividendos_yield": 0.0,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 1.8699999999999997,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
     "idx": 282,
     "question": "Como está o VISC11 hoje na B3?",
     "expected_intent": "fiis_precos",
     "expected_entity": "fiis_precos",
-    "got_intent": "fii_overview",
-    "got_entity": "fii_overview",
-    "score": 1.8699999999999997,
+    "got_intent": "fiis_cadastro",
+    "got_entity": "fiis_precos",
+    "score": 0.935,
     "status": {
       "reason": "ok",
       "message": "ok"
@@ -129,7 +27,7 @@
       "client_fiis_dividends_evolution": 0.0,
       "client_fiis_performance_vs_benchmark": 0.0,
       "fiis_cadastro": 1.1,
-      "fii_overview": 2.1999999999999997,
+      "fii_overview": -2.2,
       "fiis_precos": 1.1,
       "fiis_dividendos": 0.0,
       "fiis_yield_history": 0.0,
@@ -143,58 +41,6 @@
       "history_b3_indexes": 1.1,
       "history_currency_rates": 1.1,
       "history_market_indicators": 1.1,
-      "dividendos_yield": 0.0,
-      "carteira_enriquecida": 0.0,
-      "macro_consolidada": 0.0
-    },
-    "thresholds": {
-      "min_score": 1.0,
-      "min_gap": 0.2,
-      "gap": 0.9349999999999996,
-      "accepted": true,
-      "source": "final"
-    }
-  },
-  {
-    "idx": 296,
-    "question": "Quanto está o IFIX hoje?",
-    "expected_intent": "history_b3_indexes",
-    "expected_entity": "history_b3_indexes",
-    "got_intent": "fiis_precos",
-    "got_entity": "fiis_precos",
-    "score": 1.87,
-    "status": {
-      "reason": "ok",
-      "message": "ok"
-    },
-    "normalized": "quanto esta o ifix hoje ",
-    "tokens": [
-      "quanto",
-      "esta",
-      "o",
-      "ifix",
-      "hoje"
-    ],
-    "intent_scores": {
-      "ticker_query": 0.0,
-      "client_fiis_positions": -1.1,
-      "client_fiis_dividends_evolution": 0.0,
-      "client_fiis_performance_vs_benchmark": 1.1,
-      "fiis_cadastro": 1.1,
-      "fii_overview": -2.2,
-      "fiis_precos": 2.2,
-      "fiis_dividendos": 0.0,
-      "fiis_yield_history": 0.0,
-      "fiis_financials_snapshot": 0.0,
-      "fiis_financials_revenue_schedule": -1.1,
-      "fiis_financials_risk": 0.0,
-      "fiis_imoveis": 0.0,
-      "fiis_noticias": 0.0,
-      "fiis_processos": -1.1,
-      "fiis_rankings": 1.1,
-      "history_b3_indexes": 2.2,
-      "history_currency_rates": 1.1,
-      "history_market_indicators": 0.0,
       "dividendos_yield": 0.0,
       "carteira_enriquecida": 0.0,
       "macro_consolidada": 0.0

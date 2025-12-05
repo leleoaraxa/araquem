@@ -1,22 +1,35 @@
 {
-  "timestamp": "2025-12-05T11:00:50.201955+00:00",
+  "timestamp": "2025-12-05T16:15:35.885109+00:00",
   "entities": {
     "fiis_precos": {
       "invalid_tokens": [],
       "conflicts_with": {
+        "fiis_noticias": [
+          "hoje"
+        ],
         "history_b3_indexes": [
           "fechamento",
+          "hoje",
+          "ontem",
           "variacao"
         ],
         "history_currency_rates": [
           "cotacao",
+          "hoje",
+          "ontem",
           "variacao"
+        ],
+        "history_market_indicators": [
+          "hoje",
+          "ontem"
         ]
       },
       "accent_violations": [],
       "missing_anti_tokens": [
         "cotacao",
         "fechamento",
+        "hoje",
+        "ontem",
         "variacao"
       ],
       "prohibited_tokens": []
@@ -111,6 +124,7 @@
         "indice",
         "indices",
         "inpc",
+        "ipca",
         "receita"
       ],
       "prohibited_tokens": []
@@ -118,6 +132,9 @@
     "fiis_financials_snapshot": {
       "invalid_tokens": [],
       "conflicts_with": {
+        "fii_overview": [
+          "setor do <ticker>"
+        ],
         "fiis_financials_revenue_schedule": [
           "receita"
         ],
@@ -132,7 +149,8 @@
         "imoveis",
         "imoveis do <ticker>",
         "ocupacao",
-        "receita"
+        "receita",
+        "setor do <ticker>"
       ],
       "prohibited_tokens": []
     },
@@ -152,7 +170,8 @@
       "missing_anti_tokens": [
         "comparacao",
         "comparar",
-        "ifil"
+        "ifil",
+        "ifix"
       ],
       "prohibited_tokens": []
     },
@@ -179,6 +198,9 @@
         "fiis_dividendos": [
           "mes"
         ],
+        "fiis_precos": [
+          "hoje"
+        ],
         "history_b3_indexes": [
           "hoje"
         ],
@@ -201,13 +223,17 @@
     "fii_overview": {
       "invalid_tokens": [],
       "conflicts_with": {
+        "fiis_financials_snapshot": [
+          "setor do <ticker>"
+        ],
         "history_market_indicators": [
           "indicadores"
         ]
       },
       "accent_violations": [],
       "missing_anti_tokens": [
-        "indicadores"
+        "indicadores",
+        "setor do <ticker>"
       ],
       "prohibited_tokens": []
     },
@@ -273,9 +299,10 @@
       "accent_violations": [],
       "missing_anti_tokens": [
         "cambio",
-        "dolar",
         "inflacao",
-        "juros"
+        "ipca",
+        "juros",
+        "selic"
       ],
       "prohibited_tokens": []
     },
@@ -297,6 +324,10 @@
         "fiis_noticias": [
           "atualizacao",
           "hoje"
+        ],
+        "fiis_precos": [
+          "hoje",
+          "ontem"
         ],
         "history_b3_indexes": [
           "d-1",
@@ -329,8 +360,10 @@
         "indicadores",
         "inflacao",
         "inpc",
+        "ipca",
         "juros",
-        "ontem"
+        "ontem",
+        "selic"
       ],
       "prohibited_tokens": []
     },
@@ -346,6 +379,8 @@
         ],
         "fiis_precos": [
           "fechamento",
+          "hoje",
+          "ontem",
           "variacao"
         ],
         "fiis_rankings": [
@@ -374,6 +409,7 @@
         "fechamento",
         "hoje",
         "ifil",
+        "ifix",
         "indice",
         "indices",
         "ontem",
@@ -393,6 +429,8 @@
         ],
         "fiis_precos": [
           "cotacao",
+          "hoje",
+          "ontem",
           "variacao"
         ],
         "history_b3_indexes": [
@@ -420,7 +458,6 @@
         "cotacao",
         "d-1",
         "d1",
-        "dolar",
         "historico",
         "hoje",
         "ontem",
@@ -432,7 +469,7 @@
   },
   "summary": {
     "total_entities": 16,
-    "total_conflicts": 54,
+    "total_conflicts": 62,
     "needs_fix": true
   }
 }

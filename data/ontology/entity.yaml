@@ -319,7 +319,6 @@ intents:
     - treynor
     - beta
     - r2
-    - r²
     - coeficiente de determinacao
     - noticia
     - noticias
@@ -669,7 +668,6 @@ intents:
     - mdd
     - drawdown
     - r2
-    - r²
     - coeficiente de determinacao
     - ipca
     - juros
@@ -1172,7 +1170,6 @@ intents:
     - drawdown
     - mdd
     - r2
-    - r²
     - coeficiente de determinacao
     - coeficiente_determinacao
     - vr
@@ -1251,10 +1248,8 @@ intents:
     - indicadores de risco
     - indicadores quantitativos do fundo
     - r2 do
-    - r² do
     - coeficiente de determinacao do
     - r2 do fundo
-    - r² do fundo
     - fiis com menor drawdown
     - fiis com menor mdd
     - fundos com menor drawdown
@@ -1612,7 +1607,6 @@ intents:
     - beta
     - noticia do
     - r2
-    - r²
     - indice
     - historico
     - se comportou
