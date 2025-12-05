@@ -513,6 +513,7 @@ intents:
     - pontos principais do <ticker>
     - destaques do <ticker>
     - destaques do <ticker> hoje
+    - quais os destaques do <ticker> hoje
     - ficha tecnica do <ticker>
     - visao geral do <ticker>
     - contexto geral do <ticker>
@@ -632,6 +633,7 @@ intents:
     - variacao diaria do ifix
     - variacao diaria do ifil
     - quanto esta o ifix hoje
+    - destaques
   entities:
   - fiis_precos
 - name: fiis_dividendos
@@ -2001,7 +2003,6 @@ intents:
     include:
     - dy do fundo
     - dy do <ticker>
-    - dividend yield
     - yield de dividendos
     - yield mensal
     - yield acumulado
@@ -2187,8 +2188,12 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
+  - dividend yield do <ticker> em
+  - dy do <ticker> em
   - qual foi o dividend yield
   - qual foi o dy do
   client_fiis_dividends_evolution:
   - dy
   - dividend yield
+  - pagou de dividendos e dy
+  - pagou de dividendos
