@@ -1495,6 +1495,47 @@
       "question": "Qual foi a variação em reais do XPLG11 hoje?",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Quanto está o IFIX hoje?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi o fechamento do IBOV ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Variação do CDI este mês",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Como está o dólar hoje?",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Quais as últimas notícias do HGLG11?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "Teve fato relevante do KNRI11 hoje?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "Resumo das notícias recentes sobre VINO11",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "Alguma notícia importante sobre XPLG11 nesta semana?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
     }
+
   ]
 }
