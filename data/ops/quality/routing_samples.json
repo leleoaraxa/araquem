@@ -1525,7 +1525,236 @@
       "question": "Alguma notícia importante sobre XPLG11 nesta semana?",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
+    },
+    {
+      "question": "Máxima e mínima do MXRF11 em 27/10/2025.",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Dividendos do HGLG11 nos últimos 12 meses.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Dividendos do MXRF11 este mês.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Quais os dividendos do VISC11 esse mês?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Historico de dividendos do HGLG11.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Pagamentos de dividendos do MXRF11 nos últimos meses.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Dividendos do VISC11 nos últimos 12 meses.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Quais foram os dividendos pagos pelo HGLG11 nos últimos meses?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Quais os proventos do MXRF11 esse mês?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Proventos de VISC11 nos últimos 12 meses.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Qual foi o último dividendo pago por HGLG11?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Qual o próximo pagamento de dividendos do MXRF11?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Quanto o VISC11 pagou de dividendos nos últimos 12 meses?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Total de dividendos distribuídos por HGLG11 neste ano.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Total de dividendos distribuídos por MXRF11 nos últimos 12 meses.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "Dividendos acumulados de VISC11 no último ano.",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "question": "DY histórico do HGLG11 nos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY mensal do MXRF11 nos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Histórico de dividend yield do VISC11 nos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual foi o DY de HGLG11 nos últimos 12 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual foi o DY de MXRF11 nos últimos 12 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual foi o DY de VISC11 nos últimos 12 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Série histórica de DY do HGLG11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Série histórica de DY do MXRF11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Série histórica de DY do VISC11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Evolução do DY de HGLG11 ao longo dos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Evolução do DY de MXRF11 ao longo dos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Evolução do DY de VISC11 ao longo dos últimos 24 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY mensal do HGLG11 nos últimos 12 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY mensal do MXRF11 nos últimos 12 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY mensal do VISC11 nos últimos 12 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Grafico com o dy mensal do MXRF11 nos ultimos 2 anos.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual o DY historico do HGLG11?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Me mostra o historico de dividend yield do MXRF11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Quero ver o dy por mes do VISC11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Como foi o dy mensal do HGLG11 nos ultimos 12 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual foi o dy do MXRF11 nos ultimos 24 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Evolucao do dy do VISC11 desde 2023.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Mostra o dy 12m mes a mes do HGLG11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Qual foi o dividend yield do MXRF11 em outubro de 2024?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY de janeiro de 2024 do VISC11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Serie historica de dy do HGLG11 por mes.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Historico completo de dy do MXRF11 ao longo dos ultimos anos.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Como o dy mensal do VISC11 se comportou nos ultimos 24 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "DY por mes do HGLG11 em 2023.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Historico de dividend yield do VISC11 nos ultimos 18 meses.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
     }
-
   ]
 }

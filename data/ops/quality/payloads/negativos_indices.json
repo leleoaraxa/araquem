@@ -20,6 +20,27 @@
       "question": "Variação do CDI este mês",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Quanto está o IFIX hoje?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi o fechamento do IBOV ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Como está o dólar hoje?",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Variação do CDI este mês",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
     }
+
   ]
 }
