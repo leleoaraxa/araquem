@@ -580,8 +580,8 @@ intents:
     - quanto esta <ticker>
     - quanto ta o <ticker>
     - quanto ta <ticker>
-    - como esta o <ticker> hoje
-    - como esta <ticker> hoje
+    - como esta o <ticker> hoje na b3
+    - como esta <ticker> hoje na b3
     - como esta o <ticker> na b3
     - como esta <ticker> na b3
     - fechamento de hoje do <ticker>
