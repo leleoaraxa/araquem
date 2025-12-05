@@ -802,6 +802,9 @@ intents:
   phrases:
     include:
     - dy historico
+    - qual foi o dividend yield do <ticker> em
+    - dividend yield do <ticker> em
+    - qual foi o dy do <ticker> em
     - historico de dy
     - dy por mes
     - dy mensal
@@ -1933,14 +1936,10 @@ intents:
 - name: dividendos_yield
   tokens:
     include:
-    - dy
-    - yield
-    - dividend_yield
     - rendimento_percentual
     - comparativo
     - comparacao
     - comparar
-    - dividendos
     - dividendos dy
     - dividendos yield
     - dividendos e dy
@@ -1984,6 +1983,7 @@ intents:
     - rendimento percentual
     - rentabilidade via dividendos
     - dividendos e dy do
+    - dividendos e dy do <ticker>
     - dividendos e dividend yield do
     - dividendos e yield do
     - historico de dividendos e dy do
@@ -1995,6 +1995,7 @@ intents:
     - historico de dividendos e dy de <ticker>
     - historico de dividendos e dividend yield de <ticker>
     - historico de dividendos e yield de <ticker>
+    - dividendos e dy acumulado do <ticker>
     - dividendos e yield acumulado do <ticker>
     - dividendos e dy acumulado do <ticker>
     - comparar dividendos e dy do <ticker> e <ticker>
