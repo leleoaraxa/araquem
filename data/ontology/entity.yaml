@@ -265,6 +265,8 @@ intents:
     - classificacao
     - setor
     - subsetor
+    - segmento
+    - segmentos
     - gestao
     - publico
     - alvo
@@ -374,7 +376,6 @@ intents:
     - tipo
     - tipo_de_fundo
     - categoria
-    - segmento
     - mandato
     - objetivo
     - descricao
@@ -387,9 +388,6 @@ intents:
     - resumo
     - overview
     - situacao
-    - como esta
-    - como ta
-    - situacao geral
     - perfil
     - caracteristicas
     - visao geral
@@ -472,6 +470,8 @@ intents:
     - hoje
     - agora
     - b3
+    - segmento
+    - segmentos
   phrases:
     include:
     - cnpj do <ticker>
@@ -494,7 +494,6 @@ intents:
     - o que e o <ticker>
     - resumo do
     - overview do
-    - como esta o
     - situacao do
     - visao geral do
     - resumo do fundo
@@ -608,6 +607,7 @@ intents:
     - variacao diaria do ibov
     - variacao diaria do ifix
     - variacao diaria do ifil
+    - quanto esta o ifix hoje
   entities:
   - fiis_precos
 - name: fiis_dividendos
@@ -1778,6 +1778,7 @@ intents:
     - historico do ifix nos ultimos
     - como o ifix se comportou
     - como o ifix se comportou em
+    - quanto esta o ifix hoje
     exclude: []
   entities:
   - history_b3_indexes
@@ -2159,4 +2160,3 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
-
