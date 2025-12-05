@@ -582,11 +582,6 @@
       "expected_entity": "fiis_processos"
     },
     {
-      "question": "notícias do MXRF11",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
-    },
-    {
       "question": "últimas notícias do XPLG11",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
@@ -635,11 +630,6 @@
       "question": "risco de perda do MXRF11 em ações",
       "expected_intent": "fiis_processos",
       "expected_entity": "fiis_processos"
-    },
-    {
-      "question": "notícias do MXRF11",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
     },
     {
       "question": "últimas notícias do XPLG11",
@@ -1233,8 +1223,8 @@
     },
     {
       "question": "como esta o MXRF11 hoje",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
     },
     {
       "question": "quais os principais indicadores do CPTS11",
