@@ -202,6 +202,12 @@ intents:
     - evolucao
     - dy
     - yield
+    - processo
+    - processos
+    - judicial
+    - judiciais
+    - acao
+    - acoes
   phrases:
     include:
     - desempenho da minha carteira
@@ -311,7 +317,7 @@ intents:
     - treynor
     - beta
     - r2
-    - r2
+    - r²
     - coeficiente de determinacao
     - noticia
     - noticias
@@ -456,6 +462,16 @@ intents:
     - inflacao
     - cambio
     - curva
+    - dolar
+    - usd
+    - euro
+    - eur
+    - ifix
+    - ibov
+    - ibovespa
+    - hoje
+    - agora
+    - b3
   phrases:
     include:
     - cnpj do <ticker>
@@ -467,8 +483,7 @@ intents:
     - nome do fundo <ticker>
     - razao social do <ticker>
     - classe do <ticker>
-    - segmento do <ticker>
-    - setor do <ticker> (institucional)
+    - setor do <ticker>
     - tipo de fundo do <ticker>
     - mandato do <ticker>
     - objetivo do <ticker>
@@ -654,7 +669,7 @@ intents:
     - mdd
     - drawdown
     - r2
-    - r2
+    - r²
     - coeficiente de determinacao
     - ipca
     - juros
@@ -1001,6 +1016,8 @@ intents:
     - cronograma
     - vencimento
     - vencimentos
+    - vence
+    - vencem
     - prazo
     - prazos
     - buckets
@@ -1077,6 +1094,8 @@ intents:
     - quanto vence em 3 6m do
     - quanto vence em 6 12m do
     - quanto vence acima 36m do
+     - quanto vence em
+    - quanto vence em 12 meses
     - vencimento em
     - indexadores de receita do
     - receitas 0 3m do
@@ -1154,7 +1173,7 @@ intents:
     - drawdown
     - mdd
     - r2
-    - r2
+    - r²
     - coeficiente de determinacao
     - coeficiente_determinacao
     - vr
@@ -1233,10 +1252,10 @@ intents:
     - indicadores de risco
     - indicadores quantitativos do fundo
     - r2 do
-    - r2 do
+    - r² do
     - coeficiente de determinacao do
     - r2 do fundo
-    - r2 do fundo
+    - r² do fundo
     - fiis com menor drawdown
     - fiis com menor mdd
     - fundos com menor drawdown
@@ -1467,6 +1486,10 @@ intents:
     - litgio
     - causa
     - causas
+    - perda
+    - perdas
+    - condenacao
+    - indenizacao
     - autor
     - reu
     - re
@@ -1487,6 +1510,9 @@ intents:
     - disputas
     - demandas
     exclude:
+    - compare
+    - comparar
+    - comparacao
     - pl
     - patrimonio
     - vacancia
@@ -1527,6 +1553,8 @@ intents:
     include:
     - fiis da carteira com mais processos
     - quais fiis tem mais processos
+    - risco de perda em acoes do
+    - risco de perder acao do
     - processos do
     - acoes judiciais do
     - acoes contra o
@@ -1585,6 +1613,7 @@ intents:
     - preco
     - media do
     - variacao diaria
+    - variacao do <ticker>
     - pontos
     - fechamento
     - hoje
@@ -1592,7 +1621,7 @@ intents:
     - beta
     - noticia do
     - r2
-    - r2
+    - r²
     - indice
     - historico
     - se comportou
@@ -1698,10 +1727,13 @@ intents:
     - alta do <ticker>
     - baixa do <ticker>
     - quanto esta o <ticker>
+    - minha carteira
+    - minha carteira de fiis
+    - meus fiis
   entities:
   - fiis_rankings
 - name: history_b3_indexes
-  weight: 2
+  weight: 3
   options:
     ignore_tickers: true
   tokens:
@@ -1759,7 +1791,7 @@ intents:
   entities:
   - history_b3_indexes
 - name: history_currency_rates
-  weight: 2
+  weight: 3
   options:
     ignore_tickers: true
   tokens:
@@ -1950,6 +1982,10 @@ intents:
     - somente dividendos
     - quanto pagou de dividendos
     - pagou de dividendos
+    - o que e
+    - significado
+    - conceito
+    - explicar
   phrases:
     include:
     - dy do fundo

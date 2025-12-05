@@ -473,8 +473,8 @@
     },
     {
       "question": "DY mensal do MCCI11",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
     },
     {
       "question": "top 10 FIIs por dividend yield 12m",
@@ -1023,8 +1023,8 @@
     },
     {
       "question": "patrimônio e número de cotistas do MXRF11",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "vacância física do HGLG11",
@@ -1247,9 +1247,9 @@
       "expected_entity": "fiis_yield_history"
     },
     {
-      "question": "quanto o CPTS11 pagou de dividendos e dy em 2023-08",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "quanto o CPTS11 pagou de dividendos e dy em 08/2023",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
     },
     {
       "question": "comparativo de dy mensal entre HGLG11 e VISC11",
@@ -1277,14 +1277,14 @@
       "expected_entity": "carteira_enriquecida"
     },
     {
-      "question": "ipca e selic em 2025-11-12",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
+      "question": "ipca e selic em 12/11/2025",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
     },
     {
-      "question": "ifix e ibov do dia 2025-11-14",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
+      "question": "ifix e ibov do dia 15/11/2025",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
     },
     {
       "question": "CNPJ do HGLG11?",
@@ -1328,8 +1328,8 @@
     },
     {
       "question": "O que é dividend yield em FIIs?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
     },
     {
       "question": "preço do HGLG11",
@@ -1362,7 +1362,7 @@
       "identifiers": {"tickers": ["HGRE11"]}
     },
     {
-      "question": "compare HGLG11 e MXRF11",
+      "question": "compare HGLG11 e MXRF11 em termos de preço",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos",
       "identifiers": {"tickers": ["HGLG11", "MXRF11"]}
@@ -1393,8 +1393,8 @@
     },
     {
       "question": "qual a selic do mês?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
     },
     {
       "question": "Quanto está o HGLG11 hoje?",
