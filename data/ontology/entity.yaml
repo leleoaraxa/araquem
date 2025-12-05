@@ -477,8 +477,6 @@ intents:
     - ifix
     - ibov
     - ibovespa
-    - hoje
-    - agora
     - b3
     - segmento
     - segmentos
@@ -514,6 +512,7 @@ intents:
     - principais pontos do <ticker>
     - pontos principais do <ticker>
     - destaques do <ticker>
+    - destaques do <ticker> hoje
     - ficha tecnica do <ticker>
     - visao geral do <ticker>
     - contexto geral do <ticker>
@@ -1973,6 +1972,7 @@ intents:
     - dividendos e yield
     - dy e dividendos
     - yield e dividendos
+    - pagou
     - comparacao de dividendos
     - comparativo de dividendos e dy
     exclude:
@@ -2187,3 +2187,8 @@ anti_tokens:
   - historico de dy
   - somente dividendos
   - apenas dividendos
+  - qual foi o dividend yield
+  - qual foi o dy do
+  client_fiis_dividends_evolution:
+  - dy
+  - dividend yield
