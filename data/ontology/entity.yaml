@@ -380,6 +380,18 @@ intents:
     - identidade
     - informacoes
     - basicas
+    - resumo completo
+    - panorama
+    - panorama geral
+    - panorama do fundo
+    - principais pontos
+    - pontos principais
+    - destaques
+    - destaques do fundo
+    - ficha tecnica
+    - informacoes gerais
+    - contexto
+    - contexto geral
     - regulamento
     - publico_alvo
     - politica
@@ -470,6 +482,7 @@ intents:
     - b3
     - segmento
     - segmentos
+    - snapshot
   phrases:
     include:
     - cnpj do <ticker>
@@ -491,15 +504,29 @@ intents:
     - descricao do fundo <ticker>
     - o que e o <ticker>
     - resumo do
+    - resumo do <ticker>
+    - resumo completo do <ticker>
     - overview do
+    - overview do <ticker>
+    - panorama do <ticker>
+    - panorama geral do <ticker>
+    - panorama do fundo <ticker>
+    - principais pontos do <ticker>
+    - pontos principais do <ticker>
+    - destaques do <ticker>
+    - ficha tecnica do <ticker>
+    - visao geral do <ticker>
+    - contexto geral do <ticker>
+    - situacao geral do <ticker>
+    - ficha tecnica resumida do <ticker>
+    - panorama do fundo
+    - panorama do fundo <ticker>
     - situacao do
+    - situacao geral do fundo
     - visao geral do
     - resumo do fundo
     - overview do fundo
-    - resumo do <ticker>
-    - overview do <ticker>
     - visao geral do fundo
-    - situacao geral do fundo
     - foto do fundo
     - principais indicadores do
     exclude: []
@@ -726,7 +753,7 @@ intents:
   entities:
   - fiis_dividendos
 - name: fiis_yield_history
-  weight: 2
+  weight: 3
   tokens:
     include:
     - dy
@@ -802,9 +829,6 @@ intents:
   phrases:
     include:
     - dy historico
-    - qual foi o dividend yield do <ticker> em
-    - dividend yield do <ticker> em
-    - qual foi o dy do <ticker> em
     - historico de dy
     - dy por mes
     - dy mensal
@@ -817,6 +841,9 @@ intents:
     - evolucao do dy
     - evolucao do dy do
     - dy em
+    - qual foi o dividend yield do <ticker> em
+    - dividend yield do <ticker> em
+    - qual foi o dy do <ticker> em
     exclude: []
   entities:
   - fiis_yield_history
@@ -2007,6 +2034,12 @@ intents:
     - dy e dividendos do fundo
     - dy e dividendos do fundo <ticker>
     - dy e dividendos do fii <ticker>
+    - quanto o <ticker> pagou de dividendos e dy em
+    - quanto pagou de dividendos e dy em
+    - o que e dividend yield
+    - o que e dividend yield em fiis
+    - significado de dividend yield
+    - explicacao de dividend yield
     exclude: []
   entities:
   - dividendos_yield
