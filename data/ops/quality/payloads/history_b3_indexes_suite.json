@@ -1,0 +1,80 @@
+{
+  "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1).",
+  "samples": [
+    {
+      "question": "Ibovespa hoje (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Pontos do IFIX de ontem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Quanto variou o IFIL no dia?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Variação diária do IBOV",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Histórico recente do IFIX (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Fechamento de ontem do Ibovespa em pontos e porcentagem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi a variação do IFIX ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Como o IFIX se comportou nos últimos 10 pregões?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Série histórica do IFIL nos últimos 30 dias",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Pontos do IBOV em D-1",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Variação do IFIX no fechamento de hoje (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Quanto o IFIL subiu ou caiu ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Histórico do IBOV nos últimos 5 dias úteis",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi a variação diária do IFIX em março de 2025?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Resumo das últimas variações do IFIX e do IFIL",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    }
+  ]
+}
