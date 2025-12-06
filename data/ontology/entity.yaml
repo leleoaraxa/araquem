@@ -1,7 +1,7 @@
 normalize:
-- lower
-- strip_accents
-- strip_punct
+  - lower
+  - strip_accents
+  - strip_punct
 tokenization:
   split: \b
 weights:
@@ -21,2231 +21,2249 @@ buckets:
     - fiis_precos
     - fiis_processos
     - fiis_yield_history
-
   B:
     - carteira_enriquecida
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
     - client_fiis_positions
     - fiis_rankings
-
   C:
     - history_market_indicators
     - history_b3_indexes
     - history_currency_rates
     - macro_consolidada
-
   D: []
 intents:
-- name: ticker_query
-  bucket: A
-  tokens:
-    include:
-    - "[A-Za-z]{4}11"
-    exclude: []
-  phrases:
-    include: []
-    exclude: []
-  entities:
-  - fiis_precos
-  - fiis_dividendos
-  - fii_overview
-  - fiis_financials_risk
-  - fiis_financials_snapshot
-  - fiis_financials_revenue_schedule
-  - fiis_rankings
-  - fiis_yield_history
-  - fiis_processos
-  - fiis_imoveis
-  - dividendos_yield
-  - fiis_cadastro
-  weight: 10
-- name: client_fiis_positions
-  tokens:
-    include:
-    - posicao
-    - posicoes
-    - minhas
-    - minha
-    - meu
-    - custodia
-    - disponivel
-    - quantidade
-    exclude:
-    - cpf
-    - cnpj
-    - documento
-    - imovel
-    - imoveis
-    - galpao
-    - galpoes
-    - vacancia
-    - sharpe
-    - ifix
-    - ifil
-    - ibov
-    - cdi
-    - benchmark
-    - dividendo
-    - dividendos
-    - ranking
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
-    - provento
-    - proventos
-    - renda
-    - rendimento
-    - dy
-    - dy mensal
-    - sortino
-    - beta
-    - risco
-    - ranking
-    - processo
-    - processos
-    - judicial
-  phrases:
-    include:
-    - minhas posicoes
-    - minha carteira
-    - posicoes da minha carteira
-    - quantidade em custodia
-    - quantidade disponivel
-    - rentabilidade da minha posicao
-    exclude: []
-  entities:
-  - client_fiis_positions
-- name: client_fiis_dividends_evolution
-  tokens:
-    include:
-    - dividendos
-    - proventos
-    - renda
-    - evolucao
-    - historico
-    - mensal
-    - carteira
-    - minhas
-    - minha
-    - meu
-    - recebeu
-    - recebidos
-    - mes
-    exclude:
-    - cpf
-    - cnpj
-    - documento
-    - imovel
-    - imoveis
-    - processo
-    - processos
-    - judicial
-    - judiciais
-    - receita
-    - receitas
-    - recebiveis
-    - previsao
-    - payout
-    - reserva
-    - reserva de dividendos
-    - relatorio gerencial
-  phrases:
-    include:
-    - evolucao dos dividendos
-    - historico de dividendos
-    - renda mensal dos meus fiis
-    - dividendos da minha carteira
-    - quanto minha carteira de fiis recebeu de dividendos em cada mes
-    exclude:
-    - dividendos de <ticker>
-    - dividendos do <ticker>
-    - proventos de <ticker>
-    - proventos do <ticker>
-    - rendimento de <ticker>
-    - rendimento do <ticker>
-    - payout e a reserva de dividendos do
-    - payout e reserva de dividendos do
-  entities:
-  - client_fiis_dividends_evolution
-- name: client_fiis_performance_vs_benchmark
-  tokens:
-    include:
-    - performance
-    - rentabilidade
-    - retorno
-    - comparacao
-    - comparar
-    - benchmark
-    - ibov
-    - cdi
-    - carteira
-    - minhas
-    - minha
-    - meu
-    exclude:
-    - cpf
-    - cnpj
-    - documento
-    - imovel
-    - imoveis
-    - acumulo
-    - acumulado
-    - posicao
-    - posicoes
-    - peso
-    - distribuicao
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - renda
-    - historico
-    - evolucao
-    - dy
-    - yield
-    - processo
-    - processos
-    - judicial
-    - judiciais
-    - acao
-    - acoes
-  phrases:
-    include:
-    - desempenho da minha carteira
-    - desempenho da minha carteira de fiis
-    - performance da minha carteira de fiis
-    - rentabilidade da minha carteira vs
-    - rentabilidade da minha carteira de fiis versus
-    - rentabilidade da minha carteira versus
-    - retorno da minha carteira vs
-    - retorno da minha carteira de fiis versus
-    - comparar minha carteira com
-    - minha carteira esta melhor que
-    - minha carteira esta pior que
-    - minha carteira de fiis
-    - retorno da minha carteira de fiis
-    - minha carteira de fiis esta melhor ou pior que
-    - retorno da minha carteira de fiis comparado com
-    - desempenho da minha carteira vs ifix
-    - desempenho da minha carteira vs ifil
-    - desempenho da minha carteira vs ibov
-    - desempenho da minha carteira vs cdi
-    - rentabilidade da minha carteira vs ifix
-    - rentabilidade da minha carteira vs ifil
-    - rentabilidade da minha carteira vs ibov
-    - rentabilidade da minha carteira vs cdi
-    - minha carteira de fiis esta melhor que o ifix
-    - minha carteira de fiis esta melhor que o cdi
-    exclude:
-    - rentabilidade da minha posicao
-    - minha posicao em
-    - peso do
-    - distribuicao da minha carteira
-    - evolucao dos dividendos
-    - historico de dividendos
-    - renda mensal dos meus fiis
-  entities:
-  - client_fiis_performance_vs_benchmark
-- name: fiis_cadastro
-  tokens:
-    include:
-    - cadastro
-    - cnpj
-    - administrador
-    - administradora
-    - custodia
-    - custodiante
-    - site
-    - url
-    - assembleia
-    - nome
-    - exibicao
-    - nome de exibicao
-    - nome de pregao
-    - classificacao
-    - setor
-    - subsetor
-    - segmento
-    - segmentos
-    - gestao
-    - publico
-    - alvo
-    - publico alvo
-    - isin
-    - ipo
-    - peso
-    - ifix
-    - ifil
-    - cotas
-    - cotistas
-    - numero de cotas
-    - numero de cotistas
-    - peso no ifix
-    - peso no ifil
-    - exclusivo
-    - oficial
-    - segmento
-    - segmentos
-    exclude:
-    - abl
-    - alavancagem
-    - alta
-    - baixa
-    - contratos
-    - cotacao
-    - cotacoes
-    - variacao
-    - preco
-    - precos
-    - dividendos
-    - dividendo
-    - dy
-    - yield
-    - ranking
-    - risco
-    - volatilidade
-    - mdd
-    - renda
-    - vacancia
-    - media
-    - patrimonio
-    - patrimonio liquido
-    - payout
-    - pl
-    - provento
-    - proventos
-    - sharpe
-    - sortino
-    - treynor
-    - beta
-    - r2
-    - coeficiente de determinacao
-    - noticia
-    - noticias
-    - fato relevante
-  phrases:
-    include:
-    - cnpj do
-    - qual o cnpj do
-    - administrador do
-    - administradora do
-    - quem administra o
-    - custodiante do
-    - site do
-    - site oficial do
-    - qual o site oficial do
-    - url oficial do
-    - nome de pregao do
-    - nome de exibicao do
-    - classificacao do
-    - setor do
-    - subsetor do
-    - tipo de gestao do
-    - publico alvo do
-    - codigo isin do
-    - data do ipo do
-    - peso no ifix do
-    - peso no ifil do
-    - qual o peso do <ticker> no ifix
-    - qual o peso do <ticker> no ifil
-    - peso do <ticker> no ifix
-    - peso do <ticker> no ifil
-    - numero de cotas emitidas do
-    - numero de cotistas do
-    - quantos cotistas tem o
-    - quantas cotas tem o
-    - fundo exclusivo
-    exclude:
-    - cotacao do
-    - dividendo do
-    - dividendos do
-    - dy do
-    - preco do
-    - preco historico do
-    - vacancia do
-  entities:
-  - fiis_cadastro
-- name: fii_overview
-  weight: 3
-  tokens:
-    include:
-    - cnpj
-    - administrador
-    - administradora
-    - gestora
-    - gestor
-    - nome
-    - razao
-    - razao_social
-    - classe
-    - tipo
-    - tipo_de_fundo
-    - categoria
-    - mandato
-    - objetivo
-    - descricao
-    - identidade
-    - informacoes
-    - basicas
-    - resumo completo
-    - panorama
-    - panorama geral
-    - panorama do fundo
-    - principais pontos
-    - pontos principais
-    - destaques
-    - destaques do fundo
-    - ficha tecnica
-    - informacoes gerais
-    - contexto
-    - contexto geral
-    - regulamento
-    - publico_alvo
-    - politica
-    - resumo
-    - overview
-    - situacao
-    - perfil
-    - caracteristicas
-    - visao geral
-    - foto
-    - fotografia
-    - indicadores
-    exclude:
-    - pl
-    - patrimonio
-    - patrimonio_liquido
-    - vp
-    - valor_patrimonial
-    - vacancia
-    - ocupacao
-    - contratos
-    - imoveis
-    - abl
-    - receita
-    - receitas
-    - recebiveis
-    - preco
-    - cotacao
-    - variacao
-    - alta
-    - baixa
-    - ranking
-    - rank
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - dy
-    - yield
-    - dividendo
-    - dividendos
-    - proventos
-    - sharpe
-    - risco
-    - sortino
-    - beta
-    - volatilidade
-    - mdd
-    - processo
-    - noticia
-    - noticias
-    - fato
-    - fatos
-    - relevante
-    - comunicacao
-    - imprensa
-    - historico
-    - historia
-    - cronograma
-    - calendario
-    - indexador
-    - indexadores
-    - indice
-    - futuro
-    - futura
-    - distribuida
-    - distribuicao
-    - cdi
-    - selic
-    - ipca
-    - igpm
-    - macro
-    - juros
-    - inflacao
-    - cambio
-    - curva
-    - dolar
-    - usd
-    - euro
-    - eur
-    - ifix
-    - ibov
-    - ibovespa
-    - b3
-    - segmento
-    - segmentos
-    - snapshot
-  phrases:
-    include:
-    - cnpj do <ticker>
-    - qual o cnpj do <ticker>
-    - administrador do <ticker>
-    - gestora do <ticker>
-    - quem administra o <ticker>
-    - quem gere o <ticker>
-    - nome do fundo <ticker>
-    - razao social do <ticker>
-    - classe do <ticker>
-    - setor do <ticker>
-    - tipo de fundo do <ticker>
-    - mandato do <ticker>
-    - objetivo do <ticker>
-    - qual o objetivo do fundo
-    - informacoes basicas do <ticker>
-    - identidade do fundo <ticker>
-    - descricao do fundo <ticker>
-    - o que e o <ticker>
-    - resumo do
-    - resumo do <ticker>
-    - resumo completo do <ticker>
-    - overview do
-    - overview do <ticker>
-    - panorama do <ticker>
-    - panorama geral do <ticker>
-    - panorama do fundo <ticker>
-    - principais pontos do <ticker>
-    - pontos principais do <ticker>
-    - destaques do <ticker>
-    - destaques do <ticker> hoje
-    - quais os destaques do <ticker> hoje
-    - ficha tecnica do <ticker>
-    - visao geral do <ticker>
-    - contexto geral do <ticker>
-    - situacao geral do <ticker>
-    - ficha tecnica resumida do <ticker>
-    - panorama do fundo
-    - panorama do fundo <ticker>
-    - situacao do
-    - situacao geral do fundo
-    - visao geral do
-    - resumo do fundo
-    - overview do fundo
-    - visao geral do fundo
-    - foto do fundo
-    - principais indicadores do
-    exclude: []
-  entities:
-  - fii_overview
-- name: fiis_precos
-  weight: 2
-  tokens:
-    include:
-    - preco
-    - cotacao
-    - variacao
-    - fechamento
-    - abertura
-    - alta
-    - baixa
-    - maxima
-    - maxima e minima
-    - maximo
-    - minima
-    - minimo
-    - pregao
-    - hoje
-    - ontem
-    - agora
-    - quanto esta
-    - quanto esta o
-    - quanto ta
-    - quanto ta o
-    - como esta na b3
-    exclude:
-    - dy
-    - dividendos
-    - dividendo
-    - acumulado
-    - rendimento
-    - yield
-    - snapshot
-    - vacancia
-    - setor
-    - segmento
-    - overview
-    - administrador
-    - mandato
-    - patrimonio
-    - processos
-    - noticia
-    - noticias
-    - ranking
-    - ifix
-    - ifil
-    - dolar
-    - usd
-    - euro
-    - eur
-    - cdi
-    - selic
-    - ipca
-    - inflacao
-    - cambio
-    - ibov
-    - ibovespa
-    - caixa
-    - divida
-    - dividas
-  phrases:
-    include:
-    - preco
-    - cotacao
-    - variacao
-    - preco atual
-    - cotacao hoje
-    - valor da cota
-    - historico de preco
-    - historico de cotacao
-    - preco por mes
-    - preco ultimo mes
-    - preco ultimo ano
-    - quanto esta o <ticker>
-    - quanto esta <ticker>
-    - quanto ta o <ticker>
-    - quanto ta <ticker>
-    - como esta o <ticker> hoje na b3
-    - como esta <ticker> hoje na b3
-    - como esta o <ticker> na b3
-    - como esta <ticker> na b3
-    - fechamento de hoje do <ticker>
-    - fechamento de ontem do <ticker>
-    - quanto fechou o <ticker> ontem
-    - como o <ticker> fechou ontem
-    - maxima do <ticker>
-    - minima do <ticker>
-    - maxima e minima do <ticker>
-    - maxima e minima do <ticker> em
-    - maxima e minima do <ticker> em <data>
-    exclude:
-    - media de preco
-    - retorno no periodo
-    - variacao diaria do usd
-    - variacao diaria do dolar
-    - historico do dolar
-    - historico do ipca
-    - historico da inflacao
-    - variacao diaria do eur
-    - variacao diaria do euro
-    - variacao diaria do ibov
-    - variacao diaria do ifix
-    - variacao diaria do ifil
-    - quanto esta o ifix hoje
-    - destaques
-  entities:
-  - fiis_precos
-- name: fiis_dividendos
-  weight: 2.5
-  tokens:
-    include:
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - rendimento
-    - distribuicao
-    - acumulado
-    - esse mes
-    - mes
-    - mensal
-    - rendimento mensal
-    - historico
-    - rendimentos
-    - quais os dividendos
-    - pagamento
-    - paga
-    - pagou
-    - data com
-    - data ex
-    - distribuiu
-    - distribuiu em
-    - quanto distribuiu
-    - media de dividendos
-    - media de rendimentos
-    - ultimos 12 meses
-    - rendimento mensal
-    - rendimento 12m
-    exclude:
-    - dy
-    - dividend yield
-    - yield
-    - preco
-    - precos
-    - cotacao
-    - cotacoes
-    - variacao
-    - oscilacao
-    - alta
-    - baixa
-    - abertura
-    - fechamento
-    - intradia
-    - intradiario
-    - maximo
-    - minimo
-    - historico_preco
-    - risco
-    - volatilidade
-    - sharpe
-    - sortino
-    - treynor
-    - beta
-    - mdd
-    - drawdown
-    - r2
-    - coeficiente de determinacao
-    - ipca
-    - juros
-    - selic
-    - inflacao
-    - macro
-    - curva
-    - cambio
-    - dy em
-    - noticia
-    - imprensa
-    - fato
-    - comunicado
-    - ranking
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
-    - payout
-    - reserva
-    - reserva de dividendos
-  phrases:
-    include:
-    - dividendo do
-    - dividendos do
-    - dividendos do fundo
-    - dividendos do <ticker>
-    - dividendos de <ticker> esse mes
-    - dividendos do <ticker> esse mes
-    - dividendos mensais
-    - dividendos pagos
-    - quais os dividendos de <ticker> esse mes
-    - historico de dividendos
-    - pagamentos de dividendos
-    - rendimento mensal
-    - proventos
-    - proventos do <ticker>
-    - proventos de <ticker> esse mes
-    - ultimo dividendo
-    - proximo dividendo
-    - dividendos acumulados
-    - quanto pagou de dividendos
-    - total de dividendos
-    - dividendos nos ultimos meses
-    - dividendos nos ultimos 12 meses
-    - distribuicao de rendimentos
-    - yield distribuido
-    - proventos do
-    - rendimento do
-    - pagamento do
-    - data com do
-    - quanto o distribuiu
-    - quanto o distribuiu em
-    - media de dividendos do
-    exclude:
-    - dividendos e dy em
-    - dividend yield do
-    - payout e a reserva de dividendos do
-    - payout e reserva de dividendos do
-    - payout e a reserva de dividendos do <ticker>
-    - payout e reserva de dividendos do <ticker>
-  entities:
-  - fiis_dividendos
-- name: fiis_yield_history
-  weight: 3
-  tokens:
-    include:
-    - dy
-    - dy mensal
-    - dividend yield
-    - yield
-    - historico de dy
-    - historico de yield
-    - retorno mensal
-    - evolucao do dy
-    - dy 12m
-    - dy 24m
-    - dy_historico
-    - dy_evolucao
-    - meses
-    - anual
-    - periodo
-    - historico completo
-    - ano a ano
-    exclude:
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - snapshot
-    - indicadores
-    - payout
-    - alavancagem
-    - patrimonio
-    - patrimonio_liquido
-    - vp
-    - valor_patrimonial
-    - valor_patrimonial_cota
-    - vacancia
-    - ocupacao
-    - contratos
-    - setor
-    - segmento
-    - imoveis
-    - cnpj
-    - administrador
-    - gestora
-    - gestor
-    - overview
-    - resumo
-    - preco
-    - precos
-    - cotacao
-    - cotacoes
-    - variacao
-    - oscilacao
-    - alta
-    - baixa
-    - dividendos e dy
-    - noticia
-    - imprensa
-    - fato
-    - comunicado
-    - macro
-    - juros
-    - selic
-    - inflacao
-    - ipca
-    - curva
-    - cambio
-    - ranking
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
-    - maior
-    - maiores
-    - top
-    - ranking
-    - fiis com maior
-    - fiis com menor
-  phrases:
-    include:
-    - dy historico
-    - historico de dy
-    - dy por mes
-    - dy mensal
-    - serie historica de dy
-    - dy ao longo do tempo
-    - dy meses
-    - dy ultimo ano
-    - historico de dy do
-    - historico de dividend yield do
-    - evolucao do dy
-    - evolucao do dy do
-    - dy em
-    - qual foi o dividend yield do <ticker> em
-    - dividend yield do <ticker> em
-    - qual foi o dy do <ticker> em
-    exclude: []
-  entities:
-  - fiis_yield_history
-- name: fiis_financials_snapshot
-  weight: 5
-  tokens:
-    include:
-    - snapshot
-    - payout
-    - alavancagem
-    - leverage
-    - ev
-    - enterprise
-    - enterprise value
-    - market cap
-    - patrimonio
-    - patrimonio liquido
-    - patrimonio por cota
-    - price book
-    - preco patrimonio
-    - pl
-    - patrimonio_liquido
-    - vp
-    - valor_patrimonial
-    - valor_patrimonial_cota
-    - caixa
-    - caixa total
-    - divida
-    - dividas
-    - passivos
-    - passivos totais
-    - cap rate
-    - receita por cota
-    - receita
-    - receita_total
-    - receita_ativos
-    - renda
-    - reserva de dividendos
-    - taxa de adm
-    - taxa de administracao
-    - taxa de performance
-    - abl
-    - area_bruta_locavel
-    - ocupacao
-    - vacancia
-    - vacancia fisica
-    - vacancia financeira
-    - setor
-    - contratos
-    - contratos_vigentes
-    - tipicos
-    - atipicos
-    - relatorio gerencial
-    exclude:
-    - processo
-    - acao
-    - judicial
-    - noticia
-    - noticias
-    - fato
-    - fatos
-    - relevante
-    - cnpj
-    - administrador
-    - gestora
-    - nome
-    - razao
-    - objetivo
-    - mandato
-    - soma
-    - media
-    - nos
-    - ultimos
-    - sharpe
-    - sortino
-    - treynor
-    - preco
-    - cotacao
-    - variacao
-    - oscilacao
-    - alta
-    - baixa
-    - dividendo
-    - dividendos
-    - dy
-    - yield
-    - proventos
-    - pagamento
-    - beta
-    - volatilidade
-    - risco
-    - mdd
-    - max_drawdown
-    - noticia
-    - relevante
-    - imprensa
-    - indexacao
-    - indexado
-    - ipca
-    - igpm
-    - cdi
-    - macro
-    - juros
-    - inflacao
-    - selic
-    - curva
-    - cambio
-    - cronograma
-    - calendario
-    - ranking
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
-  phrases:
-    include:
-    - no ultimo relatorio gerencial do <ticker>
-    - payout do
-    - alavancagem do
-    - market cap do
-    - enterprise value do
-    - price book do
-    - caixa do
-    - caixa e divida do
-    - caixa disponivel do
-    - passivos totais do
-    - cap rate do
-    - patrimonio liquido do <ticker>
-    - pl do <ticker>
-    - valor patrimonial do <ticker>
-    - vp do <ticker>
-    - valor patrimonial da cota do <ticker>
-    - vacancia do <ticker>
-    - taxa de vacancia do <ticker>
-    - setor do <ticker>
-    - qual o setor do <ticker>
-    - renda do <ticker>
-    - rendimento dos ativos do <ticker>
-    - renda por ativo do <ticker>
-    - receita por ativo
-    - receita do fundo
-    - receita total do <ticker>
-    - contratos do <ticker>
-    - quantos contratos tem o <ticker>
-    - contratos vigentes do <ticker>
-    - percentual de receita por contrato
-    - tamanho do portfolio do <ticker>
-    - quantos imoveis tem o <ticker>
-    - area bruta locavel
-    - abl do <ticker>
-    - reserva de dividendos do
-    - taxa de adm do
-    - taxa de performance do
-    - indicadores financeiros do
-    - principais indicadores financeiros do
-    - indicadores financeiros do <ticker>
-    - principais indicadores financeiros do <ticker>
-    - payout e a reserva de dividendos do
-    - payout e reserva de dividendos do
-    - payout e a reserva de dividendos do <ticker>
-    - payout e reserva de dividendos do <ticker>
-    exclude:
-    - nos ultimos
-    - soma de
-    - media de
-    - preco
-    - cotacao
-    - variacao
-    - oscilacao
-    - alta
-    - baixa
-    - dividendo
-    - dividendos
-    - dy
-    - yield
-    - proventos
-    - pagamento
-    - sharpe
-    - sortino
-    - beta
-    - volatilidade
-    - risco
-    - mdd
-    - max_drawdown
-    - indexacao
-    - indexado
-    - ipca
-    - igpm
-    - cdi
-    - cronograma
-    - calendario
-  entities:
-  - fiis_financials_snapshot
-- name: fiis_financials_revenue_schedule
-  weight: 2
-  tokens:
-    include:
-    - receita
-    - receitas
-    - receita futura
-    - receitas futuras
-    - recebiveis
-    - estrutura de recebiveis
-    - futuro
-    - futura
-    - distribuida
-    - distribuicao
-    - cronograma
-    - vencimento
-    - vencimentos
-    - vence
-    - vencem
-    - prazo
-    - prazos
-    - buckets
-    - indexador
-    - indexadores
-    - indice
-    - indices
-    - previsao
-    - igpm
-    - ipca
-    - inpc
-    - incc
-    - percentual
-    - indexada
-    - 0 3m
-    - 3 6m
-    - 6 12m
-    - 12 18m
-    - 18 24m
-    - 24 30m
-    - 30 36m
-    - maior 36m
-    - acima 36m
-    - indeterminado
-    exclude:
-    - soma
-    - media
-    - nos ultimos
-    - hoje
-    - d1
-    - d-1
-    - atual
-    - atualizada
-    - ultima
-    - atualizacao
-    - valor
-    - janeiro
-    - fevereiro
-    - marco
-    - abril
-    - maio
-    - junho
-    - julho
-    - agosto
-    - setembro
-    - outubro
-    - novembro
-    - dezembro
-    - macro
-    - juros
-    - selic
-    - inflacao
-    - politica monetaria
-    - cambio
-    - curva
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - rendimento
-    - rendimento mensal
-    - yield
-    - vacancia
-    - pl
-    - patrimonio
-    - vp
-    - valor patrimonial
-  phrases:
-    include:
-    - estrutura de recebiveis do
-    - receitas por prazo do
-    - quanto vence em 0 3m do
-    - quanto vence em 3 6m do
-    - quanto vence em 6 12m do
-    - quanto vence acima 36m do
-    - quanto vence em
-    - quanto vence em 12 meses
-    - vencimento em
-    - indexadores de receita do
-    - receitas 0 3m do
-    - receitas 3 6m do
-    - receitas 6 12m do
-    - receitas acima 36m do
-    - receita futura do
-    - receita futura do fundo
-    - receita futura por indice
-    - receita futura por indice do
-    - como esta distribuida a receita futura
-    - distribuicao da receita futura
-    - distribuicao da receita por indice
-    - previsao de receita do
-    - receita nos proximos
-    - percentual da receita do
-    - receita indexada ao
-    - percentual de receita indexada ao
-    - receita ipca do
-    - receita cdi do
-    - percentual de receita indexada ao ipca do
-    - percentual de receita indexada ao cdi do
-    - receita indexada ao ipca do
-    - receita indexada ao cdi do
-    - distribuicao da receita futura por indice do
-    exclude:
-    - soma de dividendos
-    - media de preco
-    - o que significa
-    - impacto do ipca
-    - impacto da selic
-    - impacto dos juros
-    - impacto da inflacao
-    - impacto do cdi
-    - impacto do igpm
-    - impacto do ipca nos fiis
-    - impacto da selic nos fiis
-    - juros
-    - juros altos
-    - juros futuros
-    - selic
-    - selic alta
-    - inflacao
-    - macro
-    - macroeconomia
-    - politica monetaria
-    - politica fiscal
-    - cambio
-    - curva
-    - cenario
-    - ambiente
-    - quanto pagou de dividendos
-    - dividendos nos ultimos
-    - dividendos pagos
-    - distribuicao de dividendos
-    - proventos pagos
-  entities:
-  - fiis_financials_revenue_schedule
-- name: fiis_financials_risk
-  weight: 5
-  tokens:
-    include:
-    - risco
-    - volatilidade
-    - sharpe
-    - sharpe_negativo
-    - sortino
-    - sortino_negativo
-    - treynor
-    - jensen
-    - alfa
-    - alfa_jensen
-    - beta
-    - max drawdown
-    - drawdown
-    - mdd
-    - r2
-    - coeficiente de determinacao
-    - coeficiente_determinacao
-    - vr
-    - indice de risco
-    - sharpe ratio
-    exclude:
-    - soma
-    - cdi
-    - selic
-    - ipca
-    - macro
-    - juros
-    - inflacao
-    - cambio
-    - curva
-    - inpc
-    - imovel
-    - imoveis
-    - preco
-    - variacao
-    - cotacao
-    - valor da cota
-    - alta
-    - baixa
-    - dividendo
-    - dividendos
-    - provento
-    - proventos
-    - dy
-    - yield
-    - rendimento
-    - pagamento
-    - significado
-    - definicao
-    - conceito
-    - explicar
-    - cnpj
-    - gestor
-    - administradora
-    - patrimonio
-    - patrimonio_liquido
-    - pl
-    - vacancia
-    - contratos
-    - snapshot
-    - overview
-    - ranking
-    - top
-    - melhores
-    - piores
-    - campeoes
-    - lanternas
-    - destaques
-    - fiis com menor
-    - fiis com maior
-    - fundos com menor
-    - fundos com maior
-  phrases:
-    include:
-    - indicador de risco do
-    - risco atual do
-    - volatilidade do
-    - sharpe do
-    - sharpe negativo do
-    - o que significa o sharpe do
-    - sharpe ratio do
-    - sortino do
-    - sortino negativo
-    - treynor do
-    - jensen do
-    - alfa de jensen do
-    - beta do
-    - sensibilidade ao ifix
-    - volatilidade do fundo
-    - drawdown do
-    - mdd do
-    - max drawdown do
-    - maior queda acumulada
-    - mensurar risco
-    - indicadores de risco
-    - indicadores quantitativos do fundo
-    - r2 do
-    - coeficiente de determinacao do
-    - r2 do fundo
-    - fiis com menor drawdown
-    - fiis com menor mdd
-    - fundos com menor drawdown
-    - fundos com menor risco de queda
-    - premio de risco do fundo
-    - retorno ajustado ao risco
-    - interpretar sharpe
-    - interpretar risco
-    - fiis com menor drawdown
-    - fiis com menor mdd
-    - fundos com menor drawdown
-    - fundos com menor risco de queda
-    exclude: []
-  entities:
-  - fiis_financials_risk
-- name: fiis_imoveis
-  tokens:
-    include:
-      - imovel
-      - imoveis
-      - propriedade
-      - propriedades
-      - ativo
-      - ativos
-      - ocupacao
-      - laudo
-      - avaliacao
-      - metragem
-      - regiao
-      - endereco
-      - localizacao
-      - portfolio
-      - galpao
-      - galpoes
-      - unidades
-      - onde ficam
+  - name: ticker_query
+    bucket: A
+    tokens:
+      include:
+        - '[A-Za-z]{4}11'
+      exclude: []
+    phrases:
+      include: []
+      exclude: []
+    entities:
+      - fiis_precos
+      - fiis_dividendos
+      - fii_overview
+      - fiis_financials_risk
+      - fiis_financials_snapshot
+      - fiis_financials_revenue_schedule
+      - fiis_rankings
+      - fiis_yield_history
+      - fiis_processos
+      - fiis_imoveis
+      - dividendos_yield
+      - fiis_cadastro
+    weight: 10
+
+  - name: client_fiis_positions
+    tokens:
+      include:
+        - posicao
+        - posicoes
+        - minhas
+        - minha
+        - meu
+        - custodia
+        - disponivel
+        - quantidade
+      exclude:
+        - cpf
+        - cnpj
+        - documento
+        - imovel
+        - imoveis
+        - galpao
+        - galpoes
+        - vacancia
+        - sharpe
+        - ifix
+        - ifil
+        - ibov
+        - cdi
+        - benchmark
+        - dividendo
+        - dividendos
+        - ranking
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - destaques
+        - provento
+        - proventos
+        - renda
+        - rendimento
+        - dy
+        - dy mensal
+        - sortino
+        - beta
+        - risco
+        - ranking
+        - processo
+        - processos
+        - judicial
+    phrases:
+      include:
+        - minhas posicoes
+        - minha carteira
+        - posicoes da minha carteira
+        - quantidade em custodia
+        - quantidade disponivel
+        - rentabilidade da minha posicao
+      exclude: []
+    entities:
+      - client_fiis_positions
+
+  - name: client_fiis_dividends_evolution
+    tokens:
+      include:
+        - dividendos
+        - proventos
+        - renda
+        - evolucao
+        - historico
+        - mensal
+        - carteira
+        - minhas
+        - minha
+        - meu
+        - recebeu
+        - recebidos
+        - mes
+      exclude:
+        - cpf
+        - cnpj
+        - documento
+        - imovel
+        - imoveis
+        - processo
+        - processos
+        - judicial
+        - judiciais
+        - receita
+        - receitas
+        - recebiveis
+        - previsao
+        - payout
+        - reserva
+        - reserva de dividendos
+        - relatorio gerencial
+    phrases:
+      include:
+        - evolucao dos dividendos
+        - historico de dividendos
+        - renda mensal dos meus fiis
+        - dividendos da minha carteira
+        - quanto minha carteira de fiis recebeu de dividendos em cada mes
+      exclude:
+        - dividendos de <ticker>
+        - dividendos do <ticker>
+        - proventos de <ticker>
+        - proventos do <ticker>
+        - rendimento de <ticker>
+        - rendimento do <ticker>
+        - payout e a reserva de dividendos do
+        - payout e reserva de dividendos do
+    entities:
+      - client_fiis_dividends_evolution
+
+  - name: client_fiis_performance_vs_benchmark
+    tokens:
+      include:
+        - performance
+        - rentabilidade
+        - retorno
+        - comparacao
+        - comparar
+        - benchmark
+        - ibov
+        - cdi
+        - carteira
+        - minhas
+        - minha
+        - meu
+      exclude:
+        - cpf
+        - cnpj
+        - documento
+        - imovel
+        - imoveis
+        - acumulo
+        - acumulado
+        - posicao
+        - posicoes
+        - peso
+        - distribuicao
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - renda
+        - historico
+        - evolucao
+        - dy
+        - yield
+        - processo
+        - processos
+        - judicial
+        - judiciais
+        - acao
+        - acoes
+    phrases:
+      include:
+        - desempenho da minha carteira
+        - desempenho da minha carteira de fiis
+        - performance da minha carteira de fiis
+        - rentabilidade da minha carteira vs
+        - rentabilidade da minha carteira de fiis versus
+        - rentabilidade da minha carteira versus
+        - retorno da minha carteira vs
+        - retorno da minha carteira de fiis versus
+        - comparar minha carteira com
+        - minha carteira esta melhor que
+        - minha carteira esta pior que
+        - minha carteira de fiis
+        - retorno da minha carteira de fiis
+        - minha carteira de fiis esta melhor ou pior que
+        - retorno da minha carteira de fiis comparado com
+        - desempenho da minha carteira vs ifix
+        - desempenho da minha carteira vs ifil
+        - desempenho da minha carteira vs ibov
+        - desempenho da minha carteira vs cdi
+        - rentabilidade da minha carteira vs ifix
+        - rentabilidade da minha carteira vs ifil
+        - rentabilidade da minha carteira vs ibov
+        - rentabilidade da minha carteira vs cdi
+        - minha carteira de fiis esta melhor que o ifix
+        - minha carteira de fiis esta melhor que o cdi
+      exclude:
+        - rentabilidade da minha posicao
+        - minha posicao em
+        - peso do
+        - distribuicao da minha carteira
+        - evolucao dos dividendos
+        - historico de dividendos
+        - renda mensal dos meus fiis
+    entities:
+      - client_fiis_performance_vs_benchmark
+
+  - name: fiis_cadastro
+    tokens:
+      include:
+        - cadastro
+        - cnpj
+        - administrador
+        - administradora
+        - custodia
+        - custodiante
+        - site
+        - url
+        - assembleia
+        - nome
+        - exibicao
+        - nome de exibicao
+        - nome de pregao
+        - classificacao
+        - setor
+        - subsetor
+        - segmento
+        - segmentos
+        - gestao
+        - publico
+        - alvo
+        - publico alvo
+        - isin
+        - ipo
+        - peso
+        - ifix
+        - ifil
+        - cotas
+        - cotistas
+        - numero de cotas
+        - numero de cotistas
+        - peso no ifix
+        - peso no ifil
+        - exclusivo
+        - oficial
+        - segmento
+        - segmentos
+      exclude:
+        - abl
+        - alavancagem
+        - alta
+        - baixa
+        - contratos
+        - cotacao
+        - cotacoes
+        - variacao
+        - preco
+        - precos
+        - dividendos
+        - dividendo
+        - dy
+        - yield
+        - ranking
+        - risco
+        - volatilidade
+        - mdd
+        - renda
+        - vacancia
+        - media
+        - patrimonio
+        - patrimonio liquido
+        - payout
+        - pl
+        - provento
+        - proventos
+        - sharpe
+        - sortino
+        - treynor
+        - beta
+        - r2
+        - coeficiente de determinacao
+        - noticia
+        - noticias
+        - fato relevante
+    phrases:
+      include:
+        - cnpj do
+        - qual o cnpj do
+        - administrador do
+        - administradora do
+        - quem administra o
+        - custodiante do
+        - site do
+        - site oficial do
+        - qual o site oficial do
+        - url oficial do
+        - nome de pregao do
+        - nome de exibicao do
+        - classificacao do
+        - setor do
+        - subsetor do
+        - tipo de gestao do
+        - publico alvo do
+        - codigo isin do
+        - data do ipo do
+        - peso no ifix do
+        - peso no ifil do
+        - qual o peso do <ticker> no ifix
+        - qual o peso do <ticker> no ifil
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - numero de cotas emitidas do
+        - numero de cotistas do
+        - quantos cotistas tem o
+        - quantas cotas tem o
+        - fundo exclusivo
+      exclude:
+        - cotacao do
+        - dividendo do
+        - dividendos do
+        - dy do
+        - preco do
+        - preco historico do
+        - vacancia do
+    entities:
+      - fiis_cadastro
+
+  - name: fii_overview
+    weight: 3
+    tokens:
+      include:
+        - cnpj
+        - administrador
+        - administradora
+        - gestora
+        - gestor
+        - nome
+        - razao
+        - razao_social
+        - classe
+        - tipo
+        - tipo_de_fundo
+        - categoria
+        - mandato
+        - objetivo
+        - descricao
+        - identidade
+        - informacoes
+        - basicas
+        - resumo completo
+        - panorama
+        - panorama geral
+        - panorama do fundo
+        - principais pontos
+        - pontos principais
+        - destaques
+        - destaques do fundo
+        - ficha tecnica
+        - informacoes gerais
+        - contexto
+        - contexto geral
+        - regulamento
+        - publico_alvo
+        - politica
+        - resumo
+        - overview
+        - situacao
+        - perfil
+        - caracteristicas
+        - visao geral
+        - foto
+        - fotografia
+        - indicadores
+      exclude:
+        - pl
+        - patrimonio
+        - patrimonio_liquido
+        - vp
+        - valor_patrimonial
+        - vacancia
+        - ocupacao
+        - contratos
+        - imoveis
+        - abl
+        - receita
+        - receitas
+        - recebiveis
+        - preco
+        - cotacao
+        - variacao
+        - alta
+        - baixa
+        - ranking
+        - rank
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - dy
+        - yield
+        - dividendo
+        - dividendos
+        - proventos
+        - sharpe
+        - risco
+        - sortino
+        - beta
+        - volatilidade
+        - mdd
+        - processo
+        - noticia
+        - noticias
+        - fato
+        - fatos
+        - relevante
+        - comunicacao
+        - imprensa
+        - historico
+        - historia
+        - cronograma
+        - calendario
+        - indexador
+        - indexadores
+        - indice
+        - futuro
+        - futura
+        - distribuida
+        - distribuicao
+        - cdi
+        - selic
+        - ipca
+        - igpm
+        - macro
+        - juros
+        - inflacao
+        - cambio
+        - curva
+        - dolar
+        - usd
+        - euro
+        - eur
+        - ifix
+        - ibov
+        - ibovespa
+        - b3
+        - segmento
+        - segmentos
+        - snapshot
+    phrases:
+      include:
+        - cnpj do <ticker>
+        - qual o cnpj do <ticker>
+        - administrador do <ticker>
+        - gestora do <ticker>
+        - quem administra o <ticker>
+        - quem gere o <ticker>
+        - nome do fundo <ticker>
+        - razao social do <ticker>
+        - classe do <ticker>
+        - setor do <ticker>
+        - tipo de fundo do <ticker>
+        - mandato do <ticker>
+        - objetivo do <ticker>
+        - qual o objetivo do fundo
+        - informacoes basicas do <ticker>
+        - identidade do fundo <ticker>
+        - descricao do fundo <ticker>
+        - o que e o <ticker>
+        - resumo do
+        - resumo do <ticker>
+        - resumo completo do <ticker>
+        - overview do
+        - overview do <ticker>
+        - panorama do <ticker>
+        - panorama geral do <ticker>
+        - panorama do fundo <ticker>
+        - principais pontos do <ticker>
+        - pontos principais do <ticker>
+        - destaques do <ticker>
+        - destaques do <ticker> hoje
+        - quais os destaques do <ticker> hoje
+        - ficha tecnica do <ticker>
+        - visao geral do <ticker>
+        - contexto geral do <ticker>
+        - situacao geral do <ticker>
+        - ficha tecnica resumida do <ticker>
+        - panorama do fundo
+        - panorama do fundo <ticker>
+        - situacao do
+        - situacao geral do fundo
+        - visao geral do
+        - resumo do fundo
+        - overview do fundo
+        - visao geral do fundo
+        - foto do fundo
+        - principais indicadores do
+      exclude: []
+    entities:
+      - fii_overview
+
+  - name: fiis_precos
+    weight: 2
+    tokens:
+      include:
+        - preco
+        - cotacao
+        - variacao
+        - fechamento
+        - abertura
+        - alta
+        - baixa
+        - maxima
+        - maxima e minima
+        - maximo
+        - minima
+        - minimo
+        - pregao
+        - hoje
+        - ontem
+        - agora
+        - quanto esta
+        - quanto esta o
+        - quanto ta
+        - quanto ta o
+        - como esta na b3
+      exclude:
+        - dy
+        - dividendos
+        - dividendo
+        - acumulado
+        - rendimento
+        - yield
+        - snapshot
+        - vacancia
+        - setor
+        - segmento
+        - overview
+        - administrador
+        - mandato
+        - patrimonio
+        - processos
+        - noticia
+        - noticias
+        - ranking
+        - ifix
+        - ifil
+        - dolar
+        - usd
+        - euro
+        - eur
+        - cdi
+        - selic
+        - ipca
+        - inflacao
+        - cambio
+        - ibov
+        - ibovespa
+        - caixa
+        - divida
+        - dividas
+    phrases:
+      include:
+        - preco
+        - cotacao
+        - variacao
+        - preco atual
+        - cotacao hoje
+        - valor da cota
+        - historico de preco
+        - historico de cotacao
+        - preco por mes
+        - preco ultimo mes
+        - preco ultimo ano
+        - quanto esta o <ticker>
+        - quanto esta <ticker>
+        - quanto ta o <ticker>
+        - quanto ta <ticker>
+        - como esta o <ticker> hoje na b3
+        - como esta <ticker> hoje na b3
+        - como esta o <ticker> na b3
+        - como esta <ticker> na b3
+        - fechamento de hoje do <ticker>
+        - fechamento de ontem do <ticker>
+        - quanto fechou o <ticker> ontem
+        - como o <ticker> fechou ontem
+        - maxima do <ticker>
+        - minima do <ticker>
+        - maxima e minima do <ticker>
+        - maxima e minima do <ticker> em
+        - maxima e minima do <ticker> em <data>
+      exclude:
+        - media de preco
+        - retorno no periodo
+        - variacao diaria do usd
+        - variacao diaria do dolar
+        - historico do dolar
+        - historico do ipca
+        - historico da inflacao
+        - variacao diaria do eur
+        - variacao diaria do euro
+        - variacao diaria do ibov
+        - variacao diaria do ifix
+        - variacao diaria do ifil
+        - quanto esta o ifix hoje
+        - destaques
+    entities:
+      - fiis_precos
+
+  - name: fiis_dividendos
+    weight: 2.5
+    tokens:
+      include:
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - rendimento
+        - distribuicao
+        - acumulado
+        - esse mes
+        - mes
+        - mensal
+        - rendimento mensal
+        - historico
+        - rendimentos
+        - quais os dividendos
+        - pagamento
+        - paga
+        - pagou
+        - data com
+        - data ex
+        - distribuiu
+        - distribuiu em
+        - quanto distribuiu
+        - media de dividendos
+        - media de rendimentos
+        - ultimos 12 meses
+        - rendimento mensal
+        - rendimento 12m
+      exclude:
+        - dy
+        - dividend yield
+        - yield
+        - preco
+        - precos
+        - cotacao
+        - cotacoes
+        - variacao
+        - oscilacao
+        - alta
+        - baixa
+        - abertura
+        - fechamento
+        - intradia
+        - intradiario
+        - maximo
+        - minimo
+        - historico_preco
+        - risco
+        - volatilidade
+        - sharpe
+        - sortino
+        - treynor
+        - beta
+        - mdd
+        - drawdown
+        - r2
+        - coeficiente de determinacao
+        - ipca
+        - juros
+        - selic
+        - inflacao
+        - macro
+        - curva
+        - cambio
+        - dy em
+        - noticia
+        - imprensa
+        - fato
+        - comunicado
+        - ranking
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - destaques
+        - payout
+        - reserva
+        - reserva de dividendos
+    phrases:
+      include:
+        - dividendo do
+        - dividendos do
+        - dividendos do fundo
+        - dividendos do <ticker>
+        - dividendos de <ticker> esse mes
+        - dividendos do <ticker> esse mes
+        - dividendos mensais
+        - dividendos pagos
+        - quais os dividendos de <ticker> esse mes
+        - historico de dividendos
+        - pagamentos de dividendos
+        - rendimento mensal
+        - proventos
+        - proventos do <ticker>
+        - proventos de <ticker> esse mes
+        - ultimo dividendo
+        - proximo dividendo
+        - dividendos acumulados
+        - quanto pagou de dividendos
+        - total de dividendos
+        - dividendos nos ultimos meses
+        - dividendos nos ultimos 12 meses
+        - distribuicao de rendimentos
+        - yield distribuido
+        - proventos do
+        - rendimento do
+        - pagamento do
+        - data com do
+        - quanto o distribuiu
+        - quanto o distribuiu em
+        - media de dividendos do
+      exclude:
+        - dividendos e dy em
+        - dividend yield do
+        - payout e a reserva de dividendos do
+        - payout e reserva de dividendos do
+        - payout e a reserva de dividendos do <ticker>
+        - payout e reserva de dividendos do <ticker>
+    entities:
+      - fiis_dividendos
+
+  - name: fiis_yield_history
+    weight: 3
+    tokens:
+      include:
+        - dy
+        - dy mensal
+        - dividend yield
+        - yield
+        - historico de dy
+        - historico de yield
+        - retorno mensal
+        - evolucao do dy
+        - dy 12m
+        - dy 24m
+        - dy_historico
+        - dy_evolucao
+        - meses
+        - anual
+        - periodo
+        - historico completo
+        - ano a ano
+      exclude:
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - snapshot
+        - indicadores
+        - payout
+        - alavancagem
+        - patrimonio
+        - patrimonio_liquido
+        - vp
+        - valor_patrimonial
+        - valor_patrimonial_cota
+        - vacancia
+        - ocupacao
+        - contratos
+        - setor
+        - segmento
+        - imoveis
+        - cnpj
+        - administrador
+        - gestora
+        - gestor
+        - overview
+        - resumo
+        - preco
+        - precos
+        - cotacao
+        - cotacoes
+        - variacao
+        - oscilacao
+        - alta
+        - baixa
+        - dividendos e dy
+        - noticia
+        - imprensa
+        - fato
+        - comunicado
+        - macro
+        - juros
+        - selic
+        - inflacao
+        - ipca
+        - curva
+        - cambio
+        - ranking
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - destaques
+        - maior
+        - maiores
+        - top
+        - ranking
+        - fiis com maior
+        - fiis com menor
+    phrases:
+      include:
+        - dy historico
+        - historico de dy
+        - dy por mes
+        - dy mensal
+        - serie historica de dy
+        - dy ao longo do tempo
+        - dy meses
+        - dy ultimo ano
+        - historico de dy do
+        - historico de dividend yield do
+        - evolucao do dy
+        - evolucao do dy do
+        - dy em
+        - qual foi o dividend yield do <ticker> em
+        - dividend yield do <ticker> em
+        - qual foi o dy do <ticker> em
+      exclude: []
+    entities:
+      - fiis_yield_history
+
+  - name: fiis_financials_snapshot
+    weight: 5
+    tokens:
+      include:
+        - snapshot
+        - payout
+        - alavancagem
+        - leverage
+        - ev
+        - enterprise
+        - enterprise value
+        - market cap
+        - patrimonio
+        - patrimonio liquido
+        - patrimonio por cota
+        - price book
+        - preco patrimonio
+        - pl
+        - patrimonio_liquido
+        - vp
+        - valor_patrimonial
+        - valor_patrimonial_cota
+        - caixa
+        - caixa total
+        - divida
+        - dividas
+        - passivos
+        - passivos totais
+        - cap rate
+        - receita por cota
+        - receita
+        - receita_total
+        - receita_ativos
+        - renda
+        - reserva de dividendos
+        - taxa de adm
+        - taxa de administracao
+        - taxa de performance
+        - abl
+        - area_bruta_locavel
+        - ocupacao
+        - vacancia
+        - vacancia fisica
+        - vacancia financeira
+        - setor
+        - contratos
+        - contratos_vigentes
+        - tipicos
+        - atipicos
+        - relatorio gerencial
+      exclude:
+        - processo
+        - acao
+        - judicial
+        - noticia
+        - noticias
+        - fato
+        - fatos
+        - relevante
+        - cnpj
+        - administrador
+        - gestora
+        - nome
+        - razao
+        - objetivo
+        - mandato
+        - soma
+        - media
+        - nos
+        - ultimos
+        - sharpe
+        - sortino
+        - treynor
+        - preco
+        - cotacao
+        - variacao
+        - oscilacao
+        - alta
+        - baixa
+        - dividendo
+        - dividendos
+        - dy
+        - yield
+        - proventos
+        - pagamento
+        - beta
+        - volatilidade
+        - risco
+        - mdd
+        - max_drawdown
+        - noticia
+        - relevante
+        - imprensa
+        - indexacao
+        - indexado
+        - ipca
+        - igpm
+        - cdi
+        - macro
+        - juros
+        - inflacao
+        - selic
+        - curva
+        - cambio
+        - cronograma
+        - calendario
+        - ranking
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - destaques
+    phrases:
+      include:
+        - no ultimo relatorio gerencial do <ticker>
+        - payout do
+        - alavancagem do
+        - market cap do
+        - enterprise value do
+        - price book do
+        - caixa do
+        - caixa e divida do
+        - caixa disponivel do
+        - passivos totais do
+        - cap rate do
+        - patrimonio liquido do <ticker>
+        - pl do <ticker>
+        - valor patrimonial do <ticker>
+        - vp do <ticker>
+        - valor patrimonial da cota do <ticker>
+        - vacancia do <ticker>
+        - taxa de vacancia do <ticker>
+        - setor do <ticker>
+        - qual o setor do <ticker>
+        - renda do <ticker>
+        - rendimento dos ativos do <ticker>
+        - renda por ativo do <ticker>
+        - receita por ativo
+        - receita do fundo
+        - receita total do <ticker>
+        - contratos do <ticker>
+        - quantos contratos tem o <ticker>
+        - contratos vigentes do <ticker>
+        - percentual de receita por contrato
+        - tamanho do portfolio do <ticker>
+        - quantos imoveis tem o <ticker>
+        - area bruta locavel
+        - abl do <ticker>
+        - reserva de dividendos do
+        - taxa de adm do
+        - taxa de performance do
+        - indicadores financeiros do
+        - principais indicadores financeiros do
+        - indicadores financeiros do <ticker>
+        - principais indicadores financeiros do <ticker>
+        - payout e a reserva de dividendos do
+        - payout e reserva de dividendos do
+        - payout e a reserva de dividendos do <ticker>
+        - payout e reserva de dividendos do <ticker>
+      exclude:
+        - nos ultimos
+        - soma de
+        - media de
+        - preco
+        - cotacao
+        - variacao
+        - oscilacao
+        - alta
+        - baixa
+        - dividendo
+        - dividendos
+        - dy
+        - yield
+        - proventos
+        - pagamento
+        - sharpe
+        - sortino
+        - beta
+        - volatilidade
+        - risco
+        - mdd
+        - max_drawdown
+        - indexacao
+        - indexado
+        - ipca
+        - igpm
+        - cdi
+        - cronograma
+        - calendario
+    entities:
+      - fiis_financials_snapshot
+
+  - name: fiis_financials_revenue_schedule
+    weight: 2
+    tokens:
+      include:
+        - receita
+        - receitas
+        - receita futura
+        - receitas futuras
+        - recebiveis
+        - estrutura de recebiveis
+        - futuro
+        - futura
+        - distribuida
+        - distribuicao
+        - cronograma
+        - vencimento
+        - vencimentos
+        - vence
+        - vencem
+        - prazo
+        - prazos
+        - buckets
+        - indexador
+        - indexadores
+        - indice
+        - indices
+        - previsao
+        - igpm
+        - ipca
+        - inpc
+        - incc
+        - percentual
+        - indexada
+        - 0 3m
+        - 3 6m
+        - 6 12m
+        - 12 18m
+        - 18 24m
+        - 24 30m
+        - 30 36m
+        - maior 36m
+        - acima 36m
+        - indeterminado
+      exclude:
+        - soma
+        - media
+        - nos ultimos
+        - hoje
+        - d1
+        - d-1
+        - atual
+        - atualizada
+        - ultima
+        - atualizacao
+        - valor
+        - janeiro
+        - fevereiro
+        - marco
+        - abril
+        - maio
+        - junho
+        - julho
+        - agosto
+        - setembro
+        - outubro
+        - novembro
+        - dezembro
+        - macro
+        - juros
+        - selic
+        - inflacao
+        - politica monetaria
+        - cambio
+        - curva
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - rendimento
+        - rendimento mensal
+        - yield
+        - vacancia
+        - pl
+        - patrimonio
+        - vp
+        - valor patrimonial
+    phrases:
+      include:
+        - estrutura de recebiveis do
+        - receitas por prazo do
+        - quanto vence em 0 3m do
+        - quanto vence em 3 6m do
+        - quanto vence em 6 12m do
+        - quanto vence acima 36m do
+        - quanto vence em
+        - quanto vence em 12 meses
+        - vencimento em
+        - indexadores de receita do
+        - receitas 0 3m do
+        - receitas 3 6m do
+        - receitas 6 12m do
+        - receitas acima 36m do
+        - receita futura do
+        - receita futura do fundo
+        - receita futura por indice
+        - receita futura por indice do
+        - como esta distribuida a receita futura
+        - distribuicao da receita futura
+        - distribuicao da receita por indice
+        - previsao de receita do
+        - receita nos proximos
+        - percentual da receita do
+        - receita indexada ao
+        - percentual de receita indexada ao
+        - receita ipca do
+        - receita cdi do
+        - percentual de receita indexada ao ipca do
+        - percentual de receita indexada ao cdi do
+        - receita indexada ao ipca do
+        - receita indexada ao cdi do
+        - distribuicao da receita futura por indice do
+      exclude:
+        - soma de dividendos
+        - media de preco
+        - o que significa
+        - impacto do ipca
+        - impacto da selic
+        - impacto dos juros
+        - impacto da inflacao
+        - impacto do cdi
+        - impacto do igpm
+        - impacto do ipca nos fiis
+        - impacto da selic nos fiis
+        - juros
+        - juros altos
+        - juros futuros
+        - selic
+        - selic alta
+        - inflacao
+        - macro
+        - macroeconomia
+        - politica monetaria
+        - politica fiscal
+        - cambio
+        - curva
+        - cenario
+        - ambiente
+        - quanto pagou de dividendos
+        - dividendos nos ultimos
+        - dividendos pagos
+        - distribuicao de dividendos
+        - proventos pagos
+    entities:
+      - fiis_financials_revenue_schedule
+
+  - name: fiis_financials_risk
+    weight: 5
+    tokens:
+      include:
+        - risco
+        - volatilidade
+        - sharpe
+        - sharpe_negativo
+        - sortino
+        - sortino_negativo
+        - treynor
+        - jensen
+        - alfa
+        - alfa_jensen
+        - beta
+        - max drawdown
+        - drawdown
+        - mdd
+        - r2
+        - coeficiente de determinacao
+        - coeficiente_determinacao
+        - vr
+        - indice de risco
+        - sharpe ratio
+      exclude:
+        - soma
+        - cdi
+        - selic
+        - ipca
+        - macro
+        - juros
+        - inflacao
+        - cambio
+        - curva
+        - inpc
+        - imovel
+        - imoveis
+        - preco
+        - variacao
+        - cotacao
+        - valor da cota
+        - alta
+        - baixa
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - dy
+        - yield
+        - rendimento
+        - pagamento
+        - significado
+        - definicao
+        - conceito
+        - explicar
+        - cnpj
+        - gestor
+        - administradora
+        - patrimonio
+        - patrimonio_liquido
+        - pl
+        - vacancia
+        - contratos
+        - snapshot
+        - overview
+        - ranking
+        - top
+        - melhores
+        - piores
+        - campeoes
+        - lanternas
+        - destaques
+        - fiis com menor
+        - fiis com maior
+        - fundos com menor
+        - fundos com maior
+    phrases:
+      include:
+        - indicador de risco do
+        - risco atual do
+        - volatilidade do
+        - sharpe do
+        - sharpe negativo do
+        - o que significa o sharpe do
+        - sharpe ratio do
+        - sortino do
+        - sortino negativo
+        - treynor do
+        - jensen do
+        - alfa de jensen do
+        - beta do
+        - sensibilidade ao ifix
+        - volatilidade do fundo
+        - drawdown do
+        - mdd do
+        - max drawdown do
+        - maior queda acumulada
+        - mensurar risco
+        - indicadores de risco
+        - indicadores quantitativos do fundo
+        - r2 do
+        - coeficiente de determinacao do
+        - r2 do fundo
+        - fiis com menor drawdown
+        - fiis com menor mdd
+        - fundos com menor drawdown
+        - fundos com menor risco de queda
+        - premio de risco do fundo
+        - retorno ajustado ao risco
+        - interpretar sharpe
+        - interpretar risco
+        - fiis com menor drawdown
+        - fiis com menor mdd
+        - fundos com menor drawdown
+        - fundos com menor risco de queda
+      exclude: []
+    entities:
+      - fiis_financials_risk
+
+  - name: fiis_imoveis
+    tokens:
+      include:
+        - imovel
+        - imoveis
+        - propriedade
+        - propriedades
+        - ativo
+        - ativos
+        - ocupacao
+        - laudo
+        - avaliacao
+        - metragem
+        - regiao
+        - endereco
+        - localizacao
+        - portfolio
+        - galpao
+        - galpoes
+        - unidades
+        - onde ficam
+      exclude:
+        - preco
+        - cotacao
+        - processo
+        - judicial
+        - acao
+        - relatorio
+        - gerencial
+        - relatorio gerencial
+    phrases:
+      include:
+        - vacancia fisica do fii
+        - vacancia fisica do fundo
+        - vacancia fisica do
+        - imoveis do
+        - quais imoveis do
+        - lista de propriedades do
+        - area total do
+        - vacancia do
+        - vacancia dos imoveis
+        - vacancia do imovel
+        - status do
+        - status dos imoveis do
+        - imoveis do fundo
+        - imoveis do <ticker>
+        - ativos fisicos
+        - ativos imobiliarios
+        - enderecos dos imoveis
+        - localizacao dos imoveis
+        - regiao dos imoveis
+        - caracteristicas dos imoveis
+        - metragem do imovel
+        - laudo de avaliacao
+        - valor do imovel
+        - vacancia do imovel
+        - vacancia fisica
+        - vacancia financeira
+        - ocupacao do imovel
+        - taxa de ocupacao
+        - propriedades do fundo
+        - quantos imoveis
+        - lista de imoveis
+        - tipo do imovel
+        - regiao onde o fundo possui imoveis
+        - endereco do ativo
+        - dados dos imoveis
+      exclude:
+        - segundo o ultimo relatorio gerencial
+        - no ultimo relatorio gerencial
+        - segundo o ultimo relatorio gerencial do
+        - no ultimo relatorio gerencial do
+    entities:
+      - fiis_imoveis
+
+  - name: fiis_noticias
+    tokens:
+      include:
+        - noticia
+        - noticias
+        - relevante
+        - fato
+        - fatos
+        - imprensa
+        - midia
+        - divulgado
+        - divulgacao
+        - comunicado
+        - anuncio
+        - nota
+        - atualizacao
+        - recente
+        - hoje
+        - semana
+        - mes
+        - ultimo
+        - novidade
+        - materia
+        - manchete
+        - reportagem
+        - fato relevante
+        - fatos relevantes
+        - boato
+        - boatos
+        - rumor
+        - rumores
+        - ultimas
+        - negativa
+        - negativas
+        - ruim
+        - ruins
+      exclude:
+        - snapshot
+        - overview
+        - indicadores
+        - cnpj
+        - classe
+        - segmento
+        - setor
+        - administrador
+        - gestao
+        - mandato
+        - nome
+        - vacancia
+        - ocupacao
+        - contratos
+        - prazo
+        - vencimento
+        - receita
+        - renda
+        - pl
+        - patrimonio
+        - preco
+        - cotacao
+        - variacao
+        - alta
+        - baixa
+        - oscilacao
+        - dy
+        - yield
+        - dividendo
+        - dividendos
+        - proventos
+        - rendimento
+        - sharpe
+        - sortino
+        - volatilidade
+        - beta
+        - mdd
+        - risco
+        - imoveis
+        - abl
+        - propriedades
+        - ifix
+        - ifil
+        - posicao
+        - ranking
+        - peso
+        - movimentos
+        - carteira
+        - posicoes
+        - minha carteira
+        - meus fiis
+        - minha renda
+        - preco
+        - cotacao
+        - variacao
+        - alta
+        - baixa
+    phrases:
+      include:
+        - noticias do
+        - ultimas noticias do
+        - ultimas do
+        - noticias recentes do
+        - tem novidade sobre o
+        - fatos relevantes do
+        - novidades do
+        - me atualize sobre o
+        - atualizacao do
+        - o que saiu na midia sobre o
+        - o que saiu na imprensa sobre o
+        - o que aconteceu com o
+        - resumo das noticias do
+        - noticias sobre fundos imobiliarios
+        - ultima noticia de fii
+        - houve alguma noticia sobre o
+        - qual foi a noticia mais recente do
+        - noticias da semana do
+        - noticias do mes do
+        - as noticias do
+        - fato relevante do
+        - fato relevante sobre
+        - noticias negativas do
+        - noticia negativa do
+      exclude: []
+    entities:
+      - fiis_noticias
+
+  - name: fiis_processos
+    tokens:
+      include:
+        - processo
+        - processos
+        - judicial
+        - judiciais
+        - acao
+        - acoes
+        - andamento
+        - status
+        - litigio
+        - litgio
+        - causa
+        - causas
+        - perda
+        - perdas
+        - condenacao
+        - indenizacao
+        - autor
+        - reu
+        - re
+        - parte
+        - partes
+        - distribuicao
+        - distribuido
+        - vara
+        - tribunal
+        - comarca
+        - processo_numero
+        - classificada
+        - classe_processual
+        - numero
+        - quantidade_processos
+        - disputas
+        - demandas
+      exclude:
+        - compare
+        - comparar
+        - comparacao
+        - pl
+        - patrimonio
+        - vacancia
+        - ocupacao
+        - imoveis
+        - abl
+        - receita
+        - contratos
+        - ifix
+        - ifil
+        - ranking
+        - posicao
+        - movimentos
+        - peso
+        - carteira
+        - posicoes
+        - performance
+        - rendimento
+        - evolucao
+        - dy
+        - yield
+        - dividendos
+        - proventos
+        - sharpe
+        - volatilidade
+        - beta
+        - sortino
+        - mdd
+        - noticia
+        - noticias
+        - reportagem
+        - preco
+        - cotacao
+        - variacao
+        - alta
+        - baixa
+    phrases:
+      include:
+        - fiis da carteira com mais processos
+        - quais fiis tem mais processos
+        - risco de perda em acoes do
+        - risco de perder acao do
+        - processos do
+        - acoes judiciais do
+        - acoes contra o
+        - processos contra o
+        - quantos processos o
+        - ha processos contra o
+        - quais processos o
+        - qual o valor das acoes do
+        - processos envolvendo o
+        - quem move acao contra o
+        - parte autora do processo do
+        - parte re do processo do
+        - valor das causas do
+        - status dos processos do
+        - resumo das acoes judiciais do
+        - andamento dos processos do
+        - processos judiciais do
+      exclude: []
+    entities:
+      - fiis_processos
+
+  - name: fiis_rankings
+    weight: 6
+    tokens:
+      include:
+        - ranking
+        - rank
+        - posicao
+        - posicoes
+        - peso
+        - pesos
+        - participacao
+        - composicao
+        - ifix
+        - ifil
+        - movimentos
+        - top
+        - melhores
+        - maiores
+        - menores
+        - piores
+        - destaques
+        - campeoes
+        - lanternas
+        - comparacao
+        - comparar
+        - performou
+        - performance
+        - queda
+        - aumento
+        - reducao
+        - superou
+        - acima da media
+        - acima do ifix
+        - acima do setor
+        - valor de mercado
+        - market cap
     exclude:
       - preco
-      - cotacao
+      - media do
+      - variacao diaria
+      - variacao do <ticker>
+      - pontos
+      - fechamento
+      - hoje
+      - ontem
+      - beta
+      - noticia do
+      - r2
+      - indice
+      - historico
+      - se comportou
+      - mdd
+      - drawdown
+      - dy mensal
+      - yield mensal
       - processo
+      - processos
       - judicial
+      - judiciais
       - acao
-      - relatorio
-      - gerencial
-      - relatorio gerencial
-  phrases:
-    include:
-    - vacancia fisica do fii
-    - vacancia fisica do fundo
-    - vacancia fisica do
-    - imoveis do
-    - quais imoveis do
-    - lista de propriedades do
-    - area total do
-    - vacancia do
-    - vacancia dos imoveis
-    - vacancia do imovel
-    - status do
-    - status dos imoveis do
-    - imoveis do fundo
-    - imoveis do <ticker>
-    - ativos fisicos
-    - ativos imobiliarios
-    - enderecos dos imoveis
-    - localizacao dos imoveis
-    - regiao dos imoveis
-    - caracteristicas dos imoveis
-    - metragem do imovel
-    - laudo de avaliacao
-    - valor do imovel
-    - vacancia do imovel
-    - vacancia fisica
-    - vacancia financeira
-    - ocupacao do imovel
-    - taxa de ocupacao
-    - propriedades do fundo
-    - quantos imoveis
-    - lista de imoveis
-    - tipo do imovel
-    - regiao onde o fundo possui imoveis
-    - endereco do ativo
-    - dados dos imoveis
-    exclude:
-    - segundo o ultimo relatorio gerencial
-    - no ultimo relatorio gerencial
-    - segundo o ultimo relatorio gerencial do
-    - no ultimo relatorio gerencial do
-  entities:
-  - fiis_imoveis
-- name: fiis_noticias
-  tokens:
-    include:
+      - acoes
+      - cotacao
+      - preco hoje
+      - preco agora
+      - noticia
+      - imprensa
+      - comunicado
+    phrases:
+      include:
+        - ranking por dividend yield
+        - ranking de dy
+        - ranking de rendimento
+        - ranking de dividendos
+        - top fiis por dividend yield
+        - top fiis por dy
+        - top 5 fiis por dy
+        - top 10 fiis por dy
+        - top fiis do mes
+        - ranking de fiis
+        - ranking de fiis por
+        - ranquear fiis por dy
+        - melhores fiis para renda
+        - maiores altas dos fiis
+        - maiores quedas dos fiis
+        - fiis que mais subiram
+        - fiis que mais cairam
+        - fiis destaque do mes
+        - melhor setor de fiis
+        - pior setor de fiis
+        - comparar desempenho de fiis
+        - performou acima do ifix
+        - quais setores estao performando melhor
+        - fiis que mais subiram no mes
+        - fiis que mais cairam na semana
+        - fiis com maior patrimonio
+        - fiis com maior peso no ifix
+        - fiis com maior participacao
+        - destaques do mes
+        - campeoes do mes
+        - lanternas do mes
+        - fiis com maior dividend yield
+        - fiis com maior dy
+        - fiis com maior rendimento
+        - ranking do
+        - ranking dos fiis
+        - ranking de fiis
+        - posicao no IFIX
+        - posicao no IFIL
+        - ranking no IFIX
+        - ranking no IFIL
+        - movimentos no IFIX
+        - movimentos no IFIL
+        - posicao do
+        - posicao no IFIX do
+        - posicao no IFIL do
+        - participacao do
+        - participacao no ifix do
+        - participacao no ifil do
+      exclude:
+        - preco do
+        - vacancia do
+        - rendimento do
+        - rendimento do fii
+        - cotacao do
+        - preco hoje
+        - preco ontem
+        - dy do
+        - dy mensal do
+        - yield mensal do
+        - variacao do <ticker>
+        - variacao mensal do <ticker>
+        - oscilacao do <ticker>
+        - alta do <ticker>
+        - baixa do <ticker>
+        - quanto esta o <ticker>
+        - minha carteira
+        - minha carteira de fiis
+        - meus fiis
+        - peso do
+        - peso no ifix do
+        - peso no ifil do
+    entities:
+      - fiis_rankings
+
+  - name: history_b3_indexes
+    weight: 3
+    options:
+      ignore_tickers: true
+    tokens:
+      include:
+        - ibovespa
+        - ibov
+        - ifix
+        - ifil
+        - indice
+        - indices
+        - pontos
+        - fechamento
+        - variacao
+        - variacao do dia
+        - variacao diaria
+        - hoje
+        - d1
+        - d-1
+        - ontem
+      exclude:
+        - peso
+        - posicao
+        - ranking
+        - usd
+        - dolar
+        - eur
+        - euro
+        - cdi
+        - selic
+        - ipca
+        - inpc
+        - fez parte
+        - ja fez parte
+    phrases:
+      include:
+        - variacao do indice b3
+        - pontos do ibov
+        - variacao do ibov
+        - pontos do ifix
+        - variacao do ifix
+        - pontos do ifil
+        - variacao do ifil
+        - ibovespa hoje d-1
+        - variacao diaria do ibov
+        - quanto variou o ifil no dia
+        - variacao do ibov hoje
+        - quanto variou o ibov hoje
+        - quanto variou o ifix no dia
+        - quanto variou o ifil no dia
+        - variacao diaria do ifix
+        - variacao diaria do ifil
+        - historico do ifix
+        - historico do ifix nos ultimos
+        - como o ifix se comportou
+        - como o ifix se comportou em
+        - quanto esta o ifix hoje
+      exclude: []
+    entities:
+      - history_b3_indexes
+
+  - name: history_currency_rates
+    weight: 3
+    options:
+      ignore_tickers: true
+    tokens:
+      include:
+        - dolar
+        - usd
+        - euro
+        - eur
+        - cambio
+        - moeda americana
+        - moeda estrangeira
+        - cotacao
+        - compra
+        - venda
+        - variacao
+        - variacao diaria
+        - historico
+        - serie historica
+        - hoje
+        - d1
+        - d-1
+        - ontem
+        - comercial
+      exclude:
+        - fii
+        - fundo imobiliario
+        - fundo de investimento imobiliario
+    phrases:
+      include:
+        - variacao diaria do usd
+        - variacao diaria do dolar
+        - variacao do usd hoje
+        - variacao do dolar hoje
+        - variacao da moeda no dia
+        - cotacao do dolar
+        - cotacao do euro
+        - cotacao media do euro
+        - cotacao media do dolar
+        - historico do dolar
+        - historico do usd
+        - historico do cambio
+        - variacao do dolar nos ultimos
+        - variacao do usd nos ultimos
+        - alta do dolar
+        - queda do dolar
+        - dolar comercial
+        - euro comercial
+        - variacao do usd
+        - variacao do eur
+        - eur hoje d 1
+        - cotacao do usd hoje
+      exclude: []
+    entities:
+      - history_currency_rates
+
+  - name: history_market_indicators
+    weight: 2
+    options:
+      ignore_tickers: true
+    tokens:
+      include:
+        - ipca
+        - indice de preco
+        - indice de inflacao
+        - inflacao historica
+        - cdi
+        - selic
+        - igpm
+        - incc
+        - inpc
+        - taxa
+        - juros
+        - inflacao
+        - indicador
+        - indicadores
+        - meta
+        - atual
+        - atualizada
+        - ultima
+        - atualizacao
+        - valor
+        - hoje
+        - d1
+        - d-1
+        - ontem
+        - janeiro
+        - fevereiro
+        - marco
+        - abril
+        - maio
+        - junho
+        - julho
+        - agosto
+        - setembro
+        - outubro
+        - novembro
+        - dezembro
+        - acumulo
+        - acumulado
+      exclude:
+        - ibov
+        - ibovespa
+        - ifix
+        - ifil
+        - usd
+        - dolar
+        - eur
+        - euro
+        - recebiveis
+        - vencimento
+        - vencimentos
+        - buckets
+        - prazos
+        - pl
+        - patrimonio
+        - patrimonio liquido
+        - vp
+        - valor patrimonial
+        - vacancia
+        - vacancia fisica
+        - vacancia financeira
+        - fii
+        - fundo imobiliario
+        - fundo de investimento imobiliario
+    phrases:
+      include:
+        - indicador de mercado d 1
+        - ipca de ontem
+        - selic de ontem
+        - taxa do igpm
+        - indicadores economicos
+        - taxa de juros
+        - ipca de outubro d 1
+        - cdi atual
+        - inpc atual
+        - ultima atualizacao do ipca
+        - valor do cdi hoje d 1
+        - selic meta atualizada
+        - ipca de outubro
+        - ipca outubro
+        - o que significa ipca alto
+        - ipca alto para fiis
+        - impacto do ipca alto
+        - historico do ipca
+        - historico do ipca nos ultimos
+        - historico da inflacao
+        - serie historica do ipca
+        - indice de inflacao nos ultimos
+        - historico do indice de precos
+        - acumulo de cdi em 12 meses
+        - acumulo de selic em 12 meses
+        - variacao do cdi este mes
+        - variacao do cdi no mes
+        - variacao do cdi em
+        - acumulado do cdi neste mes
+        - acumulado do cdi nos ultimos meses
+      exclude:
+        - receita do
+        - receita do fii
+        - receita do fundo
+        - receita ipca do
+        - receita cdi do
+        - percentual da receita
+    entities:
+      - history_market_indicators
+
+  - name: dividendos_yield
+    tokens:
+      include:
+        - rendimento_percentual
+        - comparativo
+        - comparacao
+        - comparar
+        - dy
+        - dividendos dy
+        - dividendos yield
+        - dividendos e dy
+        - dividendos e yield
+        - dy e dividendos
+        - yield e dividendos
+        - pagou
+        - comparacao de dividendos
+        - comparativo de dividendos e dy
+      exclude:
+        - meus
+        - minha
+        - minhas
+        - carteira
+        - meus fiis
+        - minha carteira
+        - minha carteira de fiis
+        - meu
+        - carteiras
+        - carteira de fiis
+        - dy historico
+        - dy 12m
+        - serie historica de dy
+        - historico de dy
+        - somente dividendos
+        - quanto pagou de dividendos
+        - pagou de dividendos
+        - o que e
+        - significado
+        - conceito
+        - explicar
+    phrases:
+      include:
+        - dy do fundo
+        - dy do <ticker>
+        - yield de dividendos
+        - yield mensal
+        - yield acumulado
+        - retorno em dividendos
+        - retorno do fundo em dividendos
+        - rendimento percentual
+        - rentabilidade via dividendos
+        - dividendos e dy do
+        - dividendos e dy do <ticker>
+        - dividendos e dividend yield do
+        - dividendos e yield do
+        - historico de dividendos e dy do
+        - historico de dividendos e dividend yield do
+        - historico de dividendos e yield do
+        - dividendos e dy de <ticker>
+        - dividendos e dividend yield de <ticker>
+        - dividendos e yield de <ticker>
+        - historico de dividendos e dy de <ticker>
+        - historico de dividendos e dividend yield de <ticker>
+        - historico de dividendos e yield de <ticker>
+        - dividendos e dy acumulado do <ticker>
+        - dividendos e yield acumulado do <ticker>
+        - dividendos e dy acumulado do <ticker>
+        - comparar dividendos e dy do <ticker> e <ticker>
+        - comparacao de dividendos e dy entre fiis
+        - comparativo de dividendos e dy
+        - dy e dividendos do
+        - dy e dividendos do <ticker>
+        - dy e dividendos de <ticker>
+        - dy e dividendos do fundo
+        - dy e dividendos do fundo <ticker>
+        - dy e dividendos do fii <ticker>
+        - quanto o <ticker> pagou de dividendos e dy em
+        - quanto pagou de dividendos e dy em
+        - o que e dividend yield
+        - o que e dividend yield em fiis
+        - significado de dividend yield
+        - explicacao de dividend yield
+      exclude: []
+    entities:
+      - dividendos_yield
+
+  - name: carteira_enriquecida
+    weight: 2
+    tokens:
+      include:
+        - dy mensal
+        - dy 12m
+      exclude: []
+    phrases:
+      include:
+        - valor investido em
+        - meus fiis
+        - dy dos meus fiis
+        - dy mensal dos meus fiis
+        - renda e dy dos meus fiis
+        - visao consolidada da minha carteira de fiis
+        - carteira de fiis enriquecida
+        - minha carteira de fiis com dy
+        - ranking de sharpe dos meus fiis
+      exclude: []
+    entities:
+      - carteira_enriquecida
+
+  - name: macro_consolidada
+    weight: 5
+    options:
+      ignore_tickers: true
+    allow_tickerless: true
+    tokens:
+      include:
+        - macro
+        - selic
+        - juros
+        - juros_altos
+        - juros_futuros
+        - juros_reais
+        - inflacao
+        - ipca
+        - curva
+        - curva_de_juros
+        - cambio
+        - dolar
+        - politica_monetaria
+        - politica_fiscal
+        - cenario_macro
+        - tendencia
+      exclude:
+        - vacancia
+        - dy
+        - dividendos
+        - dividendo
+        - yield
+        - provento
+        - proventos
+        - fii
+        - fiis
+        - fundo imobiliario
+        - fundos imobiliarios
+        - ticker
+        - preco
+        - precos
+        - cotacao
+        - cotacoes
+        - variacao
+        - alta
+        - baixa
+        - patrimonio
+        - patrimonio_liquido
+        - vp
+        - valor_patrimonial
+        - valor_patrimonial_cota
+        - administrador
+        - gestora
+        - gestor
+        - cnpj
+        - segmento
+        - setor
+        - mandato
+        - classe
+        - categoria
+    phrases:
+      include:
+        - como juros altos afetam fiis
+        - impacto da selic nos fiis
+        - ipca alto e ruim para fiis
+        - como funciona a inflacao no brasil
+        - tendencia da curva de juros
+        - ipca acumulado dos ultimos meses
+        - juros x mercado imobiliario
+        - por que o ipca subiu
+        - a selic vai cair
+        - impacto da inflacao no mercado
+        - juros futuros e renda fixa
+        - efeito do cambio nas empresas
+        - efeito do ipca nos fundos imobiliarios
+        - juros reais
+        - ambiente de juros altos
+        - como esta o ipca acumulado
+        - impacto da selic no mercado
+        - efeito da inflacao nos fiis
+        - impacto da selic na economia
+        - impacto do ipca na economia
+      exclude:
+        - dividendos
+        - dy
+        - yield
+        - vacancia
+        - receita
+        - cronograma
+    entities:
+      - macro_consolidada
+anti_tokens:
+  generic:
+    - dolar
+    - euro
+    - usd
+    - eur
+  fiis_yield_history:
+    - dy atual
+    - ultimo dy
+    - provento
+    - proventos
+    - dividendos
+    - dividendo
+    - acumulado
+    - rendimento atual
+    - yield atual
+  fiis_noticias:
     - noticia
     - noticias
-    - relevante
-    - fato
-    - fatos
-    - imprensa
-    - midia
-    - divulgado
-    - divulgacao
-    - comunicado
-    - anuncio
-    - nota
-    - atualizacao
-    - recente
-    - hoje
-    - semana
-    - mes
-    - ultimo
-    - novidade
     - materia
-    - manchete
     - reportagem
+    - manchete
     - fato relevante
     - fatos relevantes
-    - boato
-    - boatos
-    - rumor
-    - rumores
-    - ultimas
-    - negativa
-    - negativas
-    - ruim
-    - ruins
-    exclude:
-    - snapshot
-    - overview
-    - indicadores
-    - cnpj
-    - classe
-    - segmento
-    - setor
-    - administrador
-    - gestao
-    - mandato
-    - nome
-    - vacancia
-    - ocupacao
-    - contratos
-    - prazo
-    - vencimento
-    - receita
-    - renda
-    - pl
-    - patrimonio
-    - preco
-    - cotacao
-    - variacao
-    - alta
-    - baixa
-    - oscilacao
-    - dy
-    - yield
-    - dividendo
-    - dividendos
-    - proventos
-    - rendimento
-    - sharpe
-    - sortino
-    - volatilidade
-    - beta
-    - mdd
-    - risco
-    - imoveis
-    - abl
-    - propriedades
-    - ifix
-    - ifil
-    - posicao
-    - ranking
-    - peso
-    - movimentos
-    - carteira
-    - posicoes
-    - minha carteira
-    - meus fiis
-    - minha renda
-    - preco
-    - cotacao
-    - variacao
-    - alta
-    - baixa
-  phrases:
-    include:
-    - noticias do
-    - ultimas noticias do
-    - ultimas do
-    - noticias recentes do
-    - tem novidade sobre o
-    - fatos relevantes do
-    - novidades do
-    - me atualize sobre o
-    - atualizacao do
-    - o que saiu na midia sobre o
-    - o que saiu na imprensa sobre o
-    - o que aconteceu com o
-    - resumo das noticias do
-    - noticias sobre fundos imobiliarios
-    - ultima noticia de fii
-    - houve alguma noticia sobre o
-    - qual foi a noticia mais recente do
-    - noticias da semana do
-    - noticias do mes do
-    - as noticias do
-    - fato relevante do
-    - fato relevante sobre
-    - noticias negativas do
-    - noticia negativa do
-    exclude: []
-  entities:
-  - fiis_noticias
-- name: fiis_processos
-  tokens:
-    include:
-    - processo
-    - processos
-    - judicial
-    - judiciais
-    - acao
-    - acoes
-    - andamento
-    - status
-    - litigio
-    - litgio
-    - causa
-    - causas
-    - perda
-    - perdas
-    - condenacao
-    - indenizacao
-    - autor
-    - reu
-    - re
-    - parte
-    - partes
-    - distribuicao
-    - distribuido
-    - vara
-    - tribunal
-    - comarca
-    - processo_numero
-    - classificada
-    - classe_processual
-    - numero
-    - quantidade_processos
-    - disputas
-    - demandas
-    exclude:
-    - compare
-    - comparar
-    - comparacao
-    - pl
-    - patrimonio
-    - vacancia
-    - ocupacao
-    - imoveis
-    - abl
-    - receita
-    - contratos
-    - ifix
-    - ifil
-    - ranking
-    - posicao
-    - movimentos
-    - peso
-    - carteira
-    - posicoes
-    - performance
-    - rendimento
-    - evolucao
-    - dy
-    - yield
-    - dividendos
-    - proventos
-    - sharpe
-    - volatilidade
-    - beta
-    - sortino
-    - mdd
-    - noticia
-    - noticias
-    - reportagem
-    - preco
-    - cotacao
-    - variacao
-    - alta
-    - baixa
-  phrases:
-    include:
-    - fiis da carteira com mais processos
-    - quais fiis tem mais processos
-    - risco de perda em acoes do
-    - risco de perder acao do
-    - processos do
-    - acoes judiciais do
-    - acoes contra o
-    - processos contra o
-    - quantos processos o
-    - ha processos contra o
-    - quais processos o
-    - qual o valor das acoes do
-    - processos envolvendo o
-    - quem move acao contra o
-    - parte autora do processo do
-    - parte re do processo do
-    - valor das causas do
-    - status dos processos do
-    - resumo das acoes judiciais do
-    - andamento dos processos do
-    - processos judiciais do
-    exclude: []
-  entities:
-  - fiis_processos
-- name: fiis_rankings
-  weight: 6
-  tokens:
-    include:
-    - ranking
-    - rank
-    - posicao
-    - posicoes
-    - peso
-    - pesos
-    - participacao
-    - composicao
-    - ifix
-    - ifil
-    - movimentos
-    - top
-    - melhores
-    - maiores
-    - menores
-    - piores
-    - destaques
-    - campeoes
-    - lanternas
-    - comparacao
-    - comparar
-    - performou
-    - performance
-    - queda
-    - aumento
-    - reducao
-    - superou
-    - acima da media
-    - acima do ifix
-    - acima do setor
-    - valor de mercado
-    - market cap
-  exclude:
-    - preco
-    - media do
-    - variacao diaria
-    - variacao do <ticker>
-    - pontos
-    - fechamento
-    - hoje
-    - ontem
-    - beta
-    - noticia do
-    - r2
-    - indice
-    - historico
-    - se comportou
-    - mdd
-    - drawdown
-    - dy mensal
-    - yield mensal
-    - processo
-    - processos
-    - judicial
-    - judiciais
-    - acao
-    - acoes
-    - cotacao
-    - preco hoje
-    - preco agora
-    - noticia
-    - imprensa
     - comunicado
-  phrases:
-    include:
-    - ranking por dividend yield
-    - ranking de dy
-    - ranking de rendimento
-    - ranking de dividendos
-    - top fiis por dividend yield
-    - top fiis por dy
-    - top 5 fiis por dy
-    - top 10 fiis por dy
-    - top fiis do mes
-    - ranking de fiis
-    - ranking de fiis por
-    - ranquear fiis por dy
-    - melhores fiis para renda
-    - maiores altas dos fiis
-    - maiores quedas dos fiis
-    - fiis que mais subiram
-    - fiis que mais cairam
-    - fiis destaque do mes
-    - melhor setor de fiis
-    - pior setor de fiis
-    - comparar desempenho de fiis
-    - performou acima do ifix
-    - quais setores estao performando melhor
-    - fiis que mais subiram no mes
-    - fiis que mais cairam na semana
-    - fiis com maior patrimonio
-    - fiis com maior peso no ifix
-    - fiis com maior participacao
-    - destaques do mes
-    - campeoes do mes
-    - lanternas do mes
-    - fiis com maior dividend yield
-    - fiis com maior dy
-    - fiis com maior rendimento
-    - ranking do
-    - ranking dos fiis
-    - ranking de fiis
-    - posicao no IFIX
-    - posicao no IFIL
-    - ranking no IFIX
-    - ranking no IFIL
-    - movimentos no IFIX
-    - movimentos no IFIL
-    - posicao do
-    - posicao no IFIX do
-    - posicao no IFIL do
-    - participacao do
-    - participacao no ifix do
-    - participacao no ifil do
-    exclude:
-    - preco do
-    - vacancia do
-    - rendimento do
-    - rendimento do fii
-    - cotacao do
-    - preco hoje
-    - preco ontem
-    - dy do
-    - dy mensal do
-    - yield mensal do
-    - variacao do <ticker>
-    - variacao mensal do <ticker>
-    - oscilacao do <ticker>
-    - alta do <ticker>
-    - baixa do <ticker>
-    - quanto esta o <ticker>
-    - minha carteira
-    - minha carteira de fiis
-    - meus fiis
-    - peso do
-    - peso no ifix do
-    - peso no ifil do
-  entities:
-  - fiis_rankings
-- name: history_b3_indexes
-  weight: 3
-  options:
-    ignore_tickers: true
-  tokens:
-    include:
-    - ibovespa
-    - ibov
-    - ifix
-    - ifil
-    - indice
-    - indices
-    - pontos
-    - fechamento
-    - variacao
-    - variacao do dia
-    - variacao diaria
-    - hoje
-    - d1
-    - d-1
-    - ontem
-    exclude:
-    - peso
-    - posicao
+  history_b3_indexes:
     - ranking
-    - usd
-    - dolar
-    - eur
-    - euro
-    - cdi
-    - selic
-    - ipca
-    - inpc
-    - fez parte
-    - ja fez parte
-  phrases:
-    include:
-    - variacao do indice b3
-    - pontos do ibov
-    - variacao do ibov
-    - pontos do ifix
-    - variacao do ifix
-    - pontos do ifil
-    - variacao do ifil
-    - ibovespa hoje d-1
-    - variacao diaria do ibov
-    - quanto variou o ifil no dia
-    - variacao do ibov hoje
-    - quanto variou o ibov hoje
-    - quanto variou o ifix no dia
-    - quanto variou o ifil no dia
-    - variacao diaria do ifix
-    - variacao diaria do ifil
-    - historico do ifix
-    - historico do ifix nos ultimos
-    - como o ifix se comportou
-    - como o ifix se comportou em
-    - quanto esta o ifix hoje
-    exclude: []
-  entities:
-  - history_b3_indexes
-- name: history_currency_rates
-  weight: 3
-  options:
-    ignore_tickers: true
-  tokens:
-    include:
-    - dolar
-    - usd
-    - euro
-    - eur
-    - cambio
-    - moeda americana
-    - moeda estrangeira
-    - cotacao
-    - compra
-    - venda
-    - variacao
-    - variacao diaria
-    - historico
-    - serie historica
-    - hoje
-    - d1
-    - d-1
-    - ontem
-    - comercial
-    exclude:
-    - fii
-    - fundo imobiliario
-    - fundo de investimento imobiliario
-  phrases:
-    include:
-    - variacao diaria do usd
-    - variacao diaria do dolar
-    - variacao do usd hoje
-    - variacao do dolar hoje
-    - variacao da moeda no dia
-    - cotacao do dolar
-    - cotacao do euro
-    - cotacao media do euro
-    - cotacao media do dolar
-    - historico do dolar
-    - historico do usd
-    - historico do cambio
-    - variacao do dolar nos ultimos
-    - variacao do usd nos ultimos
-    - alta do dolar
-    - queda do dolar
-    - dolar comercial
-    - euro comercial
-    - variacao do usd
-    - variacao do eur
-    - eur hoje d 1
-    - cotacao do usd hoje
-    exclude: []
-  entities:
-  - history_currency_rates
-- name: history_market_indicators
-  weight: 2
-  options:
-    ignore_tickers: true
-  tokens:
-    include:
-    - ipca
-    - indice de preco
-    - indice de inflacao
-    - inflacao historica
-    - cdi
-    - selic
-    - igpm
-    - incc
-    - inpc
-    - taxa
-    - juros
-    - inflacao
-    - indicador
-    - indicadores
-    - meta
-    - atual
-    - atualizada
-    - ultima
-    - atualizacao
-    - valor
-    - hoje
-    - d1
-    - d-1
-    - ontem
-    - janeiro
-    - fevereiro
-    - marco
-    - abril
-    - maio
-    - junho
-    - julho
-    - agosto
-    - setembro
-    - outubro
-    - novembro
-    - dezembro
-    - acumulo
-    - acumulado
-    exclude:
-    - ibov
-    - ibovespa
-    - ifix
-    - ifil
-    - usd
-    - dolar
-    - eur
-    - euro
-    - recebiveis
-    - vencimento
-    - vencimentos
-    - buckets
-    - prazos
-    - pl
-    - patrimonio
-    - patrimonio liquido
-    - vp
-    - valor patrimonial
-    - vacancia
-    - vacancia fisica
-    - vacancia financeira
-    - fii
-    - fundo imobiliario
-    - fundo de investimento imobiliario
-  phrases:
-    include:
-    - indicador de mercado d 1
-    - ipca de ontem
-    - selic de ontem
-    - taxa do igpm
-    - indicadores economicos
-    - taxa de juros
-    - ipca de outubro d 1
-    - cdi atual
-    - inpc atual
-    - ultima atualizacao do ipca
-    - valor do cdi hoje d 1
-    - selic meta atualizada
-    - ipca de outubro
-    - ipca outubro
-    - o que significa ipca alto
-    - ipca alto para fiis
-    - impacto do ipca alto
-    - historico do ipca
-    - historico do ipca nos ultimos
-    - historico da inflacao
-    - serie historica do ipca
-    - indice de inflacao nos ultimos
-    - historico do indice de precos
-    - acumulo de cdi em 12 meses
-    - acumulo de selic em 12 meses
-    - variacao do cdi este mes
-    - variacao do cdi no mes
-    - variacao do cdi em
-    - acumulado do cdi neste mes
-    - acumulado do cdi nos ultimos meses
-    exclude:
-    - receita do
-    - receita do fii
-    - receita do fundo
-    - receita ipca do
-    - receita cdi do
-    - percentual da receita
-  entities:
-  - history_market_indicators
-- name: dividendos_yield
-  tokens:
-    include:
-    - rendimento_percentual
-    - comparativo
-    - comparacao
-    - comparar
-    - dy
-    - dividendos dy
-    - dividendos yield
-    - dividendos e dy
-    - dividendos e yield
-    - dy e dividendos
-    - yield e dividendos
-    - pagou
-    - comparacao de dividendos
-    - comparativo de dividendos e dy
-    exclude:
-    - meus
-    - minha
-    - minhas
-    - carteira
-    - meus fiis
-    - minha carteira
-    - minha carteira de fiis
-    - meu
-    - carteiras
-    - carteira de fiis
+    - posicao
+  dividendos_yield:
     - dy historico
     - dy 12m
     - serie historica de dy
     - historico de dy
     - somente dividendos
-    - quanto pagou de dividendos
-    - pagou de dividendos
-    - o que e
-    - significado
-    - conceito
-    - explicar
-  phrases:
-    include:
-    - dy do fundo
-    - dy do <ticker>
-    - yield de dividendos
-    - yield mensal
-    - yield acumulado
-    - retorno em dividendos
-    - retorno do fundo em dividendos
-    - rendimento percentual
-    - rentabilidade via dividendos
-    - dividendos e dy do
-    - dividendos e dy do <ticker>
-    - dividendos e dividend yield do
-    - dividendos e yield do
-    - historico de dividendos e dy do
-    - historico de dividendos e dividend yield do
-    - historico de dividendos e yield do
-    - dividendos e dy de <ticker>
-    - dividendos e dividend yield de <ticker>
-    - dividendos e yield de <ticker>
-    - historico de dividendos e dy de <ticker>
-    - historico de dividendos e dividend yield de <ticker>
-    - historico de dividendos e yield de <ticker>
-    - dividendos e dy acumulado do <ticker>
-    - dividendos e yield acumulado do <ticker>
-    - dividendos e dy acumulado do <ticker>
-    - comparar dividendos e dy do <ticker> e <ticker>
-    - comparacao de dividendos e dy entre fiis
-    - comparativo de dividendos e dy
-    - dy e dividendos do
-    - dy e dividendos do <ticker>
-    - dy e dividendos de <ticker>
-    - dy e dividendos do fundo
-    - dy e dividendos do fundo <ticker>
-    - dy e dividendos do fii <ticker>
-    - quanto o <ticker> pagou de dividendos e dy em
-    - quanto pagou de dividendos e dy em
-    - o que e dividend yield
-    - o que e dividend yield em fiis
-    - significado de dividend yield
-    - explicacao de dividend yield
-    exclude: []
-  entities:
-  - dividendos_yield
-- name: carteira_enriquecida
-  weight: 2
-  tokens:
-    include:
-    - dy mensal
-    - dy 12m
-    exclude: []
-  phrases:
-    include:
-    - valor investido em
-    - meus fiis
-    - dy dos meus fiis
-    - dy mensal dos meus fiis
-    - renda e dy dos meus fiis
-    - visao consolidada da minha carteira de fiis
-    - carteira de fiis enriquecida
-    - minha carteira de fiis com dy
-    - ranking de sharpe dos meus fiis
-    exclude: []
-  entities:
-  - carteira_enriquecida
-- name: macro_consolidada
-  weight: 5
-  options:
-    ignore_tickers: true
-  allow_tickerless: true
-  tokens:
-    include:
-    - macro
-    - selic
-    - juros
-    - juros_altos
-    - juros_futuros
-    - juros_reais
-    - inflacao
-    - ipca
-    - curva
-    - curva_de_juros
-    - cambio
-    - dolar
-    - politica_monetaria
-    - politica_fiscal
-    - cenario_macro
-    - tendencia
-    exclude:
-    - vacancia
-    - dy
-    - dividendos
-    - dividendo
-    - yield
-    - provento
-    - proventos
-    - fii
-    - fiis
-    - fundo imobiliario
-    - fundos imobiliarios
-    - ticker
-    - preco
-    - precos
-    - cotacao
-    - cotacoes
-    - variacao
-    - alta
-    - baixa
-    - patrimonio
-    - patrimonio_liquido
-    - vp
-    - valor_patrimonial
-    - valor_patrimonial_cota
-    - administrador
-    - gestora
-    - gestor
-    - cnpj
-    - segmento
-    - setor
-    - mandato
-    - classe
-    - categoria
-  phrases:
-    include:
-    - como juros altos afetam fiis
-    - impacto da selic nos fiis
-    - ipca alto e ruim para fiis
-    - como funciona a inflacao no brasil
-    - tendencia da curva de juros
-    - ipca acumulado dos ultimos meses
-    - juros x mercado imobiliario
-    - por que o ipca subiu
-    - a selic vai cair
-    - impacto da inflacao no mercado
-    - juros futuros e renda fixa
-    - efeito do cambio nas empresas
-    - efeito do ipca nos fundos imobiliarios
-    - juros reais
-    - ambiente de juros altos
-    - como esta o ipca acumulado
-    - impacto da selic no mercado
-    - efeito da inflacao nos fiis
-    - impacto da selic na economia
-    - impacto do ipca na economia
-    exclude:
-    - dividendos
-    - dy
-    - yield
-    - vacancia
-    - receita
-    - cronograma
-  entities:
-  - macro_consolidada
-anti_tokens:
-  generic:
-  - dolar
-  - euro
-  - usd
-  - eur
-  fiis_yield_history:
-  - dy atual
-  - ultimo dy
-  - provento
-  - proventos
-  - dividendos
-  - dividendo
-  - acumulado
-  - rendimento atual
-  - yield atual
-  fiis_noticias:
-  - noticia
-  - noticias
-  - materia
-  - reportagem
-  - manchete
-  - fato relevante
-  - fatos relevantes
-  - comunicado
-  history_b3_indexes:
-  - ranking
-  - posicao
-  dividendos_yield:
-  - dy historico
-  - dy 12m
-  - serie historica de dy
-  - historico de dy
-  - somente dividendos
-  - apenas dividendos
-  - dividend yield do <ticker> em
-  - dy do <ticker> em
-  - qual foi o dividend yield
-  - qual foi o dy do
+    - apenas dividendos
+    - dividend yield do <ticker> em
+    - dy do <ticker> em
+    - qual foi o dividend yield
+    - qual foi o dy do
   client_fiis_dividends_evolution:
-  - dy
-  - dividend yield
-  - pagou de dividendos e dy
-  - pagou de dividendos
+    - dy
+    - dividend yield
+    - pagou de dividendos e dy
+    - pagou de dividendos
   fiis_rankings:
-  - peso do <ticker> no ifix
-  - peso do <ticker> no ifil
-  - peso no ifix do <ticker>
-  - peso no ifil do <ticker>
+    - peso do <ticker> no ifix
+    - peso do <ticker> no ifil
+    - peso no ifix do <ticker>
+    - peso no ifil do <ticker>
