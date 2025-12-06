@@ -27,12 +27,12 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Qual a dívida líquida do ALMI11 no último snapshot?",
+      "question": "Qual a dívida líquida do ALMI11 no último relatório gerencial?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Qual a receita total do HGLG11 nesse snapshot?",
+      "question": "Qual a receita total do HGLG11 no último relatório gerencial?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -52,7 +52,7 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Quantos imóveis o ALMI11 tem no portfólio, segundo o último snapshot?",
+      "question": "Quantos imóveis o ALMI11 tem no portfólio, segundo o último relatório gerencial?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -67,7 +67,7 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Qual o payout e a reserva de dividendos do HGLG11 nesse snapshot?",
+      "question": "Qual o payout e a reserva de dividendos do HGLG11 no último relatório gerencial?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },

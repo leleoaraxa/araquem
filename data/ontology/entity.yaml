@@ -967,6 +967,7 @@ intents:
     - destaques
   phrases:
     include:
+    - no ultimo relatorio gerencial do <ticker>
     - payout do
     - alavancagem do
     - market cap do
