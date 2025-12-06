@@ -1532,290 +1532,139 @@
       "expected_entity": "fiis_precos"
     },
     {
-      "question": "Dividendos do HGLG11 nos últimos 12 meses.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual o patrimônio líquido do HGLG11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Dividendos do MXRF11 este mês.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual o valor patrimonial por cota do XPLG11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Quais os dividendos do VISC11 esse mês?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual o P/VP atual do ALMI11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Historico de dividendos do HGLG11.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Quanto de caixa e dívida o HGLG11 tem hoje?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Pagamentos de dividendos do MXRF11 nos últimos meses.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "O XPLG11 está alavancado? Qual o nível de alavancagem dele?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Dividendos do VISC11 nos últimos 12 meses.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual a dívida líquida do ALMI11 no último snapshot?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Quais foram os dividendos pagos pelo HGLG11 nos últimos meses?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual a receita total do HGLG11 nesse snapshot?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Quais os proventos do MXRF11 esse mês?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual a receita por cota do XPLG11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Proventos de VISC11 nos últimos 12 meses.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual a ABL total do HGLG11 e qual a vacância física?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Qual foi o último dividendo pago por HGLG11?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual a vacância financeira do XPLG11 hoje?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Qual o próximo pagamento de dividendos do MXRF11?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Quantos imóveis o ALMI11 tem no portfólio, segundo o último snapshot?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Quanto o VISC11 pagou de dividendos nos últimos 12 meses?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Me traga um resumo financeiro do HGLG11: patrimônio, P/VP e alavancagem.",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Total de dividendos distribuídos por HGLG11 neste ano.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Quais são os principais indicadores financeiros do XPLG11 hoje (PL, VP/cota, vacância)?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Total de dividendos distribuídos por MXRF11 nos últimos 12 meses.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Qual o payout e a reserva de dividendos do HGLG11 nesse snapshot?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Dividendos acumulados de VISC11 no último ano.",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "question": "Comparando ALMI11 e HGLG11, qual deles tem maior patrimônio líquido hoje?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+        {
+      "question": "cronograma de receitas do LRDI11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "DY histórico do HGLG11 nos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "receitas indexadas ao IPCA do HGLG11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "DY mensal do MXRF11 nos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "receitas com vencimento em 6-9 meses do KNRI11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Histórico de dividend yield do VISC11 nos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "receitas com vencimento acima de 36 meses do VISC11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Qual foi o DY de HGLG11 nos últimos 12 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "receitas com vencimento indeterminado do MXRF11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Qual foi o DY de MXRF11 nos últimos 12 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "percentual de receitas do RBRF11 indexadas ao IGPM",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Qual foi o DY de VISC11 nos últimos 12 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "percentual de receitas do BCFF11 indexadas ao INPC",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Série histórica de DY do HGLG11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "Como está distribuída a receita futura do HGLG11 por faixa de vencimento?",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Série histórica de DY do MXRF11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "As receitas do HGLG11 estão mais concentradas no curto prazo ou no longo prazo?",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Série histórica de DY do VISC11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "Qual a estrutura de recebíveis do HGLG11?",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Evolução do DY de HGLG11 ao longo dos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
+      "question": "Compare o cronograma de receitas de HGLG11 e XPLG11.",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Evolução do DY de MXRF11 ao longo dos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Evolução do DY de VISC11 ao longo dos últimos 24 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "DY mensal do HGLG11 nos últimos 12 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "DY mensal do MXRF11 nos últimos 12 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "DY mensal do VISC11 nos últimos 12 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Grafico com o dy mensal do MXRF11 nos ultimos 2 anos.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Qual o DY historico do HGLG11?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Me mostra o historico de dividend yield do MXRF11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Quero ver o dy por mes do VISC11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Como foi o dy mensal do HGLG11 nos ultimos 12 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Qual foi o dy do MXRF11 nos ultimos 24 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Evolucao do dy do VISC11 desde 2023.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Mostra o dy 12m mes a mes do HGLG11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Qual foi o dividend yield do MXRF11 em outubro de 2024?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "DY de janeiro de 2024 do VISC11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Serie historica de dy do HGLG11 por mes.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Historico completo de dy do MXRF11 ao longo dos ultimos anos.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Como o dy mensal do VISC11 se comportou nos ultimos 24 meses?",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "DY por mes do HGLG11 em 2023.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Historico de dividend yield do VISC11 nos ultimos 18 meses.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Quero um resumo completo do HGLG11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Me mostre um panorama geral do HGLG11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Resumo geral do MXRF11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Panorama do fundo MXRF11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Visao geral do VISC11 como investimento.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Resumo dos principais indicadores de HGLG11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Principais pontos do fundo MXRF11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Quais os destaques do VISC11 hoje?",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Apresenta um overview detalhado do HGLG11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Ficha resumo do fundo MXRF11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Ficha tecnica resumida do VISC11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
-    },
-    {
-      "question": "Comparativo de overview entre HGLG11, MXRF11 e VISC11.",
-      "expected_intent": "fii_overview",
-      "expected_entity": "fii_overview"
+      "question": "Qual percentual das receitas do HGLG11 tem vencimento acima de 36 meses?",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
     }
-
   ]
 }
