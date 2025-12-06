@@ -1562,12 +1562,67 @@
       }
     },
     {
+      "question": "Como o IFIX se comportou nos últimos 10 pregões?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Fechamento de ontem do Ibovespa em pontos e porcentagem",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Histórico do IBOV nos últimos 5 dias úteis",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Histórico recente do IFIX (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Ibovespa hoje (D-1)",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi a variação diária do IFIX em março de 2025?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Qual foi a variação do IFIX ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
       "question": "Qual foi o fechamento do IBOV ontem?",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
     {
       "question": "Quanto está o IFIX hoje?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Quanto o IFIL subiu ou caiu ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Resumo das últimas variações do IFIX e do IFIL",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Série histórica do IFIL nos últimos 30 dias",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Variação do IFIX no fechamento de hoje (D-1)",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
