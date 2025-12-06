@@ -9,16 +9,15 @@
     "traded_until_date"
   ],
   "samples": [
-    { "question": "dividendos do CXTL11" },
-    { "question": "proventos do CXTL11" },
-    { "question": "rendimento do CXTL11" },
-
-    { "question": "dividendos do FPAB11" },
-    { "question": "proventos do FPAB11" },
-    { "question": "rendimento do FPAB11" },
-
-    { "question": "dividendos do HGLG11" },
-    { "question": "proventos do HGLG11" },
-    { "question": "rendimento do HGLG11" }
+    { "question": "dividendos do HGLG11 este mes" },
+    { "question": "historico de proventos do HGLG11 nos ultimos 12 meses" },
+    { "question": "ultimo dividendo pago pelo MXRF11" },
+    { "question": "proximo pagamento de dividendos do MXRF11" },
+    { "question": "quais dividendos o KNRI11 pagou em 2024" },
+    { "question": "quanto o FPAB11 pagou de proventos em outubro de 2025" },
+    { "question": "rendimento mensal do CPTS11" },
+    { "question": "total de dividendos do VISC11 nos ultimos 6 meses" },
+    { "question": "proventos anunciados do RECR11" },
+    { "question": "data de corte para receber dividendos do XPML11" }
   ]
 }

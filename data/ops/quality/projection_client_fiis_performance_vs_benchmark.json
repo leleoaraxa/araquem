@@ -15,6 +15,12 @@
     { "question": "como foi a performance da minha carteira de fiis versus o IFIX nos ultimos 12 meses" },
     { "question": "minha carteira de fiis esta melhor ou pior que o CDI" },
     { "question": "comparar o retorno da minha carteira de fiis com o IFIL" },
-    { "question": "qual foi a rentabilidade da minha carteira de fiis versus o IFIX em 2024" }
+    { "question": "qual foi a rentabilidade da minha carteira de fiis versus o IFIX em 2024" },
+    { "question": "retorno da minha carteira de fiis comparado ao IFIX no ano" },
+    { "question": "minha carteira de fiis superou o CDI no mes passado" },
+    { "question": "performance acumulada dos meus fiis versus IFIL" },
+    { "question": "benchmark ideal para medir meu portfólio de fiis" },
+    { "question": "como variou a distância da minha carteira para o IFIX nos últimos 6 meses" },
+    { "question": "minha carteira de fiis está batendo o IFIX em 2025" }
   ]
 }

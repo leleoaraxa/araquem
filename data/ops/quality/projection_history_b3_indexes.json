@@ -21,6 +21,8 @@
     { "question": "ifix ontem" },
     { "question": "último fechamento do ibovespa" },
     { "question": "pontuação do ifil (D-1)" },
-    { "question": "índices da b3 de ontem" }
+    { "question": "índices da b3 de ontem" },
+    { "question": "qual foi a pontuação do ifix na ultima sexta" },
+    { "question": "como fechou o ibov ontem em pontos e variação" }
   ]
 }

@@ -15,6 +15,13 @@
   "samples": [
     { "question": "payout e alavancagem do GFDL11" },
     { "question": "valor de mercado e EV do STRX11" },
-    { "question": "caixa total e passivos do AZPL11" }
+    { "question": "caixa total e passivos do AZPL11" },
+    { "question": "payout ratio do MXRF11" },
+    { "question": "alavancagem e enterprise value do MCCI11" },
+    { "question": "quanto de caixa o HCTR11 tem" },
+    { "question": "passivos e mercado do KNCR11" },
+    { "question": "indicadores financeiros resumidos do XPML11" },
+    { "question": "payout e leverage do VISC11" },
+    { "question": "qual o market cap do HGLG11" }
   ]
 }

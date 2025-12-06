@@ -4,28 +4,15 @@
   "result_key": "cadastro_fii",
   "must_have_columns": ["ticker", "fii_cnpj", "display_name", "admin_name", "admin_cnpj", "website_url"],
   "samples": [
+    { "question": "cnpj do HGLG11" },
+    { "question": "administrador do HGLG11" },
+    { "question": "site do HGLG11" },
     { "question": "cnpj do MCCI11" },
     { "question": "administrador do MCCI11" },
     { "question": "site do MCCI11" },
-
-    { "question": "cnpj do MAXR11" },
-    { "question": "administrador do MAXR11" },
-    { "question": "site do MAXR11" },
-
-    { "question": "cnpj do MANA11" },
-    { "question": "administrador do MANA11" },
-    { "question": "site do MANA11" },
-
-    { "question": "cnpj do LVBI11" },
-    { "question": "administrador do LVBI11" },
-    { "question": "site do LVBI11" },
-
-    { "question": "cnpj do LTMT11" },
-    { "question": "administrador do LTMT11" },
-    { "question": "site do LTMT11" },
-
-    { "question": "cnpj do LRDI11" },
-    { "question": "administrador do LRDI11" },
-    { "question": "site do LRDI11" }
+    { "question": "cnpj do XPML11" },
+    { "question": "administrador do XPML11" },
+    { "question": "site do XPML11" },
+    { "question": "qual o cnpj do KNCR11" }
   ]
 }

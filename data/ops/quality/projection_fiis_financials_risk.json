@@ -19,6 +19,8 @@
     { "question": "drawdown do KNRI11" },
     { "question": "r2 do VISC11" },
     { "question": "quais os indicadores financeiros de risco do XPML11" },
-    { "question": "me mostre os indicadores financeiros de risco do HCTR11" }
+    { "question": "me mostre os indicadores financeiros de risco do HCTR11" },
+    { "question": "qual a volatilidade do CPTS11" },
+    { "question": "indicadores de risco do RECR11" }
   ]
 }
