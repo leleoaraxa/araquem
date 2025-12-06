@@ -148,6 +148,10 @@ intents:
     - receitas
     - recebiveis
     - previsao
+    - payout
+    - reserva
+    - reserva de dividendos
+    - relatorio gerencial
   phrases:
     include:
     - evolucao dos dividendos
@@ -162,6 +166,8 @@ intents:
     - proventos do <ticker>
     - rendimento de <ticker>
     - rendimento do <ticker>
+    - payout e a reserva de dividendos do
+    - payout e reserva de dividendos do
   entities:
   - client_fiis_dividends_evolution
 - name: client_fiis_performance_vs_benchmark
@@ -173,8 +179,6 @@ intents:
     - comparacao
     - comparar
     - benchmark
-    - ifix
-    - ifil
     - ibov
     - cdi
     - carteira
@@ -836,6 +840,12 @@ intents:
     - campeoes
     - lanternas
     - destaques
+    - maior
+    - maiores
+    - top
+    - ranking
+    - fiis com maior
+    - fiis com menor
   phrases:
     include:
     - dy historico
@@ -1275,6 +1285,10 @@ intents:
     - campeoes
     - lanternas
     - destaques
+    - fiis com menor
+    - fiis com maior
+    - fundos com menor
+    - fundos com maior
   phrases:
     include:
     - indicador de risco do
@@ -1310,6 +1324,10 @@ intents:
     - retorno ajustado ao risco
     - interpretar sharpe
     - interpretar risco
+    - fiis com menor drawdown
+    - fiis com menor mdd
+    - fundos com menor drawdown
+    - fundos com menor risco de queda
     exclude: []
   entities:
   - fiis_financials_risk
@@ -1532,8 +1550,6 @@ intents:
     - re
     - parte
     - partes
-    - valor
-    - valores
     - distribuicao
     - distribuido
     - vara
@@ -1646,6 +1662,8 @@ intents:
     - acima da media
     - acima do ifix
     - acima do setor
+    - valor de mercado
+    - market cap
   exclude:
     - preco
     - media do
@@ -1746,6 +1764,28 @@ intents:
     - participacao do
     - participacao no ifix do
     - participacao no ifil do
+    - o <ticker> ja fez parte do ifix
+    - o <ticker> ja fez parte do ifil
+    - ja fez parte do ifix
+    - ja fez parte do ifil
+    - fez parte do ifix
+    - fez parte do ifil
+    - o <ticker> entrou no ifix
+    - o <ticker> saiu do ifix
+    - fiis com maior dividend yield em 12 meses
+    - quais fiis tem o maior dividend yield em 12 meses
+    - ranking por dividend yield em 12 meses
+    - ranking de dy em 12 meses
+    - top fiis por dividend yield em 12 meses
+    - fiis com maior valor de mercado
+    - quais fiis tem o maior valor de mercado
+    - maiores fiis em valor de mercado
+    - fiis com menor drawdown
+    - fiis com menor mdd
+    - fundos com menor drawdown
+    - fundos com menor risco de queda
+    - quais fiis tem o menor drawdown historico
+    - fiis com menor drawdown historico
     exclude:
     - preco do
     - vacancia do
@@ -1801,6 +1841,8 @@ intents:
     - selic
     - ipca
     - inpc
+    - fez parte
+    - ja fez parte
   phrases:
     include:
     - variacao do indice b3
