@@ -228,6 +228,66 @@
       "expected_entity": "fiis_cadastro"
     },
     {
+      "question": "O HGLG11 é um fundo de gestão ativa ou passiva?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual foi a data do IPO do ALMI11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é a classificação oficial do XPLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o administrador e o CNPJ do administrador do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o código ISIN do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o nome de exibição do fundo ALMI11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o nome de pregão do HGLG11 na B3?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o público-alvo do XPLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o setor e o subsetor do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o site oficial do fundo XPLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
       "question": "administrador do LRDI11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
@@ -1177,6 +1237,21 @@
       "expected_entity": "fiis_processos"
     },
     {
+      "question": "como está a posição do HGLG11 no ranking da SIRIOS?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "como evoluiu a posição do HGRU11 no ranking de usuários ao longo do tempo?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "como foi a variação de posição do HGLG11 no ranking da SIRIOS neste ano?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "movimentos do HGLG11 no ranking do IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -1188,6 +1263,11 @@
     },
     {
       "question": "movimentos no ranking de usuarios do CXTL11",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "o FPAB11 já fez parte do IFIX?",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -1207,6 +1287,31 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "quais fiis se destacam no ranking da SIRIOS este mês?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm melhor posição no ranking de dy 12 meses?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o maior dividend yield em 12 meses?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o maior valor de mercado?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o menor drawdown histórico?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "quais são os maiores fiis em patrimonio liquido",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -1217,12 +1322,22 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "qual a posição atual do HGLG11 no ranking de usuários?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "qual a posição do FPAB11 no IFIL",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
       "question": "qual a posição do FPAB11 no IFIX",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "qual é hoje a posição do HGRU11 no ranking do IFIL?",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -1267,72 +1382,17 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "top 5 fiis por sharpe ratio",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "top fiis por dy nos ultimos 12 meses",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
       "question": "top fiis por menor volatilidade",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "qual a posição atual do HGLG11 no ranking de usuários?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "como está a posição do HGLG11 no ranking da SIRIOS?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "qual é hoje a posição do HGRU11 no ranking do IFIL?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "o FPAB11 já fez parte do IFIX?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "como evoluiu a posição do HGRU11 no ranking de usuários ao longo do tempo?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "como foi a variação de posição do HGLG11 no ranking da SIRIOS neste ano?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "quais fiis têm o maior dividend yield em 12 meses?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "quais fiis têm o maior valor de mercado?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "quais fiis têm o menor drawdown histórico?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "quais fiis se destacam no ranking da SIRIOS este mês?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "quais fiis têm melhor posição no ranking de dy 12 meses?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "top 5 fiis por sharpe ratio",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
@@ -1680,66 +1740,6 @@
       "question": "última atualização do ipca",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
-    },
-    {
-      "question": "Qual é o nome de pregão do HGLG11 na B3?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o nome de exibição do fundo ALMI11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é a classificação oficial do XPLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o setor e o subsetor do HGLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "O HGLG11 é um fundo de gestão ativa ou passiva?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o público-alvo do XPLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o código ISIN do HGLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual foi a data do IPO do ALMI11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o site oficial do fundo XPLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o administrador e o CNPJ do administrador do HGLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
     }
   ]
 }
