@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-06T21:15:08Z",
+  "generated_at": "2025-12-06T21:59:46Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -436,7 +436,7 @@
         "cadastro"
       ],
       "chunks": 1,
-      "sha_all": "681ac90fd1225b741861cb62c95f044c60573ed7187baf498cf6120970d813c1"
+      "sha_all": "13fe07f5abe92e1f2dc7843af45a32556ef39ae4f8bc02fdaee75de51a3e3640"
     },
     {
       "id": "q-projection-dividendos",
@@ -447,7 +447,7 @@
         "dividendos"
       ],
       "chunks": 1,
-      "sha_all": "ee4b8590496efd29238d85070a587aead350a7650bbefead703978a9faf5e263"
+      "sha_all": "41b0e72854fe21bc1eba31a74f521a738eff7b924c3fa54452f9e929683d0921"
     },
     {
       "id": "q-projection-precos",
@@ -458,7 +458,7 @@
         "precos"
       ],
       "chunks": 1,
-      "sha_all": "96efd511586049974909d79b3d0897a37c7813193e5b5d3fc7b023224384b6df"
+      "sha_all": "f5c630b6caa348f5e29645207caeadea398a7a77e13137f37bea8ef7bb336fea"
     },
     {
       "id": "q-projection-rankings",
@@ -469,7 +469,7 @@
         "rankings"
       ],
       "chunks": 1,
-      "sha_all": "16ebee843931e263e3902227222348bf2495c8ec72805611512da7a0fc608774"
+      "sha_all": "70627d6b0e7ceb81d5eaa23b220b8f43fb37e9d9b93a71607893917a79dcb4c6"
     },
     {
       "id": "q-projection-imoveis",
@@ -480,7 +480,7 @@
         "imoveis"
       ],
       "chunks": 1,
-      "sha_all": "9491e9484dbac7dc0a31059e7f7f90b08c51a55196e043b10dd6788f4960e282"
+      "sha_all": "6a18a364ee827fa0f8882c414cc0d0a75817393a89f9b48ef08ded95d9c86e59"
     },
     {
       "id": "q-projection-noticias",
@@ -491,7 +491,7 @@
         "noticias"
       ],
       "chunks": 1,
-      "sha_all": "d45fc64982154272c9b5328f8d34692740eaf640330eaad5393a64fb87c08c5d"
+      "sha_all": "b142b13ab30a41840725f5016536aec6aba03cc82fb964faff6704aec0bc2b43"
     },
     {
       "id": "q-projection-processos",
@@ -502,7 +502,7 @@
         "processos"
       ],
       "chunks": 1,
-      "sha_all": "5416118870b439a21136896d7695fef1d3796961fe39c1f4d366653c0df9441d"
+      "sha_all": "cf2e748a9a2a1ac094b7f3f2df76c1fd488c92c3828178929efcc955030ad8f8"
     },
     {
       "id": "q-projection-fin-snapshot",
@@ -513,7 +513,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "0d57d3bcf88a803bfb744aa16779197458926b4d015b79c64897e9bb4f63898b"
+      "sha_all": "dd73798e67146aae5d912a6ea840584422d00471cf99faeffddeca936805f5c8"
     },
     {
       "id": "q-projection-fin-revenue",
@@ -524,7 +524,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "069bbf6b578bb522fea4ca5e3b77256ac4edafda059946701b4304332332479b"
+      "sha_all": "4c02c5e6d5d4e8ecf4b28434946c771e122a6fc12c370d70965bf8510029c2a2"
     },
     {
       "id": "q-projection-fin-risk",
@@ -535,7 +535,7 @@
         "financials"
       ],
       "chunks": 1,
-      "sha_all": "5bb15f5657be5b4e7ab95ca0c13d002cf3a483e5cb1da142b5e6a83359c57ee1"
+      "sha_all": "0db2950df95e1ef1b44e0ef67212e41240c90d97da6227f16f527d7ca25b12df"
     },
     {
       "id": "q-projection-client-positions",
@@ -546,7 +546,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "eea70b02626c969d6a6785e9b6765a1147408e44840f098e444a670ee88731e0"
+      "sha_all": "36c086c2a9f903a0dca8dc4b14f386ddcd489032684f854c2aca6ec3da3419ac"
     },
     {
       "id": "q-projection-client-dividends-evolution",
@@ -557,7 +557,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "7ccf83b7c9d530701b564957d7d23ee4958ae1c07c4dd7a2ddc8460ed587787e"
+      "sha_all": "e41b0b689112630ee9d139f3a97dfa4933ff6a537a0e9ed1287fc76649ff47c4"
     },
     {
       "id": "q-projection-client-performance-vs-benchmark",
@@ -568,7 +568,7 @@
         "private"
       ],
       "chunks": 1,
-      "sha_all": "3ee919854b84415f3b64d4b2c7cc73bbb35038851b42e3bf21c316b2f65e01cb"
+      "sha_all": "87213ab153fd82148f73019c7669219c3a42a3e820751462f47e1492e6b1c3e0"
     },
     {
       "id": "q-projection-fii-overview",
@@ -579,7 +579,7 @@
         "overview"
       ],
       "chunks": 1,
-      "sha_all": "0a8d77517b87c21e7b40047d23ae29ca969f49a758b2c33fa44f8c3acbaadf15"
+      "sha_all": "cfc7717e4f1f61ef8deea2d140cf689dcd1bb70444b83c591b9a3e372cd1a9dd"
     },
     {
       "id": "q-projection-fiis-yield-history",
@@ -590,7 +590,7 @@
         "yield"
       ],
       "chunks": 1,
-      "sha_all": "f07e73e014c5087e1b489dd6562f91d0c76a56b30fbbb5d10208cac20012086b"
+      "sha_all": "a357e34ae0149ae6439dae54ac102c2eceb2147d217cb9e538cd9ca84ad0f0e2"
     },
     {
       "id": "q-projection-dividendos-yield",
@@ -602,7 +602,7 @@
         "yield"
       ],
       "chunks": 1,
-      "sha_all": "37704acc5b61eaef2fb9210b01dc62dcf8fbcbfa5af80f5c04707dfe9bcbeecc"
+      "sha_all": "e281631ff8a0cb201a07d98f287dc4baa3098e286478eab0de6e5914a8a84d66"
     },
     {
       "id": "q-projection-carteira-enriquecida",
@@ -614,7 +614,7 @@
         "carteira"
       ],
       "chunks": 1,
-      "sha_all": "e8e08f48525ce249d2d9a6fb4c0f9532381c3f9180b7a6342f3f9cbd2d478358"
+      "sha_all": "0c1d634e38643fc51047a8aa728696cf2d0d1007b9bed5e0a567645a5c61576d"
     },
     {
       "id": "q-projection-macro-consolidada",
@@ -626,7 +626,7 @@
         "historical"
       ],
       "chunks": 1,
-      "sha_all": "47f558e1ba6140a2b5128129944369a8afd43616a65e9be2022e63dc9822e153"
+      "sha_all": "d5582a62f88de93fb2736b6b2275fe91bd38f7bcf424520a207af68e93a589ce"
     },
     {
       "id": "q-m66-projection",
@@ -678,7 +678,7 @@
       "sha_all": "79427b6bd815df654eb4ba9365ce81234884d2212a8a79100e83f69fb177dd27"
     }
   ],
-  "last_refresh_epoch": 1765055916,
+  "last_refresh_epoch": 1765058596,
   "vector_dimension": 768,
   "total_chunks": 248
 }
