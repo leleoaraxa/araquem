@@ -21,6 +21,8 @@
     { "question": "quanto fechou o euro ontem" },
     { "question": "taxa de câmbio atualizada (D-1)" },
     { "question": "valor do dólar ontem" },
-    { "question": "valores de compra e venda do euro" }
+    { "question": "valores de compra e venda do euro" },
+    { "question": "fechamento do dólar turismo ontem" },
+    { "question": "como variou o euro na última semana" }
   ]
 }

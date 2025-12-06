@@ -13,6 +13,11 @@
     { "question": "renda mensal dos meus fiis" },
     { "question": "quanto minha carteira de fiis recebeu de dividendos em cada mes" },
     { "question": "historico de dividendos da minha carteira" },
-    { "question": "minha renda mensal com fiis esta crescendo" }
+    { "question": "minha renda mensal com fiis esta crescendo" },
+    { "question": "quanto recebi de dividendos dos meus fiis em 2024" },
+    { "question": "como variou a renda mensal dos meus fiis no ultimo ano" },
+    { "question": "total de dividendos por mes dos meus fiis em 2025" },
+    { "question": "em quais meses meus fiis pagaram mais dividendos" },
+    { "question": "dividendos acumulados da minha carteira de fiis por ano" }
   ]
 }

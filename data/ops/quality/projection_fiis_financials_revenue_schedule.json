@@ -15,6 +15,13 @@
   "samples": [
     { "question": "estrutura de recebiveis do GFDL11" },
     { "question": "quanto vence em 12 meses do STRX11" },
-    { "question": "indexadores de receita do AZPL11" }
+    { "question": "indexadores de receita do AZPL11" },
+    { "question": "percentual de receitas indexadas ao ipca do HCTR11" },
+    { "question": "qual parte da receita do CPTS11 vence em ate 3 meses" },
+    { "question": "exposicao do RECR11 a igpm nos recebiveis" },
+    { "question": "recebiveis de longo prazo do KNCR11" },
+    { "question": "como estao distribuidas as receitas do VSLH11 por prazo" },
+    { "question": "qual a parcela de receita indexada a cdi do MXRF11" },
+    { "question": "vencimentos acima de 36 meses do MCCI11" }
   ]
 }

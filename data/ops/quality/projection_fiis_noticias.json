@@ -14,6 +14,11 @@
     { "question": "ultimas noticias do MXRF11" },
     { "question": "noticias recentes do HGLG11" },
     { "question": "as noticias do VISC11" },
-    { "question": "novidades sobre o XPML11" }
+    { "question": "novidades sobre o XPML11" },
+    { "question": "tem fato relevante novo do HCTR11" },
+    { "question": "o que saiu na midia sobre o CPTS11" },
+    { "question": "ultimas manchetes do RECT11" },
+    { "question": "noticias positivas ou negativas do RECR11" },
+    { "question": "novidades sobre reformas do XPIN11" }
   ]
 }

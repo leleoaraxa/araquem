@@ -13,6 +13,12 @@
     { "question": "historico de dividend yield do MXRF11 nos ultimos 12 meses" },
     { "question": "evolucao do dy do KNRI11" },
     { "question": "quanto o CPTS11 pagou de dividendos e dy em 2023-08" },
-    { "question": "comparativo de dy mensal entre HGLG11 e VISC11" }
+    { "question": "comparativo de dy mensal entre HGLG11 e VISC11" },
+    { "question": "serie historica de dy do HCTR11" },
+    { "question": "dy mensal do XPML11 em 2024-12" },
+    { "question": "histórico de dy do RECR11" },
+    { "question": "como variou o dy do VISC11 ao longo de 2025" },
+    { "question": "dy mensal do KNCR11 nos ultimos 6 meses" },
+    { "question": "dy do MXRF11 no mês anterior" }
   ]
 }

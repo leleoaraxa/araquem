@@ -20,6 +20,12 @@
     { "question": "processos do ABCP11" },
     { "question": "acoes judiciais do AIEC11" },
     { "question": "instancia dos processos do BBFI11" },
-    { "question": "status dos processos do BBRC11" }
+    { "question": "status dos processos do BBRC11" },
+    { "question": "numero dos processos do HGLG11" },
+    { "question": "qual o risco de perda dos processos do XPML11" },
+    { "question": "impacto financeiro das acoes do VISC11" },
+    { "question": "processos em que o RECT11 é réu" },
+    { "question": "detalhes das partes envolvidas nos processos do KNRI11" },
+    { "question": "causas e valores das ações contra o RECR11" }
   ]
 }

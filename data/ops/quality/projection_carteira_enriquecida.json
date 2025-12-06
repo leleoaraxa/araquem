@@ -10,8 +10,15 @@
     "weight_pct"
   ],
   "samples": [
-    { "question": "valor investido em MXRF11 na carteira" },
-    { "question": "dy mensal dos meus fiis" },
-    { "question": "ranking de sharpe dos meus fiis na carteira" }
+    { "question": "qual o patrimônio total da minha carteira de fiis" },
+    { "question": "quanto está investido em MXRF11 na minha carteira" },
+    { "question": "dy anualizado da minha carteira de fiis" },
+    { "question": "quanto de dividendos minha carteira gerou no mês" },
+    { "question": "qual o peso de cada fii na minha carteira hoje" },
+    { "question": "como está a alocação da minha carteira por setor" },
+    { "question": "qual a rentabilidade acumulada da minha carteira de fiis" },
+    { "question": "como ficou meu retorno total de fiis no último ano" },
+    { "question": "minha carteira de fiis está acima ou abaixo do dy médio" },
+    { "question": "qual o valor atual de cada posição da minha carteira" }
   ]
 }

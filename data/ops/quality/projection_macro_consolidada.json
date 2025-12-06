@@ -10,9 +10,15 @@
     "ibov_points"
   ],
   "samples": [
-    { "question": "ipca e selic em 2025-11-12" },
-    { "question": "ifix e ibov do dia 2025-11-14" },
-    { "question": "dolar e euro no mesmo dia de referencia" },
-    { "question": "comparativo de cdi e selic na ultima semana" }
+    { "question": "como juros altos afetam os fiis de tijolo" },
+    { "question": "impacto do cdi atual no rendimento médio dos fiis" },
+    { "question": "efeito da inflação recente nos fiis indexados ao ipca" },
+    { "question": "como o corte da selic muda a atratividade dos fiis" },
+    { "question": "relacao entre ifix e ibov no cenário macro" },
+    { "question": "como o dólar forte influencia fiis de logistica" },
+    { "question": "qual o panorama macro para fiis nesta semana" },
+    { "question": "como juros reais impactam o dy médio dos fiis" },
+    { "question": "cenário de 2025 para fiis com contratos atrelados ao igpm" },
+    { "question": "efeitos de inflação persistente nos fiis de recebíveis" }
   ]
 }

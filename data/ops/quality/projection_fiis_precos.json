@@ -14,20 +14,14 @@
   ],
   "samples": [
     { "question": "preço do CXTL11 em 2025-10-27" },
-    { "question": "cotação do CXTL11 em 2025-10-27" },
     { "question": "abertura do CXTL11 em 2025-10-27" },
     { "question": "máxima do CXTL11 em 2025-10-27" },
     { "question": "mínima do CXTL11 em 2025-10-27" },
     { "question": "variação diária (%) do CXTL11 em 2025-10-27" },
-    { "question": "preço do FPAB11 em 2025-10-27" },
-    { "question": "abertura do FPAB11 em 2025-10-27" },
-    { "question": "máxima do FPAB11 em 2025-10-27" },
-    { "question": "mínima do FPAB11 em 2025-10-27" },
-    { "question": "variação diária (%) do FPAB11 em 2025-10-27" },
-    { "question": "preço do HGLG11 em 2025-10-27" },
-    { "question": "abertura do HGLG11 em 2025-10-27" },
-    { "question": "máxima do HGLG11 em 2025-10-27" },
-    { "question": "mínima do HGLG11 em 2025-10-27" },
-    { "question": "variação diária (%) do HGLG11 em 2025-10-27" }
+    { "question": "cotação do HGLG11 no fechamento de ontem" },
+    { "question": "preço de fechamento do KNRI11 em 2025-01-15" },
+    { "question": "qual foi a cotação do MXRF11 em 2024-12-30" },
+    { "question": "como fechou o XPML11 (D-1)" },
+    { "question": "variação diária do VISC11 no dia 2024-11-20" }
   ]
 }

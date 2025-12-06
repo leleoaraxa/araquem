@@ -23,6 +23,8 @@
     { "question": "vacancia dos ativos do BVAR11" },
     { "question": "unidades dos ativos do HGRU11" },
     { "question": "area total dos imoveis do LFTT11" },
-    { "question": "status dos imoveis do RBVA11" }
+    { "question": "status dos imoveis do RBVA11" },
+    { "question": "ativos ocupados e desocupados do XPML11" },
+    { "question": "imoveis com inadimplencia no VISC11" }
   ]
 }

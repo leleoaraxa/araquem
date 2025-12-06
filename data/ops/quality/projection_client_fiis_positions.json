@@ -21,7 +21,12 @@
     { "question": "quantidade e preço dos meus fiis" },
     { "question": "preço médio e rentabilidade dos meus fiis" },
     { "question": "peso de cada fii na minha carteira" },
-    { "question": "em qual corretora estão meus fiis" }
+    { "question": "em qual corretora estão meus fiis" },
+    { "question": "qtde disponível e bloqueada de cada fii" },
+    { "question": "qual o preço médio do meu HGLG11" },
+    { "question": "qual a participação do KNRI11 na minha carteira" },
+    { "question": "em quais corretoras eu tenho posições de fiis" },
+    { "question": "rentabilidade individual de cada fii da carteira" }
   ],
   "params": { "document_number": "66140994691" }
 }
