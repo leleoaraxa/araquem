@@ -756,6 +756,10 @@ intents:
     exclude:
     - dividendos e dy em
     - dividend yield do
+    - payout e a reserva de dividendos do
+    - payout e reserva de dividendos do
+    - payout e a reserva de dividendos do <ticker>
+    - payout e reserva de dividendos do <ticker>
   entities:
   - fiis_dividendos
 - name: fiis_yield_history
@@ -854,7 +858,7 @@ intents:
   entities:
   - fiis_yield_history
 - name: fiis_financials_snapshot
-  weight: 4
+  weight: 5
   tokens:
     include:
     - snapshot
@@ -902,6 +906,7 @@ intents:
     - contratos_vigentes
     - tipicos
     - atipicos
+    - relatorio gerencial
     exclude:
     - processo
     - acao
@@ -1008,6 +1013,10 @@ intents:
     - principais indicadores financeiros do
     - indicadores financeiros do <ticker>
     - principais indicadores financeiros do <ticker>
+    - payout e a reserva de dividendos do
+    - payout e reserva de dividendos do
+    - payout e a reserva de dividendos do <ticker>
+    - payout e reserva de dividendos do <ticker>
     exclude:
     - nos ultimos
     - soma de
@@ -1331,6 +1340,7 @@ intents:
     - processo
     - judicial
     - acao
+    - relatorio gerencial
   phrases:
     include:
     - vacancia fisica do fii
@@ -1368,7 +1378,11 @@ intents:
     - regiao onde o fundo possui imoveis
     - endereco do ativo
     - dados dos imoveis
-    exclude: []
+    exclude:
+    - segundo o ultimo relatorio gerencial
+    - no ultimo relatorio gerencial
+    - segundo o ultimo relatorio gerencial do
+    - no ultimo relatorio gerencial do
   entities:
   - fiis_imoveis
 - name: fiis_noticias
