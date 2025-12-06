@@ -1277,6 +1277,66 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "qual a posição atual do HGLG11 no ranking de usuários?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "como está a posição do HGLG11 no ranking da SIRIOS?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "qual é hoje a posição do HGRU11 no ranking do IFIL?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "o FPAB11 já fez parte do IFIX?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "como evoluiu a posição do HGRU11 no ranking de usuários ao longo do tempo?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "como foi a variação de posição do HGLG11 no ranking da SIRIOS neste ano?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o maior dividend yield em 12 meses?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o maior valor de mercado?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm o menor drawdown histórico?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis se destacam no ranking da SIRIOS este mês?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "quais fiis têm melhor posição no ranking de dy 12 meses?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "top 5 fiis por sharpe ratio",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "Como foi o dy mensal do HGLG11 nos ultimos 12 meses?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
