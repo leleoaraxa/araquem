@@ -588,6 +588,9 @@ intents:
     - cambio
     - ibov
     - ibovespa
+    - caixa
+    - divida
+    - dividas
   phrases:
     include:
     - preco
@@ -714,6 +717,9 @@ intents:
     - campeoes
     - lanternas
     - destaques
+    - payout
+    - reserva
+    - reserva de dividendos
   phrases:
     include:
     - dividendo do
@@ -871,6 +877,8 @@ intents:
     - valor_patrimonial_cota
     - caixa
     - caixa total
+    - divida
+    - dividas
     - passivos
     - passivos totais
     - cap rate
@@ -886,13 +894,14 @@ intents:
     - abl
     - area_bruta_locavel
     - ocupacao
+    - vacancia
+    - vacancia fisica
+    - vacancia financeira
     - setor
     - contratos
     - contratos_vigentes
     - tipicos
     - atipicos
-    - imoveis
-    - portfolio_imoveis
     exclude:
     - processo
     - acao
@@ -964,6 +973,7 @@ intents:
     - enterprise value do
     - price book do
     - caixa do
+    - caixa e divida do
     - caixa disponivel do
     - passivos totais do
     - cap rate do
@@ -986,14 +996,17 @@ intents:
     - quantos contratos tem o <ticker>
     - contratos vigentes do <ticker>
     - percentual de receita por contrato
-    - imoveis do <ticker>
-    - quantos imoveis tem o <ticker>
     - tamanho do portfolio do <ticker>
+    - quantos imoveis tem o <ticker>
     - area bruta locavel
     - abl do <ticker>
     - reserva de dividendos do
     - taxa de adm do
     - taxa de performance do
+    - indicadores financeiros do
+    - principais indicadores financeiros do
+    - indicadores financeiros do <ticker>
+    - principais indicadores financeiros do <ticker>
     exclude:
     - nos ultimos
     - soma de
@@ -1311,9 +1324,6 @@ intents:
     - galpoes
     - unidades
     - onde ficam
-    - vacancia
-    - vacancia fisica
-    - vacancia financeira
     exclude:
     - preco
     - cotacao
@@ -1322,9 +1332,6 @@ intents:
     - acao
   phrases:
     include:
-    - quantos imoveis o
-    - quantos imoveis possui o
-    - quantos imoveis tem o
     - vacancia fisica do fii
     - vacancia fisica do fundo
     - vacancia fisica do
@@ -1919,6 +1926,17 @@ intents:
     - vencimentos
     - buckets
     - prazos
+    - pl
+    - patrimonio
+    - patrimonio liquido
+    - vp
+    - valor patrimonial
+    - vacancia
+    - vacancia fisica
+    - vacancia financeira
+    - fii
+    - fundo imobiliario
+    - fundo de investimento imobiliario
   phrases:
     include:
     - indicador de mercado d 1
