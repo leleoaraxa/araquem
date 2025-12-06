@@ -1,0 +1,75 @@
+{
+  "description": "Suíte de testes para carteira_enriquecida — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo.",
+  "samples": [
+    {
+      "question": "Me mostra a visão consolidada da minha carteira de FIIs.",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Quais são os FIIs da minha carteira e o valor investido em cada um?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual é o peso de cada FII na minha carteira hoje?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual é o DY mensal dos meus FIIs?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual é o DY de 12 meses da minha carteira de FIIs?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Quanto valem meus FIIs hoje no total?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Quais setores mais pesam na minha carteira de FIIs?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual FII tem o maior peso na minha carteira hoje?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual é o total de dividendos dos meus FIIs acumulado em 12 meses?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Quais FIIs da minha carteira aparecem no IFIX e qual a posição de cada um no índice?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Ranking dos meus FIIs por DY de 12 meses.",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Ranking dos meus FIIs por Sharpe.",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual FII da minha carteira tem o melhor índice de Sharpe?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Qual FII da minha carteira tem o pior max drawdown?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    }
+  ]
+}
