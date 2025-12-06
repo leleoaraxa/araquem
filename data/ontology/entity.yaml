@@ -67,24 +67,13 @@ intents:
       include:
         - posicao
         - posicoes
-        - minhas
-        - minha
-        - meu
-        - custodia
-        - disponivel
+        - atual
         - quantidade
+        - cotas
+        - exposicao
         - peso
-        - distribuicao
-        - prejuizo
-        - lucro
-        - ganho
-        - perda
-        - preco medio
-        - preco_medio
-        - pm
-        - corretora
-        - corretoras
-        - custodiante
+        - composicao
+        - ativo
       exclude:
         - cpf
         - cnpj
@@ -115,29 +104,17 @@ intents:
         - rendimento
         - dy
         - dy mensal
-        - sortino
-        - beta
-        - risco
         - processo
         - processos
         - judicial
     phrases:
       include:
-        - minhas posicoes
-        - minha carteira
-        - posicoes da minha carteira
-        - quantidade em custodia
-        - quantidade disponivel
-        - rentabilidade da minha posicao
-        - distribuicao da minha carteira de fiis por fundo
-        - distribuicao da minha carteira por fundo
-        - peso do <ticker> na minha carteira
-        - peso do <ticker> na minha carteira de fiis
-        - em qual corretora estao minhas cotas
-        - em qual corretora estao minhas cotas de <ticker>
-        - quais fiis da minha carteira estao dando prejuizo
-        - qual meu preco medio do <ticker>
-        - meu preco medio do <ticker> na minha carteira
+        - posicao atual
+        - quantidade de cotas
+        - exposicao atual da carteira
+        - peso individual do fii
+        - qual fii tem maior peso
+        - composicao por ativo
       exclude: []
     entities:
       - client_fiis_positions
@@ -145,15 +122,14 @@ intents:
   - name: client_fiis_dividends_evolution
     tokens:
       include:
+        - renda
+        - renda mensal
         - dividendos
         - proventos
-        - renda
         - evolucao
-        - historico
         - mensal
-        - recebeu
-        - recebidos
         - mes
+        - crescimento
       exclude:
         - cpf
         - cnpj
@@ -187,11 +163,12 @@ intents:
         - pm
     phrases:
       include:
+        - renda mensal
+        - meus dividendos
         - evolucao dos dividendos
-        - historico de dividendos
-        - renda mensal dos meus fiis
-        - dividendos da minha carteira
-        - quanto minha carteira de fiis recebeu de dividendos em cada mes
+        - dividendos por mes
+        - quanto recebo por mes
+        - crescimento da renda
       exclude:
         - dividendos de <ticker>
         - dividendos do <ticker>
@@ -207,18 +184,17 @@ intents:
   - name: client_fiis_performance_vs_benchmark
     tokens:
       include:
+        - desempenho
         - performance
-        - rentabilidade
-        - retorno
         - comparacao
         - comparar
         - benchmark
-        - ibov
+        - ifix
+        - ifil
         - cdi
-        - carteira
-        - minhas
-        - minha
-        - meu
+        - x
+        - versus
+        - tracking difference
       exclude:
         - cpf
         - cnpj
@@ -248,31 +224,13 @@ intents:
         - acoes
     phrases:
       include:
-        - desempenho da minha carteira
-        - desempenho da minha carteira de fiis
-        - performance da minha carteira de fiis
-        - rentabilidade da minha carteira vs
-        - rentabilidade da minha carteira de fiis versus
-        - rentabilidade da minha carteira versus
-        - retorno da minha carteira vs
-        - retorno da minha carteira de fiis versus
-        - comparar minha carteira com
-        - minha carteira esta melhor que
-        - minha carteira esta pior que
-        - minha carteira de fiis
-        - retorno da minha carteira de fiis
-        - minha carteira de fiis esta melhor ou pior que
-        - retorno da minha carteira de fiis comparado com
-        - desempenho da minha carteira vs ifix
-        - desempenho da minha carteira vs ifil
-        - desempenho da minha carteira vs ibov
-        - desempenho da minha carteira vs cdi
-        - rentabilidade da minha carteira vs ifix
-        - rentabilidade da minha carteira vs ifil
-        - rentabilidade da minha carteira vs ibov
-        - rentabilidade da minha carteira vs cdi
-        - minha carteira de fiis esta melhor que o ifix
-        - minha carteira de fiis esta melhor que o cdi
+        - desempenho da carteira
+        - performance da carteira
+        - comparacao com ifix
+        - carteira x ifix
+        - carteira x cdi
+        - rentabilidade vs benchmark
+        - tracking difference da carteira
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -832,23 +790,14 @@ intents:
     weight: 3
     tokens:
       include:
+        - dividend yield
         - dy
         - dy mensal
-        - dividend yield
-        - yield
+        - rendimento
+        - maior dy
+        - top dy
+        - 12 meses
         - historico de dy
-        - historico de yield
-        - retorno mensal
-        - evolucao do dy
-        - dy 12m
-        - dy 24m
-        - dy_historico
-        - dy_evolucao
-        - meses
-        - anual
-        - periodo
-        - historico completo
-        - ano a ano
       exclude:
         - dividendo
         - dividendos
@@ -926,6 +875,7 @@ intents:
         - qual foi o dividend yield do <ticker> em
         - dividend yield do <ticker> em
         - qual foi o dy do <ticker> em
+        - ultimos 12 meses de dy
       exclude: []
     entities:
       - fiis_yield_history
@@ -934,52 +884,19 @@ intents:
     weight: 5
     tokens:
       include:
-        - snapshot
-        - payout
-        - alavancagem
-        - leverage
-        - ev
-        - enterprise
-        - enterprise value
-        - market cap
         - patrimonio
         - patrimonio liquido
-        - patrimonio por cota
-        - price book
-        - preco patrimonio
         - pl
         - patrimonio_liquido
         - vp
         - valor_patrimonial
         - valor_patrimonial_cota
-        - caixa
-        - caixa total
-        - divida
-        - dividas
-        - passivos
-        - passivos totais
-        - cap rate
-        - receita por cota
-        - receita
-        - receita_total
-        - receita_ativos
-        - renda
-        - reserva de dividendos
-        - taxa de adm
-        - taxa de administracao
-        - taxa de performance
-        - abl
-        - area_bruta_locavel
-        - ocupacao
-        - vacancia
-        - vacancia fisica
-        - vacancia financeira
-        - setor
-        - contratos
-        - contratos_vigentes
-        - tipicos
-        - atipicos
-        - relatorio gerencial
+        - tamanho do fundo
+        - numero de cotistas
+        - cotistas
+        - liquidez
+        - maior patrimonio
+        - maiores fiis
       exclude:
         - processo
         - acao
@@ -1045,51 +962,16 @@ intents:
         - destaques
     phrases:
       include:
-        - no ultimo relatorio gerencial do <ticker>
-        - payout do
-        - alavancagem do
-        - market cap do
-        - enterprise value do
-        - price book do
-        - caixa do
-        - caixa e divida do
-        - caixa disponivel do
-        - passivos totais do
-        - cap rate do
         - patrimonio liquido do <ticker>
         - pl do <ticker>
         - valor patrimonial do <ticker>
         - vp do <ticker>
         - valor patrimonial da cota do <ticker>
-        - vacancia do <ticker>
-        - taxa de vacancia do <ticker>
-        - setor do <ticker>
-        - qual o setor do <ticker>
-        - renda do <ticker>
-        - rendimento dos ativos do <ticker>
-        - renda por ativo do <ticker>
-        - receita por ativo
-        - receita do fundo
-        - receita total do <ticker>
-        - contratos do <ticker>
-        - quantos contratos tem o <ticker>
-        - contratos vigentes do <ticker>
-        - percentual de receita por contrato
-        - tamanho do portfolio do <ticker>
-        - quantos imoveis tem o <ticker>
-        - area bruta locavel
-        - abl do <ticker>
-        - reserva de dividendos do
-        - taxa de adm do
-        - taxa de performance do
-        - indicadores financeiros do
-        - principais indicadores financeiros do
-        - indicadores financeiros do <ticker>
-        - principais indicadores financeiros do <ticker>
-        - payout e a reserva de dividendos do
-        - payout e reserva de dividendos do
-        - payout e a reserva de dividendos do <ticker>
-        - payout e reserva de dividendos do <ticker>
+        - numero de cotistas do <ticker>
+        - quantos cotistas tem o <ticker>
+        - liquidez do <ticker>
+        - tamanho do fundo
+        - maior patrimonio entre os fiis
       exclude:
         - nos ultimos
         - soma de
@@ -1283,25 +1165,14 @@ intents:
     tokens:
       include:
         - risco
+        - drawdown
+        - max drawdown
+        - mdd
         - volatilidade
         - sharpe
-        - sharpe_negativo
-        - sortino
-        - sortino_negativo
-        - treynor
-        - jensen
-        - alfa
-        - alfa_jensen
-        - beta
-        - max drawdown
-        - drawdown
-        - mdd
-        - r2
-        - coeficiente de determinacao
-        - coeficiente_determinacao
-        - vr
-        - indice de risco
         - sharpe ratio
+        - beta
+        - risco historico
       exclude:
         - soma
         - cdi
@@ -1693,30 +1564,17 @@ intents:
     weight: 6
     tokens:
       include:
-        - ranking
-        - rank
+        - ifix
+        - ifil
+        - indice
+        - indices
+        - peso
+        - composicao
+        - participacao
+        - posicao
         - movimentos
-        - top
-        - melhores
-        - maiores
-        - menores
-        - piores
-        - destaques
-        - campeoes
-        - lanternas
-        - comparacao
-        - comparar
-        - performou
-        - performance
-        - queda
-        - aumento
-        - reducao
-        - superou
-        - acima da media
-        - acima do ifix
-        - acima do setor
-        - valor de mercado
-        - market cap
+        - entrou
+        - saiu
       exclude:
         - preco
         - media do
@@ -1729,13 +1587,13 @@ intents:
         - beta
         - noticia do
         - r2
-        - indice
         - historico
         - se comportou
         - mdd
         - drawdown
-        - dy mensal
-        - yield mensal
+        - dy
+        - dividendos
+        - rendimento
         - processo
         - processos
         - judicial
@@ -1751,59 +1609,24 @@ intents:
         - selic
     phrases:
       include:
-        - ranking por dividend yield
-        - ranking de dy
-        - ranking de rendimento
-        - ranking de dividendos
-        - top fiis por dividend yield
-        - top fiis por dy
-        - top 5 fiis por dy
-        - top 10 fiis por dy
-        - top fiis do mes
-        - ranking de fiis
-        - ranking de fiis por
-        - ranquear fiis por dy
-        - melhores fiis para renda
-        - maiores altas dos fiis
-        - maiores quedas dos fiis
-        - fiis que mais subiram
-        - fiis que mais cairam
-        - fiis destaque do mes
-        - melhor setor de fiis
-        - pior setor de fiis
-        - comparar desempenho de fiis
-        - performou acima do ifix
-        - quais setores estao performando melhor
-        - fiis que mais subiram no mes
-        - fiis que mais cairam na semana
-        - fiis com maior patrimonio
-        - fiis com maior peso no ifix
-        - fiis com maior participacao
-        - destaques do mes
-        - campeoes do mes
-        - lanternas do mes
-        - fiis com maior dividend yield
-        - fiis com maior dy
-        - fiis com maior rendimento
-        - ranking do
-        - ranking dos fiis
-        - ranking de fiis
-        - posicao no IFIX
-        - posicao no IFIL
-        - ranking no IFIX
-        - ranking no IFIL
-        - movimentos no IFIX
-        - movimentos no IFIL
-        - posicao do
-        - posicao no IFIX do
-        - posicao no IFIL do
+        - composicao do ifix
+        - composicao do ifil
+        - peso no indice
+        - peso no ifix
+        - peso no ifil
+        - entrou no ifix
+        - saiu do ifix
+        - faz parte do ifix
+        - faz parte do ifil
+        - posicao no indice
+        - posicao no ifix
+        - posicao no ifil
+        - posicao no indice do
+        - posicao no ifix do
+        - posicao no ifil do
         - participacao do
         - participacao no ifix do
         - participacao no ifil do
-        - top fiis por sharpe
-        - top 5 fiis por sharpe
-        - top 5 fiis por sharpe ratio
-        - top fiis por sharpe ratio
       exclude:
         - preco do
         - vacancia do
@@ -1898,53 +1721,34 @@ intents:
       ignore_tickers: true
     tokens:
       include:
-        - dolar
-        - usd
-        - euro
-        - eur
-        - cambio
-        - moeda americana
-        - moeda estrangeira
-        - cotacao
-        - compra
-        - venda
-        - variacao
-        - variacao diaria
         - historico
-        - serie historica
-        - hoje
-        - d1
-        - d-1
-        - ontem
-        - comercial
+        - serie
+        - cambio
+        - usd
+        - dolar
+        - eur
+        - euro
+        - evolucao
+        - dados cambiais
       exclude:
         - fii
         - fundo imobiliario
         - fundo de investimento imobiliario
+        - impacto nos fiis
+        - influencia nos fiis
+        - interpretacao
+        - cenario macro
     phrases:
       include:
-        - variacao diaria do usd
-        - variacao diaria do dolar
-        - variacao do usd hoje
-        - variacao do dolar hoje
-        - variacao da moeda no dia
-        - cotacao do dolar
-        - cotacao do euro
-        - cotacao media do euro
-        - cotacao media do dolar
+        - historico de dolar
+        - serie do cambio
+        - evolucao usd/brl
+        - dados cambiais
         - historico do dolar
         - historico do usd
         - historico do cambio
         - variacao do dolar nos ultimos
         - variacao do usd nos ultimos
-        - alta do dolar
-        - queda do dolar
-        - dolar comercial
-        - euro comercial
-        - variacao do usd
-        - variacao do eur
-        - eur hoje d 1
-        - cotacao do usd hoje
       exclude: []
     entities:
       - history_currency_rates
@@ -1955,88 +1759,27 @@ intents:
       ignore_tickers: true
     tokens:
       include:
+        - historico
+        - evolucao
+        - curva
+        - serie temporal
+        - ultimos 12 meses
         - ipca
-        - indice de preco
-        - indice de inflacao
-        - inflacao historica
-        - cdi
         - selic
+        - cdi
         - igpm
         - incc
         - inpc
-        - taxa
-        - juros
-        - inflacao
-        - indicador
-        - indicadores
-        - meta
-        - atual
-        - atualizada
-        - ultima
-        - atualizacao
-        - valor
-        - hoje
-        - d1
-        - d-1
-        - ontem
-        - janeiro
-        - fevereiro
-        - marco
-        - abril
-        - maio
-        - junho
-        - julho
-        - agosto
-        - setembro
-        - outubro
-        - novembro
-        - dezembro
-        - acumulo
-        - acumulado
+        - dados
+        - valor mensal
       exclude:
-        - ibov
-        - ibovespa
-        - ifix
-        - ifil
-        - usd
-        - dolar
-        - eur
-        - euro
-        - recebiveis
-        - vencimento
-        - vencimentos
-        - buckets
-        - prazos
-        - pl
-        - patrimonio
-        - patrimonio liquido
-        - vp
-        - valor patrimonial
-        - vacancia
-        - vacancia fisica
-        - vacancia financeira
-        - fii
-        - fundo imobiliario
-        - fundo de investimento imobiliario
+        - impacto
+        - significado
+        - influencia
+        - interpretacao
+        - cenario macro
     phrases:
       include:
-        - indicador de mercado d 1
-        - ipca de ontem
-        - selic de ontem
-        - taxa do igpm
-        - indicadores economicos
-        - taxa de juros
-        - ipca de outubro d 1
-        - cdi atual
-        - inpc atual
-        - ultima atualizacao do ipca
-        - valor do cdi hoje d 1
-        - selic meta atualizada
-        - ipca de outubro
-        - ipca outubro
-        - o que significa ipca alto
-        - ipca alto para fiis
-        - impacto do ipca alto
         - historico do ipca
         - historico do ipca nos ultimos
         - historico da inflacao
@@ -2050,16 +1793,15 @@ intents:
         - variacao do cdi em
         - acumulado do cdi neste mes
         - acumulado do cdi nos ultimos meses
-        - como juros altos afetam fiis
-        - como juros altos costumam afetar fundos imobiliarios
-        - o que significa ipca alto para fiis
+        - dados de ipca
+        - dados de selic
+        - valor mensal dos indicadores
       exclude:
-        - receita do
-        - receita do fii
-        - receita do fundo
-        - receita ipca do
-        - receita cdi do
-        - percentual da receita
+        - impacto
+        - significado
+        - influencia
+        - interpretacao
+        - cenario macro
     entities:
       - history_market_indicators
 
@@ -2151,43 +1893,31 @@ intents:
     weight: 2
     tokens:
       include:
-        - dy mensal
-        - dy 12m
         - carteira
-        - minha
-        - minhas
-        - meus
-        - meus fiis
-        - renda
-        - renda mensal
-        - total
-        - total de dividendos
-        - acumulado
-        - 12 meses
-        - sharpe
-        - setor
+        - consolidada
+        - visao
+        - composicao
+        - peso
         - setores
+        - distribuicao
+        - classe
+        - geral
       exclude:
         - preco medio
         - corretora
-        - distribuicao
+        - distribuicao por fiis
     phrases:
       include:
-        - valor investido em
-        - meus fiis
-        - dy dos meus fiis
-        - dy mensal dos meus fiis
-        - renda e dy dos meus fiis
-        - visao consolidada da minha carteira de fiis
-        - carteira de fiis enriquecida
-        - minha carteira de fiis com dy
-        - ranking de sharpe dos meus fiis
-        - total de dividendos dos meus fiis acumulado em 12 meses
-        - total de dividendos dos meus fiis em 12 meses
-        - dividendos dos meus fiis acumulado em 12 meses
-        - total de renda da minha carteira de fiis em 12 meses
-        - quais fiis da minha carteira aparecem no ifix
-        - quais fiis da minha carteira aparecem no ifix e qual a posicao de cada um no indice
+        - carteira consolidada
+        - visao da carteira
+        - composicao da carteira
+        - peso dos fiis
+        - setores da carteira
+        - distribuicao por setor
+        - distribuicao por classe
+        - consolidado da carteira
+        - minha carteira
+        - visao geral da carteira
       exclude: []
     entities:
       - carteira_enriquecida
@@ -2199,87 +1929,58 @@ intents:
     allow_tickerless: true
     tokens:
       include:
-        - macro
-        - selic
-        - juros_altos
-        - juros_futuros
-        - juros_reais
-        - inflacao
-        - ipca
-        - curva
-        - curva_de_juros
-        - cambio
-        - dolar
-        - politica_monetaria
-        - politica_fiscal
-        - cenario_macro
-        - tendencia
+        - impacto
+        - afeta
+        - afetar
+        - influencia
+        - influencia
+        - significado
+        - importancia
+        - cenario macro
+        - ambiente macro
+        - contexto macro
+        - efeito da selic
+        - efeito do ipca
+        - impacto para fiis
+        - favoravel
+        - desfavoravel
+        - como fiis reagem
       exclude:
-        - vacancia
-        - dy
-        - dividendos
-        - dividendo
-        - yield
-        - provento
-        - proventos
-        - fii
-        - fiis
-        - fundo imobiliario
-        - fundos imobiliarios
-        - ticker
-        - preco
-        - precos
-        - cotacao
-        - cotacoes
-        - variacao
-        - alta
-        - baixa
-        - patrimonio
-        - patrimonio_liquido
-        - vp
-        - valor_patrimonial
-        - valor_patrimonial_cota
-        - administrador
-        - gestora
-        - gestor
-        - cnpj
-        - segmento
-        - setor
-        - mandato
-        - classe
-        - categoria
-        - significa
+        - historico
+        - evolucao
+        - serie temporal
+        - curva historica
+        - ultimos 12 meses
+        - valor do mes
+        - tabela de indicadores
     phrases:
       include:
-        - como juros altos afetam fiis
+        - cenario macro
+        - ambiente macro
+        - contexto macro
         - impacto da selic nos fiis
-        - ipca alto e ruim para fiis
-        - como funciona a inflacao no brasil
-        - tendencia da curva de juros
-        - ipca acumulado dos ultimos meses
-        - juros x mercado imobiliario
-        - por que o ipca subiu
-        - a selic vai cair
-        - impacto da inflacao no mercado
-        - juros futuros e renda fixa
-        - efeito do cambio nas empresas
-        - efeito do ipca nos fundos imobiliarios
-        - juros reais
-        - ambiente de juros altos
-        - como esta o ipca acumulado
-        - impacto da selic no mercado
-        - efeito da inflacao nos fiis
-        - impacto da selic na economia
-        - impacto do ipca na economia
+        - efeito do ipca nos fiis
+        - impacto para fiis
+        - impacto para fundos imobiliarios
+        - significado dos indicadores para fiis
+        - importancia do macro para fiis
+        - como fiis reagem aos juros
+        - como fiis reagem a inflacao
+        - efeito da selic
+        - efeito do ipca
+        - macro esta favoravel para fiis
+        - macro esta desfavoravel para fiis
       exclude:
-        - dividendos
-        - dy
-        - yield
-        - vacancia
-        - receita
-        - cronograma
+        - historico
+        - evolucao
+        - serie temporal
+        - curva historica
+        - ultimos 12 meses
+        - valor do mes
+        - tabela de indicadores
     entities:
       - macro_consolidada
+
 
 anti_tokens:
   generic:
@@ -2287,16 +1988,61 @@ anti_tokens:
     - euro
     - usd
     - eur
-  fiis_yield_history:
-    - dy atual
-    - ultimo dy
-    - provento
-    - proventos
+  carteira_enriquecida:
+    - historico
+    - evolucao
+    - minhas posicoes mes a mes
+    - minha renda mensal
+    - dividendos mensais
+    - performance vs benchmark
+    - variacao mensal
+    - drawdown individual
+    - retorno acumulado
+  client_fiis_dividends_evolution:
+    - composicao da carteira
+    - setores
+    - peso dos fiis
+    - performance vs benchmark
+    - drawdown
+    - patrimonio
+  client_fiis_positions:
+    - renda mensal
     - dividendos
-    - dividendo
-    - acumulado
-    - rendimento atual
-    - yield atual
+    - evolucao da renda
+    - drawdown
+    - volatilidade
+    - presenca no ifix
+  client_fiis_performance_vs_benchmark:
+    - peso
+    - setores
+    - composicao
+    - dividendos
+    - evolucao de renda
+    - drawdown dos fundos
+  macro_consolidada:
+    - historico
+    - evolucao
+    - serie temporal
+    - curva historica
+    - ultimos 12 meses
+    - valor do mes
+    - tabela de indicadores
+  history_market_indicators:
+    - impacto
+    - significado
+    - influencia
+    - interpretacao
+    - cenario macro
+  history_currency_rates:
+    - impacto nos fiis
+    - influencia nos fiis
+    - interpretacao
+    - cenario macro
+  fiis_yield_history:
+    - patrimonio
+    - drawdown
+    - presenca no ifix
+    - setores
   fiis_noticias:
     - noticia
     - noticias
@@ -2320,13 +2066,22 @@ anti_tokens:
     - dy do <ticker> em
     - qual foi o dividend yield
     - qual foi o dy do
-  client_fiis_dividends_evolution:
-    - dy
-    - dividend yield
-    - pagou de dividendos e dy
-    - pagou de dividendos
   fiis_rankings:
-    - peso do <ticker> no ifix
-    - peso do <ticker> no ifil
-    - peso no ifix do <ticker>
-    - peso no ifil do <ticker>
+    - patrimonio
+    - liquidez
+    - cotistas
+    - drawdown
+    - dividend yield
+    - dy
+    - risco
+  fiis_financials_snapshot:
+    - drawdown
+    - dy
+    - presenca no ifix
+    - volatilidade
+  fiis_financials_risk:
+    - patrimonio
+    - dy
+    - peso no indice
+    - setores
+
