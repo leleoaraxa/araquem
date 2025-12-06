@@ -74,6 +74,9 @@ intents:
         - peso
         - composicao
         - ativo
+        - minha
+        - minhas
+        - meu
       exclude:
         - cpf
         - cnpj
@@ -192,7 +195,6 @@ intents:
         - ifix
         - ifil
         - cdi
-        - x
         - versus
         - tracking difference
       exclude:
