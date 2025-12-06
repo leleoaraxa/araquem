@@ -58,6 +58,7 @@ intents:
   - fiis_processos
   - fiis_imoveis
   - dividendos_yield
+  - fiis_cadastro
   weight: 10
 - name: client_fiis_positions
   tokens:
@@ -335,6 +336,8 @@ intents:
     - quem administra o
     - custodiante do
     - site do
+    - site oficial do
+    - qual o site oficial do
     - url oficial do
     - nome de pregao do
     - nome de exibicao do
@@ -347,6 +350,10 @@ intents:
     - data do ipo do
     - peso no ifix do
     - peso no ifil do
+    - qual o peso do <ticker> no ifix
+    - qual o peso do <ticker> no ifil
+    - peso do <ticker> no ifix
+    - peso do <ticker> no ifil
     - numero de cotas emitidas do
     - numero de cotistas do
     - quantos cotistas tem o
@@ -1334,31 +1341,33 @@ intents:
 - name: fiis_imoveis
   tokens:
     include:
-    - imovel
-    - imoveis
-    - propriedade
-    - propriedades
-    - ativo
-    - ativos
-    - ocupacao
-    - laudo
-    - avaliacao
-    - metragem
-    - regiao
-    - endereco
-    - localizacao
-    - portfolio
-    - galpao
-    - galpoes
-    - unidades
-    - onde ficam
+      - imovel
+      - imoveis
+      - propriedade
+      - propriedades
+      - ativo
+      - ativos
+      - ocupacao
+      - laudo
+      - avaliacao
+      - metragem
+      - regiao
+      - endereco
+      - localizacao
+      - portfolio
+      - galpao
+      - galpoes
+      - unidades
+      - onde ficam
     exclude:
-    - preco
-    - cotacao
-    - processo
-    - judicial
-    - acao
-    - relatorio gerencial
+      - preco
+      - cotacao
+      - processo
+      - judicial
+      - acao
+      - relatorio
+      - gerencial
+      - relatorio gerencial
   phrases:
     include:
     - vacancia fisica do fii
@@ -1738,54 +1747,14 @@ intents:
     - posicao no IFIL
     - ranking no IFIX
     - ranking no IFIL
-    - peso no IFIX
-    - peso no IFIL
     - movimentos no IFIX
     - movimentos no IFIL
-    - posicao do <ticker> no IFIX
-    - posicao do <ticker> no IFIL
-    - ranking do <ticker> no IFIX
-    - ranking do <ticker> no IFIL
     - posicao do
-    - top fiis por
-    - top 5 fiis por
-    - top 10 fiis por
-    - maiores fiis em
-    - melhores fiis em
-    - maiores fiis em patrimonio liquido
-    - ranking dos fiis com melhor
-    - ranking dos fiis com menor
-    - peso do
-    - peso no ifix do
-    - peso no ifil do
-    - posicao do
-    - posicao no ifix do
-    - posicao no ifil do
+    - posicao no IFIX do
+    - posicao no IFIL do
     - participacao do
     - participacao no ifix do
     - participacao no ifil do
-    - o <ticker> ja fez parte do ifix
-    - o <ticker> ja fez parte do ifil
-    - ja fez parte do ifix
-    - ja fez parte do ifil
-    - fez parte do ifix
-    - fez parte do ifil
-    - o <ticker> entrou no ifix
-    - o <ticker> saiu do ifix
-    - fiis com maior dividend yield em 12 meses
-    - quais fiis tem o maior dividend yield em 12 meses
-    - ranking por dividend yield em 12 meses
-    - ranking de dy em 12 meses
-    - top fiis por dividend yield em 12 meses
-    - fiis com maior valor de mercado
-    - quais fiis tem o maior valor de mercado
-    - maiores fiis em valor de mercado
-    - fiis com menor drawdown
-    - fiis com menor mdd
-    - fundos com menor drawdown
-    - fundos com menor risco de queda
-    - quais fiis tem o menor drawdown historico
-    - fiis com menor drawdown historico
     exclude:
     - preco do
     - vacancia do
@@ -1806,6 +1775,9 @@ intents:
     - minha carteira
     - minha carteira de fiis
     - meus fiis
+    - peso do
+    - peso no ifix do
+    - peso no ifil do
   entities:
   - fiis_rankings
 - name: history_b3_indexes
@@ -2272,3 +2244,8 @@ anti_tokens:
   - dividend yield
   - pagou de dividendos e dy
   - pagou de dividendos
+  fiis_rankings:
+  - peso do <ticker> no ifix
+  - peso do <ticker> no ifil
+  - peso no ifix do <ticker>
+  - peso no ifil do <ticker>
