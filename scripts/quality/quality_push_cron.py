@@ -19,7 +19,7 @@ from urllib import error, request
 BASE_ALLOWED_TYPES: Set[str] = {"routing", "projection"}
 DEFAULT_GLOB = "data/ops/quality/*.json"
 DEFAULT_API_URL = "http://localhost:8000"
-DEFAULT_TIMEOUT = int(os.getenv("QUALITY_HTTP_TIMEOUT", "60"))
+DEFAULT_TIMEOUT = int(os.getenv("QUALITY_HTTP_TIMEOUT", "120"))
 
 
 def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
