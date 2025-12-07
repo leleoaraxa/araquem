@@ -1,0 +1,30 @@
+{
+  "description": "Suíte de testes para fiis_financials_risk — indicadores de risco (Sharpe, beta, volatilidade, drawdown)",
+  "samples": [
+    {
+      "question": "Qual o Sharpe do HGLG11",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "Beta do XPLG11 em relação ao IFIX",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "Max drawdown do MXRF11",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "Qual FII está mais volátil hoje",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "question": "Coeficiente de determinação do CPTS11",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    }
+  ]
+}

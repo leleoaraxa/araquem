@@ -1,0 +1,35 @@
+{
+  "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira",
+  "samples": [
+    {
+      "question": "Minhas posições de FIIs",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Quanto tenho de quantidade em custódia de MXRF11",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Peso do HGLG11 na minha carteira de FIIs",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Em qual corretora estão minhas cotas do XPML11",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Qual meu preço médio do CPTS11",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Rentabilidade da minha posição em VISC11",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    }
+  ]
+}

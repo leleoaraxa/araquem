@@ -1,0 +1,30 @@
+{
+  "description": "Suíte de testes para history_currency_rates — câmbio USD/EUR em BRL D-1",
+  "samples": [
+    {
+      "question": "Cotação do dólar hoje",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Cotação do euro D-1",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Variação percentual do dólar ontem",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Quanto está o dólar para compra e venda",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "question": "Qual foi a última cotação do euro",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    }
+  ]
+}
