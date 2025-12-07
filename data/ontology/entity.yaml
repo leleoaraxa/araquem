@@ -2175,7 +2175,6 @@ anti_tokens:
     - drawdown
     - volatilidade
     - presenca no ifix
-  client_fiis_performance_vs_benchmark:
     - peso
     - setores
     - composicao
