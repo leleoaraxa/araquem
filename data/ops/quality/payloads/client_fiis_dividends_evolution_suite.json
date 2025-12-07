@@ -1,0 +1,30 @@
+{
+  "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente",
+  "samples": [
+    {
+      "question": "Evolução dos dividendos da minha carteira de FIIs",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Renda mensal dos meus FIIs",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Quanto minha carteira de FIIs recebeu de dividendos em cada mês",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Histórico de dividendos da minha carteira",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Minha renda mensal com FIIs está crescendo",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    }
+  ]
+}

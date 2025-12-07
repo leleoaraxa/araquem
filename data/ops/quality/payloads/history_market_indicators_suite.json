@@ -1,0 +1,30 @@
+{
+  "description": "Suíte de testes para history_market_indicators — indicadores macro (SELIC, CDI, IPCA, IGPM) em D-1",
+  "samples": [
+    {
+      "question": "Qual a SELIC hoje",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "CDI d-1",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "IPCA do dia",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Qual o IGPM atual",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Taxa do INCC hoje",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    }
+  ]
+}
