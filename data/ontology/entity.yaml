@@ -70,6 +70,7 @@ intents:
         - atual
         - quantidade
         - cotas
+        - custodia
         - exposicao
         - peso
         - composicao
@@ -79,6 +80,12 @@ intents:
         - minha
         - minhas
         - meu
+        - preco medio
+        - preco_medio
+        - pm
+        - prejuizo
+        - ganho
+        - lucro
       exclude:
         - cpf
         - cnpj
@@ -109,6 +116,10 @@ intents:
         - rendimento
         - dy
         - dy mensal
+        - valor
+        - total
+        - vale
+        - valem
         - processo
         - processos
         - judicial
@@ -126,6 +137,14 @@ intents:
         - alocacao por fundo
         - quanto tenho de <ticker>
         - quantas cotas de <ticker>
+        - peso do <ticker> na minha carteira
+        - quantidade em custodia de <ticker>
+        - quanto tenho em custodia de <ticker>
+        - quais fiis da minha carteira estao dando prejuizo
+        - preco medio do <ticker> na minha carteira
+        - preco medio de <ticker> na minha carteira
+        - preco medio do <ticker> na carteira
+        - qual meu preco medio de <ticker>
       exclude: []
     entities:
       - client_fiis_positions
@@ -144,6 +163,14 @@ intents:
         - crescimento
         - historico de dividendos
         - linha do tempo
+        - carteira
+        - minha
+        - minhas
+        - meu
+        - mes a mes
+        - cada mes
+        - por mes
+        - mensalmente
       exclude:
         - cpf
         - cnpj
@@ -162,10 +189,6 @@ intents:
         - reserva
         - reserva de dividendos
         - relatorio gerencial
-        - carteira
-        - minhas
-        - minha
-        - meu
         - corretora
         - corretoras
         - cotas
@@ -183,6 +206,11 @@ intents:
         - evolucao dos dividendos da minha carteira
         - historico de dividendos da carteira
         - historico de dividendos da minha carteira
+        - dividendos da minha carteira por mes
+        - dividendos da carteira por mes
+        - dividendos da carteira mes a mes
+        - dividendos recebidos em cada mes
+        - quanto minha carteira de fiis recebeu de dividendos em cada mes
         - dividendos por mes
         - quanto recebo por mes
         - crescimento da renda
@@ -209,11 +237,15 @@ intents:
         - comparar
         - comparativo
         - vs
+        - versus
+        - contra
+        - x
+        - melhor
+        - pior
         - benchmark
         - ifix
         - ifil
         - cdi
-        - versus
         - tracking difference
       exclude:
         - cpf
@@ -227,6 +259,9 @@ intents:
         - posicoes
         - peso
         - distribuicao
+        - cotas
+        - quantidade
+        - ranking
         - dividendo
         - dividendos
         - provento
@@ -248,14 +283,23 @@ intents:
         - performance da carteira
         - performance da carteira de fiis versus o ifix
         - performance da minha carteira vs ifix
+        - performance da minha carteira versus o ifix
         - comparacao da carteira com ifix
         - comparacao com ifix
         - carteira x ifix
+        - carteira versus ifix
         - carteira x cdi
+        - carteira versus cdi
         - comparacao da carteira com ifil
         - comparar retorno da carteira com ibov
         - retorno da carteira vs benchmark
         - rentabilidade vs benchmark
+        - rentabilidade da minha carteira de fiis versus o ifix
+        - rentabilidade da carteira de fiis versus o ifix
+        - carteira melhor ou pior que o cdi
+        - carteira melhor ou pior que o ifix
+        - melhor ou pior que o cdi
+        - melhor ou pior que o ifix
         - tracking difference da carteira
       exclude:
         - rentabilidade da minha posicao
@@ -1938,6 +1982,30 @@ intents:
         - preco medio
         - corretora
         - distribuicao por fiis
+        - ifix
+        - ifil
+        - ibov
+        - cdi
+        - benchmark
+        - vs
+        - versus
+        - comparar
+        - comparacao
+        - rentabilidade
+        - performance
+        - historico
+        - evolucao
+        - mes
+        - mensal
+        - por mes
+        - mes a mes
+        - dividendos
+        - proventos
+        - renda
+        - peso do
+        - distribuicao por fundo
+        - alocacao
+        - cotas
     phrases:
       include:
         - carteira consolidada
@@ -2038,6 +2106,7 @@ anti_tokens:
     - comparar com ifix
     - comparar com ifil
     - comparar com cdi
+    - comparar com ibov
     - comparar performance da carteira
     - variacao mensal
     - drawdown individual
@@ -2047,6 +2116,31 @@ anti_tokens:
     - linha do tempo de dividendos
     - peso do
     - distribuicao por fundo
+    - mes a mes
+    - por mes
+    - cada mes
+    - mensal
+    - renda mensal
+    - historico da carteira
+    - rentabilidade
+    - performance
+    - benchmark
+    - ifix
+    - ifil
+    - ibov
+    - cdi
+    - melhor ou pior
+    - carteira x ifix
+    - carteira x cdi
+    - distribuicao por fii
+    - alocacao por fundo
+    - quantas cotas
+    - quantidade de cotas
+    - custodia
+    - preco medio
+    - prejuizo
+    - ganho
+    - lucro
   client_fiis_dividends_evolution:
     - composicao da carteira
     - setores
@@ -2054,10 +2148,30 @@ anti_tokens:
     - performance vs benchmark
     - drawdown
     - patrimonio
+    - ifix
+    - ifil
+    - cdi
+    - ibov
+    - benchmark
+    - versus
+    - vs
+    - comparacao
+    - comparar
   client_fiis_positions:
     - renda mensal
     - dividendos
     - evolucao da renda
+    - valor total
+    - quanto valem meus fiis
+    - visao consolidada da carteira
+  client_fiis_performance_vs_benchmark:
+    - ranking
+    - posicao no ranking
+    - top
+    - melhores
+    - piores
+    - distribuicao por fundo
+    - peso do ticker
     - drawdown
     - volatilidade
     - presenca no ifix
