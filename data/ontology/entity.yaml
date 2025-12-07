@@ -134,8 +134,8 @@ intents:
         - ifil
         - ibov
         - cdi
-      phrases:
-        include:
+    phrases:
+      include:
         - posicao atual
         - quantidade de cotas
         - exposicao atual da carteira
@@ -159,7 +159,7 @@ intents:
         - quanto tenho em custodia da minha carteira de fiis
         - quantidade em custodia do <ticker>
         - peso do <ticker> na carteira de fiis
-        exclude: []
+      exclude: []
     entities:
       - client_fiis_positions
 
