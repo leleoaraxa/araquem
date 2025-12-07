@@ -498,11 +498,13 @@ intents:
         - identidade
         - informacoes
         - basicas
+        - principais
         - resumo completo
         - panorama
         - panorama geral
         - panorama do fundo
         - principais pontos
+        - pontos
         - pontos principais
         - destaques
         - destaques do fundo
@@ -558,6 +560,14 @@ intents:
         - sortino
         - beta
         - volatilidade
+        - comparar
+        - comparativo
+        - melhor
+        - pior
+        - posicao
+        - alavancagem
+        - performance
+        - rentabilidade
         - mdd
         - processo
         - noticia
@@ -620,6 +630,7 @@ intents:
         - o que e o <ticker>
         - resumo do
         - resumo do <ticker>
+        - resumo geral do <ticker>
         - resumo completo do <ticker>
         - overview do
         - overview do <ticker>
@@ -633,6 +644,7 @@ intents:
         - quais os destaques do <ticker> hoje
         - ficha tecnica do <ticker>
         - visao geral do <ticker>
+        - visão geral do <ticker>
         - contexto geral do <ticker>
         - situacao geral do <ticker>
         - ficha tecnica resumida do <ticker>
@@ -1578,6 +1590,23 @@ intents:
         - volatilidade
         - beta
         - mdd
+        - dolar
+        - usd
+        - euro
+        - eur
+        - ipca
+        - inpc
+        - igpm
+        - cdi
+        - selic
+        - inflacao
+        - cotacao
+        - preco
+        - variacao
+        - rendimento
+        - dy
+        - dividendos
+        - carteira
         - risco
         - imoveis
         - abl
@@ -1624,6 +1653,10 @@ intents:
         - fato relevante sobre
         - noticias negativas do
         - noticia negativa do
+        - alguma noticia sobre <ticker>
+        - saiu alguma noticia do <ticker>
+        - fato relevante do <ticker>
+        - novidades do <ticker>
       exclude: []
     entities:
       - fiis_noticias
@@ -2288,6 +2321,13 @@ anti_tokens:
     - euro
     - usd
     - eur
+    - preco hoje
+    - cotacao hoje
+    - valor hoje
+    - quanto vale hoje
+    - quanto esta hoje
+    - hoje (sem ticker)
+    - agora (sem ticker)
   carteira_enriquecida:
     - historico
     - evolucao
