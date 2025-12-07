@@ -421,6 +421,14 @@ intents:
         - noticia
         - noticias
         - fato relevante
+        - ranking
+        - ifix
+        - ifil
+        - posicao
+        - peso no ifix
+        - peso no ifil
+        - peso no indice
+        - ranking de usuarios
     phrases:
       include:
         - cnpj do
@@ -461,6 +469,10 @@ intents:
         - preco do
         - preco historico do
         - vacancia do
+        - ranking do
+        - posicao do
+        - peso no ifix do
+        - peso no ifil do
     entities:
       - fiis_cadastro
 
@@ -663,6 +675,9 @@ intents:
         - quanto ta
         - quanto ta o
         - como esta na b3
+        - preco hoje
+        - cotacao hoje
+        - abertura do dia
       exclude:
         - dy
         - dividendos
@@ -702,6 +717,12 @@ intents:
         - preco_medio
         - pm
         - meu preco medio
+        - carteira
+        - performance
+        - benchmark
+        - comparacao
+        - vs
+        - versus
     phrases:
       include:
         - preco
@@ -709,6 +730,8 @@ intents:
         - variacao
         - preco atual
         - cotacao hoje
+        - cotacao do dia
+        - preco de hoje
         - valor da cota
         - historico de preco
         - historico de cotacao
@@ -732,6 +755,8 @@ intents:
         - maxima e minima do <ticker>
         - maxima e minima do <ticker> em
         - maxima e minima do <ticker> em <data>
+        - abertura do <ticker>
+        - abertura do <ticker> em
       exclude:
         - media de preco
         - retorno no periodo
@@ -1002,6 +1027,7 @@ intents:
         - patrimonio_liquido
         - vp
         - valor_patrimonial
+        - valor patrimonial
         - valor_patrimonial_cota
         - tamanho do fundo
         - numero de cotistas
@@ -1009,6 +1035,22 @@ intents:
         - liquidez
         - maior patrimonio
         - maiores fiis
+        - alavancagem
+        - caixa
+        - divida
+        - divida liquida
+        - market cap
+        - ev
+        - payout
+        - reserva de dividendos
+        - receita total
+        - receita por cota
+        - abl
+        - vacancia
+        - vacancia fisica
+        - vacancia financeira
+        - numero de imoveis
+        - numero de ativos
       exclude:
         - processo
         - acao
@@ -1084,6 +1126,21 @@ intents:
         - liquidez do <ticker>
         - tamanho do fundo
         - maior patrimonio entre os fiis
+        - alavancagem do <ticker>
+        - payout do <ticker>
+        - caixa do <ticker>
+        - caixa e divida do <ticker>
+        - divida do <ticker>
+        - divida liquida do <ticker>
+        - market cap do <ticker>
+        - ev do <ticker>
+        - receita total do <ticker>
+        - receita por cota do <ticker>
+        - abl do <ticker>
+        - vacancia fisica do <ticker>
+        - vacancia financeira do <ticker>
+        - quantos imoveis o <ticker> tem
+        - quantos ativos o <ticker> tem
       exclude:
         - nos ultimos
         - soma de
@@ -1281,8 +1338,10 @@ intents:
         - max drawdown
         - mdd
         - volatilidade
+        - volatil
         - sharpe
         - sharpe ratio
+        - sortino
         - beta
         - risco historico
       exclude:
@@ -1683,11 +1742,21 @@ intents:
         - nota
         - avaliacao
         - posicao
+        - posicoes
         - classificacao
         - melhores
         - piores
         - top
         - pior desempenho
+        - peso
+        - ifix
+        - ifil
+        - indice
+        - indices
+        - peso no ifix
+        - peso no ifil
+        - posicao no ifix
+        - posicao no ifil
       exclude:
         - preco
         - media do
@@ -1720,10 +1789,9 @@ intents:
         - imprensa
         - comunicado
         - selic
-        - ifix
-        - ifil
-        - indice
-        - indices
+        - sharpe
+        - sortino
+        - volatilidade
     phrases:
       include:
         - ranking da sirios
@@ -1741,6 +1809,21 @@ intents:
         - top fiis
         - piores fiis do ranking
         - pior desempenho no ranking
+        - ranking do ifix
+        - ranking do ifil
+        - posicao do <ticker> no ifix
+        - posicao do <ticker> no ifil
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - peso no ifix do <ticker>
+        - peso no ifil do <ticker>
+        - o <ticker> ja fez parte do ifix
+        - o <ticker> ja fez parte do ifil
+        - movimento do <ticker> no ifix
+        - movimento do <ticker> no ifil
+        - ranking de fiis por patrimonio liquido
+        - maior valor de mercado dos fiis
+        - maiores fiis por patrimonio
       exclude:
         - preco do
         - vacancia do
@@ -1788,6 +1871,9 @@ intents:
         - d1
         - d-1
         - ontem
+        - historico
+        - ultimos dias
+        - ultimos 5 dias uteis
       exclude:
         - peso
         - posicao
@@ -1825,6 +1911,9 @@ intents:
         - como o ifix se comportou
         - como o ifix se comportou em
         - quanto esta o ifix hoje
+        - historico do ibov
+        - historico do ibov nos ultimos dias
+        - historico do ibov nos ultimos 5 dias uteis
       exclude: []
     entities:
       - history_b3_indexes
@@ -1844,6 +1933,13 @@ intents:
         - euro
         - evolucao
         - dados cambiais
+        - cotacao do dolar
+        - cotacao do euro
+        - cotacao
+        - variacao do dolar
+        - variacao do euro
+        - moeda
+        - taxas de cambio
       exclude:
         - fii
         - fundo imobiliario
@@ -1863,6 +1959,17 @@ intents:
         - historico do cambio
         - variacao do dolar nos ultimos
         - variacao do usd nos ultimos
+        - cotacao do dolar
+        - cotacao do euro
+        - cotacao do usd
+        - cotacao do eur
+        - cotacao do dolar hoje
+        - cotacao do euro hoje
+        - dolar hoje
+        - usd hoje
+        - euro hoje
+        - eur hoje
+        - variacao percentual do dolar
       exclude: []
     entities:
       - history_currency_rates
@@ -1888,12 +1995,19 @@ intents:
         - inpc
         - dados
         - valor mensal
+        - do dia
+        - de ontem
+        - atual
       exclude:
         - impacto
         - significado
         - influencia
         - interpretacao
         - cenario macro
+        - ibov
+        - ifix
+        - ifil
+        - indice b3
     phrases:
       include:
         - historico do ipca
@@ -1915,6 +2029,13 @@ intents:
         - linha do tempo do ipca
         - grafico historico da selic
         - historico mensal do cdi
+        - ipca do dia
+        - ipca de hoje
+        - selic hoje
+        - selic do dia
+        - igpm de ontem
+        - incc de ontem
+        - inpc atual
       exclude:
         - impacto
         - significado
@@ -2106,6 +2227,15 @@ intents:
         - favoravel
         - desfavoravel
         - como fiis reagem
+        - impacto dos juros
+        - impacto da selic em fiis
+        - impacto do ipca em fiis
+        - juros altos
+        - juros elevados
+        - impacto da curva de juros
+        - panorama macro para fiis
+        - ambiente de juros
+        - ambiente de inflacao
       exclude:
         - historico
         - evolucao
@@ -2135,6 +2265,11 @@ intents:
         - impacto do dolar volatil nos fiis
         - macro esta favoravel para fiis
         - macro esta desfavoravel para fiis
+        - como juros altos afetam fundos imobiliarios
+        - o que significa ipca alto para fiis
+        - relacao entre selic cdi e fiis
+        - panorama macro consolidado pensando em fiis
+        - ambiente de juros e inflacao para fiis
       exclude:
         - historico
         - evolucao
@@ -2254,6 +2389,14 @@ anti_tokens:
     - dividendos
     - evolucao de renda
     - drawdown dos fundos
+    - preco
+    - cotacao
+    - preco hoje
+    - cotacao hoje
+    - abertura
+    - maxima
+    - minima
+    - fechamento
   macro_consolidada:
     - historico
     - evolucao
@@ -2273,11 +2416,21 @@ anti_tokens:
     - influencia
     - interpretacao
     - cenario macro
+    - ibov
+    - ifix
+    - ifil
+    - indice b3
   history_currency_rates:
     - impacto nos fiis
     - influencia nos fiis
     - interpretacao
     - cenario macro
+    - fii
+    - fii11
+    - 11
+    - mxrf11
+    - hglg11
+    - ticker
   fiis_yield_history:
     - patrimonio
     - drawdown
@@ -2325,14 +2478,43 @@ anti_tokens:
     - ifix
     - ifil
     - indice
+    - sharpe
+    - sortino
+    - volatilidade
   fiis_financials_snapshot:
     - drawdown
     - dy
     - presenca no ifix
     - volatilidade
+    - ranking
+    - ifix
+    - ifil
+    - posicao no ifix
+    - posicao no ifil
   fiis_financials_risk:
     - patrimonio
     - dy
     - peso no indice
     - setores
+  fiis_precos:
+    - carteira
+    - performance
+    - benchmark
+    - ifix
+    - ifil
+    - ibov
+    - comparacao
+    - vs
+    - versus
+    - dolar
+    - usd
+    - euro
+    - eur
+    - cambio
+  ticker_query:
+    - ranking
+    - ifix
+    - ifil
+    - posicao
+    - peso no indice
 
