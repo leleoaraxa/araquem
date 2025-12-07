@@ -2466,11 +2466,6 @@ anti_tokens:
     - interpretacao
     - cenario macro
     - fii
-    - fii11
-    - 11
-    - mxrf11
-    - hglg11
-    - ticker
   fiis_yield_history:
     - patrimonio
     - drawdown
@@ -2557,4 +2552,3 @@ anti_tokens:
     - ifil
     - posicao
     - peso no indice
-
