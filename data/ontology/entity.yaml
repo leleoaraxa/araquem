@@ -69,6 +69,8 @@ intents:
         - posicoes
         - atual
         - quantidade
+        - quantidade em custodia
+        - custodia de cotas
         - cotas
         - custodia
         - exposicao
@@ -86,6 +88,7 @@ intents:
         - prejuizo
         - ganho
         - lucro
+        - carteira de fiis
       exclude:
         - cpf
         - cnpj
@@ -116,6 +119,9 @@ intents:
         - rendimento
         - dy
         - dy mensal
+        - renda mensal
+        - dividendos mensais
+        - rendimento mensal
         - valor
         - total
         - vale
@@ -123,8 +129,13 @@ intents:
         - processo
         - processos
         - judicial
-    phrases:
-      include:
+        - benchmark
+        - ifix
+        - ifil
+        - ibov
+        - cdi
+      phrases:
+        include:
         - posicao atual
         - quantidade de cotas
         - exposicao atual da carteira
@@ -145,7 +156,10 @@ intents:
         - preco medio de <ticker> na minha carteira
         - preco medio do <ticker> na carteira
         - qual meu preco medio de <ticker>
-      exclude: []
+        - quanto tenho em custodia da minha carteira de fiis
+        - quantidade em custodia do <ticker>
+        - peso do <ticker> na carteira de fiis
+        exclude: []
     entities:
       - client_fiis_positions
 
@@ -160,6 +174,7 @@ intents:
         - historico
         - mensal
         - mes
+        - meses
         - crescimento
         - historico de dividendos
         - linha do tempo
@@ -171,6 +186,9 @@ intents:
         - cada mes
         - por mes
         - mensalmente
+        - 12 meses
+        - ultimos 12 meses
+        - um ano
       exclude:
         - cpf
         - cnpj
@@ -213,6 +231,11 @@ intents:
         - quanto minha carteira de fiis recebeu de dividendos em cada mes
         - dividendos por mes
         - quanto recebo por mes
+        - renda mensal da carteira de fiis
+        - renda mes a mes da carteira
+        - dividendos da minha carteira mes a mes
+        - dividendos recebidos pela carteira nos ultimos 12 meses
+        - renda dos meus fiis por mes
         - crescimento da renda
         - dividendos recebidos ao longo do tempo
         - linha do tempo de dividendos
@@ -246,6 +269,8 @@ intents:
         - ifix
         - ifil
         - cdi
+        - ibov
+        - ibovespa
         - tracking difference
       exclude:
         - cpf
@@ -290,6 +315,10 @@ intents:
         - carteira versus ifix
         - carteira x cdi
         - carteira versus cdi
+        - carteira x ifil
+        - carteira versus ifil
+        - carteira x ibov
+        - carteira versus ibov
         - comparacao da carteira com ifil
         - comparar retorno da carteira com ibov
         - retorno da carteira vs benchmark
@@ -301,6 +330,9 @@ intents:
         - melhor ou pior que o cdi
         - melhor ou pior que o ifix
         - tracking difference da carteira
+        - comparar o retorno da carteira de fiis com o ifil
+        - performance da carteira frente ao ibov
+        - performance da minha carteira melhor ou pior que o ifix
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -868,6 +900,9 @@ intents:
         - top dy
         - 12 meses
         - historico de dy
+        - dy 12 meses
+        - dy 24 meses
+        - longo prazo
       exclude:
         - dividendo
         - dividendos
@@ -927,6 +962,10 @@ intents:
         - ranking
         - fiis com maior
         - fiis com menor
+        - carteira
+        - meus fiis
+        - minha carteira
+        - carteira de fiis
     phrases:
       include:
         - dy historico
@@ -946,6 +985,9 @@ intents:
         - dividend yield do <ticker> em
         - qual foi o dy do <ticker> em
         - ultimos 12 meses de dy
+        - dy 12m mes a mes do <ticker>
+        - historico completo de dy do <ticker>
+        - dy de <ticker> ao longo dos ultimos anos
       exclude: []
     entities:
       - fiis_yield_history
@@ -1962,7 +2004,16 @@ intents:
         - o que e dividend yield em fiis
         - significado de dividend yield
         - explicacao de dividend yield
-      exclude: []
+        - qual o dy de 12 meses do <ticker>
+        - ultimo dividendo pago pelo <ticker> e dy
+        - ultimo dividendo pago pelo <ticker> e o dy correspondente
+        - dy de 12m do <ticker>
+        - dy 12 meses do <ticker>
+      exclude:
+        - historico completo
+        - ao longo dos anos
+        - mes a mes
+        - serie historica
     entities:
       - dividendos_yield
 
@@ -1978,6 +2029,9 @@ intents:
         - distribuicao
         - classe
         - geral
+        - foto
+        - overview
+        - consolidado
       exclude:
         - preco medio
         - corretora
@@ -1999,6 +2053,8 @@ intents:
         - mensal
         - por mes
         - mes a mes
+        - ultimos meses
+        - 12 meses
         - dividendos
         - proventos
         - renda
@@ -2018,6 +2074,9 @@ intents:
         - minha carteira
         - visao geral da carteira
         - foto da carteira
+        - foto consolidada da carteira
+        - resumo da carteira de fiis
+        - composicao por setor da minha carteira
       exclude: []
     entities:
       - carteira_enriquecida
@@ -2132,6 +2191,11 @@ anti_tokens:
     - melhor ou pior
     - carteira x ifix
     - carteira x cdi
+    - carteira x ifil
+    - carteira x ibov
+    - dy da carteira
+    - dy 12 meses da carteira
+    - rendimentos mensais
     - distribuicao por fii
     - alocacao por fundo
     - quantas cotas
@@ -2157,6 +2221,12 @@ anti_tokens:
     - vs
     - comparacao
     - comparar
+    - dy de <ticker>
+    - dy do <ticker>
+    - dy historico do <ticker>
+    - dy historico
+    - rentabilidade contra ifix
+    - rendimento contra ifix
   client_fiis_positions:
     - renda mensal
     - dividendos
@@ -2164,6 +2234,9 @@ anti_tokens:
     - valor total
     - quanto valem meus fiis
     - visao consolidada da carteira
+    - renda da carteira
+    - dividendos mensais
+    - rendimento mensal
   client_fiis_performance_vs_benchmark:
     - ranking
     - posicao no ranking
@@ -2210,6 +2283,11 @@ anti_tokens:
     - drawdown
     - presenca no ifix
     - setores
+    - minha carteira
+    - meus fiis
+    - carteira de fiis
+    - renda mensal
+    - dividendos da carteira
   fiis_noticias:
     - noticia
     - noticias
@@ -2227,6 +2305,9 @@ anti_tokens:
     - dy 12m
     - serie historica de dy
     - historico de dy
+    - ao longo dos anos
+    - historico completo
+    - mes a mes
     - somente dividendos
     - apenas dividendos
     - dividend yield do <ticker> em
