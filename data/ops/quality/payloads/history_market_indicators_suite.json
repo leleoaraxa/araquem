@@ -1,5 +1,5 @@
 {
-  "description": "Suíte de testes para history_market_indicators — indicadores macro (SELIC, CDI, IPCA, IGPM) em D-1",
+  "description": "Suíte de testes para history_market_indicators — séries históricas e valores pontuais (hoje, ontem) de indicadores macro como SELIC, CDI, IPCA, IGPM e INCC",
   "samples": [
     {
       "question": "Qual a SELIC hoje",
