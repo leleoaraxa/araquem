@@ -73,6 +73,8 @@ intents:
         - exposicao
         - peso
         - composicao
+        - alocacao
+        - distribuicao
         - ativo
         - minha
         - minhas
@@ -118,6 +120,12 @@ intents:
         - peso individual do fii
         - qual fii tem maior peso
         - composicao por ativo
+        - peso do <ticker>
+        - distribuicao da carteira por fundo
+        - distribuicao por fii
+        - alocacao por fundo
+        - quanto tenho de <ticker>
+        - quantas cotas de <ticker>
       exclude: []
     entities:
       - client_fiis_positions
@@ -130,9 +138,12 @@ intents:
         - dividendos
         - proventos
         - evolucao
+        - historico
         - mensal
         - mes
         - crescimento
+        - historico de dividendos
+        - linha do tempo
       exclude:
         - cpf
         - cnpj
@@ -169,9 +180,14 @@ intents:
         - renda mensal
         - meus dividendos
         - evolucao dos dividendos
+        - evolucao dos dividendos da minha carteira
+        - historico de dividendos da carteira
+        - historico de dividendos da minha carteira
         - dividendos por mes
         - quanto recebo por mes
         - crescimento da renda
+        - dividendos recebidos ao longo do tempo
+        - linha do tempo de dividendos
       exclude:
         - dividendos de <ticker>
         - dividendos do <ticker>
@@ -191,6 +207,8 @@ intents:
         - performance
         - comparacao
         - comparar
+        - comparativo
+        - vs
         - benchmark
         - ifix
         - ifil
@@ -228,9 +246,15 @@ intents:
       include:
         - desempenho da carteira
         - performance da carteira
+        - performance da carteira de fiis versus o ifix
+        - performance da minha carteira vs ifix
+        - comparacao da carteira com ifix
         - comparacao com ifix
         - carteira x ifix
         - carteira x cdi
+        - comparacao da carteira com ifil
+        - comparar retorno da carteira com ibov
+        - retorno da carteira vs benchmark
         - rentabilidade vs benchmark
         - tracking difference da carteira
       exclude:
@@ -1566,17 +1590,18 @@ intents:
     weight: 6
     tokens:
       include:
-        - ifix
-        - ifil
-        - indice
-        - indices
-        - peso
-        - composicao
-        - participacao
+        - ranking
+        - rankings
+        - sirios
+        - score
+        - nota
+        - avaliacao
         - posicao
-        - movimentos
-        - entrou
-        - saiu
+        - classificacao
+        - melhores
+        - piores
+        - top
+        - pior desempenho
       exclude:
         - preco
         - media do
@@ -1609,26 +1634,27 @@ intents:
         - imprensa
         - comunicado
         - selic
+        - ifix
+        - ifil
+        - indice
+        - indices
     phrases:
       include:
-        - composicao do ifix
-        - composicao do ifil
-        - peso no indice
-        - peso no ifix
-        - peso no ifil
-        - entrou no ifix
-        - saiu do ifix
-        - faz parte do ifix
-        - faz parte do ifil
-        - posicao no indice
-        - posicao no ifix
-        - posicao no ifil
-        - posicao no indice do
-        - posicao no ifix do
-        - posicao no ifil do
-        - participacao do
-        - participacao no ifix do
-        - participacao no ifil do
+        - ranking da sirios
+        - ranking sirios
+        - ranking de fiis
+        - nota sirios
+        - score sirios
+        - avaliacao sirios
+        - posicao no ranking
+        - posicao do <ticker> no ranking
+        - posicao do fundo no ranking
+        - ranking da sirios do <ticker>
+        - ranking do fundo <ticker>
+        - melhores fiis no ranking
+        - top fiis
+        - piores fiis do ranking
+        - pior desempenho no ranking
       exclude:
         - preco do
         - vacancia do
@@ -1765,6 +1791,8 @@ intents:
         - evolucao
         - curva
         - serie temporal
+        - serie historica
+        - linha do tempo
         - ultimos 12 meses
         - ipca
         - selic
@@ -1798,6 +1826,9 @@ intents:
         - dados de ipca
         - dados de selic
         - valor mensal dos indicadores
+        - linha do tempo do ipca
+        - grafico historico da selic
+        - historico mensal do cdi
       exclude:
         - impacto
         - significado
@@ -1899,7 +1930,6 @@ intents:
         - consolidada
         - visao
         - composicao
-        - peso
         - setores
         - distribuicao
         - classe
@@ -1913,13 +1943,13 @@ intents:
         - carteira consolidada
         - visao da carteira
         - composicao da carteira
-        - peso dos fiis
         - setores da carteira
         - distribuicao por setor
         - distribuicao por classe
         - consolidado da carteira
         - minha carteira
         - visao geral da carteira
+        - foto da carteira
       exclude: []
     entities:
       - carteira_enriquecida
@@ -1932,6 +1962,8 @@ intents:
     tokens:
       include:
         - impacto
+        - impacta
+        - impactar
         - afeta
         - afetar
         - influencia
@@ -1960,6 +1992,7 @@ intents:
         - cenario macro
         - ambiente macro
         - contexto macro
+        - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
         - impacto para fiis
@@ -1970,6 +2003,9 @@ intents:
         - como fiis reagem a inflacao
         - efeito da selic
         - efeito do ipca
+        - panorama macro para fiis hoje
+        - como selic em queda impacta fiis de tijolo
+        - impacto do dolar volatil nos fiis
         - macro esta favoravel para fiis
         - macro esta desfavoravel para fiis
       exclude:
@@ -1997,9 +2033,20 @@ anti_tokens:
     - minha renda mensal
     - dividendos mensais
     - performance vs benchmark
+    - versus ifix
+    - vs ifix
+    - comparar com ifix
+    - comparar com ifil
+    - comparar com cdi
+    - comparar performance da carteira
     - variacao mensal
     - drawdown individual
     - retorno acumulado
+    - historico de dividendos
+    - evolucao dos dividendos
+    - linha do tempo de dividendos
+    - peso do
+    - distribuicao por fundo
   client_fiis_dividends_evolution:
     - composicao da carteira
     - setores
@@ -2025,12 +2072,17 @@ anti_tokens:
     - historico
     - evolucao
     - serie temporal
+    - serie historica
+    - linha do tempo
     - curva historica
     - ultimos 12 meses
     - valor do mes
     - tabela de indicadores
   history_market_indicators:
     - impacto
+    - impacto nos fiis
+    - impacto em fiis
+    - impacto para fiis
     - significado
     - influencia
     - interpretacao
@@ -2076,6 +2128,9 @@ anti_tokens:
     - dividend yield
     - dy
     - risco
+    - ifix
+    - ifil
+    - indice
   fiis_financials_snapshot:
     - drawdown
     - dy
