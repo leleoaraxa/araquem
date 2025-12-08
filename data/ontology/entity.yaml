@@ -2024,8 +2024,6 @@ intents:
         - maiores fiis por patrimonio
         - peso do <ticker> no ifix
         - peso do <ticker> no ifil
-        - peso do mcci11 no ifix
-        - peso do mcci11 no ifil
         - o <ticker> ja fez parte do ifix
         - o <ticker> ja fez parte do ifil
         - top fiis por sharpe ratio
@@ -2652,10 +2650,8 @@ anti_tokens:
     - renda mensal dos meus fiis
     - distribuicao da minha carteira de fiis por fundo
     - distribuicao da minha carteira por fundo
-    - peso do hglg11 na minha carteira
-    - peso do xpml11 na minha carteira
-    - preco medio do hglg11 na minha carteira
-    - preco medio do xpml11 na minha carteira
+    - peso do <ticker> na minha carteira
+    - preco medio do <ticker> na minha carteira
     - peso do fii na carteira
     - peso do fii na minha carteira
     - minha carteira de fiis esta melhor ou pior que o cdi
@@ -2888,7 +2884,7 @@ anti_tokens:
     - ranking
     - posicao
   fiis_dividendos:
-    - ultimo dividendo pago pelo visc11 e o dy correspondente
+    - ultimo dividendo pago pelo <ticker> e o dy correspondente
     - ultimo dividendo e o dy correspondente
   dividendos_yield:
     - dy historico
