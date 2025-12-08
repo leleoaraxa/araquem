@@ -430,8 +430,11 @@ intents:
       include:
         - cadastro
         - cnpj
+        - cnpj do
         - administrador
         - administradora
+        - nome do administrador
+        - cnpj do administrador
         - custodia
         - custodiante
         - site
@@ -487,10 +490,8 @@ intents:
         - renda
         - vacancia
         - media
-        - patrimonio
         - patrimonio liquido
         - payout
-        - pl
         - provento
         - proventos
         - sharpe
@@ -512,11 +513,15 @@ intents:
         - ranking de usuarios
     phrases:
       include:
-        - cnpj do
-        - qual o cnpj do
-        - administrador do
-        - administradora do
-        - quem administra o
+        - cnpj do <ticker>
+        - qual o cnpj do <ticker>
+        - administrador do <ticker>
+        - qual o nome do administrador do <ticker>
+        - administradora do <ticker>
+        - quem administra o <ticker>
+        - cnpj do administrador do <ticker>
+        - qual e o cnpj do administrador do <ticker>
+        - qual e o administrador e o cnpj do administrador do <ticker>
         - custodiante do
         - site do
         - site oficial do
@@ -531,16 +536,12 @@ intents:
         - publico alvo do
         - codigo isin do
         - data do ipo do
-        - peso no ifix do
-        - peso no ifil do
-        - qual o peso do <ticker> no ifix
-        - qual o peso do <ticker> no ifil
-        - peso do <ticker> no ifix
-        - peso do <ticker> no ifil
         - numero de cotas emitidas do
         - numero de cotistas do
         - quantos cotistas tem o
         - quantas cotas tem o
+        - patrimonio e numero de cotistas do <ticker>
+        - quantos cotistas tem o <ticker>
         - fundo exclusivo
       exclude:
         - cotacao do
@@ -561,9 +562,6 @@ intents:
     weight: 3
     tokens:
       include:
-        - cnpj
-        - administrador
-        - administradora
         - gestora
         - gestor
         - nome
@@ -696,12 +694,6 @@ intents:
         - snapshot
     phrases:
       include:
-        - cnpj do <ticker>
-        - qual o cnpj do <ticker>
-        - administrador do <ticker>
-        - gestora do <ticker>
-        - quem administra o <ticker>
-        - quem gere o <ticker>
         - nome do fundo <ticker>
         - razao social do <ticker>
         - classe do <ticker>
@@ -746,7 +738,10 @@ intents:
         - resumo geral do <ticker> para comparar
         - comparativo de overview entre <ticker> e <ticker>
         - comparativo de overview entre
-      exclude: []
+      exclude:
+        - cnpj do <ticker>
+        - administrador do <ticker>
+        - cnpj do administrador do <ticker>
     entities:
       - fii_overview
 
@@ -1046,6 +1041,11 @@ intents:
         - longo prazo
         - historico de rendimento
         - dy mes a mes
+        - mes a mes
+        - ao longo dos anos
+        - 24 meses
+        - historico de dy
+        - historico de dividend yield
         - serie historica de dy
         - serie historica de dividend yield
         - historico por ticker
@@ -1133,6 +1133,9 @@ intents:
         - qual foi o dy do <ticker> em
         - ultimos 12 meses de dy
         - dy 12m mes a mes do <ticker>
+        - dy de janeiro de 2024 do <ticker>
+        - dy de <mes> de <ano> do <ticker>
+        - dy em <mes> de <ano> do <ticker>
         - historico completo de dy do <ticker>
         - dy de <ticker> ao longo dos ultimos anos
         - historico completo de dy do <ticker> ao longo dos ultimos anos
@@ -1285,6 +1288,8 @@ intents:
         - caixa disponivel do <ticker>
         - qual o payout e a reserva de dividendos do <ticker> no ultimo relatorio gerencial
       exclude:
+        - patrimonio e numero de cotistas do <ticker>
+        - quantos cotistas tem o <ticker>
         - nos ultimos
         - soma de
         - media de
@@ -1897,6 +1902,11 @@ intents:
         - variacao
         - alta
         - baixa
+        - selic
+        - cdi
+        - relacao entre selic cdi e o desempenho medio dos fiis
+        - panorama macro
+        - cenario macro
     phrases:
       include:
         - fiis da carteira com mais processos
@@ -2205,6 +2215,9 @@ intents:
         - serie historica
         - linha do tempo
         - ultimos 12 meses
+        - d-1
+        - do dia
+        - de ontem
         - ipca
         - selic
         - cdi
@@ -2233,6 +2246,9 @@ intents:
         - renda com fiis
         - panorama macro
         - panorama macro consolidado
+        - minha carteira
+        - performance da carteira
+        - melhor ou pior que o cdi
         - significado
         - influencia
         - interpretacao
@@ -2256,6 +2272,10 @@ intents:
         - variacao do cdi em
         - acumulado do cdi neste mes
         - acumulado do cdi nos ultimos meses
+        - cdi d-1
+        - taxa do cdi d-1
+        - cdi do dia
+        - cdi de ontem
         - dados de ipca
         - dados de selic
         - valor mensal dos indicadores
@@ -2386,6 +2406,11 @@ intents:
         - ao longo dos anos
         - mes a mes
         - serie historica
+        - historico completo de dy
+        - historico de dividend yield
+        - dy 12m mes a mes
+        - dy nos ultimos 24 meses
+        - dy de janeiro de 2024
     entities:
       - dividendos_yield
 
@@ -2503,6 +2528,9 @@ intents:
         - panorama macro consolidado
         - cenario
         - cenario macro
+        - macro
+        - cenario macro para fiis
+        - panorama macro para fiis
         - ambiente macro
         - contexto macro
         - efeito da selic
@@ -2529,6 +2557,7 @@ intents:
         - panorama macro para fiis hoje
         - impacto da curva de juros em fiis
         - relacao entre selic cdi e ipca
+        - relacao entre selic cdi e o desempenho medio dos fiis
         - impacto da inflacao alta em fiis
         - juros altos em fundos imobiliarios
         - contexto favoravel para fiis
@@ -2555,9 +2584,11 @@ intents:
         - contexto macro
         - cenario macro atual
         - panorama macro consolidado ipca selic cdi ifix e dolar
+        - panorama macro consolidado pensando em fiis
+        - panorama macro consolidado para fiis hoje
+        - panorama macro para fiis hoje
         - cenario macro hoje para fiis
         - cenario macro atual juros, inflacao e cambio
-        - panorama macro consolidado para fiis hoje
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
@@ -2832,6 +2863,7 @@ anti_tokens:
     - panorama macro
     - ipca selic cdi ifix dolar
     - relacao entre selic cdi e o desempenho medio dos fiis
+    - cdi d-1
   macro_consolidada:
     - historico
     - evolucao
