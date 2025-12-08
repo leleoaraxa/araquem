@@ -2032,11 +2032,6 @@
       "expected_entity": "history_market_indicators"
     },
     {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
-    },
-    {
       "question": "histórico do IPCA nos últimos 24 meses",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
@@ -2068,11 +2063,6 @@
     },
     {
       "question": "ipca e selic em 12/11/2025",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
-    },
-    {
-      "question": "O que significa IPCA alto para FIIs?",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
@@ -2162,11 +2152,6 @@
       "expected_entity": "macro_consolidada"
     },
     {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
       "question": "Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
@@ -2183,11 +2168,6 @@
     },
     {
       "question": "O ambiente de juros e inflação em 2025 está mais favorável para FIIs de tijolo ou de papel?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
-      "question": "O que significa IPCA alto para FIIs?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     },
