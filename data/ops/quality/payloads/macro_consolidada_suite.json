@@ -65,6 +65,16 @@
       "question": "Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
     }
   ]
 }

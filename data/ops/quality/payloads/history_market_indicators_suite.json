@@ -30,16 +30,6 @@
       "question": "última atualização do ipca",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
-    },
-    {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
-    },
-    {
-      "question": "O que significa IPCA alto para FIIs?",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
     }
   ]
 }

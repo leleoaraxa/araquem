@@ -2185,6 +2185,16 @@
       "question": "Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
     }
   ]
 }
