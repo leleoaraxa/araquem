@@ -143,14 +143,22 @@ narrator:
       strict_mode: false
 
     macro_consolidada:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
-      max_llm_rows: 0
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+      instruction: |
+        Atue como Narrator de cenário macro consolidado para FIIs, usando as linhas da
+        entidade como âncora factual para juros, inflação, câmbio e índices locais.
+        Entregue um snapshot interpretativo do ambiente macro (Selic/CDI, IPCA e
+        dólar), explicando como a dinâmica de taxas e inflação tende a afetar FIIs de
+        tijolo e de papel. Relacione Selic, CDI e IPCA ao desempenho típico dos FIIs e
+        destaque se o contexto está mais favorável ou desfavorável para quem busca
+        renda com FIIs.
 
     # ──────────────────
     # Cadastro / preços / processos / rankings / notícias / riscos

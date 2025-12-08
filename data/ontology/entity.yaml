@@ -2064,6 +2064,16 @@ intents:
         - atualizado
       exclude:
         - impacto
+        - impactar
+        - afeta
+        - efeito
+        - para fiis
+        - para fundos imobiliarios
+        - desempenho medio dos fiis
+        - viver de renda
+        - renda com fiis
+        - panorama macro
+        - panorama macro consolidado
         - significado
         - influencia
         - interpretacao
@@ -2105,6 +2115,15 @@ intents:
         - qual o igpm atual
       exclude:
         - impacto
+        - impacto para fiis
+        - impacto para fundos imobiliarios
+        - impacto em fiis
+        - cenario macro para fiis
+        - panorama macro para fiis
+        - panorama macro consolidado
+        - desempenho medio dos fiis
+        - viver de renda com fiis
+        - renda com fiis
         - significado
         - influencia
         - interpretacao
@@ -2292,13 +2311,22 @@ intents:
         - impacto
         - impacta
         - impactar
+        - relacao
+        - relação
         - afeta
         - afetar
         - influencia
-        - influencia
         - significado
         - importancia
+        - importância
+        - panorama
+        - panorama macro
+        - panorama consolidado
+        - panorama macro consolidado
+        - cenario
+        - cenário
         - cenario macro
+        - cenário macro
         - ambiente macro
         - contexto macro
         - efeito da selic
@@ -2316,6 +2344,11 @@ intents:
         - panorama macro para fiis
         - ambiente de juros
         - ambiente de inflacao
+        - para fiis
+        - para fundos imobiliarios
+        - viver de renda
+        - renda com fiis
+        - desempenho medio dos fiis
       exclude:
         - historico
         - evolucao
@@ -2337,6 +2370,9 @@ intents:
         - cenario macro
         - ambiente macro
         - contexto macro
+        - cenario macro atual
+        - cenario macro hoje para fiis
+        - cenário macro atual: juros, inflação e câmbio
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
@@ -2344,6 +2380,12 @@ intents:
         - impacto para fundos imobiliarios
         - significado dos indicadores para fiis
         - importancia do macro para fiis
+        - panorama macro consolidado pensando em fiis
+        - importancia do ipca e da selic para quem vive de renda com fiis
+        - relacao entre selic cdi e o desempenho medio dos fiis
+        - como a curva de juros projetada pode afetar o preco dos fiis nos proximos anos
+        - como juros altos costumam afetar fundos imobiliarios
+        - o que significa ipca alto para fiis
         - como fiis reagem aos juros
         - como fiis reagem a inflacao
         - efeito da selic
@@ -2353,10 +2395,7 @@ intents:
         - impacto do dolar volatil nos fiis
         - macro esta favoravel para fiis
         - macro esta desfavoravel para fiis
-        - como juros altos afetam fundos imobiliarios
-        - o que significa ipca alto para fiis
         - relacao entre selic cdi e fiis
-        - panorama macro consolidado pensando em fiis
         - ambiente de juros e inflacao para fiis
       exclude:
         - historico
