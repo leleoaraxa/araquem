@@ -9,6 +9,7 @@ from pathlib import Path
 from functools import lru_cache
 
 from .ontology_loader import load_ontology
+from .ticker_index import resolve_ticker_from_text
 
 # RAG: leitor de índice e hints
 from app.rag.hints import entity_hints_from_rag
@@ -254,6 +255,58 @@ def _phrase_present(text: str, phrase: str) -> bool:
     return phrase in text
 
 
+def _normalize_phrase(phrase: str, steps: List[str]) -> str:
+    return _normalize(phrase, steps)
+
+
+def _tokens_match_in_order(text_tokens: List[str], template_tokens: List[str]) -> bool:
+    if not template_tokens:
+        return True
+
+    pos = 0
+    for token in template_tokens:
+        try:
+            next_index = text_tokens.index(token, pos)
+        except ValueError:
+            return False
+        pos = next_index + 1
+    return True
+
+
+def _phrase_matches_with_placeholders(
+    norm_text: str,
+    raw_phrase: str,
+    *,
+    has_ticker: bool,
+    normalize_steps: List[str],
+    token_split: str,
+    text_tokens: List[str],
+) -> bool:
+    if not raw_phrase:
+        return False
+
+    contains_ticker = "<ticker>" in raw_phrase
+    contains_no_ticker = "(sem ticker)" in raw_phrase
+
+    if not contains_ticker and not contains_no_ticker:
+        normalized_phrase = _normalize_phrase(raw_phrase, normalize_steps)
+        return bool(normalized_phrase) and normalized_phrase in norm_text
+
+    if contains_ticker and not has_ticker:
+        return False
+    if contains_no_ticker and has_ticker:
+        return False
+
+    template = raw_phrase.replace("<ticker>", " ").replace("(sem ticker)", " ")
+    normalized_template = _normalize_phrase(template, normalize_steps)
+    template_tokens = _tokenize(normalized_template, token_split)
+
+    if not template_tokens and (contains_ticker or contains_no_ticker):
+        return True
+
+    return _tokens_match_in_order(text_tokens, template_tokens)
+
+
 def _any_in(text: str, candidates: List[str]) -> bool:
     return any(c for c in candidates if c and c in text)
 
@@ -294,6 +347,9 @@ class Planner:
         norm = _normalize(question, self.onto.normalize)
         tokens = _tokenize(norm, self.onto.token_split)
 
+        resolved_ticker = resolve_ticker_from_text(question)
+        has_ticker = bool(resolved_ticker)
+
         bucket = resolve_bucket(question, {}, self.onto)
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
 
@@ -319,16 +375,46 @@ class Planner:
         # --- scoring base (como já havia) ---
         for it in self.onto.intents:
             score = 0.0
-            include_hits = [t for t in it.tokens_include if t in tokens or t in norm]
-            exclude_hits = [t for t in it.tokens_exclude if t in tokens or t in norm]
+            include_hits = [
+                t
+                for t in it.tokens_include
+                if (t == "<ticker>" and has_ticker)
+                or (t == "(sem ticker)" and not has_ticker)
+                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens or t in norm))
+            ]
+            exclude_hits = [
+                t
+                for t in it.tokens_exclude
+                if (t == "<ticker>" and has_ticker)
+                or (t == "(sem ticker)" and not has_ticker)
+                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens or t in norm))
+            ]
             score += token_weight * len(include_hits)
             score -= token_weight * len(exclude_hits)
 
             phrase_incl_hits = [
-                p for p in it.phrases_include if _phrase_present(norm, p)
+                p
+                for p in it.phrases_include
+                if _phrase_matches_with_placeholders(
+                    norm,
+                    p,
+                    has_ticker=has_ticker,
+                    normalize_steps=self.onto.normalize,
+                    token_split=self.onto.token_split,
+                    text_tokens=tokens,
+                )
             ]
             phrase_excl_hits = [
-                p for p in it.phrases_exclude if _phrase_present(norm, p)
+                p
+                for p in it.phrases_exclude
+                if _phrase_matches_with_placeholders(
+                    norm,
+                    p,
+                    has_ticker=has_ticker,
+                    normalize_steps=self.onto.normalize,
+                    token_split=self.onto.token_split,
+                    text_tokens=tokens,
+                )
             ]
             score += phrase_weight * len(phrase_incl_hits)
             score -= phrase_weight * len(phrase_excl_hits)
