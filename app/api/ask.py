@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import time
+from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Optional, Dict, Any, List
 
@@ -108,6 +109,9 @@ def ask(
 
     if not entity:
         elapsed_ms_unr = int((time.perf_counter() - t0) * 1000)
+        response_timestamp = (
+            datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        )
 
         explain_analytics_payload = None
         if explain:
@@ -126,6 +130,11 @@ def ask(
                 metrics=metrics_snapshot,
             )
 
+        unroutable_answer = (
+            "Desculpe, não consegui encontrar dados relevantes para a sua pergunta. "
+            "Tente reformular em outras palavras ou mencionar um fundo específico."
+        )
+
         payload_out_unr = {
             "status": {"reason": "unroutable", "message": "No entity matched"},
             "results": {},
@@ -143,16 +152,16 @@ def ask(
                 "explain_analytics": explain_analytics_payload if explain else None,
                 "cache": {"hit": False, "key": None, "ttl": None},
             },
-            "answer": "",
+            "answer": unroutable_answer,
         }
 
-        # Registro do turno do "assistant" (resposta vazia/unroutable)
+        # Registro do turno do "assistant" (resposta unroutable)
         try:
             context_manager.append_turn(
                 client_id=payload.client_id,
                 conversation_id=payload.conversation_id,
                 role="assistant",
-                content=payload_out_unr.get("answer", "") or "",
+                content=unroutable_answer,
                 meta={
                     "request_id": request_id,
                     "intent": intent,
@@ -168,7 +177,24 @@ def ask(
                 extra={"request_id": request_id, "entity": entity, "intent": intent},
             )
 
-        return JSONResponse(json_sanitize(payload_out_unr))
+        if explain:
+            body = payload_out_unr
+        else:
+            body = {
+                "question": payload.question,
+                "conversation_id": payload.conversation_id,
+                "answer": unroutable_answer,
+                "timestamp": response_timestamp,
+                "elapsed_ms": elapsed_ms_unr,
+                "status": "error",
+                "error": {
+                    "code": "unroutable",
+                    "message": "No entity matched",
+                    "retryable": False,
+                },
+            }
+
+        return JSONResponse(json_sanitize(body))
 
     identifiers = orchestrator.extract_identifiers(payload.question) or {}
     last_reference_resolution: Optional[Dict[str, Any]] = None
@@ -273,6 +299,8 @@ def ask(
     agg_params = (meta.get("aggregates") or {}) if isinstance(meta, dict) else {}
 
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
+
+    response_timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
     # -------------------------------
     # Camada de apresentação (Presenter)
@@ -476,4 +504,19 @@ def ask(
             extra={"request_id": request_id, "entity": entity, "intent": intent},
         )
 
-    return JSONResponse(json_sanitize(payload_out))
+    # Escolha do payload conforme modo:
+    # - explain=True  -> payload rico (core), usado para debug/QA.
+    # - explain=False -> AskResponse v1 (client), slim e estável.
+    if explain:
+        body = payload_out
+    else:
+        body = {
+            "question": payload.question,
+            "conversation_id": payload.conversation_id,
+            "answer": presenter_result.answer or "",
+            "timestamp": response_timestamp,
+            "elapsed_ms": elapsed_ms,
+            "status": "ok",
+        }
+
+    return JSONResponse(json_sanitize(body))

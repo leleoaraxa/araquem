@@ -216,7 +216,9 @@ def present(
 
     # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
     rag_policy: Optional[Dict[str, Any]] = None
-    meta_rag_raw = meta_dict.get("rag") if isinstance(meta_dict.get("rag"), dict) else None
+    meta_rag_raw = (
+        meta_dict.get("rag") if isinstance(meta_dict.get("rag"), dict) else None
+    )
     if isinstance(meta_rag_raw, dict):
         narrator_rag_context = dict(meta_rag_raw)
         if not isinstance(narrator_rag_context.get("policy"), dict):
@@ -291,26 +293,31 @@ def present(
         try:
             effective_narrator_policy = narrator.get_effective_policy(facts.entity)
         except Exception:
-            LOGGER.warning(
-                "Falha ao obter policy efetiva do Narrator", exc_info=True
-            )
+            LOGGER.warning("Falha ao obter policy efetiva do Narrator", exc_info=True)
             effective_narrator_policy = {}
 
     # Baseline determinístico (sempre calculado)
+    # 1) Geração "antiga" (texto técnico, ainda disponível como fallback)
     legacy_answer = render_answer(
         facts.entity,
         rows,
         identifiers=facts.identifiers,
         aggregates=facts.aggregates,
     )
+
+    # 2) Geração via template .md.j2 (modo produto)
     rendered_template = render_rows_template(facts.entity, rows)
+
+    # Se o template renderizou algo não-vazio, ele passa a ser o baseline
+    # apresentado ao usuário final. O legacy_answer fica como backup.
+    if isinstance(rendered_template, str) and rendered_template.strip():
+        legacy_answer = rendered_template
 
     narrator_info: Dict[str, Any] = {
         "enabled": bool(effective_narrator_policy.get("llm_enabled")),
         "shadow": bool(effective_narrator_policy.get("shadow")),
         "model": str(
-            effective_narrator_policy.get("model")
-            or getattr(narrator, "model", "")
+            effective_narrator_policy.get("model") or getattr(narrator, "model", "")
         ),
         "latency_ms": None,
         "error": None,
@@ -404,7 +411,9 @@ def present(
                 "thresholds": routing_thresholds,
             },
             facts=facts.dict(),
-            rag=narrator_rag_context if isinstance(narrator_rag_context, dict) else None,
+            rag=(
+                narrator_rag_context if isinstance(narrator_rag_context, dict) else None
+            ),
             narrator=narrator_info,
             presenter={
                 "answer_final": final_answer,
