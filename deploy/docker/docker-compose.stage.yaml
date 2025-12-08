@@ -36,7 +36,7 @@ services:
       - araquem_network
 
   ollama:
-    image: ollama/ollama:0.3.14
+    image: ollama/ollama:0.13.2
     container_name: araquem_ollama
     restart: always
     ports:
