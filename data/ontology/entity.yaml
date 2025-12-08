@@ -1266,6 +1266,7 @@ intents:
         - alavancagem do <ticker> segundo ultimo relatorio
         - payout do <ticker>
         - payout e a reserva de dividendos do <ticker>
+        - payout e reserva de dividendos do <ticker>
         - caixa do <ticker>
         - caixa e divida do <ticker>
         - divida do <ticker>
@@ -1322,6 +1323,9 @@ intents:
       include:
         - receita
         - receitas
+        - receita contratada
+        - receita potencial
+        - receita contratada vs receita potencial
         - receita futura
         - receitas futuras
         - recebiveis
@@ -1437,6 +1441,7 @@ intents:
         - receita indexada ao ipca do
         - receita indexada ao cdi do
         - distribuicao da receita futura por indice do
+        - receita contratada vs receita potencial do <ticker>
       exclude:
         - soma de dividendos
         - media de preco
@@ -2003,6 +2008,7 @@ intents:
         - posicao do <ticker> no ifil
         - quais fiis têm o maior dividend yield em 12 meses
         - fiis com o maior dy em 12 meses
+        - maior dividend yield em 12 meses
         - top 10 fiis por dividend yield
         - quais sao os maiores fiis em patrimonio liquido
         - peso do <ticker> no ifix
@@ -2032,6 +2038,8 @@ intents:
         - quais fiis tem o maior patrimonio liquido
         - quais fiis tem o maior valor de mercado
         - qual a posicao atual do <ticker> no ranking de usuarios
+        - posicao atual do <ticker> no ranking de usuarios
+        - ranking de usuarios do <ticker>
       exclude:
         - preco do
         - vacancia do
@@ -2551,6 +2559,7 @@ intents:
         - panorama macro consolidado ipca selic cdi ifix e dolar
         - cenario macro hoje para fiis
         - cenario macro atual juros, inflacao e cambio
+        - panorama macro consolidado para fiis hoje
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
@@ -2647,6 +2656,8 @@ anti_tokens:
     - peso do xpml11 na minha carteira
     - preco medio do hglg11 na minha carteira
     - preco medio do xpml11 na minha carteira
+    - peso do fii na carteira
+    - peso do fii na minha carteira
     - minha carteira de fiis esta melhor ou pior que o cdi
     - comparar o retorno da minha carteira de fiis com o ifil
     - melhor ou pior que o cdi
@@ -2680,6 +2691,9 @@ anti_tokens:
     - payout
     - reserva de dividendos
     - relatorio gerencial
+    - payout e a reserva de dividendos
+    - payout e reserva de dividendos do
+    - yield do
   client_fiis_dividends_evolution:
     - composicao da carteira
     - setores
@@ -2696,6 +2710,11 @@ anti_tokens:
     - vs
     - comparacao
     - comparar
+    - dy de 12 meses do
+    - dy 12 meses do
+    - dy de 12m do
+    - ultimo dividendo pago pelo
+    - ultimo dividendo pago pelo e o dy correspondente
     - dy de 12 meses do <ticker>
     - dy 12 meses do <ticker>
     - dy de 12m do <ticker>
@@ -2705,6 +2724,7 @@ anti_tokens:
     - historico de dividend yield
     - dy 12m mes a mes
     - dy nos ultimos 24 meses
+    - yield do
     - yield do <ticker>
     - dy de <ticker>
     - dy do <ticker>
@@ -2753,6 +2773,10 @@ anti_tokens:
     - dy de 12m da carteira
     - posicao atual no ranking
     - ranking de usuarios
+    - alavancagem do
+    - payout e reserva de dividendos
+    - payout e a reserva de dividendos
+    - relatorio gerencial do
   client_fiis_performance_vs_benchmark:
     - ranking
     - posicao no ranking
@@ -2797,6 +2821,14 @@ anti_tokens:
     - preco medio do <ticker> na minha carteira
     - como esta o <ticker> hoje
     - como esta a cotacao do <ticker> hoje
+    - resumo geral do
+    - receita contratada vs receita potencial
+    - ja fez parte do ifix
+    - maior dividend yield em 12 meses
+    - maior dividend yield
+    - panorama macro consolidado
+    - ipca selic cdi ifix e dolar
+    - panorama macro
     - resumo geral do <ticker>
     - ja fez parte do ifix
     - maior dividend yield em 12 meses
@@ -2855,6 +2887,9 @@ anti_tokens:
   history_b3_indexes:
     - ranking
     - posicao
+  fiis_dividendos:
+    - ultimo dividendo pago pelo visc11 e o dy correspondente
+    - ultimo dividendo e o dy correspondente
   dividendos_yield:
     - dy historico
     - dy 12m
@@ -2895,6 +2930,8 @@ anti_tokens:
     - selic
     - cdi
     - desempenho medio dos fiis
+    - relacao entre selic cdi e o desempenho medio dos fiis
+    - panorama macro
     - cenario macro
   fiis_precos:
     - carteira
