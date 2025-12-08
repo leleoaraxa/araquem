@@ -366,6 +366,7 @@ intents:
         - judiciais
         - acao
         - acoes
+        - fechamento
     phrases:
       include:
         - desempenho da carteira
@@ -422,6 +423,7 @@ intents:
         - abertura do <ticker>
         - maxima do <ticker>
         - minima do <ticker>
+        - valor de fechamento do <ticker>
     entities:
       - client_fiis_performance_vs_benchmark
 
@@ -862,6 +864,7 @@ intents:
         - como esta o <ticker> hoje
         - como esta a cotacao do <ticker> hoje
         - preco de fechamento do <ticker> em <data>
+        - valor de fechamento do <ticker>
       exclude:
         - media de preco
         - retorno no periodo
