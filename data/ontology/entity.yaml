@@ -150,6 +150,7 @@ intents:
         - composicao por ativo
         - peso do <ticker>
         - distribuicao da carteira por fundo
+        - distribuicao da minha carteira de fiis por fundo
         - distribuicao por fii
         - alocacao por fundo
         - quanto tenho de <ticker>
@@ -165,6 +166,7 @@ intents:
         - quanto tenho em custodia da minha carteira de fiis
         - quantidade em custodia do <ticker>
         - peso do <ticker> na carteira de fiis
+        - peso do fii <ticker> na minha carteira
       exclude: []
     entities:
       - client_fiis_positions
@@ -868,6 +870,7 @@ intents:
         - maxima do <ticker> em <data>
         - minima do <ticker> em <data>
         - como esta o <ticker> hoje
+        - como esta a cotacao do <ticker> hoje
         - preco de fechamento do <ticker> em <data>
       exclude:
         - media de preco
@@ -1037,11 +1040,14 @@ intents:
         - top dy
         - 12 meses
         - historico de dy
+        - historico de dividend yield
         - dy 12 meses
         - dy 24 meses
         - longo prazo
         - historico de rendimento
         - dy mes a mes
+        - serie historica de dy
+        - serie historica de dividend yield
         - historico por ticker
       exclude:
         - dividendo
@@ -1129,6 +1135,10 @@ intents:
         - dy 12m mes a mes do <ticker>
         - historico completo de dy do <ticker>
         - dy de <ticker> ao longo dos ultimos anos
+        - historico completo de dy do <ticker> ao longo dos ultimos anos
+        - historico de dividend yield do <ticker> nos ultimos 12 meses
+        - dy do <ticker> nos ultimos 24 meses
+        - yield do <ticker>
       exclude:
         - dy mensal dos meus fiis
         - dy da minha carteira
@@ -1158,6 +1168,7 @@ intents:
         - maiores fiis
         - alavancagem
         - caixa
+        - caixa disponivel
         - divida
         - divida liquida
         - market cap
@@ -1165,6 +1176,7 @@ intents:
         - payout
         - reserva de dividendos
         - p/vp
+        - p vp
         - pvp
         - relatorio gerencial
         - receita total
@@ -1469,6 +1481,8 @@ intents:
         - mdd
         - volatilidade
         - volatil
+        - mais volatil
+        - mais volatil hoje
         - sharpe
         - sharpe ratio
         - sortino
@@ -2358,6 +2372,7 @@ intents:
         - qual o dy de 12 meses do <ticker>
         - ultimo dividendo pago pelo <ticker> e dy
         - ultimo dividendo pago pelo <ticker> e o dy correspondente
+        - dy de 12 meses do <ticker>
         - dy de 12m do <ticker>
         - dy 12 meses do <ticker>
       exclude:
@@ -2446,6 +2461,10 @@ intents:
         - qual e o dy mensal dos meus fiis
         - qual e o total de dividendos dos meus fiis acumulado em 12 meses
         - dy mensal dos meus fundos imobiliarios
+        - qual fii tem o maior peso na minha carteira hoje
+        - qual e o peso de cada fii na minha carteira hoje
+        - qual e o dy de 12 meses da minha carteira de fiis
+        - dy de 12 meses da minha carteira de fiis
       exclude:
         - peso do <ticker> na minha carteira
         - distribuicao da carteira por fundo
@@ -2529,6 +2548,7 @@ intents:
         - ambiente macro
         - contexto macro
         - cenario macro atual
+        - panorama macro consolidado ipca selic cdi ifix e dolar
         - cenario macro hoje para fiis
         - cenario macro atual juros, inflacao e cambio
         - impacto da selic em queda nos fiis
@@ -2541,6 +2561,7 @@ intents:
         - panorama macro consolidado pensando em fiis
         - importancia do ipca e da selic para quem vive de renda com fiis
         - relacao entre selic cdi e o desempenho medio dos fiis
+        - cenario macro para fiis hoje
         - como a curva de juros projetada pode afetar o preco dos fiis nos proximos anos
         - impacto da curva de juros no preco dos fiis
         - o que significa ipca alto para fiis
@@ -2656,6 +2677,9 @@ anti_tokens:
     - prejuizo
     - ganho
     - lucro
+    - payout
+    - reserva de dividendos
+    - relatorio gerencial
   client_fiis_dividends_evolution:
     - composicao da carteira
     - setores
@@ -2672,6 +2696,16 @@ anti_tokens:
     - vs
     - comparacao
     - comparar
+    - dy de 12 meses do <ticker>
+    - dy 12 meses do <ticker>
+    - dy de 12m do <ticker>
+    - ultimo dividendo pago pelo <ticker>
+    - ultimo dividendo pago pelo <ticker> e o dy correspondente
+    - historico completo de dy
+    - historico de dividend yield
+    - dy 12m mes a mes
+    - dy nos ultimos 24 meses
+    - yield do <ticker>
     - dy de <ticker>
     - dy do <ticker>
     - dy historico do <ticker>
@@ -2713,6 +2747,12 @@ anti_tokens:
     - caixa disponivel
     - reserva de dividendos
     - relatorio gerencial
+    - qual fii tem o maior peso na minha carteira
+    - qual e o peso de cada fii na minha carteira
+    - dy de 12 meses da minha carteira
+    - dy de 12m da carteira
+    - posicao atual no ranking
+    - ranking de usuarios
   client_fiis_performance_vs_benchmark:
     - ranking
     - posicao no ranking
@@ -2755,6 +2795,15 @@ anti_tokens:
     - distribuicao da minha carteira por fundo
     - peso do <ticker> na minha carteira
     - preco medio do <ticker> na minha carteira
+    - como esta o <ticker> hoje
+    - como esta a cotacao do <ticker> hoje
+    - resumo geral do <ticker>
+    - ja fez parte do ifix
+    - maior dividend yield em 12 meses
+    - ranking de usuarios
+    - panorama macro
+    - ipca selic cdi ifix dolar
+    - relacao entre selic cdi e o desempenho medio dos fiis
   macro_consolidada:
     - historico
     - evolucao
@@ -2842,6 +2891,11 @@ anti_tokens:
     - top
     - melhores
     - piores
+  fiis_processos:
+    - selic
+    - cdi
+    - desempenho medio dos fiis
+    - cenario macro
   fiis_precos:
     - carteira
     - performance
@@ -2852,6 +2906,8 @@ anti_tokens:
     - comparacao
     - vs
     - versus
+    - volatilidade
+    - mais volatil
     - dolar
     - usd
     - euro
