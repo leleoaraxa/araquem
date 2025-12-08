@@ -297,7 +297,6 @@ intents:
         - comparar com ibov
         - comparar com cdi
         - indice de referencia
-        - índice de referência
         - ifix
         - ifil
         - cdi
@@ -330,7 +329,6 @@ intents:
         - yield
         - abertura
         - maxima
-        - mínima
         - minima
         - preco do dia
         - preco hoje
@@ -713,7 +711,6 @@ intents:
         - quais os destaques do <ticker> hoje
         - ficha tecnica do <ticker>
         - visao geral do <ticker>
-        - visão geral do <ticker>
         - contexto geral do <ticker>
         - situacao geral do <ticker>
         - ficha tecnica resumida do <ticker>
@@ -853,7 +850,7 @@ intents:
         - abertura do <ticker> em <data>
         - maxima do <ticker> em <data>
         - minima do <ticker> em <data>
-        - como está o <ticker> hoje
+        - como esta o <ticker> hoje
         - preco de fechamento do <ticker> em <data>
       exclude:
         - media de preco
@@ -1255,7 +1252,7 @@ intents:
         - quantos ativos o <ticker> tem
         - qual o P/VP atual do <ticker>
         - qual o pvp do <ticker>
-        - caixa disponível do <ticker>
+        - caixa disponivel do <ticker>
         - qual o payout e a reserva de dividendos do <ticker> no ultimo relatorio gerencial
       exclude:
         - nos ultimos
@@ -1672,7 +1669,7 @@ intents:
         - negativas
         - ruim
         - ruins
-    exclude:
+      exclude:
         - snapshot
         - overview
         - indicadores
@@ -1778,7 +1775,7 @@ intents:
         - fato relevante do <ticker>
         - novidades do <ticker>
         - alguma noticia importante sobre <ticker> nesta semana
-    exclude: []
+      exclude: []
     entities:
       - fiis_noticias
 
@@ -1976,7 +1973,7 @@ intents:
         - quais fiis têm o maior dividend yield em 12 meses
         - fiis com o maior dy em 12 meses
         - top 10 fiis por dividend yield
-        - quais são os maiores fiis em patrimonio liquido
+        - quais sao os maiores fiis em patrimonio liquido
         - peso do <ticker> no ifix
         - peso do <ticker> no ifil
         - peso no ifix do <ticker>
@@ -2098,7 +2095,7 @@ intents:
         - ifix ontem
         - ifix do dia
         - ibov do dia
-    exclude: []
+      exclude: []
     entities:
       - history_b3_indexes
 
@@ -2278,7 +2275,7 @@ intents:
         - comparativo de dividendos e dy
         - dy 12 meses
         - dy 12m
-    exclude:
+      exclude:
         - meus
         - minha
         - minhas
@@ -2448,8 +2445,8 @@ intents:
         - ranking dos meus fiis por dy de 12 meses
         - ranking dos meus fiis por sharpe
         - dy mensal da minha carteira de fiis
-        - qual é o dy mensal dos meus fiis
-        - qual é o total de dividendos dos meus fiis acumulado em 12 meses
+        - qual e o dy mensal dos meus fiis
+        - qual e o total de dividendos dos meus fiis acumulado em 12 meses
         - dy mensal dos meus fundos imobiliarios
       exclude:
         - peso do <ticker> na minha carteira
@@ -2471,7 +2468,6 @@ intents:
         - impacta
         - impactar
         - relacao
-        - relação
         - afeta
         - afetar
         - influencia
@@ -2483,9 +2479,7 @@ intents:
         - panorama consolidado
         - panorama macro consolidado
         - cenario
-        - cenário
         - cenario macro
-        - cenário macro
         - ambiente macro
         - contexto macro
         - efeito da selic
@@ -2512,7 +2506,7 @@ intents:
         - panorama macro para fiis hoje
         - impacto da curva de juros em fiis
         - relacao entre selic cdi e ipca
-        - impacto da inflação alta em fiis
+        - impacto da inflacao alta em fiis
         - juros altos em fundos imobiliarios
         - contexto favoravel para fiis
       exclude:
@@ -2538,7 +2532,7 @@ intents:
         - contexto macro
         - cenario macro atual
         - cenario macro hoje para fiis
-        - cenário macro atual juros, inflação e câmbio
+        - cenario macro atual juros, inflacao e cambio
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
