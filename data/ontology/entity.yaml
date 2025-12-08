@@ -315,7 +315,11 @@ intents:
         - como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses
         - minha carteira de fiis esta melhor ou pior que o cdi
         - comparar o retorno da minha carteira de fiis com o ifil
+        - retorno da minha carteira de fiis
+        - rentabilidade da minha carteira de fiis
         - qual foi a rentabilidade da minha carteira de fiis versus o ifix em 2024
+        - rentabilidade da minha carteira de fiis versus o ifix em 2024
+        - melhor ou pior que o cdi
       exclude:
         - cpf
         - cnpj
@@ -2368,15 +2372,11 @@ intents:
     weight: 3
     tokens:
       include:
-        - carteira
         - consolidada
         - visao
         - composicao
         - setores
-        - distribuicao
-        - resumo
         - classe
-        - geral
         - foto
         - overview
         - consolidado
@@ -2388,13 +2388,6 @@ intents:
         - rentabilidade
         - total
         - patrimonio
-        - meus fiis
-        - minha carteira
-        - meus fundos
-        - meus investimentos
-        - carteira de fiis
-        - carteira pessoal
-        - carteira propria
         - dy da carteira
         - dy mensal da carteira
         - ranking dos meus fiis
@@ -2635,7 +2628,11 @@ anti_tokens:
     - preco medio do xpml11 na minha carteira
     - minha carteira de fiis esta melhor ou pior que o cdi
     - comparar o retorno da minha carteira de fiis com o ifil
+    - melhor ou pior que o cdi
     - rentabilidade da minha carteira de fiis versus o ifix em 2024
+    - comparar carteira com ifix
+    - comparar carteira com cdi
+    - comparar carteira com ifil
     - historico da carteira
     - rentabilidade
     - performance
