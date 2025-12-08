@@ -79,6 +79,8 @@ intents:
         - alocacao
         - distribuicao
         - distribuicao por fundo
+        - distribuicao da minha carteira de fiis por fundo
+        - distribuicao da minha carteira por fundo
         - por fundo
         - ativo
         - minha
@@ -87,6 +89,8 @@ intents:
         - preco medio
         - preco_medio
         - pm
+        - peso do <ticker> na minha carteira
+        - preco medio do <ticker> na minha carteira
         - prejuizo
         - ganho
         - lucro
@@ -191,6 +195,11 @@ intents:
         - 12 meses
         - ultimos 12 meses
         - um ano
+        - quanto minha carteira de fiis recebeu de dividendos em cada mes
+        - dividendos da minha carteira por mes
+        - dividendos mensais da minha carteira de fiis
+        - renda mensal da minha carteira de fiis
+        - linha do tempo de dividendos da minha carteira
       exclude:
         - cpf
         - cnpj
@@ -303,6 +312,10 @@ intents:
         - ibov
         - ibovespa
         - tracking difference
+        - como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses
+        - minha carteira de fiis esta melhor ou pior que o cdi
+        - comparar o retorno da minha carteira de fiis com o ifil
+        - qual foi a rentabilidade da minha carteira de fiis versus o ifix em 2024
       exclude:
         - cpf
         - cnpj
@@ -2383,9 +2396,7 @@ intents:
         - carteira pessoal
         - carteira propria
         - dy da carteira
-        - dy mensal dos meus fiis
         - dy mensal da carteira
-        - total de dividendos dos meus fiis
         - ranking dos meus fiis
       exclude:
         - preco medio
@@ -2435,15 +2446,9 @@ intents:
         - composicao por setor da minha carteira
         - minha carteira de fiis
         - meus fiis
-        - dy mensal dos meus fiis
-        - dy da minha carteira de fiis
-        - dy de 12 meses da minha carteira
-        - total de dividendos dos meus fiis
         - valor total dos meus fiis
         - quanto valem meus fiis hoje
-        - ranking dos meus fiis por dy
         - ranking dos meus fiis por dy de 12 meses
-        - ranking dos meus fiis por sharpe
         - dy mensal da minha carteira de fiis
         - qual e o dy mensal dos meus fiis
         - qual e o total de dividendos dos meus fiis acumulado em 12 meses
@@ -2617,6 +2622,20 @@ anti_tokens:
     - cada mes
     - mensal
     - renda mensal
+    - quanto minha carteira de fiis recebeu de dividendos em cada mes
+    - dividendos da minha carteira por mes
+    - dividendos da minha carteira mes a mes
+    - renda mensal da minha carteira
+    - renda mensal dos meus fiis
+    - distribuicao da minha carteira de fiis por fundo
+    - distribuicao da minha carteira por fundo
+    - peso do hglg11 na minha carteira
+    - peso do xpml11 na minha carteira
+    - preco medio do hglg11 na minha carteira
+    - preco medio do xpml11 na minha carteira
+    - minha carteira de fiis esta melhor ou pior que o cdi
+    - comparar o retorno da minha carteira de fiis com o ifil
+    - rentabilidade da minha carteira de fiis versus o ifix em 2024
     - historico da carteira
     - rentabilidade
     - performance
@@ -2662,6 +2681,16 @@ anti_tokens:
     - dy historico
     - rentabilidade contra ifix
     - rendimento contra ifix
+    - performance da minha carteira
+    - rentabilidade da minha carteira
+    - performance da carteira frente ao ifix
+    - como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses
+    - minha carteira de fiis esta melhor ou pior que o cdi
+    - comparar o retorno da minha carteira de fiis com o ifil
+    - distribuicao da minha carteira de fiis por fundo
+    - distribuicao da minha carteira por fundo
+    - peso do <ticker> na minha carteira
+    - preco medio do <ticker> na minha carteira
   client_fiis_positions:
     - renda mensal
     - dividendos
@@ -2672,6 +2701,14 @@ anti_tokens:
     - renda da carteira
     - dividendos mensais
     - rendimento mensal
+    - performance da minha carteira
+    - rentabilidade da minha carteira
+    - performance da carteira frente ao ifix
+    - como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses
+    - minha carteira de fiis esta melhor ou pior que o cdi
+    - comparar o retorno da minha carteira de fiis com o ifil
+    - dividendos da minha carteira por mes
+    - renda mensal da minha carteira
     - alavancagem
     - payout
     - p/vp
@@ -2715,6 +2752,12 @@ anti_tokens:
     - taxa do ipca
     - incc hoje
     - ipca hoje
+    - dividendos da minha carteira por mes
+    - renda mensal da minha carteira
+    - distribuicao da minha carteira de fiis por fundo
+    - distribuicao da minha carteira por fundo
+    - peso do <ticker> na minha carteira
+    - preco medio do <ticker> na minha carteira
   macro_consolidada:
     - historico
     - evolucao
