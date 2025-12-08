@@ -1,9 +1,11 @@
-{% if rows and rows|length > 0 -%}
-{# Mostra até 10 itens mais recentes, com a mesma linha editorial do templates.md #}
-{%- set limit = 10 -%}
-{%- for r in rows[:limit] -%}
-- {{ r.published_at|datetime_br }}: {{ r.title }} — {{ r.source }} ({{ r.url }})
-{%- endfor -%}
-{%- else -%}
-{{ empty_message or "Nenhuma notícia encontrada." }}
-{%- endif %}
+{% if rows and rows|length > 0 %}
+As últimas notícias do **{{ ticker }}** são:
+
+| Fonte | Título | Tags | Link |
+|-------|--------|------|------|
+{% for r in rows[:5] %}
+| {{ r.source }} | {{ r.title }} | {{ r.tags | join("; ") if r.tags else "-" }} | {{ r.url }} |
+{% endfor %}
+{% else %}
+Não encontrei notícias recentes sobre **{{ ticker }}**.
+{% endif %}
