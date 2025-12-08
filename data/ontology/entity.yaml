@@ -2598,7 +2598,6 @@ anti_tokens:
     - dy do <ticker> em
     - qual foi o dividend yield
     - qual foi o dy do
-  fiis_rankings: []
   fiis_financials_snapshot:
     - drawdown
     - dy
