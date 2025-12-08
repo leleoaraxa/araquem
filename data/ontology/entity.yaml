@@ -225,6 +225,10 @@ intents:
         - ibov
         - cdi
         - benchmark
+        - indice
+        - indice de referencia
+        - comparacao com indice
+        - comparacao com benchmark
     phrases:
       include:
         - renda mensal
@@ -257,6 +261,13 @@ intents:
         - rendimento do <ticker>
         - payout e a reserva de dividendos do
         - payout e reserva de dividendos do
+        - performance da minha carteira frente ao ifix
+        - performance da minha carteira frente ao ibov
+        - comparacao da carteira com ifix
+        - comparacao da carteira com ibov
+        - versus ifix
+        - versus ibov
+        - versus cdi
     entities:
       - client_fiis_dividends_evolution
 
@@ -270,11 +281,23 @@ intents:
         - comparativo
         - vs
         - versus
+        - versus ifix
+        - versus ibov
+        - versus cdi
+        - frente ao ifix
+        - frente ao ibov
+        - frente ao cdi
+        - frente ao indice
         - contra
         - x
         - melhor
         - pior
         - benchmark
+        - comparar com ifix
+        - comparar com ibov
+        - comparar com cdi
+        - indice de referencia
+        - índice de referência
         - ifix
         - ifil
         - cdi
@@ -305,6 +328,21 @@ intents:
         - evolucao
         - dy
         - yield
+        - abertura
+        - maxima
+        - mínima
+        - minima
+        - preco do dia
+        - preco hoje
+        - cotacao hoje
+        - noticia
+        - noticias
+        - fato relevante
+        - ipca
+        - incc
+        - indice do dia
+        - taxa de hoje
+        - valor do indice
         - processo
         - processos
         - judicial
@@ -328,6 +366,11 @@ intents:
         - carteira versus ifil
         - carteira x ibov
         - carteira versus ibov
+        - performance da minha carteira de fiis versus o ibov
+        - desempenho da minha carteira frente ao ifix
+        - desempenho da minha carteira frente ao ibov
+        - desempenho da minha carteira frente ao cdi
+        - comparar a performance da carteira com o ifix
         - comparacao da carteira com ifil
         - comparar retorno da carteira com ibov
         - retorno da carteira vs benchmark
@@ -342,6 +385,8 @@ intents:
         - comparar o retorno da carteira de fiis com o ifil
         - performance da carteira frente ao ibov
         - performance da minha carteira melhor ou pior que o ifix
+        - performance da minha carteira de fiis frente ao indice de referencia
+        - performance da minha carteira versus o benchmark
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -350,6 +395,16 @@ intents:
         - evolucao dos dividendos
         - historico de dividendos
         - renda mensal dos meus fiis
+        - ifix ontem
+        - ibov do dia
+        - ifix do dia
+        - ifil hoje
+        - ifix hoje
+        - noticia sobre <ticker>
+        - noticia sobre o <ticker>
+        - abertura do <ticker>
+        - maxima do <ticker>
+        - minima do <ticker>
     entities:
       - client_fiis_performance_vs_benchmark
 
@@ -533,6 +588,7 @@ intents:
         - foto
         - fotografia
         - indicadores
+        - comparativo de overview
       exclude:
         - pl
         - patrimonio
@@ -584,6 +640,10 @@ intents:
         - fato
         - fatos
         - relevante
+        - ranking
+        - top
+        - maiores fiis
+        - top fiis
         - comunicacao
         - imprensa
         - historico
@@ -667,6 +727,9 @@ intents:
         - visao geral do fundo
         - foto do fundo
         - principais indicadores do
+        - resumo geral do <ticker> para comparar
+        - comparativo de overview entre <ticker> e <ticker>
+        - comparativo de overview entre
       exclude: []
     entities:
       - fii_overview
@@ -699,6 +762,10 @@ intents:
         - preco hoje
         - cotacao hoje
         - abertura do dia
+        - preco de fechamento
+        - maxima do dia
+        - minima do dia
+        - preco do dia
       exclude:
         - dy
         - dividendos
@@ -744,6 +811,11 @@ intents:
         - comparacao
         - vs
         - versus
+        - ifix
+        - ifil
+        - ibov
+        - indice
+        - indice de referencia
     phrases:
       include:
         - preco
@@ -778,6 +850,11 @@ intents:
         - maxima e minima do <ticker> em <data>
         - abertura do <ticker>
         - abertura do <ticker> em
+        - abertura do <ticker> em <data>
+        - maxima do <ticker> em <data>
+        - minima do <ticker> em <data>
+        - como está o <ticker> hoje
+        - preco de fechamento do <ticker> em <data>
       exclude:
         - media de preco
         - retorno no periodo
@@ -949,6 +1026,9 @@ intents:
         - dy 12 meses
         - dy 24 meses
         - longo prazo
+        - historico de rendimento
+        - dy mes a mes
+        - historico por ticker
       exclude:
         - dividendo
         - dividendos
@@ -1012,6 +1092,7 @@ intents:
         - meus fiis
         - minha carteira
         - carteira de fiis
+        - minha carteira de fiis
     phrases:
       include:
         - dy historico
@@ -1034,7 +1115,12 @@ intents:
         - dy 12m mes a mes do <ticker>
         - historico completo de dy do <ticker>
         - dy de <ticker> ao longo dos ultimos anos
-      exclude: []
+      exclude:
+        - dy mensal dos meus fiis
+        - dy da minha carteira
+        - dy de 12 meses da minha carteira
+        - dy mensal da minha carteira de fiis
+        - dy dos meus fiis
     entities:
       - fiis_yield_history
 
@@ -1064,6 +1150,9 @@ intents:
         - ev
         - payout
         - reserva de dividendos
+        - p/vp
+        - pvp
+        - relatorio gerencial
         - receita total
         - receita por cota
         - abl
@@ -1148,7 +1237,9 @@ intents:
         - tamanho do fundo
         - maior patrimonio entre os fiis
         - alavancagem do <ticker>
+        - alavancagem do <ticker> segundo ultimo relatorio
         - payout do <ticker>
+        - payout e a reserva de dividendos do <ticker>
         - caixa do <ticker>
         - caixa e divida do <ticker>
         - divida do <ticker>
@@ -1162,6 +1253,10 @@ intents:
         - vacancia financeira do <ticker>
         - quantos imoveis o <ticker> tem
         - quantos ativos o <ticker> tem
+        - qual o P/VP atual do <ticker>
+        - qual o pvp do <ticker>
+        - caixa disponível do <ticker>
+        - qual o payout e a reserva de dividendos do <ticker> no ultimo relatorio gerencial
       exclude:
         - nos ultimos
         - soma de
@@ -1472,12 +1567,18 @@ intents:
         - metragem
         - regiao
         - endereco
+        - enderecos
+        - rua
+        - avenida
+        - local
         - localizacao
         - portfolio
         - galpao
         - galpoes
         - unidades
         - onde ficam
+        - shopping
+        - centro comercial
       exclude:
         - preco
         - cotacao
@@ -1524,6 +1625,9 @@ intents:
         - regiao onde o fundo possui imoveis
         - endereco do ativo
         - dados dos imoveis
+        - quais enderecos fazem parte do <ticker>
+        - endereco dos imoveis do <ticker>
+        - onde ficam os imoveis do <ticker>
       exclude:
         - segundo o ultimo relatorio gerencial
         - no ultimo relatorio gerencial
@@ -1568,7 +1672,7 @@ intents:
         - negativas
         - ruim
         - ruins
-      exclude:
+    exclude:
         - snapshot
         - overview
         - indicadores
@@ -1673,7 +1777,8 @@ intents:
         - saiu alguma noticia do <ticker>
         - fato relevante do <ticker>
         - novidades do <ticker>
-      exclude: []
+        - alguma noticia importante sobre <ticker> nesta semana
+    exclude: []
     entities:
       - fiis_noticias
 
@@ -1738,6 +1843,12 @@ intents:
         - evolucao
         - dy
         - yield
+        - endereco
+        - enderecos
+        - rua
+        - avenida
+        - localizacao
+        - shopping
         - dividendos
         - proventos
         - sharpe
@@ -1797,8 +1908,12 @@ intents:
         - piores
         - top
         - top 5
+        - top 10
         - maiores
         - menores
+        - mais negociados
+        - maior dy
+        - dy mais alto
         - pior desempenho
         - peso
         - ifix
@@ -1858,6 +1973,10 @@ intents:
         - ranking do ifil
         - posicao do <ticker> no ifix
         - posicao do <ticker> no ifil
+        - quais fiis têm o maior dividend yield em 12 meses
+        - fiis com o maior dy em 12 meses
+        - top 10 fiis por dividend yield
+        - quais são os maiores fiis em patrimonio liquido
         - peso do <ticker> no ifix
         - peso do <ticker> no ifil
         - peso no ifix do <ticker>
@@ -1932,6 +2051,7 @@ intents:
         - d1
         - d-1
         - ontem
+        - do dia
         - historico
         - ultimos dias
         - ultimos 5 dias uteis
@@ -1975,7 +2095,10 @@ intents:
         - historico do ibov
         - historico do ibov nos ultimos dias
         - historico do ibov nos ultimos 5 dias uteis
-      exclude: []
+        - ifix ontem
+        - ifix do dia
+        - ibov do dia
+    exclude: []
     entities:
       - history_b3_indexes
 
@@ -2055,6 +2178,8 @@ intents:
         - incc
         - inpc
         - dados
+        - taxa
+        - valor
         - valor mensal
         - do dia
         - de ontem
@@ -2109,6 +2234,9 @@ intents:
         - selic do dia
         - igpm de ontem
         - incc de ontem
+        - taxa do incc hoje
+        - valor do incc hoje
+        - taxa do indicador
         - inpc atual
         - ultima atualizacao do ipca
         - ultima atualizacao do indicador
@@ -2148,7 +2276,9 @@ intents:
         - pagou
         - comparacao de dividendos
         - comparativo de dividendos e dy
-      exclude:
+        - dy 12 meses
+        - dy 12m
+    exclude:
         - meus
         - minha
         - minhas
@@ -2225,7 +2355,7 @@ intents:
       - dividendos_yield
 
   - name: carteira_enriquecida
-    weight: 2
+    weight: 3
     tokens:
       include:
         - carteira
@@ -2248,11 +2378,25 @@ intents:
         - rentabilidade
         - total
         - patrimonio
+        - meus fiis
+        - minha carteira
+        - meus fundos
+        - meus investimentos
+        - carteira de fiis
+        - carteira pessoal
+        - carteira propria
+        - dy da carteira
+        - dy mensal dos meus fiis
+        - dy mensal da carteira
+        - total de dividendos dos meus fiis
+        - ranking dos meus fiis
       exclude:
         - preco medio
         - corretora
         - distribuicao por fiis
         - distribuicao por fundo
+        - distribuicao da carteira por fundo
+        - distribuicao por ativo
         - ifix
         - ifil
         - ibov
@@ -2272,7 +2416,10 @@ intents:
         - ultimos meses
         - 12 meses
         - peso do
+        - peso
         - alocacao
+        - alocacao por ativo
+        - alocacao por fii
         - cotas
     phrases:
       include:
@@ -2289,6 +2436,8 @@ intents:
         - foto consolidada da carteira
         - resumo da carteira de fiis
         - composicao por setor da minha carteira
+        - minha carteira de fiis
+        - meus fiis
         - dy mensal dos meus fiis
         - dy da minha carteira de fiis
         - dy de 12 meses da minha carteira
@@ -2296,8 +2445,18 @@ intents:
         - valor total dos meus fiis
         - quanto valem meus fiis hoje
         - ranking dos meus fiis por dy
+        - ranking dos meus fiis por dy de 12 meses
         - ranking dos meus fiis por sharpe
-      exclude: []
+        - dy mensal da minha carteira de fiis
+        - qual é o dy mensal dos meus fiis
+        - qual é o total de dividendos dos meus fiis acumulado em 12 meses
+        - dy mensal dos meus fundos imobiliarios
+      exclude:
+        - peso do <ticker> na minha carteira
+        - distribuicao da carteira por fundo
+        - alocacao por ativo
+        - alocacao por fii
+        - peso do fii na carteira
     entities:
       - carteira_enriquecida
 
@@ -2349,6 +2508,13 @@ intents:
         - viver de renda
         - renda com fiis
         - desempenho medio dos fiis
+        - cenario macro atual
+        - panorama macro para fiis hoje
+        - impacto da curva de juros em fiis
+        - relacao entre selic cdi e ipca
+        - impacto da inflação alta em fiis
+        - juros altos em fundos imobiliarios
+        - contexto favoravel para fiis
       exclude:
         - historico
         - evolucao
@@ -2384,6 +2550,10 @@ intents:
         - importancia do ipca e da selic para quem vive de renda com fiis
         - relacao entre selic cdi e o desempenho medio dos fiis
         - como a curva de juros projetada pode afetar o preco dos fiis nos proximos anos
+        - impacto da curva de juros no preco dos fiis
+        - o que significa ipca alto para fiis
+        - como juros altos costumam afetar fundos imobiliarios
+        - panorama macro consolidado para fiis hoje
         - como juros altos costumam afetar fundos imobiliarios
         - o que significa ipca alto para fiis
         - como fiis reagem aos juros
@@ -2508,6 +2678,13 @@ anti_tokens:
     - renda da carteira
     - dividendos mensais
     - rendimento mensal
+    - alavancagem
+    - payout
+    - p/vp
+    - pvp
+    - caixa disponivel
+    - reserva de dividendos
+    - relatorio gerencial
   client_fiis_performance_vs_benchmark:
     - ranking
     - posicao no ranking
@@ -2533,6 +2710,17 @@ anti_tokens:
     - maxima
     - minima
     - fechamento
+    - preco do dia
+    - noticia
+    - noticias
+    - fato relevante
+    - ifix do dia
+    - ibov do dia
+    - ifix ontem
+    - ibov ontem
+    - taxa do ipca
+    - incc hoje
+    - ipca hoje
   macro_consolidada:
     - historico
     - evolucao
