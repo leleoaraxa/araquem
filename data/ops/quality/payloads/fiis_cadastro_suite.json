@@ -58,11 +58,6 @@
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
       "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"

@@ -80,6 +80,11 @@
       "question": "peso do MCCI11 no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
     }
   ]
 }

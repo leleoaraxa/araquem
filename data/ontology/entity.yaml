@@ -455,15 +455,10 @@ intents:
         - publico alvo
         - isin
         - ipo
-        - peso
-        - ifix
-        - ifil
         - cotas
         - cotistas
         - numero de cotas
         - numero de cotistas
-        - peso no ifix
-        - peso no ifil
         - exclusivo
         - oficial
         - segmento
@@ -2160,6 +2155,9 @@ intents:
         - eur
         - euro
         - evolucao
+        - comercial
+        - compra
+        - venda
         - dados cambiais
         - cotacao do dolar
         - cotacao do euro
@@ -2198,6 +2196,7 @@ intents:
         - euro hoje
         - eur hoje
         - variacao percentual do dolar
+        - dolar comercial
       exclude: []
     entities:
       - history_currency_rates
@@ -2257,6 +2256,10 @@ intents:
         - ifix
         - ifil
         - indice b3
+        - dolar
+        - usd
+        - euro
+        - eur
     phrases:
       include:
         - historico do ipca
@@ -2575,7 +2578,6 @@ intents:
         - ultima atualizacao
         - atual
         - do dia
-        - hoje
         - ultima atualizacao
     phrases:
       include:
@@ -2628,7 +2630,6 @@ intents:
         - tabela de indicadores
         - atual
         - do dia
-        - hoje
         - ultima atualizacao
     entities:
       - macro_consolidada
@@ -2887,6 +2888,10 @@ anti_tokens:
     - ifix
     - ifil
     - indice b3
+    - dolar
+    - usd
+    - euro
+    - eur
   history_currency_rates:
     - impacto nos fiis
     - influencia nos fiis
