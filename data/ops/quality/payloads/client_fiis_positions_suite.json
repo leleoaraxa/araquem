@@ -30,6 +30,11 @@
       "question": "Rentabilidade da minha posição em VISC11",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "distribuição da minha carteira de fiis por fundo",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     }
   ]
 }

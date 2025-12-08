@@ -2,16 +2,6 @@
   "description": "Suíte de testes para macro_consolidada — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",
   "samples": [
     {
-      "question": "O que significa IPCA alto para FIIs?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
       "question": "Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"

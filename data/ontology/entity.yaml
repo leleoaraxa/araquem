@@ -78,6 +78,8 @@ intents:
         - composicao
         - alocacao
         - distribuicao
+        - distribuicao por fundo
+        - por fundo
         - ativo
         - minha
         - minhas
@@ -216,6 +218,13 @@ intents:
         - preco medio
         - preco_medio
         - pm
+        - vs
+        - versus
+        - ifix
+        - ifil
+        - ibov
+        - cdi
+        - benchmark
     phrases:
       include:
         - renda mensal
@@ -1384,6 +1393,13 @@ intents:
         - significado
         - definicao
         - conceito
+        - ranking
+        - top
+        - melhores
+        - piores
+        - posicao
+        - peso no ifix
+        - peso no ifil
         - explicar
         - cnpj
         - gestor
@@ -1780,6 +1796,9 @@ intents:
         - melhores
         - piores
         - top
+        - top 5
+        - maiores
+        - menores
         - pior desempenho
         - peso
         - ifix
@@ -1804,11 +1823,7 @@ intents:
         - r2
         - historico
         - se comportou
-        - mdd
-        - drawdown
-        - dy
-        - dividendos
-        - rendimento
+        - rendimento do fii
         - processo
         - processos
         - judicial
@@ -1822,9 +1837,6 @@ intents:
         - imprensa
         - comunicado
         - selic
-        - sharpe
-        - sortino
-        - volatilidade
     phrases:
       include:
         - ranking da sirios
@@ -1857,6 +1869,22 @@ intents:
         - ranking de fiis por patrimonio liquido
         - maior valor de mercado dos fiis
         - maiores fiis por patrimonio
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - peso do mcci11 no ifix
+        - peso do mcci11 no ifil
+        - o <ticker> ja fez parte do ifix
+        - o <ticker> ja fez parte do ifil
+        - top fiis por sharpe ratio
+        - ranking dos fiis com melhor sharpe ratio
+        - top 5 fiis por sharpe ratio
+        - top fiis por dy nos ultimos 12 meses
+        - ranking de fiis com maior dy em 12 meses
+        - quais fiis tem o maior dividend yield em 12 meses
+        - quais fiis tem o menor drawdown historico
+        - quais fiis tem o maior patrimonio liquido
+        - quais fiis tem o maior valor de mercado
+        - qual a posicao atual do <ticker> no ranking de usuarios
       exclude:
         - preco do
         - vacancia do
@@ -2031,6 +2059,9 @@ intents:
         - do dia
         - de ontem
         - atual
+        - ultima atualizacao
+        - ultimo dado
+        - atualizado
       exclude:
         - impacto
         - significado
@@ -2069,6 +2100,9 @@ intents:
         - igpm de ontem
         - incc de ontem
         - inpc atual
+        - ultima atualizacao do ipca
+        - ultima atualizacao do indicador
+        - qual o igpm atual
       exclude:
         - impacto
         - significado
@@ -2181,15 +2215,25 @@ intents:
         - composicao
         - setores
         - distribuicao
+        - resumo
         - classe
         - geral
         - foto
         - overview
         - consolidado
+        - dy
+        - yield
+        - dividendos
+        - proventos
+        - rendimento
+        - rentabilidade
+        - total
+        - patrimonio
       exclude:
         - preco medio
         - corretora
         - distribuicao por fiis
+        - distribuicao por fundo
         - ifix
         - ifil
         - ibov
@@ -2199,7 +2243,6 @@ intents:
         - versus
         - comparar
         - comparacao
-        - rentabilidade
         - performance
         - historico
         - evolucao
@@ -2209,11 +2252,7 @@ intents:
         - mes a mes
         - ultimos meses
         - 12 meses
-        - dividendos
-        - proventos
-        - renda
         - peso do
-        - distribuicao por fundo
         - alocacao
         - cotas
     phrases:
@@ -2231,6 +2270,14 @@ intents:
         - foto consolidada da carteira
         - resumo da carteira de fiis
         - composicao por setor da minha carteira
+        - dy mensal dos meus fiis
+        - dy da minha carteira de fiis
+        - dy de 12 meses da minha carteira
+        - total de dividendos dos meus fiis
+        - valor total dos meus fiis
+        - quanto valem meus fiis hoje
+        - ranking dos meus fiis por dy
+        - ranking dos meus fiis por sharpe
       exclude: []
     entities:
       - carteira_enriquecida
@@ -2277,6 +2324,14 @@ intents:
         - ultimos 12 meses
         - valor do mes
         - tabela de indicadores
+        - atual
+        - do dia
+        - hoje
+        - ultima atualizacao
+        - atual
+        - do dia
+        - hoje
+        - ultima atualizacao
     phrases:
       include:
         - cenario macro
@@ -2311,6 +2366,10 @@ intents:
         - ultimos 12 meses
         - valor do mes
         - tabela de indicadores
+        - atual
+        - do dia
+        - hoje
+        - ultima atualizacao
     entities:
       - macro_consolidada
 
@@ -2368,8 +2427,6 @@ anti_tokens:
     - carteira x cdi
     - carteira x ifil
     - carteira x ibov
-    - dy da carteira
-    - dy 12 meses da carteira
     - rendimentos mensais
     - distribuicao por fii
     - alocacao por fundo
@@ -2502,20 +2559,7 @@ anti_tokens:
     - dy do <ticker> em
     - qual foi o dividend yield
     - qual foi o dy do
-  fiis_rankings:
-    - patrimonio
-    - liquidez
-    - cotistas
-    - drawdown
-    - dividend yield
-    - dy
-    - risco
-    - ifix
-    - ifil
-    - indice
-    - sharpe
-    - sortino
-    - volatilidade
+  fiis_rankings: []
   fiis_financials_snapshot:
     - drawdown
     - dy
@@ -2526,11 +2570,18 @@ anti_tokens:
     - ifil
     - posicao no ifix
     - posicao no ifil
+    - maiores fiis
+    - maior patrimonio
+    - maiores patrimonios
   fiis_financials_risk:
     - patrimonio
     - dy
     - peso no indice
     - setores
+    - ranking
+    - top
+    - melhores
+    - piores
   fiis_precos:
     - carteira
     - performance
