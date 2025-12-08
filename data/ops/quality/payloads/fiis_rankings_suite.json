@@ -75,6 +75,11 @@
       "question": "top 5 fiis por sharpe ratio",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
+    },
+    {
+      "question": "peso do MCCI11 no IFIX",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
     }
   ]
 }
