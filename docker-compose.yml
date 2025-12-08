@@ -51,6 +51,7 @@ services:
     ports: ["11434:11434"]
     volumes:
       - ollama:/root/.ollama
+      - ./docker/Modelfile.sirios-narrator:/app/docker/Modelfile.sirios-narrator:ro
     environment:
       # EXECUÇÃO
       - OLLAMA_NUM_PARALLEL=1        # 1 requisição por vez (evita thrash de memória)
