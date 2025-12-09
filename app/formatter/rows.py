@@ -81,6 +81,22 @@ _NUMBER_THOUSANDS = (
 _INT_CFG = _NUMBER_CFG if isinstance(_NUMBER_CFG, dict) else {}
 _INT_THOUSANDS = bool(_INT_CFG.get("thousands")) if isinstance(_INT_CFG, dict) else True
 
+_FILTERS_CFG = _FORMAT_POLICY.get("filters") if isinstance(_FORMAT_POLICY, dict) else {}
+
+_PLACEHOLDERS = (
+    _FORMAT_POLICY.get("placeholders") if isinstance(_FORMAT_POLICY, dict) else []
+)
+
+_FIELD_TO_FILTER: Dict[str, str] = {}
+if isinstance(_PLACEHOLDERS, list):
+    for ph in _PLACEHOLDERS:
+        if not isinstance(ph, dict):
+            continue
+        field = ph.get("field")
+        flt = ph.get("filter")
+        if isinstance(field, str) and isinstance(flt, str):
+            _FIELD_TO_FILTER[field.lower()] = flt
+
 if isinstance(_FORMAT_POLICY, dict):
     _DATE_CFG = _FORMAT_POLICY.get("date_br") or _FORMAT_POLICY.get("date")
 else:
@@ -257,29 +273,94 @@ def _mask_cnpj(value: Any) -> Any:
     return f"{digits[:2]}.{digits[2:5]}.{digits[5:8]}/{digits[8:12]}-{digits[12:]}"
 
 
-_JINJA_ENV.filters.update(
-    {
-        "currency_br": _format_currency,
-        "percent_br": _format_percentage,
-        "percent_raw_br": _format_percentage_no_mul,
-        "number_br": _format_number,
-        "int_br": _format_int,
-        "date_br": _format_date_br,
-        "datetime_br": _format_datetime_br,
-        "cnpj_mask": _mask_cnpj,
-    }
-)
+def _get_filter_formatter(filter_name: str) -> Optional[Callable[[Any], Any]]:
+    """
+    Dado o nome de um filtro declarado em data/policies/formatting.yaml,
+    devolve a função de formatação apropriada.
+    """
+    cfg = _FILTERS_CFG.get(filter_name) if isinstance(_FILTERS_CFG, dict) else None
+    if not isinstance(cfg, dict):
+        return None
+
+    ftype = cfg.get("type")
+
+    if ftype == "currency":
+        return _format_currency
+
+    if ftype == "percent":
+        # Prioriza override no filtro; se não houver, usa default global
+        multiply = cfg.get("multiply_by_100")
+        if multiply is None:
+            multiply = _PERCENT_MULTIPLY_BY_100
+        return _format_percentage if multiply else _format_percentage_no_mul
+
+    if ftype == "number":
+        return _format_number
+
+    if ftype == "integer":
+        return _format_int
+
+    if ftype == "date":
+        return _format_date_br
+
+    if ftype == "datetime":
+        return _format_datetime_br
+
+    if ftype == "mask":
+        # Hoje só temos CNPJ; se surgirem outros, expandimos aqui.
+        pattern = cfg.get("pattern")
+        if pattern == "##.###.###/####-##":
+            return _mask_cnpj
+
+    return None
+
+
+def _register_jinja_filters() -> None:
+    filters_map: Dict[str, Callable[[Any], Any]] = {}
+
+    # Registra filtros declarados em data/policies/formatting.yaml
+    if isinstance(_FILTERS_CFG, dict):
+        for name, cfg in _FILTERS_CFG.items():
+            if not isinstance(name, str):
+                continue
+            fmt = _get_filter_formatter(name)
+            if fmt:
+                filters_map[name] = fmt
+
+    # Garantia de retrocompatibilidade mínima se algo não vier do YAML
+    filters_map.setdefault("currency_br", _format_currency)
+    filters_map.setdefault("percent_br", _format_percentage)
+    filters_map.setdefault("percent_raw_br", _format_percentage_no_mul)
+    filters_map.setdefault("number_br", _format_number)
+    filters_map.setdefault("int_br", _format_int)
+    filters_map.setdefault("date_br", _format_date_br)
+    filters_map.setdefault("datetime_br", _format_datetime_br)
+    filters_map.setdefault("cnpj_mask", _mask_cnpj)
+
+    _JINJA_ENV.filters.update(filters_map)
+
+
+_register_jinja_filters()
 
 
 def _detect_formatter(column_name: str) -> Optional[Callable[[Any], Any]]:
     lowered = (column_name or "").lower()
-    # TODO: tornar declarativo em data/ontology quando existir mapa dedicado.
+
+    # 1) Preferência: mapping declarativo em data/policies/formatting.yaml (placeholders)
+    filter_name = _FIELD_TO_FILTER.get(lowered)
+    if filter_name:
+        fmt = _get_filter_formatter(filter_name)
+        if fmt:
+            return fmt
+
+    # 2) Fallback legado por sufixo (para campos ainda não mapeados em placeholders)
     if lowered.endswith("_at") or lowered.endswith("_date"):
         return _format_date
     if lowered.endswith("_pct") or lowered.endswith("_ratio"):
         return _format_percentage
     if lowered.endswith("_amt"):
         return _format_currency
+
     return None
 
 
