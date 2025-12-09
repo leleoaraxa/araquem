@@ -298,11 +298,17 @@ def render_rows_template(
         )
         cfg = None
     if not isinstance(cfg, dict):
+        LOGGER.warning(
+            "render_rows_template: cfg invalido para entity=%s (esperado dict)", entity
+        )
         return ""
 
     presentation = cfg.get("presentation") or {}
     kind = presentation.get("kind") if isinstance(presentation, dict) else None
     if not isinstance(kind, str) or not kind.strip():
+        LOGGER.warning(
+            "render_rows_template: entity=%s sem presentation.kind definido", entity
+        )
         return ""
     template_path = _ENTITY_ROOT / entity / "responses" / f"{kind}.md.j2"
 
@@ -310,17 +316,36 @@ def render_rows_template(
     try:
         template_path_resolved = template_path.resolve(strict=False)
     except Exception:
+        LOGGER.warning(
+            "render_rows_template: falha ao resolver caminho do template %s para entity=%s",
+            template_path,
+            entity,
+            exc_info=True,
+        )
         return ""
     if not str(template_path_resolved).startswith(str(_ENTITY_ROOT.resolve())):
         # Outside allowed root directory
+        LOGGER.warning(
+            "render_rows_template: template %s fora do root permitido para entity=%s",
+            template_path_resolved,
+            entity,
+        )
         return ""
     if not template_path_resolved.exists():
+        LOGGER.warning(
+            "render_rows_template: template %s nao encontrado para entity=%s",
+            template_path_resolved,
+            entity,
+        )
         return ""
 
     fields = presentation.get("fields") if isinstance(presentation, dict) else {}
     key_field = fields.get("key") if isinstance(fields, dict) else None
     value_field = fields.get("value") if isinstance(fields, dict) else None
     if not key_field or not value_field:
+        LOGGER.warning(
+            "render_rows_template: fields.key/value ausentes para entity=%s", entity
+        )
         return ""
 
     rows_list = list(rows or [])

@@ -88,6 +88,10 @@ class PresentResult(BaseModel):
     # Payload canônico de fatos usados na geração
     facts: FactsPayload
 
+    # Observabilidade sobre uso de template declarativo
+    template_used: bool = False
+    template_kind: Optional[str] = None
+
 
 def build_facts(
     *,
@@ -315,7 +319,10 @@ def present(
 
     # Se o template renderizou algo não-vazio, ele passa a ser o baseline
     # apresentado ao usuário final. O legacy_answer fica como backup.
-    if isinstance(rendered_template, str) and rendered_template.strip():
+    template_used = bool(
+        isinstance(rendered_template, str) and rendered_template.strip()
+    )
+    if template_used:
         legacy_answer = rendered_template
 
     narrator_info: Dict[str, Any] = {
@@ -425,6 +432,8 @@ def present(
                 "answer_baseline": legacy_answer,
                 "rows_used": len(rows),
                 "style": getattr(narrator, "style", None),
+                "template_used": template_used,
+                "template_kind": None,
             },
         )
         collect_narrator_shadow(shadow_event)
@@ -437,4 +446,6 @@ def present(
         rendered_template=rendered_template,
         narrator_meta=narrator_info,
         facts=facts,
+        template_used=template_used,
+        template_kind=None,
     )
