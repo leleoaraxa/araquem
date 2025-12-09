@@ -20,39 +20,63 @@ def _load_formatting_policy() -> Dict[str, Any]:
     try:
         policy = load_yaml_cached(str(_FORMATTING_POLICY_PATH))
     except Exception as exc:  # pragma: no cover - hard to force in tests
-        LOGGER.warning(
-            "Falha ao carregar policy de formatação: %s", exc, exc_info=True
-        )
+        LOGGER.info("Falha ao carregar policy de formatação: %s", exc, exc_info=True)
         return {}
     return policy if isinstance(policy, dict) else {}
 
 
 _FORMAT_POLICY = _load_formatting_policy()
-_SEPARATORS = _FORMAT_POLICY.get("separators") if isinstance(_FORMAT_POLICY, dict) else {}
-_DECIMAL_SEPARATOR = (_SEPARATORS.get("decimal") if isinstance(_SEPARATORS, dict) else ",") or ","
+_SEPARATORS = (
+    _FORMAT_POLICY.get("separators") if isinstance(_FORMAT_POLICY, dict) else {}
+)
+_DECIMAL_SEPARATOR = (
+    _SEPARATORS.get("decimal") if isinstance(_SEPARATORS, dict) else ","
+) or ","
 _THOUSANDS_SEPARATOR = (
     _SEPARATORS.get("thousands") if isinstance(_SEPARATORS, dict) else "."
 ) or "."
 
-_CURRENCY_CFG = _FORMAT_POLICY.get("currency") if isinstance(_FORMAT_POLICY, dict) else {}
-_CURRENCY_SYMBOL = (_CURRENCY_CFG.get("symbol") if isinstance(_CURRENCY_CFG, dict) else "R$") or "R$"
-_CURRENCY_SPACE = bool(_CURRENCY_CFG.get("space")) if isinstance(_CURRENCY_CFG, dict) else True
+_CURRENCY_CFG = (
+    _FORMAT_POLICY.get("currency") if isinstance(_FORMAT_POLICY, dict) else {}
+)
+_CURRENCY_SYMBOL = (
+    _CURRENCY_CFG.get("symbol") if isinstance(_CURRENCY_CFG, dict) else "R$"
+) or "R$"
+_CURRENCY_SPACE = (
+    bool(_CURRENCY_CFG.get("space")) if isinstance(_CURRENCY_CFG, dict) else True
+)
 _CURRENCY_PRECISION = (
-    int(_CURRENCY_CFG.get("precision")) if isinstance(_CURRENCY_CFG, dict) and _CURRENCY_CFG.get("precision") is not None else 2
+    int(_CURRENCY_CFG.get("precision"))
+    if isinstance(_CURRENCY_CFG, dict) and _CURRENCY_CFG.get("precision") is not None
+    else 2
 )
 
 _PERCENT_CFG = _FORMAT_POLICY.get("percent") if isinstance(_FORMAT_POLICY, dict) else {}
-_PERCENT_MULTIPLY_BY_100 = bool(_PERCENT_CFG.get("multiply_by_100")) if isinstance(_PERCENT_CFG, dict) else True
+_PERCENT_MULTIPLY_BY_100 = (
+    bool(_PERCENT_CFG.get("multiply_by_100"))
+    if isinstance(_PERCENT_CFG, dict)
+    else True
+)
 _PERCENT_PRECISION = (
-    int(_PERCENT_CFG.get("precision")) if isinstance(_PERCENT_CFG, dict) and _PERCENT_CFG.get("precision") is not None else 2
+    int(_PERCENT_CFG.get("precision"))
+    if isinstance(_PERCENT_CFG, dict) and _PERCENT_CFG.get("precision") is not None
+    else 2
 )
 
 _NUMBER_CFG = _FORMAT_POLICY.get("number") if isinstance(_FORMAT_POLICY, dict) else {}
 _NUMBER_PRECISION = (
-    int(_NUMBER_CFG.get("precision")) if isinstance(_NUMBER_CFG, dict) and _NUMBER_CFG.get("precision") is not None else 2
+    int(_NUMBER_CFG.get("precision"))
+    if isinstance(_NUMBER_CFG, dict) and _NUMBER_CFG.get("precision") is not None
+    else 2
 )
-_NUMBER_TRIM = bool(_NUMBER_CFG.get("trim_trailing_zeros")) if isinstance(_NUMBER_CFG, dict) else True
-_NUMBER_THOUSANDS = bool(_NUMBER_CFG.get("thousands")) if isinstance(_NUMBER_CFG, dict) else True
+_NUMBER_TRIM = (
+    bool(_NUMBER_CFG.get("trim_trailing_zeros"))
+    if isinstance(_NUMBER_CFG, dict)
+    else True
+)
+_NUMBER_THOUSANDS = (
+    bool(_NUMBER_CFG.get("thousands")) if isinstance(_NUMBER_CFG, dict) else True
+)
 
 _INT_CFG = _NUMBER_CFG if isinstance(_NUMBER_CFG, dict) else {}
 _INT_THOUSANDS = bool(_INT_CFG.get("thousands")) if isinstance(_INT_CFG, dict) else True
@@ -170,9 +194,7 @@ def _format_int(value: Any) -> Any:
     if decimal_value is None:
         return value
     quantized = decimal_value.quantize(Decimal(1), rounding=ROUND_HALF_UP)
-    formatted = (
-        f"{quantized:,}" if _INT_THOUSANDS else f"{quantized}"
-    )
+    formatted = f"{quantized:,}" if _INT_THOUSANDS else f"{quantized}"
     formatted = formatted.replace(",", _THOUSANDS_SEPARATOR)
     return formatted
 
@@ -289,67 +311,47 @@ def render_rows_template(
     aggregates: Optional[Dict[str, Any]] = None,
 ) -> str:
     """Renderiza a resposta declarativa via templates de entidade."""
+    rows_list = list(rows or [])
+    identifiers_safe = identifiers if isinstance(identifiers, dict) else {}
 
+    # 1) Carrega entity.yaml
+    cfg_path = _ENTITY_ROOT / entity / "entity.yaml"
     try:
-        cfg = load_yaml_cached(str((_ENTITY_ROOT / entity / "entity.yaml")))
-    except Exception as exc:  # pragma: no cover - cache/policy failures
-        LOGGER.warning(
-            "Falha ao carregar entity.yaml para %s: %s", entity, exc, exc_info=True
-        )
-        cfg = None
-    if not isinstance(cfg, dict):
-        LOGGER.warning(
-            "render_rows_template: cfg invalido para entity=%s (esperado dict)", entity
-        )
+        cfg = load_yaml_cached(str(cfg_path))
+    except Exception as exc:
         return ""
 
+    if not isinstance(cfg, dict):
+        return ""
+
+    # 2) presentation.kind
     presentation = cfg.get("presentation") or {}
     kind = presentation.get("kind") if isinstance(presentation, dict) else None
     if not isinstance(kind, str) or not kind.strip():
-        LOGGER.warning(
-            "render_rows_template: entity=%s sem presentation.kind definido", entity
-        )
         return ""
+
     template_path = _ENTITY_ROOT / entity / "responses" / f"{kind}.md.j2"
 
-    # Normalize and ensure template_path is within _ENTITY_ROOT
+    # 3) Caminho do template
     try:
         template_path_resolved = template_path.resolve(strict=False)
-    except Exception:
-        LOGGER.warning(
-            "render_rows_template: falha ao resolver caminho do template %s para entity=%s",
-            template_path,
-            entity,
-            exc_info=True,
+        print(
+            f"[rows-debug] step=template_path entity={entity} kind={kind} path={template_path_resolved} exists={template_path_resolved.exists()}"
         )
+    except Exception as exc:
         return ""
+
     if not str(template_path_resolved).startswith(str(_ENTITY_ROOT.resolve())):
-        # Outside allowed root directory
-        LOGGER.warning(
-            "render_rows_template: template %s fora do root permitido para entity=%s",
-            template_path_resolved,
-            entity,
-        )
         return ""
+
     if not template_path_resolved.exists():
-        LOGGER.warning(
-            "render_rows_template: template %s nao encontrado para entity=%s",
-            template_path_resolved,
-            entity,
-        )
         return ""
 
     fields = presentation.get("fields") if isinstance(presentation, dict) else {}
     key_field = fields.get("key") if isinstance(fields, dict) else None
     value_field = fields.get("value") if isinstance(fields, dict) else None
     if not key_field or not value_field:
-        LOGGER.warning(
-            "render_rows_template: fields.key/value ausentes para entity=%s", entity
-        )
         return ""
-
-    rows_list = list(rows or [])
-    identifiers_safe = identifiers if isinstance(identifiers, dict) else {}
 
     context = {
         "rows": rows_list,
@@ -359,21 +361,16 @@ def render_rows_template(
         "aggregates": aggregates if isinstance(aggregates, dict) else {},
         "ticker": _extract_ticker(identifiers_safe, rows_list),
     }
+
     try:
         template = _JINJA_ENV.from_string(
             template_path_resolved.read_text(encoding="utf-8")
         )
         rendered = template.render(**context)
     except Exception as exc:
-        LOGGER.warning(
-            "Falha ao renderizar template %s para entidade %s: %s",
-            template_path_resolved.name,
-            entity,
-            exc,
-            exc_info=True,
-        )
         return ""
-    return rendered.strip()
+
+    return (rendered or "").strip()
 
 
 def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str, Any]]:
