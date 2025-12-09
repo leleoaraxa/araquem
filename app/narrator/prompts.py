@@ -365,9 +365,10 @@ def render_narrative(
     if not entity_key:
         return ""
 
-    # Quando a policy desabilita o LLM, usamos apenas o fallback determinístico.
+    # Quando a policy desabilita o LLM, não geramos texto próprio e deixamos
+    # o Presenter usar o baseline determinístico (technical/template).
     if not entity_policy.get("llm_enabled"):
-        return _fallback_render(entity_key, facts)
+        return ""
 
     return ""
 
