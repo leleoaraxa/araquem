@@ -25,7 +25,7 @@ presentation:
     open_price:             { as: currency }              # "R$ 97,66"
     max_price:              { as: currency }              # "R$ 99,01"
     min_price:              { as: currency }              # "R$ 97,65"
-    daily_variation_pct:    { as: percent, precision: 2 } # "0,99%"
+    daily_variation_pct:    { as: percent, multiply_by_100: false, precision: 2 } # "0,99%"
 
   rules:
     percent_precision: 2
