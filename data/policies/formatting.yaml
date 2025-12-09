@@ -35,19 +35,6 @@ percent:
     threshold: 0.001
     max_decimals: 4
 
-percent_raw:
-  symbol: "%"
-  space: false
-  multiply_by_100: false
-  precision: 2
-  min_decimals: 2
-  max_decimals: 2
-  thousands: false
-  trim_trailing_zeros: false
-  small_percent_auto:
-    threshold: 0.001
-    max_decimals: 4
-
 number:
   precision: 2
   min_decimals: 0
@@ -59,7 +46,7 @@ number:
 filters:
   currency_br: { type: currency }
   percent_br: { type: percent }
-  percent_raw_br: { type: percent_raw }
+  percent_raw_br: { type: percent, multiply_by_100: false }
   number_br: { type: number, precision: 4 }
   int_br: { type: integer, thousands: true }
   date_br: { type: date, format: "%d/%m/%Y" }

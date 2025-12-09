@@ -1,7 +1,7 @@
 {% if rows and rows|length > 0 %}
 
 {% set last = rows[0] %}
-O **{{ ticker }}** está sendo negociado em torno de **{{ last.close_price | currency_br }}**, com variação de **{{ last.daily_variation_pct | percent_br }}** no pregão mais recente.
+O **{{ ticker }}** está sendo negociado em torno de **{{ last.close_price | currency_br }}**, com variação de **{{ last.daily_variation_pct | percent_raw_br }}** no pregão mais recente.
 
 Segue um resumo recente de preços:
 
