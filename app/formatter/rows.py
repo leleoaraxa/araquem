@@ -162,6 +162,24 @@ def _format_percentage(value: Any) -> Any:
     return f"{formatted}{suffix}"
 
 
+def _format_percentage_no_mul(value: Any) -> Any:
+    """
+    Versão alternativa de percent que NÃO multiplica por 100.
+    Útil para campos que já vêm na base em pontos percentuais.
+    """
+    decimal_value = _to_decimal(value)
+    if decimal_value is None:
+        return value
+
+    formatted = _format_decimal_br(
+        decimal_value,
+        _PERCENT_PRECISION,
+        thousands=bool(_PERCENT_CFG.get("thousands", False)),
+    )
+    suffix = "%" if not bool(_PERCENT_CFG.get("space", False)) else " %"
+    return f"{formatted}{suffix}"
+
+
 def _format_currency(value: Any) -> Any:
     decimal_value = _to_decimal(value)
     if decimal_value is None:
@@ -243,6 +261,7 @@ _JINJA_ENV.filters.update(
     {
         "currency_br": _format_currency,
         "percent_br": _format_percentage,
+        "percent_raw_br": _format_percentage_no_mul,
         "number_br": _format_number,
         "int_br": _format_int,
         "date_br": _format_date_br,

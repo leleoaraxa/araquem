@@ -35,6 +35,19 @@ percent:
     threshold: 0.001
     max_decimals: 4
 
+percent_raw:
+  symbol: "%"
+  space: false
+  multiply_by_100: false
+  precision: 2
+  min_decimals: 2
+  max_decimals: 2
+  thousands: false
+  trim_trailing_zeros: false
+  small_percent_auto:
+    threshold: 0.001
+    max_decimals: 4
+
 number:
   precision: 2
   min_decimals: 0
@@ -46,6 +59,7 @@ number:
 filters:
   currency_br: { type: currency }
   percent_br: { type: percent }
+  percent_raw_br: { type: percent_raw }
   number_br: { type: number, precision: 4 }
   int_br: { type: integer, thousands: true }
   date_br: { type: date, format: "%d/%m/%Y" }
@@ -131,7 +145,7 @@ placeholders:
   - field: min_price
     filter: currency_br
   - field: daily_variation_pct
-    filter: percent_br
+    filter: percent_raw_br
   - field: initiation_date
     filter: date_br
   - field: loss_risk_pct

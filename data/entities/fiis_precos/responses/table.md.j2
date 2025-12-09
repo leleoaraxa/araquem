@@ -8,7 +8,7 @@ Segue um resumo recente de preços:
 | Data | Preço (R$) | Variação no dia |
 |------|-------------|------------------|
 {% for r in rows[:6] %}
-| {{ r.traded_at | date_br }} | {{ r.close_price | currency_br }} | {{ r.daily_variation_pct | percent_br }} |
+| {{ r.traded_at | date_br }} | {{ r.close_price | currency_br }} | {{ r.daily_variation_pct | percent_raw_br }} |
 {% endfor %}
 
 {% else %}
