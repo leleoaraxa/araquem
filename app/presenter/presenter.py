@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from pydantic import BaseModel, Field
 
-from app.formatter.rows import render_rows_template
+from app.formatter.rows import get_entity_presentation_kind, render_rows_template
 from app.narrator.narrator import Narrator
 from app.observability.metrics import (
     emit_counter as counter,
@@ -78,6 +78,12 @@ class PresentResult(BaseModel):
 
     # Baseline determinístico (sempre calculado)
     legacy_answer: str
+
+    # Resposta técnica determinística (pré-template)
+    technical_answer: str
+
+    # Resposta baseline (template ou resposta técnica)
+    baseline_answer: str
 
     # Renderização tabular/template (Markdown)
     rendered_template: str
@@ -300,9 +306,11 @@ def present(
             LOGGER.warning("Falha ao obter policy efetiva do Narrator", exc_info=True)
             effective_narrator_policy = {}
 
+    template_kind = get_entity_presentation_kind(facts.entity)
+
     # Baseline determinístico (sempre calculado)
     # 1) Geração "antiga" (texto técnico, ainda disponível como fallback)
-    legacy_answer = render_answer(
+    technical_answer = render_answer(
         facts.entity,
         rows,
         identifiers=facts.identifiers,
@@ -323,7 +331,11 @@ def present(
         isinstance(rendered_template, str) and rendered_template.strip()
     )
     if template_used:
-        legacy_answer = rendered_template
+        baseline_answer = rendered_template
+    else:
+        baseline_answer = technical_answer
+
+    legacy_answer = baseline_answer
 
     narrator_info: Dict[str, Any] = {
         "enabled": bool(effective_narrator_policy.get("llm_enabled")),
@@ -339,7 +351,7 @@ def present(
         "effective_policy": effective_narrator_policy or None,
     }
 
-    final_answer = legacy_answer
+    final_answer = baseline_answer
 
     if narrator is not None:
         meta_for_narrator: Dict[str, Any] = {
@@ -379,9 +391,9 @@ def present(
                 )
 
             strategy = narrator_info.get("strategy") or "deterministic"
-            text = out.get("text") or legacy_answer
+            text = out.get("text") or baseline_answer
             if strategy == "llm_shadow":
-                final_answer = legacy_answer
+                final_answer = baseline_answer
                 counter("sirios_narrator_shadow_total", outcome="ok")
             else:
                 final_answer = text
@@ -396,7 +408,7 @@ def present(
         except Exception as e:  # noqa: BLE001
             narrator_info.update(error=str(e), strategy="fallback_error")
             counter("sirios_narrator_render_total", outcome="error")
-            # fallback: mantém final_answer = legacy_answer
+            # fallback: mantém final_answer = baseline_answer
 
     narrator_info.setdefault("rag", narrator_rag_context)
 
@@ -429,11 +441,12 @@ def present(
             narrator=narrator_info,
             presenter={
                 "answer_final": final_answer,
-                "answer_baseline": legacy_answer,
+                "answer_baseline": baseline_answer,
+                "answer_technical": technical_answer,
                 "rows_used": len(rows),
                 "style": getattr(narrator, "style", None),
                 "template_used": template_used,
-                "template_kind": None,
+                "template_kind": template_kind,
             },
         )
         collect_narrator_shadow(shadow_event)
@@ -443,9 +456,11 @@ def present(
     return PresentResult(
         answer=final_answer,
         legacy_answer=legacy_answer,
+        technical_answer=technical_answer,
+        baseline_answer=baseline_answer,
         rendered_template=rendered_template,
         narrator_meta=narrator_info,
         facts=facts,
         template_used=template_used,
-        template_kind=None,
+        template_kind=template_kind,
     )
