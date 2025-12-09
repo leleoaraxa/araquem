@@ -1,8 +1,8 @@
 # app/formatter/rows.py
 
+import logging
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
-import os
 from pathlib import Path
 from typing import List, Dict, Any, Optional, Callable
 
@@ -10,7 +10,69 @@ from jinja2 import Environment, StrictUndefined
 
 from app.utils.filecache import load_yaml_cached
 
+LOGGER = logging.getLogger(__name__)
+
 _ENTITY_ROOT = Path("data/entities")
+_FORMATTING_POLICY_PATH = Path("data/policies/formatting.yaml")
+
+
+def _load_formatting_policy() -> Dict[str, Any]:
+    try:
+        policy = load_yaml_cached(str(_FORMATTING_POLICY_PATH))
+    except Exception as exc:  # pragma: no cover - hard to force in tests
+        LOGGER.warning(
+            "Falha ao carregar policy de formatação: %s", exc, exc_info=True
+        )
+        return {}
+    return policy if isinstance(policy, dict) else {}
+
+
+_FORMAT_POLICY = _load_formatting_policy()
+_SEPARATORS = _FORMAT_POLICY.get("separators") if isinstance(_FORMAT_POLICY, dict) else {}
+_DECIMAL_SEPARATOR = (_SEPARATORS.get("decimal") if isinstance(_SEPARATORS, dict) else ",") or ","
+_THOUSANDS_SEPARATOR = (
+    _SEPARATORS.get("thousands") if isinstance(_SEPARATORS, dict) else "."
+) or "."
+
+_CURRENCY_CFG = _FORMAT_POLICY.get("currency") if isinstance(_FORMAT_POLICY, dict) else {}
+_CURRENCY_SYMBOL = (_CURRENCY_CFG.get("symbol") if isinstance(_CURRENCY_CFG, dict) else "R$") or "R$"
+_CURRENCY_SPACE = bool(_CURRENCY_CFG.get("space")) if isinstance(_CURRENCY_CFG, dict) else True
+_CURRENCY_PRECISION = (
+    int(_CURRENCY_CFG.get("precision")) if isinstance(_CURRENCY_CFG, dict) and _CURRENCY_CFG.get("precision") is not None else 2
+)
+
+_PERCENT_CFG = _FORMAT_POLICY.get("percent") if isinstance(_FORMAT_POLICY, dict) else {}
+_PERCENT_MULTIPLY_BY_100 = bool(_PERCENT_CFG.get("multiply_by_100")) if isinstance(_PERCENT_CFG, dict) else True
+_PERCENT_PRECISION = (
+    int(_PERCENT_CFG.get("precision")) if isinstance(_PERCENT_CFG, dict) and _PERCENT_CFG.get("precision") is not None else 2
+)
+
+_NUMBER_CFG = _FORMAT_POLICY.get("number") if isinstance(_FORMAT_POLICY, dict) else {}
+_NUMBER_PRECISION = (
+    int(_NUMBER_CFG.get("precision")) if isinstance(_NUMBER_CFG, dict) and _NUMBER_CFG.get("precision") is not None else 2
+)
+_NUMBER_TRIM = bool(_NUMBER_CFG.get("trim_trailing_zeros")) if isinstance(_NUMBER_CFG, dict) else True
+_NUMBER_THOUSANDS = bool(_NUMBER_CFG.get("thousands")) if isinstance(_NUMBER_CFG, dict) else True
+
+_INT_CFG = _NUMBER_CFG if isinstance(_NUMBER_CFG, dict) else {}
+_INT_THOUSANDS = bool(_INT_CFG.get("thousands")) if isinstance(_INT_CFG, dict) else True
+
+if isinstance(_FORMAT_POLICY, dict):
+    _DATE_CFG = _FORMAT_POLICY.get("date_br") or _FORMAT_POLICY.get("date")
+else:
+    _DATE_CFG = None
+_DATE_FORMAT = "%d/%m/%Y"
+if isinstance(_DATE_CFG, dict):
+    _DATE_FORMAT = _DATE_CFG.get("format") or _DATE_FORMAT
+
+if isinstance(_FORMAT_POLICY, dict):
+    _DATETIME_CFG = _FORMAT_POLICY.get("datetime_br") or _FORMAT_POLICY.get("datetime")
+else:
+    _DATETIME_CFG = None
+_DATETIME_FORMAT = "%d/%m/%Y %H:%M"
+if isinstance(_DATETIME_CFG, dict):
+    _DATETIME_FORMAT = _DATETIME_CFG.get("format") or _DATETIME_FORMAT
+
 _JINJA_ENV = Environment(
     autoescape=False,
     undefined=StrictUndefined,
@@ -34,11 +96,25 @@ def _to_decimal(value: Any) -> Optional[Decimal]:
     return None
 
 
-def _format_decimal_br(value: Decimal, places: int) -> str:
+def _format_decimal_br(
+    value: Decimal,
+    places: int,
+    *,
+    thousands: bool = True,
+    trim_trailing_zeros: bool = False,
+) -> str:
     quant = Decimal(1).scaleb(-places)
     quantized = value.quantize(quant, rounding=ROUND_HALF_UP) if places else value
-    formatted = f"{quantized:,.{places}f}" if places else f"{quantized:,}"
-    return formatted.replace(",", "_").replace(".", ",").replace("_", ".")
+    if thousands:
+        formatted = f"{quantized:,.{places}f}"
+    else:
+        formatted = f"{quantized:.{places}f}"
+    formatted = formatted.replace(",", "_")
+    formatted = formatted.replace(".", _DECIMAL_SEPARATOR)
+    formatted = formatted.replace("_", _THOUSANDS_SEPARATOR)
+    if trim_trailing_zeros and _DECIMAL_SEPARATOR in formatted:
+        formatted = formatted.rstrip("0").rstrip(_DECIMAL_SEPARATOR)
+    return formatted
 
 
 def _format_date(value: Any) -> Any:
@@ -51,16 +127,107 @@ def _format_percentage(value: Any) -> Any:
     decimal_value = _to_decimal(value)
     if decimal_value is None:
         return value
-    if decimal_value.copy_abs() <= Decimal("1"):
+    if _PERCENT_MULTIPLY_BY_100:
         decimal_value = decimal_value * Decimal(100)
-    return f"{_format_decimal_br(decimal_value, 2)}%"
+    formatted = _format_decimal_br(
+        decimal_value,
+        _PERCENT_PRECISION,
+        thousands=bool(_PERCENT_CFG.get("thousands", False)),
+    )
+    suffix = "%" if not bool(_PERCENT_CFG.get("space", False)) else " %"
+    return f"{formatted}{suffix}"
 
 
 def _format_currency(value: Any) -> Any:
     decimal_value = _to_decimal(value)
     if decimal_value is None:
         return value
-    return f"R$ {_format_decimal_br(decimal_value, 2)}"
+    formatted = _format_decimal_br(
+        decimal_value.copy_abs(),
+        _CURRENCY_PRECISION,
+        thousands=bool(_CURRENCY_CFG.get("thousands", True)),
+    )
+    space = " " if _CURRENCY_SPACE else ""
+    sign = "-" if decimal_value < 0 else ""
+    return f"{sign}{_CURRENCY_SYMBOL}{space}{formatted}"
+
+
+def _format_number(value: Any) -> Any:
+    decimal_value = _to_decimal(value)
+    if decimal_value is None:
+        return value
+    formatted = _format_decimal_br(
+        decimal_value,
+        _NUMBER_PRECISION,
+        thousands=_NUMBER_THOUSANDS,
+        trim_trailing_zeros=_NUMBER_TRIM,
+    )
+    return formatted
+
+
+def _format_int(value: Any) -> Any:
+    decimal_value = _to_decimal(value)
+    if decimal_value is None:
+        return value
+    quantized = decimal_value.quantize(Decimal(1), rounding=ROUND_HALF_UP)
+    formatted = (
+        f"{quantized:,}" if _INT_THOUSANDS else f"{quantized}"
+    )
+    formatted = formatted.replace(",", _THOUSANDS_SEPARATOR)
+    return formatted
+
+
+def _try_parse_date(value: str) -> Optional[dt.datetime]:
+    try:
+        return dt.datetime.fromisoformat(value)
+    except Exception:
+        return None
+
+
+def _format_date_br(value: Any) -> Any:
+    if isinstance(value, dt.datetime):
+        return value.strftime(_DATE_FORMAT)
+    if isinstance(value, dt.date):
+        return value.strftime(_DATE_FORMAT)
+    if isinstance(value, str):
+        parsed = _try_parse_date(value)
+        if parsed:
+            return parsed.strftime(_DATE_FORMAT)
+    return value
+
+
+def _format_datetime_br(value: Any) -> Any:
+    if isinstance(value, dt.datetime):
+        return value.strftime(_DATETIME_FORMAT)
+    if isinstance(value, dt.date):
+        return dt.datetime.combine(value, dt.time.min).strftime(_DATETIME_FORMAT)
+    if isinstance(value, str):
+        parsed = _try_parse_date(value)
+        if parsed:
+            return parsed.strftime(_DATETIME_FORMAT)
+    return value
+
+
+def _mask_cnpj(value: Any) -> Any:
+    if value is None:
+        return value
+    digits = "".join(ch for ch in str(value) if ch.isdigit())
+    if len(digits) != 14:
+        return value
+    return f"{digits[:2]}.{digits[2:5]}.{digits[5:8]}/{digits[8:12]}-{digits[12:]}"
+
+
+_JINJA_ENV.filters.update(
+    {
+        "currency_br": _format_currency,
+        "percent_br": _format_percentage,
+        "number_br": _format_number,
+        "int_br": _format_int,
+        "date_br": _format_date_br,
+        "datetime_br": _format_datetime_br,
+        "cnpj_mask": _mask_cnpj,
+    }
+)
 
 
 def _detect_formatter(column_name: str) -> Optional[Callable[[Any], Any]]:
@@ -99,12 +266,36 @@ def format_metric_value(metric_key: str, value: Any) -> Any:
     return value
 
 
-def render_rows_template(entity: str, rows: List[Dict[str, Any]]) -> str:
+def _extract_ticker(
+    identifiers: Optional[Dict[str, Any]], rows: List[Dict[str, Any]]
+) -> str:
+    if isinstance(identifiers, dict):
+        ticker = identifiers.get("ticker") or identifiers.get("symbol")
+        if ticker:
+            return str(ticker)
+    for row in rows:
+        if isinstance(row, dict):
+            ticker = row.get("ticker") or row.get("symbol")
+            if ticker:
+                return str(ticker)
+    return ""
+
+
+def render_rows_template(
+    entity: str,
+    rows: List[Dict[str, Any]],
+    *,
+    identifiers: Optional[Dict[str, Any]] = None,
+    aggregates: Optional[Dict[str, Any]] = None,
+) -> str:
     """Renderiza a resposta declarativa via templates de entidade."""
 
     try:
         cfg = load_yaml_cached(str((_ENTITY_ROOT / entity / "entity.yaml")))
-    except Exception:
+    except Exception as exc:  # pragma: no cover - cache/policy failures
+        LOGGER.warning(
+            "Falha ao carregar entity.yaml para %s: %s", entity, exc, exc_info=True
+        )
         cfg = None
     if not isinstance(cfg, dict):
         return ""
@@ -132,17 +323,30 @@ def render_rows_template(entity: str, rows: List[Dict[str, Any]]) -> str:
     if not key_field or not value_field:
         return ""
 
+    rows_list = list(rows or [])
+    identifiers_safe = identifiers if isinstance(identifiers, dict) else {}
+
     context = {
-        "rows": list(rows or []),
+        "rows": rows_list,
         "fields": {"key": key_field, "value": value_field},
         "empty_message": presentation.get("empty_message"),
+        "identifiers": identifiers_safe or {},
+        "aggregates": aggregates if isinstance(aggregates, dict) else {},
+        "ticker": _extract_ticker(identifiers_safe, rows_list),
     }
     try:
         template = _JINJA_ENV.from_string(
             template_path_resolved.read_text(encoding="utf-8")
         )
         rendered = template.render(**context)
-    except Exception:
+    except Exception as exc:
+        LOGGER.warning(
+            "Falha ao renderizar template %s para entidade %s: %s",
+            template_path_resolved.name,
+            entity,
+            exc,
+            exc_info=True,
+        )
         return ""
     return rendered.strip()
 

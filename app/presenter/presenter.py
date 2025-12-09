@@ -306,7 +306,12 @@ def present(
     )
 
     # 2) Geração via template .md.j2 (modo produto)
-    rendered_template = render_rows_template(facts.entity, rows)
+    rendered_template = render_rows_template(
+        facts.entity,
+        rows,
+        identifiers=facts.identifiers,
+        aggregates=facts.aggregates,
+    )
 
     # Se o template renderizou algo não-vazio, ele passa a ser o baseline
     # apresentado ao usuário final. O legacy_answer fica como backup.
