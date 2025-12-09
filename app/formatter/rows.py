@@ -357,13 +357,6 @@ def render_rows_template(
     # 3) Caminho do template
     try:
         template_path_resolved = template_path.resolve(strict=False)
-        LOGGER.debug(
-            "[rows-debug] step=template_path entity=%s kind=%s path=%s exists=%s",
-            entity,
-            kind,
-            template_path_resolved,
-            template_path_resolved.exists(),
-        )
     except Exception as exc:
         return ""
 
