@@ -1,7 +1,6 @@
 # app/formatter/rows.py
 
 import logging
-import os
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
 from pathlib import Path
@@ -15,28 +14,6 @@ LOGGER = logging.getLogger(__name__)
 
 _ENTITY_ROOT = Path("data/entities")
 _FORMATTING_POLICY_PATH = Path("data/policies/formatting.yaml")
-
-LOG_DIR = Path("logs")
-os.makedirs(LOG_DIR, exist_ok=True)
-
-
-ROWS_LOG_FILE = os.path.join(LOG_DIR, "rows_debug.log")
-
-rows_file_logger = logging.getLogger("rows_debug")
-rows_file_logger.setLevel(logging.DEBUG)
-
-fh = logging.FileHandler(ROWS_LOG_FILE, mode="a", encoding="utf-8")
-fh.setLevel(logging.DEBUG)
-
-formatter = logging.Formatter(
-    fmt="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-fh.setFormatter(formatter)
-
-# Evitar duplicação caso recarregado
-if not rows_file_logger.handlers:
-    rows_file_logger.addHandler(fh)
 
 
 def _load_formatting_policy() -> Dict[str, Any]:
@@ -359,42 +336,20 @@ def render_rows_template(
     rows_list = list(rows or [])
     identifiers_safe = identifiers if isinstance(identifiers, dict) else {}
 
-    rows_file_logger.debug(
-        "render_rows_template start entity=%s rows=%d",
-        entity,
-        len(rows_list),
-    )
-
     # 1) Carrega entity.yaml
     cfg_path = _ENTITY_ROOT / entity / "entity.yaml"
     try:
         cfg = load_yaml_cached(str(cfg_path))
     except Exception as exc:
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=load_yaml_failed path=%s exc=%s",
-            entity,
-            cfg_path,
-            exc,
-        )
         return ""
 
     if not isinstance(cfg, dict):
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=cfg_not_dict path=%s",
-            entity,
-            cfg_path,
-        )
         return ""
 
     # 2) presentation.kind
     presentation = cfg.get("presentation") or {}
     kind = presentation.get("kind") if isinstance(presentation, dict) else None
     if not isinstance(kind, str) or not kind.strip():
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=no_presentation_kind path=%s",
-            entity,
-            cfg_path,
-        )
         return ""
     kind = kind.strip()
 
@@ -404,49 +359,18 @@ def render_rows_template(
     try:
         template_path_resolved = template_path.resolve(strict=False)
     except Exception as exc:
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=template_resolve_failed path=%s exc=%s",
-            entity,
-            template_path,
-            exc,
-        )
         return ""
 
-    rows_file_logger.debug(
-        "step=template_path entity=%s kind=%s path=%s exists=%s",
-        entity,
-        kind,
-        template_path_resolved,
-        template_path_resolved.exists(),
-    )
-
     if not str(template_path_resolved).startswith(str(_ENTITY_ROOT.resolve())):
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=template_outside_root path=%s",
-            entity,
-            template_path_resolved,
-        )
         return ""
 
     if not template_path_resolved.exists():
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=template_not_found path=%s",
-            entity,
-            template_path_resolved,
-        )
         return ""
 
     fields_cfg = presentation.get("fields") if isinstance(presentation, dict) else {}
     key_field = fields_cfg.get("key") if isinstance(fields_cfg, dict) else None
     value_field = fields_cfg.get("value") if isinstance(fields_cfg, dict) else None
     if kind == "list" and (not key_field or not value_field):
-        rows_file_logger.debug(
-            "early_exit entity=%s reason=list_missing_fields kind=%s key=%s value=%s",
-            entity,
-            kind,
-            key_field,
-            value_field,
-        )
         return ""
 
     context = {
@@ -463,19 +387,7 @@ def render_rows_template(
             template_path_resolved.read_text(encoding="utf-8")
         )
         rendered = template.render(**context)
-        rows_file_logger.debug(
-            "render_ok entity=%s kind=%s rendered_len=%d",
-            entity,
-            kind,
-            len(rendered or ""),
-        )
     except Exception as exc:
-        rows_file_logger.debug(
-            "render_error entity=%s kind=%s exc=%s",
-            entity,
-            kind,
-            exc,
-        )
         return ""
 
     return (rendered or "").strip()

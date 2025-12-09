@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
 from pydantic import BaseModel, Field
@@ -224,7 +225,7 @@ def present(
             if m in ("concept", "data", "default"):
                 compute_mode_meta = m
 
-    # RAG canônico: preferimos o contexto já produzido pelo Orchestrator em meta["rag"].
+    # RAG canônico
     rag_policy: Optional[Dict[str, Any]] = None
     meta_rag_raw = (
         meta_dict.get("rag") if isinstance(meta_dict.get("rag"), dict) else None
@@ -251,9 +252,7 @@ def present(
             policy=rag_policy,
         )
 
-    # ------------------------------------------------------------------
-    # CONTEXTO CONVERSACIONAL — carga best-effort para o Narrator
-    # ------------------------------------------------------------------
+    # CONTEXTO CONVERSACIONAL
     context_history_wire: List[Dict[str, Any]] = []
     try:
         if context_manager.enabled and context_manager.narrator_allows_entity(entity):
@@ -261,7 +260,6 @@ def present(
             if turns:
                 context_history_wire = context_manager.to_wire(turns)
     except Exception:
-        # Contexto nunca deve quebrar a resposta principal
         context_history_wire = []
 
     facts, result_key, rows = build_facts(
@@ -273,17 +271,7 @@ def present(
         aggregates=aggregates,
     )
 
-    # ------------------------------------------------------------------
-    # compute.mode — decide se a pergunta é conceitual ou baseada em dados
-    # ------------------------------------------------------------------
-    # Regra atual (sem heurísticas mágicas):
-    # - Se a entidade tiver prefer_concept_when_no_ticker=true na policy
-    #   do Narrator E não houver ticker extraído da pergunta (identifiers),
-    #   então compute.mode = "concept". Caso contrário, "data".
-    #
-    # Isso garante que perguntas como "Sharpe negativo em um FII quer dizer
-    # que ele é ruim?" sejam tratadas como conceituais, mesmo que exista
-    # uma view tabular por trás da entidade.
+    # compute.mode
     compute_mode = "data"
     if narrator is not None and hasattr(narrator, "policy"):
         policy = getattr(narrator, "policy", {}) or {}
@@ -308,8 +296,7 @@ def present(
 
     template_kind = get_entity_presentation_kind(facts.entity)
 
-    # Baseline determinístico (sempre calculado)
-    # 1) Geração "antiga" (texto técnico, ainda disponível como fallback)
+    # Baseline determinístico
     technical_answer = render_answer(
         facts.entity,
         rows,
@@ -317,7 +304,6 @@ def present(
         aggregates=facts.aggregates,
     )
 
-    # 2) Geração via template .md.j2 (modo produto)
     rendered_template = render_rows_template(
         facts.entity,
         rows,
@@ -325,8 +311,6 @@ def present(
         aggregates=facts.aggregates,
     )
 
-    # Se o template renderizou algo não-vazio, ele passa a ser o baseline
-    # apresentado ao usuário final. O legacy_answer fica como backup.
     template_used = bool(
         isinstance(rendered_template, str) and rendered_template.strip()
     )
@@ -353,7 +337,8 @@ def present(
 
     final_answer = baseline_answer
 
-    if narrator is not None:
+    # Só chama o Narrator se a policy efetiva da entidade permitir LLM.
+    if narrator is not None and bool(effective_narrator_policy.get("llm_enabled")):
         meta_for_narrator: Dict[str, Any] = {
             "intent": facts.intent,
             "entity": facts.entity,
@@ -364,8 +349,6 @@ def present(
             "rag": narrator_rag_context,
         }
 
-        # Injeta histórico de contexto no meta consumido pelo Narrator.
-        # Não altera o payload externo do /ask: é apenas meta interno.
         if context_history_wire:
             meta_for_narrator["history"] = context_history_wire
 
@@ -405,10 +388,10 @@ def present(
             latency = narrator_info.get("latency_ms") or dt_ms
             if latency is not None:
                 histogram("sirios_narrator_latency_ms", float(latency))
+
         except Exception as e:  # noqa: BLE001
             narrator_info.update(error=str(e), strategy="fallback_error")
             counter("sirios_narrator_render_total", outcome="error")
-            # fallback: mantém final_answer = baseline_answer
 
     narrator_info.setdefault("rag", narrator_rag_context)
 
