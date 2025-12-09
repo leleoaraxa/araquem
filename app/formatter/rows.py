@@ -303,6 +303,28 @@ def _extract_ticker(
     return ""
 
 
+def get_entity_presentation_kind(entity: str) -> Optional[str]:
+    """Retorna presentation.kind do entity.yaml, se disponível."""
+
+    cfg_path = _ENTITY_ROOT / entity / "entity.yaml"
+    try:
+        cfg = load_yaml_cached(str(cfg_path))
+    except Exception:
+        return None
+
+    if not isinstance(cfg, dict):
+        return None
+
+    presentation = cfg.get("presentation") if isinstance(cfg, dict) else None
+    if not isinstance(presentation, dict):
+        return None
+
+    kind = presentation.get("kind") if isinstance(presentation, dict) else None
+    if isinstance(kind, str) and kind.strip():
+        return kind.strip()
+    return None
+
+
 def render_rows_template(
     entity: str,
     rows: List[Dict[str, Any]],
@@ -335,8 +357,12 @@ def render_rows_template(
     # 3) Caminho do template
     try:
         template_path_resolved = template_path.resolve(strict=False)
-        print(
-            f"[rows-debug] step=template_path entity={entity} kind={kind} path={template_path_resolved} exists={template_path_resolved.exists()}"
+        LOGGER.debug(
+            "[rows-debug] step=template_path entity=%s kind=%s path=%s exists=%s",
+            entity,
+            kind,
+            template_path_resolved,
+            template_path_resolved.exists(),
         )
     except Exception as exc:
         return ""
