@@ -1,8 +1,8 @@
-{% if rows and rows|length > 0 -%}
+{% if rows and rows|length > 0 %}
 Lista ({{ rows|length }}):
-{%- for r in rows %}
+{% for r in rows %}
 - {{ r[fields.key] }} — {{ r[fields.value] }}
-{%- endfor %}
-{%- else -%}
-{{ empty_message or "Nenhum registro encontrado." }}
-{%- endif %}
+{% endfor %}
+{% else %}
+{{ empty_message or "Nenhum processo encontrado para o **{{ ticker }}**." }}
+{% endif %}

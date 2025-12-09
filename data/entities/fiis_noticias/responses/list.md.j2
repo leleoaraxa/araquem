@@ -4,7 +4,17 @@ As últimas notícias do **{{ ticker }}** são:
 | Fonte | Título | Tags | Link |
 |-------|--------|------|------|
 {% for r in rows[:5] %}
-| {{ r.source }} | {{ r.title }} | {{ r.tags | join("; ") if r.tags else "-" }} | {{ r.url }} |
+{% if r.tags %}
+  {% if r.tags is string %}
+    {% set tags_value = r.tags %}
+  {% else %}
+    {% set tags_value = r.tags | join("; ") %}
+  {% endif %}
+{% else %}
+  {% set tags_value = "-" %}
+{% endif %}
+
+| {{ r.source }} | {{ r.title }} | {{ tags_value }} | {{ r.url }} |
 {% endfor %}
 {% else %}
 Não encontrei notícias recentes sobre **{{ ticker }}**.
