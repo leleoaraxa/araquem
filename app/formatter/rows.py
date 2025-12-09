@@ -351,6 +351,7 @@ def render_rows_template(
     kind = presentation.get("kind") if isinstance(presentation, dict) else None
     if not isinstance(kind, str) or not kind.strip():
         return ""
+    kind = kind.strip()
 
     template_path = _ENTITY_ROOT / entity / "responses" / f"{kind}.md.j2"
 
@@ -360,16 +361,24 @@ def render_rows_template(
     except Exception as exc:
         return ""
 
+    LOGGER.debug(
+        "[rows-debug] step=template_path entity=%s kind=%s path=%s exists=%s",
+        entity,
+        kind,
+        template_path_resolved,
+        template_path_resolved.exists(),
+    )
+
     if not str(template_path_resolved).startswith(str(_ENTITY_ROOT.resolve())):
         return ""
 
     if not template_path_resolved.exists():
         return ""
 
-    fields = presentation.get("fields") if isinstance(presentation, dict) else {}
-    key_field = fields.get("key") if isinstance(fields, dict) else None
-    value_field = fields.get("value") if isinstance(fields, dict) else None
-    if not key_field or not value_field:
+    fields_cfg = presentation.get("fields") if isinstance(presentation, dict) else {}
+    key_field = fields_cfg.get("key") if isinstance(fields_cfg, dict) else None
+    value_field = fields_cfg.get("value") if isinstance(fields_cfg, dict) else None
+    if kind == "list" and (not key_field or not value_field):
         return ""
 
     context = {
@@ -387,6 +396,13 @@ def render_rows_template(
         )
         rendered = template.render(**context)
     except Exception as exc:
+        LOGGER.warning(
+            "[rows-debug] step=render_template entity=%s kind=%s exc=%s",
+            entity,
+            kind,
+            exc,
+            exc_info=True,
+        )
         return ""
 
     return (rendered or "").strip()
