@@ -41,9 +41,6 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: date_reference
-    value: portfolio_return_pct
   empty_message: Sem histórico de performance para exibir.
 
 ask:

@@ -62,9 +62,6 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: ticker
-    value: qty
   empty_message: Sem posições disponíveis.
 
 ask:
