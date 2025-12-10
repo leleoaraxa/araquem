@@ -32,10 +32,7 @@ columns:
   description: Data da última atualização do registro.
 presentation:
   kind: table
-  fields:
-    key: payment_date
-    value: dividend_amt
-  empty_message: Sem dividendos para exibir.
+  empty_message: "Nenhum registro encontrado."
 ask:
   intents:
   - fiis_dividendos

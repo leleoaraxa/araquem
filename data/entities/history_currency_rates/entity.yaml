@@ -37,11 +37,8 @@ columns:
   description: Data da última atualização do registro.
 
 presentation:
-  kind: list
-  fields:
-    key: rate_date
-    value: usd_sell_amt
-  empty_message: Nenhum dado de câmbio encontrado.
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:
@@ -125,5 +122,5 @@ aggregations:
 
 responses:
   default:
-    kind: list
-    template: responses/list.md.j2
+    kind: table
+    template: responses/table.md.j2

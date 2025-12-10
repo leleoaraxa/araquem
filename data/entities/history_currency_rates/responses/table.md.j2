@@ -1,0 +1,11 @@
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
+{%- else -%}
+{%- set r = rows[0] %}
+
+**Câmbio em {{ r.rate_date|date_br if r.rate_date is not none else '-' }}**
+
+- USD: **{{ r.usd_sell_amt|currency_br if r.usd_sell_amt is not none else '-' }}** (venda) / **{{ r.usd_buy_amt|currency_br if r.usd_buy_amt is not none else '-' }}** (compra) — variação **{{ r.usd_var_pct|percent_br if r.usd_var_pct is not none else '-' }}**
+- EUR: **{{ r.eur_sell_amt|currency_br if r.eur_sell_amt is not none else '-' }}** (venda) / **{{ r.eur_buy_amt|currency_br if r.eur_buy_amt is not none else '-' }}** (compra) — variação **{{ r.eur_var_pct|percent_br if r.eur_var_pct is not none else '-' }}**
+
+{%- endif %}

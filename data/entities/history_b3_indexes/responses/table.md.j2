@@ -1,0 +1,12 @@
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
+{%- else -%}
+{%- set r = rows[0] %}
+
+**Índices B3 em {{ r.index_date|date_br if r.index_date is not none else '-' }}**
+
+- Ibovespa: **{{ r.ibov_points_count|number_br if r.ibov_points_count is not none else '-' }} pts** (variação **{{ r.ibov_var_pct|percent_br if r.ibov_var_pct is not none else '-' }}**)
+- IFIX: **{{ r.ifix_points_count|number_br if r.ifix_points_count is not none else '-' }} pts** (variação **{{ r.ifix_var_pct|percent_br if r.ifix_var_pct is not none else '-' }}**)
+- IFIL: **{{ r.ifil_points_count|number_br if r.ifil_points_count is not none else '-' }} pts** (variação **{{ r.ifil_var_pct|percent_br if r.ifil_var_pct is not none else '-' }}**)
+
+{%- endif %}

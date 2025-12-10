@@ -25,11 +25,8 @@ columns:
   description: Data da última atualização do registro.
 
 presentation:
-  kind: list
-  fields:
-    key: indicator_name
-    value: indicator_amt
-  empty_message: Nenhum indicador encontrado.
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:
@@ -124,5 +121,5 @@ aggregations:
 
 responses:
   default:
-    kind: list
-    template: responses/list.md.j2
+    kind: table
+    template: responses/table.md.j2

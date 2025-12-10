@@ -37,11 +37,8 @@ columns:
   description: Data da última atualização do registro.
 
 presentation:
-  kind: list
-  fields:
-    key: index_date
-    value: ibov_points_count
-  empty_message: Nenhum dado de índices encontrado.
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:
@@ -140,5 +137,5 @@ aggregations:
 
 responses:
   default:
-    kind: list
-    template: responses/list.md.j2
+    kind: table
+    template: responses/table.md.j2

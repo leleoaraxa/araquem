@@ -1,11 +1,13 @@
-{% if rows and rows|length > 0 -%}
-| Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-{%- for r in rows %}
-{%- set ipca_val = r.ipca if r.ipca is not none else None %}
-{%- set cdi_val = r.cdi if r.cdi is not none else None %}
-| {{ r.ref_date|date_br }} | {{ ipca_val if ipca_val is not none else '-' }} | {{ r.selic }} | {{ cdi_val if cdi_val is not none else '-' }} | {{ r.ifix_points }} | {{ r.ifix_var_pct|percent_br }} | {{ r.ibov_points }} | {{ r.ibov_var_pct|percent_br }} | {{ r.usd_buy_amt|currency_br }} | {{ r.usd_sell_amt|currency_br }} | {{ r.usd_var_pct|percent_br }} | {{ r.eur_buy_amt|currency_br }} | {{ r.eur_sell_amt|currency_br }} | {{ r.eur_var_pct|percent_br }} |
-{%- endfor %}
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{{ empty_message or "Sem histórico macro para exibir." }}
+{%- set r = rows[0] %}
+
+**Resumo macro de {{ r.ref_date|date_br if r.ref_date is not none else '-' }}**
+
+- Inflação e juros: **IPCA {{ r.ipca if r.ipca is not none else '-' }}**, **SELIC {{ r.selic if r.selic is not none else '-' }}**, **CDI {{ r.cdi if r.cdi is not none else '-' }}**
+- Índices de mercado: **IFIX {{ r.ifix_points if r.ifix_points is not none else '-' }} pts ({{ r.ifix_var_pct|percent_br if r.ifix_var_pct is not none else '-' }})**, **IBOV {{ r.ibov_points if r.ibov_points is not none else '-' }} pts ({{ r.ibov_var_pct|percent_br if r.ibov_var_pct is not none else '-' }})**
+- Câmbio USD: **compra {{ r.usd_buy_amt|currency_br if r.usd_buy_amt is not none else '-' }}**, **venda {{ r.usd_sell_amt|currency_br if r.usd_sell_amt is not none else '-' }}**, variação **{{ r.usd_var_pct|percent_br if r.usd_var_pct is not none else '-' }}**
+- Câmbio EUR: **compra {{ r.eur_buy_amt|currency_br if r.eur_buy_amt is not none else '-' }}**, **venda {{ r.eur_sell_amt|currency_br if r.eur_sell_amt is not none else '-' }}**, variação **{{ r.eur_var_pct|percent_br if r.eur_var_pct is not none else '-' }}**
+
 {%- endif %}

@@ -1,0 +1,12 @@
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
+{%- else -%}
+{%- set r = rows[0] %}
+
+**Indicadores de mercado em {{ r.indicator_date|date_br if r.indicator_date is not none else '-' }}**
+
+- Indicador: **{{ r.indicator_name if r.indicator_name is not none else '-' }}**
+- Valor: **{{ r.indicator_amt|number_br if r.indicator_amt is not none else '-' }}**
+- Registro atualizado em: **{{ r.updated_at|datetime_br if r.updated_at is not none else '-' }}**
+
+{%- endif %}

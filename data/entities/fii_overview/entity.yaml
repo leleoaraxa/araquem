@@ -209,10 +209,7 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: ticker
-    value: display_name
-  empty_message: Nenhum FII encontrado para os filtros informados.
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:
