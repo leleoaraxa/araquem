@@ -74,25 +74,6 @@ columns:
 - name: updated_at
   alias: Atualizado em
   description: Data da última atualização do registro.
-presentation:
-  kind: table
-  fields:
-    key: ticker
-    columns:
-    - users_rank_position
-    - sirios_rank_position
-    - ifix_rank_position
-    - ifil_rank_position
-    - rank_dy_12m
-    - rank_dy_monthly
-    - rank_dividends_12m
-    - rank_market_cap
-    - rank_equity
-    - rank_sharpe
-    - rank_sortino
-    - rank_low_volatility
-    - rank_low_drawdown
-  empty_message: Sem rankings disponíveis.
 ask:
   intents:
     - fiis_rankings
@@ -199,65 +180,15 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-  metrics_synonyms:
-    users_rank_position:
-      - ranking usuarios
-      - ranking de usuarios
-      - posicao no ranking de usuarios
-    users_rank_net_movement:
-      - movimentos ranking usuarios
-      - movimentacao no ranking de usuarios
-      - variacao no ranking de usuarios
-    sirios_rank_position:
-      - ranking sirios
-      - ranking da sirios
-      - posicao no ranking sirios
-    sirios_rank_net_movement:
-      - movimentos ranking sirios
-      - movimentacao no ranking da sirios
-      - variacao no ranking da sirios
-    ifix_rank_position:
-      - ranking ifix
-      - posicao no ifix
-    ifix_rank_net_movement:
-      - movimentos ranking ifix
-      - movimentacao no ranking ifix
-      - variacao no ranking ifix
-    ifil_rank_position:
-      - ranking ifil
-      - posicao no ifil
-    ifil_rank_net_movement:
-      - movimentos ranking ifil
-      - movimentacao no ranking ifil
-      - variacao no ranking ifil
-    rank_dy_12m:
-      - ranking dy 12m
-      - ranking dividend yield 12m
-      - ranking rendimento 12m
-    rank_dy_monthly:
-      - ranking dy mensal
-      - ranking dividend yield mensal
-      - ranking rendimento mensal
-    rank_dividends_12m:
-      - ranking dividendos 12m
-      - ranking proventos 12m
-    rank_market_cap:
-      - ranking valor de mercado
-      - ranking market cap
-    rank_sharpe:
-      - ranking sharpe
-      - ranking sharpe ratio
-    rank_sortino:
-      - ranking sortino
-      - ranking sortino ratio
-    rank_low_volatility:
-      - ranking menor volatilidade
-      - ranking baixa volatilidade
-    rank_low_drawdown:
-      - ranking menor drawdown
-      - ranking mdd
-  sample_questions:
+    sample_questions:
     - quais sao os top fiis no ranking de dy
+
+presentation:
+  kind: list
+  fields:
+    key: metric
+    value: value
+  empty_message: Sem rankings disponíveis.
 
 responses:
   default:

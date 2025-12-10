@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-09T18:27:16Z",
+  "generated_at": "2025-12-09T23:00:05Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -119,7 +119,7 @@
         "entity:fiis_cadastro"
       ],
       "chunks": 4,
-      "sha_all": "32026f2065737953997359cde75981243457394954ff564f78c9a0d65cdf35c4"
+      "sha_all": "f4c902993ae202866cb6564e234d3e4b59db12e4b9e2889741d9cb88212fb502"
     },
     {
       "id": "entity-fiis-cadastro-hints",
@@ -190,8 +190,8 @@
         "rankings",
         "entity:fiis_rankings"
       ],
-      "chunks": 6,
-      "sha_all": "c721c76771efd4ea0bd12dad76cfb60c5df870a1040c443b2f5c3943e642300d"
+      "chunks": 5,
+      "sha_all": "f2af6c4bf55e712a48b9d992cd5a10f28f1f60143362b4e369cd12af28ecf178"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -252,8 +252,8 @@
         "revenue",
         "entity:fiis_financials_revenue_schedule"
       ],
-      "chunks": 6,
-      "sha_all": "0f508040e76c4df9c6a94ed7d589ea136f12721f0ea5ad636d6c5d744f895a4e"
+      "chunks": 4,
+      "sha_all": "43d5320ab740c26cdc24c18ea65443cb35ba0be0d5eccfffc84e6217758498e3"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -265,8 +265,8 @@
         "risk",
         "entity:fiis_financials_risk"
       ],
-      "chunks": 4,
-      "sha_all": "01731725e21e44415d7ec0ca2cf476e879f39cd78013390f3837c7760b5764c4"
+      "chunks": 3,
+      "sha_all": "823700cbc1d6cdf26af21b0b5b5dddf7526a690c1316b122db25467f07f9fc33"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -678,7 +678,7 @@
       "sha_all": "79427b6bd815df654eb4ba9365ce81234884d2212a8a79100e83f69fb177dd27"
     }
   ],
-  "last_refresh_epoch": 1765304987,
+  "last_refresh_epoch": 1765321372,
   "vector_dimension": 768,
-  "total_chunks": 269
+  "total_chunks": 265
 }

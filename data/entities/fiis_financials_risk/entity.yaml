@@ -155,49 +155,6 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-  metrics_synonyms:
-    volatility_ratio:
-      - volatilidade
-      - volatilidade historica
-      - desvio padrao
-      - desvio-padrao
-      - risco de preco
-    sharpe_ratio:
-      - sharpe
-      - indice de sharpe
-      - sharpe ratio
-      - retorno ajustado ao risco
-    treynor_ratio:
-      - treynor
-      - indice de treynor
-      - treynor ratio
-    jensen_alpha:
-      - alfa de jensen
-      - alpha de jensen
-      - jensen alpha
-      - retorno acima do capm
-    beta_index:
-      - beta
-      - beta indice
-      - beta em relacao ao ifix
-      - beta em relacao ao indice
-      - sensibilidade ao ifix
-    sortino_ratio:
-      - sortino
-      - indice de sortino
-      - sortino ratio
-      - retorno ajustado a quedas
-    max_drawdown:
-      - max drawdown
-      - mdd
-      - pior queda
-      - maior queda acumulada
-      - maior perda acumulada
-    r_squared:
-      - r2
-      - r dois
-      - coeficiente de determinacao
-
   sample_questions:
     - sharpe ratio do HGLG11 nos últimos 12 meses
     - qual o beta do MXRF11
