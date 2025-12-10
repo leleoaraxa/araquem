@@ -8,6 +8,6 @@
 - Data da posição: **{{ r.position_date|date_br if r.position_date is not none else '-' }}**
 - Quantidade: **{{ r.qty|int_br if r.qty is not none else '-' }}**
 - Preço de fechamento: **{{ r.closing_price|currency_br if r.closing_price is not none else '-' }}**
-- Peso na carteira: **{{ r.percentage|percent_br if r.percentage is not none else '-' }}**
-- Participante: **{{ r.participant_name or '-' }}**
+- Peso na carteira: **{{ r.percentage|percent_raw_br if r.percentage is not none else '-' }}**
+- Mês/Ano Referência: **{{ r.month_number or '-' }}/{{ r.year_number or '-' }}**
 {%- endif %}
