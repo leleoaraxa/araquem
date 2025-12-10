@@ -36,9 +36,6 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: year_reference
-    value: total_dividends
   empty_message: Sem histórico de dividendos para exibir.
 
 ask:

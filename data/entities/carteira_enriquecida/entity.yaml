@@ -110,9 +110,6 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: ticker
-    value: position_value
   empty_message: Sem posições disponíveis.
 
 ask:
