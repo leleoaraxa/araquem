@@ -1,13 +1,18 @@
-{% if rows and rows|length > 0 -%}
-| Ticker | Mês ref. | Data-com | Pagamento | Dividendo (R$) | Dividendos mês (R$) | Preço ref. (R$) | DY mensal | DY 12m (%) | DY mensal atual (%) | Dividendos 12m (R$) | Último dividendo (R$) | Último pagamento |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-{%- for r in rows %}
-{%- set price = r.month_price_ref if r.month_price_ref is not none else None %}
-{%- set dy_m = r.dy_monthly if r.dy_monthly is not none else None %}
-{%- set dy12 = r.dy_12m_pct if r.dy_12m_pct is not none else None %}
-{%- set dy_cur = r.dy_current_monthly_pct if r.dy_current_monthly_pct is not none else None %}
-| {{ r.ticker }} | {{ r.ref_month|date_br }} | {{ r.traded_until_date|datetime_br }} | {{ r.payment_date|datetime_br }} | {{ r.dividend_amt|currency_br }} | {{ r.month_dividends_amt|currency_br }} | {{ price|currency_br if price is not none else '-' }} | {{ dy_m|percent_br if dy_m is not none else '-' }} | {{ dy12|percent_br if dy12 is not none else '-' }} | {{ dy_cur|percent_br if dy_cur is not none else '-' }} | {{ r.dividends_12m_amt|currency_br }} | {{ r.last_dividend_amt|currency_br }} | {{ r.last_payment_date|datetime_br }} |
-{%- endfor %}
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{{ empty_message or "Sem histórico de dividendos e DY para exibir." }}
+{%- set r = rows[0] %}
+
+**Dividendos e yield do{{ ' ' + r.ticker if r.ticker else '' }}**
+
+- Mês de referência: **{{ r.ref_month|date_br if r.ref_month is not none else '-' }}**
+- Data-com (cutoff): **{{ r.traded_until_date|datetime_br if r.traded_until_date is not none else '-' }}**
+- Data de pagamento: **{{ r.payment_date|datetime_br if r.payment_date is not none else '-' }}**
+- Dividendo por cota: **{{ r.dividend_amt|currency_br if r.dividend_amt is not none else '-' }}**
+- DY mensal: **{{ r.dy_monthly|percent_br if r.dy_monthly is not none else '-' }}**
+- DY 12 meses: **{{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}**
+- DY mensal atual: **{{ r.dy_current_monthly_pct|percent_br if r.dy_current_monthly_pct is not none else '-' }}**
+- Dividendos acumulados 12m: **{{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}**
+- Último dividendo pago: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**
+
 {%- endif %}

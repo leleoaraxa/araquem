@@ -1,35 +1,13 @@
-{% if rows and rows|length > 0 -%}
-  {%- set first_ticker = rows[0].ticker -%}
-  {%- set ns = namespace(multi=false) -%}
-  {%- for r in rows -%}
-    {%- if r.ticker != first_ticker -%}
-      {%- set ns.multi = true -%}
-    {%- endif -%}
-  {%- endfor -%}
-
-  {%- if not ns.multi -%}
-    {%- set ticker = first_ticker -%}
-    {%- if rows|length == 1 -%}
-      {%- set r = rows[0] -%}
-O {{ ticker }} pagou {{ r.dividend_amt|currency_br }} por cota em {{ r.payment_date|date_br }} (posição em {{ r.traded_until_date|date_br }}).
-    {%- else -%}
-Nos últimos {{ rows|length }} pagamentos, o {{ ticker }} distribuiu dividendos nesta ordem:
-{%-     for r in rows %}
-- {{ r.payment_date|date_br }} — {{ r.dividend_amt|currency_br }} por cota (posição em {{ r.traded_until_date|date_br }})
-{%-     endfor %}
-    {%- endif -%}
-  {%- else -%}
-Histórico de dividendos por FII:
-{%-   set ns_group = namespace(current=None) %}
-{%-   for r in rows %}
-    {%- if ns_group.current != r.ticker %}
-{% if not loop.first %}
-{% endif %}Pagamentos de **{{ r.ticker }}**:
-      {%- set ns_group.current = r.ticker -%}
-    {%- endif %}
-- {{ r.payment_date|date_br }} — {{ r.dividend_amt|currency_br }} por cota (posição em {{ r.traded_until_date|date_br }})
-{%-   endfor %}
-  {%- endif -%}
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{{ empty_message or "Sem dividendos para exibir." }}
+{%- set r = rows[0] %}
+
+**Dividendos do{{ ' ' + r.ticker if r.ticker else '' }}**
+
+- Data de pagamento: **{{ r.payment_date|datetime_br if r.payment_date is not none else '-' }}**
+- Data-com (cutoff): **{{ r.traded_until_date|datetime_br if r.traded_until_date is not none else '-' }}**
+- Valor distribuído por cota: **{{ r.dividend_amt|currency_br if r.dividend_amt is not none else '-' }}**
+- Registro criado em: **{{ r.created_at|datetime_br if r.created_at is not none else '-' }}**, atualizado em **{{ r.updated_at|datetime_br if r.updated_at is not none else '-' }}**
+
 {%- endif %}

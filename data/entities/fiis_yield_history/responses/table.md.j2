@@ -1,11 +1,13 @@
-{% if rows and rows|length > 0 -%}
-| Ticker | Mês ref. | Dividendos (R$) | Preço ref. (R$) | DY mensal (%) |
-| --- | --- | --- | --- | --- |
-{%- for r in rows %}
-{%- set price = r.price_ref if r.price_ref is not none else None %}
-{%- set dy = r.dy_monthly if r.dy_monthly is not none else None %}
-| {{ r.ticker }} | {{ r.ref_month|date_br }} | {{ r.dividends_sum|currency_br }} | {{ price|currency_br if price is not none else '-' }} | {{ dy|percent_br if dy is not none else '-' }} |
-{%- endfor %}
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{{ empty_message or "Sem histórico de dividend yield para exibir." }}
+{%- set r = rows[0] %}
+
+**Histórico de yield do{{ ' ' + r.ticker if r.ticker else '' }}**
+
+- Mês de referência: **{{ r.ref_month|date_br if r.ref_month is not none else '-' }}**
+- Dividendos no mês: **{{ r.dividends_sum|currency_br if r.dividends_sum is not none else '-' }}**
+- Preço de referência: **{{ r.price_ref|currency_br if r.price_ref is not none else '-' }}**
+- DY mensal: **{{ r.dy_monthly|percent_br if r.dy_monthly is not none else '-' }}**
+
 {%- endif %}

@@ -97,11 +97,8 @@ columns:
     description: Data da última atualização.
 
 presentation:
-  kind: summary
-  fields:
-    key: ticker
-    value: dy_pct
-  empty_message: Sem indicadores financeiros disponíveis.
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:
@@ -202,5 +199,5 @@ aggregations:
 
 responses:
   default:
-    kind: summary
-    template: responses/summary.md.j2
+    kind: table
+    template: responses/table.md.j2

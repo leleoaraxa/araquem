@@ -78,10 +78,7 @@ columns:
   description: Data da última atualização.
 presentation:
   kind: table
-  fields:
-    key: ticker
-    value: revenue_due_0_3m_pct
-  empty_message: Sem cronograma de receitas disponível.
+  empty_message: "Nenhum registro encontrado."
 ask:
   intents:
   - fiis_financials_revenue_schedule

@@ -74,10 +74,7 @@ columns:
 
 presentation:
   kind: table
-  fields:
-    key: ref_month
-    value: dy_monthly
-  empty_message: Sem histórico de dividendos e DY para exibir.
+  empty_message: "Nenhum registro encontrado."
 
 ask:
   intents:

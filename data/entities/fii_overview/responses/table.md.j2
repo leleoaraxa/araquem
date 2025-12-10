@@ -1,24 +1,17 @@
-{% if rows and rows|length > 0 -%}
-| Ticker | Nome | Setor | Gestão | DY mensal | DY 12m | Dividendos 12m | Market Cap | Sharpe | Sortino | Volatilidade | Drawdown | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-{%- for r in rows %}
-| {{ r.ticker }}
-  | {{ r.display_name or '-' }}
-  | {{ r.sector or '-' }}
-  | {{ r.management_type or '-' }}
-  | {{ r.dy_monthly_pct|percent_br if r.dy_monthly_pct is not none else '-' }}
-  | {{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}
-  | {{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}
-  | {{ r.market_cap_value|currency_br if r.market_cap_value is not none else '-' }}
-  | {{ r.sharpe_ratio|number_br(precision=2) if r.sharpe_ratio is not none else '-' }}
-  | {{ r.sortino_ratio|number_br(precision=2) if r.sortino_ratio is not none else '-' }}
-  | {{ r.volatility_ratio|percent_br if r.volatility_ratio is not none else '-' }}
-  | {{ r.max_drawdown|percent_br if r.max_drawdown is not none else '-' }}
-  | {{ r.sirios_rank_position|int_br if r.sirios_rank_position is not none else '-' }}
-  | {{ r.ifix_rank_position|int_br if r.ifix_rank_position is not none else '-' }}
-  | {{ r.ifil_rank_position|int_br if r.ifil_rank_position is not none else '-' }}
-  | {{ r.rank_dy_12m|int_br if r.rank_dy_12m is not none else '-' }} |
-{%- endfor %}
+{% if not rows or rows|length == 0 -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{{ empty_message or "Nenhum FII encontrado para os filtros informados." }}
+{%- set r = rows[0] %}
+
+**Overview do{{ ' ' + r.ticker if r.ticker else '' }}**
+
+- Nome: **{{ r.display_name if r.display_name is not none else '-' }}**
+- Setor / Subsetor: **{{ r.sector if r.sector is not none else '-' }} / {{ r.sub_sector if r.sub_sector is not none else '-' }}**
+- Classificação e gestão: **{{ r.classification if r.classification is not none else '-' }} / {{ r.management_type if r.management_type is not none else '-' }}**
+- DY mensal / 12m: **{{ r.dy_monthly_pct|percent_br if r.dy_monthly_pct is not none else '-' }} / {{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}**
+- Dividendos 12m: **{{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}** (último: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**)
+- Valor de mercado: **{{ r.market_cap_value|currency_br if r.market_cap_value is not none else '-' }}** — P/BV **{{ r.price_book_ratio|number_br(precision=2) if r.price_book_ratio is not none else '-' }}**, EV **{{ r.enterprise_value|currency_br if r.enterprise_value is not none else '-' }}**
+- Risco: Vol **{{ r.volatility_ratio|percent_br if r.volatility_ratio is not none else '-' }}**, Sharpe **{{ r.sharpe_ratio|number_br(precision=2) if r.sharpe_ratio is not none else '-' }}**, Sortino **{{ r.sortino_ratio|number_br(precision=2) if r.sortino_ratio is not none else '-' }}**, MDD **{{ r.max_drawdown|percent_br if r.max_drawdown is not none else '-' }}**
+- Rankings: Sírios **{{ r.sirios_rank_position|int_br if r.sirios_rank_position is not none else '-' }}**, IFIX **{{ r.ifix_rank_position|int_br if r.ifix_rank_position is not none else '-' }}**, IFIL **{{ r.ifil_rank_position|int_br if r.ifil_rank_position is not none else '-' }}**
+
 {%- endif %}
