@@ -1,8 +1,6 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Nenhum ranking encontrado para esse FII." }}
-{%- else -%}
-{%- set r = rows[0] %}
-
+{% if rows and rows|length > 0 -%}
+{% if rows|length == 1 -%}
+{% set r = rows[0] %}
 **Rankings do {{ r.ticker }}**
 
 - Posição no IFIX: **{{ r.ifix_rank_position if r.ifix_rank_position is not none else '-' }}**
@@ -19,5 +17,15 @@
 - Ranking por Sortino: **{{ r.rank_sortino if r.rank_sortino is not none else '-' }}**
 - Ranking por baixa volatilidade: **{{ r.rank_low_volatility if r.rank_low_volatility is not none else '-' }}**
 - Ranking por menor drawdown: **{{ r.rank_low_drawdown if r.rank_low_drawdown is not none else '-' }}**
+{% else %}
+**Rankings dos FIIs**
 
+| FII | IFIX (posição) | IFIL (posição) | Rank DY 12m | Rank Market Cap |
+|-----|----------------|----------------|-------------|-----------------|
+{% for r in rows %}
+| {{ r.ticker }} | {{ r.ifix_rank_position }} | {{ r.ifil_rank_position }} | {{ r.rank_dy_12m }} | {{ r.rank_market_cap }} |
+{% endfor %}
+{% endif %}
+{%- else -%}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}
