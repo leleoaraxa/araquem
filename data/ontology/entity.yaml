@@ -24,12 +24,12 @@ buckets:
     - fiis_precos
     - fiis_processos
     - fiis_yield_history
+    - fiis_rankings
   B:
     - carteira_enriquecida
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
     - client_fiis_positions
-    - fiis_rankings
   C:
     - history_market_indicators
     - history_b3_indexes
@@ -60,6 +60,7 @@ intents:
       - fiis_imoveis
       - dividendos_yield
       - fiis_cadastro
+      - dividendos_yield
     weight: 10
 
   - name: client_fiis_positions
@@ -465,6 +466,8 @@ intents:
         - oficial
         - segmento
         - segmentos
+        - peso no ifix
+        - peso no ifil
       exclude:
         - abl
         - alavancagem
@@ -504,10 +507,8 @@ intents:
         - ifix
         - ifil
         - posicao
-        - peso no ifix
-        - peso no ifil
-        - peso no indice
-        - ranking de usuarios
+        - posicao no ifix
+        - posicao no ifil
     phrases:
       include:
         - cnpj do <ticker>
@@ -540,6 +541,12 @@ intents:
         - patrimonio e numero de cotistas do <ticker>
         - quantos cotistas tem o <ticker>
         - fundo exclusivo
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - peso no ifix do <ticker>
+        - peso no ifil do <ticker>
+        - o <ticker> ja fez parte do ifix
+        - o <ticker> ja fez parte do ifil
       exclude:
         - cotacao do
         - dividendo do
@@ -550,8 +557,8 @@ intents:
         - vacancia do
         - ranking do
         - posicao do
-        - peso no ifix do
-        - peso no ifil do
+        - posicao no ifix do
+        - posicao no ifil do
     entities:
       - fiis_cadastro
 
@@ -1956,13 +1963,10 @@ intents:
         - maior dy
         - dy mais alto
         - pior desempenho
-        - peso
         - ifix
         - ifil
         - indice
         - indices
-        - peso no ifix
-        - peso no ifil
         - posicao no ifix
         - posicao no ifil
       exclude:
@@ -1993,6 +1997,7 @@ intents:
         - imprensa
         - comunicado
         - selic
+        - peso
     phrases:
       include:
         - ranking da sirios
@@ -2019,21 +2024,11 @@ intents:
         - maior dividend yield em 12 meses
         - top 10 fiis por dividend yield
         - quais sao os maiores fiis em patrimonio liquido
-        - peso do <ticker> no ifix
-        - peso do <ticker> no ifil
-        - peso no ifix do <ticker>
-        - peso no ifil do <ticker>
-        - o <ticker> ja fez parte do ifix
-        - o <ticker> ja fez parte do ifil
         - movimento do <ticker> no ifix
         - movimento do <ticker> no ifil
         - ranking de fiis por patrimonio liquido
         - maior valor de mercado dos fiis
         - maiores fiis por patrimonio
-        - peso do <ticker> no ifix
-        - peso do <ticker> no ifil
-        - o <ticker> ja fez parte do ifix
-        - o <ticker> ja fez parte do ifil
         - top fiis por sharpe ratio
         - ranking dos fiis com melhor sharpe ratio
         - top 5 fiis por sharpe ratio
@@ -2069,6 +2064,12 @@ intents:
         - peso do
         - peso no ifix do
         - peso no ifil do
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - peso no ifix do <ticker>
+        - peso no ifil do <ticker>
+        - o <ticker> ja fez parte do ifix
+        - o <ticker> ja fez parte do ifil
     entities:
       - fiis_rankings
 

@@ -17,11 +17,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "o FPAB11 já fez parte do IFIX?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
       "question": "como evoluiu a posição do HGRU11 no ranking de usuários ao longo do tempo?",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -73,16 +68,6 @@
     },
     {
       "question": "top 5 fiis por sharpe ratio",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "peso do MCCI11 no IFIX",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     }

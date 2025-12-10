@@ -184,10 +184,10 @@ ask:
     - quais sao os top fiis no ranking de dy
 
 presentation:
-  kind: list
+  kind: table
   fields:
-    key: metric
-    value: value
+    key: ticker
+    value: users_rank_position
   empty_message: Sem rankings disponíveis.
 
 responses:

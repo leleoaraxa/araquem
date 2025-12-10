@@ -529,8 +529,8 @@
     },
     {
       "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "Qual é o público-alvo do XPLG11?",
@@ -1553,8 +1553,8 @@
     },
     {
       "question": "o FPAB11 já fez parte do IFIX?",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "peso do MCCI11 no IFIL",
@@ -1563,8 +1563,8 @@
     },
     {
       "question": "peso do MCCI11 no IFIX",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
     },
     {
       "question": "posicao do HGLG11 no IFIX",

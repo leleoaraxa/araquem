@@ -47,10 +47,10 @@ def build_sample_context() -> dict:
     rows = [
         {
             "ticker": "HGLG11",
-            "users_rank_position": 0,
-            "users_rank_net_movement": 0,
-            "sirios_rank_position": 0,
-            "sirios_rank_net_movement": 0,
+            "users_rank_position": None,
+            "users_rank_net_movement": None,
+            "sirios_rank_position": None,
+            "sirios_rank_net_movement": None,
             "ifix_rank_position": 4,
             "ifix_rank_net_movement": 0,
             "ifil_rank_position": 4,

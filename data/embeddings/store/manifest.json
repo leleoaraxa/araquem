@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-09T23:00:05Z",
+  "generated_at": "2025-12-10T12:12:02Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -106,8 +106,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 51,
-      "sha_all": "f63b78bdda17b83f82854713d0354ee04be4b8d191d24c2bc00075de0a2e95c5"
+      "chunks": 52,
+      "sha_all": "19fa571fd2c5d47f40df2dfe76bd799a3859bb8caa6a67ea707907d9c0b4c0c9"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -191,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 5,
-      "sha_all": "f2af6c4bf55e712a48b9d992cd5a10f28f1f60143362b4e369cd12af28ecf178"
+      "sha_all": "1c804ef67bd37b830a369cf2906479feea9e0844b3b6a9b2c5f3ae80948b90bd"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -425,7 +425,7 @@
         "samples"
       ],
       "chunks": 59,
-      "sha_all": "7badb70dae8e7849f4e097eebac55f385d2dea78858b5947ba2e7712d9335a6e"
+      "sha_all": "5a6f3376922a4160554316fe04f1f1f1a91872b8fd2c9932815a40648e96d20a"
     },
     {
       "id": "q-projection-cadastro",
@@ -678,7 +678,7 @@
       "sha_all": "79427b6bd815df654eb4ba9365ce81234884d2212a8a79100e83f69fb177dd27"
     }
   ],
-  "last_refresh_epoch": 1765321372,
+  "last_refresh_epoch": 1765368870,
   "vector_dimension": 768,
-  "total_chunks": 265
+  "total_chunks": 266
 }
