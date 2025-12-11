@@ -1,8 +1,27 @@
-{% if rows and rows|length > 0 %}
-Lista ({{ rows|length }}):
-{% for r in rows %}
-- {{ r[fields.key] }} — {{ r[fields.value] }}
-{% endfor %}
-{% else %}
-{{ empty_message or "Nenhum processo encontrado para o **{{ ticker }}**." }}
-{% endif %}
+{% if rows and rows|length > 0 -%}
+{% set tickers = rows | map(attribute='ticker') | unique | list %}
+{% if tickers|length == 1 -%}
+**Processos do {{ tickers[0] }} ({{ rows|length }})**
+{%- else -%}
+**Processos encontrados ({{ rows|length }})**
+{%- endif %}
+
+{% for ticker in tickers -%}
+  {% if tickers|length > 1 -%}
+### {{ ticker }}
+  {%- endif %}
+  {% for r in rows if r.ticker == ticker -%}
+- **{{ r.process_number }}**{% if r.judgment %} — {{ r.judgment }}{% endif %}
+  - Instância: {{ r.instance or "-" }}
+  - Início: {{ r.initiation_date or "-" }}
+  - Valor da causa: {{ r.cause_amt or "-" }}
+  - Risco de perda: {{ r.loss_risk_pct or "-" }}
+  - Partes: {{ r.process_parts or "-" }}
+  - Fatos principais: {{ r.main_facts or "-" }}
+  - Análise de impacto: {{ r.loss_impact_analysis or "-" }}
+  - Atualizado em: {{ r.updated_at or "-" }}
+  {%- endfor %}
+{%- endfor %}
+{%- else -%}
+  {{ empty_message or "Nenhum registro encontrado." }}
+{%- endif %}
