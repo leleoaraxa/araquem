@@ -10,8 +10,8 @@
 - Data de pagamento: **{{ r.payment_date|datetime_br if r.payment_date is not none else '-' }}**
 - Dividendo por cota: **{{ r.dividend_amt|currency_br if r.dividend_amt is not none else '-' }}**
 - DY mensal: **{{ r.dy_monthly|percent_br if r.dy_monthly is not none else '-' }}**
-- DY 12 meses: **{{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}**
-- DY mensal atual: **{{ r.dy_current_monthly_pct|percent_br if r.dy_current_monthly_pct is not none else '-' }}**
+- DY 12 meses: **{{ r.dy_12m_pct|percent_raw_br if r.dy_12m_pct is not none else '-' }}**
+- DY mensal atual: **{{ r.dy_current_monthly_pct|percent_raw_br if r.dy_current_monthly_pct is not none else '-' }}**
 - Dividendos acumulados 12m: **{{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}**
 - Último dividendo pago: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**
 
