@@ -1,17 +1,32 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Nenhum registro encontrado." }}
+{% if rows and rows|length > 0 -%}
+{%- for r in rows %}
+**{{ r.ticker }} — {{ r.display_name or r.b3_name or '-' }}**
+
+- Classificação / gestão: **{{ r.classification or '-' }} / {{ r.management_type or '-' }}**
+- Setor / Subsetor: **{{ r.sector or '-' }} / {{ r.sub_sector or '-' }}**
+- Público-alvo: **{{ r.target_market or '-' }}**
+- Exclusivo: **{{ 'Sim' if r.is_exclusive else 'Não' if r.is_exclusive is not none else '-' }}**
+- DY mensal / 12m: **{{ r.dy_monthly_pct | percent_br if r.dy_monthly_pct is not none else '-' }} / {{ r.dy_12m_pct | percent_br if r.dy_12m_pct is not none else '-' }}**
+- Dividendos 12m: **{{ r.dividends_12m_amt | currency_br if r.dividends_12m_amt is not none else '-' }}** — último: **{{ r.last_dividend_amt | currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date | datetime_br if r.last_payment_date is not none else '-' }}**
+- Valor de mercado / EV: **{{ r.market_cap_value | currency_br if r.market_cap_value is not none else '-' }} / {{ r.enterprise_value | currency_br if r.enterprise_value is not none else '-' }}**
+- P/BV e PL por cota: **{{ r.price_book_ratio | number_br(precision=2) if r.price_book_ratio is not none else '-' }} / {{ r.equity_per_share | number_br(precision=2) if r.equity_per_share is not none else '-' }}**
+- Receitas e payout: **{{ r.revenue_per_share | number_br(precision=3) if r.revenue_per_share is not none else '-' }}** por cota — payout **{{ r.dividend_payout_pct | percent_br if r.dividend_payout_pct is not none else '-' }}**
+- Crescimento e cap rate: **{{ r.growth_rate | percent_br if r.growth_rate is not none else '-' }} / {{ r.cap_rate | percent_br if r.cap_rate is not none else '-' }}**
+- Alavancagem e patrimônio: **{{ r.leverage_ratio | percent_br if r.leverage_ratio is not none else '-' }}** — PL **{{ r.equity_value | currency_br if r.equity_value is not none else '-' }}**, nº de cotas **{{ r.shares_count | int_br if r.shares_count is not none else '-' }}**, cotistas **{{ r.shareholders_count | int_br if r.shareholders_count is not none else '-' }}**
+- Variação mês / ano: **{{ r.variation_month_ratio | percent_br if r.variation_month_ratio is not none else '-' }} / {{ r.variation_year_ratio | percent_br if r.variation_year_ratio is not none else '-' }}**
+- Risco: Vol **{{ r.volatility_ratio | percent_br if r.volatility_ratio is not none else '-' }}**, Sharpe **{{ r.sharpe_ratio | number_br(precision=2) if r.sharpe_ratio is not none else '-' }}**, Sortino **{{ r.sortino_ratio | number_br(precision=2) if r.sortino_ratio is not none else '-' }}**, MDD **{{ r.max_drawdown | percent_br if r.max_drawdown is not none else '-' }}**
+- Índices e rankings: peso IFIX **{{ r.ifix_weight_pct | percent_br if r.ifix_weight_pct is not none else '-' }}**, IFIL **{{ r.ifil_weight_pct | percent_br if r.ifil_weight_pct is not none else '-' }}** — ranks: usuários **{{ r.users_rank_position | int_br if r.users_rank_position is not none else '-' }}**, Sírios **{{ r.sirios_rank_position | int_br if r.sirios_rank_position is not none else '-' }}**, IFIX **{{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else '-' }}**, IFIL **{{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else '-' }}**, DY 12m **{{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else '-' }}**, market cap **{{ r.rank_market_cap | int_br if r.rank_market_cap is not none else '-' }}**
+
+{%- if r.snapshot_updated_at or r.risk_updated_at or r.rankings_updated_at %}
+- Atualizações: snapshot **{{ r.snapshot_updated_at | datetime_br if r.snapshot_updated_at else '-' }}**, risco **{{ r.risk_updated_at | datetime_br if r.risk_updated_at else '-' }}**, rankings **{{ r.rankings_updated_at | datetime_br if r.rankings_updated_at else '-' }}**
+{%- endif %}
+
+{%- if not loop.last %}
+
+---
+
+{%- endif %}
+{%- endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Overview do{{ ' ' + r.ticker if r.ticker else '' }}**
-
-- Nome: **{{ r.display_name if r.display_name is not none else '-' }}**
-- Setor / Subsetor: **{{ r.sector if r.sector is not none else '-' }} / {{ r.sub_sector if r.sub_sector is not none else '-' }}**
-- Classificação e gestão: **{{ r.classification if r.classification is not none else '-' }} / {{ r.management_type if r.management_type is not none else '-' }}**
-- DY mensal / 12m: **{{ r.dy_monthly_pct|percent_br if r.dy_monthly_pct is not none else '-' }} / {{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}**
-- Dividendos 12m: **{{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}** (último: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**)
-- Valor de mercado: **{{ r.market_cap_value|currency_br if r.market_cap_value is not none else '-' }}** — P/BV **{{ r.price_book_ratio|number_br(precision=2) if r.price_book_ratio is not none else '-' }}**, EV **{{ r.enterprise_value|currency_br if r.enterprise_value is not none else '-' }}**
-- Risco: Vol **{{ r.volatility_ratio|percent_br if r.volatility_ratio is not none else '-' }}**, Sharpe **{{ r.sharpe_ratio|number_br(precision=2) if r.sharpe_ratio is not none else '-' }}**, Sortino **{{ r.sortino_ratio|number_br(precision=2) if r.sortino_ratio is not none else '-' }}**, MDD **{{ r.max_drawdown|percent_br if r.max_drawdown is not none else '-' }}**
-- Rankings: Sírios **{{ r.sirios_rank_position|int_br if r.sirios_rank_position is not none else '-' }}**, IFIX **{{ r.ifix_rank_position|int_br if r.ifix_rank_position is not none else '-' }}**, IFIL **{{ r.ifil_rank_position|int_br if r.ifil_rank_position is not none else '-' }}**
-
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}

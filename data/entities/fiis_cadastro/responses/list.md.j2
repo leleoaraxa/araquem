@@ -1,28 +1,21 @@
 {% if rows and rows|length > 0 -%}
 {%- for r in rows %}
+**{{ r.ticker }} — {{ r.display_name or r.b3_name or '-' }}**
 
-**{{ r.ticker }} — {{ r.display_name or r.b3_name }}**
-
-- CNPJ do fundo: **{{ r.fii_cnpj or 'Não informado' }}**
+- CNPJ do fundo: **{{ r.fii_cnpj or '-' }}**
 - Nome de pregão (B3): **{{ r.b3_name or '-' }}**
-- Classificação: **{{ r.classification or '-' }}**
+- Classificação / gestão: **{{ r.classification or '-' }} / {{ r.management_type or '-' }}**
 - Setor / Subsetor: **{{ r.sector or '-' }} / {{ r.sub_sector or '-' }}**
-- Tipo de gestão: **{{ r.management_type or '-' }}**
 - Público-alvo: **{{ r.target_market or '-' }}**
 - Fundo exclusivo: **{{ 'Sim' if r.is_exclusive else 'Não' if r.is_exclusive is not none else '-' }}**
 - Código ISIN: **{{ r.isin or '-' }}**
 - Data de IPO: **{{ r.ipo_date | date_br if r.ipo_date else '-' }}**
 - Site oficial: {% if r.website_url %}**[Acessar site]({{ r.website_url }})**{% else %}**-**{% endif %}
-
 - Administrador: **{{ r.admin_name or '-' }}**
 - CNPJ do administrador: **{{ r.admin_cnpj or '-' }}**
 - Custodiante: **{{ r.custodian_name or '-' }}**
-
-- Peso no IFIX: **{{ r.ifix_weight_pct | percent_br if r.ifix_weight_pct is not none else '-' }}**
-- Peso no IFIL: **{{ r.ifil_weight_pct | percent_br if r.ifil_weight_pct is not none else '-' }}**
-
-- Nº de cotas emitidas: **{{ r.shares_count | int_br if r.shares_count is not none else '-' }}**
-- Nº de cotistas: **{{ r.shareholders_count | int_br if r.shareholders_count is not none else '-' }}**
+- Peso no IFIX / IFIL: **{{ r.ifix_weight_pct | percent_br if r.ifix_weight_pct is not none else '-' }} / {{ r.ifil_weight_pct | percent_br if r.ifil_weight_pct is not none else '-' }}**
+- Nº de cotas / cotistas: **{{ r.shares_count | int_br if r.shares_count is not none else '-' }} / {{ r.shareholders_count | int_br if r.shareholders_count is not none else '-' }}**
 
 {%- if r.created_at or r.updated_at %}
 - Criado em: **{{ r.created_at | date_br if r.created_at else '-' }}**
@@ -36,5 +29,5 @@
 {%- endif %}
 {%- endfor %}
 {%- else -%}
-{{ empty_message or "Nenhum cadastro encontrado." }}
+  {{ empty_message or "Nenhum cadastro encontrado." }}
 {%- endif %}
