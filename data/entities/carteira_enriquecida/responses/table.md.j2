@@ -1,13 +1,15 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Sem posições disponíveis." }}
+{% if rows and rows|length > 0 -%}
+  {% set first = rows[0] %}
+  **Posições da carteira de FIIs**
+
+  - Data da posição: **{{ first.position_date|date_br if first.position_date is not none else '-' }}**
+  - Valor total da carteira: **{{ first.portfolio_value|currency_br if first.portfolio_value is not none else '-' }}**
+
+  | Ticker | Quantidade | Preço de fechamento | Valor da posição | Peso na carteira | DY 12m | Setor | Classificação |
+  | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
+  {%- for r in rows %}
+  | {{ r.ticker or '-' }} | {{ r.qty|int_br if r.qty is not none else '-' }} | {{ r.closing_price|currency_br if r.closing_price is not none else '-' }} | {{ r.position_value|currency_br if r.position_value is not none else '-' }} | {{ r.weight_pct|percent_br if r.weight_pct is not none else '-' }} | {{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }} | {{ r.sector or '-' }} | {{ r.classification or '-' }} |
+  {%- endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Resumo da posição em {{ r.ticker or identifiers.ticker or '-' }}**
-
-- Data da posição: **{{ r.position_date|date_br if r.position_date is not none else '-' }}**
-- Quantidade: **{{ r.qty|int_br if r.qty is not none else '-' }}**
-- Valor da posição: **{{ r.position_value|currency_br if r.position_value is not none else '-' }}**
-- Peso na carteira: **{{ r.weight_pct|percent_br if r.weight_pct is not none else '-' }}**
-- DY 12m: **{{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }}**
+  {{ empty_message or "Sem posições disponíveis." }}
 {%- endif %}

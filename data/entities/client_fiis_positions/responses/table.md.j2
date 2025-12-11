@@ -1,13 +1,14 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Sem posições disponíveis." }}
+{% if rows and rows|length > 0 -%}
+  {% set first = rows[0] %}
+  **Posições do cliente em FIIs**
+
+  - Data da posição: **{{ first.position_date|date_br if first.position_date is not none else '-' }}**
+
+  | Ticker | Quantidade | Disponível | Preço médio | Preço de fechamento | Rentabilidade | Peso na carteira | Corretora |
+  | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+  {%- for r in rows %}
+  | {{ r.ticker or '-' }} | {{ r.qty|int_br if r.qty is not none else '-' }} | {{ r.available_quantity|int_br if r.available_quantity is not none else '-' }} | {{ r.average_price|currency_br if r.average_price is not none else '-' }} | {{ r.closing_price|currency_br if r.closing_price is not none else '-' }} | {{ r.profitability_percentage|percent_raw_br if r.profitability_percentage is not none else '-' }} | {{ r.percentage|percent_raw_br if r.percentage is not none else '-' }} | {{ r.participant_name or '-' }} |
+  {%- endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Posição do cliente em {{ r.ticker or identifiers.ticker or '-' }}**
-
-- Data da posição: **{{ r.position_date|date_br if r.position_date is not none else '-' }}**
-- Quantidade: **{{ r.qty|int_br if r.qty is not none else '-' }}**
-- Preço de fechamento: **{{ r.closing_price|currency_br if r.closing_price is not none else '-' }}**
-- Peso na carteira: **{{ r.percentage|percent_raw_br if r.percentage is not none else '-' }}**
-- Mês/Ano Referência: **{{ r.month_number or '-' }}/{{ r.year_number or '-' }}**
+  {{ empty_message or "Sem posições disponíveis." }}
 {%- endif %}

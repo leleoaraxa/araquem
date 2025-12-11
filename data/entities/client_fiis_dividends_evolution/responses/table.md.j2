@@ -1,11 +1,14 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Sem histórico de dividendos para exibir." }}
+{% if rows and rows|length > 0 -%}
+  {% set latest = rows[0] %}
+  **Evolução de dividendos da carteira do cliente**
+
+  - Último valor ({{ latest.month_name or latest.month_number or '-' }}/{{ latest.year_reference or '-' }}): **{{ latest.total_dividends|currency_br if latest.total_dividends is not none else '-' }}**
+
+  | Mês | Ano | Dividendos (R$) |
+  | --- | --- | ---: |
+  {%- for r in rows %}
+  | {{ r.month_name or r.month_number or '-' }} | {{ r.year_reference or '-' }} | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
+  {%- endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Evolução de dividendos da carteira do cliente**
-
-- Referência: **{{ r.month_name or r.month_number or '-' }}/{{ r.year_reference or '-' }}**
-- Total no mês: **{{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }}**
-- Documento: **{{ r.document_number or '-' }}**
+  {{ empty_message or "Sem histórico de dividendos para exibir." }}
 {%- endif %}
