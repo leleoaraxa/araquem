@@ -48,12 +48,6 @@ columns:
 - name: updated_at
   alias: Atualizado em
   description: Data da última atualização do registro.
-presentation:
-  kind: list
-  fields:
-    key: asset_name
-    value: asset_class
-  empty_message: Nenhum imóvel encontrado.
 ask:
   intents:
     - fiis_imoveis
@@ -143,7 +137,11 @@ aggregations:
       limit: 10
       order: desc
 
+presentation:
+  kind: table
+  empty_message: "Nenhum registro encontrado."
+
 responses:
   default:
-    kind: list
-    template: responses/list.md.j2
+    kind: table
+    template: responses/table.md.j2

@@ -1,8 +1,0 @@
-{% if rows and rows|length > 0 -%}
-Histórico ({{ rows|length }}):
-{%- for r in rows %}
-- {{ r.rate_date }} — USD {{ r.usd_sell_amt|number_br }} (venda) / {{ r.usd_buy_amt|number_br }} (compra), ΔUSD {{ r.usd_var_pct|percent_br }}; EUR {{ r.eur_sell_amt|number_br }} (venda) / {{ r.eur_buy_amt|number_br }} (compra), ΔEUR {{ r.eur_var_pct|percent_br }}
-{%- endfor %}
-{%- else -%}
-{{ empty_message or "Nenhum registro encontrado." }}
-{%- endif %}

@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-11T13:03:30Z",
+  "generated_at": "2025-12-11T19:15:15Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -203,7 +203,7 @@
         "entity:fiis_imoveis"
       ],
       "chunks": 3,
-      "sha_all": "1162e3f59b4ac549c90300f37a17fcaf42573c7f012927f2e7bd367e1445c95c"
+      "sha_all": "e791f88593889da2fc65b5b7593e38875c4f765fa0c61ecd427c81c849f1f581"
     },
     {
       "id": "entity-fiis-noticias",
@@ -675,10 +675,10 @@
         "entity:history_market_indicators"
       ],
       "chunks": 2,
-      "sha_all": "567187eb9a6744e2790d546e742e1eec3bb2db85f77a6d443ce72c42ebc43527"
+      "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1765458364,
+  "last_refresh_epoch": 1765480683,
   "vector_dimension": 768,
   "total_chunks": 266
 }

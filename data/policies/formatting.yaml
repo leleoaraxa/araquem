@@ -38,7 +38,7 @@ percent:
 number:
   precision: 2
   min_decimals: 0
-  max_decimals: 3
+  max_decimals: 4
   thousands: true
   trim_trailing_zeros: true
   big_int_grouping: true
@@ -47,7 +47,8 @@ filters:
   currency_br: { type: currency }
   percent_br: { type: percent }
   percent_raw_br: { type: percent, multiply_by_100: false }
-  number_br: { type: number, precision: 4 }
+  number_br: { type: number }
+  number_raw_br: { type: number, precision: 4 }
   int_br: { type: integer, thousands: true }
   date_br: { type: date, format: "%d/%m/%Y" }
   datetime_br: { type: datetime, format: "%d/%m/%Y %H:%M" }
@@ -80,17 +81,17 @@ placeholders:
   - field: revenue_igpm_pct
     filter: percent_br
   - field: volatility_ratio
-    filter: percent_br
+    filter: number_raw_br
   - field: sharpe_ratio
-    filter: percent_br
+    filter: number_raw_br
   - field: sortino_ratio
-    filter: percent_br
+    filter: number_raw_br
   - field: treynor_ratio
-    filter: percent_br
+    filter: number_raw_br
   - field: jensen_alpha
-    filter: number_br
+    filter: number_raw_br
   - field: beta_index
-    filter: number_br
+    filter: number_raw_br
   - field: max_drawdown
     filter: percent_br
   - field: r_squared
@@ -155,3 +156,39 @@ placeholders:
     filter: int_br
   - field: ifil_rank_net_movement
     filter: int_br
+  - field: weight_pct
+    filter: percent_raw_br
+  - field: portfolio_return_pct
+    filter: percent_raw_br
+  - field: benchmark_return_pct
+    filter: percent_raw_br
+  - field: profitability_percentage
+    filter: percent_raw_br
+  - field: percentage
+    filter: percent_raw_br
+  - field: dy_monthly
+    filter: percent_raw_br
+  - field: dy_current_monthly_pct
+    filter: percent_raw_br
+  - field: dy_12m_pct
+    filter: percent_raw_br
+  - field: ifix_weight_pct
+    filter: percent_raw_br
+  - field: ifil_weight_pct
+    filter: percent_raw_br
+  - field: dy_monthly_pct
+    filter: percent_raw_br
+  - field: dy_pct
+    filter: percent_raw_br
+  - field: dividend_payout_pct
+    filter: percent_raw_br
+  - field: ibov_var_pct
+    filter: percent_raw_br
+  - field: ifix_var_pct
+    filter: percent_raw_br
+  - field: ifil_var_pct
+    filter: percent_raw_br
+  - field: usd_var_pct
+    filter: percent_raw_br
+  - field: eur_var_pct
+    filter: percent_raw_br

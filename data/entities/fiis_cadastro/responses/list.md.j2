@@ -14,7 +14,7 @@
 - Administrador: **{{ r.admin_name or '-' }}**
 - CNPJ do administrador: **{{ r.admin_cnpj or '-' }}**
 - Custodiante: **{{ r.custodian_name or '-' }}**
-- Peso no IFIX / IFIL: **{{ r.ifix_weight_pct | percent_raw_br if r.ifix_weight_pct is not none else '-' }} / {{ r.ifil_weight_pct | percent_raw_br if r.ifil_weight_pct is not none else '-' }}**
+- Peso no IFIX / IFIL: **{{ r.ifix_weight_pct|percent_raw_br if r.ifix_weight_pct is not none else '-' }} / {{ r.ifil_weight_pct|percent_raw_br if r.ifil_weight_pct is not none else '-' }}**
 - Nº de cotas / cotistas: **{{ r.shares_count | int_br if r.shares_count is not none else '-' }} / {{ r.shareholders_count | int_br if r.shareholders_count is not none else '-' }}**
 
 {%- if r.created_at or r.updated_at %}

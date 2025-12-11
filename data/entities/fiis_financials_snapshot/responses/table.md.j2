@@ -5,13 +5,13 @@
 
 **Snapshot financeiro do{{ ' ' + r.ticker if r.ticker else '' }}**
 
-- DY mensal / anualizado: **{{ r.dy_monthly_pct|percent_br if r.dy_monthly_pct is not none else '-' }} / {{ r.dy_pct|percent_br if r.dy_pct is not none else '-' }}**
+- DY mensal / anualizado: **{{ r.dy_monthly_pct|percent_raw_br if r.dy_monthly_pct is not none else '-' }} / {{ r.dy_pct|percent_raw_br if r.dy_pct is not none else '-' }}**
 - Último dividendo: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**
 - Dividendos no ano: **{{ r.sum_anual_dy_amt|currency_br if r.sum_anual_dy_amt is not none else '-' }}**
 - Market Cap / EV: **{{ r.market_cap_value|currency_br if r.market_cap_value is not none else '-' }} / {{ r.enterprise_value|currency_br if r.enterprise_value is not none else '-' }}**
 - P/BV e patrimônio por cota: **{{ r.price_book_ratio|number_br(precision=2) if r.price_book_ratio is not none else '-' }} / {{ r.equity_per_share|currency_br if r.equity_per_share is not none else '-' }}**
 - Caixa total e passivos: **{{ r.total_cash_amt|currency_br if r.total_cash_amt is not none else '-' }} / {{ r.liabilities_total_amt|currency_br if r.liabilities_total_amt is not none else '-' }}**
-- Payout e crescimento: **{{ r.dividend_payout_pct|percent_br if r.dividend_payout_pct is not none else '-' }}** (taxa de crescimento **{{ r.growth_rate|percent_br if r.growth_rate is not none else '-' }}**, cap rate **{{ r.cap_rate|percent_br if r.cap_rate is not none else '-' }}**)
+- Payout e crescimento: **{{ r.dividend_payout_pct|percent_raw_br if r.dividend_payout_pct is not none else '-' }}** (taxa de crescimento **{{ r.growth_rate|number_br(precision=3) if r.growth_rate is not none else '-' }}**, cap rate **{{ r.cap_rate|number_br(precision=3) if r.cap_rate is not none else '-' }}**)
 - Alavancagem e patrimônio: **{{ r.leverage_ratio|number_br if r.leverage_ratio is not none else '-' }}**, patrimônio **{{ r.equity_value|currency_br if r.equity_value is not none else '-' }}**
 - Receita e taxas devidas: **{{ r.revenue_per_share|currency_br if r.revenue_per_share is not none else '-' }}**, admin **{{ r.admin_fee_due_amt|currency_br if r.admin_fee_due_amt is not none else '-' }}**, performance **{{ r.perf_fee_due_amt|currency_br if r.perf_fee_due_amt is not none else '-' }}**
 - Atualizado em: **{{ r.updated_at|datetime_br if r.updated_at is not none else '-' }}**

@@ -8,7 +8,7 @@
   | Ticker | Quantidade | Preço de fechamento | Valor da posição | Peso na carteira | DY 12m | Setor | Classificação |
   | --- | ---: | ---: | ---: | ---: | ---: | --- | --- |
   {%- for r in rows %}
-  | {{ r.ticker or '-' }} | {{ r.qty|int_br if r.qty is not none else '-' }} | {{ r.closing_price|currency_br if r.closing_price is not none else '-' }} | {{ r.position_value|currency_br if r.position_value is not none else '-' }} | {{ r.weight_pct|percent_br if r.weight_pct is not none else '-' }} | {{ r.dy_12m_pct|percent_br if r.dy_12m_pct is not none else '-' }} | {{ r.sector or '-' }} | {{ r.classification or '-' }} |
+  | {{ r.ticker or '-' }} | {{ r.qty|int_br if r.qty is not none else '-' }} | {{ r.closing_price|currency_br if r.closing_price is not none else '-' }} | {{ r.position_value|currency_br if r.position_value is not none else '-' }} | {{ r.weight_pct|percent_raw_br if r.weight_pct is not none else '-' }} | {{ r.dy_12m_pct|percent_raw_br if r.dy_12m_pct is not none else '-' }} | {{ r.sector or '-' }} | {{ r.classification or '-' }} |
   {%- endfor %}
 {%- else -%}
   {{ empty_message or "Sem posições disponíveis." }}
