@@ -1,12 +1,17 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Nenhum registro encontrado." }}
+{% if rows and rows|length > 0 -%}
+  {% set latest = rows[0] %}
+  **Índices B3 (D-1)**
+
+  Última data {{ latest.index_date|date_br if latest.index_date is not none else '-' }}:
+  - IBOV: **{{ latest.ibov_points_count|number_br if latest.ibov_points_count is not none else '-' }} pts** (Δ **{{ latest.ibov_var_pct|percent_br if latest.ibov_var_pct is not none else '-' }}**)
+  - IFIX: **{{ latest.ifix_points_count|number_br if latest.ifix_points_count is not none else '-' }} pts** (Δ **{{ latest.ifix_var_pct|percent_br if latest.ifix_var_pct is not none else '-' }}**)
+  - IFIL: **{{ latest.ifil_points_count|number_br if latest.ifil_points_count is not none else '-' }} pts** (Δ **{{ latest.ifil_var_pct|percent_br if latest.ifil_var_pct is not none else '-' }}**)
+
+  | Data | IBOV (pts) | IBOV (Δ%) | IFIX (pts) | IFIX (Δ%) | IFIL (pts) | IFIL (Δ%) |
+  | --- | --- | --- | --- | --- | --- | --- |
+  {% for r in rows %}
+    | {{ r.index_date|date_br if r.index_date is not none else '-' }} | {{ r.ibov_points_count|number_br if r.ibov_points_count is not none else '-' }} | {{ r.ibov_var_pct|percent_br if r.ibov_var_pct is not none else '-' }} | {{ r.ifix_points_count|number_br if r.ifix_points_count is not none else '-' }} | {{ r.ifix_var_pct|percent_br if r.ifix_var_pct is not none else '-' }} | {{ r.ifil_points_count|number_br if r.ifil_points_count is not none else '-' }} | {{ r.ifil_var_pct|percent_br if r.ifil_var_pct is not none else '-' }} |
+  {% endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Índices B3 em {{ r.index_date|date_br if r.index_date is not none else '-' }}**
-
-- Ibovespa: **{{ r.ibov_points_count|number_br if r.ibov_points_count is not none else '-' }} pts** (variação **{{ r.ibov_var_pct|percent_br if r.ibov_var_pct is not none else '-' }}**)
-- IFIX: **{{ r.ifix_points_count|number_br if r.ifix_points_count is not none else '-' }} pts** (variação **{{ r.ifix_var_pct|percent_br if r.ifix_var_pct is not none else '-' }}**)
-- IFIL: **{{ r.ifil_points_count|number_br if r.ifil_points_count is not none else '-' }} pts** (variação **{{ r.ifil_var_pct|percent_br if r.ifil_var_pct is not none else '-' }}**)
-
+  {{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}
