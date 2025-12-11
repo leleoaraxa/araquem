@@ -7,6 +7,10 @@ d_minus: 1
 
 default_date_field: indicator_date
 
+identifiers:
+  - name: indicator_name
+    description: Nome ou sigla do indicador (ex. CDI, SELIC, IPCA, IGPM).
+
 columns:
 - name: indicator_date
   alias: Data (D-1)

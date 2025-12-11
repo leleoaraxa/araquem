@@ -1,22 +1,20 @@
-{% if rows and rows|length > 0 -%}
-{%- set grouped = rows | groupby('ticker') %}
-{%- for ticker, items in grouped %}
-### {{ ticker }}
+{% if not rows or rows|length == 0 -%}
+Dados de imóveis do {{ ticker }} não disponíveis no momento.
+{%- else -%}
+  {%- set grouped = rows | groupby('ticker') %}
+  {%- for ticker, items in grouped %}
+**Imóveis do {{ ticker }}**
+
+| Nome do ativo | Classe | Localização | Área total (m²) | Unidades | Vacância | Inadimplência | Status | Atualizado em |
+| --- | --- | --- | ---: | ---: | --- | --- | --- | --- |
 {%- for r in items %}
-- **{{ r.asset_name or '-' }}** ({{ r.asset_class or '-' }})
-  - Endereço/localização: **{{ r.asset_address or '-' }}**
-  - Área total: **{{ r.total_area | number_br(precision=2) if r.total_area is not none else '-' }} m²**
-  - Unidades: **{{ r.units_count | int_br if r.units_count is not none else '-' }}**
-  - Vacância / inadimplência: **{{ r.vacancy_ratio | percent_br if r.vacancy_ratio is not none else '-' }} / {{ r.non_compliant_ratio | percent_br if r.non_compliant_ratio is not none else '-' }}**
-  - Status: **{{ r.assets_status or '-' }}**
-  - Atualizado em: **{{ r.updated_at | datetime_br if r.updated_at else '-' }}**
+| {{ r.asset_name or '-' }} | {{ r.asset_class or '-' }} | {{ r.asset_address or '-' }} | {{ r.total_area | number_br(precision=2) if r.total_area is not none else '-' }} | {{ r.units_count | int_br if r.units_count is not none else '-' }} | {{ r.vacancy_ratio | percent_br if r.vacancy_ratio is not none else '-' }} | {{ r.non_compliant_ratio | percent_br if r.non_compliant_ratio is not none else '-' }} | {{ r.assets_status or '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
 {%- endfor %}
+
 {%- if not loop.last %}
 
 ---
 
 {%- endif %}
-{%- endfor %}
-{%- else -%}
-  {{ empty_message or "Nenhum imóvel encontrado." }}
+  {%- endfor %}
 {%- endif %}
