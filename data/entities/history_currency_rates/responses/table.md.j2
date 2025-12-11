@@ -1,11 +1,16 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Nenhum registro encontrado." }}
+{% if rows and rows|length > 0 -%}
+  {% set latest = rows[0] %}
+  **Taxas de câmbio (D-1)**
+
+  Última data {{ latest.rate_date|date_br if latest.rate_date is not none else '-' }}:
+  - USD: compra **{{ latest.usd_buy_amt|number_br if latest.usd_buy_amt is not none else '-' }}**, venda **{{ latest.usd_sell_amt|number_br if latest.usd_sell_amt is not none else '-' }}**, variação **{{ latest.usd_var_pct|percent_br if latest.usd_var_pct is not none else '-' }}**
+  - EUR: compra **{{ latest.eur_buy_amt|number_br if latest.eur_buy_amt is not none else '-' }}**, venda **{{ latest.eur_sell_amt|number_br if latest.eur_sell_amt is not none else '-' }}**, variação **{{ latest.eur_var_pct|percent_br if latest.eur_var_pct is not none else '-' }}**
+
+  | Data | USD compra (R$) | USD venda (R$) | USD (Δ%) | EUR compra (R$) | EUR venda (R$) | EUR (Δ%) |
+  | --- | --- | --- | --- | --- | --- | --- |
+  {% for r in rows %}
+    | {{ r.rate_date|date_br if r.rate_date is not none else '-' }} | {{ r.usd_buy_amt|number_br if r.usd_buy_amt is not none else '-' }} | {{ r.usd_sell_amt|number_br if r.usd_sell_amt is not none else '-' }} | {{ r.usd_var_pct|percent_br if r.usd_var_pct is not none else '-' }} | {{ r.eur_buy_amt|number_br if r.eur_buy_amt is not none else '-' }} | {{ r.eur_sell_amt|number_br if r.eur_sell_amt is not none else '-' }} | {{ r.eur_var_pct|percent_br if r.eur_var_pct is not none else '-' }} |
+  {% endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Câmbio em {{ r.rate_date|date_br if r.rate_date is not none else '-' }}**
-
-- USD: **{{ r.usd_sell_amt|currency_br if r.usd_sell_amt is not none else '-' }}** (venda) / **{{ r.usd_buy_amt|currency_br if r.usd_buy_amt is not none else '-' }}** (compra) — variação **{{ r.usd_var_pct|percent_br if r.usd_var_pct is not none else '-' }}**
-- EUR: **{{ r.eur_sell_amt|currency_br if r.eur_sell_amt is not none else '-' }}** (venda) / **{{ r.eur_buy_amt|currency_br if r.eur_buy_amt is not none else '-' }}** (compra) — variação **{{ r.eur_var_pct|percent_br if r.eur_var_pct is not none else '-' }}**
-
+  {{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}

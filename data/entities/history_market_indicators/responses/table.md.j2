@@ -1,12 +1,14 @@
-{% if not rows or rows|length == 0 -%}
-{{ empty_message or "Nenhum registro encontrado." }}
+{% if rows and rows|length > 0 -%}
+  {% set latest = rows[0] %}
+  **Indicadores de mercado (D-1)**
+
+  Último registro em {{ latest.indicator_date|datetime_br if latest.indicator_date is not none else '-' }}: **{{ latest.indicator_name if latest.indicator_name is not none else '-' }} = {{ latest.indicator_amt|percent_br if latest.indicator_amt is not none else '-' }}**.
+
+  | Data | Indicador | Valor |
+  | --- | --- | --- |
+  {% for r in rows %}
+    | {{ r.indicator_date|datetime_br if r.indicator_date is not none else '-' }} | {{ r.indicator_name if r.indicator_name is not none else '-' }} | {{ r.indicator_amt|percent_br if r.indicator_amt is not none else '-' }} |
+  {% endfor %}
 {%- else -%}
-{%- set r = rows[0] %}
-
-**Indicadores de mercado em {{ r.indicator_date|date_br if r.indicator_date is not none else '-' }}**
-
-- Indicador: **{{ r.indicator_name if r.indicator_name is not none else '-' }}**
-- Valor: **{{ r.indicator_amt|number_br if r.indicator_amt is not none else '-' }}**
-- Registro atualizado em: **{{ r.updated_at|datetime_br if r.updated_at is not none else '-' }}**
-
+  {{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}
