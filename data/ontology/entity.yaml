@@ -60,7 +60,6 @@ intents:
       - fiis_imoveis
       - dividendos_yield
       - fiis_cadastro
-      - dividendos_yield
     weight: 10
 
   - name: client_fiis_positions
