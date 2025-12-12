@@ -1,29 +1,7 @@
-FROM ollama/ollama:0.13.2
+FROM ollama/ollama:0.13.3
 SHELL ["/bin/sh","-lc"]
 
-ENTRYPOINT ["sh","-lc","\
-  echo '[init] aguardando ollama daemon...'; \
-  until ollama ps >/dev/null 2>&1; do sleep 1; done; \
-  # 1) pull dos modelos base (embeddings + base LLM)
-  for m in ${OLLAMA_MODELS:-}; do \
-    if ollama show \"$m\" >/dev/null 2>&1; then \
-      echo \"[init] modelo já presente: $m\"; \
-    else \
-      echo \"[init] puxando modelo: $m\"; \
-      ollama pull \"$m\"; \
-    fi; \
-  done; \
-  # 2) criação do modelo customizado sirios-narrator:latest
-  if ollama show sirios-narrator:latest >/dev/null 2>&1; then \
-    echo '[init] modelo já presente: sirios-narrator:latest'; \
-  else \
-    MF=\"${SIRIOS_MODEFILE:-/app/docker/Modelfile.sirios-narrator}\"; \
-    if [ -f \"$MF\" ]; then \
-      echo \"[init] criando modelo sirios-narrator:latest a partir de $MF\"; \
-      ollama create sirios-narrator:latest -f \"$MF\"; \
-    else \
-      echo \"[init][WARN] Modelfile do sirios-narrator não encontrado em $MF\"; \
-    fi; \
-  fi; \
-  echo '[init] modelos prontos. Saindo.' \
-"]
+COPY docker/ollama-bootstrap.sh /usr/local/bin/ollama-bootstrap.sh
+RUN chmod +x /usr/local/bin/ollama-bootstrap.sh
+
+ENTRYPOINT ["/usr/local/bin/ollama-bootstrap.sh"]

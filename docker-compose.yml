@@ -45,7 +45,7 @@ services:
     networks: [araquem_network]
 
   ollama:
-    image: ollama/ollama:0.13.2
+    image: ollama/ollama:0.13.3
     container_name: araquem-ollama
     restart: unless-stopped
     ports: ["11434:11434"]
@@ -57,12 +57,8 @@ services:
       - OLLAMA_NUM_PARALLEL=1        # 1 requisição por vez (evita thrash de memória)
       - OLLAMA_MAX_LOADED_MODELS=1   # só o sirios-narrator na RAM
       - OLLAMA_CPU_THREADS=8         # alinha com num_thread do Modelfile
-
-      # CACHE / LATÊNCIA
       - OLLAMA_KEEP_ALIVE=600        # mantém o modelo carregado ~10 minutos
       - OLLAMA_KV_CACHE_TYPE=f16     # bom compromisso para CPU
-
-      # (opcional) se quiser logs menos verbosos:
       - OLLAMA_LOG_LEVEL=warn
     healthcheck:
       test: ["CMD-SHELL", "ollama ps >/dev/null 2>&1 || exit 1"]
