@@ -12,6 +12,8 @@
 {%- else -%}
 {%- set r = rows[0] %}
 
+**Snapshot financeiro do{{ ' ' + r.ticker if r.ticker else '' }}**
+
 | Campo | Valor |
 |-------|-------|
 | DY mensal / anualizado | {{ r.dy_monthly_pct or '-' }} / {{ r.dy_pct or '-' }} |

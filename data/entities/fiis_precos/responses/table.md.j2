@@ -1,4 +1,7 @@
 {% if rows and rows|length > 0 %}
+
+**Preços recentes do {{ ticker }}**
+
 | Data | Preço (R$) | Variação no dia |
 |------|-------------|------------------|
 {% for r in rows[:6] %}

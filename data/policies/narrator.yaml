@@ -204,8 +204,8 @@ narrator:
       strict_mode: false
 
     fiis_financials_snapshot:
-      llm_enabled: false
-      shadow: false
+      llm_enabled: true
+      shadow: true
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -224,8 +224,8 @@ narrator:
       strict_mode: false
 
     fiis_precos:
-      llm_enabled: false
-      shadow: false
+      llm_enabled: true
+      shadow: true
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
