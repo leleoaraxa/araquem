@@ -1,3 +1,5 @@
+# app/narrator/formatter.py
+
 """Formatação determinística do Narrador da SIRIOS.
 
 Recebe o payload retornado pelo executor SQL e converte o conteúdo
@@ -18,7 +20,9 @@ def _normalize_payload(payload: Dict[str, Any]) -> Dict[str, Any]:
     if not isinstance(payload, dict):
         return {}
     # Compat: alguns geradores podem encapsular em "executor_payload"
-    if "executor_payload" in payload and isinstance(payload.get("executor_payload"), dict):
+    if "executor_payload" in payload and isinstance(
+        payload.get("executor_payload"), dict
+    ):
         return payload["executor_payload"].get("facts") or {}
     return payload.get("facts") or {}
 
