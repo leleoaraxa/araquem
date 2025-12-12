@@ -2258,6 +2258,11 @@ intents:
         - cenario macro
         - ibov
         - ifix
+        - comparativo
+        - comparar
+        - panorama
+        - consolidado
+        - mesmo dia
         - ifil
         - indice b3
         - dolar
@@ -2568,12 +2573,24 @@ intents:
         - impacto da inflacao alta em fiis
         - juros altos em fundos imobiliarios
         - contexto favoravel para fiis
+        - cdi
+        - selic
+        - ipca
+        - ifix
+        - ibov
+        - dolar
+        - euro
+        - cambio
+        - comparativo
+        - comparar
+        - ultima
+        - ultimas
+        - ultimos
+        - semana
+        - dias
+        - data
       exclude:
-        - historico
-        - evolucao
-        - serie temporal
         - curva historica
-        - ultimos 12 meses
         - valor do mes
         - tabela de indicadores
         - atual
@@ -2618,6 +2635,11 @@ intents:
         - efeito da selic
         - efeito do ipca
         - panorama macro para fiis hoje
+        - "cdi e selic"
+        - "cdi e selic na ultima semana"
+        - "ifix e ibov na semana"
+        - "dolar e euro no mesmo dia"
+        - "comparativo de cdi e selic"
         - como selic em queda impacta fiis de tijolo
         - impacto do dolar volatil nos fiis
         - macro esta favoravel para fiis
