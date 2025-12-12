@@ -12,17 +12,17 @@
 {%- else -%}
 {%- set r = rows[0] %}
 
-**Snapshot financeiro do{{ ' ' + r.ticker if r.ticker else '' }}**
-
-- DY mensal / anualizado: **{{ r.dy_monthly_pct or '-' }} / {{ r.dy_pct or '-' }}**
-- Último dividendo: **{{ r.last_dividend_amt or '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date else '-' }}**
-- Dividendos no ano: **{{ r.sum_anual_dy_amt or '-' }}**
-- Market Cap / EV: **{{ r.market_cap_value or '-' }} / {{ r.enterprise_value or '-' }}**
-- P/BV e patrimônio por cota: **{{ r.price_book_ratio or '-' }} / {{ r.equity_per_share or '-' }}**
-- Caixa total e passivos: **{{ r.total_cash_amt or '-' }} / {{ r.liabilities_total_amt or '-' }}**
-- Payout e crescimento: **{{ r.dividend_payout_pct or '-' }}** (taxa de crescimento **{{ r.growth_rate or '-' }}**, cap rate **{{ r.cap_rate or '-' }}**)
-- Alavancagem e patrimônio: **{{ r.leverage_ratio or '-' }}**, patrimônio **{{ r.equity_value or '-' }}**
-- Receita e taxas devidas: **{{ r.revenue_per_share or '-' }}**, admin **{{ r.admin_fee_due_amt or '-' }}**, performance **{{ r.perf_fee_due_amt or '-' }}**
-- Atualizado em: **{{ r.updated_at|datetime_br if r.updated_at else '-' }}**
+| Campo | Valor |
+|-------|-------|
+| DY mensal / anualizado | {{ r.dy_monthly_pct or '-' }} / {{ r.dy_pct or '-' }} |
+| Último dividendo (valor / data) | {{ r.last_dividend_amt or '-' }} / {{ r.last_payment_date|datetime_br if r.last_payment_date else '-' }} |
+| Dividendos no ano | {{ r.sum_anual_dy_amt or '-' }} |
+| Market Cap / EV | {{ r.market_cap_value or '-' }} / {{ r.enterprise_value or '-' }} |
+| P/BV e patrimônio por cota | {{ r.price_book_ratio or '-' }} / {{ r.equity_per_share or '-' }} |
+| Caixa total e passivos | {{ r.total_cash_amt or '-' }} / {{ r.liabilities_total_amt or '-' }} |
+| Payout (taxa de crescimento / cap rate) | {{ r.dividend_payout_pct or '-' }} ({{ r.growth_rate or '-' }} / {{ r.cap_rate or '-' }}) |
+| Alavancagem e patrimônio | {{ r.leverage_ratio or '-' }} / {{ r.equity_value or '-' }} |
+| Receita por cota / taxas devidas (admin / performance) | {{ r.revenue_per_share or '-' }} / {{ r.admin_fee_due_amt or '-' }} / {{ r.perf_fee_due_amt or '-' }} |
+| Atualizado em | {{ r.updated_at|datetime_br if r.updated_at else '-' }} |
 
 {%- endif %}

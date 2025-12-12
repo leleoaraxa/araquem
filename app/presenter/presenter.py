@@ -319,6 +319,8 @@ def present(
     else:
         baseline_answer = technical_answer
 
+    facts_md = rendered_template if template_used else baseline_answer
+
     legacy_answer = baseline_answer
 
     narrator_info: Dict[str, Any] = {
@@ -347,6 +349,7 @@ def present(
             "explain": (plan.get("explain") if explain else None),
             "result_key": result_key,
             "rag": narrator_rag_context,
+            "presentation_kind": template_kind,
         }
 
         if context_history_wire:
@@ -378,11 +381,14 @@ def present(
             if strategy == "llm_shadow":
                 final_answer = baseline_answer
                 counter("sirios_narrator_shadow_total", outcome="ok")
+            elif strategy == "llm":
+                final_answer = f"{text}\n\n{facts_md}"
+                counter("sirios_narrator_render_total", outcome="ok")
             else:
                 final_answer = text
                 counter(
                     "sirios_narrator_render_total",
-                    outcome="ok" if strategy == "llm" else "skip",
+                    outcome="skip",
                 )
 
             latency = narrator_info.get("latency_ms") or dt_ms
