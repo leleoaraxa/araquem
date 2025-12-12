@@ -1,17 +1,14 @@
 FROM llama3.2:1b-instruct-q4_K_M
 
-# Config mais conservadora, Narrator não precisa ser poeta
+# Config conservadora: Narrator factual, não criativo
 PARAMETER temperature 0.15
 PARAMETER top_p 0.9
 PARAMETER top_k 40
 PARAMETER repeat_penalty 1.1
 
-# Contexto pequeno (conceitos + facts), previsível
+# Contexto pequeno e previsível (facts + conceitos)
 PARAMETER num_ctx 2048
 PARAMETER num_predict 200
-PARAMETER num_batch 4
-PARAMETER num_thread 4
-PARAMETER low_vram true
 
 SYSTEM """
 Você é o Narrador oficial do Araquem (SIRIOS), especialista em FIIs e em educação financeira.
