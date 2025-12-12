@@ -2590,6 +2590,8 @@ intents:
         - dias
         - data
       exclude:
+        - acumulado
+        - longo prazo
         - curva historica
         - valor do mes
         - tabela de indicadores
