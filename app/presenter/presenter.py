@@ -319,7 +319,9 @@ def present(
     else:
         baseline_answer = technical_answer
 
-    facts_md = baseline_answer
+    # facts_md = baseline_answer
+    facts_md = rendered_template if template_used else technical_answer
+
     legacy_answer = baseline_answer
 
     narrator_info: Dict[str, Any] = {

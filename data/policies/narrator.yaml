@@ -7,7 +7,7 @@ terms:
 narrator:
   model: sirios-narrator:latest
   llm_enabled: true
-  shadow: true
+  shadow: false
 
   # Buckets:
   # - A/B/C → SQL-only (llm_enabled=false via entities)
@@ -205,8 +205,8 @@ narrator:
 
     fiis_financials_snapshot:
       llm_enabled: true
-      shadow: true
-      max_llm_rows: 0
+      shadow: false
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -214,9 +214,9 @@ narrator:
       strict_mode: false
 
     fiis_imoveis:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
-      max_llm_rows: 0
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -225,8 +225,8 @@ narrator:
 
     fiis_precos:
       llm_enabled: true
-      shadow: true
-      max_llm_rows: 0
+      shadow: false
+      max_llm_rows: 20
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -234,9 +234,9 @@ narrator:
       strict_mode: false
 
     fiis_processos:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
-      max_llm_rows: 0
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -244,9 +244,9 @@ narrator:
       strict_mode: false
 
     fiis_rankings:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
-      max_llm_rows: 0
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
