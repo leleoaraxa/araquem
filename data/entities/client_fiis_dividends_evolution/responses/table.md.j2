@@ -1,14 +1,21 @@
 {% if rows and rows|length > 0 -%}
-  {% set latest = rows[0] %}
-  **Evolução de dividendos da carteira do cliente**
+{% set months_pt = {
+  1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',
+  5: 'Maio', 6: 'Junho', 7: 'Julho', 8: 'Agosto',
+  9: 'Setembro', 10: 'Outubro', 11: 'Novembro', 12: 'Dezembro'
+} %}
+{% set latest = rows[0] %}
 
-  - Último valor ({{ latest.month_name or latest.month_number or '-' }}/{{ latest.year_reference or '-' }}): **{{ latest.total_dividends|currency_br if latest.total_dividends is not none else '-' }}**
+**Evolução de dividendos da carteira do cliente**
 
-  | Mês | Ano | Dividendos (R$) |
-  | --- | --- | ---: |
-  {%- for r in rows %}
-  | {{ r.month_name or r.month_number or '-' }} | {{ r.year_reference or '-' }} | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
-  {%- endfor %}
+- Último valor ({{ months_pt.get(latest.month_number, '-') }}/{{ latest.year_reference or '-' }}):
+  **{{ latest.total_dividends|currency_br if latest.total_dividends is not none else '-' }}**
+
+| Mês | Ano | Dividendos (R$) |
+| --- | --- | ---: |
+{%- for r in rows %}
+| {{ months_pt.get(r.month_number, '-') }} | {{ r.year_reference or '-' }} | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
+{%- endfor %}
 {%- else -%}
-  {{ empty_message or "Sem histórico de dividendos para exibir." }}
+{{ empty_message or "Sem histórico de dividendos para exibir." }}
 {%- endif %}
