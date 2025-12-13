@@ -29,7 +29,7 @@ from app.formatter.rows import render_rows_template
 from app.templates_answer import render_answer
 
 # nova camada de apresentação (pós-formatter)
-from app.presenter.presenter import present
+from app.presenter.presenter import present, _choose_result_key
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Narrator (camada de apresentação M10)
@@ -291,7 +291,9 @@ def ask(
 
     results = orchestration.get("results") or {}
     meta = orchestration.get("meta") or {}
-    result_key = meta.get("result_key") or next(iter(results.keys()), None)
+    result_key, rk_diag = _choose_result_key(results, meta.get("result_key"))
+    if rk_diag:
+        meta.setdefault("diagnostics", {})["result_key_mismatch"] = rk_diag
     rows = (
         results.get(result_key, []) if isinstance(results.get(result_key), list) else []
     )
