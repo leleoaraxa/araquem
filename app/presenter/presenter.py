@@ -361,7 +361,22 @@ def present(
 
         try:
             t0 = time.perf_counter()
-            out = narrator.render(question, facts.dict(), meta_for_narrator)
+            # Wire payload para o Narrator (evita deriva quando rewrite-only estiver habilitado)
+            facts_wire = facts.dict()
+
+            # Ativa rewrite-only apenas quando explicitamente habilitado na policy efetiva
+            # (sem hardcode por entidade; contrato controlado por YAML/policy)
+            if bool(effective_narrator_policy.get("rewrite_only")):
+                # baseline textual primário: preferir template se existir, senão technical
+                facts_wire["rendered_text"] = facts_md
+                # opcional (recomendado): não dar munição para o LLM reconstruir campos
+                facts_wire.pop("rows", None)
+                facts_wire.pop("primary", None)
+                facts_wire.pop("identifiers", None)
+                facts_wire.pop("aggregates", None)
+
+            out = narrator.render(question, facts_wire, meta_for_narrator)
+
             dt_ms = (time.perf_counter() - t0) * 1000.0
 
             narrator_out_meta = out.get("meta", {}).get("narrator")
@@ -383,7 +398,10 @@ def present(
                 final_answer = baseline_answer
                 counter("sirios_narrator_shadow_total", outcome="ok")
             elif strategy == "llm":
-                final_answer = f"{text}\n\n{facts_md}"
+                if bool(effective_narrator_policy.get("rewrite_only")):
+                    final_answer = text
+                else:
+                    final_answer = f"{text}\n\n{facts_md}"
                 counter("sirios_narrator_render_total", outcome="ok")
             else:
                 final_answer = text
@@ -424,7 +442,7 @@ def present(
                 "tokens": meta_dict.get("tokens"),
                 "thresholds": routing_thresholds,
             },
-            facts=facts.dict(),
+            facts=facts_wire if "facts_wire" in locals() else facts.dict(),
             rag=(
                 narrator_rag_context if isinstance(narrator_rag_context, dict) else None
             ),

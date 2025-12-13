@@ -298,7 +298,6 @@ def build_prompt(
             focus_metric_key = mk.strip()
 
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
-    facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
 
     # ------------------------------------------------------------------
     # Modo rewrite-only (anti-deriva):
@@ -307,18 +306,39 @@ def build_prompt(
     # ------------------------------------------------------------------
     rendered_text = _extract_rendered_text(facts or {})
     rewrite_only = _has_rewrite_baseline(facts or {})
-    rewrite_block = ""
     if rewrite_only:
         rewrite_block = dedent(
             f"""
-            TEXTO_BASE (fonte textual primária; NÃO inventar conteúdo além disso):
-            {rendered_text}
+            MODO REWRITE-ONLY (OBRIGATÓRIO):
+            - Você NÃO deve responder usando JSON, tabelas ou contexto auxiliar.
+            - Você deve usar EXCLUSIVAMENTE o TEXTO_BASE abaixo como fonte do conteúdo.
+            - Você pode apenas:
+              (a) corrigir quebras de linha/espaços,
+              (b) padronizar Markdown,
+              (c) opcionalmente adicionar UMA única 1ª frase curta que responda diretamente.
+            - É PROIBIDO:
+              - criar bullets/“resumo” antes do TEXTO_BASE,
+              - introduzir qualquer fato/campo que não exista no TEXTO_BASE,
+              - remover processos/linhas do TEXTO_BASE.
 
-            REGRA DE REWRITE (OBRIGATÓRIA):
-            - Sua saída deve manter o MESMO conteúdo do TEXTO_BASE.
-            - Você pode apenas: corrigir espaços/linhas, padronizar Markdown, e opcionalmente
-              adicionar uma 1ª frase curta respondendo diretamente (ex.: "Sim. Há 4 processos.").
-            - É PROIBIDO criar bullets de resumo antes do TEXTO_BASE.
+            REGRA DE VALIDAÇÃO:
+            - Após a 1ª frase opcional, sua resposta deve ser o TEXTO_BASE reescrito,
+              mantendo integralmente o conteúdo.
+
+            TEXTO_BASE:
+            {rendered_text}
+            """
+        ).strip()
+
+        return dedent(
+            f"""
+            {SYSTEM_PROMPT}
+
+            O usuário perguntou: {question}
+
+            {rewrite_block}
+
+            SAÍDA: devolva apenas o texto final.
             """
         ).strip()
 
@@ -333,6 +353,8 @@ def build_prompt(
         "use_rag_in_prompt", False
     ):
         rag = None
+
+    facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
 
     rag_payload = _prepare_rag_payload(rag, max_snippet_chars=snippet_max_chars)
     if rag_payload is not None:

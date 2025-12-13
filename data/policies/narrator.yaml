@@ -236,6 +236,7 @@ narrator:
     fiis_processos:
       llm_enabled: true
       shadow: false
+      rewrite_only: true
       max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
