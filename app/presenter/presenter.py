@@ -5,7 +5,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from pydantic import BaseModel, Field
 
@@ -100,6 +100,137 @@ class PresentResult(BaseModel):
     template_kind: Optional[str] = None
 
 
+def _choose_result_key(
+    results: Dict[str, Any], meta_result_key: Optional[str]
+) -> Tuple[Optional[str], Optional[str]]:
+    """Seleciona result_key de forma determinística e auditável.
+
+    Retorna a chave escolhida e uma etiqueta de diagnóstico quando houver
+    divergência (ex.: meta aponta para chave inexistente).
+    """
+
+    if not isinstance(results, dict):
+        return None, "results_not_dict"
+
+    # Preferência pelo meta.result_key quando existir na saída
+    if isinstance(meta_result_key, str) and meta_result_key in results:
+        return meta_result_key, None
+
+    keys = [k for k in results.keys()]
+    if len(keys) == 1:
+        chosen = keys[0]
+        mismatch_reason = None
+    else:
+        # heurística determinística: escolher a primeira chave com lista não vazia
+        chosen = None
+        for k in keys:
+            v = results.get(k)
+            if isinstance(v, list) and v:
+                chosen = k
+                break
+        if chosen is None and keys:
+            chosen = sorted(keys)[0]
+        mismatch_reason = "result_key_mismatch" if meta_result_key else None
+
+    return chosen, mismatch_reason
+
+
+def _extract_rows_compact(
+    rows: Iterable[Dict[str, Any]], *, max_rows: int = 3, max_fields: int = 6
+) -> List[Dict[str, Any]]:
+    """Extrai subconjunto de campos primitivos para wiring seguro.
+
+    Evita campos aninhados e limita a quantidade para reduzir payload em
+    rewrite_only sem perder ancoragem factual.
+    """
+
+    compact_rows: List[Dict[str, Any]] = []
+    for row in list(rows)[: max_rows if max_rows > 0 else None]:
+        if not isinstance(row, dict):
+            continue
+        compact: Dict[str, Any] = {}
+        for idx, (key, value) in enumerate(row.items()):
+            if key == "meta":
+                continue
+            if max_fields > 0 and idx >= max_fields:
+                break
+            if isinstance(value, (str, int, float, bool)):
+                compact[key] = value
+        if compact:
+            compact_rows.append(compact)
+    return compact_rows
+
+
+def _extract_anchors_from_rows(
+    rows: Iterable[Dict[str, Any]], *, max_rows: int = 5, max_fields: int = 6
+) -> Set[str]:
+    """Gera conjunto pequeno de âncoras textuais a partir de campos primitivos."""
+
+    anchors: Set[str] = set()
+    for row in list(rows)[: max_rows if max_rows > 0 else None]:
+        if not isinstance(row, dict):
+            continue
+        for idx, (key, value) in enumerate(row.items()):
+            if key == "meta":
+                continue
+            if max_fields > 0 and idx >= max_fields:
+                break
+            if isinstance(value, (str, int, float)):
+                text = str(value).strip()
+                if text:
+                    anchors.add(text[:120])
+    return anchors
+
+
+def _ensure_baseline(baseline: str, rows: List[Dict[str, Any]]) -> str:
+    """Garante baseline determinístico não vazio quando houver linhas."""
+
+    if isinstance(baseline, str) and baseline.strip():
+        return baseline
+
+    bullets: List[str] = []
+    for row in rows[:3]:
+        if not isinstance(row, dict):
+            continue
+        parts: List[str] = []
+        for idx, (k, v) in enumerate(row.items()):
+            if idx >= 5:
+                break
+            if isinstance(v, (str, int, float, bool)):
+                parts.append(f"{k}: {v}")
+        if parts:
+            bullets.append("- " + "; ".join(parts))
+    return "\n".join(bullets).strip()
+
+
+def _answer_has_anchor(answer: str, anchors: Set[str]) -> bool:
+    """Valida se a resposta mantém pelo menos uma âncora factual."""
+
+    if not anchors:
+        return bool(answer and answer.strip())
+    answer_low = (answer or "").lower()
+    for anchor in anchors:
+        if not anchor:
+            continue
+        if str(anchor).lower() in answer_low:
+            return True
+    return False
+
+
+def _is_absence_text(answer: str) -> bool:
+    text = (answer or "").strip().lower()
+    if not text:
+        return True
+    absence_markers = [
+        "não encontrei",
+        "sem dados",
+        "nenhum dado",
+        "sem registros",
+        "nao encontrei",
+    ]
+    return any(marker in text for marker in absence_markers)
+
+
 def build_facts(
     *,
     question: str,
@@ -108,7 +239,7 @@ def build_facts(
     meta: Optional[Dict[str, Any]] = None,
     identifiers: Dict[str, Any],
     aggregates: Dict[str, Any],
-) -> Tuple[FactsPayload, Optional[str], List[Dict[str, Any]]]:
+) -> Tuple[FactsPayload, Optional[str], List[Dict[str, Any]], Optional[str]]:
     """
     Constrói o FactsPayload a partir do output das camadas de
     Planner + Orchestrator + Param Inference.
@@ -137,14 +268,7 @@ def build_facts(
     meta_result_key = (
         meta_dict.get("result_key") if isinstance(meta_dict, dict) else None
     )
-    result_key: Optional[str]
-    if isinstance(meta_result_key, str) and meta_result_key in results:
-        result_key = meta_result_key
-    else:
-        result_key = next(
-            iter(results.keys()),
-            meta_result_key if isinstance(meta_result_key, str) else None,
-        )
+    result_key, mismatch_reason = _choose_result_key(results, meta_result_key)
 
     rows_raw = results.get(result_key)
     rows: List[Dict[str, Any]] = rows_raw if isinstance(rows_raw, list) else []
@@ -181,7 +305,7 @@ def build_facts(
         fund=fund,
     )
 
-    return facts, result_key, rows
+    return facts, result_key, rows, mismatch_reason
 
 
 def present(
@@ -262,7 +386,7 @@ def present(
     except Exception:
         context_history_wire = []
 
-    facts, result_key, rows = build_facts(
+    facts, result_key, rows, result_key_mismatch = build_facts(
         question=question,
         plan=plan,
         orchestrator_results=orchestrator_results,
@@ -270,6 +394,12 @@ def present(
         identifiers=identifiers,
         aggregates=aggregates,
     )
+
+    if result_key_mismatch:
+        LOGGER.info(
+            "result_key ajustado de forma determinística",
+            extra={"meta_result_key": meta_dict.get("result_key"), "chosen": result_key},
+        )
 
     # compute.mode
     compute_mode = "data"
@@ -319,6 +449,8 @@ def present(
     else:
         baseline_answer = technical_answer
 
+    baseline_answer = _ensure_baseline(baseline_answer, rows)
+
     # facts_md = baseline_answer
     facts_md = rendered_template if template_used else technical_answer
 
@@ -339,6 +471,7 @@ def present(
     }
 
     final_answer = baseline_answer
+    anchors = _extract_anchors_from_rows(rows)
 
     # Wire payload que pode ser usado pelo Narrator e/ou persistido no Shadow Event.
     facts_wire: Optional[Dict[str, Any]] = None
@@ -366,13 +499,17 @@ def present(
             t0 = time.perf_counter()
             # Wire payload para o Narrator (evita deriva quando rewrite-only estiver habilitado)
             facts_wire = facts.dict()
+            # adiciona evidência compacta para manter ancoragem factual mesmo em rewrite_only
+            facts_wire["rows_compact"] = _extract_rows_compact(rows)
+            if anchors:
+                facts_wire["anchors"] = sorted(anchors)
 
             # Ativa rewrite-only apenas quando explicitamente habilitado na policy efetiva
             # (sem hardcode por entidade; contrato controlado por YAML/policy)
             if bool(effective_narrator_policy.get("rewrite_only")):
                 # baseline textual primário: preferir template se existir, senão technical
-                facts_wire["rendered_text"] = facts_md
-                # opcional (recomendado): não dar munição para o LLM reconstruir campos
+                facts_wire["rendered_text"] = facts_md or baseline_answer
+                # optional trimming: manter apenas evidência compacta para reduzir payload
                 facts_wire.pop("rows", None)
                 facts_wire.pop("primary", None)
                 facts_wire.pop("identifiers", None)
@@ -420,6 +557,17 @@ def present(
         except Exception as e:  # noqa: BLE001
             narrator_info.update(error=str(e), strategy="fallback_error")
             counter("sirios_narrator_render_total", outcome="error")
+
+    # Validação pós-narrator: garante âncoras quando rows_total > 0
+    if rows and (_is_absence_text(final_answer) or not _answer_has_anchor(final_answer, anchors)):
+        LOGGER.info(
+            "Narrator output descartado por falta de âncoras; usando baseline determinístico",
+            extra={"result_key": result_key, "rows": len(rows)},
+        )
+        final_answer = baseline_answer
+        narrator_info.setdefault("validation", {})[
+            "result"
+        ] = "fallback_baseline_missing_anchor"
 
     # Observabilidade: explicita se a entidade estava em rewrite-only.
     narrator_info.setdefault(
