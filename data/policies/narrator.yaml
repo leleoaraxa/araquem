@@ -277,7 +277,7 @@ narrator:
           3) Se N=0, responda apenas com a mensagem de vazio da entidade (sem inventar).
 
     fiis_rankings:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
       rewrite_only: true
       max_llm_rows: 50
