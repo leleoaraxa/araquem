@@ -340,6 +340,9 @@ def present(
 
     final_answer = baseline_answer
 
+    # Wire payload que pode ser usado pelo Narrator e/ou persistido no Shadow Event.
+    facts_wire: Optional[Dict[str, Any]] = None
+
     # Só chama o Narrator se a policy efetiva da entidade permitir LLM.
     if narrator is not None and bool(effective_narrator_policy.get("llm_enabled")):
         meta_for_narrator: Dict[str, Any] = {
@@ -418,6 +421,11 @@ def present(
             narrator_info.update(error=str(e), strategy="fallback_error")
             counter("sirios_narrator_render_total", outcome="error")
 
+    # Observabilidade: explicita se a entidade estava em rewrite-only.
+    narrator_info.setdefault(
+        "rewrite_only", bool(effective_narrator_policy.get("rewrite_only"))
+    )
+
     narrator_info.setdefault("rag", narrator_rag_context)
 
     try:
@@ -442,7 +450,7 @@ def present(
                 "tokens": meta_dict.get("tokens"),
                 "thresholds": routing_thresholds,
             },
-            facts=facts_wire if "facts_wire" in locals() else facts.dict(),
+            facts=facts_wire or facts.dict(),
             rag=(
                 narrator_rag_context if isinstance(narrator_rag_context, dict) else None
             ),

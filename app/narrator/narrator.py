@@ -388,9 +388,7 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
         raise RuntimeError(f"Erro ao carregar Narrator policy: {policy_path}") from exc
 
     if not isinstance(data, dict):
-        LOGGER.error(
-            "Narrator policy inválida (esperado mapeamento): %s", policy_path
-        )
+        LOGGER.error("Narrator policy inválida (esperado mapeamento): %s", policy_path)
         raise ValueError(
             f"Narrator policy inválida: esperado mapeamento em {policy_path}"
         )
@@ -413,19 +411,13 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
 
     for key, expected_type in required_fields.items():
         if key not in cfg:
-            LOGGER.error(
-                "Narrator policy malformada: campo '%s' é obrigatório", key
-            )
-            raise ValueError(
-                f"Narrator policy malformada: campo '{key}' é obrigatório"
-            )
+            LOGGER.error("Narrator policy malformada: campo '%s' é obrigatório", key)
+            raise ValueError(f"Narrator policy malformada: campo '{key}' é obrigatório")
 
         value = cfg.get(key)
         if expected_type is bool:
             if not isinstance(value, bool):
-                LOGGER.error(
-                    "Narrator policy malformada: '%s' deve ser booleano", key
-                )
+                LOGGER.error("Narrator policy malformada: '%s' deve ser booleano", key)
                 raise ValueError(
                     f"Narrator policy malformada: '{key}' deve ser booleano"
                 )
@@ -467,9 +459,7 @@ def _load_narrator_shadow_policy(
         LOGGER.error(
             "Erro ao carregar Narrator shadow policy de %s", policy_path, exc_info=True
         )
-        raise ValueError(
-            f"Narrator shadow policy inválida: {policy_path}"
-        ) from exc
+        raise ValueError(f"Narrator shadow policy inválida: {policy_path}") from exc
     except Exception as exc:  # pragma: no cover - caminho excepcional
         LOGGER.error(
             "Erro inesperado ao carregar Narrator shadow policy de %s",
@@ -587,7 +577,10 @@ class Narrator:
         # Flags: **apenas YAML** define habilitação e shadow;
         # env é ignorado para evitar heurísticas escondidas.
         self.enabled = bool(default_policy.get("llm_enabled", False))
-        self.shadow = bool(default_policy.get("shadow", False)) and self._is_shadow_globally_enabled()
+        self.shadow = (
+            bool(default_policy.get("shadow", False))
+            and self._is_shadow_globally_enabled()
+        )
 
         # Limite de linhas para uso de LLM (0 = nunca usar LLM)
         max_rows = default_policy.get("max_llm_rows", 0)
@@ -643,7 +636,9 @@ class Narrator:
             return effective_meta
 
         bucket_cfg = (
-            self.bucket_policy.get(bucket, {}) if isinstance(self.bucket_policy, dict) else {}
+            self.bucket_policy.get(bucket, {})
+            if isinstance(self.bucket_policy, dict)
+            else {}
         )
         if not isinstance(bucket_cfg, dict) or not bucket_cfg.get("llm_enabled"):
             return effective_meta
@@ -822,6 +817,7 @@ class Narrator:
                     "shadow": effective_shadow,
                     "max_llm_rows": effective_max_llm_rows,
                     "use_rag_in_prompt": use_rag_in_prompt,
+                    "rewrite_only": bool(effective_policy.get("rewrite_only", False)),
                     "model": effective_model,
                 }
             ),
@@ -924,7 +920,9 @@ class Narrator:
                 shrunk = _shrink_rag_for_concept(
                     rag_ctx_for_prompt, max_chars=rag_snippet_max_chars
                 )
-                rag_ctx_for_prompt = shrunk if shrunk is not None else rag_ctx_for_prompt
+                rag_ctx_for_prompt = (
+                    shrunk if shrunk is not None else rag_ctx_for_prompt
+                )
             elif concept_mode:
                 # Em modo conceitual, usamos apenas um chunk enxuto de RAG
                 shrunk = _shrink_rag_for_concept(
@@ -1094,13 +1092,25 @@ class Narrator:
         # sem risco de deriva. Nesses casos, não chamamos o modelo e
         # respondemos diretamente com o texto de segurança canônico.
         # ------------------------------------------------------------------
+        rewrite_only = bool(effective_policy.get("rewrite_only", False))
+
+        # Em rewrite-only, o Presenter injeta `rendered_text` e pode remover rows/primary.
+        # Portanto, o baseline textual vira a evidência primária (âncora factual).
+        rendered_text = effective_facts.get("rendered_text")
+        has_rendered_text = isinstance(rendered_text, str) and bool(
+            rendered_text.strip()
+        )
+
         has_rows = bool(effective_facts.get("rows") or effective_facts.get("primary"))
         rag_chunks = []
         if isinstance(rag_ctx, dict) and rag_ctx.get("enabled"):
             rag_chunks = rag_ctx.get("chunks") or []
         has_rag = bool(rag_chunks)
 
-        if not has_rows and not has_rag:
+        # Se rewrite-only estiver ativo, aceitamos `rendered_text` como evidência suficiente.
+        if rewrite_only and has_rendered_text:
+            pass
+        elif not has_rows and not has_rag:
             return _finalize_response(
                 _FAILSAFE_TEXT,
                 error="llm_skipped_no_evidence",
@@ -1164,18 +1174,43 @@ class Narrator:
         try:
             response = self.client.generate(prompt, model=effective_model, stream=False)
             candidate = (response or "").strip()
-            LOGGER.info(
-                "NARRATOR_LLM_RAW_RESPONSE entity=%s intent=%s model=%s "
-                "tokens_in=%s candidate_len=%s",
-                entity,
-                intent,
-                effective_model,
-                tokens_in,
-                len(candidate),
-            )
+            # Sanitização leve de prefixos comuns (somente em rewrite-only)
+            if bool(effective_policy.get("rewrite_only")) and candidate:
+                for prefix in (
+                    "**SAÍDA**",
+                    "SAÍDA",
+                    "**OUTPUT**",
+                    "OUTPUT",
+                    "RESPOSTA",
+                    "**RESPOSTA**",
+                ):
+                    if candidate.startswith(prefix):
+                        candidate = candidate[len(prefix) :].lstrip(" \n:-—")
+                        break
+
             if candidate:
-                text = candidate
-                tokens_out = len(candidate.split())
+                if rewrite_only:
+                    rendered_text = effective_facts.get("rendered_text", "")
+                    # validação mínima: pelo menos um número de processo deve aparecer
+                    has_process_anchor = False
+                    for token in rendered_text.split():
+                        if token.isdigit() and token in candidate:
+                            has_process_anchor = True
+                            break
+
+                    if not has_process_anchor:
+                        LOGGER.warning(
+                            "LLM rewrite-only violou contrato (sem âncoras). Fallback para baseline."
+                        )
+                        text = baseline_text
+                        tokens_out = 0
+                    else:
+                        text = candidate
+                        tokens_out = len(candidate.split())
+                else:
+                    text = candidate
+                    tokens_out = len(candidate.split())
+
         except Exception as exc:  # pragma: no cover - caminho excepcional
             error = f"llm_error: {exc}"
             LOGGER.error(
