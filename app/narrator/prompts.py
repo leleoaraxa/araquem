@@ -2,12 +2,32 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any, Dict, List
 from textwrap import dedent
 
 # Limite padrão de caracteres por snippet de RAG enviado ao Narrator.
 # Ajuda a evitar prompts gigantes e manter o foco em trechos curtos.
 RAG_SNIPPET_MAX_CHARS = 320
+
+
+def _extract_rendered_text(facts: dict) -> str:
+    """
+    O pipeline já injeta `facts.rendered_text` com o baseline determinístico.
+    Quando disponível, tratamos como fonte textual primária para evitar deriva/alucinação.
+    """
+    if not isinstance(facts, dict):
+        return ""
+    for k in ("rendered_text", "rendered", "text"):
+        v = facts.get(k)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    return ""
+
+
+def _has_rewrite_baseline(facts: dict) -> bool:
+    return bool(_extract_rendered_text(facts))
+
 
 SYSTEM_PROMPT = """Você é o Narrator do Araquem.
 
@@ -37,6 +57,7 @@ PROIBIÇÕES EXPLÍCITAS (saída):
 - NÃO comece a resposta com "Facts:", "Fatos:", "Contexto:", "Resumo:", "Notas:" ou similares.
 - NÃO crie uma seção introdutória com bullet points de “fatos” antes de responder.
 - NÃO diga como você chegou na resposta. Apenas responda.
+- NÃO invente “campos auxiliares” (ex.: causas, decisões, explicações) se eles não estiverem explicitamente nos dados.
 
 FORMATO RECOMENDADO:
 - 1ª frase: responda diretamente (sim/não/valor/quantidade).
@@ -279,6 +300,28 @@ def build_prompt(
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
     facts_json = json.dumps(facts or {}, ensure_ascii=False, indent=2)
 
+    # ------------------------------------------------------------------
+    # Modo rewrite-only (anti-deriva):
+    # Se existir baseline determinístico em facts.rendered_text, o LLM deve
+    # apenas melhorar legibilidade, sem adicionar conteúdo novo.
+    # ------------------------------------------------------------------
+    rendered_text = _extract_rendered_text(facts or {})
+    rewrite_only = _has_rewrite_baseline(facts or {})
+    rewrite_block = ""
+    if rewrite_only:
+        rewrite_block = dedent(
+            f"""
+            TEXTO_BASE (fonte textual primária; NÃO inventar conteúdo além disso):
+            {rendered_text}
+
+            REGRA DE REWRITE (OBRIGATÓRIA):
+            - Sua saída deve manter o MESMO conteúdo do TEXTO_BASE.
+            - Você pode apenas: corrigir espaços/linhas, padronizar Markdown, e opcionalmente
+              adicionar uma 1ª frase curta respondendo diretamente (ex.: "Sim. Há 4 processos.").
+            - É PROIBIDO criar bullets de resumo antes do TEXTO_BASE.
+            """
+        ).strip()
+
     # Modo conceitual: não precisa de RAG, reduzimos o prompt ao essencial
     compute_block = (meta or {}).get("compute") or {}
     if isinstance(compute_block, dict):
@@ -327,6 +370,8 @@ def build_prompt(
 
         Contexto auxiliar (não imprimir; não copiar trechos):
         {rag_json}
+
+        {rewrite_block}
 
         Instruções específicas de resposta (não citar literalmente):
         {base_instruction}
