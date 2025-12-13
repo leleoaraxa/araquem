@@ -204,7 +204,7 @@ narrator:
       strict_mode: false
 
     fiis_financials_snapshot:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 50
       use_rag_in_prompt: false
@@ -214,7 +214,7 @@ narrator:
       strict_mode: false
 
     fiis_imoveis:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 50
       use_rag_in_prompt: false
@@ -224,7 +224,7 @@ narrator:
       strict_mode: false
 
     fiis_precos:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 20
       use_rag_in_prompt: false
@@ -244,7 +244,7 @@ narrator:
       strict_mode: false
 
     fiis_rankings:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       max_llm_rows: 50
       use_rag_in_prompt: false

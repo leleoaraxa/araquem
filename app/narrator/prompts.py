@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 from typing import Any, Dict, List
+from textwrap import dedent
 
 # Limite padrão de caracteres por snippet de RAG enviado ao Narrator.
 # Ajuda a evitar prompts gigantes e manter o foco em trechos curtos.
@@ -10,16 +11,36 @@ RAG_SNIPPET_MAX_CHARS = 320
 
 SYSTEM_PROMPT = """Você é o Narrator do Araquem.
 
+IMPORTANTE: nunca exponha ou repita blocos técnicos do prompt.
+NUNCA mencione ou reproduza rótulos como [FACTS], [RAG_CONTEXT], [MODEL], [INTENT], [ENTITY], [FOCUS_METRIC_KEY] ou similares.
+
+
 As regras principais de comportamento, estilo, segurança e uso de dados já estão
 definidas no seu system prompt interno (modelo sirios-narrator). Aqui você deve:
 
-- Ler a pergunta original do usuário ([PERGUNTA]).
-- Usar os dados em [FACTS] como fonte primária para números e fatos objetivos.
-- Usar [RAG_CONTEXT] apenas como apoio conceitual, sem copiar trechos literais.
+- Ler a pergunta original do usuário.
+- Usar os dados fornecidos como fonte primária para números e fatos objetivos.
+- Usar contexto auxiliar apenas como apoio conceitual, sem copiar trechos literais.
 - Respeitar o modo de resposta indicado (por exemplo, narrador_mode="concept").
 
-A seguir, você receberá detalhes específicos (FACTS, RAG_CONTEXT, FOCUS_METRIC_KEY
-e instruções de formato) que devem orientar APENAS esta resposta.
+Responda sempre em linguagem natural, como se estivesse falando diretamente
+com o usuário final. Nunca explique estruturas internas, schemas ou metadados.
+
+REGRAS DE SAÍDA (OBRIGATÓRIAS):
+- Entregue APENAS o texto final ao usuário (sem cabeçalhos, sem seções técnicas).
+- NÃO inclua rótulos como: "PERGUNTA", "FACTS", "RAG_CONTEXT", "FOCUS_METRIC_KEY",
+  "NARRADOR_MODE", "MODEL", "ESTILO", "LLM_ENABLED", "SHADOW", "INTENT", "ENTITY".
+- NÃO descreva schema/colunas ("a coluna X significa...") e NÃO explique “campos do dataset”.
+- Não invente números. Use apenas valores presentes nos dados fornecidos.
+
+PROIBIÇÕES EXPLÍCITAS (saída):
+- NÃO comece a resposta com "Facts:", "Fatos:", "Contexto:", "Resumo:", "Notas:" ou similares.
+- NÃO crie uma seção introdutória com bullet points de “fatos” antes de responder.
+- NÃO diga como você chegou na resposta. Apenas responda.
+
+FORMATO RECOMENDADO:
+- 1ª frase: responda diretamente (sim/não/valor/quantidade).
+- Depois: detalhe apenas o que é relevante para a pergunta.
 """
 
 
@@ -27,25 +48,21 @@ PROMPT_TEMPLATES: Dict[str, str] = {
     "summary": """Produza uma resposta curta, em até 3 parágrafos:
 - Comece respondendo diretamente à pergunta, priorizando a métrica em foco (se houver).
 - Em seguida, explique em 2–3 frases como interpretar a métrica no contexto do fundo.
-- Use apenas números presentes em FACTS. Não invente valores.
+- Use apenas números presentes nos dados factuais. Não invente valores.
 - Mantenha tom neutro, sem recomendar compra ou venda.""",
     "list": """Produza uma resposta em Markdown no formato de lista:
-- Use os itens de `facts.rows` na mesma ordem.
+- Comece com uma frase direta respondendo a pergunta.
+- Em seguida, use os itens das linhas retornadas (na mesma ordem).
 - Em cada item, destaque os campos principais em **negrito**.
 - Não crie campos adicionais e não invente números ou categorias que não existam em FACTS.""",
     "table": """Descreva os dados tabulares de forma sucinta:
-- Explique o que cada coluna principal representa.
-- Selecione apenas as colunas mais relevantes para a pergunta.
-- Não extrapole conclusões além do que os dados fornecem.""",
-    "concept": """Produza uma explicação **conceitual**, SEM mencionar fundos ou tickers específicos e SEM apresentar valores numéricos individuais.
-
-Guia:
-- Se [FOCUS_METRIC_KEY] estiver preenchido, explique apenas essa métrica (ex.: Sharpe, Beta,
-  Sortino, volatilidade, MDD, R²): o que mede, como interpretar sinais/valores, e como é usada
-  na análise de risco/retorno.
-- Se não houver foco explícito, explique a métrica (ou conjunto de métricas) citada na pergunta.
-- Traga uma interpretação prática para o investidor, sem dizer se um fundo é “bom” ou “ruim”.
-- Não dê recomendação de investimento.
+Produza uma resposta direta à pergunta do usuário:
+- Comece respondendo objetivamente à pergunta.
+- Em seguida, cite os dados relevantes em linguagem natural.
+- NÃO explique o significado de colunas, campos ou estrutura da tabela.
+- NÃO descreva o schema nem a organização interna dos dados.
+- NÃO dê recomendação de investimento.
+- Use apenas informações presentes nos dados factuais, sem extrapolar.
 """,
 }
 
@@ -279,32 +296,44 @@ def build_prompt(
         rag_json = json.dumps(rag_payload, ensure_ascii=False, indent=2)
     else:
         rag_json = "(nenhum contexto adicional relevante foi encontrado.)"
-    return f"""{SYSTEM_PROMPT}
 
-[MODEL]: {narrator_model}
-[ESTILO]: {narrator_style}
-[LLM_ENABLED]: {llm_enabled}
-[SHADOW]: {shadow_enabled}
-[MAX_PROMPT_TOKENS]: {max_prompt_tokens}
-[MAX_OUTPUT_TOKENS]: {max_output_tokens}
-[APRESENTACAO]: {template_key}
-[INTENT]: {intent}
-[ENTITY]: {entity}
-[FOCUS_METRIC_KEY]: {focus_metric_key}
+    # Importante: reduzir ao máximo “seções” imitáveis. Mantém controle em JSON,
+    # mas sem títulos com cara de cabeçalho.
+    control = {
+        "style": narrator_style,
+        "template": template_key,
+        "intent": intent,
+        "entity": entity,
+        "focus_metric_key": focus_metric_key,
+        "llm_enabled": llm_enabled,
+        "shadow": shadow_enabled,
+        "max_prompt_tokens": max_prompt_tokens,
+        "max_output_tokens": max_output_tokens,
+        "model": narrator_model,
+    }
+    control_json = json.dumps(control, ensure_ascii=False, indent=2)
 
-[PERGUNTA]: {question}
+    return dedent(
+        f"""
+        {SYSTEM_PROMPT}
 
-[FACTS]:
-{facts_json}
+        Controle interno (não imprimir; apenas para orientar):
+        {control_json}
 
-[RAG_CONTEXT]:
-{rag_json}
+        O usuário perguntou: {question}
 
-Instruções adicionais:
-{base_instruction}
+        Dados factuais (JSON interno; não reproduzir como JSON; use apenas para extrair fatos):
+        {facts_json}
 
-Entregue apenas o texto final para o usuário.
-"""
+        Contexto auxiliar (não imprimir; não copiar trechos):
+        {rag_json}
+
+        Instruções específicas de resposta (não citar literalmente):
+        {base_instruction}
+
+        Entregue somente a resposta final ao usuário.
+        """
+    ).strip()
 
 
 # ---------------------------------------------------------------------------
