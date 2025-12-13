@@ -1,53 +1,37 @@
-{%- if rows and rows|length > 0 -%}
-{%- set tickers = rows | map(attribute='ticker') | unique | list -%}
-{%- if tickers|length == 1 -%}
+{% set rows = rows if rows is defined else [] %}
+
+{% if results is defined and meta is defined and meta.result_key is defined %}
+  {% if meta.result_key in results %}
+    {% set rows = results[meta.result_key] %}
+  {% endif %}
+{% endif %}
+
+{% if rows and rows|length > 0 %}
+{% set tickers = rows | map(attribute='ticker') | unique | list %}
+
+{% if tickers|length == 1 %}
 **Processos do {{ tickers[0] }} ({{ rows|length }})**
-{%- else -%}
+{% else %}
 **Processos encontrados ({{ rows|length }})**
-{%- endif -%}
+{% endif %}
 
-{%- for ticker in tickers -%}
-{%- if tickers|length > 1 -%}
+{% for ticker in tickers %}
+{% if tickers|length > 1 %}
 ### {{ ticker }}
-{%- endif -%}
+{% endif %}
 
-{%- for r in rows if r.ticker == ticker -%}
-- **{{ r.process_number }}**{%- if r.judgment %} — {{ r.judgment }}{%- endif %}
-
-{%- set inst = (r.instance|string)|trim if r.instance is not none else "" -%}
-{%- if inst %}  - Instância: {{ inst }}
-{%- endif -%}
-
-{%- set init = r.initiation_date if r.initiation_date is not none else "" -%}
-{%- if init %}  - Início: {{ init | date_br }}
-{%- endif -%}
-
-{%- set cause = r.cause_amt if r.cause_amt is not none else "" -%}
-{%- if cause %}  - Valor da causa: {{ cause | currency_br }}
-{%- endif -%}
-
-{%- set risk = (r.loss_risk_pct|string)|trim if r.loss_risk_pct is not none else "" -%}
-{%- if risk %}  - Risco de perda: {{ risk }}
-{%- endif -%}
-
-{%- set parts = (r.process_parts|string)|trim if r.process_parts is not none else "" -%}
-{%- if parts %}  - Partes: {{ parts }}
-{%- endif -%}
-
-{%- set mf = (r.main_facts|string)|trim if r.main_facts is not none else "" -%}
-{%- if mf %}  - Fatos principais: {%- if mf|length > 400 -%}{{ mf[:400] }}…{%- else -%}{{ mf }}{%- endif -%}
-{%- endif -%}
-
-{%- set impact = (r.loss_impact_analysis|string)|trim if r.loss_impact_analysis is not none else "" -%}
-{%- if impact %}  - Análise de impacto: {{ impact }}
-{%- endif -%}
-
-{%- set upd = r.updated_at if r.updated_at is not none else "" -%}
-{%- if upd %}  - Atualizado em: {{ upd | date_br }}
-{%- endif -%}
-
-{%- endfor -%}
-{%- endfor -%}
-{%- else -%}
+{% for r in rows if r.ticker == ticker %}
+- **{{ r.process_number or "-" }}**{% if r.judgment %} — {{ r.judgment }}{% endif %}
+  - Instância: {{ r.instance or "-" }}
+  - Início: {{ r.initiation_date | date_br if r.initiation_date else "-" }}
+  - Valor da causa: {{ r.cause_amt | currency_br if r.cause_amt is not none else "-" }}
+  - Risco de perda: {{ r.loss_risk_pct | percent_br if r.loss_risk_pct is not none else "-" }}
+  - Partes: {{ r.process_parts or "-" }}
+  - Fatos principais: {{ r.main_facts or "-" }}
+  - Análise de impacto: {{ r.loss_impact_analysis or "-" }}
+  - Atualizado em: {{ r.updated_at | date_br if r.updated_at else "-" }}
+{% endfor %}
+{% endfor %}
+{% else %}
 {{ empty_message or "Nenhum registro encontrado." }}
-{%- endif -%}
+{% endif %}

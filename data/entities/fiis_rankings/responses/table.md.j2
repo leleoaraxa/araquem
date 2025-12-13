@@ -1,33 +1,39 @@
-{%- set rows = rows if rows is defined else [] -%}
+{% set rows = rows if rows is defined else [] %}
 
-{%- if rows and rows|length > 0 -%}
-{%- if rows|length == 1 -%}
-{%- set r = rows[0] -%}
+{% if results is defined and meta is defined and meta.result_key is defined %}
+  {% if meta.result_key in results %}
+    {% set rows = results[meta.result_key] %}
+  {% endif %}
+{% endif %}
+
+{% if rows and rows|length > 0 %}
+{% if rows|length == 1 %}
+{% set r = rows[0] %}
 **Rankings do {{ r.ticker }}**
 
-- Posição no IFIX: **{{ r.ifix_rank_position if r.ifix_rank_position is not none else '-' }}**
-- Movimento no IFIX: **{{ r.ifix_rank_net_movement if r.ifix_rank_net_movement is not none else '-' }}**
-- Posição no IFIL: **{{ r.ifil_rank_position if r.ifil_rank_position is not none else '-' }}**
-- Movimento no IFIL: **{{ r.ifil_rank_net_movement if r.ifil_rank_net_movement is not none else '-' }}**
+- Posição no IFIX: **{{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else "-" }}**
+- Movimento no IFIX: **{{ r.ifix_rank_net_movement | int_br if r.ifix_rank_net_movement is not none else "-" }}**
+- Posição no IFIL: **{{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else "-" }}**
+- Movimento no IFIL: **{{ r.ifil_rank_net_movement | int_br if r.ifil_rank_net_movement is not none else "-" }}**
 
-- Ranking por DY 12m: **{{ r.rank_dy_12m if r.rank_dy_12m is not none else '-' }}**
-- Ranking por DY mensal: **{{ r.rank_dy_monthly if r.rank_dy_monthly is not none else '-' }}**
-- Ranking por dividendos 12m: **{{ r.rank_dividends_12m if r.rank_dividends_12m is not none else '-' }}**
-- Ranking por market cap: **{{ r.rank_market_cap if r.rank_market_cap is not none else '-' }}**
-- Ranking por patrimônio (equity): **{{ r.rank_equity if r.rank_equity is not none else '-' }}**
-- Ranking por Sharpe: **{{ r.rank_sharpe if r.rank_sharpe is not none else '-' }}**
-- Ranking por Sortino: **{{ r.rank_sortino if r.rank_sortino is not none else '-' }}**
-- Ranking por baixa volatilidade: **{{ r.rank_low_volatility if r.rank_low_volatility is not none else '-' }}**
-- Ranking por menor drawdown: **{{ r.rank_low_drawdown if r.rank_low_drawdown is not none else '-' }}**
-{%- else -%}
+- Ranking por DY 12m: **{{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else "-" }}**
+- Ranking por DY mensal: **{{ r.rank_dy_monthly | int_br if r.rank_dy_monthly is not none else "-" }}**
+- Ranking por dividendos 12m: **{{ r.rank_dividends_12m | int_br if r.rank_dividends_12m is not none else "-" }}**
+- Ranking por market cap: **{{ r.rank_market_cap | int_br if r.rank_market_cap is not none else "-" }}**
+- Ranking por patrimônio (equity): **{{ r.rank_equity | int_br if r.rank_equity is not none else "-" }}**
+- Ranking por Sharpe: **{{ r.rank_sharpe | int_br if r.rank_sharpe is not none else "-" }}**
+- Ranking por Sortino: **{{ r.rank_sortino | int_br if r.rank_sortino is not none else "-" }}**
+- Ranking por baixa volatilidade: **{{ r.rank_low_volatility | int_br if r.rank_low_volatility is not none else "-" }}**
+- Ranking por menor drawdown: **{{ r.rank_low_drawdown | int_br if r.rank_low_drawdown is not none else "-" }}**
+{% else %}
 **Rankings dos FIIs**
 
 | FII | IFIX (posição) | IFIL (posição) | Rank DY 12m | Rank Market Cap |
 |-----|----------------|----------------|-------------|-----------------|
-{%- for r in rows -%}
-| {{ r.ticker }} | {{ r.ifix_rank_position }} | {{ r.ifil_rank_position }} | {{ r.rank_dy_12m }} | {{ r.rank_market_cap }} |
-{%- endfor -%}
-{%- endif -%}
-{%- else -%}
+{% for r in rows %}
+| {{ r.ticker or "-" }} | {{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else "-" }} | {{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else "-" }} | {{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else "-" }} | {{ r.rank_market_cap | int_br if r.rank_market_cap is not none else "-" }} |
+{% endfor %}
+{% endif %}
+{% else %}
 {{ empty_message or "Nenhum registro encontrado." }}
-{%- endif -%}
+{% endif %}

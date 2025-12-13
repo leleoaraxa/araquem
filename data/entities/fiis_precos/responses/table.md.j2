@@ -1,13 +1,22 @@
-{%- set rows = rows if rows is defined else [] -%}
+{% set rows = rows if rows is defined else [] %}
 
-{%- if rows and rows|length > 0 -%}
+{% if results is defined and meta is defined and meta.result_key is defined %}
+  {% if meta.result_key in results %}
+    {% set rows = results[meta.result_key] %}
+  {% endif %}
+{% endif %}
+
+{% if rows and rows|length > 0 %}
+{% set first = rows[0] %}
+{% set ticker = (first.ticker if first.ticker is defined else (meta.aggregates.ticker if meta is defined and meta.aggregates is defined and meta.aggregates.ticker is defined else "FII")) %}
+
 **Preços recentes do {{ ticker }}**
 
 | Data | Preço (R$) | Variação no dia |
 |------|------------|-----------------|
-{%- for r in rows[:6] -%}
-| {{ r.traded_at | date_br }} | {{ r.close_price | currency_br }} | {{ r.daily_variation_pct | percent_raw_br }} |
-{%- endfor -%}
-{%- else -%}
-Não encontrei dados de preço para **{{ ticker }}**.
-{%- endif -%}
+{% for r in rows[:6] %}
+| {{ r.traded_at | date_br if r.traded_at else "-" }} | {{ r.close_price | currency_br if r.close_price is not none else "-" }} | {{ r.daily_variation_pct | percent_raw_br if r.daily_variation_pct is not none else "-" }} |
+{% endfor %}
+{% else %}
+Não encontrei dados de preço para **{{ ticker if ticker is defined else "esse FII" }}**.
+{% endif %}
