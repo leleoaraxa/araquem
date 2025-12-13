@@ -1,16 +1,13 @@
 {# Normalização Araquem — captura rows do results quando presente #}
-{% set rows = rows if rows is defined else [] %}
+{%- set rows = rows if rows is defined else [] -%}
+{%- if results is defined and meta is defined and meta.result_key is defined and meta.result_key in results -%}
+  {%- set rows = results[meta.result_key] -%}
+{%- endif -%}
 
-{% if results is defined and meta is defined and meta.result_key is defined %}
-  {% if meta.result_key in results %}
-    {% set rows = results[meta.result_key] %}
-  {% endif %}
-{% endif %}
-
-{% if not rows or rows|length == 0 -%}
+{%- if not rows or rows|length == 0 -%}
 {{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{%- set r = rows[0] %}
+{%- set r = rows[0] -%}
 
 **Snapshot financeiro do{{ ' ' + r.ticker if r.ticker else '' }}**
 
@@ -26,5 +23,4 @@
 | Alavancagem e patrimônio | {{ r.leverage_ratio or '-' }} / {{ r.equity_value or '-' }} |
 | Receita por cota / taxas devidas (admin / performance) | {{ r.revenue_per_share or '-' }} / {{ r.admin_fee_due_amt or '-' }} / {{ r.perf_fee_due_amt or '-' }} |
 | Atualizado em | {{ r.updated_at|datetime_br if r.updated_at else '-' }} |
-
-{%- endif %}
+{%- endif -%}

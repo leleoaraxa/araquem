@@ -1,33 +1,30 @@
-{% if results is defined and meta is defined and meta.result_key in results %}
-  {% set rows = results[meta.result_key] %}
-{% endif %}
+{%- set rows = rows if rows is defined else [] -%}
+{%- if results is defined and meta is defined and meta.result_key is defined and meta.result_key in results -%}
+  {%- set rows = results[meta.result_key] -%}
+{%- endif -%}
 
-{% set ticker_label = (
+{%- set ticker_label = (
   meta.aggregates.ticker
-  if meta is defined
-     and meta.aggregates is defined
-     and meta.aggregates.ticker is defined
+  if meta is defined and meta.aggregates is defined and meta.aggregates.ticker is defined
   else 'FII'
-) %}
+) -%}
 
-{% if not rows or rows|length == 0 -%}
+{%- if not rows or rows|length == 0 -%}
 Dados de imóveis do {{ ticker_label }} não disponíveis no momento.
 {%- else -%}
-  {%- set grouped = rows | groupby('ticker') %}
-
-  {%- for ticker, items in grouped %}
+{%- set grouped = rows | groupby('ticker') -%}
+{%- for ticker, items in grouped -%}
 **Imóveis do {{ ticker }}**
 
 | Nome do ativo | Classe | Localização | Área total (m²) | Unidades | Vacância | Inadimplência | Status | Atualizado em |
 | --- | --- | --- | ---: | ---: | --- | --- | --- | --- |
-{%- for r in items %}
+{%- for r in items -%}
 | {{ r.asset_name or '-' }} | {{ r.asset_class or '-' }} | {{ r.asset_address or '-' }} | {{ r.total_area or '-' }} | {{ r.units_count or '-' }} | {{ r.vacancy_ratio or '-' }} | {{ r.non_compliant_ratio or '-' }} | {{ r.assets_status or '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
-{%- endfor %}
-
-{%- if not loop.last %}
+{%- endfor -%}
+{%- if not loop.last -%}
 
 ---
 
-{%- endif %}
-  {%- endfor %}
-{%- endif %}
+{%- endif -%}
+{%- endfor -%}
+{%- endif -%}

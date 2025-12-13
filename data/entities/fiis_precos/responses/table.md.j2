@@ -1,13 +1,13 @@
-{% if rows and rows|length > 0 %}
+{%- set rows = rows if rows is defined else [] -%}
 
+{%- if rows and rows|length > 0 -%}
 **Preços recentes do {{ ticker }}**
 
 | Data | Preço (R$) | Variação no dia |
-|------|-------------|------------------|
-{% for r in rows[:6] %}
-| {{ r.traded_at | date_br }} | {{ r.close_price|currency_br }} | {{ r.daily_variation_pct|percent_raw_br }} |
-{% endfor %}
-
-{% else %}
+|------|------------|-----------------|
+{%- for r in rows[:6] -%}
+| {{ r.traded_at | date_br }} | {{ r.close_price | currency_br }} | {{ r.daily_variation_pct | percent_raw_br }} |
+{%- endfor -%}
+{%- else -%}
 Não encontrei dados de preço para **{{ ticker }}**.
-{% endif %}
+{%- endif -%}
