@@ -1,3 +1,5 @@
+{% set rows = rows if rows is defined else [] %}
+
 {% if not rows or rows|length == 0 -%}
 {{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}

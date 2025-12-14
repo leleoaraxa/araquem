@@ -1,3 +1,5 @@
+{% set rows = rows if rows is defined else [] %}
+
 {% if rows and rows|length > 0 -%}
   {% set latest = rows[0] %}
   **Performance da carteira vs {{ latest.benchmark_code or 'benchmark' }}**

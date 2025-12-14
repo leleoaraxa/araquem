@@ -1,3 +1,5 @@
+{% set rows = rows if rows is defined else [] %}
+
 {% if rows and rows|length > 0 -%}
 {% set months_pt = {
   1: 'Janeiro', 2: 'Fevereiro', 3: 'Março', 4: 'Abril',

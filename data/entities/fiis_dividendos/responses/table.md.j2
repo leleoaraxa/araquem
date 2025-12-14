@@ -1,3 +1,5 @@
+{% set rows = rows if rows is defined else [] %}
+
 {% if rows and rows|length > 0 -%}
   {% set tickers = rows | map(attribute='ticker') | unique | list %}
   {% for ticker in tickers %}
