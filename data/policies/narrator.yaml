@@ -226,12 +226,13 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+      max_output_tokens: 1200
 
     fiis_imoveis:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
       rewrite_only: true
-      max_llm_rows: 50
+      max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -248,6 +249,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+      max_output_tokens: 800
 
     fiis_processos:
       llm_enabled: true
@@ -286,6 +288,7 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+      max_output_tokens: 1200
 
     # ──────────────────
     # Entidades do cliente (posições / desempenho / dividendos evol.)
