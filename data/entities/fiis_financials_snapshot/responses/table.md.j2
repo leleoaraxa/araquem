@@ -1,9 +1,7 @@
 {% set rows = rows if rows is defined else [] %}
 
-{% if results is defined and meta is defined and meta.result_key is defined %}
-  {% if meta.result_key in results %}
-    {% set rows = results[meta.result_key] %}
-  {% endif %}
+{% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
+  {% set rows = results[meta.result_key] %}
 {% endif %}
 
 {% if not rows or rows|length == 0 %}
@@ -14,12 +12,12 @@
 **Snapshot financeiro do{{ " " + r.ticker if r.ticker else "" }}**
 
 | Campo | Valor |
-|-------|-------|
+| --- | --- |
 | DY mensal / anualizado | {{ r.dy_monthly_pct | percent_raw_br if r.dy_monthly_pct is not none else "-" }} / {{ r.dy_pct | percent_raw_br if r.dy_pct is not none else "-" }} |
 | Último dividendo (valor / data) | {{ r.last_dividend_amt | currency_br if r.last_dividend_amt is not none else "-" }} / {{ r.last_payment_date | datetime_br if r.last_payment_date else "-" }} |
 | Dividendos no ano | {{ r.sum_anual_dy_amt | currency_br if r.sum_anual_dy_amt is not none else "-" }} |
 | Market Cap / EV | {{ r.market_cap_value | currency_br if r.market_cap_value is not none else "-" }} / {{ r.enterprise_value | currency_br if r.enterprise_value is not none else "-" }} |
-| P/BV e patrimônio por cota | {{ r.price_book_ratio | percent_br if r.price_book_ratio is not none else "-" }} / {{ r.equity_per_share | number_br if r.equity_per_share is not none else "-" }} |
+| P/BV e patrimônio por cota | {{ r.price_book_ratio | number_br if r.price_book_ratio is not none else "-" }} / {{ r.equity_per_share | number_br if r.equity_per_share is not none else "-" }} |
 | Caixa total e passivos | {{ r.total_cash_amt | currency_br if r.total_cash_amt is not none else "-" }} / {{ r.liabilities_total_amt | currency_br if r.liabilities_total_amt is not none else "-" }} |
 | Payout (taxa de crescimento / cap rate) | {{ r.dividend_payout_pct | percent_raw_br if r.dividend_payout_pct is not none else "-" }} ({{ r.growth_rate | number_br if r.growth_rate is not none else "-" }} / {{ r.cap_rate | percent_br if r.cap_rate is not none else "-" }}) |
 | Alavancagem e patrimônio | {{ r.leverage_ratio | number_br if r.leverage_ratio is not none else "-" }} / {{ r.equity_value | currency_br if r.equity_value is not none else "-" }} |

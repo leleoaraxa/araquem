@@ -1,10 +1,9 @@
 {% set rows = rows if rows is defined else [] %}
 
-{% if results is defined and meta is defined and meta.result_key is defined %}
-  {% if meta.result_key in results %}
-    {% set rows = results[meta.result_key] %}
-  {% endif %}
+{% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
+  {% set rows = results[meta.result_key] %}
 {% endif %}
+
 
 {% set ticker_label = (
   meta.aggregates.ticker
