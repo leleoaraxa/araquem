@@ -1,5 +1,6 @@
 {% set rows = rows if rows is defined else [] %}
 
+{# Só hidrata rows via results se rows estiver vazio (rewrite_only-safe) #}
 {% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
   {% set rows = results[meta.result_key] %}
 {% endif %}
@@ -27,7 +28,7 @@
 **Rankings dos FIIs**
 
 | FII | IFIX (posição) | IFIL (posição) | Rank DY 12m | Rank Market Cap |
-|-----|----------------|----------------|-------------|-----------------|
+| --- | ---: | ---: | ---: | ---: |
 {% for r in rows %}
 | {{ r.ticker or "-" }} | {{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else "-" }} | {{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else "-" }} | {{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else "-" }} | {{ r.rank_market_cap | int_br if r.rank_market_cap is not none else "-" }} |
 {% endfor %}

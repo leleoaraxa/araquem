@@ -1,10 +1,11 @@
 {% set rows = rows if rows is defined else [] %}
 
+{# Só hidrata rows via results se rows estiver vazio (rewrite_only-safe) #}
 {% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
   {% set rows = results[meta.result_key] %}
 {% endif %}
 
-{# ticker_label sempre definido (para o empty state) #}
+{# ticker_label sempre definido (para empty state e título) #}
 {% set ticker_label = (
   meta.aggregates.ticker
   if meta is defined and meta.aggregates is defined and meta.aggregates.ticker is defined

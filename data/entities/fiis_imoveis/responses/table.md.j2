@@ -1,9 +1,9 @@
 {% set rows = rows if rows is defined else [] %}
 
+{# Só hidrata rows via results se rows estiver vazio (rewrite_only-safe) #}
 {% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
   {% set rows = results[meta.result_key] %}
 {% endif %}
-
 
 {% set ticker_label = (
   meta.aggregates.ticker
