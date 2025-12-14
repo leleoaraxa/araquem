@@ -134,7 +134,7 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 10
+      limit: 100
       order: desc
 
 presentation:
