@@ -49,6 +49,7 @@ filters:
   percent_raw_br: { type: percent, multiply_by_100: false }
   number_br: { type: number }
   number_raw_br: { type: number, precision: 4 }
+  number_m2_br: { type: number, precision: 0, thousands: true, trim_trailing_zeros: true }
   int_br: { type: integer, thousands: true }
   date_br: { type: date, format: "%d/%m/%Y" }
   datetime_br: { type: datetime, format: "%d/%m/%Y %H:%M" }
@@ -113,13 +114,13 @@ placeholders:
   - field: admin_cnpj
     filter: cnpj_mask
   - field: total_area
-    filter: number_br
+    filter: number_m2_br
   - field: units_count
     filter: int_br
   - field: vacancy_ratio
-    filter: percent_br
+    filter: percent_raw_br
   - field: non_compliant_ratio
-    filter: percent_br
+    filter: percent_raw_br
   - field: published_at
     filter: datetime_br
   - field: traded_at
