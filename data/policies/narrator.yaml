@@ -231,7 +231,7 @@ narrator:
     fiis_imoveis:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
