@@ -79,7 +79,7 @@ O Planner **não** deve usar `fiis_rankings` quando a pergunta for sobre:
    - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividendos`
    - “Qual o DY do HGLG11 nos últimos 12 meses?” → `fiis_yield_history` / `dividendos_yield`.
 
-3. **Snapshot financeiro do FII (PL, VP/cota, vacância, caixa, dívida)**:
+3. **Dados financeiros do FII (PL, VP/cota, vacância, caixa, dívida)**:
    - “Qual o patrimônio líquido do HGLG11?” → `fiis_financials_snapshot`
    - “Qual a vacância do HGLG11?” → `fiis_financials_snapshot`
 
