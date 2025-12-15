@@ -307,11 +307,12 @@ def build_prompt(
     rendered_text = _extract_rendered_text(facts or {})
     rewrite_only = _has_rewrite_baseline(facts or {})
     if rewrite_only:
-        rewrite_block = dedent(
-            f"""
+            rewrite_block = dedent(
+                f"""
             MODO REWRITE-ONLY (INTRO-ONLY):
             - Você deve retornar APENAS um prefácio curto (máx. 5 linhas).
             - PROIBIDO: tabelas, pipes `|`, Markdown table, reproduzir TEXTO_BASE, bullets de facts, JSON.
+            - PROIBIDO: números, percentuais, datas (deixe os números para o TEXTO_BASE que será exibido depois).
             - Use o TEXTO_BASE abaixo apenas como referência de fatos; não copie ou reescreva o bloco.
             - Cite no máximo 1–2 valores do TEXTO_BASE no prefácio, se necessário, sempre em texto corrido.
 
