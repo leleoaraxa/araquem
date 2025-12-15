@@ -29,10 +29,6 @@ columns:
   alias: DY mensal
   description: Dividend yield mensal (dividends_sum / price_ref).
 
-presentation:
-  kind: table
-  empty_message: "Nenhum registro encontrado."
-
 ask:
   intents:
     - fiis_yield_history
@@ -130,7 +126,7 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 12
+      limit: 24
       order: desc
     avg:
       window: months:6
@@ -146,6 +142,10 @@ aggregations:
   - count:12
   - count:24
   - count:1
+
+presentation:
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 responses:
   default:

@@ -67,7 +67,7 @@ narrator:
     history_market_indicators:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true
@@ -80,7 +80,7 @@ narrator:
     history_b3_indexes:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true
@@ -93,7 +93,7 @@ narrator:
     history_currency_rates:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 5
       rag_snippet_max_chars: 260
       use_rag_in_prompt: true
@@ -109,7 +109,7 @@ narrator:
     fii_overview:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -120,7 +120,7 @@ narrator:
     fiis_yield_history:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -131,7 +131,7 @@ narrator:
     dividendos_yield:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -142,7 +142,7 @@ narrator:
     carteira_enriquecida:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -197,7 +197,7 @@ narrator:
     fiis_cadastro:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -280,7 +280,7 @@ narrator:
     client_fiis_positions:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -291,7 +291,7 @@ narrator:
     client_fiis_dividends_evolution:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -302,7 +302,7 @@ narrator:
     client_fiis_performance_vs_benchmark:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
