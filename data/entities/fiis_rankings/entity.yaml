@@ -115,6 +115,32 @@ ask:
     - melhores fiis no ranking
     - posicao no ranking
     - ranking do fii
+
+  metrics_synonyms:
+    ifix_rank_position:
+      - ifix
+      - posicao no ifix
+      - ranking ifix
+    ifil_rank_position:
+      - ifil
+      - posicao no ifil
+      - ranking ifil
+    users_rank_position:
+      - usuarios
+      - ranking dos usuarios
+      - posicao dos usuarios
+    sirios_rank_position:
+      - sirios
+      - ranking sirios
+      - posicao sirios
+    rank_dy_12m:
+      - dy 12m
+      - dividend yield 12 meses
+      - dy anual
+    rank_market_cap:
+      - market cap
+      - valor de mercado
+      - capitalizacao
   synonyms:
     ticker:
       - ativo

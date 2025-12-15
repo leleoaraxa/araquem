@@ -188,6 +188,33 @@ ask:
     - "quanto variou hoje o"
     - "quanto variou ontem o"
 
+  metrics_synonyms:
+    close_price:
+      - fechamento
+      - preco de fechamento
+      - cotacao de fechamento
+      - close
+    daily_variation_pct:
+      - variacao
+      - variacao no dia
+      - alta
+      - queda
+      - oscilacao
+      - "% no dia"
+    traded_at:
+      - data
+      - pregao
+      - ultimo pregao
+    open_price:
+      - abertura
+      - preco de abertura
+    max_price:
+      - maxima
+      - preco maximo
+    min_price:
+      - minima
+      - preco minimo
+
   synonyms:
     ticker:
       - ativo
