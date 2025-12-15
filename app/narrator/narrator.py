@@ -901,6 +901,15 @@ class Narrator:
             candidate = requested_metrics[0]
             if isinstance(candidate, str) and candidate.strip():
                 focus_metric_key = candidate.strip()
+        # ------------------------------------------------------------------
+        # Propaga foco para o prompt via meta.focus.metric_key (contrato do prompt)
+        # Sem heurística: deriva 1:1 de requested_metrics (declarativo no YAML).
+        # ------------------------------------------------------------------
+        if focus_metric_key:
+            if not isinstance(render_meta.get("focus"), dict):
+                render_meta["focus"] = {}
+            if "metric_key" not in render_meta["focus"]:
+                render_meta["focus"]["metric_key"] = focus_metric_key
 
         canonical_value = _extract_focus_value(effective_facts, focus_metric_key)
         if canonical_value:
