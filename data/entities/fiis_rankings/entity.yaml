@@ -163,12 +163,16 @@ ask:
       - movimentos sirios
     ifix_rank_position:
       - ifix ranking
+      - ranking do ifix
+      - ranking no ifix
     ifix_rank_net_movement:
       - ifix movimento
       - variacao ifix
       - movimentos ifix
     ifil_rank_position:
       - ifil ranking
+      - ranking do ifil
+      - ranking no ifil
     ifil_rank_net_movement:
       - ifil movimento
       - variacao ifil
