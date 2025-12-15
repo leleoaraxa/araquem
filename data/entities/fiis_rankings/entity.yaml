@@ -206,7 +206,8 @@ ask:
     identifiers: 2.0
     keywords: 1.0
     synonyms: 0.5
-    sample_questions:
+
+  sample_questions:
     - quais sao os top fiis no ranking de dy
 
 presentation:
