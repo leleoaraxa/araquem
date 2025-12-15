@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-15T14:03:37Z",
+  "generated_at": "2025-12-15T15:10:55Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -166,8 +166,8 @@
         "precos",
         "entity:fiis_precos"
       ],
-      "chunks": 4,
-      "sha_all": "0b6789fc54d7b9672120161e4c8bd7a29899c4611f4172a8214af9cd96b65474"
+      "chunks": 5,
+      "sha_all": "bde08528e9496a79f07219bfc358bb275a13d695ba56965f99b6e2805634cf88"
     },
     {
       "id": "entity-fiis-precos-hints",
@@ -191,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 5,
-      "sha_all": "1c804ef67bd37b830a369cf2906479feea9e0844b3b6a9b2c5f3ae80948b90bd"
+      "sha_all": "abfc08b9dc5a8563641d2a0480aada41f8dc7f17ac6b13cb7f4b6a6af2c6099b"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -240,7 +240,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 5,
-      "sha_all": "1835ce8e3b679c777e62187e67282ba0e26d6f216a08eb259b6f24eb3f366aa0"
+      "sha_all": "3bbe4f763f45a52ce703f90a42962b4086e7f163d44a17c54dcb784a7017ef97"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -678,7 +678,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1765807578,
+  "last_refresh_epoch": 1765811609,
   "vector_dimension": 768,
-  "total_chunks": 266
+  "total_chunks": 267
 }
