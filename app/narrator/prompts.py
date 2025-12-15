@@ -302,30 +302,20 @@ def build_prompt(
     # ------------------------------------------------------------------
     # Modo rewrite-only (anti-deriva):
     # Se existir baseline determinístico em facts.rendered_text, o LLM deve
-    # apenas melhorar legibilidade, sem adicionar conteúdo novo.
+    # apenas entregar um prefácio curto antes do texto-base.
     # ------------------------------------------------------------------
     rendered_text = _extract_rendered_text(facts or {})
     rewrite_only = _has_rewrite_baseline(facts or {})
     if rewrite_only:
         rewrite_block = dedent(
             f"""
-            MODO REWRITE-ONLY (OBRIGATÓRIO):
-            - Você NÃO deve responder usando JSON, tabelas ou contexto auxiliar.
-            - Você deve usar EXCLUSIVAMENTE o TEXTO_BASE abaixo como fonte do conteúdo.
-            - Você pode apenas:
-              (a) corrigir quebras de linha/espaços,
-              (b) padronizar Markdown,
-              (c) opcionalmente adicionar UMA única 1ª frase curta que responda diretamente.
-            - É PROIBIDO:
-              - criar bullets/“resumo” antes do TEXTO_BASE,
-              - introduzir qualquer fato/campo que não exista no TEXTO_BASE,
-              - remover processos/linhas do TEXTO_BASE.
+            MODO REWRITE-ONLY (INTRO-ONLY):
+            - Você deve retornar APENAS um prefácio curto (máx. 5 linhas).
+            - PROIBIDO: tabelas, pipes `|`, Markdown table, reproduzir TEXTO_BASE, bullets de facts, JSON.
+            - Use o TEXTO_BASE abaixo apenas como referência de fatos; não copie ou reescreva o bloco.
+            - Cite no máximo 1–2 valores do TEXTO_BASE no prefácio, se necessário, sempre em texto corrido.
 
-            REGRA DE VALIDAÇÃO:
-            - Após a 1ª frase opcional, sua resposta deve ser o TEXTO_BASE reescrito,
-              mantendo integralmente o conteúdo.
-
-            TEXTO_BASE:
+            TEXTO_BASE (não deve ser reproduzido, apenas usado como evidência):
             {rendered_text}
             """
         ).strip()
@@ -338,7 +328,7 @@ def build_prompt(
 
             {rewrite_block}
 
-            SAÍDA: devolva apenas o texto final.
+            SAÍDA: devolva apenas o prefácio.
             """
         ).strip()
 

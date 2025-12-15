@@ -1190,23 +1190,31 @@ class Narrator:
 
             if candidate:
                 if rewrite_only:
-                    rendered_text = effective_facts.get("rendered_text", "")
-                    # validação mínima: pelo menos um número de processo deve aparecer
-                    has_process_anchor = False
-                    for token in rendered_text.split():
-                        if token.isdigit() and token in candidate:
-                            has_process_anchor = True
-                            break
+                    rendered_text = effective_facts.get("rendered_text", "").strip()
+                    intro = candidate.strip()
+                    intro_lines = intro.splitlines()
+                    invalid_intro = False
 
-                    if not has_process_anchor:
+                    if not intro:
+                        invalid_intro = True
+                    if "|" in intro or re.search(r"\n\s*\|", intro):
+                        invalid_intro = True
+                    if any(line.count("|") >= 2 for line in intro_lines):
+                        invalid_intro = True
+                    if re.search(r"TEXTO_BASE", intro, re.IGNORECASE):
+                        invalid_intro = True
+                    if len(intro_lines) > 5:
+                        invalid_intro = True
+
+                    if invalid_intro or not rendered_text:
                         LOGGER.warning(
-                            "LLM rewrite-only violou contrato (sem âncoras). Fallback para baseline."
+                            "LLM rewrite-only violou contrato (intro inválido). Fallback para baseline."
                         )
-                        text = baseline_text
+                        text = rendered_text or baseline_text
                         tokens_out = 0
                     else:
-                        text = candidate
-                        tokens_out = len(candidate.split())
+                        text = f"{intro}\n\n{rendered_text}" if intro else rendered_text
+                        tokens_out = len(text.split())
                 else:
                     text = candidate
                     tokens_out = len(candidate.split())
