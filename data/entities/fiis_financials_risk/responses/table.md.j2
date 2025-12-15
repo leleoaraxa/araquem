@@ -1,6 +1,6 @@
 {% set rows = rows if rows is defined else [] %}
 {% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
-  {% set rows = results[meta.result_key] %}
+{% set rows = results[meta.result_key] %}
 {% endif %}
 {% if rows and rows|length > 0 -%}
 | Código | Volatilidade | Sharpe | Sortino | Treynor | Alfa de Jensen | Beta | Máx. drawdown (%) | R² (%) | Atualizado em |
