@@ -4,20 +4,11 @@
   {% set rows = results[meta.result_key] %}
 {% endif %}
 {% if rows and rows|length > 0 -%}
-  {%- if rows|length == 1 -%}
-    {%- set r = rows[0] -%}
-    ### Rankings do {{ r.ticker or '-' }}
-
-    - Rankings IFIX / IFIL: **{{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else '-' }} / {{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else '-' }}**
-    - DY 12m e market cap: **{{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else '-' }} / {{ r.rank_market_cap | int_br if r.rank_market_cap is not none else '-' }}**
-    - Sharpe e Sortino: **{{ r.rank_sharpe | int_br if r.rank_sharpe is not none else '-' }} / {{ r.rank_sortino | int_br if r.rank_sortino is not none else '-' }}**
-  {%- endif %}
-
-  | Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
-  | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-  {%- for r in rows %}
-    | {{ r.ticker or '-' }} | {{ r.users_rank_position | int_br if r.users_rank_position is not none else '-' }} | {{ r.users_rank_net_movement | int_br if r.users_rank_net_movement is not none else '-' }} | {{ r.sirios_rank_position | int_br if r.sirios_rank_position is not none else '-' }} | {{ r.sirios_rank_net_movement | int_br if r.sirios_rank_net_movement is not none else '-' }} | {{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else '-' }} | {{ r.ifix_rank_net_movement | int_br if r.ifix_rank_net_movement is not none else '-' }} | {{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else '-' }} | {{ r.ifil_rank_net_movement | int_br if r.ifil_rank_net_movement is not none else '-' }} | {{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else '-' }} | {{ r.rank_dy_monthly | int_br if r.rank_dy_monthly is not none else '-' }} | {{ r.rank_dividends_12m | int_br if r.rank_dividends_12m is not none else '-' }} | {{ r.rank_market_cap | int_br if r.rank_market_cap is not none else '-' }} | {{ r.rank_equity | int_br if r.rank_equity is not none else '-' }} | {{ r.rank_sharpe | int_br if r.rank_sharpe is not none else '-' }} | {{ r.rank_sortino | int_br if r.rank_sortino is not none else '-' }} | {{ r.rank_low_volatility | int_br if r.rank_low_volatility is not none else '-' }} | {{ r.rank_low_drawdown | int_br if r.rank_low_drawdown is not none else '-' }} | {{ r.created_at | datetime_br if r.created_at else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
-  {%- endfor %}
+| Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+{%- for r in rows %}
+| {{ r.ticker or '-' }} | {{ r.users_rank_position | int_br if r.users_rank_position is not none else '-' }} | {{ r.users_rank_net_movement | int_br if r.users_rank_net_movement is not none else '-' }} | {{ r.sirios_rank_position | int_br if r.sirios_rank_position is not none else '-' }} | {{ r.sirios_rank_net_movement | int_br if r.sirios_rank_net_movement is not none else '-' }} | {{ r.ifix_rank_position | int_br if r.ifix_rank_position is not none else '-' }} | {{ r.ifix_rank_net_movement | int_br if r.ifix_rank_net_movement is not none else '-' }} | {{ r.ifil_rank_position | int_br if r.ifil_rank_position is not none else '-' }} | {{ r.ifil_rank_net_movement | int_br if r.ifil_rank_net_movement is not none else '-' }} | {{ r.rank_dy_12m | int_br if r.rank_dy_12m is not none else '-' }} | {{ r.rank_dy_monthly | int_br if r.rank_dy_monthly is not none else '-' }} | {{ r.rank_dividends_12m | int_br if r.rank_dividends_12m is not none else '-' }} | {{ r.rank_market_cap | int_br if r.rank_market_cap is not none else '-' }} | {{ r.rank_equity | int_br if r.rank_equity is not none else '-' }} | {{ r.rank_sharpe | int_br if r.rank_sharpe is not none else '-' }} | {{ r.rank_sortino | int_br if r.rank_sortino is not none else '-' }} | {{ r.rank_low_volatility | int_br if r.rank_low_volatility is not none else '-' }} | {{ r.rank_low_drawdown | int_br if r.rank_low_drawdown is not none else '-' }} | {{ r.created_at | datetime_br if r.created_at else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
+{%- endfor %}
 {%- else -%}
-  {{ empty_message or "Nenhum registro encontrado." }}
+{{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}
