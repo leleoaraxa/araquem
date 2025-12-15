@@ -117,9 +117,9 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
       instruction: |
-        Escreva no máximo 5 linhas. Coloque o texto antes do bloco tabular. Preserve a tabela
-        exatamente como está (mesmas colunas, linhas e valores). Não remova, não reordene e
-        não reescreva a tabela. Não invente dados; não altere números/datas.
+        Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
+        usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
+        repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
 
     fiis_yield_history:
       llm_enabled: false
@@ -230,11 +230,11 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 1200
+      max_output_tokens: 220
       instruction: |
-        Escreva no máximo 5 linhas. Coloque o texto antes do bloco tabular. Preserve a tabela
-        exatamente como está (mesmas colunas, linhas e valores). Não remova, não reordene e
-        não reescreva a tabela. Não invente dados; não altere números/datas.
+        Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
+        usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
+        repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
 
     fiis_imoveis:
       llm_enabled: false
@@ -257,11 +257,11 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 800
+      max_output_tokens: 220
       instruction: |
-        Escreva no máximo 5 linhas. Coloque o texto antes do bloco tabular. Preserve a tabela
-        exatamente como está (mesmas colunas, linhas e valores). Não remova, não reordene e
-        não reescreva a tabela. Não invente dados; não altere números/datas.
+        Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
+        usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
+        repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
 
     fiis_processos:
       llm_enabled: false
@@ -284,11 +284,11 @@ narrator:
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 1200
+      max_output_tokens: 220
       instruction: |
-        Escreva no máximo 5 linhas. Coloque o texto antes do bloco tabular. Preserve a tabela
-        exatamente como está (mesmas colunas, linhas e valores). Não remova, não reordene e
-        não reescreva a tabela. Não invente dados; não altere números/datas.
+        Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
+        usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
+        repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
 
     # ──────────────────
     # Entidades do cliente (posições / desempenho / dividendos evol.)
