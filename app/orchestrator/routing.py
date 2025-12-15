@@ -739,6 +739,16 @@ class Orchestrator:
             },
         }
 
+        if "focus" not in meta:
+            candidate_metric = None
+            if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
+                candidate = requested_metrics[0]
+                if isinstance(candidate, str):
+                    candidate_metric = candidate.strip()
+
+            if candidate_metric:
+                meta["focus"] = {"metric_key": candidate_metric}
+
         # ------------------- M12: contexto de RAG -------------------
         # O contexto canônico de RAG é sempre produzido aqui no
         # orchestrator. O build_rag_context aplica as políticas
