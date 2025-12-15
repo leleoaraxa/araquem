@@ -108,10 +108,6 @@ columns:
   alias: Ranking Sharpe
   description: Posição no ranking por Sharpe.
 
-presentation:
-  kind: table
-  empty_message: Sem posições disponíveis.
-
 ask:
   intents:
     - carteira_enriquecida
@@ -198,6 +194,10 @@ aggregations:
       limit: 50
       order: desc
   windows_allowed: []
+
+presentation:
+  kind: table
+  empty_message: Sem posições disponíveis.
 
 responses:
   default:
