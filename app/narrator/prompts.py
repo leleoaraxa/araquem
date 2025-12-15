@@ -339,7 +339,6 @@ def build_prompt(
             - PROIBIDO: tabelas, pipes `|`, Markdown table, reproduzir TEXTO_BASE, bullets de facts, JSON.
             - {numbers_rule}
             - Use o TEXTO_BASE abaixo apenas como referência de fatos; não copie ou reescreva o bloco.
-            - Cite no máximo 1–2 valores do TEXTO_BASE no prefácio, se necessário, sempre em texto corrido.
 
             {anchor_block}
 

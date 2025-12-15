@@ -876,11 +876,18 @@ class Narrator:
         # Métrica foco (focus_metric_key) — vinda da ontologia / requested_metrics
         # ------------------------------------------------------------------
         focus_metric_key: str | None = None
-        requested_metrics = effective_facts.get("requested_metrics")
-        if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
-            candidate = requested_metrics[0]
+        focus_meta = render_meta.get("focus")
+        if isinstance(focus_meta, dict):
+            candidate = focus_meta.get("metric_key")
             if isinstance(candidate, str) and candidate.strip():
                 focus_metric_key = candidate.strip()
+
+        if focus_metric_key is None:
+            requested_metrics = effective_facts.get("requested_metrics")
+            if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
+                candidate = requested_metrics[0]
+                if isinstance(candidate, str) and candidate.strip():
+                    focus_metric_key = candidate.strip()
         # ------------------------------------------------------------------
         # Propaga foco para o prompt via meta.focus.metric_key (contrato do prompt)
         # Sem heurística: deriva 1:1 de requested_metrics (declarativo no YAML).
