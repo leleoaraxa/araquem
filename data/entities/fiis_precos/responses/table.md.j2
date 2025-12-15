@@ -1,25 +1,19 @@
 {% set rows = rows if rows is defined else [] %}
+{% if rows and rows|length > 0 -%}
+  {%- if rows|length == 1 -%}
+    {%- set r = rows[0] -%}
+    ### Preços recentes do {{ r.ticker or '-' }}
 
-{# Só hidrata rows via results se rows estiver vazio (rewrite_only-safe) #}
-{% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
-  {% set rows = results[meta.result_key] %}
-{% endif %}
+    - Último pregão: **{{ r.traded_at | date_br if r.traded_at else '-' }}**
+    - Preço de fechamento: **{{ r.close_price | currency_br if r.close_price is not none else '-' }}**
+    - Variação no dia: **{{ r.daily_variation_pct | percent_raw_br if r.daily_variation_pct is not none else '-' }}**
+  {%- endif %}
 
-{# ticker_label sempre definido (para empty state e título) #}
-{% set ticker_label = (
-  meta.aggregates.ticker
-  if meta is defined and meta.aggregates is defined and meta.aggregates.ticker is defined
-  else (rows[0].ticker if rows and rows[0].ticker is defined else "esse FII")
-) %}
-
-{% if rows and rows|length > 0 %}
-**Preços recentes do {{ ticker_label }}**
-
-| Data | Preço (R$) | Variação no dia |
-| --- | ---: | ---: |
-{% for r in rows[:6] %}
-| {{ r.traded_at | date_br if r.traded_at else "-" }} | {{ r.close_price | currency_br if r.close_price is not none else "-" }} | {{ r.daily_variation_pct | percent_raw_br if r.daily_variation_pct is not none else "-" }} |
-{% endfor %}
-{% else %}
-Não encontrei dados de preço para **{{ ticker_label }}**.
-{% endif %}
+  | Data | Código | Preço de fechamento (R$) | Preço ajustado (R$) | Abertura (R$) | Máxima (R$) | Mínima (R$) | Variação diária (%) | Criado em | Atualizado em |
+  | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+  {%- for r in rows %}
+    | {{ r.traded_at | date_br if r.traded_at else '-' }} | {{ r.ticker or '-' }} | {{ r.close_price | currency_br if r.close_price is not none else '-' }} | {{ r.adj_close_price | currency_br if r.adj_close_price is not none else '-' }} | {{ r.open_price | currency_br if r.open_price is not none else '-' }} | {{ r.max_price | currency_br if r.max_price is not none else '-' }} | {{ r.min_price | currency_br if r.min_price is not none else '-' }} | {{ r.daily_variation_pct | percent_raw_br if r.daily_variation_pct is not none else '-' }} | {{ r.created_at | datetime_br if r.created_at else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
+  {%- endfor %}
+{%- else -%}
+  {{ empty_message or "Nenhum registro encontrado." }}
+{%- endif %}
