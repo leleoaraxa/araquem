@@ -29,7 +29,7 @@ except Exception:  # pragma: no cover - dependência opcional
 
 _FAILSAFE_TEXT = (
     "Não sei responder com segurança agora. Exemplos de perguntas válidas: "
-    "'cnpj do MCCI11', 'preço do MXRF11 hoje'."
+    "'Qual o cnpj do MCCI11', 'Qual o preço do MXRF11 hoje'."
 )
 
 LOGGER = logging.getLogger(__name__)
@@ -228,7 +228,9 @@ def _collect_filter_texts(payload: Any) -> Iterable[str]:
     return texts
 
 
-def _extract_focus_value(facts: Dict[str, Any], focus_metric_key: str | None) -> str | None:
+def _extract_focus_value(
+    facts: Dict[str, Any], focus_metric_key: str | None
+) -> str | None:
     if not focus_metric_key:
         return None
     value = None
@@ -1238,17 +1240,25 @@ class Narrator:
                             invalid_intro = True
                     if re.search(r"\d+(?:º|°)", intro):
                         invalid_intro = True
-                    if re.search(r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE):
+                    if re.search(
+                        r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE
+                    ):
                         invalid_intro = True
 
                     canonical_value = effective_facts.get("llm_canonical_value")
-                    canonical_str = str(canonical_value).strip() if canonical_value is not None else ""
+                    canonical_str = (
+                        str(canonical_value).strip()
+                        if canonical_value is not None
+                        else ""
+                    )
                     has_digits = bool(_DIGIT_RE.search(intro))
 
                     if canonical_str:
                         if has_digits:
                             if canonical_str in intro:
-                                intro_without_canonical = intro.replace(canonical_str, "", 1)
+                                intro_without_canonical = intro.replace(
+                                    canonical_str, "", 1
+                                )
                                 if _DIGIT_RE.search(intro_without_canonical):
                                     invalid_intro = True
                             else:
