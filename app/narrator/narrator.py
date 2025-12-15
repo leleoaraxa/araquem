@@ -9,6 +9,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
 
+from app.narrator.canonical import extract_canonical_value
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import (
     build_bucket_d_global_prompt,
@@ -226,27 +227,6 @@ def _collect_filter_texts(payload: Any) -> Iterable[str]:
         for item in payload:
             texts.extend(_collect_filter_texts(item))
     return texts
-
-
-def _extract_focus_value(
-    facts: Dict[str, Any], focus_metric_key: str | None
-) -> str | None:
-    if not focus_metric_key:
-        return None
-    value = None
-    if isinstance(facts, dict):
-        rows = facts.get("rows")
-        if isinstance(rows, list) and rows and isinstance(rows[0], dict):
-            if focus_metric_key in rows[0]:
-                value = rows[0].get(focus_metric_key)
-        data = facts.get("data")
-        if value is None and isinstance(data, dict):
-            if focus_metric_key in data:
-                value = data.get(focus_metric_key)
-    if value is None:
-        return None
-    value_str = str(value)
-    return value_str if value_str else None
 
 
 def _best_rag_chunk_text(
@@ -911,10 +891,20 @@ class Narrator:
             if "metric_key" not in render_meta["focus"]:
                 render_meta["focus"]["metric_key"] = focus_metric_key
 
-        canonical_value = _extract_focus_value(effective_facts, focus_metric_key)
+        canonical_value = extract_canonical_value(effective_facts, focus_metric_key)
         if canonical_value:
             effective_facts["llm_canonical_value"] = canonical_value
             effective_facts["llm_focus_metric_key"] = focus_metric_key
+            narrator_meta["canonical"] = {
+                "metric_key": focus_metric_key,
+                "value": canonical_value,
+            }
+            preview_value = canonical_value
+            if isinstance(preview_value, str) and len(preview_value) > 80:
+                preview_value = preview_value[:77] + "..."
+            LOGGER.debug(
+                "NARRATOR_CANONICAL_VALUE metric_key=%s value=%s", focus_metric_key, preview_value
+            )
 
         narrator_meta["focus_metric_key"] = focus_metric_key
 

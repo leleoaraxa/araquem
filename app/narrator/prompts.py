@@ -6,6 +6,8 @@ import re
 from typing import Any, Dict, List
 from textwrap import dedent
 
+from app.narrator.canonical import extract_canonical_value
+
 # Limite padrão de caracteres por snippet de RAG enviado ao Narrator.
 # Ajuda a evitar prompts gigantes e manter o foco em trechos curtos.
 RAG_SNIPPET_MAX_CHARS = 320
@@ -297,27 +299,9 @@ def build_prompt(
         if isinstance(mk, str):
             focus_metric_key = mk.strip()
 
-    def _extract_focus_value() -> str | None:
-        if not focus_metric_key:
-            return None
-        value = None
-        if isinstance(facts, dict):
-            rows = facts.get("rows")
-            if isinstance(rows, list) and rows and isinstance(rows[0], dict):
-                if focus_metric_key in rows[0]:
-                    value = rows[0].get(focus_metric_key)
-            data = facts.get("data")
-            if value is None and isinstance(data, dict):
-                if focus_metric_key in data:
-                    value = data.get(focus_metric_key)
-        if value is None:
-            return None
-        value_str = str(value)
-        return value_str if value_str else None
-
     canonical_value = facts.get("llm_canonical_value")
     if canonical_value is None:
-        canonical_value = _extract_focus_value()
+        canonical_value = extract_canonical_value(facts, focus_metric_key)
     if canonical_value:
         facts["llm_canonical_value"] = canonical_value
         facts["llm_focus_metric_key"] = focus_metric_key
@@ -338,14 +322,14 @@ def build_prompt(
                 f"""
                 METRICA_FOCO: {focus_metric_key}
                 VALOR_CANONICO: {canonical_value}
-                INSTRUÇÃO: você pode citar SOMENTE esse número (no máximo uma vez). Qualquer outro número, data ou percentual invalida.
+                INSTRUÇÃO: cite apenas esse valor (uma única vez). Qualquer outro número, data ou percentual é proibido.
                 """
             ).strip()
 
         numbers_rule = (
-            "PERMITIDO citar somente o VALOR_CANONICO uma única vez (se fizer sentido). PROIBIDO qualquer outro número, data ou percentual."
+            "SE VALOR_CANONICO existir: cite somente esse número (no máximo uma vez). PROIBIDO qualquer outro número, data ou percentual."
             if canonical_value
-            else "PROIBIDO: números, percentuais, datas (deixe os números para o TEXTO_BASE que será exibido depois)."
+            else "SEM VALOR_CANONICO: PROIBIDO introduzir números, percentuais ou datas (deixe os números para o TEXTO_BASE que será exibido depois)."
         )
 
         rewrite_block = dedent(
