@@ -166,6 +166,28 @@ ask:
     - enterprise value do
     - market cap do
     - passivos totais do
+
+  metrics_synonyms:
+    total_cash_amt:
+      - caixa
+      - caixa disponivel
+      - caixa total
+      - disponibilidades
+    last_dividend_amt:
+      - ultimo dividendo
+      - ultimo rendimento
+      - dividendo mais recente
+    dy_monthly_pct:
+      - dy mensal
+      - dividend yield mensal
+    dy_pct:
+      - dy anualizado
+      - dy
+      - dividend yield
+    liabilities_total_amt:
+      - passivos
+      - divida
+      - obrigacoes
   synonyms:
     ticker: [ativo, fii, fundo, papel]
     dividend_payout_pct: [distribuicao, payout]
