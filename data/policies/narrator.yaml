@@ -180,7 +180,13 @@ narrator:
       llm_enabled: true
       shadow: false
       rewrite_only: true
-      max_llm_rows: 50
+      max_llm_rows: 10
+      instruction: |
+        Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
+        usando os dados de risco como âncora factual (ex.: volatilidade, sharpe, sortino, drawdown,
+        beta e demais métricas presentes). Proibido: tabelas, pipes (|), markdown tabular,
+        repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
+      max_output_tokens: 260
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
