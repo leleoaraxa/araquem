@@ -38,6 +38,7 @@ _NARRATOR_POLICY_PATH = Path("data/policies/narrator.yaml")
 _NARRATOR_SHADOW_POLICY_PATH = Path("data/policies/narrator_shadow.yaml")
 _TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
 _FILTER_FIELD_NAMES = ("filters", "filter")
+_DIGIT_RE = re.compile(r"\d")
 
 
 def _json_sanitise(obj: Any) -> Any:
@@ -225,6 +226,25 @@ def _collect_filter_texts(payload: Any) -> Iterable[str]:
         for item in payload:
             texts.extend(_collect_filter_texts(item))
     return texts
+
+
+def _extract_focus_value(facts: Dict[str, Any], focus_metric_key: str | None) -> str | None:
+    if not focus_metric_key:
+        return None
+    value = None
+    if isinstance(facts, dict):
+        rows = facts.get("rows")
+        if isinstance(rows, list) and rows and isinstance(rows[0], dict):
+            if focus_metric_key in rows[0]:
+                value = rows[0].get(focus_metric_key)
+        data = facts.get("data")
+        if value is None and isinstance(data, dict):
+            if focus_metric_key in data:
+                value = data.get(focus_metric_key)
+    if value is None:
+        return None
+    value_str = str(value)
+    return value_str if value_str else None
 
 
 def _best_rag_chunk_text(
@@ -880,6 +900,11 @@ class Narrator:
             if isinstance(candidate, str) and candidate.strip():
                 focus_metric_key = candidate.strip()
 
+        canonical_value = _extract_focus_value(effective_facts, focus_metric_key)
+        if canonical_value:
+            effective_facts["llm_canonical_value"] = canonical_value
+            effective_facts["llm_focus_metric_key"] = focus_metric_key
+
         narrator_meta["focus_metric_key"] = focus_metric_key
 
         if concept_mode:
@@ -1209,10 +1234,26 @@ class Narrator:
                         invalid_intro = True
                     digit_count = sum(1 for ch in intro if ch.isdigit())
                     if digit_count > 6:
-                        invalid_intro = True
+                        if not effective_facts.get("llm_canonical_value"):
+                            invalid_intro = True
                     if re.search(r"\d+(?:º|°)", intro):
                         invalid_intro = True
                     if re.search(r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE):
+                        invalid_intro = True
+
+                    canonical_value = effective_facts.get("llm_canonical_value")
+                    canonical_str = str(canonical_value).strip() if canonical_value is not None else ""
+                    has_digits = bool(_DIGIT_RE.search(intro))
+
+                    if canonical_str:
+                        if has_digits:
+                            if canonical_str in intro:
+                                intro_without_canonical = intro.replace(canonical_str, "", 1)
+                                if _DIGIT_RE.search(intro_without_canonical):
+                                    invalid_intro = True
+                            else:
+                                invalid_intro = True
+                    elif has_digits:
                         invalid_intro = True
 
                     if invalid_intro or not rendered_text:
