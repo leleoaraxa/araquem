@@ -297,6 +297,31 @@ def build_prompt(
         if isinstance(mk, str):
             focus_metric_key = mk.strip()
 
+    def _extract_focus_value() -> str | None:
+        if not focus_metric_key:
+            return None
+        value = None
+        if isinstance(facts, dict):
+            rows = facts.get("rows")
+            if isinstance(rows, list) and rows and isinstance(rows[0], dict):
+                if focus_metric_key in rows[0]:
+                    value = rows[0].get(focus_metric_key)
+            data = facts.get("data")
+            if value is None and isinstance(data, dict):
+                if focus_metric_key in data:
+                    value = data.get(focus_metric_key)
+        if value is None:
+            return None
+        value_str = str(value)
+        return value_str if value_str else None
+
+    canonical_value = facts.get("llm_canonical_value")
+    if canonical_value is None:
+        canonical_value = _extract_focus_value()
+    if canonical_value:
+        facts["llm_canonical_value"] = canonical_value
+        facts["llm_focus_metric_key"] = focus_metric_key
+
     base_instruction = PROMPT_TEMPLATES.get(template_key, PROMPT_TEMPLATES["summary"])
 
     # ------------------------------------------------------------------
@@ -307,14 +332,32 @@ def build_prompt(
     rendered_text = _extract_rendered_text(facts or {})
     rewrite_only = _has_rewrite_baseline(facts or {})
     if rewrite_only:
-            rewrite_block = dedent(
+        anchor_block = ""
+        if canonical_value:
+            anchor_block = dedent(
                 f"""
+                METRICA_FOCO: {focus_metric_key}
+                VALOR_CANONICO: {canonical_value}
+                INSTRUÇÃO: você pode citar SOMENTE esse número (no máximo uma vez). Qualquer outro número, data ou percentual invalida.
+                """
+            ).strip()
+
+        numbers_rule = (
+            "PERMITIDO citar somente o VALOR_CANONICO uma única vez (se fizer sentido). PROIBIDO qualquer outro número, data ou percentual."
+            if canonical_value
+            else "PROIBIDO: números, percentuais, datas (deixe os números para o TEXTO_BASE que será exibido depois)."
+        )
+
+        rewrite_block = dedent(
+            f"""
             MODO REWRITE-ONLY (INTRO-ONLY):
             - Você deve retornar APENAS um prefácio curto (máx. 5 linhas).
             - PROIBIDO: tabelas, pipes `|`, Markdown table, reproduzir TEXTO_BASE, bullets de facts, JSON.
-            - PROIBIDO: números, percentuais, datas (deixe os números para o TEXTO_BASE que será exibido depois).
+            - {numbers_rule}
             - Use o TEXTO_BASE abaixo apenas como referência de fatos; não copie ou reescreva o bloco.
             - Cite no máximo 1–2 valores do TEXTO_BASE no prefácio, se necessário, sempre em texto corrido.
+
+            {anchor_block}
 
             TEXTO_BASE (não deve ser reproduzido, apenas usado como evidência):
             {rendered_text}
