@@ -107,15 +107,19 @@ narrator:
     # Overview / yield / carteira
     # ──────────────────
     fii_overview:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
-      rewrite_only: false
-      max_llm_rows: 0
+      rewrite_only: true
+      max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
+      instruction: |
+        Reescreva a resposta de forma curta e direta, resumindo o que foi perguntado pelo
+        usuário com base nas linhas fornecidas. Não adicione recomendações e não invente
+        dados. Mantenha os números e datas idênticos aos dados exibidos.
 
     fiis_yield_history:
       llm_enabled: false
@@ -220,13 +224,17 @@ narrator:
       llm_enabled: true
       shadow: false
       rewrite_only: true
-      max_llm_rows: 50
+      max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
       max_output_tokens: 1200
+      instruction: |
+        Reescreva a resposta em até 5 linhas destacando os principais pontos pedidos (ex.:
+        caixa, DY, último dividendo, indicadores do snapshot) estritamente com base nos dados
+        exibidos.
 
     fiis_imoveis:
       llm_enabled: false
@@ -243,13 +251,16 @@ narrator:
       llm_enabled: true
       shadow: false
       rewrite_only: true
-      max_llm_rows: 20
+      max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
       max_output_tokens: 800
+      instruction: |
+        Reescreva a resposta em até 5 linhas contextualizando o que o usuário perguntou
+        (cotação/variação/período) usando estritamente as linhas exibidas. Sem previsões.
 
     fiis_processos:
       llm_enabled: false
@@ -266,13 +277,16 @@ narrator:
       llm_enabled: true
       shadow: false
       rewrite_only: true
-      max_llm_rows: 50
+      max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
       max_output_tokens: 1200
+      instruction: |
+        Reescreva a resposta em até 5 linhas explicando a posição/ranking solicitado, sem
+        generalizações. Use somente os dados exibidos.
 
     # ──────────────────
     # Entidades do cliente (posições / desempenho / dividendos evol.)
