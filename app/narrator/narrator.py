@@ -1168,6 +1168,8 @@ class Narrator:
         text = baseline_text
         error: str | None = None
         tokens_out = 0
+        llm_intro_used = False
+        llm_intro_tokens = 0
 
         narrator_meta["used"] = True
 
@@ -1205,6 +1207,13 @@ class Narrator:
                         invalid_intro = True
                     if len(intro_lines) > 5:
                         invalid_intro = True
+                    digit_count = sum(1 for ch in intro if ch.isdigit())
+                    if digit_count > 6:
+                        invalid_intro = True
+                    if re.search(r"\d+(?:º|°)", intro):
+                        invalid_intro = True
+                    if re.search(r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE):
+                        invalid_intro = True
 
                     if invalid_intro or not rendered_text:
                         LOGGER.warning(
@@ -1212,9 +1221,13 @@ class Narrator:
                         )
                         text = rendered_text or baseline_text
                         tokens_out = 0
+                        llm_intro_used = False
+                        llm_intro_tokens = 0
                     else:
                         text = f"{intro}\n\n{rendered_text}" if intro else rendered_text
                         tokens_out = len(text.split())
+                        llm_intro_used = True
+                        llm_intro_tokens = len(intro.split())
                 else:
                     text = candidate
                     tokens_out = len(candidate.split())
@@ -1231,6 +1244,8 @@ class Narrator:
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
         narrator_meta["latency_ms"] = elapsed_ms
+        narrator_meta["llm_intro_used"] = llm_intro_used
+        narrator_meta["llm_intro_tokens"] = llm_intro_tokens
 
         LOGGER.info(
             "NARRATOR_FINAL_TEXT entity=%s intent=%s model=%s "
@@ -1238,7 +1253,7 @@ class Narrator:
             entity,
             intent,
             effective_model,
-            bool(tokens_out),
+            llm_intro_used,
             elapsed_ms,
             error,
             (text[:120] + "..." if isinstance(text, str) and len(text) > 120 else text),
