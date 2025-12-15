@@ -389,6 +389,14 @@ class Orchestrator:
             or 0.0
         )
 
+        entity_conf = _load_entity_config(str(entity) if entity else None)
+        requested_metrics = extract_requested_metrics(question, entity_conf)
+        focus_metric = None
+        if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
+            candidate = requested_metrics[0]
+            if isinstance(candidate, str):
+                focus_metric = candidate.strip() or None
+
         # --------- M6.6: aplicar GATES por YAML ----------
         th = _load_thresholds(_TH_PATH)
         dfl = th.get("defaults", {}) if isinstance(th, dict) else {}
@@ -432,39 +440,47 @@ class Orchestrator:
             )
 
         if not entity:
+            meta_payload = {
+                "planner": plan,
+                "result_key": None,
+                "planner_intent": intent,
+                "planner_entity": entity,
+                "planner_score": score,
+                "rows_total": 0,
+                "elapsed_ms": int((time.perf_counter() - t0) * 1000),
+                "requested_metrics": requested_metrics,
+                "gate": gate,
+            }
+            if focus_metric:
+                meta_payload["focus"] = {"metric_key": focus_metric}
             return {
                 "status": {"reason": "unroutable", "message": "No entity matched"},
                 "results": {},
-                "meta": {
-                    "planner": plan,
-                    "result_key": None,
-                    "planner_intent": intent,
-                    "planner_entity": entity,
-                    "planner_score": score,
-                    "rows_total": 0,
-                    "elapsed_ms": int((time.perf_counter() - t0) * 1000),
-                    "gate": gate,
-                },
+                "meta": meta_payload,
             }
 
         if gate["blocked"]:
+            meta_payload = {
+                "planner": plan,
+                "result_key": None,
+                "planner_intent": intent,
+                "planner_entity": entity,
+                "planner_score": score,
+                "rows_total": 0,
+                "elapsed_ms": int((time.perf_counter() - t0) * 1000),
+                "requested_metrics": requested_metrics,
+                "gate": gate,
+                "explain": exp if explain else None,
+            }
+            if focus_metric:
+                meta_payload["focus"] = {"metric_key": focus_metric}
             return {
                 "status": {
                     "reason": "gated",
                     "message": f"Blocked by threshold: {gate['reason']}",
                 },
                 "results": {},
-                "meta": {
-                    "planner": plan,
-                    "result_key": None,
-                    "planner_intent": intent,
-                    "planner_entity": entity,
-                    "planner_score": score,
-                    "rows_total": 0,
-                    "elapsed_ms": int((time.perf_counter() - t0) * 1000),
-                    "gate": gate,
-                    "explain": exp if explain else None,
-                },
+                "meta": meta_payload,
             }
 
         identifiers = self.extract_identifiers(question)
@@ -478,8 +494,6 @@ class Orchestrator:
             identifiers = {**identifiers, "tickers": tickers_list}
             if len(tickers_list) == 1:
                 identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
-        entity_conf = _load_entity_config(str(entity) if entity else None)
-
         exp_safe = exp if isinstance(exp, dict) else {}
         bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
         if not isinstance(bucket_info, dict):
@@ -711,7 +725,6 @@ class Orchestrator:
             )
 
         final_rows = rows_formatted or []
-        requested_metrics = extract_requested_metrics(question, entity_conf)
         results = {result_key: final_rows}
 
         meta: Dict[str, Any] = {
@@ -740,14 +753,8 @@ class Orchestrator:
         }
 
         if "focus" not in meta:
-            candidate_metric = None
-            if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
-                candidate = requested_metrics[0]
-                if isinstance(candidate, str):
-                    candidate_metric = candidate.strip()
-
-            if candidate_metric:
-                meta["focus"] = {"metric_key": candidate_metric}
+            if focus_metric:
+                meta["focus"] = {"metric_key": focus_metric}
 
         # ------------------- M12: contexto de RAG -------------------
         # O contexto canônico de RAG é sempre produzido aqui no
