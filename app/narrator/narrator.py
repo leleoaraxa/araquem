@@ -884,7 +884,10 @@ class Narrator:
 
         if focus_metric_key is None:
             requested_metrics = effective_facts.get("requested_metrics")
-            if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
+            if (
+                isinstance(requested_metrics, (list, tuple))
+                and len(requested_metrics) == 1
+            ):
                 candidate = requested_metrics[0]
                 if isinstance(candidate, str) and candidate.strip():
                     focus_metric_key = candidate.strip()
@@ -895,7 +898,8 @@ class Narrator:
         if focus_metric_key:
             if not isinstance(render_meta.get("focus"), dict):
                 render_meta["focus"] = {}
-            if "metric_key" not in render_meta["focus"]:
+            mk_existing = render_meta["focus"].get("metric_key")
+            if not isinstance(mk_existing, str) or not mk_existing.strip():
                 render_meta["focus"]["metric_key"] = focus_metric_key
 
         canonical_value = extract_canonical_value(effective_facts, focus_metric_key)
@@ -910,7 +914,9 @@ class Narrator:
             if isinstance(preview_value, str) and len(preview_value) > 80:
                 preview_value = preview_value[:77] + "..."
             LOGGER.debug(
-                "NARRATOR_CANONICAL_VALUE metric_key=%s value=%s", focus_metric_key, preview_value
+                "NARRATOR_CANONICAL_VALUE metric_key=%s value=%s",
+                focus_metric_key,
+                preview_value,
             )
 
         narrator_meta["focus_metric_key"] = focus_metric_key
