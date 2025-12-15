@@ -209,7 +209,7 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 10
+      limit: 20
       order: desc
 
 responses:

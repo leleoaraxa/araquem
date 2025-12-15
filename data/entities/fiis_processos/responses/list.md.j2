@@ -4,7 +4,6 @@
   {% set rows = results[meta.result_key] %}
 {% endif %}
 
-
 {% if rows and rows|length > 0 %}
 {% set tickers = rows | map(attribute='ticker') | unique | list %}
 
@@ -31,6 +30,9 @@
   - Atualizado em: {{ r.updated_at | date_br if r.updated_at else "-" }}
 {% endfor %}
 {% endfor %}
+
+_Fonte: CVM (dados públicos reportados pelos fundos e consolidados pela SIRIOS)._
+
 {% else %}
 {{ empty_message or "Nenhum registro encontrado." }}
 {% endif %}

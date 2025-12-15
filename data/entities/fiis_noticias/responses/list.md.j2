@@ -1,24 +1,26 @@
 {% set rows = rows if rows is defined else [] %}
 
-{% if rows and rows|length > 0 -%}
-{%- set grouped = rows | groupby('ticker') %}
-{%- for ticker, items in grouped %}
-### {{ ticker }}
-{%- for r in items %}
+{% if rows and rows|length > 0 %}
+{% set grouped = rows | groupby('ticker') %}
+
+{% for ticker, items in grouped %}
+### Notícias do {{ ticker }} ({{ items|length }})
+
+{% for r in items %}
 - **{{ r.published_at | datetime_br if r.published_at else '-' }}** — {{ r.title or '-' }}
   - Fonte: **{{ r.source or '-' }}**
   - Tags:{% if r.tags is string %} **{{ r.tags }}**{% elif r.tags %} **{{ r.tags | join('; ') }}**{% else %} **-**{% endif %}
-  {%- if r.description %}
+  {% if r.description %}
   - Resumo: {{ r.description }}
-  {%- endif %}
+  {% endif %}
   - Link:{% if r.url %} [Acessar notícia]({{ r.url }}){% else %} **-**{% endif %}
-{%- endfor %}
-{%- if not loop.last %}
+{% endfor %}
 
+{% if not loop.last %}
 ---
+{% endif %}
+{% endfor %}
 
-{%- endif %}
-{%- endfor %}
-{%- else -%}
-  {{ empty_message or "Nenhuma notícia encontrada." }}
-{%- endif %}
+{% else %}
+{{ empty_message or "Nenhuma notícia encontrada." }}
+{% endif %}

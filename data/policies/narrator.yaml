@@ -186,7 +186,7 @@ narrator:
     fiis_noticias:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -252,31 +252,15 @@ narrator:
       max_output_tokens: 800
 
     fiis_processos:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
-      max_llm_rows: 50
+      rewrite_only: false
+      max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      instruction: |
-          Você está em modo REWRITE-ONLY.
-          Fonte única de verdade: o campo `rendered_text`.
-          Reescreva para PT-BR claro e executivo, sem alterar fatos e sem omitir itens.
-
-          Regras obrigatórias:
-          - NÃO escreva rótulos como "SAÍDA", "OUTPUT", "RESPOSTA" ou similares.
-          - NÃO adicione conteúdo que não esteja em `rendered_text`.
-          - Se a pergunta pedir "quais são" / "liste", você DEVE listar todos os processos encontrados.
-          - Sempre incluir o número do processo em cada item.
-          - Se houver risco/perda/valor, inclua de forma concisa (quando presente em `rendered_text`).
-
-          Formato:
-          1) Uma frase de resumo: "Encontrei N processos para {ticker}."
-          2) Lista em bullets, um por processo: Número — Órgão/vara — Instância (se houver) — Risco — Valor (se houver).
-          3) Se N=0, responda apenas com a mensagem de vazio da entidade (sem inventar).
 
     fiis_rankings:
       llm_enabled: true
