@@ -13,7 +13,9 @@ def _value_to_string(value: Any) -> Optional[str]:
 
     if isinstance(value, Decimal):
         text = str(value)
-    elif isinstance(value, (int, float, bool)):
+    elif isinstance(value, bool):
+        return None
+    elif isinstance(value, (int, float)):
         text = str(value)
     elif isinstance(value, str):
         text = value.strip()
