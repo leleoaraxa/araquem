@@ -46,10 +46,6 @@ columns:
     alias: Atualizado em
     description: Data da última atualização.
 
-presentation:
-  kind: table
-  empty_message: "Nenhum registro encontrado."
-
 ask:
   intents:
     - fiis_financials_risk
@@ -164,8 +160,12 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 10
+      limit: 50
       order: desc
+
+presentation:
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 responses:
   default:

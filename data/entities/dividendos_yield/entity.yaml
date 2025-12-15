@@ -72,10 +72,6 @@ columns:
   alias: Último pagamento
   description: Data do último pagamento de dividendo.
 
-presentation:
-  kind: table
-  empty_message: "Nenhum registro encontrado."
-
 ask:
   intents:
     - dividendos_yield
@@ -196,7 +192,7 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 12
+      limit: 24
       order: desc
     avg:
       window: months:6
@@ -212,6 +208,10 @@ aggregations:
   - count:12
   - count:24
   - count:1
+
+presentation:
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 responses:
   default:

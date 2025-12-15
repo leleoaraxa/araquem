@@ -30,9 +30,6 @@ columns:
 - name: updated_at
   alias: Atualizado em
   description: Data da última atualização do registro.
-presentation:
-  kind: table
-  empty_message: "Nenhum registro encontrado."
 ask:
   intents:
   - fiis_dividendos
@@ -142,7 +139,7 @@ aggregations:
   defaults:
     inference: true
     list:
-      limit: 10
+      limit: 24
       order: desc
     avg:
       window: months:6
@@ -158,6 +155,10 @@ aggregations:
   - count:12
   - count:24
   - count:1
+
+presentation:
+  kind: table
+  empty_message: "Nenhum registro encontrado."
 
 responses:
   default:

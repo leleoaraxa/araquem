@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-15T10:25:03Z",
+  "generated_at": "2025-12-15T10:52:10Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -143,7 +143,7 @@
         "entity:fiis_dividendos"
       ],
       "chunks": 3,
-      "sha_all": "6e1973e7668d4aaece4506313729e54504fa409757d8fcff29220cb299663357"
+      "sha_all": "044b16af687642b2522f36ed6d09d0b33b5cdfd810fdcbfd3c20049f60696f7a"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -266,7 +266,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 3,
-      "sha_all": "02f46c33092846c41313bd533c317d65ed0376a87d220e2db1d2606e83149500"
+      "sha_all": "7530c55679ce0314fe4a2e2488c3bbc25ea609c68cfda3b42809d8964ee421d8"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -678,7 +678,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1765794451,
+  "last_refresh_epoch": 1765796074,
   "vector_dimension": 768,
   "total_chunks": 266
 }

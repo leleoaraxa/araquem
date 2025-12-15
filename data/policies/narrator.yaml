@@ -53,7 +53,7 @@ narrator:
     fiis_financials_revenue_schedule:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
@@ -173,10 +173,10 @@ narrator:
     # Cadastro / preços / processos / rankings / notícias / riscos
     # ──────────────────
     fiis_financials_risk:
-      llm_enabled: false
+      llm_enabled: true
       shadow: false
       rewrite_only: true
-      max_llm_rows: 0
+      max_llm_rows: 50
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -208,7 +208,7 @@ narrator:
     fiis_dividendos:
       llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 0
       use_rag_in_prompt: false
       use_conversation_context: false
