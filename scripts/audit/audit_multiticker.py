@@ -7,6 +7,7 @@ Markdown summaries for reproducibility.
 If the API on http://localhost:8000 is not reachable, the script exits with a
 clear message so the auditor can bring the service up before re-running.
 """
+
 from __future__ import annotations
 
 import json
@@ -92,7 +93,7 @@ def _build_client() -> httpx.Client:
     try:
         ping = httpx.get(health_url, timeout=2.0)
         if ping.status_code == 200:
-            return httpx.Client(base_url=base_url, timeout=10.0)
+            return httpx.Client(base_url=base_url, timeout=60.0)
     except Exception:
         pass
 
@@ -104,7 +105,7 @@ def _build_client() -> httpx.Client:
             timeout=4.0,
         )
         if probe_resp.status_code < 500:
-            return httpx.Client(base_url=base_url, timeout=10.0)
+            return httpx.Client(base_url=base_url, timeout=60.0)
     except Exception:
         pass
 
@@ -174,21 +175,31 @@ def _collect_fields(resp_json: Dict[str, Any]) -> Dict[str, Any]:
         "meta_intent": meta.get("intent"),
         "intent_top2_gap_base": planner_scoring.get("intent_top2_gap_base"),
         "intent_top2_gap_final": planner_scoring.get("intent_top2_gap_final"),
-        "thresholds_applied_min_score": (thresholds_applied or {}).get("min_score")
-        if isinstance(thresholds_applied, dict)
-        else None,
-        "thresholds_applied_min_gap": (thresholds_applied or {}).get("min_gap")
-        if isinstance(thresholds_applied, dict)
-        else None,
-        "thresholds_applied_gap": (thresholds_applied or {}).get("gap")
-        if isinstance(thresholds_applied, dict)
-        else None,
-        "thresholds_applied_accepted": (thresholds_applied or {}).get("accepted")
-        if isinstance(thresholds_applied, dict)
-        else None,
-        "thresholds_applied_source": (thresholds_applied or {}).get("source")
-        if isinstance(thresholds_applied, dict)
-        else None,
+        "thresholds_applied_min_score": (
+            (thresholds_applied or {}).get("min_score")
+            if isinstance(thresholds_applied, dict)
+            else None
+        ),
+        "thresholds_applied_min_gap": (
+            (thresholds_applied or {}).get("min_gap")
+            if isinstance(thresholds_applied, dict)
+            else None
+        ),
+        "thresholds_applied_gap": (
+            (thresholds_applied or {}).get("gap")
+            if isinstance(thresholds_applied, dict)
+            else None
+        ),
+        "thresholds_applied_accepted": (
+            (thresholds_applied or {}).get("accepted")
+            if isinstance(thresholds_applied, dict)
+            else None
+        ),
+        "thresholds_applied_source": (
+            (thresholds_applied or {}).get("source")
+            if isinstance(thresholds_applied, dict)
+            else None
+        ),
         "answer": _shorten(answer_field),
     }
 
@@ -220,7 +231,7 @@ def run_audit() -> None:
             }
             try:
                 suffix = "?explain=true" if EXPLAIN_FLAG else ""
-                resp = client.post(f"/ask{suffix}", json=payload, timeout=10.0)
+                resp = client.post(f"/ask{suffix}", json=payload, timeout=60.0)
             except Exception as exc:
                 record = {
                     "label": q.label,
@@ -301,7 +312,9 @@ def run_audit() -> None:
             )
 
     OUTPUT_MD.write_text("\n".join(rows_md), encoding="utf-8")
-    print(f"Audit completed. JSONL saved to {OUTPUT_JSONL} and markdown to {OUTPUT_MD}.")
+    print(
+        f"Audit completed. JSONL saved to {OUTPUT_JSONL} and markdown to {OUTPUT_MD}."
+    )
 
 
 if __name__ == "__main__":
