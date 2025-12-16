@@ -47,6 +47,93 @@ _NARR: Optional[Narrator] = Narrator()
 router = APIRouter()
 
 
+def _is_blank_answer(answer: Any) -> bool:
+    return not (isinstance(answer, str) and answer.strip())
+
+
+def _extract_gate_candidates(plan: Dict[str, Any]) -> List[str]:
+    scoring = ((plan or {}).get("explain") or {}).get("scoring") or {}
+    seen = set()
+    candidates: List[str] = []
+
+    def add_candidate(name: Optional[str], score: Optional[Any]):
+        if not isinstance(name, str) or not name or name in seen:
+            return
+        label = name
+        try:
+            if score is not None:
+                label = f"{name} ({float(score):.3f})"
+        except Exception:
+            pass
+        seen.add(name)
+        candidates.append(label)
+
+    combined_block = scoring.get("combined") if isinstance(scoring, dict) else {}
+    combined_intents = (
+        combined_block.get("intent") if isinstance(combined_block, dict) else None
+    )
+    if isinstance(combined_intents, list):
+        for item in combined_intents:
+            if not isinstance(item, dict):
+                continue
+            add_candidate(item.get("name"), item.get("combined"))
+            if len(candidates) >= 3:
+                return candidates
+
+    final_combined = scoring.get("final_combined") if isinstance(scoring, dict) else []
+    if isinstance(final_combined, list):
+        for item in final_combined:
+            if not isinstance(item, dict):
+                continue
+            add_candidate(item.get("intent"), item.get("score"))
+            if len(candidates) >= 3:
+                return candidates
+
+    intent_scores = scoring.get("intent") if isinstance(scoring, dict) else []
+    if isinstance(intent_scores, list):
+        for item in intent_scores:
+            if not isinstance(item, dict):
+                continue
+            add_candidate(item.get("name"), item.get("score"))
+            if len(candidates) >= 3:
+                return candidates
+
+    return candidates[:3]
+
+
+def _build_gate_answer(
+    status_reason_live: str,
+    orchestration_raw: Dict[str, Any],
+    meta_gate: Dict[str, Any],
+    plan: Dict[str, Any],
+) -> str:
+    status_block = orchestration_raw.get("status") if isinstance(orchestration_raw, dict) else {}
+    status_message = status_block.get("message") if isinstance(status_block, dict) else None
+    gate_block = meta_gate.get("gate") if isinstance(meta_gate, dict) else {}
+    gate_reason = gate_block.get("reason") if isinstance(gate_block, dict) else None
+
+    reason_parts = [str(part) for part in [gate_reason, status_message] if part]
+    reason_text = " (" + " | ".join(reason_parts) + ")" if reason_parts else ""
+
+    intro = (
+        "Não consegui decidir com segurança entre rotas possíveis"
+        if status_reason_live == "gated"
+        else "Não consegui determinar uma rota adequada para sua pergunta"
+    )
+
+    suggestions = (
+        "Tente reformular especificando o que precisa (ex.: risco, dividendos, preços, cadastro/segmento)."
+    )
+
+    candidates = _extract_gate_candidates(plan)
+    candidates_text = (
+        f"Possíveis rotas: {', '.join(candidates[:3])}." if candidates else ""
+    )
+
+    parts = [f"{intro}{reason_text}.", suggestions, candidates_text]
+    return " ".join([p for p in parts if p]).strip()
+
+
 class AskPayload(BaseModel):
     question: str
     conversation_id: str
@@ -404,12 +491,16 @@ def ask(
             datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
         )
 
+        answer_gate = orchestration_raw.get("answer") if isinstance(orchestration_raw, dict) else None
+        if _is_blank_answer(answer_gate):
+            answer_gate = _build_gate_answer(status_reason_live, orchestration_raw, meta_gate, plan)
+
         payload_out_gate = {
             "status": orchestration_raw.get("status")
             or {"reason": status_reason_live, "message": status_reason_live},
             "results": orchestration_raw.get("results") or {},
             "meta": meta_gate,
-            "answer": orchestration_raw.get("answer") or "",
+            "answer": answer_gate or "",
         }
 
         # registro no contexto (assistant)

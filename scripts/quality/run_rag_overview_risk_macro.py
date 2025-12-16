@@ -30,6 +30,29 @@ def main():
         print(f"  → status={status}")
         print(f"  → answer={text[:200].replace(chr(10), ' ')}...\n")
 
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+
+        answer = payload.get("answer") if isinstance(payload, dict) else None
+        if isinstance(answer, str) and answer.strip():
+            continue
+
+        status_block = payload.get("status") if isinstance(payload, dict) else {}
+        meta_block = payload.get("meta") if isinstance(payload, dict) else {}
+        gate_block = meta_block.get("gate") if isinstance(meta_block, dict) else {}
+
+        print("  → answer is empty; diagnostics:")
+        if isinstance(status_block, dict):
+            print(f"     status.reason={status_block.get('reason')}")
+            print(f"     status.message={status_block.get('message')}")
+        if isinstance(gate_block, dict):
+            print(f"     meta.gate.reason={gate_block.get('reason')}")
+            for key in ["top2_gap", "min_gap", "min_score"]:
+                if key in gate_block:
+                    print(f"     meta.gate.{key}={gate_block.get(key)}")
+
 
 if __name__ == "__main__":
     main()
