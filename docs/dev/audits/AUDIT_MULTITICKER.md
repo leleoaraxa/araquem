@@ -1,6 +1,6 @@
 # Audit Multi-Ticker
 
-Timestamp: 2025-12-16T20:06:52
+Timestamp: 2025-12-16T20:40:09
 Endpoint: POST http://localhost:8000/ask (explain=True)
 Command: python scripts/audit/audit_multiticker.py
 
@@ -17,9 +17,7 @@ Command: python scripts/audit/audit_multiticker.py
   - IPCA: **-**
   - Ju... |
 | pure_conceptual_max_drawdown | o que significa max drawdown alto | gated | low_score | 1.032647057350364 | 0.2 | 0.85 | fiis_financials_risk | fiis_financials_risk | None | 1.1 | 1.032647057350364 | 0.85 | 0.2 | 1.032647057350364 | False | final | Não consegui decidir com segurança entre rotas possíveis ... |
-| pure_conceptual_sharpe | o que é um sharpe ratio negativo | ok | None | None | None | None | fiis_financials_risk | fiis_financials_risk | None | 1.1 | 1.0386326586467103 | 0.85 | 0.2 | 1.0386326586467103 | True | final | O usuário perguntou: "O que é um sharpe ratio negativo"
-
-... |
+| pure_conceptual_sharpe | o que é um sharpe ratio negativo | ok | None | None | None | None | fiis_financials_risk | fiis_financials_risk | None | 1.1 | 1.0386326586467103 | 0.85 | 0.2 | 1.0386326586467103 | True | final | Nenhum registro encontrado. |
 | multi_intent_sector_yield | setor do HGLG11 e renda/dividendos esperados | gated | low_gap | 0.11698533883764717 | 0.15 | 0.9 | fiis_dividendos | fiis_dividendos | None | 0.0 | 0.11698533883764717 | 0.9 | 0.15 | 0.11698533883764717 | False | final | Não consegui decidir com segurança entre rotas possíveis ... |
 | multi_intent_sector_risk | setor do KNRI11 e risco de vacância | ok | None | None | None | None | fiis_cadastro | fiis_cadastro | cadastro_fii | 1.1 | 1.045452623070723 | 1.0 | 0.2 | 1.045452623070723 | True | final | **KNRI11 — Kinea Renda Imobiliria Fundo Investimento Imob... |
 | multi_intent_rankings | ranking de HGLG11 e MXRF11 por yield e por risco | gated | low_score | 0.0 | 0.2 | 1.0 | fiis_rankings | fiis_rankings | None | 0.0 | 0.0 | 1.0 | 0.2 | 0.0 | False | final | Não consegui decidir com segurança entre rotas possíveis ... |
