@@ -179,6 +179,7 @@ ask:
       - queda maxima
     r_squared:
       - r2
+      - r²
       - r squared
       - coeficiente de determinacao
   weights:
