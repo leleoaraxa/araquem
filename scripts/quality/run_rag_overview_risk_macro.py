@@ -12,7 +12,7 @@ def run_sample(sample):
         "question": sample["question"],
         "conversation_id": f"ragtest-{sample['id']}",
         "nickname": "Leleo",
-        "client_id": "ragtest",
+        "client_id": "66140994691",
     }
     r = requests.post(API_URL, json=payload, timeout=60)
     return r.status_code, r.text
