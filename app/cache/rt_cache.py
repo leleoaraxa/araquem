@@ -273,6 +273,11 @@ def _is_empty_payload(val: Any) -> bool:
     return False
 
 
+def is_cacheable_payload(val: Any) -> bool:
+    """Retorna True quando o payload é elegível para cache (não-vazio)."""
+    return not _is_empty_payload(val)
+
+
 def read_through(
     cache: RedisCache,
     policies: CachePolicies,

@@ -13,7 +13,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from app.analytics.explain import explain as _explain_analytics
-from app.cache.rt_cache import read_through
+from app.cache.rt_cache import is_cacheable_payload, make_cache_key
 from app.common.http import json_sanitize, make_request_id
 from app.core.context import cache, orchestrator, planner, policies, context_manager
 from app.observability.metrics import (
@@ -267,27 +267,152 @@ def ask(
     #             window_norm=window_norm,
     #             **window_info,
     #         )
-    if strategy == "read_through" and ttl_seconds:
-        rt = read_through(cache, policies, entity, cache_identifiers, _fetch)
-        cache_outcome = "hit" if rt.get("cached") else "miss"
-    else:
-        value = _fetch()
-        rt = {"cached": False, "value": value, "key": None, "ttl": ttl_seconds}
-        cache_outcome = "miss"
-    counter("sirios_cache_ops_total", op="get", outcome=cache_outcome)
+    # --------------------------------------------------------------------------
+    # CACHE FLOW (read → compute → write, sempre validando gate primeiro)
+    # 1) Sempre invocamos o Orchestrator (_fetch) para obter o status atual.
+    # 2) Se a política permitir, tentamos ler o cache de resposta (get_json)
+    #    após o fetch, apenas para reutilizar payloads ok já persistidos.
+    # 3) Se o Orchestrator sinalizar gate/unroutable, ignoramos qualquer cache
+    #    (hit=False) e retornamos imediatamente sem gravar.
+    # 4) Para respostas ok, calculamos result_key e só gravamos no cache quando
+    #    há TTL configurado, chave válida e payload cacheável.
+    # 5) meta.cache reflete apenas este cache de resposta (layer="response");
+    #    cache de métricas continua em meta.compute.metrics_cache_hit.
+    # --------------------------------------------------------------------------
+    cache_key = None
+    cache_ttl = ttl_seconds if ttl_seconds and ttl_seconds > 0 else None
+    cache_hit = False
+    cache_layer = "response"
 
-    orchestration_raw = rt.get("value")
-    if isinstance(orchestration_raw, dict) and "results" in orchestration_raw:
-        orchestration = orchestration_raw
-    else:
-        legacy_results = (
-            orchestration_raw if isinstance(orchestration_raw, dict) else {}
-        )
-        orchestration = {
+    # calcula sempre o resultado atual do Orchestrator para respeitar gate
+    orchestration_raw_live = _fetch()
+
+    # leitura opcional do cache (apenas para respostas que podem ser cacheadas)
+    cached_value = None
+    cache_read_attempted = False
+    policy_allows_cache = (
+        policy
+        and cache_ttl
+        and strategy == "read_through"
+        and hasattr(policies, "is_private_entity")
+        and not policies.is_private_entity(entity)
+    )
+    if policy_allows_cache:
+        scope = str(policy.get("scope", "pub"))
+        build_id = os.getenv("BUILD_ID", "dev")
+        cache_key = make_cache_key(build_id, scope, entity, cache_identifiers)
+        cache_read_attempted = True
+        cached_value = cache.get_json(cache_key)
+        cache_hit = cached_value is not None
+        cache_ttl = cache_ttl if cache_ttl is not None else ttl_seconds
+        counter("sirios_cache_ops_total", op="get", outcome=("hit" if cache_hit else "miss"))
+
+    def _normalize_orchestration(raw_value: Any) -> Dict[str, Any]:
+        if isinstance(raw_value, dict) and "results" in raw_value:
+            return raw_value
+        legacy_results = raw_value if isinstance(raw_value, dict) else {}
+        return {
             "status": {"reason": "ok", "message": "ok"},
             "results": legacy_results,
             "meta": {},
         }
+
+    orchestration_live = _normalize_orchestration(orchestration_raw_live)
+    status_reason_live = (
+        orchestration_live.get("status", {}).get("reason")
+        if isinstance(orchestration_live, dict)
+        else None
+    ) or "ok"
+
+    # GATE / UNROUTABLE vindo do orchestrator: nunca cacheia e responde direto
+    if status_reason_live in ("gated", "unroutable"):
+        elapsed_ms_gate = int((time.perf_counter() - t0) * 1000)
+        meta_gate = orchestration_live.get("meta") or {}
+        gate_block = meta_gate.get("gate") if isinstance(meta_gate, dict) else {}
+        if not isinstance(gate_block, dict):
+            gate_block = {}
+        gate_block.setdefault("blocked", status_reason_live == "gated")
+        meta_gate["gate"] = gate_block
+        meta_gate.update(
+            {
+                "planner": plan,
+                "result_key": meta_gate.get("result_key"),
+                "intent": intent,
+                "entity": entity,
+                "planner_intent": intent,
+                "planner_entity": entity,
+                "planner_score": score,
+                "rows_total": 0,
+                "elapsed_ms": elapsed_ms_gate,
+                "explain": (plan.get("explain") if explain else None),
+                "explain_analytics": None,
+                "cache": {
+                    "hit": False,
+                    "key": None,
+                    "ttl": None,
+                    "layer": cache_layer,
+                },
+            }
+        )
+
+        response_timestamp_gate = (
+            datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        )
+
+        payload_out_gate = {
+            "status": orchestration_live.get("status")
+            or {"reason": status_reason_live, "message": status_reason_live},
+            "results": orchestration_live.get("results") or {},
+            "meta": meta_gate,
+            "answer": orchestration_live.get("answer") or "",
+        }
+
+        # registro no contexto (assistant)
+        try:
+            context_manager.append_turn(
+                client_id=payload.client_id,
+                conversation_id=payload.conversation_id,
+                role="assistant",
+                content=payload_out_gate.get("answer") or "",
+                meta={
+                    "request_id": request_id,
+                    "intent": intent,
+                    "entity": entity,
+                    "bucket": bucket_selected,
+                    "status_reason": status_reason_live,
+                },
+            )
+        except Exception:
+            LOGGER.warning(
+                "Falha ao registrar turno gated/unroutable no contexto",
+                exc_info=True,
+                extra={"request_id": request_id, "entity": entity, "intent": intent},
+            )
+
+        if explain:
+            body_gate = payload_out_gate
+        else:
+            body_gate = {
+                "question": payload.question,
+                "conversation_id": payload.conversation_id,
+                "answer": payload_out_gate.get("answer") or "",
+                "timestamp": response_timestamp_gate,
+                "elapsed_ms": elapsed_ms_gate,
+                "status": "error",
+                "error": {
+                    "code": status_reason_live,
+                    "message": payload_out_gate.get("status", {}).get("message")
+                    or status_reason_live,
+                    "retryable": False,
+                },
+            }
+
+        return JSONResponse(json_sanitize(body_gate))
+
+    # caso ok, usamos payload cacheado (quando disponível) apenas após validar gate
+    orchestration_raw = cached_value if cache_hit else orchestration_raw_live
+    orchestration = _normalize_orchestration(orchestration_raw)
+    status_reason = status_reason_live
 
     results = orchestration.get("results") or {}
     meta = orchestration.get("meta") or {}
@@ -299,6 +424,31 @@ def ask(
     )
 
     agg_params = (meta.get("aggregates") or {}) if isinstance(meta, dict) else {}
+
+    # grava cache somente para respostas ok e cacheáveis (result_key presente)
+    cache_ttl_to_use = (
+        int(cache_ttl) if isinstance(cache_ttl, (int, float, Decimal)) else None
+    )
+    should_cache_response = (
+        cache_read_attempted
+        and not cache_hit
+        and status_reason == "ok"
+        and cache_key
+        and cache_ttl_to_use
+        and result_key is not None
+        and is_cacheable_payload(orchestration)
+    )
+    if should_cache_response:
+        try:
+            cache.set_json(cache_key, orchestration, ttl_seconds=cache_ttl_to_use)
+            counter("sirios_cache_ops_total", op="set", outcome="ok")
+        except Exception:
+            counter("sirios_cache_ops_total", op="set", outcome="error")
+            LOGGER.warning(
+                "Falha ao gravar cache de resposta",
+                exc_info=True,
+                extra={"entity": entity, "cache_key": cache_key},
+            )
 
     elapsed_ms = int((time.perf_counter() - t0) * 1000)
 
@@ -329,8 +479,8 @@ def ask(
         }
         metrics_snapshot = {
             "latency_ms": elapsed_ms,
-            "cache_hit": bool(rt.get("cached")),
-            "route_source": "cache" if rt.get("cached") else "planner",
+            "cache_hit": bool(cache_hit),
+            "route_source": "cache" if cache_hit else "planner",
         }
         explain_analytics_payload = _explain_analytics(
             request_id=request_id,
@@ -400,6 +550,20 @@ def ask(
             )
             counter("sirios_explain_events_failed_total")
 
+    cache_meta_key = cache_key if cache_read_attempted else None
+    cache_meta_ttl = (
+        int(cache_ttl)
+        if (cache_read_attempted and isinstance(cache_ttl, (int, float, Decimal)))
+        else (cache_ttl if cache_read_attempted else None)
+    )
+
+    cache_meta = {
+        "hit": bool(cache_hit),
+        "key": cache_meta_key,
+        "ttl": cache_meta_ttl,
+        "layer": cache_layer,
+    }
+
     payload_out = {
         "status": {"reason": "ok", "message": "ok"},
         "results": results,
@@ -417,15 +581,7 @@ def ask(
             "elapsed_ms": elapsed_ms,
             "explain": (plan.get("explain") if explain else None),
             "explain_analytics": explain_analytics_payload if explain else None,
-            "cache": {
-                "hit": bool(rt.get("cached")),
-                "key": rt.get("key"),
-                "ttl": (
-                    int(rt.get("ttl"))
-                    if isinstance(rt.get("ttl"), (int, float, Decimal))
-                    else rt.get("ttl")
-                ),
-            },
+            "cache": cache_meta,
             "aggregates": agg_params,
             "narrator": presenter_result.narrator_meta,
             "requested_metrics": meta.get("requested_metrics"),
