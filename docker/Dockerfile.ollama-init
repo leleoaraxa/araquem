@@ -1,4 +1,4 @@
-FROM ollama/ollama:0.13.3
+FROM ollama/ollama:0.13.4
 SHELL ["/bin/sh","-lc"]
 
 COPY docker/ollama-bootstrap.sh /usr/local/bin/ollama-bootstrap.sh
