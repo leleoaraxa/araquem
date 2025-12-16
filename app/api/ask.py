@@ -292,8 +292,14 @@ def ask(
         cache_read_attempted = True
         try:
             cached_value = cache.get_json(cache_key)
-            cache_hit = cached_value is not None
-            cache_get_outcome = "hit" if cache_hit else "miss"
+            cache_hit = isinstance(cached_value, dict) and isinstance(
+                cached_value.get("results"), dict
+            )
+            if cache_hit:
+                cache_get_outcome = "hit"
+            else:
+                cached_value = None
+                cache_get_outcome = "miss"
         except Exception:
             counter("sirios_cache_ops_total", op="get", outcome="error")
             LOGGER.warning(
@@ -325,7 +331,8 @@ def ask(
         ) or "ok"
         if status_reason_cached in ("gated", "unroutable"):
             cache_hit = False
-            cache_get_outcome = cache_get_outcome or "miss"
+            cached_value = None
+            cache_get_outcome = "miss"
         else:
             orchestration_raw = orchestration_candidate
     if not cache_hit:
