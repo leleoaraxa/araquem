@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-15T16:38:42Z",
+  "generated_at": "2025-12-15T23:32:19Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -191,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 5,
-      "sha_all": "abfc08b9dc5a8563641d2a0480aada41f8dc7f17ac6b13cb7f4b6a6af2c6099b"
+      "sha_all": "31646143aa05b122a27abafa578b892a87b27c3fcf57be88ac3eca4d34710702"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -678,7 +678,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1765816871,
+  "last_refresh_epoch": 1765841702,
   "vector_dimension": 768,
   "total_chunks": 267
 }

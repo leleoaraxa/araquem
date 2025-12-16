@@ -144,6 +144,43 @@ ask:
     - "treynor do"
   synonyms:
     ticker: [ativo, fii, fundo, papel]
+  metrics_synonyms:
+    volatility_ratio:
+      - volatilidade
+      - vol
+      - volatility
+      - desvio padrao
+    sharpe_ratio:
+      - sharpe
+      - indice de sharpe
+      - sharpe ratio
+    sortino_ratio:
+      - sortino
+      - indice de sortino
+      - sortino ratio
+    treynor_ratio:
+      - treynor
+      - indice de treynor
+      - treynor ratio
+    jensen_alpha:
+      - alfa de jensen
+      - alpha de jensen
+      - jensen
+      - jensen alpha
+    beta_index:
+      - beta
+      - beta do fundo
+      - beta index
+    max_drawdown:
+      - drawdown
+      - max drawdown
+      - mdd
+      - drawdown maximo
+      - queda maxima
+    r_squared:
+      - r2
+      - r squared
+      - coeficiente de determinacao
   weights:
     identifiers: 2.0
     keywords: 1.0
