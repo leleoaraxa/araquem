@@ -274,7 +274,24 @@ def _is_empty_payload(val: Any) -> bool:
 
 
 def is_cacheable_payload(val: Any) -> bool:
-    """Retorna True quando o payload é elegível para cache (não-vazio)."""
+    """
+    Retorna True quando o payload é elegível para cache.
+
+    Compatível com payloads do orchestrator:
+      - exige result_key definido em meta
+      - exige lista de rows não vazia em results[result_key]
+    Fallback: usa heurística genérica para formatos legados.
+    """
+    if isinstance(val, dict) and isinstance(val.get("results"), dict):
+        results = val.get("results") or {}
+        meta = val.get("meta") or {}
+        result_key = meta.get("result_key") if isinstance(meta, dict) else None
+        if result_key:
+            rows = results.get(result_key)
+            if isinstance(rows, list) and len(rows) > 0:
+                return True
+        return False
+
     return not _is_empty_payload(val)
 
 
