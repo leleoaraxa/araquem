@@ -292,14 +292,33 @@ def ask(
         cache_read_attempted = True
         try:
             cached_value = cache.get_json(cache_key)
-            cache_hit = isinstance(cached_value, dict) and isinstance(
-                cached_value.get("results"), dict
+            cache_get_outcome = "miss"
+            # Requer meta.result_key com rows não-vazios para evitar hit em payload quebrado
+            results_block = (
+                cached_value.get("results") if isinstance(cached_value, dict) else None
+            )
+            meta = cached_value.get("meta") if isinstance(cached_value, dict) else None
+            result_key = meta.get("result_key") if isinstance(meta, dict) else None
+            rows = (
+                results_block.get(result_key)
+                if isinstance(results_block, dict)
+                and isinstance(result_key, str)
+                and result_key
+                else None
+            )
+            cache_hit = (
+                isinstance(cached_value, dict)
+                and isinstance(results_block, dict)
+                and isinstance(meta, dict)
+                and isinstance(result_key, str)
+                and bool(result_key)
+                and isinstance(rows, list)
+                and len(rows) > 0
             )
             if cache_hit:
                 cache_get_outcome = "hit"
             else:
                 cached_value = None
-                cache_get_outcome = "miss"
         except Exception:
             counter("sirios_cache_ops_total", op="get", outcome="error")
             LOGGER.warning(
