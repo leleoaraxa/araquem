@@ -268,27 +268,12 @@ def ask(
     #             **window_info,
     #         )
     # --------------------------------------------------------------------------
-    # CACHE FLOW (read → compute → write, sempre validando gate primeiro)
-    # 1) Sempre invocamos o Orchestrator (_fetch) para obter o status atual.
-    # 2) Se a política permitir, tentamos ler o cache de resposta (get_json)
-    #    após o fetch, apenas para reutilizar payloads ok já persistidos.
-    # 3) Se o Orchestrator sinalizar gate/unroutable, ignoramos qualquer cache
-    #    (hit=False) e retornamos imediatamente sem gravar.
-    # 4) Para respostas ok, calculamos result_key e só gravamos no cache quando
-    #    há TTL configurado, chave válida e payload cacheável.
-    # 5) meta.cache reflete apenas este cache de resposta (layer="response");
-    #    cache de métricas continua em meta.compute.metrics_cache_hit.
+    # CACHE FLOW (cache-first → fetch → write)
     # --------------------------------------------------------------------------
     cache_key = None
     cache_ttl = ttl_seconds if ttl_seconds and ttl_seconds > 0 else None
     cache_hit = False
     cache_layer = "response"
-
-    # calcula sempre o resultado atual do Orchestrator para respeitar gate
-    orchestration_raw_live = _fetch()
-
-    # leitura opcional do cache (apenas para respostas que podem ser cacheadas)
-    cached_value = None
     cache_read_attempted = False
     policy_allows_cache = (
         policy
@@ -297,15 +282,28 @@ def ask(
         and hasattr(policies, "is_private_entity")
         and not policies.is_private_entity(entity)
     )
+
+    cached_value = None
+    cache_get_outcome: Optional[str] = None
     if policy_allows_cache:
         scope = str(policy.get("scope", "pub"))
         build_id = os.getenv("BUILD_ID", "dev")
         cache_key = make_cache_key(build_id, scope, entity, cache_identifiers)
         cache_read_attempted = True
-        cached_value = cache.get_json(cache_key)
-        cache_hit = cached_value is not None
+        try:
+            cached_value = cache.get_json(cache_key)
+            cache_hit = cached_value is not None
+            cache_get_outcome = "hit" if cache_hit else "miss"
+        except Exception:
+            counter("sirios_cache_ops_total", op="get", outcome="error")
+            LOGGER.warning(
+                "Falha ao ler cache de resposta",
+                exc_info=True,
+                extra={"entity": entity, "cache_key": cache_key},
+            )
+            cached_value = None
+            cache_hit = False
         cache_ttl = cache_ttl if cache_ttl is not None else ttl_seconds
-        counter("sirios_cache_ops_total", op="get", outcome=("hit" if cache_hit else "miss"))
 
     def _normalize_orchestration(raw_value: Any) -> Dict[str, Any]:
         if isinstance(raw_value, dict) and "results" in raw_value:
@@ -317,17 +315,38 @@ def ask(
             "meta": {},
         }
 
-    orchestration_live = _normalize_orchestration(orchestration_raw_live)
+    orchestration_raw_live = None
+    if cache_hit:
+        orchestration_candidate = _normalize_orchestration(cached_value)
+        status_reason_cached = (
+            orchestration_candidate.get("status", {}).get("reason")
+            if isinstance(orchestration_candidate, dict)
+            else None
+        ) or "ok"
+        if status_reason_cached in ("gated", "unroutable"):
+            cache_hit = False
+            cache_get_outcome = cache_get_outcome or "miss"
+        else:
+            orchestration_raw = orchestration_candidate
+    if not cache_hit:
+        orchestration_raw_live = _fetch()
+        orchestration_raw = _normalize_orchestration(orchestration_raw_live)
+    else:
+        orchestration_raw_live = None
+
+    if cache_read_attempted and cache_get_outcome:
+        counter("sirios_cache_ops_total", op="get", outcome=cache_get_outcome)
+
     status_reason_live = (
-        orchestration_live.get("status", {}).get("reason")
-        if isinstance(orchestration_live, dict)
+        orchestration_raw.get("status", {}).get("reason")
+        if isinstance(orchestration_raw, dict)
         else None
     ) or "ok"
 
     # GATE / UNROUTABLE vindo do orchestrator: nunca cacheia e responde direto
     if status_reason_live in ("gated", "unroutable"):
         elapsed_ms_gate = int((time.perf_counter() - t0) * 1000)
-        meta_gate = orchestration_live.get("meta") or {}
+        meta_gate = orchestration_raw.get("meta") or {}
         gate_block = meta_gate.get("gate") if isinstance(meta_gate, dict) else {}
         if not isinstance(gate_block, dict):
             gate_block = {}
@@ -348,8 +367,8 @@ def ask(
                 "explain_analytics": None,
                 "cache": {
                     "hit": False,
-                    "key": None,
-                    "ttl": None,
+                    "key": cache_key if cache_read_attempted else None,
+                    "ttl": cache_ttl if cache_read_attempted else None,
                     "layer": cache_layer,
                 },
             }
@@ -360,11 +379,11 @@ def ask(
         )
 
         payload_out_gate = {
-            "status": orchestration_live.get("status")
+            "status": orchestration_raw.get("status")
             or {"reason": status_reason_live, "message": status_reason_live},
-            "results": orchestration_live.get("results") or {},
+            "results": orchestration_raw.get("results") or {},
             "meta": meta_gate,
-            "answer": orchestration_live.get("answer") or "",
+            "answer": orchestration_raw.get("answer") or "",
         }
 
         # registro no contexto (assistant)
@@ -409,9 +428,7 @@ def ask(
 
         return JSONResponse(json_sanitize(body_gate))
 
-    # caso ok, usamos payload cacheado (quando disponível) apenas após validar gate
-    orchestration_raw = cached_value if cache_hit else orchestration_raw_live
-    orchestration = _normalize_orchestration(orchestration_raw)
+    orchestration = orchestration_raw
     status_reason = status_reason_live
 
     results = orchestration.get("results") or {}
@@ -436,6 +453,8 @@ def ask(
         and cache_key
         and cache_ttl_to_use
         and result_key is not None
+        and isinstance(rows, list)
+        and len(rows) > 0
         and is_cacheable_payload(orchestration)
     )
     if should_cache_response:
