@@ -3,7 +3,9 @@
 {% if not rows or rows|length == 0 -%}
 {{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{%- set r = rows[0] %}
+{% set grouped = rows | groupby('ticker') %}
+{%- for ticker, items in grouped %}
+{%- set r = items[0] %}
 
 **Estrutura de receitas do{{ ' ' + r.ticker if r.ticker else '' }}**
 
@@ -11,5 +13,12 @@
 - Médio prazo (12–36m): **12–15m {{ r.revenue_due_12_15m_pct|percent_br if r.revenue_due_12_15m_pct is not none else '-' }}**, **15–18m {{ r.revenue_due_15_18m_pct|percent_br if r.revenue_due_15_18m_pct is not none else '-' }}**, **18–21m {{ r.revenue_due_18_21m_pct|percent_br if r.revenue_due_18_21m_pct is not none else '-' }}**, **21–24m {{ r.revenue_due_21_24m_pct|percent_br if r.revenue_due_21_24m_pct is not none else '-' }}**, **24–27m {{ r.revenue_due_24_27m_pct|percent_br if r.revenue_due_24_27m_pct is not none else '-' }}**, **27–30m {{ r.revenue_due_27_30m_pct|percent_br if r.revenue_due_27_30m_pct is not none else '-' }}**, **30–33m {{ r.revenue_due_30_33m_pct|percent_br if r.revenue_due_30_33m_pct is not none else '-' }}**, **33–36m {{ r.revenue_due_33_36m_pct|percent_br if r.revenue_due_33_36m_pct is not none else '-' }}**
 - Longo prazo e indefinido: **>36m {{ r.revenue_due_over_36m_pct|percent_br if r.revenue_due_over_36m_pct is not none else '-' }}**, **Indeterminado {{ r.revenue_due_undetermined_pct|percent_br if r.revenue_due_undetermined_pct is not none else '-' }}**
 - Indexadores da receita: **IPCA {{ r.revenue_ipca_pct|percent_br if r.revenue_ipca_pct is not none else '-' }}**, **IGPM {{ r.revenue_igpm_pct|percent_br if r.revenue_igpm_pct is not none else '-' }}**, **INPC {{ r.revenue_inpc_pct|percent_br if r.revenue_inpc_pct is not none else '-' }}**, **INCC {{ r.revenue_incc_pct|percent_br if r.revenue_incc_pct is not none else '-' }}**
+
+{%- if not loop.last %}
+
+---
+
+{%- endif %}
+{%- endfor %}
 
 {%- endif %}

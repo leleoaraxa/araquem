@@ -4,10 +4,18 @@
   {% set rows = results[meta.result_key] %}
 {% endif %}
 {% if rows and rows|length > 0 -%}
+{% set grouped = rows | groupby('ticker') %}
+{%- for ticker, items in grouped %}
 | Código | DY mensal (%) | DY (%) | Dividendos no ano (R$) | Último dividendo (R$) | Último pagamento | Market Cap (R$) | EV (R$) | P/BV | Patrimônio por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio (R$) | Var. mês (%) | Var. ano (%) | Var. patrimônio mês (%) | Reserva de dividendos (R$) | Taxa de adm. devida (R$) | Taxa de perf. devida (R$) | Caixa total (R$) | Receita esperada (R$) | Passivos totais (R$) | Criado em | Atualizado em |
 | --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-{%- for r in rows %}
+{%- for r in items %}
 | {{ r.ticker or '-' }} | {{ r.dy_monthly_pct | percent_raw_br if r.dy_monthly_pct is not none else '-' }} | {{ r.dy_pct | percent_raw_br if r.dy_pct is not none else '-' }} | {{ r.sum_anual_dy_amt | currency_br if r.sum_anual_dy_amt is not none else '-' }} | {{ r.last_dividend_amt | currency_br if r.last_dividend_amt is not none else '-' }} | {{ r.last_payment_date | datetime_br if r.last_payment_date else '-' }} | {{ r.market_cap_value | currency_br if r.market_cap_value is not none else '-' }} | {{ r.enterprise_value | currency_br if r.enterprise_value is not none else '-' }} | {{ r.price_book_ratio | number_br if r.price_book_ratio is not none else '-' }} | {{ r.equity_per_share | number_br if r.equity_per_share is not none else '-' }} | {{ r.revenue_per_share | number_br if r.revenue_per_share is not none else '-' }} | {{ r.dividend_payout_pct | percent_raw_br if r.dividend_payout_pct is not none else '-' }} | {{ r.growth_rate | number_br if r.growth_rate is not none else '-' }} | {{ r.cap_rate | percent_br if r.cap_rate is not none else '-' }} | {{ r.leverage_ratio | number_br if r.leverage_ratio is not none else '-' }} | {{ r.equity_value | currency_br if r.equity_value is not none else '-' }} | {{ r.variation_month_ratio | percent_br if r.variation_month_ratio is not none else '-' }} | {{ r.variation_year_ratio | percent_br if r.variation_year_ratio is not none else '-' }} | {{ r.equity_month_ratio | percent_br if r.equity_month_ratio is not none else '-' }} | {{ r.dividend_reserve_amt | currency_br if r.dividend_reserve_amt is not none else '-' }} | {{ r.admin_fee_due_amt | currency_br if r.admin_fee_due_amt is not none else '-' }} | {{ r.perf_fee_due_amt | currency_br if r.perf_fee_due_amt is not none else '-' }} | {{ r.total_cash_amt | currency_br if r.total_cash_amt is not none else '-' }} | {{ r.expected_revenue_amt | currency_br if r.expected_revenue_amt is not none else '-' }} | {{ r.liabilities_total_amt | currency_br if r.liabilities_total_amt is not none else '-' }} | {{ r.created_at | datetime_br if r.created_at else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
+{%- endfor %}
+{%- if not loop.last %}
+
+---
+
+{%- endif %}
 {%- endfor %}
 {%- else -%}
 {{ empty_message or "Nenhum registro encontrado." }}

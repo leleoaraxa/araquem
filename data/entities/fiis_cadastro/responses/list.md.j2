@@ -1,7 +1,9 @@
 {% set rows = rows if rows is defined else [] %}
 
 {% if rows and rows|length > 0 -%}
-{%- for r in rows %}
+{% set grouped = rows | groupby('ticker') %}
+{%- for ticker, items in grouped %}
+{%- for r in items %}
 **{{ r.ticker }} — {{ r.display_name or r.b3_name or '-' }}**
 
 - CNPJ do fundo: **{{ r.fii_cnpj or '-' }}**
@@ -23,6 +25,7 @@
 - Criado em: **{{ r.created_at | date_br if r.created_at else '-' }}**
 - Atualizado em: **{{ r.updated_at | date_br if r.updated_at else '-' }}**
 {%- endif %}
+{%- endfor %}
 
 {%- if not loop.last %}
 

@@ -3,7 +3,9 @@
 {% if not rows or rows|length == 0 -%}
 {{ empty_message or "Nenhum registro encontrado." }}
 {%- else -%}
-{%- set r = rows[0] %}
+{% set grouped = rows | groupby('ticker') %}
+{%- for ticker, items in grouped %}
+{%- set r = items[0] %}
 
 **Dividendos e yield do{{ ' ' + r.ticker if r.ticker else '' }}**
 
@@ -16,11 +18,18 @@
 - Dividendos acumulados 12m: **{{ r.dividends_12m_amt|currency_br if r.dividends_12m_amt is not none else '-' }}**
 - Último dividendo pago: **{{ r.last_dividend_amt|currency_br if r.last_dividend_amt is not none else '-' }}** em **{{ r.last_payment_date|datetime_br if r.last_payment_date is not none else '-' }}**
 
-{% set ultimos = rows[:12] %}
+{% set ultimos = items[:12] %}
 | Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
 | --- | --- | --- | --- |
 {%- for row in ultimos %}
 | {{ row.ref_month|date_br if row.ref_month is not none else '-' }} | {{ row.dividend_amt|currency_br if row.dividend_amt is not none else '-' }} | {{ row.dy_current_monthly_pct|percent_raw_br if row.dy_current_monthly_pct is not none else '-' }} | {{ row.dy_12m_pct|percent_raw_br if row.dy_12m_pct is not none else '-' }} |
+{%- endfor %}
+
+{%- if not loop.last %}
+
+---
+
+{%- endif %}
 {%- endfor %}
 
 {%- endif %}
