@@ -4,7 +4,10 @@
   {% set tickers = rows | map(attribute='ticker') | unique | list %}
   {% for ticker in tickers %}
     {% set subset = rows | selectattr('ticker', 'equalto', ticker) | list %}
-    {% set latest = subset[0] %}
+
+    {# "latest" robusto sem depender do ORDER BY do SQL #}
+    {% set latest = (subset | sort(attribute='ref_month', reverse=true) | first) %}
+
     **Dividend yield mensal de {{ ticker }}**
 
     Último mês em {{ latest.ref_month|date_br if latest.ref_month is not none else '-' }}: dividendos **{{ latest.dividends_sum|currency_br if latest.dividends_sum is not none else '-' }}**; DY mensal **{{ latest.dy_monthly|percent_br if latest.dy_monthly is not none else '-' }}**.
@@ -15,6 +18,11 @@
       | {{ r.ref_month|date_br if r.ref_month is not none else '-' }} | {{ r.dividends_sum|currency_br if r.dividends_sum is not none else '-' }} | {{ r.price_ref|currency_br if r.price_ref is not none else '-' }} | {{ r.dy_monthly|percent_br if r.dy_monthly is not none else '-' }} |
     {% endfor %}
 
+    {%- if not loop.last %}
+
+---
+
+    {%- endif %}
   {%- endfor %}
 {%- else -%}
   {{ empty_message or "Nenhum registro encontrado." }}

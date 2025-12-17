@@ -5,15 +5,15 @@
   {% set rows = results[meta.result_key] %}
 {% endif %}
 
+{% if not rows or rows|length == 0 %}
+{# ticker_label seguro mesmo sem rows #}
 {% set ticker_label = (
   meta.aggregates.ticker
   if meta is defined
      and meta.aggregates is defined
      and meta.aggregates.ticker is defined
-  else (rows[0].ticker if rows and rows[0].ticker is defined else 'FII')
+  else 'FII'
 ) %}
-
-{% if not rows or rows|length == 0 %}
 Dados de imóveis do {{ ticker_label }} não disponíveis no momento.
 {% else %}
 {% set grouped = rows | groupby('ticker') %}

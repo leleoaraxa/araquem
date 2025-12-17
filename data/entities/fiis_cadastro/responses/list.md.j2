@@ -3,6 +3,7 @@
 {% if rows and rows|length > 0 -%}
 {% set grouped = rows | groupby('ticker') %}
 {%- for ticker, items in grouped %}
+
 {%- for r in items %}
 **{{ r.ticker }} — {{ r.display_name or r.b3_name or '-' }}**
 
@@ -32,7 +33,8 @@
 ---
 
 {%- endif %}
+
 {%- endfor %}
 {%- else -%}
-  {{ empty_message or "Nenhum cadastro encontrado." }}
+{{ empty_message or "Nenhum cadastro encontrado." }}
 {%- endif %}

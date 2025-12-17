@@ -4,7 +4,10 @@
   {% set tickers = rows | map(attribute='ticker') | unique | list %}
   {% for ticker in tickers %}
     {% set subset = rows | selectattr('ticker', 'equalto', ticker) | list %}
-    {% set latest = subset[0] %}
+
+    {# "latest" robusto sem depender do ORDER BY do SQL #}
+    {% set latest = (subset | sort(attribute='payment_date', reverse=true) | first) %}
+
     **Dividendos de {{ ticker }}**
 
     Último pagamento em {{ latest.payment_date|date_br if latest.payment_date is not none else '-' }}: **{{ latest.dividend_amt|currency_br if latest.dividend_amt is not none else '-' }}** por cota.
@@ -15,6 +18,11 @@
       | {{ r.payment_date|date_br if r.payment_date is not none else '-' }} | {{ r.traded_until_date|date_br if r.traded_until_date is not none else '-' }} | {{ r.dividend_amt|currency_br if r.dividend_amt is not none else '-' }} |
     {% endfor %}
 
+    {%- if not loop.last %}
+
+---
+
+    {%- endif %}
   {%- endfor %}
 {%- else -%}
   {{ empty_message or "Nenhum registro encontrado." }}
