@@ -236,6 +236,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   client_fiis_positions:
@@ -378,6 +379,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_financials_risk:
@@ -399,6 +401,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   history_currency_rates:
@@ -665,6 +668,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   carteira_enriquecida:
@@ -746,6 +750,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_cadastro:
@@ -755,6 +760,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_noticias:
@@ -764,6 +770,7 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference
 
   fiis_imoveis:
@@ -773,4 +780,5 @@ intents:
         source:
           - text
           - context
+        allow_multi_ticker: true
         context_key: last_reference

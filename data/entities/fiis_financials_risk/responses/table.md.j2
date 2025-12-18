@@ -1,21 +1,26 @@
 {% set rows = rows if rows is defined else [] %}
 {% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
-{% set rows = results[meta.result_key] %}
+  {% set rows = results[meta.result_key] %}
 {% endif %}
+
 {% if rows and rows|length > 0 -%}
-{% set grouped = rows | groupby('ticker') %}
-{%- for ticker, items in grouped %}
+  {# IMPORTANTE: groupby exige ordenação prévia para não quebrar grupos #}
+  {% set rows_sorted = rows | sort(attribute='ticker') %}
+  {% set grouped = rows_sorted | groupby('ticker') %}
+
+  {% for ticker, items in grouped %}
 | Código | Volatilidade | Sharpe | Sortino | Treynor | Alfa de Jensen | Beta | Máx. drawdown (%) | R² (%) | Atualizado em |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-{%- for r in items %}
+{% for r in items %}
 | {{ r.ticker or '-' }} | {{ r.volatility_ratio | number_raw_br if r.volatility_ratio is not none else '-' }} | {{ r.sharpe_ratio | number_raw_br if r.sharpe_ratio is not none else '-' }} | {{ r.sortino_ratio | number_raw_br if r.sortino_ratio is not none else '-' }} | {{ r.treynor_ratio | number_raw_br if r.treynor_ratio is not none else '-' }} | {{ r.jensen_alpha | number_raw_br if r.jensen_alpha is not none else '-' }} | {{ r.beta_index | number_raw_br if r.beta_index is not none else '-' }} | {{ r.max_drawdown | percent_br if r.max_drawdown is not none else '-' }} | {{ r.r_squared | percent_br if r.r_squared is not none else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
-{%- endfor %}
-{%- if not loop.last %}
+{% endfor %}
+
+{% if not loop.last %}
 
 ---
 
-{%- endif %}
-{%- endfor %}
+{% endif %}
+  {% endfor %}
 {%- else -%}
 {{ empty_message or "Nenhum registro encontrado." }}
 {%- endif %}
