@@ -1,4 +1,5 @@
 # app/planner/param_inference.py
+
 # Contexto não é consultado diretamente pelo Planner.
 # O endpoint /ask resolve contexto via ContextManager.resolve_last_reference()
 # e injeta identifiers já enriquecidos.
@@ -119,7 +120,8 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
             )
             allowed_aggs = agg_cfg.get("allowed") or []
             _require_list(
-                allowed_aggs, label=f"compute_on_read.agg.allowed da intent '{intent_name}'"
+                allowed_aggs,
+                label=f"compute_on_read.agg.allowed da intent '{intent_name}'",
             )
             for agg_name in allowed_aggs:
                 if agg_name not in _ALLOWED_AGGS:
@@ -295,7 +297,10 @@ def _validate_param_inference(data: Dict[str, Any], *, path: Path) -> Dict[str, 
                             raise ValueError(
                                 "param_inference.yaml inválido: source de params deve ser lista de strings"
                             )
-                if "allow_multi_ticker" in spec and spec.get("allow_multi_ticker") is not None:
+                if (
+                    "allow_multi_ticker" in spec
+                    and spec.get("allow_multi_ticker") is not None
+                ):
                     if not isinstance(spec.get("allow_multi_ticker"), bool):
                         raise ValueError(
                             "param_inference.yaml inválido: allow_multi_ticker em params.ticker deve ser boolean"
@@ -485,9 +490,7 @@ def infer_params(
     window_defaults = cor_cfg.get("window") or {}
 
     # defaults
-    agg_allowed = set(
-        a for a in agg_defaults.get("allowed", []) if a in _ALLOWED_AGGS
-    )
+    agg_allowed = set(a for a in agg_defaults.get("allowed", []) if a in _ALLOWED_AGGS)
     agg = agg_defaults.get("default") or icfg.get("default_agg")
     window = window_defaults.get("default") or icfg.get("default_window")
     limit: Optional[int] = None
@@ -498,7 +501,11 @@ def infer_params(
     if isinstance(icfg.get("required"), list):
         required_fields = [str(r) for r in icfg.get("required") if isinstance(r, str)]
     if isinstance(icfg.get("bindings"), dict):
-        bindings = {str(k): str(v) for k, v in icfg.get("bindings", {}).items() if isinstance(k, str) and isinstance(v, str)}
+        bindings = {
+            str(k): str(v)
+            for k, v in icfg.get("bindings", {}).items()
+            if isinstance(k, str) and isinstance(v, str)
+        }
 
     # Defaults da ENTIDADE (limit/order e windows_allowed adicionais)
     ent_def = _entity_agg_defaults(entity_yaml_path)
