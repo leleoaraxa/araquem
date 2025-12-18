@@ -15,6 +15,11 @@ intents:
           - "months:6"
           - "months:12"
           - "months:24"
+          - "count:1"
+          - "count:3"
+          - "count:6"
+          - "count:12"
+          - "count:24"
         default: "months:12"
       agg:
         allowed:
@@ -24,17 +29,17 @@ intents:
           - "latest"
         default: "list"
     default_agg: list
-    default_window: months:12
+    default_window: "months:12"
     windows_allowed:
-      - months:3
-      - months:6
-      - months:12
-      - months:24
-      - count:1
-      - count:3
-      - count:6
-      - count:12
-      - count:24
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:3"
+      - "count:6"
+      - "count:12"
+      - "count:24"
 
     agg_keywords:
       avg:
@@ -56,7 +61,7 @@ intents:
           - hoje
           - recente
           - atual
-        window: count:1
+        window: "count:1"
       list:
         include:
           - ultimos
@@ -119,6 +124,12 @@ intents:
           - "months:6"
           - "months:12"
           - "months:24"
+          - "count:1"
+          - "count:3"
+          - "count:5"
+          - "count:6"
+          - "count:12"
+          - "count:24"
         default: "months:12"
       agg:
         allowed:
@@ -129,18 +140,18 @@ intents:
         default: "list"
 
     default_agg: list
-    default_window: months:12
+    default_window: "months:12"
     windows_allowed:
-      - months:3
-      - months:6
-      - months:12
-      - months:24
-      - count:1
-      - count:3
-      - count:5
-      - count:6
-      - count:12
-      - count:24
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:3"
+      - "count:5"
+      - "count:6"
+      - "count:12"
+      - "count:24"
 
     agg_keywords:
       avg:
@@ -164,7 +175,7 @@ intents:
           - fechou
           - fechou a quanto
           - quanto fechou
-        window: count:1
+        window: "count:1"
       list:
         include:
           - ultimos
@@ -183,10 +194,6 @@ intents:
           - 3 meses
           - tres meses
           - ultimos 3 meses
-        5:
-          - 5 pregoes
-          - cinco pregoes
-          - ultimos 5 pregoes
         6:
           - semestre
           - 6 meses
@@ -212,6 +219,10 @@ intents:
         3:
           - 3 ultimos
           - tres ultimos
+        5:
+          - 5 pregoes
+          - cinco pregoes
+          - ultimos 5 pregoes
         6:
           - 6 ultimos
           - seis ultimos
@@ -268,6 +279,10 @@ intents:
           - "months:6"
           - "months:12"
           - "months:24"
+          - "count:3"
+          - "count:6"
+          - "count:12"
+          - "count:24"
         default: "months:12"
       agg:
         allowed:
@@ -278,16 +293,16 @@ intents:
         default: "list"
 
     default_agg: list
-    default_window: months:12
+    default_window: "months:12"
     windows_allowed:
-      - months:3
-      - months:6
-      - months:12
-      - months:24
-      - count:3
-      - count:6
-      - count:12
-      - count:24
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:3"
+      - "count:6"
+      - "count:12"
+      - "count:24"
 
     agg_keywords:
       avg:
@@ -307,7 +322,7 @@ intents:
           - ultimo dy
           - dy mais recente
           - dy atual
-        window: count:1
+        window: "count:1"
       list:
         include:
           - historico de dy
@@ -406,15 +421,15 @@ intents:
 
   history_currency_rates:
     default_agg: list
-    default_window: months:6
+    default_window: "months:6"
     windows_allowed:
-      - months:1
-      - months:3
-      - months:6
-      - months:12
-      - count:1
-      - count:5
-      - count:20
+      - "months:1"
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "count:1"
+      - "count:5"
+      - "count:20"
     agg_keywords:
       latest:
         include:
@@ -423,7 +438,7 @@ intents:
           - agora
           - fechamento
           - fechamento de ontem
-        window: count:1
+        window: "count:1"
       list:
         include:
           - ultimos
@@ -470,16 +485,16 @@ intents:
 
   history_b3_indexes:
     default_agg: list
-    default_window: months:6
+    default_window: "months:6"
     windows_allowed:
-      - months:3
-      - months:6
-      - months:12
-      - months:24
-      - count:1
-      - count:5
-      - count:20
-      - count:60
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:5"
+      - "count:20"
+      - "count:60"
 
     agg_keywords:
       latest:
@@ -489,7 +504,7 @@ intents:
           - agora
           - fechamento
           - fechamento de ontem
-        window: count:1
+        window: "count:1"
       list:
         include:
           - ultimos
@@ -540,15 +555,15 @@ intents:
 
   history_market_indicators:
     default_agg: list
-    default_window: months:6
+    default_window: "months:6"
     windows_allowed:
-      - months:1
-      - months:3
-      - months:6
-      - months:12
-      - count:1
-      - count:5
-      - count:20
+      - "months:1"
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "count:1"
+      - "count:5"
+      - "count:20"
 
     agg_keywords:
       latest:
@@ -559,7 +574,7 @@ intents:
           - ontem
           - indicador de ontem
           - taxa de ontem
-        window: count:1
+        window: "count:1"
       list:
         include:
           - ultimos
@@ -602,17 +617,17 @@ intents:
 
   dividendos_yield:
     default_agg: list
-    default_window: months:12
+    default_window: "months:12"
     windows_allowed:
-      - months:3
-      - months:6
-      - months:12
-      - months:24
-      - count:1
-      - count:3
-      - count:6
-      - count:12
-      - count:24
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "months:24"
+      - "count:1"
+      - "count:3"
+      - "count:6"
+      - "count:12"
+      - "count:24"
 
     agg_keywords:
       latest:
@@ -620,7 +635,7 @@ intents:
           - ultimo dy
           - dy atual
           - ultimo pagamento
-        window: count:1
+        window: "count:1"
       list:
         include:
           - historico
@@ -680,17 +695,17 @@ intents:
 
   macro_consolidada:
     default_agg: list
-    default_window: months:6
+    default_window: "months:6"
     windows_allowed:
-      - months:1
-      - months:3
-      - months:6
-      - months:12
-      - count:5
-      - count:10
-      - count:20
-      - count:30
-      - count:60
+      - "months:1"
+      - "months:3"
+      - "months:6"
+      - "months:12"
+      - "count:5"
+      - "count:10"
+      - "count:20"
+      - "count:30"
+      - "count:60"
 
     agg_keywords:
       latest:
@@ -698,7 +713,7 @@ intents:
           - ultimo
           - hoje
           - agora
-        window: count:1
+        window: "count:1"
       list:
         include:
           - historico
