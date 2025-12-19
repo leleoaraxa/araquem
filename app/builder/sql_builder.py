@@ -431,12 +431,11 @@ def build_select_for_entity(
                 value = alt
 
         if name == "ticker" and multi_ticker_values:
-            params["ticker"] = multi_ticker_values[0]
             if len(multi_ticker_values) == 1:
                 params[name] = multi_ticker_values[0]
                 where_terms.append(f"{name} = %({name})s")
             else:
-                params["tickers"] = multi_ticker_values
+                params["tickers"] = list(multi_ticker_values)
                 where_terms.append(f"{name} = ANY(%(tickers)s)")
             continue
         if value is None or value == "":
@@ -507,7 +506,8 @@ def build_select_for_entity(
     elif default_order_dir:
         preferred_order_dir = default_order_dir
 
-    if agg_mode == "latest":
+    is_latest_requested = agg_mode == "latest"
+    if is_latest_requested:
         agg_mode = "list"
         window = window or "count:1"
         requested_limit = 1
@@ -541,7 +541,28 @@ def build_select_for_entity(
     if not agg_enabled or agg_mode in ("", None):
         agg_mode = "list"
 
+    is_count_one_window = window_kind == "count" and window_value == 1
+    latest_per_ticker = (
+        supports_multi_ticker and len(multi_ticker_values) > 1 and (is_latest_requested or is_count_one_window)
+    )
+
     if agg_mode == "list":
+        if latest_per_ticker:
+            window_order_by = (
+                order_value
+                or (f"{default_date_field} DESC" if default_date_field else None)
+                or return_cols[0]
+            )
+            base_select = ", ".join(return_cols)
+            sql = (
+                f"SELECT {', '.join(f't.{col}' for col in return_cols)} "
+                f"FROM (SELECT {base_select}, ROW_NUMBER() OVER (PARTITION BY ticker ORDER BY {window_order_by}) AS rn "
+                f"FROM {view_name}{where_sql}) t "
+                "WHERE t.rn = 1 "
+                "ORDER BY t.ticker"
+            )
+            return sql, params, result_key, return_cols
+
         limit_clause = f" LIMIT {limit_value}" if limit_value else ""
         sql = (
             f"SELECT {', '.join(return_cols)} FROM {view_name}{where_sql}"

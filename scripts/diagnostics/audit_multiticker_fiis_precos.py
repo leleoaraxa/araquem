@@ -74,8 +74,16 @@ class TracingPgExecutor(PgExecutor):
 
     def query(self, sql: str, params: Dict[str, Any]) -> List[Dict[str, Any]]:
         if self.stub_rows or not self._dsn:
-            ticker_value = (params or {}).get("ticker")
-            rows = [{"ticker": ticker_value}]
+            safe_params = params or {}
+            tickers_param = safe_params.get("tickers")
+            tickers_list = (
+                [safe_params.get("ticker")]
+                if not isinstance(tickers_param, (list, tuple, set))
+                else list(tickers_param)
+            )
+            rows = [{"ticker": t} for t in tickers_list if t]
+            if not rows:
+                rows = [{"ticker": safe_params.get("ticker")}]
         else:
             rows = super().query(sql, params)
         unique_tickers = sorted(
@@ -157,6 +165,9 @@ def run_audit() -> Tuple[Dict[str, Any], Dict[str, Any]]:
     )
 
     extracted_tickers = extract_tickers_from_text(QUESTION)
+    expected_set = set(extracted_tickers)
+    final_set = set(final_rows_unique_tickers)
+    matches_expected = expected_set == final_set
     suspicion_rank = _rank_hypotheses(loop_iterations, executor_calls)
 
     payload = {
@@ -166,6 +177,9 @@ def run_audit() -> Tuple[Dict[str, Any], Dict[str, Any]]:
         "loop_iterations": loop_iterations,
         "executor_calls": executor_calls,
         "final_rows_unique_tickers": final_rows_unique_tickers,
+        "final_rows_match_expected": matches_expected,
+        "missing_tickers": sorted(expected_set - final_set),
+        "unexpected_tickers": sorted(final_set - expected_set),
         "suspicion_rank": suspicion_rank,
     }
     return payload, response

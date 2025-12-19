@@ -548,6 +548,7 @@ class Orchestrator:
             bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
         )
         multi_ticker_enabled = supports_multi and len(tickers_list) > 1
+        multi_ticker_batch_supported = multi_ticker_enabled and entity == "fiis_precos"
 
         cache_ctx = None
         if not multi_ticker_enabled:
@@ -639,7 +640,7 @@ class Orchestrator:
             else:
 
                 # Caminho determinístico normal: gera SELECT + executa no Postgres
-                if multi_ticker_enabled:
+                if multi_ticker_enabled and not multi_ticker_batch_supported:
                     rows_raw = []
                     result_key = None
                     return_columns = None
