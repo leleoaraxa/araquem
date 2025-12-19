@@ -55,6 +55,7 @@ def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str
 
     norm = _normalize(question, normalize_steps)
     tokens = _tokenize(norm, split_pat)
+    tokens_set = set(tokens)
 
     token_weight = float(defaults.get("token_weight", 1.0))
     phrase_weight = float(defaults.get("phrase_weight", 3.0))
@@ -82,8 +83,8 @@ def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str
         phrases_exc = rule.get("phrases_exclude") or []
 
         # Contagem de hits
-        token_hits_inc = [t for t in tokens_inc if t in tokens or t in norm]
-        token_hits_exc = [t for t in tokens_exc if t in tokens or t in norm]
+        token_hits_inc = [t for t in tokens_inc if t in tokens_set]
+        token_hits_exc = [t for t in tokens_exc if t in tokens_set]
         phrase_hits_inc = [p for p in phrases_inc if _phrase_present(norm, p)]
         phrase_hits_exc = [p for p in phrases_exc if _phrase_present(norm, p)]
 
@@ -346,6 +347,7 @@ class Planner:
     def explain(self, question: str):
         norm = _normalize(question, self.onto.normalize)
         tokens = _tokenize(norm, self.onto.token_split)
+        tokens_set = set(tokens)
 
         resolved_ticker = resolve_ticker_from_text(question)
         has_ticker = bool(resolved_ticker)
@@ -367,7 +369,9 @@ class Planner:
                 "result": tokens[:],
             }
         ]
-        decision_path.append({"stage": "bucketize", "type": "planner_bucket", "bucket": bucket})
+        decision_path.append(
+            {"stage": "bucketize", "type": "planner_bucket", "bucket": bucket}
+        )
         token_score_items: List[Dict[str, Any]] = []
         phrase_score_items: List[Dict[str, Any]] = []
         anti_hits_items: List[Dict[str, Any]] = []
@@ -380,14 +384,15 @@ class Planner:
                 for t in it.tokens_include
                 if (t == "<ticker>" and has_ticker)
                 or (t == "(sem ticker)" and not has_ticker)
-                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens or t in norm))
+                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens_set))
             ]
+
             exclude_hits = [
                 t
                 for t in it.tokens_exclude
                 if (t == "<ticker>" and has_ticker)
                 or (t == "(sem ticker)" and not has_ticker)
-                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens or t in norm))
+                or (t not in {"<ticker>", "(sem ticker)"} and (t in tokens_set))
             ]
             score += token_weight * len(include_hits)
             score -= token_weight * len(exclude_hits)
@@ -561,11 +566,21 @@ class Planner:
                 if entity_name is None:
                     rag_signal = 0.0
                 else:
-                    rag_signal = float(rag_entity_hints.get(entity_name.strip(), 0.0))
-                if rag_fusion_applied:
+                    # defensivo: entity_name pode não ser str em casos extremos
+                    key = str(entity_name).strip()
+                    rag_signal = float(rag_entity_hints.get(key, 0.0))
+
+                # Regra anti-penalização:
+                # se o RAG foi usado globalmente, mas ESTA entidade não tem sinal (0),
+                # não reduzimos o score base (evita "blend" derrubar o base).
+                if rag_fusion_applied and rag_signal <= 0.0:
+                    final_score = base
+                elif rag_fusion_applied:
                     if re_rank_mode == "additive":
+                        # additive: base + w*rag
                         final_score = base + fusion_weight * rag_signal
                     else:
+                        # blend: base*(1-w) + rag*w
                         final_score = (
                             base * (1.0 - fusion_weight) + rag_signal * fusion_weight
                         )

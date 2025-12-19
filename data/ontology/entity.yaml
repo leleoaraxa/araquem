@@ -42,7 +42,7 @@ intents:
     bucket: A
     tokens:
       include:
-        - '[A-Za-z]{4}11'
+        - '<ticker>'
       exclude: []
     phrases:
       include: []
