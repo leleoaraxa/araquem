@@ -1,430 +1,288 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-run_ask_suite.py
-
-Executa 10 perguntas no /ask e extrai um "audit payload" enxuto:
-- winner por intent + entity vem do intent (Contrato A)
-- thresholds_applied (gate)
-- top2 gap base/final
-- rag.used + rerank_policy + fusion.used/weight/affected
-- cache hit + latência total + latência narrator
-- entity_top_telemetry (apenas para inspeção; pode ser ruidoso)
-
-Saídas:
-- stdout: tabela resumida
-- out/audit_results.jsonl
-- out/audit_results.csv
-
-Uso:
-  python run_ask_suite.py --questions questions.txt
-  python run_ask_suite.py --inline
-"""
-
-from __future__ import annotations
-
 import argparse
 import csv
 import json
 import os
 import sys
 import time
-import uuid
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
 
 
-def _get(d: Dict[str, Any], path: str, default=None):
-    """Safe getter for dotted paths."""
-    cur: Any = d
-    for part in path.split("."):
-        if not isinstance(cur, dict):
-            return default
-        if part not in cur:
-            return default
-        cur = cur[part]
-    return cur
-
-
-def _to_bool(v: Any) -> Optional[bool]:
-    if isinstance(v, bool):
-        return v
-    return None
-
-
-def _to_float(v: Any) -> Optional[float]:
-    try:
-        if v is None:
-            return None
-        return float(v)
-    except Exception:
-        return None
-
-
-def _utc_now_iso() -> str:
-    return datetime.now(timezone.utc).isoformat()
+DEFAULT_QUESTIONS: List[str] = [
+    "Como está o KNRI11 e o XPLG11?",
+    "Quais são os dividendos do HGLG11?",
+    "Quais são os imóveis do HGLG11?",
+    "Qual o DY do HGLG11?",
+    "Qual o preço do HGLG11?",
+    "Quais os riscos do KNRI11?",
+    "Quais as notícias do KNRI11?",
+    "Qual foi o dólar hoje?",
+    "Qual foi o IPCA em março de 2025?",
+    "Qual é a minha carteira enriquecida?",
+]
 
 
 @dataclass
-class AskConfig:
+class Config:
     base_url: str
-    api_key: Optional[str]
-    nickname: str
-    client_id: str
     conversation_id: str
-    timeout_s: int = 120
+    client_id: str
+    nickname: str
+    timeout_s: float
+    out_dir: str
 
 
-def call_ask(cfg: AskConfig, question: str) -> Dict[str, Any]:
-    url = cfg.base_url.rstrip("/") + "/ask?explain=true"
-    headers = {"Content-Type": "application/json"}
-    if cfg.api_key:
-        # Ajuste aqui se o seu gateway usa outro header (ex: Authorization: Bearer)
-        headers["Authorization"] = f"Bearer {cfg.api_key}"
+def _ask_url(cfg: Config) -> str:
+    # IMPORTANT: use explain=true
+    return cfg.base_url.rstrip("/") + "/ask?explain=true"
 
+
+def _safe_get(d: Dict[str, Any], path: str, default=None):
+    cur: Any = d
+    for part in path.split("."):
+        if cur is None:
+            return default
+        if isinstance(cur, dict):
+            cur = cur.get(part)
+        else:
+            return default
+    return cur if cur is not None else default
+
+
+def _post_question(
+    cfg: Config, question: str
+) -> Tuple[Dict[str, Any], float, Optional[str]]:
+    url = _ask_url(cfg)
     payload = {
         "question": question,
         "conversation_id": cfg.conversation_id,
         "nickname": cfg.nickname,
-        "client_id": cfg.client_id,
+        "client_id": "66140994691",
     }
+    t0 = time.time()
+    try:
+        r = requests.post(url, json=payload, timeout=cfg.timeout_s)
+        dt_ms = (time.time() - t0) * 1000.0
+        # tenta JSON mesmo em erro (para capturar status/message)
+        try:
+            data = r.json()
+        except Exception:
+            data = {"_raw_text": r.text}
+        data["_http_status"] = r.status_code
+        return data, dt_ms, None
+    except Exception as e:
+        dt_ms = (time.time() - t0) * 1000.0
+        return {}, dt_ms, str(e)
 
-    r = requests.post(
-        url, headers=headers, data=json.dumps(payload), timeout=cfg.timeout_s
+
+def _extract_row(
+    resp: Dict[str, Any],
+    question: str,
+    elapsed_ms_client: float,
+    request_error: Optional[str],
+) -> Dict[str, Any]:
+    # status base do endpoint (quando existir)
+    status_reason = _safe_get(resp, "status.reason")
+    status_message = _safe_get(resp, "status.message")
+
+    # atalhos topo (o seu payload já tem intent/entity no meta)
+    chosen_intent = _safe_get(resp, "meta.intent") or _safe_get(
+        resp, "meta.planner.chosen.intent"
     )
-    r.raise_for_status()
-    return r.json()
-
-
-def extract_audit(resp: Dict[str, Any], question: str) -> Dict[str, Any]:
-    meta = resp.get("meta", {}) if isinstance(resp.get("meta"), dict) else {}
-
-    chosen_intent = _get(meta, "planner.chosen.intent")
-    chosen_entity = _get(meta, "planner.chosen.entity")
-    chosen_score = _get(meta, "planner.chosen.score")
-
-    # Gate / thresholds
-    th = _get(meta, "planner.explain.scoring.thresholds_applied", {}) or {}
-    gate_accepted = _get(th, "accepted")
-    gate_source = _get(th, "source")
-    gate_min_score = _get(th, "min_score")
-    gate_min_gap = _get(th, "min_gap")
-    gate_gap = _get(th, "gap")
-    gate_score_for_gate = _get(th, "score_for_gate")
-    gate_reason = _get(th, "reason")
-
-    # top2 gaps
-    gap_base = _get(meta, "planner.explain.scoring.intent_top2_gap_base")
-    gap_final = _get(meta, "planner.explain.scoring.intent_top2_gap_final")
-
-    # RAG / rerank / fusion
-    rag_used = _get(meta, "planner.rag.used")
-    rag_error = _get(meta, "planner.rag.error")
-    rag_hints = _get(meta, "planner.rag.entity_hints", {}) or {}
-    rerank_enabled = _get(meta, "planner.rag.re_rank.enabled")
-    rerank_policy_enabled = _get(meta, "planner.rag.rerank_policy.enabled")
-    rerank_policy_source = _get(meta, "planner.rag.rerank_policy.source")
-
-    fusion_used = _get(meta, "planner.fusion.used")
-    fusion_weight = _get(meta, "planner.fusion.weight")
-    fusion_affected = _get(meta, "planner.fusion.affected_entities", []) or []
-
-    # Telemetria "top_entity" (ruidosa quando há empate)
-    entity_top_telemetry = _get(
-        meta, "planner.explain.scoring.entity_top_telemetry.name"
+    chosen_entity = _safe_get(resp, "meta.entity") or _safe_get(
+        resp, "meta.planner.chosen.entity"
+    )
+    planner_score = _safe_get(resp, "meta.planner_score") or _safe_get(
+        resp, "meta.planner.chosen.score"
     )
 
-    # Context allow/deny
-    context_allowed = _get(meta, "planner.chosen.context_allowed")
-    context_entity_allowed = _get(meta, "planner.context.entity_allowed")
-    context_entity = _get(meta, "planner.context.entity")
+    # gate
+    gate = _safe_get(resp, "meta.planner.explain.thresholds_applied", {}) or {}
+    gate_accepted = gate.get("accepted")
+    gate_source = gate.get("source")
+    gate_reason = gate.get("reason")
+    gate_min_score = gate.get("min_score")
+    gate_min_gap = gate.get("min_gap")
+    gate_gap = gate.get("gap")
+    score_for_gate = gate.get("score_for_gate")
 
-    # Cache
-    cache_hit = _get(meta, "cache.hit")
-    cache_ttl = _get(meta, "cache.ttl")
+    # gaps
+    gap_base = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_base")
+    gap_final = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_final")
 
-    # Latências (top-level + narrator)
-    elapsed_ms = _get(meta, "elapsed_ms")
-    narrator_used = _get(meta, "narrator.used")
-    narrator_latency_ms = _get(meta, "narrator.latency_ms")
-    narrator_error = _get(meta, "narrator.error")
-    route_source = _get(meta, "explain_analytics.details.route_source")
+    # resultado
+    rows_total = _safe_get(resp, "meta.rows_total")
+    result_key = _safe_get(resp, "meta.result_key")
 
-    # Contrato A: entity vem do intent
-    # details.<intent>.entities deve conter chosen_entity
-    intent_entities = (
-        _get(meta, f"planner.details.{chosen_intent}.entities", [])
-        if chosen_intent
-        else []
-    )
-    entity_from_intent = (
-        isinstance(intent_entities, list) and (chosen_entity in intent_entities)
-        if chosen_entity and chosen_intent
-        else None
-    )
+    # cache
+    cache_hit = _safe_get(resp, "meta.cache.hit")
+    cache_key = _safe_get(resp, "meta.cache.key")
+    cache_ttl = _safe_get(resp, "meta.cache.ttl")
+    cache_layer = _safe_get(resp, "meta.cache.layer")
 
-    # Consistência "top-level" vs planner
-    top_intent = _get(meta, "intent")
-    top_entity = _get(meta, "entity")
-    consistent_intent = (
-        (top_intent == chosen_intent) if (top_intent and chosen_intent) else None
-    )
-    consistent_entity = (
-        (top_entity == chosen_entity) if (top_entity and chosen_entity) else None
-    )
+    # rag/fusion
+    rag_used = _safe_get(resp, "meta.planner.explain.rag.used")
+    fusion_used = _safe_get(resp, "meta.planner.explain.fusion.used")
+
+    # narrator
+    narrator_used = _safe_get(resp, "meta.narrator.used")
+    narrator_latency_ms = _safe_get(resp, "meta.narrator.latency_ms")
+    narrator_error = _safe_get(resp, "meta.narrator.error")
+
+    # executor latency do pipeline (se existir) vs client measured
+    elapsed_ms_server = _safe_get(resp, "meta.elapsed_ms")
+
+    http_status = resp.get("_http_status")
 
     return {
-        "ts_utc": _utc_now_iso(),
         "question": question,
+        "http_status": http_status,
+        "request_error": request_error,
+        "status_reason": status_reason,
+        "status_message": status_message,
         "chosen_intent": chosen_intent,
         "chosen_entity": chosen_entity,
-        "chosen_score": _to_float(chosen_score),
-        "contract_entity_from_intent": entity_from_intent,
-        "contract_intent_consistent_top_level": consistent_intent,
-        "contract_entity_consistent_top_level": consistent_entity,
-        "gate_accepted": _to_bool(gate_accepted),
+        "planner_score": planner_score,
+        "gate_accepted": gate_accepted,
         "gate_source": gate_source,
-        "gate_min_score": _to_float(gate_min_score),
-        "gate_min_gap": _to_float(gate_min_gap),
-        "gate_gap": _to_float(gate_gap),
-        "gate_score_for_gate": _to_float(gate_score_for_gate),
         "gate_reason": gate_reason,
-        "intent_top2_gap_base": _to_float(gap_base),
-        "intent_top2_gap_final": _to_float(gap_final),
-        "rag_used": _to_bool(rag_used),
-        "rag_error": rag_error,
-        "rag_hints": rag_hints,  # mantém map completo
-        "rerank_enabled": _to_bool(rerank_enabled),
-        "rerank_policy_enabled": _to_bool(rerank_policy_enabled),
-        "rerank_policy_source": rerank_policy_source,
-        "fusion_used": _to_bool(fusion_used),
-        "fusion_weight": _to_float(fusion_weight),
-        "fusion_affected_entities": fusion_affected,
-        "context_allowed": _to_bool(context_allowed),
-        "context_entity_allowed": _to_bool(context_entity_allowed),
-        "context_entity": context_entity,
-        "cache_hit": _to_bool(cache_hit),
+        "gate_min_score": gate_min_score,
+        "gate_min_gap": gate_min_gap,
+        "gate_gap": gate_gap,
+        "score_for_gate": score_for_gate,
+        "intent_top2_gap_base": gap_base,
+        "intent_top2_gap_final": gap_final,
+        "rows_total": rows_total,
+        "result_key": result_key,
+        "cache_hit": cache_hit,
+        "cache_layer": cache_layer,
         "cache_ttl": cache_ttl,
-        "elapsed_ms": _to_float(elapsed_ms),
-        "narrator_used": _to_bool(narrator_used),
-        "narrator_latency_ms": _to_float(narrator_latency_ms),
+        "cache_key": cache_key,
+        "rag_used": rag_used,
+        "fusion_used": fusion_used,
+        "elapsed_ms_server": elapsed_ms_server,
+        "elapsed_ms_client": round(elapsed_ms_client, 3),
+        "narrator_used": narrator_used,
+        "narrator_latency_ms": narrator_latency_ms,
         "narrator_error": narrator_error,
-        "route_source": route_source,
-        "entity_top_telemetry": entity_top_telemetry,
     }
 
 
-def print_table(rows: List[Dict[str, Any]]) -> None:
-    # Tabela enxuta (para terminal)
-    cols = [
-        ("#", "idx"),
-        ("intent", "chosen_intent"),
-        ("entity", "chosen_entity"),
-        ("gate", "gate_accepted"),
-        ("src", "gate_source"),
-        ("gap_b", "intent_top2_gap_base"),
-        ("gap_f", "intent_top2_gap_final"),
-        ("rag", "rag_used"),
-        ("fusion", "fusion_used"),
-        ("cache", "cache_hit"),
-        ("ms", "elapsed_ms"),
-        ("llm_ms", "narrator_latency_ms"),
-    ]
-
-    def fmt(v):
-        if v is None:
-            return "-"
-        if isinstance(v, bool):
-            return "Y" if v else "N"
-        if isinstance(v, float):
-            # 3 casas para gaps / scores, 0 para ms
-            return f"{v:.3f}" if v < 10 else f"{v:.0f}"
-        return str(v)
-
-    header = " | ".join([c[0].ljust(7) for c in cols])
-    sep = "-+-".join(["-" * 7 for _ in cols])
-    print(header)
-    print(sep)
-    for i, r in enumerate(rows, start=1):
-        r2 = dict(r)
-        r2["idx"] = i
-        line = " | ".join([fmt(r2.get(key)).ljust(7)[:7] for _, key in cols])
-        print(line)
+def _load_questions(args: argparse.Namespace) -> List[str]:
+    if args.questions_file:
+        with open(args.questions_file, "r", encoding="utf-8") as f:
+            qs = [
+                ln.strip()
+                for ln in f.readlines()
+                if ln.strip() and not ln.strip().startswith("#")
+            ]
+        return qs
+    if args.inline:
+        n = args.questions
+        return DEFAULT_QUESTIONS[:n]
+    # default: inline também, mas exige --questions-file ou --inline para ser explícito
+    raise SystemExit("Use --inline ou --questions-file.")
 
 
-def write_jsonl(path: str, rows: List[Dict[str, Any]]) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+def _ensure_out_dir(out_dir: str) -> None:
+    os.makedirs(out_dir, exist_ok=True)
+
+
+def _write_jsonl(path: str, rows: List[Dict[str, Any]]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         for r in rows:
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
-def write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-
-    # Flatten mínimo (mantém rag_hints e fusion_affected_entities como json-string)
-    fieldnames = [
-        "ts_utc",
-        "question",
-        "chosen_intent",
-        "chosen_entity",
-        "chosen_score",
-        "contract_entity_from_intent",
-        "contract_intent_consistent_top_level",
-        "contract_entity_consistent_top_level",
-        "gate_accepted",
-        "gate_source",
-        "gate_min_score",
-        "gate_min_gap",
-        "gate_gap",
-        "gate_score_for_gate",
-        "gate_reason",
-        "intent_top2_gap_base",
-        "intent_top2_gap_final",
-        "rag_used",
-        "rag_error",
-        "rerank_enabled",
-        "rerank_policy_enabled",
-        "rerank_policy_source",
-        "fusion_used",
-        "fusion_weight",
-        "context_allowed",
-        "context_entity_allowed",
-        "context_entity",
-        "cache_hit",
-        "cache_ttl",
-        "elapsed_ms",
-        "narrator_used",
-        "narrator_latency_ms",
-        "narrator_error",
-        "route_source",
-        "entity_top_telemetry",
-        "rag_hints_json",
-        "fusion_affected_entities_json",
-    ]
-
-    with open(path, "w", newline="", encoding="utf-8") as f:
+def _write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
+    if not rows:
+        return
+    fieldnames = list(rows[0].keys())
+    with open(path, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=fieldnames)
         w.writeheader()
         for r in rows:
-            out = {k: r.get(k) for k in fieldnames if k in r}
-            out["rag_hints_json"] = json.dumps(
-                r.get("rag_hints", {}), ensure_ascii=False
-            )
-            out["fusion_affected_entities_json"] = json.dumps(
-                r.get("fusion_affected_entities", []), ensure_ascii=False
-            )
-            w.writerow(out)
-
-
-def load_questions(path: Optional[str], inline: bool) -> List[str]:
-    if inline:
-        # Substitua por suas 10 perguntas (ou mantenha como exemplo)
-        return [
-            "Como está o KNRI11 e o XPLG11?",
-            "Qual foi o último dividendo do HGLG11?",
-            "Quais são os imóveis do HGLG11?",
-            "Qual é o DY anualizado do MXRF11?",
-            "Existe algum processo judicial relevante do HGRU11?",
-            "Qual o P/VP do KNRI11?",
-            "Quais notícias recentes do KNRI11?",
-            "Qual foi a variação do IFIX no último pregão?",
-            "Qual foi o IPCA em março de 2025?",
-            "Mostre minha carteira enriquecida.",
-        ]
-
-    if not path:
-        raise SystemExit(
-            "Você precisa passar --questions questions.txt ou usar --inline."
-        )
-
-    with open(path, "r", encoding="utf-8") as f:
-        qs = [line.strip() for line in f.readlines()]
-    qs = [q for q in qs if q and not q.startswith("#")]
-    if len(qs) < 1:
-        raise SystemExit("Arquivo de perguntas vazio.")
-    if len(qs) > 10:
-        qs = qs[:10]
-    return qs
+            w.writerow(r)
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument(
-        "--base-url", default=os.getenv("ARAQUEM_BASE_URL", "http://localhost:8000")
-    )
-    ap.add_argument("--api-key", default=os.getenv("ARAQUEM_API_KEY"))
-    ap.add_argument("--nickname", default=os.getenv("ARAQUEM_NICKNAME", "audit"))
-    ap.add_argument("--client-id", default=os.getenv("ARAQUEM_CLIENT_ID", "audit"))
-    ap.add_argument(
-        "--conversation-id",
-        default=os.getenv("ARAQUEM_CONVERSATION_ID", str(uuid.uuid4())),
-    )
-    ap.add_argument(
-        "--questions", help="Arquivo txt com até 10 perguntas (1 por linha)."
-    )
-    ap.add_argument(
         "--inline",
         action="store_true",
-        help="Usa a lista inline de 10 perguntas (edite no script).",
+        help="Usa lista embutida de perguntas (DEFAULT_QUESTIONS).",
     )
-    ap.add_argument("--out-dir", default="out")
     ap.add_argument(
-        "--sleep-ms", type=int, default=0, help="Delay entre requests (0..)."
+        "--questions",
+        type=int,
+        default=10,
+        help="Quantas perguntas do inline usar (default=10).",
     )
-    ap.add_argument("--timeout", type=int, default=120)
+    ap.add_argument(
+        "--questions-file", default="", help="Arquivo txt com perguntas (1 por linha)."
+    )
+    ap.add_argument("--base-url", required=True, help="Ex: http://localhost:8000")
+    ap.add_argument("--conversation-id", required=True)
+    ap.add_argument("--client-id", default="dev")
+    ap.add_argument("--nickname", default="diagnostics")
+    ap.add_argument("--timeout-s", type=float, default=90.0)
+    ap.add_argument("--out-dir", default="out")
     args = ap.parse_args()
 
-    questions = load_questions(args.questions, args.inline)
-
-    cfg = AskConfig(
+    cfg = Config(
         base_url=args.base_url,
-        api_key=args.api_key,
-        nickname=args.nickname,
-        client_id=args.client_id,
         conversation_id=args.conversation_id,
-        timeout_s=args.timeout,
+        client_id=args.client_id,
+        nickname=args.nickname,
+        timeout_s=args.timeout_s,
+        out_dir=args.out_dir,
     )
 
-    results: List[Dict[str, Any]] = []
-    errors: List[Tuple[str, str]] = []
+    questions = _load_questions(args)
+    _ensure_out_dir(cfg.out_dir)
 
-    print(
-        f"base_url={cfg.base_url} conversation_id={cfg.conversation_id} questions={len(questions)}"
-    )
-    for q in questions:
-        try:
-            resp = call_ask(cfg, q)
-            audit = extract_audit(resp, q)
-            results.append(audit)
-        except Exception as e:
-            errors.append((q, str(e)))
-        if args.sleep_ms > 0:
-            time.sleep(args.sleep_ms / 1000.0)
+    rows: List[Dict[str, Any]] = []
+    for i, q in enumerate(questions, start=1):
+        resp, dt_ms, err = _post_question(cfg, q)
+        row = _extract_row(resp, q, dt_ms, err)
+        row["idx"] = i
+        rows.append(row)
 
-    print()
-    print_table(results)
+        # print curto para console
+        intent = (row.get("chosen_intent") or "-")[:12]
+        entity = (row.get("chosen_entity") or "-")[:12]
+        gate = (
+            "Y"
+            if row.get("gate_accepted") is True
+            else ("N" if row.get("gate_accepted") is False else "-")
+        )
+        src = (row.get("gate_source") or "-")[:8]
+        gap_b = row.get("intent_top2_gap_base")
+        gap_f = row.get("intent_top2_gap_final")
+        rag = "Y" if row.get("rag_used") else "-"
+        fusion = "Y" if row.get("fusion_used") else "-"
+        cache = "Y" if row.get("cache_hit") else "N"
+        ms = int(row.get("elapsed_ms_server") or row.get("elapsed_ms_client") or 0)
+        llm_ms = (
+            int(row.get("narrator_latency_ms") or 0) if row.get("narrator_used") else 0
+        )
 
-    out_jsonl = os.path.join(args.out_dir, "audit_results.jsonl")
-    out_csv = os.path.join(args.out_dir, "audit_results.csv")
-    write_jsonl(out_jsonl, results)
-    write_csv(out_csv, results)
+        print(
+            f"{i:>2} | {intent:<12} | {entity:<12} | gate={gate} src={src:<8} gap_b={gap_b} gap_f={gap_f} rag={rag} fusion={fusion} cache={cache} ms={ms} llm_ms={llm_ms}"
+        )
 
-    print()
-    print(f"Wrote: {out_jsonl}")
-    print(f"Wrote: {out_csv}")
+    jsonl_path = os.path.join(cfg.out_dir, "audit_results.jsonl")
+    csv_path = os.path.join(cfg.out_dir, "audit_results.csv")
+    _write_jsonl(jsonl_path, rows)
+    _write_csv(csv_path, rows)
 
-    if errors:
-        print()
-        print("Errors:")
-        for q, err in errors:
-            print(f"- {q}: {err}")
-        return 2
-
+    print(f"\nWrote: {jsonl_path}")
+    print(f"Wrote: {csv_path}")
     return 0
 
 
