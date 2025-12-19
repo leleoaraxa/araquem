@@ -408,7 +408,7 @@ class Orchestrator:
             if isinstance(candidate, str):
                 focus_metric = candidate.strip() or None
 
-        # --------- M6.6: aplicar GATES por YAML ----------
+        # --------- M6.6: aplicar GATES por YAML (fonte única = Planner) ----------
         th = _load_thresholds(_TH_PATH)
         dfl = th.get("defaults", {}) if isinstance(th, dict) else {}
         i_th = (
@@ -422,25 +422,51 @@ class Orchestrator:
             else {}
         )
 
-        # prioridade: entity > intent > defaults
+        # prioridade: entity > intent > defaults (usado apenas como fallback)
         min_score = float(
             e_th.get("min_score", i_th.get("min_score", dfl.get("min_score", 0.0)))
         )
         min_gap = float(
             e_th.get("min_gap", i_th.get("min_gap", dfl.get("min_gap", 0.0)))
         )
+        gate_source = None
+        gate_score_for_planner = score
+        planner_gate_reason = None
+        if thr_info:
+            try:
+                min_score = float(thr_info.get("min_score", min_score))
+                min_gap = float(thr_info.get("min_gap", min_gap))
+                gate_source = thr_info.get("source", gate_source)
+                top2_gap = float(thr_info.get("gap", top2_gap))
+                gate_score_for_planner = float(
+                    thr_info.get("score_for_gate", gate_score_for_planner or 0.0)
+                )
+                planner_gate_reason = thr_info.get("reason")
+            except Exception:
+                pass
         gate = {
             "blocked": False,
             "reason": None,
             "min_score": min_score,
             "min_gap": min_gap,
             "top2_gap": top2_gap,
+            "source": gate_source,
+            "score_for_gate": gate_score_for_planner,
         }
         if entity:
-            if score < min_score:
-                gate.update({"blocked": True, "reason": "low_score"})
-            elif top2_gap < min_gap:
-                gate.update({"blocked": True, "reason": "low_gap"})
+            if thr_info:
+                gate["blocked"] = not bool(thr_info.get("accepted", True))
+                if gate["blocked"]:
+                    gate["reason"] = (
+                        planner_gate_reason
+                        or ("low_score" if gate_score_for_planner < min_score else None)
+                        or ("low_gap" if top2_gap < min_gap else None)
+                    )
+            else:
+                if score < min_score:
+                    gate.update({"blocked": True, "reason": "low_score"})
+                elif top2_gap < min_gap:
+                    gate.update({"blocked": True, "reason": "low_gap"})
 
         if gate["blocked"]:
             counter(
@@ -461,6 +487,7 @@ class Orchestrator:
                 "elapsed_ms": int((time.perf_counter() - t0) * 1000),
                 "requested_metrics": requested_metrics,
                 "gate": gate,
+                "planner_gate_source": gate.get("source"),
             }
             if focus_metric:
                 meta_payload["focus"] = {"metric_key": focus_metric}
@@ -481,6 +508,7 @@ class Orchestrator:
                 "elapsed_ms": int((time.perf_counter() - t0) * 1000),
                 "requested_metrics": requested_metrics,
                 "gate": gate,
+                "planner_gate_source": gate.get("source"),
                 "explain": exp if explain else None,
             }
             if focus_metric:
@@ -764,6 +792,7 @@ class Orchestrator:
             "planner_intent": intent,
             "planner_entity": entity,
             "planner_score": score,
+            "planner_gate_source": gate.get("source"),
             "rows_total": len(final_rows),
             "elapsed_ms": elapsed_ms,
             "gate": gate,
