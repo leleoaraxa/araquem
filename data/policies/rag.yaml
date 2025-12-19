@@ -53,6 +53,20 @@ routing:
     continuam sem RAG. No estado atual ainda não há intents
     específicas configuradas para o Bucket D, então o RAG
     permanece efetivamente desligado até criarmos essas intents.
+rerank:
+  default:
+    enabled: false
+  intents: {}
+  entities:
+    fiis_dividendos:
+      enabled: true
+    history_currency_rates:
+      enabled: true
+    history_b3_indexes:
+      enabled: true
+    history_market_indicators:
+      enabled: true
+  domains: {}
 rag:
   entities:
     history_market_indicators:

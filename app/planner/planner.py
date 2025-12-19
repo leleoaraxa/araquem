@@ -130,6 +130,142 @@ def _require_positive_int(value: Any, *, key: str, path: str) -> int:
     return int(value)
 
 
+def _normalize_apply_on_config(raw: Any) -> Dict[str, Dict[str, str]]:
+    """
+    Normaliza o bloco thresholds.apply_on para um mapa estruturado:
+      {
+        "default": "base"|"final",
+        "intents": {intent: "base"|"final"},
+        "entities": {entity: "base"|"final"},
+      }
+    """
+    allowed = {"base", "final", "fused"}
+
+    def _normalize_value(val: Any, *, path: str) -> str:
+        if isinstance(val, bool) or not isinstance(val, str):
+            raise ValueError(f"{path} deve ser uma string ('base' ou 'final')")
+        lowered = val.strip().lower()
+        if lowered not in allowed:
+            raise ValueError(f"{path} deve ser um de {sorted(allowed)}")
+        return "final" if lowered == "fused" else lowered
+
+    if isinstance(raw, str):
+        normalized = _normalize_value(raw, path="thresholds.apply_on")
+        return {"default": normalized, "intents": {}, "entities": {}}
+
+    if not isinstance(raw, dict):
+        raise ValueError("thresholds.apply_on deve ser string ou mapeamento")
+
+    intents_cfg = raw.get("intents") or {}
+    entities_cfg = raw.get("entities") or {}
+    if not isinstance(intents_cfg, dict) or not isinstance(entities_cfg, dict):
+        raise ValueError("thresholds.apply_on.intents/entities devem ser mapas")
+
+    default_val = _normalize_value(
+        raw.get("default", "base"), path="thresholds.apply_on.default"
+    )
+    intents = {
+        str(name): _normalize_value(val, path=f"thresholds.apply_on.intents.{name}")
+        for name, val in intents_cfg.items()
+    }
+    entities = {
+        str(name): _normalize_value(val, path=f"thresholds.apply_on.entities.{name}")
+        for name, val in entities_cfg.items()
+    }
+
+    return {"default": default_val, "intents": intents, "entities": entities}
+
+
+def _resolve_apply_on(
+    apply_on_cfg: Dict[str, Dict[str, str]], intent: str | None, entity: str | None
+) -> str:
+    if not isinstance(apply_on_cfg, dict):
+        return "base"
+    entities_cfg = apply_on_cfg.get("entities") or {}
+    intents_cfg = apply_on_cfg.get("intents") or {}
+    if entity and entity in entities_cfg:
+        return str(entities_cfg[entity])
+    if intent and intent in intents_cfg:
+        return str(intents_cfg[intent])
+    return str(apply_on_cfg.get("default", "base"))
+
+
+_RAG_POLICY_CACHE: Dict[str, Any] | None = None
+
+
+def _load_rag_policy(path: str = "data/policies/rag.yaml") -> Dict[str, Any]:
+    global _RAG_POLICY_CACHE
+    if _RAG_POLICY_CACHE is not None:
+        return _RAG_POLICY_CACHE
+
+    policy_path = Path(path)
+    if not policy_path.exists():
+        _LOG.warning("Política de RAG ausente em %s; usando fallback vazio", path)
+        _RAG_POLICY_CACHE = {}
+        return _RAG_POLICY_CACHE
+
+    try:
+        data = load_yaml_cached(str(policy_path)) or {}
+        if not isinstance(data, dict):
+            raise ValueError("rag.yaml deve ser um mapeamento")
+        _RAG_POLICY_CACHE = data
+        return _RAG_POLICY_CACHE
+    except Exception:
+        _LOG.error("Falha ao carregar rag.yaml", exc_info=True)
+        _RAG_POLICY_CACHE = {}
+        return _RAG_POLICY_CACHE
+
+
+def _resolve_rerank_policy(
+    policy: Dict[str, Any], *, intent: str | None, entity: str | None, bucket: str
+) -> Dict[str, Any]:
+    """
+    Extrai decisão declarativa sobre rerank/fusão a partir de data/policies/rag.yaml.
+    Ordem de precedência: entity > intent > domain(buckets) > default.
+    """
+
+    def _extract_enabled(section: Any, key: str) -> tuple[bool | None, str]:
+        if not isinstance(section, dict) or key not in section:
+            return None, ""
+        val = section.get(key)
+        if isinstance(val, dict):
+            if "enabled" in val:
+                return bool(val.get("enabled")), key
+        elif isinstance(val, bool):
+            return bool(val), key
+        return None, ""
+
+    rerank_cfg = policy.get("rerank") if isinstance(policy, dict) else {}
+    default_enabled = False
+    if isinstance(rerank_cfg, dict):
+        default_enabled = bool(
+            (rerank_cfg.get("default") or {}).get("enabled", False)
+        )
+    entities_cfg = rerank_cfg.get("entities") if isinstance(rerank_cfg, dict) else {}
+    intents_cfg = rerank_cfg.get("intents") if isinstance(rerank_cfg, dict) else {}
+    domains_cfg = rerank_cfg.get("domains") if isinstance(rerank_cfg, dict) else {}
+
+    selected = default_enabled
+    source = "default"
+
+    if entity:
+        found, label = _extract_enabled(entities_cfg, str(entity))
+        if found is not None:
+            return {"enabled": bool(found), "source": f"entity:{label or entity}"}
+
+    if intent:
+        found, label = _extract_enabled(intents_cfg, str(intent))
+        if found is not None:
+            return {"enabled": bool(found), "source": f"intent:{label or intent}"}
+
+    if bucket:
+        found, label = _extract_enabled(domains_cfg, str(bucket))
+        if found is not None:
+            return {"enabled": bool(found), "source": f"domain:{label or bucket}"}
+
+    return {"enabled": bool(selected), "source": source}
+
+
 _THRESHOLDS_CACHE: Dict[str, Any] | None = None
 
 
@@ -183,6 +319,8 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
     _require_number(rag.get("min_score"), key="min_score", path="rag")
     _require_number(rag.get("weight"), key="weight", path="rag")
     _require_number(re_rank_cfg.get("weight"), key="weight", path="rag.re_rank")
+
+    thresholds["_apply_on"] = _normalize_apply_on_config(thresholds.get("apply_on"))
 
     _THRESHOLDS_CACHE = {"planner": {"thresholds": thresholds, "rag": rag}}
     return _THRESHOLDS_CACHE
@@ -536,6 +674,10 @@ class Planner:
         planner_cfg = cfg["planner"]
         rag_cfg = planner_cfg["rag"]
         thresholds_cfg = planner_cfg["thresholds"]
+        apply_on_cfg = thresholds_cfg.get("_apply_on") or _normalize_apply_on_config(
+            thresholds_cfg.get("apply_on")
+        )
+        rag_policy_cfg = _load_rag_policy()
 
         rag_enabled = bool(rag_cfg["enabled"])
         rag_k = int(rag_cfg["k"])
@@ -549,10 +691,6 @@ class Planner:
         re_rank_enabled = bool(re_rank_cfg["enabled"])
         re_rank_mode = str(re_rank_cfg["mode"])
         re_rank_weight = float(re_rank_cfg["weight"])
-        thr_apply_on = str(thresholds_cfg["apply_on"])
-        # Compat: 'fused' deve usar o score final (pós-fusão) no gate
-        if thr_apply_on == "fused":
-            thr_apply_on = "final"
 
         rag_entity_hints: Dict[str, float] = {}
         rag_error: Any = None
@@ -602,11 +740,15 @@ class Planner:
         fused_scores: Dict[str, float] = {}
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
+        intent_hit_counts: Dict[str, int] = {}
+        intent_entity_counts: Dict[str, int] = {}
+        rerank_policy_trace: Dict[str, Any] = {}
 
         # Fusão linear: prioriza peso do re_rank se habilitado; caso contrário usa peso do RAG
         fusion_weight = re_rank_weight if re_rank_enabled else rag_weight
-        rag_fusion_applied = bool(rag_enabled and rag_used and (fusion_weight > 0.0))
-        effective_weight = fusion_weight if rag_fusion_applied else 0.0
+        rag_fusion_applied = False
+        effective_weight = 0.0
+        fusion_used_entities: List[str] = []
 
         for it in self.onto.intents:
             base = float(intent_scores.get(it.name, 0.0))
@@ -614,6 +756,13 @@ class Planner:
             ents = [e for e in (it.entities or []) if e in bucket_entities]
             # Se não houver entidades, mantemos None (compat)
             intent_entities[it.name] = ents[0] if ents else None
+            intent_entity_counts[it.name] = len(ents)
+
+            det = details.get(it.name, {})
+            hit_count = len(det.get("token_includes", [])) + len(
+                det.get("phrase_includes", [])
+            )
+            intent_hit_counts[it.name] = hit_count
 
             # Para métricas por intent, reportamos o melhor rag_signal entre suas entidades
             best_rag_signal_for_intent = 0.0
@@ -621,17 +770,34 @@ class Planner:
             for entity_name in ents or [None]:
                 if entity_name is None:
                     rag_signal = 0.0
+                    rerank_policy_decision = _resolve_rerank_policy(
+                        rag_policy_cfg, intent=it.name, entity=None, bucket=bucket
+                    )
                 else:
                     # defensivo: entity_name pode não ser str em casos extremos
                     key = str(entity_name).strip()
                     rag_signal = float(rag_entity_hints.get(key, 0.0))
+                    rerank_policy_decision = _resolve_rerank_policy(
+                        rag_policy_cfg, intent=it.name, entity=key, bucket=bucket
+                    )
+
+                rerank_policy_trace[f"{it.name}:{entity_name}"] = rerank_policy_decision
 
                 # Regra anti-penalização:
                 # se o RAG foi usado globalmente, mas ESTA entidade não tem sinal (0),
                 # não reduzimos o score base (evita "blend" derrubar o base).
-                if rag_fusion_applied and rag_signal <= 0.0:
+                fusion_allowed = bool(
+                    rerank_policy_decision.get("enabled", False)
+                    and rag_enabled
+                    and rag_used
+                    and (fusion_weight > 0.0)
+                )
+                if fusion_allowed and rag_signal <= 0.0:
                     final_score = base
-                elif rag_fusion_applied:
+                    rag_fusion_applied = True
+                    effective_weight = fusion_weight
+                    fusion_used_entities.append(str(entity_name or it.name))
+                elif fusion_allowed:
                     if re_rank_mode == "additive":
                         # additive: base + w*rag
                         final_score = base + fusion_weight * rag_signal
@@ -640,6 +806,9 @@ class Planner:
                         final_score = (
                             base * (1.0 - fusion_weight) + rag_signal * fusion_weight
                         )
+                    rag_fusion_applied = True
+                    effective_weight = fusion_weight
+                    fusion_used_entities.append(str(entity_name or it.name))
                 else:
                     final_score = base
 
@@ -682,8 +851,17 @@ class Planner:
 
         chosen_intent = None
         chosen_score = 0.0
+
+        def _choice_key(name: str) -> tuple[float, int, int, float]:
+            return (
+                float(fused_scores.get(name, 0.0)),
+                int(intent_hit_counts.get(name, 0)),
+                -int(intent_entity_counts.get(name, 0)),
+                float(intent_rag_signals.get(name, 0.0)),
+            )
+
         if fused_scores:
-            chosen_intent = max(fused_scores, key=lambda key: fused_scores[key])
+            chosen_intent = max(fused_scores, key=_choice_key)
             chosen_score = float(fused_scores[chosen_intent])
 
         ordered_combined = sorted(
@@ -715,7 +893,15 @@ class Planner:
             item["winner"] = bool(item["name"] == top_entity_name)
 
         if chosen_intent is not None:
-            chosen_entity = top_entity_name or intent_entities.get(chosen_intent)
+            preferred_entity = intent_entities.get(chosen_intent)
+            chosen_entity = top_entity_name or preferred_entity
+            if preferred_entity:
+                preferred_score = entity_combined_scores.get(preferred_entity, float("-inf"))
+                chosen_score_for_entity = entity_combined_scores.get(
+                    chosen_entity, float("-inf")
+                )
+                if preferred_score >= chosen_score_for_entity:
+                    chosen_entity = preferred_entity
         else:
             chosen_entity = None
 
@@ -724,6 +910,9 @@ class Planner:
             for item in combined_entities
             if abs(float(item["combined"]) - float(item["base"])) > 1e-9
         ]
+        gate_rerank_policy = _resolve_rerank_policy(
+            rag_policy_cfg, intent=chosen_intent, entity=chosen_entity, bucket=bucket
+        )
 
         if rag_fusion_applied:
             decision_path.append(
@@ -952,6 +1141,7 @@ class Planner:
                     "mode": re_rank_mode,
                     "weight": re_rank_weight,
                 },
+                "rerank_policy": gate_rerank_policy,
             }
             # scoring.rag_hint — lista [{entity, score}]
             meta_explain["scoring"]["rag_hint"] = [
@@ -968,6 +1158,7 @@ class Planner:
                     "mode": re_rank_mode,
                     "weight": re_rank_weight,
                 },
+                "rerank_policy": gate_rerank_policy,
             }
         meta_explain["scoring"]["rag_signal"] = [
             {
@@ -987,6 +1178,11 @@ class Planner:
             "mode": re_rank_mode,
             "affected_entities": affected_entities,
             "error": rag_error,
+            "policy": {
+                "winner": gate_rerank_policy,
+                "decisions": rerank_policy_trace,
+            },
+            "used_entities": fusion_used_entities,
         }
 
         # --- Métricas M7.3 (apenas quando rag_context foi emitido) ---
@@ -1046,7 +1242,17 @@ class Planner:
         )
 
         # Fonte do gate: base|final (apenas se re-rank estiver ligado)
-        gate_source_is_final = bool(re_rank_enabled and (thr_apply_on == "final"))
+        thr_apply_on = _resolve_apply_on(
+            apply_on_cfg, intent=chosen_intent, entity=chosen_entity
+        )
+        gate_source_is_final = bool(
+            re_rank_enabled
+            and rag_fusion_applied
+            and gate_rerank_policy.get("enabled", False)
+            and rag_used
+            and (fusion_weight > 0.0)
+            and (thr_apply_on == "final")
+        )
         # score usado no gate: base do vencedor ou final do vencedor
         chosen_base_score = float(intent_scores.get(chosen_intent or "", 0.0))
         score_for_gate = (
@@ -1055,7 +1261,12 @@ class Planner:
             else chosen_base_score
         )
         gap_used = float(gap_final if gate_source_is_final else gap_base)
-        accepted = (score_for_gate >= min_score) and (gap_used >= min_gap)
+        gate_reason = None
+        if score_for_gate < min_score:
+            gate_reason = "low_score"
+        elif gap_used < min_gap:
+            gate_reason = "low_gap"
+        accepted = gate_reason is None
 
         meta_explain["scoring"]["thresholds_applied"] = {
             "min_score": min_score,
@@ -1063,7 +1274,12 @@ class Planner:
             "gap": gap_used,
             "accepted": accepted,
             "source": ("final" if gate_source_is_final else "base"),
+            "score_for_gate": score_for_gate,
+            "reason": gate_reason,
         }
+        meta_explain["planner_gate_source"] = (
+            "final" if gate_source_is_final else "base"
+        )
 
         try:
             _LOG.info(
@@ -1076,6 +1292,8 @@ class Planner:
                     "apply_on": ("final" if gate_source_is_final else "base"),
                     "score_for_gate": score_for_gate,
                     "accepted": accepted,
+                    "reason": gate_reason,
+                    "gate_source": ("final" if gate_source_is_final else "base"),
                     "rag_enabled": rag_enabled,
                     "re_rank_enabled": re_rank_enabled,
                     "rag_used": rag_used,

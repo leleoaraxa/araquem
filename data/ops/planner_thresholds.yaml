@@ -5,7 +5,18 @@ planner:
     defaults:
       min_score: 0.8
       min_gap: 0.1
-    apply_on: fused
+    apply_on:
+      default: base
+      intents:
+        fiis_dividendos: final
+        history_currency_rates: final
+        history_b3_indexes: final
+        history_market_indicators: final
+      entities:
+        fiis_dividendos: final
+        history_currency_rates: final
+        history_b3_indexes: final
+        history_market_indicators: final
     intents:
       fiis_cadastro:
         min_score: 1.0
@@ -14,8 +25,8 @@ planner:
         min_score: 0.9
         min_gap: 0.0
       fiis_dividendos:
-        min_score: 0.9
-        min_gap: 0.15
+        min_score: 0.0
+        min_gap: 0.0
       fiis_rankings:
         min_score: 1.0
         min_gap: 0.2
@@ -56,8 +67,8 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       history_currency_rates:
-        min_score: 0.8
-        min_gap: 0.1
+        min_score: 0.0
+        min_gap: 0.0
       history_market_indicators:
         min_score: 0.8
         min_gap: 0.1
@@ -78,8 +89,8 @@ planner:
         min_score: 0.9
         min_gap: 0.0
       fiis_dividendos:
-        min_score: 0.9
-        min_gap: 0.15
+        min_score: 0.0
+        min_gap: 0.0
       fiis_rankings:
         min_score: 1.0
         min_gap: 0.2
@@ -120,8 +131,8 @@ planner:
         min_score: 0.8
         min_gap: 0.1
       history_currency_rates:
-        min_score: 0.8
-        min_gap: 0.1
+        min_score: 0.0
+        min_gap: 0.0
       history_market_indicators:
         min_score: 0.8
         min_gap: 0.1
