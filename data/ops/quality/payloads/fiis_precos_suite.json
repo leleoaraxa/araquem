@@ -68,6 +68,11 @@
       "question": "Quanto o KNRI11 variou hoje em porcentagem?",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
+    },
+    {
+      "question": "Como está o KNRI11 e o XPLG11 hoje?",
+      "expected_intent": "fiis_precos",
+      "expected_entity": "fiis_precos"
     }
   ]
 }
