@@ -355,6 +355,36 @@ class Planner:
         bucket = resolve_bucket(question, {}, self.onto)
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
 
+        try:
+            _LOG.info(
+                {
+                    "planner_phase": "normalize_tokenize",
+                    "raw_question": question,
+                    "normalized": norm,
+                    "tokens": tokens,
+                    "token_split": self.onto.token_split,
+                    "normalize_steps": self.onto.normalize,
+                    "tokens_set_sample": list(sorted(tokens_set))[:30],
+                    "resolved_ticker": resolved_ticker,
+                    "has_ticker": has_ticker,
+                }
+            )
+        except Exception:
+            pass
+
+        try:
+            _LOG.info(
+                {
+                    "planner_phase": "bucket_resolve",
+                    "raw_question": question,
+                    "bucket": bucket,
+                    "bucket_entities_count": len(bucket_entities),
+                    "bucket_entities_sample": list(sorted(bucket_entities))[:50],
+                }
+            )
+        except Exception:
+            pass
+
         # pesos vêm 100% da ontologia validada (sem defaults embutidos no código)
         token_weight = float(self.onto.weights["token"])
         phrase_weight = float(self.onto.weights["phrase"])
@@ -375,6 +405,7 @@ class Planner:
         token_score_items: List[Dict[str, Any]] = []
         phrase_score_items: List[Dict[str, Any]] = []
         anti_hits_items: List[Dict[str, Any]] = []
+        intent_base_breakdown: List[Dict[str, Any]] = []
 
         # --- scoring base (como já havia) ---
         for it in self.onto.intents:
@@ -474,6 +505,31 @@ class Planner:
                 "anti_penalty": anti_penalty,
                 "entities": [e for e in it.entities if e in bucket_entities],
             }
+            intent_base_breakdown.append(
+                {
+                    "intent": it.name,
+                    "score": score,
+                    "token_includes": include_hits,
+                    "token_excludes": exclude_hits,
+                    "phrase_includes": phrase_incl_hits,
+                    "phrase_excludes": phrase_excl_hits,
+                    "anti_penalty": anti_penalty,
+                }
+            )
+
+        try:
+            ordered_base_breakdown = sorted(
+                intent_base_breakdown, key=lambda item: item["score"], reverse=True
+            )
+            _LOG.info(
+                {
+                    "planner_phase": "intent_base_scoring",
+                    "raw_question": question,
+                    "top_intents": ordered_base_breakdown[:10],
+                }
+            )
+        except Exception:
+            pass
 
         # --- configurações RAG ---
         cfg = _load_thresholds()
@@ -733,6 +789,24 @@ class Planner:
                 }
             )
 
+        try:
+            ordered_final_intents = sorted(
+                combined_intents, key=lambda item: item["combined"], reverse=True
+            )
+            _LOG.info(
+                {
+                    "planner_phase": "intent_final_scoring",
+                    "raw_question": question,
+                    "rag_enabled": rag_enabled,
+                    "rag_used": rag_used,
+                    "fusion_weight": effective_weight,
+                    "fusion_mode": re_rank_mode,
+                    "top_intents": ordered_final_intents[:10],
+                }
+            )
+        except Exception:
+            pass
+
         # --- sumarização de pesos (como já havia) ---
         token_sum = float(sum(item["weight"] for item in token_score_items))
         phrase_sum = float(sum(item["weight"] for item in phrase_score_items))
@@ -990,6 +1064,25 @@ class Planner:
             "accepted": accepted,
             "source": ("final" if gate_source_is_final else "base"),
         }
+
+        try:
+            _LOG.info(
+                {
+                    "planner_phase": "gate_decision",
+                    "raw_question": question,
+                    "min_score": min_score,
+                    "min_gap": min_gap,
+                    "gap": gap_used,
+                    "apply_on": ("final" if gate_source_is_final else "base"),
+                    "score_for_gate": score_for_gate,
+                    "accepted": accepted,
+                    "rag_enabled": rag_enabled,
+                    "re_rank_enabled": re_rank_enabled,
+                    "rag_used": rag_used,
+                }
+            )
+        except Exception:
+            pass
 
         # --------- Métricas M7.4: re-rank aplicado e gaps before/after ----------
         try:

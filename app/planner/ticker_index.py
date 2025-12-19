@@ -4,11 +4,13 @@ from __future__ import annotations
 import re
 import unicodedata
 from typing import Dict, List, Optional, Set
+import logging
 
 from app.utils.filecache import load_yaml_cached
 
 _DEFAULT_PATH = "data/ontology/ticker_index.yaml"
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
+_LOG = logging.getLogger("planner.ticker_index")
 
 
 def _strip_accents(value: str) -> str:
@@ -87,11 +89,28 @@ class TickerIndex:
         token_norm = _normalize_token(token)
         if not token_norm:
             return None
+        strategy = None
+        resolved = None
         if self._enable_exact and token_norm in self._canonical:
-            return token_norm
-        if self._enable_prefix4 and len(token_norm) == 4:
-            return self._by_prefix4.get(token_norm)
-        return None
+            resolved = token_norm
+            strategy = "exact"
+        elif self._enable_prefix4 and len(token_norm) == 4:
+            resolved = self._by_prefix4.get(token_norm)
+            strategy = "prefix4" if resolved else None
+        if resolved:
+            try:
+                _LOG.info(
+                    {
+                        "planner_phase": "ticker_resolve",
+                        "token": token,
+                        "token_norm": token_norm,
+                        "resolved": resolved,
+                        "strategy": strategy,
+                    }
+                )
+            except Exception:
+                pass
+        return resolved
 
 
 def get_ticker_index(path: str = _DEFAULT_PATH) -> TickerIndex:
@@ -108,10 +127,35 @@ def get_ticker_index(path: str = _DEFAULT_PATH) -> TickerIndex:
 
 def resolve_ticker_from_text(question: str) -> Optional[str]:
     ticker_index = get_ticker_index()
-    for token in _tokens_from_text(question):
+    tokens = _tokens_from_text(question)
+    for token in tokens:
         resolved = ticker_index.resolve(token)
         if resolved:
+            try:
+                _LOG.info(
+                    {
+                        "planner_phase": "ticker_from_text",
+                        "raw_question": question,
+                        "token": token,
+                        "resolved": resolved,
+                        "tokens_count": len(tokens),
+                    }
+                )
+            except Exception:
+                pass
             return resolved
+    try:
+        _LOG.info(
+            {
+                "planner_phase": "ticker_from_text",
+                "raw_question": question,
+                "token": None,
+                "resolved": None,
+                "tokens_count": len(tokens),
+            }
+        )
+    except Exception:
+        pass
     return None
 
 
@@ -119,9 +163,21 @@ def extract_tickers_from_text(question: str) -> List[str]:
     ticker_index = get_ticker_index()
     seen = set()
     results: List[str] = []
-    for token in _tokens_from_text(question):
+    tokens = _tokens_from_text(question)
+    for token in tokens:
         resolved = ticker_index.resolve(token)
         if resolved and resolved not in seen:
             results.append(resolved)
             seen.add(resolved)
+    try:
+        _LOG.info(
+            {
+                "planner_phase": "ticker_extract_multi",
+                "raw_question": question,
+                "tokens": tokens,
+                "resolved": results,
+            }
+        )
+    except Exception:
+        pass
     return results
