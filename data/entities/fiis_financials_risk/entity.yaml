@@ -50,7 +50,7 @@ ask:
   intents:
     - fiis_financials_risk
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - beta
     - beta do fundo

@@ -33,7 +33,7 @@ ask:
   intents:
     - fiis_yield_history
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - dy 12m historico
     - dy 24m historico

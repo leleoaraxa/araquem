@@ -194,9 +194,14 @@ class Orchestrator:
 
     def extract_identifiers(self, question: str) -> Dict[str, Any]:
         tickers = _extract_ticker_identifiers(question)
-        identifiers: Dict[str, Any] = {"ticker": tickers[0] if tickers else None}
+        # Contrato canônico:
+        # - ticker: apenas quando há exatamente 1 ticker na pergunta
+        # - tickers: lista quando há 1+ tickers
+        identifiers: Dict[str, Any] = {"ticker": None}
         if tickers:
             identifiers["tickers"] = tickers
+            if len(tickers) == 1:
+                identifiers["ticker"] = tickers[0]
         return identifiers
 
     def _normalize_metrics_window(
@@ -315,14 +320,6 @@ class Orchestrator:
         identifiers: Dict[str, Any],
         agg_params: Optional[Dict[str, Any]],
     ) -> bool:
-        """
-        Decide se devemos pular o SELECT no banco para esta combinação
-        (intent/entity/pergunta), de forma 100% dirigida por YAML.
-
-        Regra: se o bloco ask.requires_identifiers estiver definido na
-        entity.yaml, e qualquer um desses identificadores estiver ausente
-        em `identifiers`, não executamos SQL (modo conceitual).
-        """
         ask_conf = entity_conf.get("ask") if isinstance(entity_conf, dict) else None
         if not isinstance(ask_conf, dict):
             return False
@@ -331,11 +328,27 @@ class Orchestrator:
         if not isinstance(required_ids, (list, tuple, set)):
             return False
 
+        # suporta multi? (YAML-driven)
+        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
+        supports_multi = (
+            bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
+        )
+        has_tickers = (
+            isinstance(identifiers.get("tickers"), list)
+            and len(identifiers["tickers"]) > 0
+        )
+        is_multi_question = has_tickers and len(identifiers["tickers"]) > 1
+
         for raw_key in required_ids:
             key = str(raw_key or "").strip()
             if not key:
                 continue
-            # 1) Checa identificadores canônicos extraídos do texto
+
+            # Se a entidade suporta multi e a pergunta tem 2+ tickers,
+            # aceitar "ticker" como satisfeito via "tickers" (sem violar contrato).
+            if key == "ticker" and supports_multi and is_multi_question:
+                continue
+
             value = identifiers.get(key)
             missing = (
                 value is None
@@ -344,8 +357,6 @@ class Orchestrator:
             )
 
             if missing:
-                # 2) Se não veio do texto, tenta resolver via inferência
-                #    declarativa (param_inference → contexto, YAML).
                 if isinstance(agg_params, dict):
                     alt = agg_params.get(key)
                     alt_missing = (
@@ -354,7 +365,7 @@ class Orchestrator:
                         or (isinstance(alt, str) and not alt.strip())
                     )
                     if not alt_missing:
-                        continue  # requisito satisfeito por agg_params
+                        continue
                 return True
 
         return False
@@ -494,6 +505,9 @@ class Orchestrator:
             identifiers = {**identifiers, "tickers": tickers_list}
             if len(tickers_list) == 1:
                 identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
+            else:
+                # Garante contrato: multi ticker => ticker (singular) deve ser None
+                identifiers["ticker"] = None
         exp_safe = exp if isinstance(exp, dict) else {}
         bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
         if not isinstance(bucket_info, dict):
@@ -529,7 +543,12 @@ class Orchestrator:
             agg_params=agg_params,
         )
 
-        multi_ticker_enabled = bucket_selected == "A" and len(tickers_list) > 1
+        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
+        supports_multi = (
+            bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
+        )
+        multi_ticker_enabled = supports_multi and len(tickers_list) > 1
+
         cache_ctx = None
         if not multi_ticker_enabled:
             cache_ctx = self._prepare_metrics_cache_context(
@@ -723,6 +742,11 @@ class Orchestrator:
                 planner_output=planner_output,
                 metrics=metrics_snapshot,
             )
+
+        if not result_key:
+            result_key = (
+                entity_conf.get("result_key") if isinstance(entity_conf, dict) else None
+            ) or entity
 
         final_rows = rows_formatted or []
         results = {result_key: final_rows}

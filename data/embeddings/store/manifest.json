@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-18T19:21:02Z",
+  "generated_at": "2025-12-19T12:28:00Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -119,7 +119,7 @@
         "entity:fiis_cadastro"
       ],
       "chunks": 4,
-      "sha_all": "f4c902993ae202866cb6564e234d3e4b59db12e4b9e2889741d9cb88212fb502"
+      "sha_all": "a8562196e093de422833fbf2e7ea918bfa0c8857e301090313470d248b1fe4b7"
     },
     {
       "id": "entity-fiis-cadastro-hints",
@@ -143,7 +143,7 @@
         "entity:fiis_dividendos"
       ],
       "chunks": 3,
-      "sha_all": "044b16af687642b2522f36ed6d09d0b33b5cdfd810fdcbfd3c20049f60696f7a"
+      "sha_all": "1a3241b220aa5ef6bb094b85af1b3c3e697ab74b354e4aae90b400e705480e0e"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -167,7 +167,7 @@
         "entity:fiis_precos"
       ],
       "chunks": 5,
-      "sha_all": "bde08528e9496a79f07219bfc358bb275a13d695ba56965f99b6e2805634cf88"
+      "sha_all": "2db45d9efe305dc6c78cfa35227695c48aced763e726f67b6c450bdf00b5b7c9"
     },
     {
       "id": "entity-fiis-precos-hints",
@@ -191,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 5,
-      "sha_all": "31646143aa05b122a27abafa578b892a87b27c3fcf57be88ac3eca4d34710702"
+      "sha_all": "6a9a95589d3b72357e75262d11a38e374de6632aaaf9eba3984736066ca23e58"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -203,7 +203,7 @@
         "entity:fiis_imoveis"
       ],
       "chunks": 3,
-      "sha_all": "7e87cd8296ba18a93491824d8947cf7b146d9dd2c5332995707bc26439ba6e3f"
+      "sha_all": "41ab8f750385ada6a40afc7da26692e075ddd3956c30d28a243030535399180e"
     },
     {
       "id": "entity-fiis-noticias",
@@ -215,7 +215,7 @@
         "entity:fiis_noticias"
       ],
       "chunks": 4,
-      "sha_all": "512fc047529cf7e54b136f43d4ef7caceed3a515604b6d09b666acccfdc9bbf9"
+      "sha_all": "7269334ddac6b650794c192973602add3aa88ea6046cac336f748d9ef9775ab9"
     },
     {
       "id": "entity-fiis-processos",
@@ -227,7 +227,7 @@
         "entity:fiis_processos"
       ],
       "chunks": 2,
-      "sha_all": "09a7da4072bc1f675b35ab7cd66a1ee91c4d50de1072f1e7e4d45e4ee6b56eb8"
+      "sha_all": "0896f61bbffe7fca33cddd9be531a8d4e2b65343b3e8b38e1a9dfb720e81c050"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -240,7 +240,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 5,
-      "sha_all": "3bbe4f763f45a52ce703f90a42962b4086e7f163d44a17c54dcb784a7017ef97"
+      "sha_all": "843e331c0b5a2d1fe554dbf2ec2084a2eeacc94de1d78a800cff8841be139a92"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -253,7 +253,7 @@
         "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 4,
-      "sha_all": "19a0ea32fc29f4bd71d7b6587b082937669978de9839d508cf00691e43052067"
+      "sha_all": "1dd4e81bdaf8a3c0fa351f4797f7652b32a488f8a054a9da2e4b29c3ff7b14e8"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -266,7 +266,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 4,
-      "sha_all": "1eb3336913a900e3e6d7da992f3a9d4819926011b83eb2ef974a79ecdbb10433"
+      "sha_all": "9616a9da1c1f0ccf8be0f9d1b56871b23e6d2d3e23da04779056818415e373e0"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -678,7 +678,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1766085838,
+  "last_refresh_epoch": 1766147447,
   "vector_dimension": 768,
   "total_chunks": 268
 }

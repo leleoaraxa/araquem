@@ -104,7 +104,7 @@ ask:
   intents:
     - fiis_financials_snapshot
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - alavancagem
     - caixa

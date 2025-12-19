@@ -52,7 +52,7 @@ ask:
   intents:
     - fiis_imoveis
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - area
     - ativos

@@ -60,7 +60,7 @@ ask:
   intents:
     - fiis_processos
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - processo
     - processos

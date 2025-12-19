@@ -86,7 +86,7 @@ ask:
   intents:
     - fiis_cadastro
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - administrador
     - anbima

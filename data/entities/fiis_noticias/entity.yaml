@@ -38,7 +38,7 @@ ask:
   intents:
     - fiis_noticias
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - anuncio
     - anuncios

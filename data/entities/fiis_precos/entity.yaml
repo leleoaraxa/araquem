@@ -53,7 +53,7 @@ ask:
   intents:
     - fiis_precos
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - abertura
     - aberturas

@@ -215,7 +215,7 @@ ask:
   intents:
     - fii_overview
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - overview
     - descricao

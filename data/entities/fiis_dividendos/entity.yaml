@@ -34,7 +34,7 @@ ask:
   intents:
   - fiis_dividendos
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - distribuiu
     - dividendo pago

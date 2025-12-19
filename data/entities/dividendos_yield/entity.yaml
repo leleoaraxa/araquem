@@ -76,7 +76,7 @@ ask:
   intents:
     - dividendos_yield
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
     - dividend yield atual
     - dividend yields atuais

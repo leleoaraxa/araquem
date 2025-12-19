@@ -83,7 +83,7 @@ ask:
   intents:
   - fiis_financials_revenue_schedule
   requires_identifiers:
-    - ticker
+    - tickers
   keywords:
   - bucket
   - buckets
