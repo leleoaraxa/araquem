@@ -22,8 +22,8 @@ DEFAULT_QUESTIONS: List[str] = [
     "Quais os riscos do KNRI11?",
     "Quais as notícias do KNRI11?",
     "Qual foi o dólar hoje?",
-    "Qual foi o IPCA em março de 2025?",
-    "Qual é a minha carteira enriquecida?",
+    "Qual a SELIC de ontem?",
+    "Qual é a minha carteira hoje?",
 ]
 
 
@@ -35,11 +35,53 @@ class Config:
     nickname: str
     timeout_s: float
     out_dir: str
+    print_answer: bool
 
 
 def _ask_url(cfg: Config) -> str:
     # IMPORTANT: use explain=true
     return cfg.base_url.rstrip("/") + "/ask?explain=true"
+
+
+def _best_effort_topk_intents(scoring: Any) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Tenta extrair os 2 primeiros intents (top1/top2) do bloco de scoring,
+    sem assumir um shape único. Aceita formatos:
+      - {"intents_ranked": [{"intent": "x", ...}, {"intent": "y", ...}]}
+      - {"intents": [{"intent": "x", ...}, ...]}
+      - {"ranked": [{"intent": "x", ...}, ...]}
+      - lista direta [{"intent": "x"}, ...]
+      - chaves alternativas ("name", "id", "label")
+    """
+    if scoring is None:
+        return None, None
+
+    candidates = None
+    if isinstance(scoring, list):
+        candidates = scoring
+    elif isinstance(scoring, dict):
+        for k in ("intents_ranked", "intents", "ranked", "top_intents", "candidates"):
+            v = scoring.get(k)
+            if isinstance(v, list) and v:
+                candidates = v
+                break
+
+    if not isinstance(candidates, list) or not candidates:
+        return None, None
+
+    def _pick_intent(obj: Any) -> Optional[str]:
+        if isinstance(obj, dict):
+            for kk in ("intent", "name", "id", "label"):
+                vv = obj.get(kk)
+                if isinstance(vv, str) and vv.strip():
+                    return vv.strip()
+        if isinstance(obj, str) and obj.strip():
+            return obj.strip()
+        return None
+
+    top1 = _pick_intent(candidates[0])
+    top2 = _pick_intent(candidates[1]) if len(candidates) > 1 else None
+    return top1, top2
 
 
 def _safe_get(d: Dict[str, Any], path: str, default=None):
@@ -101,8 +143,12 @@ def _extract_row(
         resp, "meta.planner.chosen.score"
     )
 
-    # gate
-    gate = _safe_get(resp, "meta.planner.explain.thresholds_applied", {}) or {}
+    # gate (FIX: thresholds_applied lives under scoring)
+    gate = (
+        _safe_get(resp, "meta.planner.explain.scoring.thresholds_applied")
+        or _safe_get(resp, "meta.planner.explain.thresholds_applied")
+        or {}
+    )
     gate_accepted = gate.get("accepted")
     gate_source = gate.get("source")
     gate_reason = gate.get("reason")
@@ -114,6 +160,10 @@ def _extract_row(
     # gaps
     gap_base = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_base")
     gap_final = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_final")
+
+    # ranking (top1/top2) — ajuda muito a explicar gap=0.0 (colisão)
+    scoring_blob = _safe_get(resp, "meta.planner.explain.scoring")
+    intent_top1, intent_top2 = _best_effort_topk_intents(scoring_blob)
 
     # resultado
     rows_total = _safe_get(resp, "meta.rows_total")
@@ -137,7 +187,17 @@ def _extract_row(
     # executor latency do pipeline (se existir) vs client measured
     elapsed_ms_server = _safe_get(resp, "meta.elapsed_ms")
 
-    http_status = resp.get("_http_status")
+    http_status = resp.get("_http_status") or 0
+
+    # total (aproximação): server + narrator quando existir
+    total_ms = None
+    if elapsed_ms_server is not None:
+        try:
+            total_ms = float(elapsed_ms_server)
+            if narrator_used and narrator_latency_ms is not None:
+                total_ms += float(narrator_latency_ms)
+        except Exception:
+            total_ms = None
 
     return {
         "question": question,
@@ -157,6 +217,8 @@ def _extract_row(
         "score_for_gate": score_for_gate,
         "intent_top2_gap_base": gap_base,
         "intent_top2_gap_final": gap_final,
+        "intent_top1": intent_top1,
+        "intent_top2": intent_top2,
         "rows_total": rows_total,
         "result_key": result_key,
         "cache_hit": cache_hit,
@@ -166,6 +228,7 @@ def _extract_row(
         "rag_used": rag_used,
         "fusion_used": fusion_used,
         "elapsed_ms_server": elapsed_ms_server,
+        "elapsed_ms_total": total_ms,
         "elapsed_ms_client": round(elapsed_ms_client, 3),
         "narrator_used": narrator_used,
         "narrator_latency_ms": narrator_latency_ms,
@@ -232,6 +295,11 @@ def main() -> int:
     ap.add_argument("--nickname", default="diagnostics")
     ap.add_argument("--timeout-s", type=float, default=90.0)
     ap.add_argument("--out-dir", default="out")
+    ap.add_argument(
+        "--print-answer",
+        action="store_true",
+        help="Imprime também o campo answer (útil para debug pontual).",
+    )
     args = ap.parse_args()
 
     cfg = Config(
@@ -241,6 +309,7 @@ def main() -> int:
         nickname=args.nickname,
         timeout_s=args.timeout_s,
         out_dir=args.out_dir,
+        print_answer=args.print_answer,
     )
 
     questions = _load_questions(args)
@@ -256,6 +325,8 @@ def main() -> int:
         # print curto para console
         intent = (row.get("chosen_intent") or "-")[:12]
         entity = (row.get("chosen_entity") or "-")[:12]
+        top1 = (row.get("intent_top1") or "-")[:12]
+        top2 = (row.get("intent_top2") or "-")[:12]
         gate = (
             "Y"
             if row.get("gate_accepted") is True
@@ -264,8 +335,8 @@ def main() -> int:
         src = (row.get("gate_source") or "-")[:8]
         gap_b = row.get("intent_top2_gap_base")
         gap_f = row.get("intent_top2_gap_final")
-        rag = "Y" if row.get("rag_used") else "-"
-        fusion = "Y" if row.get("fusion_used") else "-"
+        rag = "Y" if row.get("rag_used") is True else "-"
+        fusion = "Y" if row.get("fusion_used") is True else "-"
         cache = "Y" if row.get("cache_hit") else "N"
         ms = int(row.get("elapsed_ms_server") or row.get("elapsed_ms_client") or 0)
         llm_ms = (
@@ -273,8 +344,16 @@ def main() -> int:
         )
 
         print(
-            f"{i:>2} | {intent:<12} | {entity:<12} | gate={gate} src={src:<8} gap_b={gap_b} gap_f={gap_f} rag={rag} fusion={fusion} cache={cache} ms={ms} llm_ms={llm_ms}"
+            f"{i:>2} | {intent:<12} | {entity:<12} | "
+            f"gate={gate} src={src:<8} gap_b={gap_b} gap_f={gap_f} "
+            f"top1={top1} top2={top2} "
+            f"rag={rag} fusion={fusion} cache={cache} ms={ms} llm_ms={llm_ms}"
         )
+
+        if cfg.print_answer:
+            ans = _safe_get(resp, "answer")
+            if isinstance(ans, str) and ans.strip():
+                print(f"   answer: {ans.strip()[:500]}")
 
     jsonl_path = os.path.join(cfg.out_dir, "audit_results.jsonl")
     csv_path = os.path.join(cfg.out_dir, "audit_results.csv")
