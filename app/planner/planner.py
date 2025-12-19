@@ -740,8 +740,6 @@ class Planner:
         fused_scores: Dict[str, float] = {}
         intent_rag_signals: Dict[str, float] = {}
         intent_entities: Dict[str, Any] = {}
-        intent_hit_counts: Dict[str, int] = {}
-        intent_entity_counts: Dict[str, int] = {}
         rerank_policy_trace: Dict[str, Any] = {}
 
         # Fusão linear: prioriza peso do re_rank se habilitado; caso contrário usa peso do RAG
@@ -756,13 +754,6 @@ class Planner:
             ents = [e for e in (it.entities or []) if e in bucket_entities]
             # Se não houver entidades, mantemos None (compat)
             intent_entities[it.name] = ents[0] if ents else None
-            intent_entity_counts[it.name] = len(ents)
-
-            det = details.get(it.name, {})
-            hit_count = len(det.get("token_includes", [])) + len(
-                det.get("phrase_includes", [])
-            )
-            intent_hit_counts[it.name] = hit_count
 
             # Para métricas por intent, reportamos o melhor rag_signal entre suas entidades
             best_rag_signal_for_intent = 0.0
@@ -852,24 +843,20 @@ class Planner:
         chosen_intent = None
         chosen_score = 0.0
 
-        def _choice_key(name: str) -> tuple[float, int, int, float]:
-            return (
-                float(fused_scores.get(name, 0.0)),
-                int(intent_hit_counts.get(name, 0)),
-                -int(intent_entity_counts.get(name, 0)),
-                float(intent_rag_signals.get(name, 0.0)),
+        ranking_source = fused_scores if fused_scores else intent_scores
+        if ranking_source:
+            ordered_ranking = sorted(
+                ((name, float(score or 0.0)) for name, score in ranking_source.items()),
+                key=lambda item: (-item[1], item[0]),
             )
-
-        if fused_scores:
-            chosen_intent = max(fused_scores, key=_choice_key)
-            chosen_score = float(fused_scores[chosen_intent])
+            chosen_intent, chosen_score = ordered_ranking[0]
 
         ordered_combined = sorted(
-            combined_intents, key=lambda item: item["combined"], reverse=True
+            combined_intents,
+            key=lambda item: (-float(item["combined"]), item["name"]),
         )
-        top_intent_name = ordered_combined[0]["name"] if ordered_combined else None
         for item in ordered_combined:
-            item["winner"] = bool(item["name"] == top_intent_name)
+            item["winner"] = bool(item["name"] == chosen_intent)
 
         combined_entities: List[Dict[str, Any]] = []
         for entity_name, base_val in entity_base_scores.items():
@@ -886,24 +873,16 @@ class Planner:
             )
 
         combined_entities = sorted(
-            combined_entities, key=lambda item: item["combined"], reverse=True
+            combined_entities,
+            key=lambda item: (-float(item["combined"]), item["name"]),
         )
         top_entity_name = combined_entities[0]["name"] if combined_entities else None
-        for item in combined_entities:
-            item["winner"] = bool(item["name"] == top_entity_name)
-
         if chosen_intent is not None:
-            preferred_entity = intent_entities.get(chosen_intent)
-            chosen_entity = top_entity_name or preferred_entity
-            if preferred_entity:
-                preferred_score = entity_combined_scores.get(preferred_entity, float("-inf"))
-                chosen_score_for_entity = entity_combined_scores.get(
-                    chosen_entity, float("-inf")
-                )
-                if preferred_score >= chosen_score_for_entity:
-                    chosen_entity = preferred_entity
+            chosen_entity = intent_entities.get(chosen_intent)
         else:
             chosen_entity = None
+        for item in combined_entities:
+            item["winner"] = bool(item["name"] == chosen_entity)
 
         affected_entities = [
             item["name"]
@@ -1103,6 +1082,11 @@ class Planner:
                 "intent_top2_gap_final": gap_final,
             },
         }
+        if top_entity_name:
+            meta_explain["scoring"]["entity_top_telemetry"] = {
+                "name": top_entity_name,
+                "note": "telemetria/top_entity_combined (não altera roteamento)",
+            }
         meta_explain["bucket"] = {
             "selected": bucket,
             "entities": sorted(bucket_entities),
