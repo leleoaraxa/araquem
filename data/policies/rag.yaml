@@ -52,20 +52,13 @@ routing:
     Buckets A, B e C permanecem puramente SQL; dados numéricos
     continuam sem RAG. No estado atual ainda não há intents
     específicas configuradas para o Bucket D, então o RAG
-    permanece efetivamente desligado até criarmos essas intents.
+    permanece efetivamente desligado (rerank desabilitado) até
+    criarmos intents ou entidades textuais elegíveis.
 rerank:
   default:
     enabled: false
   intents: {}
-  entities:
-    fiis_dividendos:
-      enabled: true
-    history_currency_rates:
-      enabled: true
-    history_b3_indexes:
-      enabled: true
-    history_market_indicators:
-      enabled: true
+  entities: {}
   domains: {}
 rag:
   entities:
