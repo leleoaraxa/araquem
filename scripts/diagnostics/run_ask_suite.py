@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+# scripts/diagnostics/run_ask_suite.py
+
 import argparse
 import csv
 import json
@@ -43,47 +45,6 @@ def _ask_url(cfg: Config) -> str:
     return cfg.base_url.rstrip("/") + "/ask?explain=true"
 
 
-def _best_effort_topk_intents(scoring: Any) -> Tuple[Optional[str], Optional[str]]:
-    """
-    Tenta extrair os 2 primeiros intents (top1/top2) do bloco de scoring,
-    sem assumir um shape único. Aceita formatos:
-      - {"intents_ranked": [{"intent": "x", ...}, {"intent": "y", ...}]}
-      - {"intents": [{"intent": "x", ...}, ...]}
-      - {"ranked": [{"intent": "x", ...}, ...]}
-      - lista direta [{"intent": "x"}, ...]
-      - chaves alternativas ("name", "id", "label")
-    """
-    if scoring is None:
-        return None, None
-
-    candidates = None
-    if isinstance(scoring, list):
-        candidates = scoring
-    elif isinstance(scoring, dict):
-        for k in ("intents_ranked", "intents", "ranked", "top_intents", "candidates"):
-            v = scoring.get(k)
-            if isinstance(v, list) and v:
-                candidates = v
-                break
-
-    if not isinstance(candidates, list) or not candidates:
-        return None, None
-
-    def _pick_intent(obj: Any) -> Optional[str]:
-        if isinstance(obj, dict):
-            for kk in ("intent", "name", "id", "label"):
-                vv = obj.get(kk)
-                if isinstance(vv, str) and vv.strip():
-                    return vv.strip()
-        if isinstance(obj, str) and obj.strip():
-            return obj.strip()
-        return None
-
-    top1 = _pick_intent(candidates[0])
-    top2 = _pick_intent(candidates[1]) if len(candidates) > 1 else None
-    return top1, top2
-
-
 def _safe_get(d: Dict[str, Any], path: str, default=None):
     cur: Any = d
     for part in path.split("."):
@@ -94,6 +55,110 @@ def _safe_get(d: Dict[str, Any], path: str, default=None):
         else:
             return default
     return cur if cur is not None else default
+
+
+def _sorted_top2_from_score_map(
+    score_map: Dict[Any, Any],
+) -> Tuple[Optional[str], Optional[str]]:
+    """
+    Recebe um dict do tipo {intent: score} e retorna (top1, top2) por score desc.
+    Filtra somente (str, number).
+    """
+    items: List[Tuple[str, float]] = []
+    for intent, score in score_map.items():
+        if isinstance(intent, str) and isinstance(score, (int, float)):
+            items.append((intent, float(score)))
+    if not items:
+        return None, None
+    items.sort(key=lambda x: x[1], reverse=True)
+    top1 = items[0][0]
+    top2 = items[1][0] if len(items) > 1 else None
+    return top1, top2
+
+
+def _pick_intent_name(obj: Any) -> Optional[str]:
+    if isinstance(obj, dict):
+        for kk in ("intent", "name", "id", "label"):
+            vv = obj.get(kk)
+            if isinstance(vv, str) and vv.strip():
+                return vv.strip()
+    if isinstance(obj, str) and obj.strip():
+        return obj.strip()
+    return None
+
+
+def _best_effort_topk_intents(scoring: Any) -> Tuple[Optional[str], Optional[str], str]:
+    """
+    Extrai top1/top2 do bloco scoring, aceitando múltiplos shapes reais do Araquem.
+
+    Ordem de preferência (do mais “canônico” no seu explain atual):
+      1) scoring["final_combined"] -> lista de {intent, score}
+      2) scoring["combined"]["intent"] -> lista de {name/base/rag/combined}
+      3) scoring["intent"] -> lista de {name, score}
+      4) scoring["intent_scores_*"] / "intent_scores" -> dict {intent: score}
+      5) fallback: listas genéricas (intents_ranked, ranked, etc.)
+    """
+    if scoring is None:
+        return None, None, "none"
+
+    # 1) final_combined (lista)
+    if isinstance(scoring, dict):
+        fc = scoring.get("final_combined")
+        if isinstance(fc, list) and fc:
+            top1 = _pick_intent_name(fc[0])
+            top2 = _pick_intent_name(fc[1]) if len(fc) > 1 else None
+            return top1, top2, "list:final_combined"
+
+    # 2) combined.intent (lista)
+    if isinstance(scoring, dict):
+        cmb = scoring.get("combined")
+        if isinstance(cmb, dict):
+            cmb_int = cmb.get("intent")
+            if isinstance(cmb_int, list) and cmb_int:
+                top1 = _pick_intent_name(cmb_int[0])
+                top2 = _pick_intent_name(cmb_int[1]) if len(cmb_int) > 1 else None
+                return top1, top2, "list:combined.intent"
+
+    # 3) scoring.intent (lista)
+    if isinstance(scoring, dict):
+        s_int = scoring.get("intent")
+        if isinstance(s_int, list) and s_int:
+            top1 = _pick_intent_name(s_int[0])
+            top2 = _pick_intent_name(s_int[1]) if len(s_int) > 1 else None
+            return top1, top2, "list:scoring.intent"
+
+    # 4) dicts de scores
+    if isinstance(scoring, dict):
+        for k in (
+            "intent_scores_final",
+            "intent_scores_base",
+            "intent_scores",
+            "scores_final",
+            "scores_base",
+            "scores",
+        ):
+            v = scoring.get(k)
+            if isinstance(v, dict) and v:
+                top1, top2 = _sorted_top2_from_score_map(v)
+                if top1:
+                    return top1, top2, f"dict_scores:{k}"
+
+    # 5) listas candidatas (fallback)
+    if isinstance(scoring, dict):
+        for k in ("intents_ranked", "intents", "ranked", "top_intents", "candidates"):
+            v = scoring.get(k)
+            if isinstance(v, list) and v:
+                top1 = _pick_intent_name(v[0])
+                top2 = _pick_intent_name(v[1]) if len(v) > 1 else None
+                return top1, top2, f"list:{k}"
+
+    # 6) scoring já é lista
+    if isinstance(scoring, list) and scoring:
+        top1 = _pick_intent_name(scoring[0])
+        top2 = _pick_intent_name(scoring[1]) if len(scoring) > 1 else None
+        return top1, top2, "list"
+
+    return None, None, "unknown"
 
 
 def _post_question(
@@ -110,7 +175,6 @@ def _post_question(
     try:
         r = requests.post(url, json=payload, timeout=cfg.timeout_s)
         dt_ms = (time.time() - t0) * 1000.0
-        # tenta JSON mesmo em erro (para capturar status/message)
         try:
             data = r.json()
         except Exception:
@@ -128,11 +192,9 @@ def _extract_row(
     elapsed_ms_client: float,
     request_error: Optional[str],
 ) -> Dict[str, Any]:
-    # status base do endpoint (quando existir)
     status_reason = _safe_get(resp, "status.reason")
     status_message = _safe_get(resp, "status.message")
 
-    # atalhos topo (o seu payload já tem intent/entity no meta)
     chosen_intent = _safe_get(resp, "meta.intent") or _safe_get(
         resp, "meta.planner.chosen.intent"
     )
@@ -143,7 +205,7 @@ def _extract_row(
         resp, "meta.planner.chosen.score"
     )
 
-    # gate (FIX: thresholds_applied lives under scoring)
+    # gate
     gate = (
         _safe_get(resp, "meta.planner.explain.scoring.thresholds_applied")
         or _safe_get(resp, "meta.planner.explain.thresholds_applied")
@@ -161,9 +223,13 @@ def _extract_row(
     gap_base = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_base")
     gap_final = _safe_get(resp, "meta.planner.explain.scoring.intent_top2_gap_final")
 
-    # ranking (top1/top2) — ajuda muito a explicar gap=0.0 (colisão)
-    scoring_blob = _safe_get(resp, "meta.planner.explain.scoring")
-    intent_top1, intent_top2 = _best_effort_topk_intents(scoring_blob)
+    # scoring introspection
+    scoring = _safe_get(resp, "meta.planner.explain.scoring")
+    intent_top1, intent_top2, scoring_mode = _best_effort_topk_intents(scoring)
+
+    scoring_keys = ""
+    if isinstance(scoring, dict):
+        scoring_keys = ";".join(sorted(scoring.keys()))
 
     # resultado
     rows_total = _safe_get(resp, "meta.rows_total")
@@ -189,15 +255,16 @@ def _extract_row(
 
     http_status = resp.get("_http_status") or 0
 
-    # total (aproximação): server + narrator quando existir
-    total_ms = None
-    if elapsed_ms_server is not None:
-        try:
-            total_ms = float(elapsed_ms_server)
+    # total estimado (explícito como “estimate”)
+    elapsed_ms_total_est = None
+    try:
+        if elapsed_ms_server is not None:
+            elapsed_ms_total_est = float(elapsed_ms_server)
+            # Só soma se vier separado; se não vier, fica só server.
             if narrator_used and narrator_latency_ms is not None:
-                total_ms += float(narrator_latency_ms)
-        except Exception:
-            total_ms = None
+                elapsed_ms_total_est += float(narrator_latency_ms)
+    except Exception:
+        elapsed_ms_total_est = None
 
     return {
         "question": question,
@@ -219,6 +286,8 @@ def _extract_row(
         "intent_top2_gap_final": gap_final,
         "intent_top1": intent_top1,
         "intent_top2": intent_top2,
+        "scoring_mode": scoring_mode,
+        "scoring_keys": scoring_keys,
         "rows_total": rows_total,
         "result_key": result_key,
         "cache_hit": cache_hit,
@@ -228,7 +297,7 @@ def _extract_row(
         "rag_used": rag_used,
         "fusion_used": fusion_used,
         "elapsed_ms_server": elapsed_ms_server,
-        "elapsed_ms_total": total_ms,
+        "elapsed_ms_total_est": elapsed_ms_total_est,
         "elapsed_ms_client": round(elapsed_ms_client, 3),
         "narrator_used": narrator_used,
         "narrator_latency_ms": narrator_latency_ms,
@@ -248,7 +317,6 @@ def _load_questions(args: argparse.Namespace) -> List[str]:
     if args.inline:
         n = args.questions
         return DEFAULT_QUESTIONS[:n]
-    # default: inline também, mas exige --questions-file ou --inline para ser explícito
     raise SystemExit("Use --inline ou --questions-file.")
 
 
@@ -271,6 +339,55 @@ def _write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
         w.writeheader()
         for r in rows:
             w.writerow(r)
+
+
+def _print_summary(rows: List[Dict[str, Any]]) -> None:
+    if not rows:
+        return
+
+    total = len(rows)
+    gate_ok = sum(1 for r in rows if r.get("gate_accepted") is True)
+    gate_no = sum(1 for r in rows if r.get("gate_accepted") is False)
+    cache_hits = sum(1 for r in rows if r.get("cache_hit") is True)
+    narrator_used = sum(1 for r in rows if r.get("narrator_used") is True)
+
+    # Top lentas por client
+    by_client = sorted(
+        rows, key=lambda r: float(r.get("elapsed_ms_client") or 0.0), reverse=True
+    )[:3]
+    # Top lentas por narrator
+    by_llm = sorted(
+        rows, key=lambda r: float(r.get("narrator_latency_ms") or 0.0), reverse=True
+    )[:3]
+
+    print("\n=== RESULT COMPLETO (SUMÁRIO) ===")
+    print(f"Perguntas: {total}")
+    print(f"Gate: OK={gate_ok} | FAIL={gate_no}")
+    print(f"Cache hit: {cache_hits}/{total} ({(cache_hits/total)*100:.1f}%)")
+    print(f"Narrator usado: {narrator_used}/{total} ({(narrator_used/total)*100:.1f}%)")
+
+    if gate_no > 0:
+        print("\nFalhas de gate (gate=N):")
+        for r in rows:
+            if r.get("gate_accepted") is False:
+                print(
+                    f"- idx={r.get('idx')} | q={r.get('question')!r} | "
+                    f"intent={r.get('chosen_intent')} entity={r.get('chosen_entity')} | "
+                    f"reason={r.get('gate_reason')} score={r.get('score_for_gate')} "
+                    f"min_score={r.get('gate_min_score')} min_gap={r.get('gate_min_gap')} gap={r.get('gate_gap')}"
+                )
+
+    print("\nTop 3 mais lentas (elapsed_ms_client):")
+    for r in by_client:
+        print(
+            f"- idx={r.get('idx')} | {r.get('elapsed_ms_client')} ms | {r.get('question')}"
+        )
+
+    print("\nTop 3 maior latência LLM (narrator_latency_ms):")
+    for r in by_llm:
+        print(
+            f"- idx={r.get('idx')} | {r.get('narrator_latency_ms')} ms | {r.get('question')}"
+        )
 
 
 def main() -> int:
@@ -322,7 +439,6 @@ def main() -> int:
         row["idx"] = i
         rows.append(row)
 
-        # print curto para console
         intent = (row.get("chosen_intent") or "-")[:12]
         entity = (row.get("chosen_entity") or "-")[:12]
         top1 = (row.get("intent_top1") or "-")[:12]
@@ -362,6 +478,8 @@ def main() -> int:
 
     print(f"\nWrote: {jsonl_path}")
     print(f"Wrote: {csv_path}")
+
+    _print_summary(rows)
     return 0
 
 
