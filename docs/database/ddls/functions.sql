@@ -228,228 +228,370 @@ $$;
 
 DROP FUNCTION IF EXISTS calc_fiis_performance_vs_benchmark(text, text);
 
-CREATE OR REPLACE FUNCTION calc_fiis_performance_vs_benchmark(
-    document_number_in text,
-    benchmark_in text  -- 'IFIX', 'IFIL', 'IBOV', 'CDI'
-)
-RETURNS TABLE (
-    date_reference           date,
-    portfolio_amount         numeric,
-    portfolio_return_pct     numeric,
-    benchmark_value          numeric,
-    benchmark_return_pct     numeric
-)
-LANGUAGE plpgsql
-AS $$
+
+CREATE OR REPLACE FUNCTION public.calc_fiis_performance_vs_benchmark(
+	p_document_number text,
+	p_indices text[],
+	p_start_date date DEFAULT NULL::date,
+	p_end_date date DEFAULT NULL::date)
+    RETURNS TABLE(ref_date date, month_year text, series_id text, series_kind text, cumulative_return numeric, cumulative_index numeric, cumulative_dividends numeric)
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
 BEGIN
     --------------------------------------------------------------------
-    -- BRANCH CDI
+    -- 0) Sanidade dos parâmetros
     --------------------------------------------------------------------
-    IF upper(benchmark_in) = 'CDI' THEN
-        RETURN QUERY
-        WITH portfolio AS (
-            SELECT
-                reference_date AS ref_date,
-                SUM(update_value) AS portfolio_value
-            FROM equities_positions
-            WHERE document_number       = document_number_in
-              AND product_category_name = 'Renda Variavel'
-              AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
-              AND specification_code    = 'Cotas'
-            GROUP BY reference_date
-        ),
-        bounds AS (
-            SELECT
-                MIN(ref_date) AS min_date,
-                MAX(ref_date) AS max_date
-            FROM portfolio
-        ),
-        dividends AS (
-            SELECT
-                reference_date AS ref_date,
-                SUM(operation_value) AS div_value
-            FROM movement
-            WHERE document_number       = document_number_in
-              AND product_category_name = 'Renda Variavel'
-              AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
-              AND movement_type         = 'Rendimento'
-              AND operation_type        = 'Credito'
-            GROUP BY reference_date
-        ),
-        port_enriched AS (
-            SELECT
-                p.ref_date,
-                p.portfolio_value,
-                COALESCE(d.div_value, 0) AS div_value
-            FROM portfolio p
-            LEFT JOIN dividends d USING (ref_date)
-        ),
-        port_with_cum AS (
-            SELECT
-                ref_date,
-                portfolio_value,
-                SUM(div_value) OVER (ORDER BY ref_date) AS cum_div,
-                FIRST_VALUE(portfolio_value) OVER (ORDER BY ref_date) AS first_value
-            FROM port_enriched
-        ),
-        port_return AS (
-            SELECT
-                ref_date,
-                portfolio_value,
-                (portfolio_value + cum_div) / NULLIF(first_value, 0) - 1 AS portfolio_return
-            FROM port_with_cum
-        ),
-        cdi_raw AS (
-            SELECT
-                h.indicator_date::date AS indicator_date,
-                h.indicator_amt        AS daily_rate
-            FROM history_market_indicators h
-            JOIN bounds b
-              ON h.indicator_date::date BETWEEN b.min_date AND b.max_date
-            WHERE h.indicator_name = 'CDI'
-        ),
-        cdi_cum AS (
-            SELECT
-                indicator_date,
-                EXP(
-                    SUM(LN(1 + daily_rate / 100.0)) OVER (ORDER BY indicator_date)
-                ) AS cdi_index
-            FROM cdi_raw
-        ),
-        cdi_norm AS (
-            SELECT
-                indicator_date,
-                cdi_index,
-                (cdi_index / FIRST_VALUE(cdi_index) OVER (ORDER BY indicator_date) - 1)
-                    AS cdi_return
-            FROM cdi_cum
-        ),
-        joined AS (
-            SELECT
-                p.ref_date,
-                p.portfolio_value,
-                p.portfolio_return,
-                c.cdi_index  AS benchmark_value,
-                c.cdi_return AS benchmark_return
-            FROM port_return p
-            LEFT JOIN cdi_norm c
-              ON c.indicator_date = p.ref_date
-        )
-        SELECT
-            j.ref_date::date                   AS date_reference,
-            j.portfolio_value                  AS portfolio_amount,
-            ROUND(j.portfolio_return * 100, 2) AS portfolio_return_pct,
-            j.benchmark_value,
-            ROUND(j.benchmark_return * 100, 2) AS benchmark_return_pct
-        FROM joined j
-        ORDER BY j.ref_date;
+    IF p_indices IS NULL
+       OR array_length(p_indices, 1) IS NULL
+       OR array_length(p_indices, 1) = 0 THEN
+        RAISE EXCEPTION 'Informe pelo menos um benchmark (CDI, IFIX, IFIL, IBOVESPA).';
+    END IF;
+
+    IF array_length(p_indices, 1) > 4 THEN
+        RAISE EXCEPTION 'Número máximo de benchmarks é 4. Recebido: %',
+            array_length(p_indices, 1);
+    END IF;
+
+    IF EXISTS (
+        SELECT 1
+        FROM unnest(p_indices) AS b(val)
+        WHERE upper(val) NOT IN ('CDI','IFIX','IFIL','IBOVESPA')
+    ) THEN
+        RAISE EXCEPTION 'Benchmarks inválidos. Use apenas: CDI, IFIX, IFIL, IBOVESPA.';
+    END IF;
 
     --------------------------------------------------------------------
-    -- BRANCH IFIX / IFIL / IBOV
+    -- 1) Janela: p_start_date / p_end_date + limites da base
     --------------------------------------------------------------------
-    ELSE
-        RETURN QUERY
-        WITH portfolio AS (
-            SELECT
-                reference_date AS ref_date,
-                SUM(update_value) AS portfolio_value
-            FROM equities_positions
-            WHERE document_number       = document_number_in
-              AND product_category_name = 'Renda Variavel'
-              AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
-              AND specification_code    = 'Cotas'
-            GROUP BY reference_date
-        ),
-        bounds AS (
-            SELECT
-                MIN(ref_date) AS min_date,
-                MAX(ref_date) AS max_date
-            FROM portfolio
-        ),
-        dividends AS (
-            SELECT
-                reference_date AS ref_date,
-                SUM(operation_value) AS div_value
-            FROM movement
-            WHERE document_number       = document_number_in
-              AND product_category_name = 'Renda Variavel'
-              AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
-              AND movement_type         = 'Rendimento'
-              AND operation_type        = 'Credito'
-            GROUP BY reference_date
-        ),
-        port_enriched AS (
-            SELECT
-                p.ref_date,
-                p.portfolio_value,
-                COALESCE(d.div_value, 0) AS div_value
-            FROM portfolio p
-            LEFT JOIN dividends d USING (ref_date)
-        ),
-        port_with_cum AS (
-            SELECT
-                ref_date,
-                portfolio_value,
-                SUM(div_value) OVER (ORDER BY ref_date) AS cum_div,
-                FIRST_VALUE(portfolio_value) OVER (ORDER BY ref_date) AS first_value
-            FROM port_enriched
-        ),
-        port_return AS (
-            SELECT
-                ref_date,
-                portfolio_value,
-                (portfolio_value + cum_div) / NULLIF(first_value, 0) - 1 AS portfolio_return
-            FROM port_with_cum
-        ),
-        idx_raw AS (
-            SELECT
-                h.index_date::date AS index_date,
-                CASE upper(benchmark_in)
-                    WHEN 'IFIX' THEN h.ifix_points_count
-                    WHEN 'IFIL' THEN h.ifil_points_count
-                    WHEN 'IBOV' THEN h.ibov_points_count
-                END AS idx_points
-            FROM history_b3_indexes h
-            JOIN bounds b
-              ON h.index_date::date BETWEEN b.min_date AND b.max_date
-        ),
-        idx_filtered AS (
-            SELECT
-                index_date,
-                idx_points
-            FROM idx_raw
-            WHERE idx_points IS NOT NULL
-        ),
-        idx_norm AS (
-            SELECT
-                index_date,
-                idx_points,
-                (idx_points / FIRST_VALUE(idx_points) OVER (ORDER BY index_date) - 1)
-                    AS idx_return
-            FROM idx_filtered
-        ),
-        joined AS (
-            SELECT
-                p.ref_date,
-                p.portfolio_value,
-                p.portfolio_return,
-                i.idx_points AS benchmark_value,
-                i.idx_return AS benchmark_return
-            FROM port_return p
-            LEFT JOIN idx_norm i
-              ON i.index_date = p.ref_date
-        )
+    RETURN QUERY
+    WITH raw_bounds AS (
         SELECT
-            j.ref_date::date                   AS date_reference,
-            j.portfolio_value                  AS portfolio_amount,
-            ROUND(j.portfolio_return * 100, 2) AS portfolio_return_pct,
-            j.benchmark_value,
-            ROUND(j.benchmark_return * 100, 2) AS benchmark_return_pct
-        FROM joined j
-        ORDER BY j.ref_date;
-    END IF;
+            MIN(date_trunc('month', h.date_taxes)::date) AS hist_min_month,
+            MAX(date_trunc('month', h.date_taxes)::date) AS hist_max_month
+        FROM hist_taxes h
+    ),
+    params AS (
+        SELECT
+            LEAST(
+                COALESCE(date_trunc('month', p_end_date)::date,
+                         date_trunc('month', CURRENT_DATE)::date),
+                rb.hist_max_month
+            ) AS max_month,
+            GREATEST(
+                COALESCE(date_trunc('month', p_start_date)::date,
+                         rb.hist_min_month),
+                rb.hist_min_month
+            ) AS min_month
+        FROM raw_bounds rb
+    ),
+
+    --------------------------------------------------------------------
+    -- 2) Taxes mensais (CDI/SELIC mensal + níveis dos índices)
+    --------------------------------------------------------------------
+    taxes AS (
+        SELECT DISTINCT ON (date_trunc('month', h.date_taxes))
+               date_trunc('month', h.date_taxes)::date              AS ref_month,
+               to_char(date_trunc('month', h.date_taxes),'MM/YYYY') AS month_year,
+               TRUNC(POWER(1 + h.cdi_taxes   / 100.0, 1.0/12) - 1, 6) AS cdi_mensal,
+               TRUNC(POWER(1 + h.selic_taxes / 100.0, 1.0/12) - 1, 6) AS selic_mensal,
+               h.ibovespa_taxes                                       AS ibov,
+               h.ifix_taxes                                           AS ifix,
+               h.ifil_taxes                                           AS ifil
+        FROM hist_taxes h
+        JOIN params p
+          ON h.date_taxes::date >= p.min_month
+         AND h.date_taxes::date <  p.max_month + INTERVAL '1 month'
+        ORDER BY date_trunc('month', h.date_taxes),
+                 h.date_taxes DESC
+    ),
+
+    --------------------------------------------------------------------
+    -- 3) Dividendos mensais
+    --------------------------------------------------------------------
+    dividends AS (
+        SELECT
+            date_trunc('month', reference_date)::date AS ref_month,
+            SUM(operation_value)                      AS dividends
+        FROM movement
+        JOIN params p
+          ON reference_date::date >= p.min_month
+         AND reference_date::date <  p.max_month + INTERVAL '1 month'
+        WHERE document_number       = p_document_number
+          AND product_category_name = 'Renda Variavel'
+          AND product_type_name     = 'FII - Fundo de Investimento Imobiliário'
+          AND movement_type         = 'Rendimento'
+          AND operation_type        = 'Credito'
+        GROUP BY 1
+    ),
+
+    --------------------------------------------------------------------
+    -- 4) Carteira diária
+    -- Ajustes:
+    --   (a) MATERIALIZED: garante 1 cálculo do agregado, evita loops explosivos
+    --   (b) corte superior seguro: não precisamos de datas > fim da janela
+    --------------------------------------------------------------------
+    wallet_daily AS MATERIALIZED (
+        SELECT
+            ep.reference_date::date AS ref_date,
+            SUM(ep.update_value)    AS portfolio_value
+        FROM equities_positions ep
+        JOIN params p
+          ON ep.reference_date::date <= (p.max_month + INTERVAL '1 month - 1 day')::date
+        WHERE ep.document_number       = p_document_number
+          AND ep.product_category_name = 'Renda Variavel'
+          AND ep.product_type_name     = 'FII - Fundo de Investimento Imobiliário'
+          AND ep.specification_code    = 'Cotas'
+        GROUP BY ep.reference_date::date
+    ),
+
+    -- Para cada mês da janela, pega o último valor de carteira (SET-BASED)
+    wallet AS MATERIALIZED (
+        SELECT
+            x.ref_month,
+            x.portfolio_value
+        FROM (
+            SELECT
+                t.ref_month,
+                wd.portfolio_value,
+                row_number() OVER (
+                    PARTITION BY t.ref_month
+                    ORDER BY wd.ref_date DESC
+                ) AS rn
+            FROM taxes t
+            LEFT JOIN wallet_daily wd
+              ON wd.ref_date <= (t.ref_month + INTERVAL '1 month - 1 day')::date
+        ) x
+        WHERE x.rn = 1
+    ),
+
+    --------------------------------------------------------------------
+    -- 5) Grid mensal: CDI / índices / carteira / dividendos
+    --------------------------------------------------------------------
+    base_months AS (
+        SELECT
+            t.ref_month,
+            t.month_year,
+            t.cdi_mensal,
+            t.selic_mensal,
+            t.ibov,
+            t.ifix,
+            t.ifil,
+            COALESCE(d.dividends, 0)           AS dividends,
+            COALESCE(w.portfolio_value, 0.0)   AS portfolio_value
+        FROM taxes t
+        LEFT JOIN dividends d USING (ref_month)
+        LEFT JOIN wallet    w USING (ref_month)
+    ),
+
+    --------------------------------------------------------------------
+    -- 6) Dividendos acumulados por mês
+    --------------------------------------------------------------------
+    dividends_cum AS (
+        SELECT
+            b.ref_month,
+            b.month_year,
+            b.dividends,
+            COALESCE(
+                SUM(b.dividends) OVER (ORDER BY b.ref_month),
+                0
+            ) AS cumulative_dividends
+        FROM base_months b
+    ),
+
+    --------------------------------------------------------------------
+    -- 7) Séries mensais de retorno (wallet + índices)
+    --------------------------------------------------------------------
+    wallet_series AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'WALLET'::text                 AS series_id,
+            'WALLET'::text                 AS series_kind,
+            CASE
+                WHEN b.portfolio_value IS NULL
+                     OR b.portfolio_value = 0
+                     OR b.dividends = 0
+                THEN 0.0
+                ELSE b.dividends / b.portfolio_value
+            END AS monthly_return
+        FROM base_months b
+    ),
+
+    indices_cdi AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'CDI'::text                    AS series_id,
+            'INDEX'::text                  AS series_kind,
+            b.cdi_mensal                   AS monthly_return
+        FROM base_months b
+        WHERE 'CDI' = ANY (p_indices)
+    ),
+
+    indices_selic AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'SELIC'::text                  AS series_id,
+            'INDEX'::text                  AS series_kind,
+            b.selic_mensal                 AS monthly_return
+        FROM base_months b
+        WHERE 'SELIC' = ANY (p_indices)
+    ),
+
+    indices_ifix AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'IFIX'::text                   AS series_id,
+            'INDEX'::text                  AS series_kind,
+            CASE
+                WHEN lag(b.ifix) OVER (ORDER BY b.ref_month) IS NULL
+                     OR lag(b.ifix) OVER (ORDER BY b.ref_month) = 0
+                THEN 0.0
+                ELSE b.ifix
+                     / NULLIF(
+                         lag(b.ifix) OVER (ORDER BY b.ref_month),
+                         0
+                       ) - 1.0
+            END AS monthly_return
+        FROM base_months b
+        WHERE 'IFIX' = ANY (p_indices)
+    ),
+
+    indices_ifil AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'IFIL'::text                   AS series_id,
+            'INDEX'::text                  AS series_kind,
+            CASE
+                WHEN lag(b.ifil) OVER (ORDER BY b.ref_month) IS NULL
+                     OR lag(b.ifil) OVER (ORDER BY b.ref_month) = 0
+                THEN 0.0
+                ELSE b.ifil
+                     / NULLIF(
+                         lag(b.ifil) OVER (ORDER BY b.ref_month),
+                         0
+                       ) - 1.0
+            END AS monthly_return
+        FROM base_months b
+        WHERE 'IFIL' = ANY (p_indices)
+    ),
+
+    indices_ibov AS (
+        SELECT
+            b.ref_month                    AS ref_date,
+            b.month_year,
+            'IBOV'::text                   AS series_id,
+            'INDEX'::text                  AS series_kind,
+            CASE
+                WHEN lag(b.ibov) OVER (ORDER BY b.ref_month) IS NULL
+                     OR lag(b.ibov) OVER (ORDER BY b.ref_month) = 0
+                THEN 0.0
+                ELSE b.ibov
+                     / NULLIF(
+                         lag(b.ibov) OVER (ORDER BY b.ref_month),
+                         0
+                       ) - 1.0
+            END AS monthly_return
+        FROM base_months b
+        WHERE 'IBOVESPA' = ANY (p_indices)
+    ),
+
+    indices_raw AS (
+        SELECT * FROM indices_cdi
+        UNION ALL
+        SELECT * FROM indices_selic
+        UNION ALL
+        SELECT * FROM indices_ifix
+        UNION ALL
+        SELECT * FROM indices_ifil
+        UNION ALL
+        SELECT * FROM indices_ibov
+    ),
+
+    all_series AS (
+        SELECT * FROM wallet_series
+        UNION ALL
+        SELECT * FROM indices_raw
+    ),
+
+    --------------------------------------------------------------------
+    -- 8) Crescimento acumulado e normalização
+    --------------------------------------------------------------------
+    series_cum AS (
+        SELECT
+            s.ref_date,
+            s.month_year,
+            s.series_id,
+            s.series_kind,
+            s.monthly_return,
+            EXP(
+                SUM(
+                    LN(1.0 + s.monthly_return)
+                ) OVER (
+                    PARTITION BY s.series_kind, s.series_id
+                    ORDER BY s.ref_date
+                    ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
+                )
+            ) AS growth
+        FROM all_series s
+    ),
+
+    series_norm AS (
+        SELECT
+            sc.ref_date,
+            sc.month_year,
+            sc.series_id,
+            sc.series_kind,
+            sc.growth
+              / FIRST_VALUE(sc.growth) OVER (
+                    PARTITION BY sc.series_kind, sc.series_id
+                    ORDER BY sc.ref_date
+                ) AS norm_index
+        FROM series_cum sc
+    ),
+
+    series_final AS (
+        SELECT
+            sn.ref_date,
+            sn.month_year,
+            sn.series_id,
+            sn.series_kind,
+            sn.norm_index,
+            LAG(sn.norm_index) OVER (
+                PARTITION BY sn.series_kind, sn.series_id
+                ORDER BY sn.ref_date
+            ) AS prev_index
+        FROM series_norm sn
+    )
+
+    --------------------------------------------------------------------
+    -- 9) Saída final com dividendos acumulados
+    --------------------------------------------------------------------
+    SELECT
+        sf.ref_date,
+        sf.month_year,
+        sf.series_id,
+        sf.series_kind,
+        CASE
+            WHEN sf.prev_index IS NULL THEN 0.00
+            ELSE ROUND(((sf.norm_index / sf.prev_index) - 1.0) * 100.0, 2)
+        END AS cumulative_return,
+        ROUND(sf.norm_index * 100.0, 2) AS cumulative_index,
+        COALESCE(dc.cumulative_dividends, 0.0) AS cumulative_dividends
+    FROM series_final sf
+    LEFT JOIN dividends_cum dc
+           ON dc.ref_month = sf.ref_date
+    ORDER BY sf.ref_date, sf.series_kind, sf.series_id;
+
 END;
-$$;
+$BODY$;
 
 DROP FUNCTION IF EXISTS calc_fiis_dividends_evolution(text);
 
