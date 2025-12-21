@@ -43,7 +43,40 @@ intents:
     tokens:
       include:
         - '<ticker>'
-      exclude: []
+      exclude:
+        - risco
+        - riscos
+        - volatilidade
+        - drawdown
+        - mdd
+        - sharpe
+        - sortino
+        - beta
+        - jensen
+        - treynor
+        - r2
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - rendimento
+        - dy
+        - yield
+        - noticia
+        - noticias
+        - fato relevante
+        - fatos relevantes
+        - comunicado
+        - processo
+        - processos
+        - judicial
+        - judiciais
+        - acao
+        - acoes
+        - imovel
+        - imoveis
+        - vacancia
+        - ocupacao
     phrases:
       include: []
       exclude: []
@@ -1456,6 +1489,7 @@ intents:
     tokens:
       include:
         - risco
+        - riscos
         - drawdown
         - max drawdown
         - mdd
@@ -1524,6 +1558,8 @@ intents:
     phrases:
       include:
         - indicador de risco do
+        - riscos do
+        - riscos do <ticker>
         - risco atual do
         - volatilidade do
         - sharpe do
@@ -2184,8 +2220,6 @@ intents:
         - linha do tempo
         - ultimos 12 meses
         - d-1
-        - do dia
-        - de ontem
         - ipca
         - selic
         - cdi
@@ -2196,8 +2230,6 @@ intents:
         - taxa
         - valor
         - valor mensal
-        - do dia
-        - de ontem
         - atual
         - ultima atualizacao
         - ultimo dado
@@ -2236,6 +2268,20 @@ intents:
         - eur
     phrases:
       include:
+        - selic de ontem
+        - taxa selic de ontem
+        - selic ontem
+        - selic do dia
+        - taxa selic do dia
+        - cdi de ontem
+        - taxa do cdi de ontem
+        - cdi ontem
+        - cdi do dia
+        - ipca de ontem
+        - ipca do dia
+        - igpm de ontem
+        - incc de ontem
+        - inpc de ontem
         - historico do ipca
         - historico do ipca nos ultimos
         - historico da inflacao

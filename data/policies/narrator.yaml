@@ -9,6 +9,10 @@ narrator:
   llm_enabled: true
   shadow: false
 
+  # Objetivo operacional:
+  # - reduzir p95/p99 do /ask removendo LLM de respostas numéricas/tabelares
+  # - manter LLM apenas onde agrega valor (macro/overview conceitual)
+
   # Buckets:
   # - A/B/C → SQL-only (llm_enabled=false via entities)
   # - D     → conceitual/chitchat (usa default.llm_enabled=true quando não há entidade)
@@ -27,15 +31,17 @@ narrator:
       entities:
         - macro_consolidada
   default:
-    llm_enabled: true
+    # Default agora é SQL-first: LLM somente quando uma entidade habilitar explicitamente.
+    llm_enabled: false
     shadow: false
     model: sirios-narrator:latest
     style: executivo
 
     # Limites de uso do LLM
-    max_llm_rows: 999
-    max_prompt_tokens: 2000
-    max_output_tokens: 400
+    # (quando uma entidade habilitar LLM)
+    max_llm_rows: 20
+    max_prompt_tokens: 900
+    max_output_tokens: 220
 
     # RAG / contexto
     use_rag_in_prompt: false
@@ -111,6 +117,8 @@ narrator:
       shadow: false
       rewrite_only: true
       max_llm_rows: 10
+      max_prompt_tokens: 700
+      max_output_tokens: 180
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -159,6 +167,8 @@ narrator:
       shadow: false
       rewrite_only: true
       max_llm_rows: 50
+      max_prompt_tokens: 1200
+      max_output_tokens: 280
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -177,16 +187,17 @@ narrator:
     # Cadastro / preços / processos / rankings / notícias / riscos
     # ──────────────────
     fiis_financials_risk:
-      llm_enabled: true
+      # Desliga LLM: latência alta e resposta é essencialmente numérica/estruturada.
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 10
       instruction: |
         Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
         usando os dados de risco como âncora factual (ex.: volatilidade, sharpe, sortino, drawdown,
         beta e demais métricas presentes). Proibido: tabelas, pipes (|), markdown tabular,
         repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
-      max_output_tokens: 260
+      max_output_tokens: 0
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
@@ -227,16 +238,16 @@ narrator:
       strict_mode: false
 
     fiis_financials_snapshot:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 220
+      max_output_tokens: 0
       instruction: |
         Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
         usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
@@ -254,16 +265,17 @@ narrator:
       strict_mode: false
 
     fiis_precos:
-      llm_enabled: true
+      # Desliga LLM: foi o principal causador de 40s+ nos testes (prefácio não compensa).
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 220
+      max_output_tokens: 0
       instruction: |
         Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
         usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
@@ -281,16 +293,16 @@ narrator:
       strict_mode: false
 
     fiis_rankings:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 10
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false
       concept_with_data_when_rag: false
       strict_mode: false
-      max_output_tokens: 220
+      max_output_tokens: 0
       instruction: |
         Escreva apenas um prefácio curto (máximo 5 linhas) respondendo ao que o usuário perguntou,
         usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
