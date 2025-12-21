@@ -4,7 +4,7 @@ normalize:
   - strip_punct
 
 tokenization:
-  split: \b
+  split: \s+
 
 weights:
   token: 1.1
@@ -69,8 +69,6 @@ intents:
         - posicoes
         - atual
         - quantidade
-        - quantidade em custodia
-        - custodia de cotas
         - cotas
         - custodia
         - exposicao
@@ -78,23 +76,15 @@ intents:
         - composicao
         - alocacao
         - distribuicao
-        - distribuicao por fundo
-        - distribuicao da minha carteira de fiis por fundo
-        - distribuicao da minha carteira por fundo
-        - por fundo
         - ativo
         - minha
         - minhas
         - meu
-        - preco medio
         - preco_medio
         - pm
-        - peso do <ticker> na minha carteira
-        - preco medio do <ticker> na minha carteira
         - prejuizo
         - ganho
         - lucro
-        - carteira de fiis
       exclude:
         - cpf
         - cnpj
@@ -167,6 +157,11 @@ intents:
         - quantidade em custodia do <ticker>
         - peso do <ticker> na carteira de fiis
         - peso do fii <ticker> na minha carteira
+        - quantidade em custodia
+        - custodia de cotas
+        - distribuicao por fundo
+        - por fundo
+        - carteira de fiis
       exclude: []
     entities:
       - client_fiis_positions
@@ -175,7 +170,6 @@ intents:
     tokens:
       include:
         - renda
-        - renda mensal
         - dividendos
         - proventos
         - evolucao
@@ -184,24 +178,11 @@ intents:
         - mes
         - meses
         - crescimento
-        - historico de dividendos
-        - linha do tempo
         - carteira
         - minha
         - minhas
         - meu
-        - mes a mes
-        - cada mes
-        - por mes
         - mensalmente
-        - 12 meses
-        - ultimos 12 meses
-        - um ano
-        - quanto minha carteira de fiis recebeu de dividendos em cada mes
-        - dividendos da minha carteira por mes
-        - dividendos mensais da minha carteira de fiis
-        - renda mensal da minha carteira de fiis
-        - linha do tempo de dividendos da minha carteira
       exclude:
         - cpf
         - cnpj
@@ -263,6 +244,11 @@ intents:
         - crescimento da renda
         - dividendos recebidos ao longo do tempo
         - linha do tempo de dividendos
+        - renda mensal
+        - historico de dividendos
+        - linha do tempo
+        - 12 meses
+        - ultimos 12 meses
       exclude:
         - dividendos de <ticker>
         - dividendos do <ticker>
@@ -292,36 +278,16 @@ intents:
         - comparativo
         - vs
         - versus
-        - versus ifix
-        - versus ibov
-        - versus cdi
-        - frente ao ifix
-        - frente ao ibov
-        - frente ao cdi
-        - frente ao indice
         - contra
         - x
         - melhor
         - pior
         - benchmark
-        - comparar com ifix
-        - comparar com ibov
-        - comparar com cdi
-        - indice de referencia
         - ifix
         - ifil
         - cdi
         - ibov
         - ibovespa
-        - tracking difference
-        - como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses
-        - minha carteira de fiis esta melhor ou pior que o cdi
-        - comparar o retorno da minha carteira de fiis com o ifil
-        - retorno da minha carteira de fiis
-        - rentabilidade da minha carteira de fiis
-        - qual foi a rentabilidade da minha carteira de fiis versus o ifix em 2024
-        - rentabilidade da minha carteira de fiis versus o ifix em 2024
-        - melhor ou pior que o cdi
       exclude:
         - cpf
         - cnpj
@@ -2935,15 +2901,6 @@ anti_tokens:
     - carteira de fiis
     - renda mensal
     - dividendos da carteira
-  fiis_noticias:
-    - noticia
-    - noticias
-    - materia
-    - reportagem
-    - manchete
-    - fato relevante
-    - fatos relevantes
-    - comunicado
   history_b3_indexes:
     - ranking
     - posicao

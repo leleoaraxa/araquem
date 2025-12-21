@@ -87,48 +87,65 @@ def _pick_intent_name(obj: Any) -> Optional[str]:
     return None
 
 
-def _best_effort_topk_intents(scoring: Any) -> Tuple[Optional[str], Optional[str], str]:
+def _best_effort_topk_intents(
+    scoring: Any, chosen_intent: Optional[str] = None
+) -> Tuple[Optional[str], Optional[str], str]:
     """
-    Extrai top1/top2 do bloco scoring, aceitando múltiplos shapes reais do Araquem.
-
-    Ordem de preferência (do mais “canônico” no seu explain atual):
-      1) scoring["final_combined"] -> lista de {intent, score}
-      2) scoring["combined"]["intent"] -> lista de {name/base/rag/combined}
-      3) scoring["intent"] -> lista de {name, score}
-      4) scoring["intent_scores_*"] / "intent_scores" -> dict {intent: score}
-      5) fallback: listas genéricas (intents_ranked, ranked, etc.)
+    Extrai top1/top2 do bloco de scoring sem assumir shape único.
+    Prioriza listas ranqueadas e listas com {intent/name/id/label, score}.
     """
     if scoring is None:
         return None, None, "none"
 
-    # 1) final_combined (lista)
-    if isinstance(scoring, dict):
-        fc = scoring.get("final_combined")
-        if isinstance(fc, list) and fc:
-            top1 = _pick_intent_name(fc[0])
-            top2 = _pick_intent_name(fc[1]) if len(fc) > 1 else None
-            return top1, top2, "list:final_combined"
+    def _pick_intent(obj: Any) -> Optional[str]:
+        if isinstance(obj, dict):
+            for kk in ("intent", "name", "id", "label"):
+                vv = obj.get(kk)
+                if isinstance(vv, str) and vv.strip():
+                    return vv.strip()
+        if isinstance(obj, str) and obj.strip():
+            return obj.strip()
+        return None
 
-    # 2) combined.intent (lista)
-    if isinstance(scoring, dict):
-        cmb = scoring.get("combined")
-        if isinstance(cmb, dict):
-            cmb_int = cmb.get("intent")
-            if isinstance(cmb_int, list) and cmb_int:
-                top1 = _pick_intent_name(cmb_int[0])
-                top2 = _pick_intent_name(cmb_int[1]) if len(cmb_int) > 1 else None
-                return top1, top2, "list:combined.intent"
+    def _maybe_sort_by_score(items: List[Any]) -> List[Any]:
+        # Se houver campo numérico 'score' em dict, ordena desc por score.
+        scored = []
+        unscored = []
+        for it in items:
+            if isinstance(it, dict) and isinstance(it.get("score"), (int, float)):
+                scored.append(it)
+            else:
+                unscored.append(it)
+        if scored:
+            scored.sort(key=lambda x: float(x["score"]), reverse=True)
+            return scored + unscored
+        return items
 
-    # 3) scoring.intent (lista)
-    if isinstance(scoring, dict):
-        s_int = scoring.get("intent")
-        if isinstance(s_int, list) and s_int:
-            top1 = _pick_intent_name(s_int[0])
-            top2 = _pick_intent_name(s_int[1]) if len(s_int) > 1 else None
-            return top1, top2, "list:scoring.intent"
+    # 1) scoring já é lista ranqueada
+    if isinstance(scoring, list) and scoring:
+        items = _maybe_sort_by_score(scoring)
+        top1 = _pick_intent(items[0])
+        top2 = _pick_intent(items[1]) if len(items) > 1 else None
+        return top1, top2, "list"
 
-    # 4) dicts de scores
     if isinstance(scoring, dict):
+        # 2) campos com listas candidatas
+        for k in (
+            "final_combined",
+            "intents_ranked",
+            "intents",
+            "ranked",
+            "top_intents",
+            "candidates",
+        ):
+            v = scoring.get(k)
+            if isinstance(v, list) and v:
+                items = _maybe_sort_by_score(v)
+                top1 = _pick_intent(items[0])
+                top2 = _pick_intent(items[1]) if len(items) > 1 else None
+                return top1, top2, f"list:{k}"
+
+        # 3) campos com dict de scores por intent
         for k in (
             "intent_scores_final",
             "intent_scores_base",
@@ -143,22 +160,88 @@ def _best_effort_topk_intents(scoring: Any) -> Tuple[Optional[str], Optional[str
                 if top1:
                     return top1, top2, f"dict_scores:{k}"
 
-    # 5) listas candidatas (fallback)
-    if isinstance(scoring, dict):
-        for k in ("intents_ranked", "intents", "ranked", "top_intents", "candidates"):
-            v = scoring.get(k)
-            if isinstance(v, list) and v:
-                top1 = _pick_intent_name(v[0])
-                top2 = _pick_intent_name(v[1]) if len(v) > 1 else None
-                return top1, top2, f"list:{k}"
-
-    # 6) scoring já é lista
-    if isinstance(scoring, list) and scoring:
-        top1 = _pick_intent_name(scoring[0])
-        top2 = _pick_intent_name(scoring[1]) if len(scoring) > 1 else None
-        return top1, top2, "list"
+        # 4) scoring["intent"] pode ser lista OU dict
+        v_intent = scoring.get("intent")
+        if isinstance(v_intent, list) and v_intent:
+            items = _maybe_sort_by_score(v_intent)
+            top1 = _pick_intent(items[0])
+            top2 = _pick_intent(items[1]) if len(items) > 1 else None
+            return top1, top2, "list:intent"
+        if isinstance(v_intent, dict) and v_intent:
+            top1, top2 = _sorted_top2_from_score_map(v_intent)
+            if top1:
+                return top1, top2, "dict_scores:intent"
+    if chosen_intent:
+        return chosen_intent, None, "fallback:chosen_intent"
 
     return None, None, "unknown"
+
+
+def _print_suite_summary(rows: List[Dict[str, Any]]) -> None:
+    total = len(rows)
+    gate_ok = sum(1 for r in rows if r.get("gate_accepted") is True)
+    gate_fail = sum(1 for r in rows if r.get("gate_accepted") is False)
+    cache_hits = sum(1 for r in rows if r.get("cache_hit") is True)
+    narrator_used = sum(1 for r in rows if r.get("narrator_used") is True)
+
+    print("\n=== RESULT COMPLETO (SUMÁRIO) ===")
+    print(f"Perguntas: {total}")
+    print(f"Gate: OK={gate_ok} | FAIL={gate_fail}")
+    print(
+        f"Cache hit: {cache_hits}/{total} ({(cache_hits/total*100.0 if total else 0.0):.1f}%)"
+    )
+    print(
+        f"Narrator usado: {narrator_used}/{total} ({(narrator_used/total*100.0 if total else 0.0):.1f}%)"
+    )
+
+    fails = [r for r in rows if r.get("gate_accepted") is False]
+    if fails:
+        print("\nFalhas de gate (gate=N):")
+        for r in fails:
+            print(
+                f"- idx={r.get('idx')} | intent={r.get('chosen_intent')} entity={r.get('chosen_entity')} | "
+                f"reason={r.get('gate_reason')} score={r.get('score_for_gate')} "
+                f"min_score={r.get('gate_min_score')} min_gap={r.get('gate_min_gap')} gap={r.get('gate_gap')} | "
+                f"q='{r.get('question')}'"
+            )
+
+    # top lentas no cliente
+    slow = sorted(
+        rows, key=lambda r: float(r.get("elapsed_ms_client") or 0.0), reverse=True
+    )[:5]
+    print("\nTop lentas (elapsed_ms_client):")
+    for r in slow:
+        print(
+            f"- idx={r.get('idx')} | {r.get('elapsed_ms_client')} ms | {r.get('question')}"
+        )
+
+    # top LLM
+    llm = [r for r in rows if r.get("narrator_used") is True]
+    llm = sorted(
+        llm, key=lambda r: float(r.get("narrator_latency_ms") or 0.0), reverse=True
+    )[:5]
+    print("\nTop LLM (narrator_latency_ms):")
+    if llm:
+        for r in llm:
+            print(
+                f"- idx={r.get('idx')} | {r.get('narrator_latency_ms')} ms | "
+                f"err={r.get('narrator_error') or '-'} | {r.get('question')}"
+            )
+    else:
+        print("- (nenhuma chamada ao narrator)")
+
+    # “alertas” rápidos
+    timeouts = [
+        r
+        for r in rows
+        if isinstance(r.get("narrator_error"), str) and "Timeout" in r["narrator_error"]
+    ]
+    if timeouts:
+        print("\nALERTA: timeouts de LLM detectados:")
+        for r in timeouts:
+            print(
+                f"- idx={r.get('idx')} | {r.get('narrator_error')} | {r.get('question')}"
+            )
 
 
 def _post_question(
@@ -225,7 +308,9 @@ def _extract_row(
 
     # scoring introspection
     scoring = _safe_get(resp, "meta.planner.explain.scoring")
-    intent_top1, intent_top2, scoring_mode = _best_effort_topk_intents(scoring)
+    intent_top1, intent_top2, scoring_mode = _best_effort_topk_intents(
+        scoring, chosen_intent
+    )
 
     scoring_keys = ""
     if isinstance(scoring, dict):
@@ -480,6 +565,7 @@ def main() -> int:
     print(f"Wrote: {csv_path}")
 
     _print_summary(rows)
+    _print_suite_summary(rows)
     return 0
 
 
