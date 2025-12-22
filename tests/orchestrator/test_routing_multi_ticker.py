@@ -32,7 +32,7 @@ class _DummyBackend:
         return "dummy-trace"
 
 
-def _plan_with_bucket(bucket: str = "A", entity: str = "fiis_cadastro") -> dict:
+def _plan_with_bucket(bucket: str = "", entity: str = "fiis_cadastro") -> dict:
     return {
         "chosen": {
             "intent": "ticker_query",
@@ -48,11 +48,13 @@ def _plan_with_bucket(bucket: str = "A", entity: str = "fiis_cadastro") -> dict:
     }
 
 
-def test_route_question_runs_one_select_per_ticker(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_route_question_runs_one_select_per_ticker_when_multi_supported(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket("A", entity="fiis_cadastro")
+    planner.explain.return_value = _plan_with_bucket(bucket="", entity="fiis_dividendos")
 
     executor = MagicMock()
 
@@ -78,13 +80,15 @@ def test_route_question_runs_one_select_per_ticker(monkeypatch: pytest.MonkeyPat
     ]
 
 
-def test_route_question_keeps_single_select_for_non_bucket_a(
+def test_route_question_uses_first_ticker_when_multi_disabled(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket("A", entity="fiis_precos")
+    planner.explain.return_value = _plan_with_bucket(
+        bucket="", entity="client_fiis_dividends_evolution"
+    )
 
     executor = MagicMock()
     captured_identifiers = {}
@@ -99,9 +103,15 @@ def test_route_question_keeps_single_select_for_non_bucket_a(
 
     orchestrator = routing.Orchestrator(planner=planner, executor=executor)
 
-    response = orchestrator.route_question("compare HGLG11 e MXRF11")
+    response = orchestrator.route_question(
+        "compare HGLG11 e MXRF11",
+        resolved_identifiers={
+            "document_number": "00000000000",
+            "tickers": ["HGLG11", "MXRF11"],
+        },
+    )
 
     assert executor.query.call_count == 1
-    assert captured_identifiers.get("ticker") is None
+    assert captured_identifiers.get("ticker") == "HGLG11"
     assert captured_identifiers.get("tickers") == ["HGLG11", "MXRF11"]
     assert response["results"]["result_key"] == [{"ticker": "HGLG11"}]
