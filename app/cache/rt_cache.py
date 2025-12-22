@@ -15,7 +15,7 @@ from app.observability.instrumentation import counter, histogram
 
 LOGGER = logging.getLogger(__name__)
 
-SENSITIVE_FIELDS = {"document_number", "doc_number", "cpf", "cnpj"}
+DEFAULT_SENSITIVE_FIELDS = {"document_number", "doc_number", "cpf", "cnpj"}
 
 # Fonte oficial (novo) e caminho legado (compat)
 POLICY_PATH = Path("data/policies/cache.yaml")
@@ -192,14 +192,30 @@ def _normalize_list(obj: Iterable[Any]) -> list:
 
 def _normalize_scalar(value: Any) -> Any:
     if isinstance(value, Decimal):
-        return float(value)
+        # Representação determinística: evita float para manter precisão no hash
+        return str(value)
     if isinstance(value, (str, int, float, bool)):
         return value
     return str(value)
 
 
+@lru_cache(maxsize=1)
+def _get_sensitive_fields() -> set:
+    try:
+        data = load_yaml_cached(str(POLICY_PATH))
+        fields = data.get("sensitive_fields") if isinstance(data, dict) else None
+        if isinstance(fields, (list, tuple, set)):
+            normalized = {str(f).strip() for f in fields if str(f).strip()}
+            return {f for f in normalized if f}
+    except Exception:
+        LOGGER.warning(
+            "Falha ao carregar sensitive_fields de %s; usando defaults", POLICY_PATH, exc_info=True
+        )
+    return set(DEFAULT_SENSITIVE_FIELDS)
+
+
 def _mask_sensitive_value(key: str, value: Any) -> Optional[str]:
-    if key in SENSITIVE_FIELDS and value is not None:
+    if key in _get_sensitive_fields() and value is not None:
         return f"sha256:{hashlib.sha256(str(value).encode('utf-8')).hexdigest()}"
     return None
 

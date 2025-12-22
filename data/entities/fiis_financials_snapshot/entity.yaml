@@ -6,6 +6,7 @@ description: Snapshot D-1 de indicadores financeiros por FII (valores, razões, 
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 identifiers:
   - name: ticker

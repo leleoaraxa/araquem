@@ -3,6 +3,11 @@ terms:
   kind: policy
   scope: cache
   version: 1
+sensitive_fields:
+  - document_number
+  - doc_number
+  - cpf
+  - cnpj
 policies:
   client_fiis_positions:
     # Entidades privadas não devem usar cache compartilhado entre clientes.

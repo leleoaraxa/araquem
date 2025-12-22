@@ -6,6 +6,7 @@ description: Processos judiciais associados a FIIs (dados 1×N com risco e andam
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 d_minus: 1
 

@@ -14,20 +14,15 @@ from pydantic import BaseModel
 
 from app.analytics.explain import explain as _explain_analytics
 from app.cache.rt_cache import (
-    build_plan_hash,
     is_cacheable_payload,
     make_plan_cache_key,
 )
 from app.common.http import json_sanitize, make_request_id
 from app.core.context import cache, orchestrator, planner, policies, context_manager
-from app.orchestrator import routing as orchestrator_routing
 from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
 )
-from app.planner.param_inference import infer_params
-
-# from app.planner.param_inference import infer_params
 
 # ainda importamos responder/formatter aqui para retrocompatibilidade
 # (o presenter usa esses módulos internamente)
@@ -310,15 +305,19 @@ def ask(
             extra={"entity": entity, "intent": intent, "request_id": request_id},
         )
 
-    def _fetch():
-        return orchestrator.route_question(
-            payload.question,
-            client_id=payload.client_id,
-            conversation_id=payload.conversation_id,
-            plan=plan,
-            resolved_identifiers=identifiers,
-            agg_params_override=plan_agg_params,
-        )
+    plan_bundle = orchestrator.prepare_plan(
+        payload.question,
+        client_id=payload.client_id,
+        conversation_id=payload.conversation_id,
+        planner_plan=plan,
+        resolved_identifiers=identifiers,
+    )
+    entity = plan_bundle.get("entity") or entity
+    intent = plan_bundle.get("intent") or intent
+    bucket_selected = plan_bundle.get("bucket_selected") or bucket_selected
+    identifiers = plan_bundle.get("identifiers") or identifiers
+    plan_agg_params = plan_bundle.get("agg_params")
+    plan_hash = plan_bundle.get("plan_hash")
 
     policy = policies.get(entity) if policies else None
     strategy = str((policy or {}).get("strategy") or "read_through").lower()
@@ -331,72 +330,18 @@ def ask(
         if ttl_candidate and ttl_candidate > 0:
             ttl_seconds = ttl_candidate
 
-    entity_conf = orchestrator_routing._load_entity_config(entity)
-    requested_metrics = orchestrator_routing.extract_requested_metrics(
-        payload.question, entity_conf
-    )
-    opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
-    supports_multi = bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
-    tickers_list = (
-        identifiers.get("tickers")
-        if isinstance(identifiers, dict) and isinstance(identifiers.get("tickers"), list)
-        else []
-    )
-    if tickers_list:
-        identifiers = {**identifiers, "tickers": tickers_list}
-        if len(tickers_list) == 1:
-            identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
-        else:
-            identifiers["ticker"] = None
+    scope_for_plan = plan_bundle.get("scope") or str((policy or {}).get("scope", ""))
 
-    multi_ticker_enabled = (supports_multi or bucket_selected == "A") and len(tickers_list) > 1
-    if tickers_list and len(tickers_list) > 1 and not multi_ticker_enabled:
-        identifiers["ticker"] = tickers_list[0]
-    multi_ticker_batch_supported = multi_ticker_enabled and entity == "fiis_precos"
-    plan_agg_params = None
-    try:
-        plan_agg_params = infer_params(
-            question=payload.question,
-            intent=intent,
-            entity=entity,
-            entity_yaml_path=f"data/entities/{entity}/entity.yaml",
-            defaults_yaml_path="data/ops/param_inference.yaml",
-            identifiers=identifiers,
+    def _fetch():
+        return orchestrator.route_question(
+            payload.question,
             client_id=payload.client_id,
             conversation_id=payload.conversation_id,
+            plan=plan_bundle.get("planner_plan"),
+            resolved_identifiers=plan_bundle.get("identifiers"),
+            agg_params_override=plan_agg_params,
+            prepared_plan=plan_bundle,
         )
-    except Exception:
-        LOGGER.warning(
-            "Inferência de parâmetros falhou; seguindo sem agregados",
-            extra={"entity": entity, "intent": intent, "request_id": request_id},
-            exc_info=True,
-        )
-        plan_agg_params = None
-    skip_sql = orchestrator._should_skip_sql_for_question(
-        entity=entity,
-        entity_conf=entity_conf,
-        identifiers=identifiers,
-        agg_params=plan_agg_params,
-    )
-
-    plan_flags = {
-        "multi_ticker_enabled": multi_ticker_enabled,
-        "supports_multi_ticker": supports_multi,
-        "multi_ticker_batch_supported": multi_ticker_batch_supported,
-        "compute_mode": "conceptual" if skip_sql else "sql",
-    }
-
-    scope_for_plan = str((policy or {}).get("scope", ""))
-    plan_hash, _plan_fingerprint = build_plan_hash(
-        entity=entity or "",
-        intent=intent or "",
-        bucket=bucket_selected,
-        scope=scope_for_plan,
-        identifiers=identifiers,
-        agg_params=plan_agg_params,
-        flags=plan_flags,
-        requested_metrics=requested_metrics,
-    )
     # --------------------------------------------------------------------------
     # CACHE FLOW (cache-first → fetch → write)
     # --------------------------------------------------------------------------

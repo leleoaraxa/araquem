@@ -6,6 +6,7 @@ description: Imóveis e propriedades de FIIs (dados operacionais 1×N)
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 d_minus: 1
 
