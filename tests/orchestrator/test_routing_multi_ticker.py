@@ -48,36 +48,43 @@ def _plan_with_bucket(bucket: str = "", entity: str = "fiis_cadastro") -> dict:
     }
 
 
-def test_route_question_runs_one_select_per_ticker_when_multi_supported(
+def test_route_question_runs_single_select_when_multi_supported_batch(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket(bucket="", entity="fiis_dividendos")
+    planner.explain.return_value = _plan_with_bucket(bucket="", entity="fiis_precos")
 
     executor = MagicMock()
+    captured_identifiers = {}
 
     def fake_build_select_for_entity(entity, identifiers, agg_params):
-        ticker = identifiers.get("ticker")
-        return f"sql_{ticker}", {"ticker": ticker}, "result_key", ["ticker", "value"]
+        captured_identifiers.update(
+            {"ticker": identifiers.get("ticker"), "tickers": identifiers.get("tickers")}
+        )
+        return (
+            "sql",
+            {
+                "tickers": identifiers.get("tickers"),
+                "ticker": identifiers.get("ticker"),
+            },
+            "result_key",
+            ["ticker", "value"],
+        )
 
     monkeypatch.setattr(routing, "build_select_for_entity", fake_build_select_for_entity)
 
-    def _query(sql, params):
-        return [{"ticker": params["ticker"], "value": params["ticker"]}]
-
-    executor.query.side_effect = _query
+    executor.query.return_value = [{"ticker": "HGLG11", "value": "HGLG11"}]
 
     orchestrator = routing.Orchestrator(planner=planner, executor=executor)
 
     response = orchestrator.route_question("compare HGLG11 e MXRF11")
 
-    assert executor.query.call_count == 2
-    assert response["results"]["result_key"] == [
-        {"ticker": "HGLG11", "value": "HGLG11"},
-        {"ticker": "MXRF11", "value": "MXRF11"},
-    ]
+    assert executor.query.call_count == 1
+    assert captured_identifiers.get("ticker") is None
+    assert captured_identifiers.get("tickers") == ["HGLG11", "MXRF11"]
+    assert response["results"]["result_key"] == [{"ticker": "HGLG11", "value": "HGLG11"}]
 
 
 def test_route_question_uses_first_ticker_when_multi_disabled(
@@ -95,7 +102,15 @@ def test_route_question_uses_first_ticker_when_multi_disabled(
 
     def fake_build_select_for_entity(entity, identifiers, agg_params):
         captured_identifiers.update(identifiers)
-        return "sql", {"ticker": identifiers.get("ticker")}, "result_key", ["ticker"]
+        return (
+            "sql",
+            {
+                "ticker": identifiers.get("ticker"),
+                "tickers": identifiers.get("tickers"),
+            },
+            "result_key",
+            ["ticker"],
+        )
 
     monkeypatch.setattr(routing, "build_select_for_entity", fake_build_select_for_entity)
 
