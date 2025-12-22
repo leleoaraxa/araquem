@@ -6,10 +6,6 @@ description: >
   Visão privada e composta da carteira do cliente, cruzando posição, cadastro do FII,
   métricas financeiras, risco e rankings por ativo.
 
-options:
-  supports_multi_ticker: true
-  multi_ticker_mode: loop
-
 identifiers:
 - name: document_number
   description: Documento do cliente (CPF/CNPJ) – recebido do contexto seguro.
