@@ -1,8 +1,9 @@
 # app/cache/rt_cache.py
 import logging
 import os, json, hashlib, time, datetime as dt
+from decimal import Decimal
 from functools import lru_cache
-from typing import Any, Dict, Iterable, Optional
+from typing import Any, Dict, Iterable, Optional, Tuple
 from pathlib import Path
 
 import redis
@@ -13,6 +14,8 @@ from app.utils.filecache import load_yaml_cached
 from app.observability.instrumentation import counter, histogram
 
 LOGGER = logging.getLogger(__name__)
+
+SENSITIVE_FIELDS = {"document_number", "doc_number", "cpf", "cnpj"}
 
 # Fonte oficial (novo) e caminho legado (compat)
 POLICY_PATH = Path("data/policies/cache.yaml")
@@ -155,6 +158,136 @@ def _stable_hash(obj: Any) -> str:
     return hashlib.sha1(s.encode("utf-8")).hexdigest()  # curto e suficiente
 
 
+def _normalize_mapping(obj: Dict[str, Any]) -> Dict[str, Any]:
+    normalized: Dict[str, Any] = {}
+    for key, value in sorted(obj.items(), key=lambda kv: kv[0]):
+        if value is None:
+            continue
+        masked = _mask_sensitive_value(key, value)
+        if masked is not None:
+            normalized[key] = masked
+            continue
+        if isinstance(value, dict):
+            normalized[key] = _normalize_mapping(value)
+        elif isinstance(value, list):
+            normalized[key] = _normalize_list(value)
+        else:
+            normalized[key] = _normalize_scalar(value)
+    return normalized
+
+
+def _normalize_list(obj: Iterable[Any]) -> list:
+    normalized_list = []
+    for item in obj:
+        if item is None:
+            continue
+        if isinstance(item, dict):
+            normalized_list.append(_normalize_mapping(item))
+        elif isinstance(item, list):
+            normalized_list.append(_normalize_list(item))
+        else:
+            normalized_list.append(_normalize_scalar(item))
+    return normalized_list
+
+
+def _normalize_scalar(value: Any) -> Any:
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, (str, int, float, bool)):
+        return value
+    return str(value)
+
+
+def _mask_sensitive_value(key: str, value: Any) -> Optional[str]:
+    if key in SENSITIVE_FIELDS and value is not None:
+        return f"sha256:{hashlib.sha256(str(value).encode('utf-8')).hexdigest()}"
+    return None
+
+
+def _normalize_identifiers_for_plan(identifiers: Dict[str, Any]) -> Dict[str, Any]:
+    if not isinstance(identifiers, dict):
+        return {}
+
+    normalized: Dict[str, Any] = {}
+    ticker = identifiers.get("ticker")
+    if isinstance(ticker, str) and ticker:
+        normalized["ticker"] = ticker
+
+    tickers = identifiers.get("tickers")
+    if isinstance(tickers, list):
+        tickers_norm = sorted({t for t in tickers if isinstance(t, str) and t})
+        if tickers_norm:
+            normalized["tickers"] = tickers_norm
+
+    for key, value in identifiers.items():
+        if key in {"ticker", "tickers"}:
+            continue
+        if value is None:
+            continue
+        masked = _mask_sensitive_value(key, value)
+        if masked is not None:
+            normalized[key] = masked
+            continue
+        if isinstance(value, dict):
+            normalized[key] = _normalize_mapping(value)
+        elif isinstance(value, list):
+            normalized[key] = _normalize_list(value)
+        else:
+            normalized[key] = _normalize_scalar(value)
+
+    return normalized
+
+
+def build_plan_hash(
+    *,
+    entity: str,
+    intent: str,
+    bucket: str,
+    scope: Optional[str],
+    identifiers: Dict[str, Any],
+    agg_params: Optional[Dict[str, Any]],
+    flags: Optional[Dict[str, Any]] = None,
+    requested_metrics: Optional[Iterable[Any]] = None,
+) -> Tuple[str, Dict[str, Any]]:
+    """
+    Gera hash determinístico do plano final (após param_inference + contexto).
+    Retorna (plan_hash, fingerprint_dict).
+    """
+
+    identifiers_norm = _normalize_identifiers_for_plan(identifiers or {})
+    agg_norm: Dict[str, Any] = {}
+    if isinstance(agg_params, dict):
+        agg_norm = _normalize_mapping(agg_params)
+
+    flags_norm: Dict[str, Any] = {}
+    if isinstance(flags, dict):
+        flags_norm = _normalize_mapping(flags)
+
+    metrics_norm: list = []
+    if requested_metrics:
+        metrics_norm = sorted(
+            {m for m in requested_metrics if isinstance(m, (str, int, float))}
+        )
+
+    fingerprint: Dict[str, Any] = {
+        "entity": str(entity or ""),
+        "intent": str(intent or ""),
+        "bucket": str(bucket or ""),
+        "scope": str(scope or ""),
+        "identifiers": identifiers_norm,
+        "agg_params": agg_norm,
+        "flags": flags_norm,
+    }
+    if metrics_norm:
+        fingerprint["requested_metrics"] = metrics_norm
+
+    canonical = json.dumps(
+        fingerprint, sort_keys=True, ensure_ascii=False, separators=(",", ":")
+    )
+    digest = hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+    return digest, fingerprint
+
+
 def _iter_config_files() -> Iterable[Path]:
     for base in CONFIG_VERSION_PATHS:
         if not base.exists():
@@ -218,6 +351,13 @@ def make_cache_key(
 ) -> str:
     cfg_version = get_config_version()
     return f"araquem:{build_id}:{cfg_version}:{scope}:{entity}:{_stable_hash(identifiers or {})}"
+
+
+def make_plan_cache_key(
+    build_id: str, scope: str, entity: str, plan_hash: str
+) -> str:
+    cfg_version = get_config_version()
+    return f"araquem:{build_id}:{cfg_version}:{scope}:{entity}:plan:{plan_hash}"
 
 
 def _mk_hit_guard(key: str) -> str:

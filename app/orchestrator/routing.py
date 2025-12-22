@@ -377,14 +377,17 @@ class Orchestrator:
         *,
         client_id: Optional[str] = None,
         conversation_id: Optional[str] = None,
+        plan: Optional[Dict[str, Any]] = None,
+        resolved_identifiers: Optional[Dict[str, Any]] = None,
+        agg_params_override: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         t0 = time.perf_counter()
-        plan = self._planner.explain(question)
-        chosen = plan.get("chosen") or {}
+        plan_resolved = plan if isinstance(plan, dict) else self._planner.explain(question)
+        chosen = plan_resolved.get("chosen") or {}
         intent = chosen.get("intent")
         entity = chosen.get("entity")
         score = chosen.get("score")
-        exp = plan.get("explain") or {}
+        exp = plan_resolved.get("explain") or {}
 
         # top2 gap do planner (M7.4: usa gap consolidado do planner)
         scoring_block = exp.get("scoring") or {}
@@ -478,7 +481,7 @@ class Orchestrator:
 
         if not entity:
             meta_payload = {
-                "planner": plan,
+                "planner": plan_resolved,
                 "result_key": None,
                 "planner_intent": intent,
                 "planner_entity": entity,
@@ -499,7 +502,7 @@ class Orchestrator:
 
         if gate["blocked"]:
             meta_payload = {
-                "planner": plan,
+                "planner": plan_resolved,
                 "result_key": None,
                 "planner_intent": intent,
                 "planner_entity": entity,
@@ -522,7 +525,11 @@ class Orchestrator:
                 "meta": meta_payload,
             }
 
-        identifiers = self.extract_identifiers(question)
+        identifiers = (
+            dict(resolved_identifiers)
+            if isinstance(resolved_identifiers, dict)
+            else self.extract_identifiers(question)
+        )
         provided_tickers = identifiers.get("tickers")
         tickers_list = (
             provided_tickers
@@ -542,26 +549,40 @@ class Orchestrator:
             bucket_info = {}
         bucket_selected = str(bucket_info.get("selected") or "")
 
+        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
+        supports_multi = (
+            bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
+        )
+        multi_ticker_enabled = (
+            (supports_multi or bucket_selected == "A") and len(tickers_list) > 1
+        )
+        if tickers_list and len(tickers_list) > 1 and not multi_ticker_enabled:
+            identifiers["ticker"] = tickers_list[0]
+        multi_ticker_batch_supported = multi_ticker_enabled and entity == "fiis_precos"
+
         # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
         # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
-        try:
-            agg_params = infer_params(
-                question=question,
-                intent=intent,
-                entity=entity,
-                entity_yaml_path=f"data/entities/{entity}/entity.yaml",
-                defaults_yaml_path="data/ops/param_inference.yaml",
-                identifiers=identifiers,
-                client_id=client_id,
-                conversation_id=conversation_id,
-            )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
-        except Exception:
-            LOGGER.warning(
-                "Inferência de parâmetros falhou; usando SELECT básico",
-                exc_info=True,
-                extra={"entity": entity, "intent": intent},
-            )
-            agg_params = None  # fallback seguro: SELECT básico (sem agregação)
+        if agg_params_override is not None:
+            agg_params = dict(agg_params_override)
+        else:
+            try:
+                agg_params = infer_params(
+                    question=question,
+                    intent=intent,
+                    entity=entity,
+                    entity_yaml_path=f"data/entities/{entity}/entity.yaml",
+                    defaults_yaml_path="data/ops/param_inference.yaml",
+                    identifiers=identifiers,
+                    client_id=client_id,
+                    conversation_id=conversation_id,
+                )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
+            except Exception:
+                LOGGER.warning(
+                    "Inferência de parâmetros falhou; usando SELECT básico",
+                    exc_info=True,
+                    extra={"entity": entity, "intent": intent},
+                )
+                agg_params = None  # fallback seguro: SELECT básico (sem agregação)
 
         # Decisão compute-on-read vs conceitual puro (dirigido por YAML)
         skip_sql = self._should_skip_sql_for_question(
@@ -570,13 +591,6 @@ class Orchestrator:
             identifiers=identifiers,
             agg_params=agg_params,
         )
-
-        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
-        supports_multi = (
-            bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
-        )
-        multi_ticker_enabled = supports_multi and len(tickers_list) > 1
-        multi_ticker_batch_supported = multi_ticker_enabled and entity == "fiis_precos"
 
         cache_ctx = None
         if not multi_ticker_enabled:
@@ -781,7 +795,7 @@ class Orchestrator:
         results = {result_key: final_rows}
 
         meta: Dict[str, Any] = {
-            "planner": plan,
+            "planner": plan_resolved,
             "explain": exp if explain else None,
             "explain_analytics": explain_analytics_payload if explain else None,
             "result_key": result_key,
