@@ -7,6 +7,7 @@ description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificaç�
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 identifiers:
 - name: ticker

@@ -6,6 +6,7 @@ description: Histórico mensal de dividendos, dividend yield (DY) e cadastro do 
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 identifiers:
 - name: ticker

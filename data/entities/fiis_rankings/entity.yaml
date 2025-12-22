@@ -8,6 +8,7 @@ description: Rankings de FIIs (top/maiores/melhores/menores) por métricas como 
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 identifiers:
 - name: ticker

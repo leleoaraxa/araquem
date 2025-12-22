@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import uuid4
 
-from app.cache.rt_cache import make_cache_key
+from app.cache.rt_cache import build_plan_hash, make_cache_key
 from app.planner import planner as planner_module
 from app.planner.planner import Planner
 from app.planner.ticker_index import extract_tickers_from_text
@@ -313,6 +313,141 @@ class Orchestrator:
         )
         return {"key": key, "ttl": ttl, "entity": entity, "context": context}
 
+    def prepare_plan(
+        self,
+        question: str,
+        *,
+        client_id: Optional[str],
+        conversation_id: Optional[str],
+        planner_plan: Optional[Dict[str, Any]] = None,
+        resolved_identifiers: Optional[Dict[str, Any]] = None,
+        agg_params_override: Optional[Dict[str, Any]] = None,
+    ) -> Dict[str, Any]:
+        plan_resolved = (
+            planner_plan if isinstance(planner_plan, dict) else self._planner.explain(question)
+        )
+        chosen = plan_resolved.get("chosen") or {}
+        intent = chosen.get("intent")
+        entity = chosen.get("entity")
+        score = chosen.get("score")
+        exp = plan_resolved.get("explain") or {}
+
+        exp_safe = exp if isinstance(exp, dict) else {}
+        bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
+        if not isinstance(bucket_info, dict):
+            bucket_info = {}
+        bucket_selected = str(bucket_info.get("selected") or "")
+
+        entity_conf = _load_entity_config(str(entity) if entity else None)
+        requested_metrics = extract_requested_metrics(question, entity_conf)
+
+        identifiers = (
+            dict(resolved_identifiers)
+            if isinstance(resolved_identifiers, dict)
+            else self.extract_identifiers(question)
+        )
+        provided_tickers = identifiers.get("tickers")
+        tickers_list = (
+            provided_tickers
+            if isinstance(provided_tickers, list) and provided_tickers
+            else extract_tickers_from_text(question)
+        )
+        if tickers_list:
+            identifiers = {**identifiers, "tickers": tickers_list}
+            if len(tickers_list) == 1:
+                identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
+            else:
+                identifiers["ticker"] = None
+
+        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
+        supports_multi = bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
+        raw_multi_mode = (
+            str(opts.get("multi_ticker_mode")).strip().lower()
+            if isinstance(opts, dict) and "multi_ticker_mode" in opts
+            else None
+        )
+        multi_ticker_mode = None
+        if supports_multi:
+            multi_ticker_mode = raw_multi_mode or "loop"
+        else:
+            multi_ticker_mode = "none"
+
+        multi_ticker_enabled = supports_multi and len(tickers_list) > 1
+        if tickers_list and len(tickers_list) > 1 and not multi_ticker_enabled:
+            identifiers["ticker"] = tickers_list[0]
+
+        agg_params = None
+        if entity:
+            if agg_params_override is not None:
+                agg_params = dict(agg_params_override)
+            else:
+                try:
+                    agg_params = infer_params(
+                        question=question,
+                        intent=intent,
+                        entity=entity,
+                        entity_yaml_path=f"data/entities/{entity}/entity.yaml",
+                        defaults_yaml_path="data/ops/param_inference.yaml",
+                        identifiers=identifiers,
+                        client_id=client_id,
+                        conversation_id=conversation_id,
+                    )
+                except Exception:
+                    LOGGER.warning(
+                        "Inferência de parâmetros falhou; usando SELECT básico",
+                        exc_info=True,
+                        extra={"entity": entity, "intent": intent},
+                    )
+                    agg_params = None
+
+        skip_sql = self._should_skip_sql_for_question(
+            entity=entity,
+            entity_conf=entity_conf,
+            identifiers=identifiers,
+            agg_params=agg_params,
+        )
+
+        compute_mode = "conceptual" if skip_sql else "sql"
+        flags = {
+            "multi_ticker_enabled": multi_ticker_enabled,
+            "multi_ticker_mode": multi_ticker_mode,
+            "compute_mode": compute_mode,
+        }
+
+        scope = ""
+        policy = self._cache_policies.get(entity) if self._cache_policies else None
+        if policy and isinstance(policy, dict):
+            scope = str(policy.get("scope", ""))
+
+        plan_hash, plan_fingerprint = build_plan_hash(
+            entity=str(entity or ""),
+            intent=str(intent or ""),
+            bucket=bucket_selected,
+            scope=scope,
+            identifiers=identifiers,
+            agg_params=agg_params,
+            flags=flags,
+            requested_metrics=requested_metrics,
+        )
+
+        return {
+            "planner_plan": plan_resolved,
+            "entity": entity,
+            "intent": intent,
+            "score": score,
+            "bucket_selected": bucket_selected,
+            "scope": scope,
+            "identifiers": identifiers,
+            "agg_params": agg_params,
+            "skip_sql": skip_sql,
+            "requested_metrics": requested_metrics,
+            "multi_ticker_enabled": multi_ticker_enabled,
+            "multi_ticker_mode": multi_ticker_mode,
+            "compute_mode": compute_mode,
+            "plan_hash": plan_hash,
+            "plan_fingerprint": plan_fingerprint,
+        }
+
     def _should_skip_sql_for_question(
         self,
         entity: Optional[str],
@@ -380,9 +515,25 @@ class Orchestrator:
         plan: Optional[Dict[str, Any]] = None,
         resolved_identifiers: Optional[Dict[str, Any]] = None,
         agg_params_override: Optional[Dict[str, Any]] = None,
+        prepared_plan: Optional[Dict[str, Any]] = None,
     ) -> Dict[str, Any]:
         t0 = time.perf_counter()
-        plan_resolved = plan if isinstance(plan, dict) else self._planner.explain(question)
+        prepared = (
+            prepared_plan
+            if isinstance(prepared_plan, dict)
+            else self.prepare_plan(
+                question,
+                client_id=client_id,
+                conversation_id=conversation_id,
+                planner_plan=plan,
+                resolved_identifiers=resolved_identifiers,
+                agg_params_override=agg_params_override,
+            )
+        )
+
+        plan_resolved = prepared.get("planner_plan") or (
+            plan if isinstance(plan, dict) else self._planner.explain(question)
+        )
         chosen = plan_resolved.get("chosen") or {}
         intent = chosen.get("intent")
         entity = chosen.get("entity")
@@ -404,7 +555,9 @@ class Orchestrator:
         )
 
         entity_conf = _load_entity_config(str(entity) if entity else None)
-        requested_metrics = extract_requested_metrics(question, entity_conf)
+        requested_metrics = prepared.get("requested_metrics") or extract_requested_metrics(
+            question, entity_conf
+        )
         focus_metric = None
         if isinstance(requested_metrics, (list, tuple)) and len(requested_metrics) == 1:
             candidate = requested_metrics[0]
@@ -525,72 +678,33 @@ class Orchestrator:
                 "meta": meta_payload,
             }
 
-        identifiers = (
-            dict(resolved_identifiers)
-            if isinstance(resolved_identifiers, dict)
-            else self.extract_identifiers(question)
-        )
-        provided_tickers = identifiers.get("tickers")
+        identifiers = prepared.get("identifiers") or {}
         tickers_list = (
-            provided_tickers
-            if isinstance(provided_tickers, list) and provided_tickers
-            else extract_tickers_from_text(question)
+            identifiers.get("tickers")
+            if isinstance(identifiers.get("tickers"), list)
+            else []
         )
-        if tickers_list:
-            identifiers = {**identifiers, "tickers": tickers_list}
-            if len(tickers_list) == 1:
-                identifiers["ticker"] = identifiers.get("ticker") or tickers_list[0]
-            else:
-                # Garante contrato: multi ticker => ticker (singular) deve ser None
-                identifiers["ticker"] = None
-        exp_safe = exp if isinstance(exp, dict) else {}
-        bucket_info = exp_safe.get("bucket") if isinstance(exp_safe, dict) else {}
-        if not isinstance(bucket_info, dict):
-            bucket_info = {}
-        bucket_selected = str(bucket_info.get("selected") or "")
+        bucket_selected = prepared.get("bucket_selected") or ""
 
-        opts = entity_conf.get("options") if isinstance(entity_conf, dict) else None
-        supports_multi = (
-            bool(opts.get("supports_multi_ticker")) if isinstance(opts, dict) else False
+        multi_ticker_enabled = bool(prepared.get("multi_ticker_enabled"))
+        multi_ticker_mode = prepared.get("multi_ticker_mode") or (
+            "loop"
+            if bool(
+                (entity_conf.get("options") or {}).get("supports_multi_ticker")
+                if isinstance(entity_conf, dict)
+                else False
+            )
+            else "none"
         )
-        multi_ticker_enabled = (
-            (supports_multi or bucket_selected == "A") and len(tickers_list) > 1
-        )
-        if tickers_list and len(tickers_list) > 1 and not multi_ticker_enabled:
-            identifiers["ticker"] = tickers_list[0]
-        multi_ticker_batch_supported = multi_ticker_enabled and entity == "fiis_precos"
+        multi_ticker_batch_supported = multi_ticker_enabled and multi_ticker_mode == "batch"
 
         # --- M7.2: inferência de parâmetros (compute-on-read) ---------------
         # Lê regras de data/ops/param_inference.yaml + entity.yaml (aggregations.*)
-        if agg_params_override is not None:
-            agg_params = dict(agg_params_override)
-        else:
-            try:
-                agg_params = infer_params(
-                    question=question,
-                    intent=intent,
-                    entity=entity,
-                    entity_yaml_path=f"data/entities/{entity}/entity.yaml",
-                    defaults_yaml_path="data/ops/param_inference.yaml",
-                    identifiers=identifiers,
-                    client_id=client_id,
-                    conversation_id=conversation_id,
-                )  # dict: {"agg": "...", "window": "...", "limit": int, "order": "..."}
-            except Exception:
-                LOGGER.warning(
-                    "Inferência de parâmetros falhou; usando SELECT básico",
-                    exc_info=True,
-                    extra={"entity": entity, "intent": intent},
-                )
-                agg_params = None  # fallback seguro: SELECT básico (sem agregação)
+        agg_params = prepared.get("agg_params")
 
         # Decisão compute-on-read vs conceitual puro (dirigido por YAML)
-        skip_sql = self._should_skip_sql_for_question(
-            entity=entity,
-            entity_conf=entity_conf,
-            identifiers=identifiers,
-            agg_params=agg_params,
-        )
+        skip_sql = bool(prepared.get("skip_sql"))
+        compute_mode = prepared.get("compute_mode") or ("conceptual" if skip_sql else "sql")
 
         cache_ctx = None
         if not multi_ticker_enabled:
@@ -813,7 +927,7 @@ class Orchestrator:
             "aggregates": (agg_params or {}),
             "requested_metrics": requested_metrics,
             "compute": {
-                "mode": ("conceptual" if skip_sql else "sql"),
+                "mode": compute_mode,
                 "metrics_cache_hit": bool(metrics_cache_hit),
                 "cache_key": metrics_cache_key,
                 "cache_ttl": metrics_cache_ttl,

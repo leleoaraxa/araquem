@@ -6,6 +6,7 @@ description: Notícias e matérias relevantes sobre FIIs (fonte externa consolid
 
 options:
   supports_multi_ticker: true
+  multi_ticker_mode: loop
 
 d_minus: 1
 

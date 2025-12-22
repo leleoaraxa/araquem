@@ -32,11 +32,11 @@ class _DummyBackend:
         return "dummy-trace"
 
 
-def _plan_with_bucket(bucket: str = "A") -> dict:
+def _plan_with_bucket(bucket: str = "A", entity: str = "fiis_cadastro") -> dict:
     return {
         "chosen": {
             "intent": "ticker_query",
-            "entity": "fii_metrics",
+            "entity": entity,
             "score": 1.0,
             "accepted": True,
             "context_allowed": True,
@@ -52,7 +52,7 @@ def test_route_question_runs_one_select_per_ticker(monkeypatch: pytest.MonkeyPat
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket("A")
+    planner.explain.return_value = _plan_with_bucket("A", entity="fiis_cadastro")
 
     executor = MagicMock()
 
@@ -84,7 +84,7 @@ def test_route_question_keeps_single_select_for_non_bucket_a(
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket("B")
+    planner.explain.return_value = _plan_with_bucket("A", entity="fiis_precos")
 
     executor = MagicMock()
     captured_identifiers = {}
@@ -102,5 +102,6 @@ def test_route_question_keeps_single_select_for_non_bucket_a(
     response = orchestrator.route_question("compare HGLG11 e MXRF11")
 
     assert executor.query.call_count == 1
-    assert captured_identifiers.get("ticker") == "HGLG11"
+    assert captured_identifiers.get("ticker") is None
+    assert captured_identifiers.get("tickers") == ["HGLG11", "MXRF11"]
     assert response["results"]["result_key"] == [{"ticker": "HGLG11"}]
