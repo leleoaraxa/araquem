@@ -10,13 +10,18 @@ import os, json, sys
 from pathlib import Path
 import httpx
 
+from app.api.ops.quality_contracts import (
+    RoutingPayloadValidationError,
+    validate_routing_payload_contract,
+)
+
 API = os.getenv("API_URL", "http://localhost:8000")
 TOKEN = os.getenv("QUALITY_OPS_TOKEN", "araquem-secret-bust-2025")
 MASTER = Path("data/ops/quality/routing_samples.json")
 
 
 def run_subset(samples):
-    payload = {"type": "routing", "samples": samples}
+    payload = {"type": "routing", "payloads": samples}
     r = httpx.post(
         f"{API}/ops/quality/push",
         headers={"x-ops-token": TOKEN, "Content-Type": "application/json"},
@@ -51,8 +56,10 @@ def bisect(indices, all_samples, out):
 
 def main():
     master = json.loads(MASTER.read_text(encoding="utf-8"))
-    assert master.get("type") == "routing"
-    samples = master["samples"]
+    try:
+        samples, _, _ = validate_routing_payload_contract(master)
+    except RoutingPayloadValidationError as exc:
+        raise RuntimeError(f"Payload inválido em {MASTER}: {exc}") from exc
     idxs = list(range(len(samples)))  # 0-based
     misses = []
     bisect(idxs, samples, misses)

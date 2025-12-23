@@ -3,7 +3,7 @@
 """
 Ferramenta de análise de colisão de intents/entidades do planner (Araquem).
 
-- Lê samples de roteamento (ex.: data/ops/quality/routing_samples.json).
+- Lê payloads de roteamento (ex.: data/ops/quality/routing_samples.json, Suite v2).
 - Para cada pergunta:
   - chama orchestrator.route_question(question)
   - extrai meta.planner.candidates
@@ -25,6 +25,11 @@ import datetime
 import statistics
 from typing import Any, Dict, List, Optional, Tuple
 
+from app.api.ops.quality_contracts import (
+    RoutingPayloadValidationError,
+    validate_routing_payload_contract,
+)
+
 from app.core.context import orchestrator  # contrato já usado em ops/rag_debug
 
 
@@ -33,17 +38,21 @@ Candidate = Dict[str, Any]
 
 
 def load_samples(path: pathlib.Path) -> List[Sample]:
-    """Carrega samples de um arquivo JSON com chave 'samples'."""
+    """Carrega payloads de um arquivo JSON com chave 'payloads'."""
     with path.open("r", encoding="utf-8") as f:
         data = json.load(f)
 
-    if isinstance(data, dict) and "samples" in data:
-        samples = data["samples"]
+    if isinstance(data, dict):
+        candidate = data
     elif isinstance(data, list):
-        # fallback: arquivo é uma lista direta de samples
-        samples = data
+        candidate = {"payloads": data}
     else:
         raise ValueError(f"Formato inesperado em {path}")
+
+    try:
+        samples, _, _ = validate_routing_payload_contract(candidate)
+    except RoutingPayloadValidationError as exc:
+        raise ValueError(f"Payload inválido em {path}: {exc}") from exc
 
     out: List[Sample] = []
     for s in samples:
@@ -301,13 +310,13 @@ def summarize_results(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Analisa colisão de intents/entidades do planner usando samples de roteamento."
+        description="Analisa colisão de intents/entidades do planner usando payloads de roteamento."
     )
     parser.add_argument(
         "--samples-file",
         type=str,
         default="data/ops/quality/routing_samples.json",
-        help="Caminho para o arquivo de samples (JSON). Default: data/ops/quality/routing_samples.json",
+        help="Caminho para o arquivo de payloads (JSON). Default: data/ops/quality/routing_samples.json",
     )
     parser.add_argument(
         "--top2-gap-threshold",

@@ -19,6 +19,11 @@ try:
 except ModuleNotFoundError:  # pragma: no cover - runtime dependency check
     yaml = None
 
+from app.api.ops.quality_contracts import (
+    RoutingPayloadValidationError,
+    validate_routing_payload_contract,
+)
+
 API = os.getenv("API_URL", "http://localhost:8000")
 TOKEN = os.getenv("QUALITY_OPS_TOKEN", "araquem-secret-bust-2025")
 
@@ -37,6 +42,15 @@ def load_payload(path: str):
 
 
 def _ensure_suite_v2(path: Path, payload: Dict[str, Any]) -> None:
+    ptype = str(payload.get("type") or "routing").strip().lower()
+
+    if ptype == "routing":
+        try:
+            validate_routing_payload_contract(payload)
+        except RoutingPayloadValidationError as exc:
+            raise RuntimeError(f"{path}: {exc}") from exc
+        return
+
     is_suite_file = path.name.endswith("_suite.json") or "suite" in payload or "payloads" in payload
     if not is_suite_file:
         return
