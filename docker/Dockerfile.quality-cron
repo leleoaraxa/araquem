@@ -37,6 +37,9 @@ COPY --chmod=0755 docker/quality-cron.sh /usr/local/bin/quality-cron.sh
 
 # 5) Defaults úteis (sobrescreva no docker-compose se quiser)
 ENV QUALITY_API_URL=http://api:8000 \
-    QUALITY_OPS_TOKEN=araquem-secret-bust-2025
+    QUALITY_OPS_TOKEN=araquem-secret-bust-2025 \
+    QUALITY_PUSH_TIMEOUT_S=30 \
+    QUALITY_PUSH_TIMEOUT_ROUTING_S=60 \
+    QUALITY_ROUTING_BATCH_SIZE=100
 
 ENTRYPOINT ["/usr/local/bin/quality-cron.sh"]

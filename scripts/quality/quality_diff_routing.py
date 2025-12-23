@@ -97,7 +97,7 @@ def ask(q: str):
 def main():
     data = json.loads(SRC.read_text(encoding="utf-8"))
     try:
-        samples, _, _ = validate_routing_payload_contract(data)
+        samples, _, _, _ = validate_routing_payload_contract(data)
     except RoutingPayloadValidationError as exc:
         raise RuntimeError(f"payload de routing inválido em {SRC}: {exc}") from exc
     misses = []

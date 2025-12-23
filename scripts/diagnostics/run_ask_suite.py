@@ -8,12 +8,19 @@ import csv
 import glob
 import json
 import os
+import sys
 from pathlib import Path
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
 import requests
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from scripts.diagnostics.suite_contracts import SuiteValidationError, load_suite_file
 
 
 DEFAULT_QUESTIONS: List[str] = [
@@ -91,75 +98,6 @@ def _sorted_top2_from_score_map(
     top1 = items[0][0]
     top2 = items[1][0] if len(items) > 1 else None
     return top1, top2
-
-
-def _expected_suite_from_filename(path: str) -> str:
-    stem = Path(path).stem
-    if stem.endswith("_suite"):
-        return stem[: -len("_suite")]
-    return stem
-
-
-def _load_suite_file(path: str) -> Dict[str, Any]:
-    with open(path, "r", encoding="utf-8") as f:
-        data = json.load(f)
-    if not isinstance(data, dict):
-        raise SystemExit(f"Formato inválido em {path}: esperado objeto com {{suite, payloads}}")
-    if "samples" in data:
-        raise SystemExit(
-            f"Formato inválido em {path}: esperado contrato Suite v2 com 'payloads' (remova 'samples')"
-        )
-
-    suite_name = data.get("suite")
-    if not isinstance(suite_name, str) or not suite_name.strip():
-        raise SystemExit(f"Formato inválido em {path}: campo obrigatório 'suite' ausente ou vazio")
-    suite_name = suite_name.strip()
-
-    expected_suite = _expected_suite_from_filename(path)
-    if suite_name != expected_suite:
-        raise SystemExit(
-            f"Formato inválido: suite='{suite_name}' não bate com filename (esperado '{expected_suite}') em {path}"
-        )
-
-    description = data.get("description") or ""
-    if not isinstance(description, str):
-        raise SystemExit(f"Formato inválido: description deve ser string em {path}")
-
-    if "payloads" not in data:
-        raise SystemExit(f"Formato inválido em {path}: campo obrigatório 'payloads' ausente (Suite v2)")
-    payloads = data.get("payloads")
-    if not isinstance(payloads, list):
-        raise SystemExit(f"Suite inválida em {path}: 'payloads' deve ser uma lista")
-
-    normalized_payloads: List[Dict[str, Any]] = []
-    for idx, payload in enumerate(payloads, start=1):
-        if not isinstance(payload, dict):
-            raise SystemExit(f"Payload #{idx} inválido em {path}: esperado objeto com question/expected_*")
-        q = payload.get("question")
-        if not isinstance(q, str) or not q.strip():
-            raise SystemExit(f"Payload #{idx} inválido em {path}: campo 'question' vazio")
-
-        expected_intent = payload.get("expected_intent")
-        if expected_intent is not None and not isinstance(expected_intent, str):
-            raise SystemExit(
-                f"Payload #{idx} inválido (expected_intent deve ser string ou null) em {path}"
-            )
-
-        expected_entity = payload.get("expected_entity")
-        if expected_entity is not None and not isinstance(expected_entity, str):
-            raise SystemExit(
-                f"Payload #{idx} inválido (expected_entity deve ser string ou null) em {path}"
-            )
-
-        normalized_payloads.append(
-            {
-                "question": q,
-                "expected_intent": expected_intent,
-                "expected_entity": expected_entity,
-            }
-        )
-
-    return {"suite": suite_name, "description": description, "payloads": normalized_payloads}
 
 
 def _pick_intent_name(obj: Any) -> Optional[str]:
@@ -607,7 +545,10 @@ def _load_suites(paths: List[str]) -> List[Dict[str, Any]]:
     for path in paths:
         if not os.path.exists(path):
             raise SystemExit(f"Suite não encontrada: {path}")
-        suites.append(_load_suite_file(path))
+        try:
+            suites.append(load_suite_file(path))
+        except SuiteValidationError as exc:
+            raise SystemExit(str(exc)) from exc
     return suites
 
 

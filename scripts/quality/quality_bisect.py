@@ -57,7 +57,7 @@ def bisect(indices, all_samples, out):
 def main():
     master = json.loads(MASTER.read_text(encoding="utf-8"))
     try:
-        samples, _, _ = validate_routing_payload_contract(master)
+        samples, _, _, _ = validate_routing_payload_contract(master)
     except RoutingPayloadValidationError as exc:
         raise RuntimeError(f"Payload inválido em {MASTER}: {exc}") from exc
     idxs = list(range(len(samples)))  # 0-based

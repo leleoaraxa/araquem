@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import sys
+import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 from urllib import error, request
@@ -22,6 +23,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from app.api.ops.quality_contracts import (
+    RoutingBatchMetadata,
     RoutingPayloadValidationError,
     validate_routing_payload_contract,
 )
@@ -29,7 +31,9 @@ from app.api.ops.quality_contracts import (
 BASE_ALLOWED_TYPES: Set[str] = {"routing", "projection"}
 DEFAULT_GLOB = "data/ops/quality/*.json"
 DEFAULT_API_URL = "http://localhost:8000"
-DEFAULT_TIMEOUT = int(os.getenv("QUALITY_HTTP_TIMEOUT", "120"))
+DEFAULT_TIMEOUT = max(1, int(os.getenv("QUALITY_PUSH_TIMEOUT_S", os.getenv("QUALITY_HTTP_TIMEOUT", "30"))))
+ROUTING_TIMEOUT = max(1, int(os.getenv("QUALITY_PUSH_TIMEOUT_ROUTING_S", "60")))
+ROUTING_BATCH_SIZE = max(1, int(os.getenv("QUALITY_ROUTING_BATCH_SIZE", "100")))
 
 
 def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
@@ -65,7 +69,7 @@ def validate_routing_payload(
     data: Dict[str, Any],
 ) -> Tuple[bool, Optional[str], List[Dict[str, Any]]]:
     try:
-        payloads, _, _ = validate_routing_payload_contract(data)
+        payloads, _, _, _ = validate_routing_payload_contract(data)
     except RoutingPayloadValidationError as exc:
         return False, str(exc), []
     return True, None, payloads
@@ -166,6 +170,43 @@ def validate_rag_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
             return False, err_tags
 
     return True, None
+
+
+def _serialize_batch(batch: RoutingBatchMetadata) -> Dict[str, Any]:
+    return {"id": batch.id, "index": batch.index, "total": batch.total}
+
+
+def build_routing_batches(data: Dict[str, Any], batch_size: int) -> List[Dict[str, Any]]:
+    payloads, suite_name, description, incoming_batch = validate_routing_payload_contract(data)
+
+    base: Dict[str, Any] = {
+        "type": "routing",
+        "payloads": payloads,
+        "description": description,
+    }
+    if suite_name is not None:
+        base["suite"] = suite_name
+    if description:
+        base["description"] = description
+
+    if incoming_batch is not None:
+        base["batch"] = _serialize_batch(incoming_batch)
+        return [base]
+
+    effective_batch_size = max(1, int(batch_size))
+    total_batches = max(1, (len(payloads) + effective_batch_size - 1) // effective_batch_size)
+    batch_id = str(uuid.uuid4())
+
+    batches: List[Dict[str, Any]] = []
+    for index in range(total_batches):
+        start = index * effective_batch_size
+        end = start + effective_batch_size
+        chunk = payloads[start:end]
+        batch_payload = dict(base)
+        batch_payload["payloads"] = chunk
+        batch_payload["batch"] = {"id": batch_id, "index": index + 1, "total": total_batches}
+        batches.append(batch_payload)
+    return batches
 
 
 def make_headers() -> Dict[str, str]:
@@ -277,8 +318,14 @@ def main(argv: Iterable[str]) -> int:
     errors_parse = 0
     errors_http = 0
     total = 0
+    abort_cycle = False
 
     for path in files:
+        if abort_cycle:
+            print(f"[skip] {path} → aborted after previous failure")
+            skipped += 1
+            continue
+
         total += 1
         data, load_error = load_json(path)
         if load_error is not None:
@@ -298,27 +345,64 @@ def main(argv: Iterable[str]) -> int:
             continue
 
         label = "payloads" if type_name == "routing" else "samples"
-        print(f"[post] {path} (type={type_name}, {label}={items_len})")
-        if args.dry_run:
+        if type_name == "routing":
+            try:
+                batches = build_routing_batches(data, ROUTING_BATCH_SIZE)
+            except RoutingPayloadValidationError as exc:
+                errors_parse += 1
+                print(f"[error] {path} → invalid routing payload: {exc}")
+                continue
+            for batch_payload in batches:
+                batch_info = batch_payload.get("batch") or {}
+                batch_label = f"{batch_info.get('index', '?')}/{batch_info.get('total', '?')}"
+                batch_count = len(batch_payload.get("payloads") or [])
+                print(
+                    f"[post] {path} (type={type_name}, {label}={batch_count}, batch={batch_label})"
+                )
+                if args.dry_run:
+                    posted += 1
+                    continue
+
+                try:
+                    status, response_body = post_payload(batch_payload, timeout=ROUTING_TIMEOUT)
+                except (error.URLError, TimeoutError) as exc:  # pragma: no cover - network issues are hard to simulate
+                    errors_http += 1
+                    abort_cycle = True
+                    print(f"[error] post {path} batch {batch_label} → network error: {exc}")
+                    break
+
+                if status != 200:
+                    errors_http += 1
+                    abort_cycle = True
+                    truncated_body = response_body.strip()
+                    print(f"[error] post {path} batch {batch_label} → {status}: {truncated_body}")
+                    break
+
+                posted += 1
+        else:
+            print(f"[post] {path} (type={type_name}, {label}={items_len})")
+            if args.dry_run:
+                posted += 1
+                continue
+
+            try:
+                status, response_body = post_payload(data, timeout=DEFAULT_TIMEOUT)
+            except (error.URLError, TimeoutError) as exc:  # pragma: no cover - network issues are hard to simulate
+                errors_http += 1
+                print(f"[error] post {path} → network error: {exc}")
+                continue
+
+            if status != 200:
+                errors_http += 1
+                truncated_body = response_body.strip()
+                print(f"[error] post {path} → {status}: {truncated_body}")
+                continue
+
             posted += 1
-            continue
 
-        try:
-            status, response_body = post_payload(data)
-        except (
-            error.URLError
-        ) as exc:  # pragma: no cover - network issues are hard to simulate
-            errors_http += 1
-            print(f"[error] post {path} → network error: {exc}")
-            continue
-
-        if status != 200:
-            errors_http += 1
-            truncated_body = response_body.strip()
-            print(f"[error] post {path} → {status}: {truncated_body}")
-            continue
-
-        posted += 1
+        if abort_cycle:
+            print("[abort] stopping current cycle due to failed routing batch")
+            break
 
     summary = (
         f"[summary] posted={posted} skipped={skipped} "

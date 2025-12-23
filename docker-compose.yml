@@ -172,6 +172,9 @@ services:
       - QUALITY_TOKEN_HEADER=X-OPS-TOKEN
       - QUALITY_REPORT_WAIT_MAX=90
       - QUALITY_REPORT_WAIT_SLEEP=3
+      - QUALITY_PUSH_TIMEOUT_S=30
+      - QUALITY_PUSH_TIMEOUT_ROUTING_S=60
+      - QUALITY_ROUTING_BATCH_SIZE=100
     working_dir: /workspace
     volumes:
       - ./:/workspace:ro
