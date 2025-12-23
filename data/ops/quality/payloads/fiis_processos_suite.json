@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_processos",
   "description": "Suíte de testes para fiis_processos — existência de processos, quantidade, status, valor e risco de perda",
-  "samples": [
+  "payloads": [
     {
       "question": "O ALMI11 tem processos judiciais em aberto?",
       "expected_intent": "fiis_processos",

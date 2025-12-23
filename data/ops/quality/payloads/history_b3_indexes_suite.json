@@ -1,6 +1,7 @@
 {
+  "suite": "history_b3_indexes",
   "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1).",
-  "samples": [
+  "payloads": [
     {
       "question": "Ibovespa hoje (D-1)",
       "expected_intent": "history_b3_indexes",

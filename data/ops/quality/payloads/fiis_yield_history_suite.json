@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_yield_history",
   "description": "Roteiro de perguntas canônicas para rota fiis_yield_history (histórico de dividend yield mensal por FII). Foco: dy historico, dy mensal, dy 12m/24m, sempre com ticker.",
-  "samples": [
+  "payloads": [
     {
       "question": "Qual o DY historico do HGLG11?",
       "expected_intent": "fiis_yield_history",

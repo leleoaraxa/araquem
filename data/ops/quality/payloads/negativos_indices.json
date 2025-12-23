@@ -1,6 +1,7 @@
 {
+  "suite": "negativos_indices",
   "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_precos",
-  "samples": [
+  "payloads": [
     {
       "question": "Quanto está o IFIX hoje?",
       "expected_intent": "history_b3_indexes",
@@ -41,6 +42,5 @@
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     }
-
   ]
 }

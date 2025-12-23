@@ -8,6 +8,7 @@ import csv
 import glob
 import json
 import os
+from pathlib import Path
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
@@ -92,36 +93,71 @@ def _sorted_top2_from_score_map(
     return top1, top2
 
 
+def _expected_suite_from_filename(path: str) -> str:
+    stem = Path(path).stem
+    if stem.endswith("_suite"):
+        return stem[: -len("_suite")]
+    return stem
+
+
 def _load_suite_file(path: str) -> Dict[str, Any]:
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     if not isinstance(data, dict):
-        raise SystemExit(f"Suite inválida (não é dict): {path}")
+        raise SystemExit(f"Formato inválido: esperado {{suite, payloads}} em {path}")
+    if "samples" in data:
+        raise SystemExit(f"Formato inválido: esperado {{suite, payloads}} (remova 'samples') em {path}")
+
     suite_name = data.get("suite")
     if not isinstance(suite_name, str) or not suite_name.strip():
-        raise SystemExit(f"Suite inválida (campo 'suite' ausente): {path}")
-    payloads = data.get("payloads") or []
+        raise SystemExit(f"Formato inválido: esperado campo 'suite' string em {path}")
+    suite_name = suite_name.strip()
+
+    expected_suite = _expected_suite_from_filename(path)
+    if suite_name != expected_suite:
+        raise SystemExit(
+            f"Formato inválido: suite='{suite_name}' não bate com filename (esperado '{expected_suite}') em {path}"
+        )
+
+    description = data.get("description") or ""
+    if not isinstance(description, str):
+        raise SystemExit(f"Formato inválido: description deve ser string em {path}")
+
+    if "payloads" not in data:
+        raise SystemExit(f"Formato inválido: esperado {{suite, payloads}} em {path}")
+    payloads = data.get("payloads")
     if not isinstance(payloads, list):
         raise SystemExit(f"Suite inválida (payloads não é lista): {path}")
+
+    normalized_payloads: List[Dict[str, Any]] = []
     for idx, payload in enumerate(payloads, start=1):
         if not isinstance(payload, dict):
             raise SystemExit(f"Payload #{idx} inválido (não é dict) em {path}")
         q = payload.get("question")
         if not isinstance(q, str) or not q.strip():
             raise SystemExit(f"Payload #{idx} inválido (question vazio) em {path}")
-        if "expected_intent" in payload and not (
-            isinstance(payload["expected_intent"], str) or payload["expected_intent"] is None
-        ):
+
+        expected_intent = payload.get("expected_intent")
+        if expected_intent is not None and not isinstance(expected_intent, str):
             raise SystemExit(
-                f"Payload #{idx} inválido (expected_intent deve ser string) em {path}"
+                f"Payload #{idx} inválido (expected_intent deve ser string ou null) em {path}"
             )
-        if "expected_entity" in payload and not (
-            isinstance(payload["expected_entity"], str) or payload["expected_entity"] is None
-        ):
+
+        expected_entity = payload.get("expected_entity")
+        if expected_entity is not None and not isinstance(expected_entity, str):
             raise SystemExit(
-                f"Payload #{idx} inválido (expected_entity deve ser string) em {path}"
+                f"Payload #{idx} inválido (expected_entity deve ser string ou null) em {path}"
             )
-    return data
+
+        normalized_payloads.append(
+            {
+                "question": q,
+                "expected_intent": expected_intent,
+                "expected_entity": expected_entity,
+            }
+        )
+
+    return {"suite": suite_name, "description": description, "payloads": normalized_payloads}
 
 
 def _pick_intent_name(obj: Any) -> Optional[str]:

@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_noticias",
   "description": "Suíte de testes para fiis_noticias — notícias, fatos relevantes, manchetes e atualizações recentes associadas a FIIs.",
-  "samples": [
+  "payloads": [
     {
       "question": "Quais são as últimas notícias do HGLG11?",
       "expected_intent": "fiis_noticias",

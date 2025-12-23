@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_financials_revenue_schedule",
   "description": "Suíte de testes para fiis_financials_revenue_schedule — cronograma de receitas futuras por faixa de vencimento e indexador",
-  "samples": [
+  "payloads": [
     {
       "question": "cronograma de receitas do LRDI11",
       "expected_intent": "fiis_financials_revenue_schedule",

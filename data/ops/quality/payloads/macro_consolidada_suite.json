@@ -1,6 +1,7 @@
 {
+  "suite": "macro_consolidada",
   "description": "Suíte de testes para macro_consolidada — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",
-  "samples": [
+  "payloads": [
     {
       "question": "Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",
       "expected_intent": "macro_consolidada",

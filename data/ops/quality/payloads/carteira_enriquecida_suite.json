@@ -1,6 +1,7 @@
 {
+  "suite": "carteira_enriquecida",
   "description": "Suíte de testes para carteira_enriquecida — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo.",
-  "samples": [
+  "payloads": [
     {
       "question": "Me mostra a visão consolidada da minha carteira de FIIs.",
       "expected_intent": "carteira_enriquecida",

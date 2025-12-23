@@ -1,6 +1,7 @@
 {
+  "suite": "client_fiis_dividends_evolution",
   "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente",
-  "samples": [
+  "payloads": [
     {
       "question": "Evolução dos dividendos da minha carteira de FIIs",
       "expected_intent": "client_fiis_dividends_evolution",

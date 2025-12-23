@@ -1,6 +1,7 @@
 {
+  "suite": "fii_overview",
   "description": "Roteiro de perguntas canônicas para rota fii_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",
-  "samples": [
+  "payloads": [
     {
       "question": "Quero um resumo completo do HGLG11.",
       "expected_intent": "fii_overview",

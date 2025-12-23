@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_rankings",
   "description": "Suíte de testes para fiis_rankings — rankings de FIIs por usuários, SIRIOS, IFIX/IFIL e métricas quantitativas (DY, Sharpe, volatilidade, drawdown etc.)",
-  "samples": [
+  "payloads": [
     {
       "question": "qual a posição atual do HGLG11 no ranking de usuários?",
       "expected_intent": "fiis_rankings",
