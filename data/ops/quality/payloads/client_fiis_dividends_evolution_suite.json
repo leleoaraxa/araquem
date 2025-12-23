@@ -8,7 +8,12 @@
       "expected_entity": "client_fiis_dividends_evolution"
     },
     {
-      "question": "Renda mensal dos meus FIIs",
+      "question": "Histórico de dividendos da minha carteira",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Minha renda mensal com FIIs está crescendo",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
     },
@@ -18,12 +23,7 @@
       "expected_entity": "client_fiis_dividends_evolution"
     },
     {
-      "question": "Histórico de dividendos da minha carteira",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
-      "question": "Minha renda mensal com FIIs está crescendo",
+      "question": "Renda mensal dos meus FIIs",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
     }

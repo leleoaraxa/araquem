@@ -3,37 +3,7 @@
   "description": "Suíte de testes para fiis_financials_revenue_schedule — cronograma de receitas futuras por faixa de vencimento e indexador",
   "payloads": [
     {
-      "question": "cronograma de receitas do LRDI11",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "receitas indexadas ao IPCA do HGLG11",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "receitas com vencimento em 6-9 meses do KNRI11",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "receitas com vencimento acima de 36 meses do VISC11",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "receitas com vencimento indeterminado do MXRF11",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "percentual de receitas do RBRF11 indexadas ao IGPM",
-      "expected_intent": "fiis_financials_revenue_schedule",
-      "expected_entity": "fiis_financials_revenue_schedule"
-    },
-    {
-      "question": "percentual de receitas do BCFF11 indexadas ao INPC",
+      "question": "As receitas do HGLG11 estão mais concentradas no curto prazo ou no longo prazo?",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
@@ -43,7 +13,22 @@
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "As receitas do HGLG11 estão mais concentradas no curto prazo ou no longo prazo?",
+      "question": "Compare o cronograma de receitas de HGLG11 e XPLG11.",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "cronograma de receitas do LRDI11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "percentual de receitas do BCFF11 indexadas ao INPC",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "percentual de receitas do RBRF11 indexadas ao IGPM",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
@@ -53,12 +38,27 @@
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Compare o cronograma de receitas de HGLG11 e XPLG11.",
+      "question": "Qual percentual das receitas do HGLG11 tem vencimento acima de 36 meses?",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
-      "question": "Qual percentual das receitas do HGLG11 tem vencimento acima de 36 meses?",
+      "question": "receitas com vencimento acima de 36 meses do VISC11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "receitas com vencimento em 6-9 meses do KNRI11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "receitas com vencimento indeterminado do MXRF11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "question": "receitas indexadas ao IPCA do HGLG11",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     }

@@ -1,6 +1,9 @@
 #!/bin/sh
 set -eu
 
+# Garante acesso a app/ mesmo que a env não tenha vindo do orchestrator
+export PYTHONPATH="${PYTHONPATH:-/workspace}"
+
 # -------- Config --------
 API_URL="${QUALITY_API_URL:-http://localhost:8000}"
 API_URL="${API_URL%\"}"; API_URL="${API_URL#\"}"

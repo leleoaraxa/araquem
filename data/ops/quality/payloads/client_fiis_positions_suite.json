@@ -3,17 +3,7 @@
   "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira",
   "payloads": [
     {
-      "question": "Minhas posições de FIIs",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
-      "question": "Quanto tenho de quantidade em custódia de MXRF11",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
-      "question": "Peso do HGLG11 na minha carteira de FIIs",
+      "question": "distribuição da minha carteira de fiis por fundo",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
@@ -23,17 +13,27 @@
       "expected_entity": "client_fiis_positions"
     },
     {
+      "question": "Minhas posições de FIIs",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Peso do HGLG11 na minha carteira de FIIs",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
       "question": "Qual meu preço médio do CPTS11",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "Rentabilidade da minha posição em VISC11",
+      "question": "Quanto tenho de quantidade em custódia de MXRF11",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "distribuição da minha carteira de fiis por fundo",
+      "question": "Rentabilidade da minha posição em VISC11",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     }
