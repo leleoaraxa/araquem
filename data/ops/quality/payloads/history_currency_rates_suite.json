@@ -13,7 +13,7 @@
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "Variação percentual do dólar ontem",
+      "question": "Qual foi a última cotação do euro",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
@@ -23,7 +23,7 @@
       "expected_entity": "history_currency_rates"
     },
     {
-      "question": "Qual foi a última cotação do euro",
+      "question": "Variação percentual do dólar ontem",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     }

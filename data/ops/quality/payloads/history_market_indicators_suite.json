@@ -3,17 +3,17 @@
   "description": "Suíte de testes para history_market_indicators — séries históricas e valores pontuais (hoje, ontem) de indicadores macro como SELIC, CDI, IPCA, IGPM e INCC",
   "payloads": [
     {
-      "question": "Qual a SELIC hoje",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
-    },
-    {
       "question": "CDI d-1",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
     {
       "question": "IPCA do dia",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Qual a SELIC hoje",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },

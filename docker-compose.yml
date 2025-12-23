@@ -167,7 +167,6 @@ services:
     environment:
       - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
       - QUALITY_SAMPLES_GLOB=data/ops/quality/*.json
-      - PYTHONPATH=/workspace
       - QUALITY_PUSH_SLEEP=0.2
       - QUALITY_AUTH_BEARER=false
       - QUALITY_TOKEN_HEADER=X-OPS-TOKEN

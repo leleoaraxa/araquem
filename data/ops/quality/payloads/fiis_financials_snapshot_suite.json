@@ -3,57 +3,7 @@
   "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)",
   "payloads": [
     {
-      "question": "Qual o patrimônio líquido do HGLG11?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual o valor patrimonial por cota do XPLG11?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual o P/VP atual do ALMI11?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Quanto de caixa e dívida o HGLG11 tem hoje?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "O XPLG11 está alavancado? Qual o nível de alavancagem dele?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual a dívida líquida do ALMI11 no último relatório gerencial?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual a receita total do HGLG11 no último relatório gerencial?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual a receita por cota do XPLG11?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual a ABL total do HGLG11 e qual a vacância física?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Qual a vacância financeira do XPLG11 hoje?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot"
-    },
-    {
-      "question": "Quantos imóveis o ALMI11 tem no portfólio, segundo o último relatório gerencial?",
+      "question": "Comparando ALMI11 e HGLG11, qual deles tem maior patrimônio líquido hoje?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -63,7 +13,47 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
+      "question": "O XPLG11 está alavancado? Qual o nível de alavancagem dele?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
       "question": "Quais são os principais indicadores financeiros do XPLG11 hoje (PL, VP/cota, vacância)?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual a ABL total do HGLG11 e qual a vacância física?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual a dívida líquida do ALMI11 no último relatório gerencial?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual a receita por cota do XPLG11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual a receita total do HGLG11 no último relatório gerencial?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual a vacância financeira do XPLG11 hoje?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual o P/VP atual do ALMI11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Qual o patrimônio líquido do HGLG11?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
@@ -73,7 +63,17 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Comparando ALMI11 e HGLG11, qual deles tem maior patrimônio líquido hoje?",
+      "question": "Qual o valor patrimonial por cota do XPLG11?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Quanto de caixa e dívida o HGLG11 tem hoje?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "question": "Quantos imóveis o ALMI11 tem no portfólio, segundo o último relatório gerencial?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     }

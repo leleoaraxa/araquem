@@ -8,7 +8,7 @@
       "expected_entity": "dividendos_yield"
     },
     {
-      "question": "Quanto o CPTS11 pagou de dividendos e dy em 08/2023",
+      "question": "O que é dividend yield em FIIs",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
@@ -18,12 +18,12 @@
       "expected_entity": "dividendos_yield"
     },
     {
-      "question": "Último dividendo pago pelo VISC11 e o dy correspondente",
+      "question": "Quanto o CPTS11 pagou de dividendos e dy em 08/2023",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
-      "question": "O que é dividend yield em FIIs",
+      "question": "Último dividendo pago pelo VISC11 e o dy correspondente",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     }

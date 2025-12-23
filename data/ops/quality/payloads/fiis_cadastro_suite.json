@@ -3,27 +3,7 @@
   "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",
   "payloads": [
     {
-      "question": "Qual o CNPJ do HGLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o nome de pregão do HGLG11 na B3?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o nome de exibição do fundo ALMI11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é a classificação oficial do XPLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o setor e o subsetor do HGLG11?",
+      "question": "o FPAB11 já fez parte do IFIX?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
@@ -33,12 +13,7 @@
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "Qual é o público-alvo do XPLG11?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "Qual é o código ISIN do HGLG11?",
+      "question": "peso do MCCI11 no IFIX",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
@@ -48,7 +23,12 @@
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "Qual é o site oficial do fundo XPLG11?",
+      "question": "Qual o CNPJ do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é a classificação oficial do XPLG11?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
@@ -58,12 +38,17 @@
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
+      "question": "Qual é o código ISIN do HGLG11?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "peso do MCCI11 no IFIX",
+      "question": "Qual é o nome de exibição do fundo ALMI11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o nome de pregão do HGLG11 na B3?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
@@ -73,7 +58,22 @@
       "expected_entity": "fiis_cadastro"
     },
     {
-      "question": "o FPAB11 já fez parte do IFIX?",
+      "question": "Qual é o público-alvo do XPLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o setor e o subsetor do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Qual é o site oficial do fundo XPLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     }

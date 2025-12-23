@@ -187,16 +187,17 @@ def allowed_types() -> Set[str]:
 
 
 def should_post(
-    data: Dict[str, Any],
+    data: Dict[str, Any], source_path: Optional[Path] = None
 ) -> Tuple[bool, Optional[str], str, int, bool]:
+    prefix = f"{source_path}: " if source_path else ""
     if not isinstance(data, dict):
-        return False, "invalid schema: payload must be an object", "", 0, False
+        return False, f"{prefix}invalid schema: payload must be an object", "", 0, False
 
     raw_type = data.get("type")
     if not isinstance(raw_type, str) or not raw_type.strip():
         return (
             False,
-            "invalid schema: 'type' must be a non-empty string",
+            f"{prefix}invalid schema: 'type' must be a non-empty string",
             "",
             0,
             False,
@@ -214,7 +215,7 @@ def should_post(
             items_len = len(data.get("samples") or [])
             return (
                 False,
-                "invalid schema: routing uses 'payloads' (Suite v2); found legacy 'samples'",
+                f"{prefix}invalid schema: routing uses 'payloads' (Suite v2); found legacy 'samples'",
                 type_name,
                 items_len,
                 skip,
@@ -231,7 +232,7 @@ def should_post(
     if not valid:
         return (
             False,
-            f"invalid schema: {error_message}",
+            f"{prefix}invalid schema: {error_message}",
             type_name,
             items_len,
             skip,
@@ -285,7 +286,7 @@ def main(argv: Iterable[str]) -> int:
             print(f"[error] parse {path} → {load_error}")
             continue
 
-        ok, reason, type_name, items_len, skip = should_post(data)
+        ok, reason, type_name, items_len, skip = should_post(data, source_path=path)
         if not ok:
             message = reason or "unknown reason"
             if skip:
