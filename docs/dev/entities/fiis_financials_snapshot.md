@@ -183,5 +183,4 @@ Resumindo: sempre que o usuário perguntar sobre **fundamentos financeiros agreg
 
 4. **Suíte de qualidade**
    - A suíte `data/ops/quality/payloads/fiis_financials_snapshot_suite.json` garante que perguntas com termos como “patrimônio líquido”, “valor patrimonial”, “alavancagem”, “ABL”, “vacância”, “receita total” caiam corretamente em `fiis_financials_snapshot`.
-   - Testes negativos (já cobertos em `negativos_indices.json` e outras suítes) ajudam a evitar colisão com macro, índices e preço/dividendo.
-
+  - Testes negativos (já cobertos em `negativos_indices_suite.json` e outras suítes) ajudam a evitar colisão com macro, índices e preço/dividendo.

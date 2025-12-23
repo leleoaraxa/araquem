@@ -168,11 +168,12 @@ services:
       - QUALITY_SAMPLES_GLOB=${QUALITY_SAMPLES_GLOB:-data/ops/quality/*.json}
       - QUALITY_PUSH_SLEEP=${QUALITY_PUSH_SLEEP:-5}
       - QUALITY_AUTH_BEARER=${QUALITY_AUTH_BEARER:-true}
-      - QUALITY_TOKEN_HEADER=${QUALITY_TOKEN_HEADER:-Authorization}
+      - QUALITY_TOKEN_HEADER=${QUALITY_TOKEN_HEADER:-X-OPS-TOKEN}
       - QUALITY_REPORT_WAIT_MAX=${QUALITY_REPORT_WAIT_MAX:-600}
       - QUALITY_REPORT_WAIT_SLEEP=${QUALITY_REPORT_WAIT_SLEEP:-10}
       - QUALITY_API_URL=${QUALITY_API_URL:-http://api:8000}
       - QUALITY_CRON_INTERVAL=${QUALITY_CRON_INTERVAL:-3600}
+      - PYTHONPATH=/workspace
     # Usa rede da API para enxergar localhost:8000 se você usar essa abordagem
     network_mode: "service:api"
 

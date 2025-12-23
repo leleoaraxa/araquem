@@ -16,6 +16,11 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 from urllib import error, request
 
+# Garantia local de PYTHONPATH para acesso a app/
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
 from app.api.ops.quality_contracts import (
     RoutingPayloadValidationError,
     validate_routing_payload_contract,
@@ -167,7 +172,7 @@ def make_headers() -> Dict[str, str]:
     headers = {"Content-Type": "application/json"}
     token = os.environ.get("QUALITY_OPS_TOKEN")
     if token:
-        headers["X-Ops-Token"] = token
+        headers["X-OPS-TOKEN"] = token
     bearer = os.environ.get("QUALITY_AUTH_BEARER")
     if bearer:
         headers["Authorization"] = f"Bearer {bearer}"
@@ -320,7 +325,11 @@ def main(argv: Iterable[str]) -> int:
     )
     print(summary)
 
-    return 0 if errors_parse == 0 and errors_http == 0 else 1
+    if errors_http > 0:
+        return 2
+    if errors_parse > 0:
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
