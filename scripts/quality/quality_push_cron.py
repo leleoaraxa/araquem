@@ -181,17 +181,39 @@ def allowed_types() -> Set[str]:
     return allowed
 
 
-def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
+def should_post(
+    data: Dict[str, Any],
+) -> Tuple[bool, Optional[str], str, int, bool]:
     if not isinstance(data, dict):
-        return False, "invalid schema: payload must be an object", "", 0
+        return False, "invalid schema: payload must be an object", "", 0, False
 
-    raw_type = data.get("type") or ""
+    raw_type = data.get("type")
+    if not isinstance(raw_type, str) or not raw_type.strip():
+        return (
+            False,
+            "invalid schema: 'type' must be a non-empty string",
+            "",
+            0,
+            False,
+        )
+
     type_name = raw_type.strip().lower()
     allowed = allowed_types()
     if type_name not in allowed:
-        return False, f"unsupported type '{type_name}'", type_name, 0
+        return False, f"unsupported type '{type_name}'", type_name, 0, True
 
+    items_len = 0
+    skip = False
     if type_name == "routing":
+        if "samples" in data:
+            items_len = len(data.get("samples") or [])
+            return (
+                False,
+                "invalid schema: routing uses 'payloads' (Suite v2); found legacy 'samples'",
+                type_name,
+                items_len,
+                skip,
+            )
         valid, error_message, payloads = validate_routing_payload(data)
         items_len = len(payloads)
     elif type_name == "projection":
@@ -207,9 +229,10 @@ def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
             f"invalid schema: {error_message}",
             type_name,
             items_len,
+            skip,
         )
 
-    return True, None, type_name, items_len
+    return True, None, type_name, items_len, skip
 
 
 def post_payload(data: Dict[str, Any], timeout=DEFAULT_TIMEOUT) -> Tuple[int, str]:
@@ -257,10 +280,10 @@ def main(argv: Iterable[str]) -> int:
             print(f"[error] parse {path} → {load_error}")
             continue
 
-        ok, reason, type_name, items_len = should_post(data)
+        ok, reason, type_name, items_len, skip = should_post(data)
         if not ok:
             message = reason or "unknown reason"
-            if message.startswith("unsupported type"):
+            if skip:
                 skipped += 1
                 print(f"[skip] {path} → {message}")
             else:
