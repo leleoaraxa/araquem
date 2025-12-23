@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_imoveis",
   "description": "Suíte de testes para fiis_imoveis — ativos, endereços, área e vacância dos FIIs",
-  "samples": [
+  "payloads": [
     {
       "question": "Quais imóveis compõem o HGLG11",
       "expected_intent": "fiis_imoveis",

@@ -255,7 +255,77 @@ def quality_push(
     ptype = (payload.get("type") or "routing").strip().lower()
 
     if ptype == "routing":
-        samples_raw: List[Dict[str, Any]] = payload.get("samples", [])
+        if "samples" in payload:
+            return JSONResponse(
+                {"error": "invalid routing payload: use 'payloads' (Suite v2), not 'samples'"},
+                status_code=400,
+            )
+
+        payloads_raw = payload.get("payloads")
+        if not isinstance(payloads_raw, list) or not payloads_raw:
+            return JSONResponse(
+                {"error": "invalid routing payload: 'payloads' must be a non-empty list"},
+                status_code=400,
+            )
+
+        suite_name = payload.get("suite")
+        if suite_name is not None and not isinstance(suite_name, str):
+            return JSONResponse(
+                {"error": "invalid routing payload: 'suite' must be a string"}, status_code=400
+            )
+
+        description = payload.get("description") or ""
+        if not isinstance(description, str):
+            return JSONResponse(
+                {"error": "invalid routing payload: 'description' must be a string"},
+                status_code=400,
+            )
+
+        normalized_payloads: List[Dict[str, Any]] = []
+        for idx, sample in enumerate(payloads_raw):
+            if not isinstance(sample, dict):
+                return JSONResponse(
+                    {
+                        "error": f"invalid routing payload: payloads[{idx}] must be an object"
+                    },
+                    status_code=400,
+                )
+            q = sample.get("question")
+            if not isinstance(q, str) or not q.strip():
+                return JSONResponse(
+                    {
+                        "error": "invalid routing payload: "
+                        f"payloads[{idx}].question must be a non-empty string"
+                    },
+                    status_code=400,
+                )
+            expected_intent = sample.get("expected_intent")
+            if expected_intent is not None and not isinstance(expected_intent, str):
+                return JSONResponse(
+                    {
+                        "error": "invalid routing payload: "
+                        f"payloads[{idx}].expected_intent must be a string or null"
+                    },
+                    status_code=400,
+                )
+            expected_entity = sample.get("expected_entity")
+            if expected_entity is not None and not isinstance(expected_entity, str):
+                return JSONResponse(
+                    {
+                        "error": "invalid routing payload: "
+                        f"payloads[{idx}].expected_entity must be a string or null"
+                    },
+                    status_code=400,
+                )
+            normalized_payloads.append(
+                {
+                    "question": q,
+                    "expected_intent": expected_intent,
+                    "expected_entity": expected_entity,
+                }
+            )
+
+        samples_raw = normalized_payloads
         matched = 0
         missed = 0
         for s in samples_raw:
@@ -295,6 +365,8 @@ def quality_push(
             missed += int(predicted != expected)
         return {
             "accepted": len(samples_raw),
+            "suite": suite_name,
+            "description": description,
             "metrics": {"matched": matched, "missed": missed},
         }
 

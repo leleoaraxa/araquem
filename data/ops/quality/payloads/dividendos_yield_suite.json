@@ -1,6 +1,7 @@
 {
+  "suite": "dividendos_yield",
   "description": "Suíte de testes para dividendos_yield — histórico de dividendos e dividend yield por FII",
-  "samples": [
+  "payloads": [
     {
       "question": "Histórico de dividendos e dy do MXRF11",
       "expected_intent": "dividendos_yield",

@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_dividendos",
   "description": "Suíte de testes para fiis_dividendos — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",
-  "samples": [
+  "payloads": [
     {
       "question": "Quais os dividendos do HGLG11 esse mês?",
       "expected_intent": "fiis_dividendos",

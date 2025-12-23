@@ -1,6 +1,7 @@
 {
+  "suite": "client_fiis_positions",
   "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira",
-  "samples": [
+  "payloads": [
     {
       "question": "Minhas posições de FIIs",
       "expected_intent": "client_fiis_positions",

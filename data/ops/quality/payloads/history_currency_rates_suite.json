@@ -1,6 +1,7 @@
 {
+  "suite": "history_currency_rates",
   "description": "Suíte de testes para history_currency_rates — câmbio USD/EUR em BRL D-1",
-  "samples": [
+  "payloads": [
     {
       "question": "Cotação do dólar hoje",
       "expected_intent": "history_currency_rates",

@@ -10,6 +10,7 @@ import os
 import sys
 import json
 from pathlib import Path
+from typing import Any, Dict
 
 import httpx
 
@@ -35,8 +36,31 @@ def load_payload(path: str):
     raise ValueError(f"formato não suportado: '{suffix}' (use .json, .yaml ou .yml)")
 
 
+def _ensure_suite_v2(path: Path, payload: Dict[str, Any]) -> None:
+    is_suite_file = path.name.endswith("_suite.json") or "suite" in payload or "payloads" in payload
+    if not is_suite_file:
+        return
+    if "samples" in payload:
+        raise RuntimeError(
+            f"{path}: formato inválido: use o contrato Suite v2 com 'payloads' (remova 'samples')."
+        )
+    payloads = payload.get("payloads")
+    if not isinstance(payloads, list) or not payloads:
+        raise RuntimeError(f"{path}: formato inválido: 'payloads' deve ser uma lista não vazia.")
+    suite_name = payload.get("suite")
+    if suite_name is None:
+        raise RuntimeError(f"{path}: formato inválido: campo obrigatório 'suite' ausente.")
+    if not isinstance(suite_name, str) or not suite_name.strip():
+        raise RuntimeError(f"{path}: formato inválido: 'suite' deve ser string não vazia.")
+    description = payload.get("description") or ""
+    if not isinstance(description, str):
+        raise RuntimeError(f"{path}: formato inválido: 'description' deve ser string.")
+
+
 def push(path: str):
+    payload_path = Path(path)
     payload = load_payload(path)
+    _ensure_suite_v2(payload_path, payload)
     r = httpx.post(
         f"{API}/ops/quality/push",
         headers={"x-ops-token": TOKEN, "Content-Type": "application/json"},

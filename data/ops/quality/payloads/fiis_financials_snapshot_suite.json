@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_financials_snapshot",
   "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)",
-  "samples": [
+  "payloads": [
     {
       "question": "Qual o patrimônio líquido do HGLG11?",
       "expected_intent": "fiis_financials_snapshot",

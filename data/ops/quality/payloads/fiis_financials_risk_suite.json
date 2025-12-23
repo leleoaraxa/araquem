@@ -1,6 +1,7 @@
 {
+  "suite": "fiis_financials_risk",
   "description": "Suíte de testes para fiis_financials_risk — indicadores de risco (Sharpe, beta, volatilidade, drawdown)",
-  "samples": [
+  "payloads": [
     {
       "question": "Qual o Sharpe do HGLG11",
       "expected_intent": "fiis_financials_risk",
