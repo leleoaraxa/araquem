@@ -50,7 +50,7 @@ def load_samples(path: pathlib.Path) -> List[Sample]:
         raise ValueError(f"Formato inesperado em {path}")
 
     try:
-        samples, _, _ = validate_routing_payload_contract(candidate)
+        samples, _, _, _ = validate_routing_payload_contract(candidate)
     except RoutingPayloadValidationError as exc:
         raise ValueError(f"Payload inválido em {path}: {exc}") from exc
 

@@ -2,8 +2,9 @@
 import math
 import os
 import logging
+from threading import Lock
 from fastapi import Request
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 import yaml
 
 from fastapi import APIRouter, Body, Header
@@ -11,6 +12,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 from app.api.ops.quality_contracts import (
+    RoutingBatchMetadata,
     RoutingPayloadValidationError,
     validate_routing_payload_contract,
 )
@@ -25,12 +27,37 @@ from app.observability.runtime import prom_query_instant
 router = APIRouter()
 LOGGER = logging.getLogger(__name__)
 _QUALITY_LOADER_ERRORS: List[str] | None = None
+_ROUTING_BATCH_LOCK = Lock()
+_PROCESSED_ROUTING_BATCHES: Dict[str, Set[int]] = {}
+_ROUTING_BATCH_MAX_KEYS = 512
 
 
 class QualitySample(BaseModel):
     question: str
     expected_intent: str
     expected_entity: Optional[str] = None
+
+
+def _routing_batch_to_dict(batch: RoutingBatchMetadata) -> Dict[str, Any]:
+    return {"id": batch.id, "index": batch.index, "total": batch.total}
+
+
+def _is_duplicate_routing_batch(batch: RoutingBatchMetadata) -> bool:
+    """
+    Controla idempotência básica por (batch.id, batch.index).
+    Mantém um cache em memória com tamanho máximo para evitar crescimento indefinido.
+    """
+    with _ROUTING_BATCH_LOCK:
+        if batch.id not in _PROCESSED_ROUTING_BATCHES and len(_PROCESSED_ROUTING_BATCHES) >= _ROUTING_BATCH_MAX_KEYS:
+            # Remove uma chave antiga para evitar crescimento infinito.
+            _PROCESSED_ROUTING_BATCHES.pop(next(iter(_PROCESSED_ROUTING_BATCHES)))
+
+        seen = _PROCESSED_ROUTING_BATCHES.setdefault(batch.id, set())
+        if batch.index in seen:
+            return True
+
+        seen.add(batch.index)
+        return False
 
 
 def _to_float(x) -> float:
@@ -260,11 +287,22 @@ def quality_push(
 
     if ptype == "routing":
         try:
-            normalized_payloads, suite_name, description = validate_routing_payload_contract(
+            normalized_payloads, suite_name, description, batch_meta = validate_routing_payload_contract(
                 payload
             )
         except RoutingPayloadValidationError as exc:
             return JSONResponse({"error": str(exc)}, status_code=400)
+
+        batch_dict = _routing_batch_to_dict(batch_meta) if batch_meta else None
+        if batch_meta and _is_duplicate_routing_batch(batch_meta):
+            return {
+                "accepted": 0,
+                "suite": suite_name,
+                "description": description,
+                "batch": batch_dict,
+                "duplicate": True,
+                "metrics": {"matched": 0, "missed": 0},
+            }
 
         samples_raw = normalized_payloads
         matched = 0
@@ -304,12 +342,16 @@ def quality_push(
 
             matched += int(predicted == expected)
             missed += int(predicted != expected)
-        return {
+
+        response: Dict[str, Any] = {
             "accepted": len(samples_raw),
             "suite": suite_name,
             "description": description,
             "metrics": {"matched": matched, "missed": missed},
         }
+        if batch_dict:
+            response["batch"] = batch_dict
+        return response
 
     if ptype == "rag_search":
         defaults = payload.get("defaults") or {}
