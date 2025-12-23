@@ -10,6 +10,7 @@ API_URL="$(printf '%s' "$API_URL" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]
 WAIT_MAX="${QUALITY_REPORT_WAIT_MAX:-60}"
 WAIT_SLEEP="${QUALITY_REPORT_WAIT_SLEEP:-2}"
 CRON_INTERVAL="${QUALITY_CRON_INTERVAL:-3600}"
+PUSH_RETRY_SLEEP="${QUALITY_PUSH_RETRY_SLEEP:-10}"
 
 TOKEN_HEADER="X-OPS-TOKEN: ${QUALITY_OPS_TOKEN}"
 
@@ -29,10 +30,9 @@ until curl -fsS -H "$TOKEN_HEADER" "$API_URL/ops/quality/report" >/dev/null; do
 done
 echo "✅ API ok, iniciando ciclo de qualidade"
 
-# helper: POST de arquivos com quality_push.py (mantém teu fluxo)
-post_quality_dir() {
-  python ./scripts/quality/quality_push_cron.py || true
-}
+echo "🔎 validando imports de qualidade..."
+python -c "import app; import app.api.ops.quality_contracts; print('imports ok')"
+echo "✅ imports prontos"
 
 # fallback sem jq (mantém o teu teste de routed_rate/top1_accuracy)
 ready_json() {
@@ -48,7 +48,11 @@ PY
 }
 
 while true; do
-  post_quality_dir
+  if ! python ./scripts/quality/quality_push_cron.py; then
+    echo "❌ quality_push_cron falhou; pulando consolidação e quality_gate_check (retry em ${PUSH_RETRY_SLEEP}s)"
+    sleep "$PUSH_RETRY_SLEEP"
+    continue
+  fi
 
   echo "⏳ aguardando consolidação das métricas..."
   waited=0

@@ -259,9 +259,13 @@ def main(argv: Iterable[str]) -> int:
 
         ok, reason, type_name, items_len = should_post(data)
         if not ok:
-            skipped += 1
             message = reason or "unknown reason"
-            print(f"[skip] {path} → {message}")
+            if message.startswith("unsupported type"):
+                skipped += 1
+                print(f"[skip] {path} → {message}")
+            else:
+                errors_parse += 1
+                print(f"[error] {path} → {message}")
             continue
 
         label = "payloads" if type_name == "routing" else "samples"
