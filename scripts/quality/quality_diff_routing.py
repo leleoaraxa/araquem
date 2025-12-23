@@ -9,6 +9,11 @@ Compliance: Guardrails Araquem v2.1.1
 import os, json, uuid, httpx
 from pathlib import Path
 
+from app.api.ops.quality_contracts import (
+    RoutingPayloadValidationError,
+    validate_routing_payload_contract,
+)
+
 API = os.getenv("API_URL", "http://localhost:8000")
 CID = os.getenv("QUALITY_CONVERSATION_ID", "ops-quality")
 NICK = os.getenv("QUALITY_NICK", "ops")
@@ -91,7 +96,10 @@ def ask(q: str):
 
 def main():
     data = json.loads(SRC.read_text(encoding="utf-8"))
-    samples = data["samples"]
+    try:
+        samples, _, _ = validate_routing_payload_contract(data)
+    except RoutingPayloadValidationError as exc:
+        raise RuntimeError(f"payload de routing inválido em {SRC}: {exc}") from exc
     misses = []
     for i, s in enumerate(samples, start=1):
         intent, entity, score, resp = ask(s["question"])

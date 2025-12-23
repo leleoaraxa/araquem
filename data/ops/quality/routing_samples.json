@@ -1,6 +1,6 @@
 {
   "type": "routing",
-  "samples": [
+  "payloads": [
     {
       "question": "dy mensal dos meus fiis",
       "expected_intent": "carteira_enriquecida",

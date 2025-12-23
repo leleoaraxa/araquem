@@ -8,7 +8,7 @@ Purpose: Listar perguntas que estão falhando nos quality gates de roteamento,
 
 Este script é um alias fino em cima do `quality_diff_routing.py`, que é a
 fonte da verdade para comparar o roteamento atual com o golden set
-(data/ops/quality/routing_samples.json).
+(data/ops/quality/routing_samples.json, Suite v2 com chave payloads).
 
 Uso típico:
 

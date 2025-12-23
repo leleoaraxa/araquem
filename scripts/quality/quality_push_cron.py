@@ -16,6 +16,11 @@ from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 from urllib import error, request
 
+from app.api.ops.quality_contracts import (
+    RoutingPayloadValidationError,
+    validate_routing_payload_contract,
+)
+
 BASE_ALLOWED_TYPES: Set[str] = {"routing", "projection"}
 DEFAULT_GLOB = "data/ops/quality/*.json"
 DEFAULT_API_URL = "http://localhost:8000"
@@ -51,29 +56,14 @@ def _validate_tags(value: Any, path: str) -> Tuple[bool, Optional[str]]:
     return True, None
 
 
-def validate_routing_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
-    ok, error_message, samples = _validate_samples_list(data)
-    if not ok:
-        return False, error_message
-
-    for index, sample in enumerate(samples):
-        if not isinstance(sample, dict):
-            return False, f"samples[{index}] must be an object"
-        question = sample.get("question")
-        expected_intent = sample.get("expected_intent")
-        if not isinstance(question, str) or not question.strip():
-            return False, f"samples[{index}].question must be a non-empty string"
-        if not isinstance(expected_intent, str) or not expected_intent.strip():
-            return False, f"samples[{index}].expected_intent must be a non-empty string"
-        if "expected_entity" in sample:
-            expected_entity = sample["expected_entity"]
-            if not isinstance(expected_entity, str) or not expected_entity.strip():
-                return (
-                    False,
-                    f"samples[{index}].expected_entity must be a non-empty string when provided",
-                )
-
-    return True, None
+def validate_routing_payload(
+    data: Dict[str, Any],
+) -> Tuple[bool, Optional[str], List[Dict[str, Any]]]:
+    try:
+        payloads, _, _ = validate_routing_payload_contract(data)
+    except RoutingPayloadValidationError as exc:
+        return False, str(exc), []
+    return True, None, payloads
 
 
 def validate_projection_payload(data: Dict[str, Any]) -> Tuple[bool, Optional[str]]:
@@ -202,22 +192,24 @@ def should_post(data: Dict[str, Any]) -> Tuple[bool, Optional[str], str, int]:
         return False, f"unsupported type '{type_name}'", type_name, 0
 
     if type_name == "routing":
-        valid, error_message = validate_routing_payload(data)
+        valid, error_message, payloads = validate_routing_payload(data)
+        items_len = len(payloads)
     elif type_name == "projection":
         valid, error_message = validate_projection_payload(data)
+        items_len = len(data.get("samples") or [])
     else:
         valid, error_message = validate_rag_payload(data)
+        items_len = len(data.get("samples") or [])
 
     if not valid:
         return (
             False,
             f"invalid schema: {error_message}",
             type_name,
-            len(data.get("samples") or []),
+            items_len,
         )
 
-    samples = data.get("samples") or []
-    return True, None, type_name, len(samples)
+    return True, None, type_name, items_len
 
 
 def post_payload(data: Dict[str, Any], timeout=DEFAULT_TIMEOUT) -> Tuple[int, str]:
@@ -265,14 +257,15 @@ def main(argv: Iterable[str]) -> int:
             print(f"[error] parse {path} → {load_error}")
             continue
 
-        ok, reason, type_name, samples_len = should_post(data)
+        ok, reason, type_name, items_len = should_post(data)
         if not ok:
             skipped += 1
             message = reason or "unknown reason"
             print(f"[skip] {path} → {message}")
             continue
 
-        print(f"[post] {path} (type={type_name}, samples={samples_len})")
+        label = "payloads" if type_name == "routing" else "samples"
+        print(f"[post] {path} (type={type_name}, {label}={items_len})")
         if args.dry_run:
             posted += 1
             continue
