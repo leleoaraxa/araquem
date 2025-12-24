@@ -63,10 +63,6 @@ intents:
         - rendimento
         - dy
         - yield
-        - desempenho
-        - performance
-        - rentabilidade
-        - retorno
         - noticia
         - noticias
         - manchete
@@ -108,6 +104,8 @@ intents:
         - preco medio
         - minha posicao
         - performance da minha carteira
+        - rentabilidade da minha carteira
+        - retorno da minha carteira
         - resumo da performance
         - subiu ou caiu
         - fechamento ontem
