@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import sys
+import time
 import uuid
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
@@ -34,6 +35,8 @@ DEFAULT_API_URL = "http://localhost:8000"
 DEFAULT_TIMEOUT = max(1, int(os.getenv("QUALITY_PUSH_TIMEOUT_S", os.getenv("QUALITY_HTTP_TIMEOUT", "30"))))
 ROUTING_TIMEOUT = max(1, int(os.getenv("QUALITY_PUSH_TIMEOUT_ROUTING_S", "60")))
 ROUTING_BATCH_SIZE = max(1, int(os.getenv("QUALITY_ROUTING_BATCH_SIZE", "100")))
+PUSH_RETRIES = max(1, int(os.getenv("QUALITY_PUSH_RETRIES", "3")))
+PUSH_RETRY_BACKOFF = max(0.0, float(os.getenv("QUALITY_PUSH_RETRY_BACKOFF_S", "2")))
 
 
 def load_json(path: Path) -> Tuple[Optional[Dict[str, Any]], Optional[str]]:
@@ -227,6 +230,47 @@ def allowed_types() -> Set[str]:
     return allowed
 
 
+def effective_api_url() -> str:
+    raw = os.environ.get("API_URL") or DEFAULT_API_URL
+    return raw.rstrip("/")
+
+
+def build_push_url(api_url: str) -> str:
+    return f"{api_url}/ops/quality/push"
+
+
+def is_timeout_error(exc: BaseException) -> bool:
+    if isinstance(exc, TimeoutError):
+        return True
+    if isinstance(exc, error.URLError):
+        reason = getattr(exc, "reason", None)
+        if isinstance(reason, TimeoutError):
+            return True
+        if isinstance(reason, Exception) and "timed out" in str(reason).lower():
+            return True
+    return False
+
+
+def log_post_details(
+    source_path: Path,
+    type_name: str,
+    items_len: int,
+    timeout_s: int,
+    push_url: str,
+    batch_label: Optional[str] = None,
+    attempt: Optional[int] = None,
+    total_attempts: Optional[int] = None,
+) -> None:
+    batch_info = f", batch={batch_label}" if batch_label else ""
+    attempt_info = (
+        f", attempt={attempt}/{total_attempts}" if attempt and total_attempts else ""
+    )
+    print(
+        f"[post] {source_path} → url={push_url} type={type_name} "
+        f"items_len={items_len} timeout_s={timeout_s}{batch_info}{attempt_info}"
+    )
+
+
 def should_post(
     data: Dict[str, Any], source_path: Optional[Path] = None
 ) -> Tuple[bool, Optional[str], str, int, bool]:
@@ -282,12 +326,10 @@ def should_post(
     return True, None, type_name, items_len, skip
 
 
-def post_payload(data: Dict[str, Any], timeout=DEFAULT_TIMEOUT) -> Tuple[int, str]:
-    api_url = os.environ.get("API_URL", DEFAULT_API_URL).rstrip("/")
-    url = f"{api_url}/ops/quality/push"
+def post_payload(push_url: str, data: Dict[str, Any], timeout: int) -> Tuple[int, str]:
     body = json.dumps(data).encode("utf-8")
     headers = make_headers()
-    req = request.Request(url, data=body, headers=headers, method="POST")
+    req = request.Request(push_url, data=body, headers=headers, method="POST")
     try:
         with request.urlopen(req, timeout=timeout) as response:
             status = response.getcode()
@@ -307,28 +349,77 @@ def parse_args(argv: Iterable[str]) -> argparse.Namespace:
     return parser.parse_args(list(argv))
 
 
+def send_payload_with_retry(
+    payload: Dict[str, Any],
+    *,
+    path: Path,
+    type_name: str,
+    items_len: int,
+    timeout_s: int,
+    batch_label: Optional[str],
+    push_url: str,
+) -> Tuple[bool, Optional[int]]:
+    attempts = max(1, PUSH_RETRIES)
+    for attempt in range(1, attempts + 1):
+        log_post_details(
+            path,
+            type_name,
+            items_len,
+            timeout_s,
+            push_url,
+            batch_label=batch_label,
+            attempt=attempt,
+            total_attempts=attempts,
+        )
+        try:
+            status, response_body = post_payload(push_url, payload, timeout=timeout_s)
+        except (error.URLError, TimeoutError) as exc:  # pragma: no cover - hard to simulate live timeouts
+            if is_timeout_error(exc) and attempt < attempts:
+                delay = PUSH_RETRY_BACKOFF * (2 ** (attempt - 1))
+                print(
+                    f"[warn] post {path}{f' batch {batch_label}' if batch_label else ''} "
+                    f"timed out; retrying in {delay:.1f}s"
+                )
+                time.sleep(delay)
+                continue
+            print(
+                f"[error] post {path}{f' batch {batch_label}' if batch_label else ''} "
+                f"→ network error: {exc}"
+            )
+            return False, None
+
+        if status != 200:
+            truncated_body = (response_body or "").strip()
+            print(
+                f"[error] post {path}{f' batch {batch_label}' if batch_label else ''} "
+                f"→ {status}: {truncated_body}"
+            )
+            return False, status
+
+        return True, status
+
+    return False, None
+
+
 def main(argv: Iterable[str]) -> int:
     args = parse_args(argv)
     glob_pattern = os.environ.get("QUALITY_SAMPLES_GLOB", args.glob or DEFAULT_GLOB)
     base = Path.cwd()
     files = sorted(base.glob(glob_pattern))
 
-    posted = 0
     skipped = 0
     errors_parse = 0
     errors_http = 0
-    total = 0
-    abort_cycle = False
+    files_total = 0
+    files_ok = 0
+    http_posts_ok = 0
+    push_base_url = effective_api_url()
+    push_url = build_push_url(push_base_url)
 
     for path in files:
-        if abort_cycle:
-            print(f"[skip] {path} → aborted after previous failure")
-            skipped += 1
-            continue
-
-        total += 1
         data, load_error = load_json(path)
         if load_error is not None:
+            files_total += 1
             errors_parse += 1
             print(f"[error] parse {path} → {load_error}")
             continue
@@ -340,11 +431,12 @@ def main(argv: Iterable[str]) -> int:
                 skipped += 1
                 print(f"[skip] {path} → {message}")
             else:
+                files_total += 1
                 errors_parse += 1
                 print(f"[error] {path} → {message}")
             continue
 
-        label = "payloads" if type_name == "routing" else "samples"
+        files_total += 1
         if type_name == "routing":
             try:
                 batches = build_routing_batches(data, ROUTING_BATCH_SIZE)
@@ -352,69 +444,73 @@ def main(argv: Iterable[str]) -> int:
                 errors_parse += 1
                 print(f"[error] {path} → invalid routing payload: {exc}")
                 continue
+            routing_failed = False
             for batch_payload in batches:
                 batch_info = batch_payload.get("batch") or {}
                 batch_label = f"{batch_info.get('index', '?')}/{batch_info.get('total', '?')}"
                 batch_count = len(batch_payload.get("payloads") or [])
-                print(
-                    f"[post] {path} (type={type_name}, {label}={batch_count}, batch={batch_label})"
-                )
                 if args.dry_run:
-                    posted += 1
+                    log_post_details(
+                        path, type_name, batch_count, ROUTING_TIMEOUT, push_url, batch_label=batch_label
+                    )
+                    http_posts_ok += 1
                     continue
 
-                try:
-                    status, response_body = post_payload(batch_payload, timeout=ROUTING_TIMEOUT)
-                except (error.URLError, TimeoutError) as exc:  # pragma: no cover - network issues are hard to simulate
-                    errors_http += 1
-                    abort_cycle = True
-                    print(f"[error] post {path} batch {batch_label} → network error: {exc}")
-                    break
+                success, _ = send_payload_with_retry(
+                    batch_payload,
+                    path=path,
+                    type_name=type_name,
+                    items_len=batch_count,
+                    timeout_s=ROUTING_TIMEOUT,
+                    batch_label=batch_label,
+                    push_url=push_url,
+                )
+                if success:
+                    http_posts_ok += 1
+                    continue
 
-                if status != 200:
-                    errors_http += 1
-                    abort_cycle = True
-                    truncated_body = response_body.strip()
-                    print(f"[error] post {path} batch {batch_label} → {status}: {truncated_body}")
-                    break
+                errors_http += 1
+                routing_failed = True
+                break
 
-                posted += 1
+            if routing_failed:
+                continue
+
+            files_ok += 1
+            continue
         else:
-            print(f"[post] {path} (type={type_name}, {label}={items_len})")
             if args.dry_run:
-                posted += 1
+                log_post_details(
+                    path, type_name, items_len, DEFAULT_TIMEOUT, push_url, batch_label=None
+                )
+                http_posts_ok += 1
+                files_ok += 1
                 continue
 
-            try:
-                status, response_body = post_payload(data, timeout=DEFAULT_TIMEOUT)
-            except (error.URLError, TimeoutError) as exc:  # pragma: no cover - network issues are hard to simulate
+            success, _ = send_payload_with_retry(
+                data,
+                path=path,
+                type_name=type_name,
+                items_len=items_len,
+                timeout_s=DEFAULT_TIMEOUT,
+                batch_label=None,
+                push_url=push_url,
+            )
+            if success:
+                http_posts_ok += 1
+                files_ok += 1
+            else:
                 errors_http += 1
-                print(f"[error] post {path} → network error: {exc}")
-                continue
 
-            if status != 200:
-                errors_http += 1
-                truncated_body = response_body.strip()
-                print(f"[error] post {path} → {status}: {truncated_body}")
-                continue
-
-            posted += 1
-
-        if abort_cycle:
-            print("[abort] stopping current cycle due to failed routing batch")
-            break
+            continue
 
     summary = (
-        f"[summary] posted={posted} skipped={skipped} "
-        f"errors_parse={errors_parse} errors_http={errors_http} total={total}"
+        f"[summary] files_total={files_total} files_ok={files_ok} skipped={skipped} "
+        f"errors_parse={errors_parse} errors_http={errors_http} http_posts_ok={http_posts_ok}"
     )
     print(summary)
 
-    if errors_http > 0:
-        return 2
-    if errors_parse > 0:
-        return 1
-    return 0
+    return 0 if files_ok == files_total else 1
 
 
 if __name__ == "__main__":
