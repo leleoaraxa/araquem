@@ -63,6 +63,10 @@ intents:
         - rendimento
         - dy
         - yield
+        - desempenho
+        - performance
+        - rentabilidade
+        - retorno
         - noticia
         - noticias
         - manchete
@@ -97,9 +101,18 @@ intents:
         - fato relevante
         - fatos relevantes
         - minha carteira
+        - carteira no ifix
+        - carteira no ifil
+        - carteira vs
+        - carteira versus
         - preco medio
         - minha posicao
         - performance da minha carteira
+        - resumo da performance
+        - subiu ou caiu
+        - fechamento ontem
+        - ultimas noticias
+        - ultimas manchetes
         - ultimos 30 dias
     entities:
       - fiis_precos
