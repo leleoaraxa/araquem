@@ -492,6 +492,11 @@ class Planner:
 
         bucket = resolve_bucket(question, {}, self.onto)
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
+        all_intents = list(self.onto.intents)
+        bucket_gate_applied = bool(bucket)
+        filtered_intents = [it for it in all_intents if getattr(it, "bucket", "") == bucket] if bucket else all_intents
+        bucket_gate_fallback = bucket_gate_applied and not filtered_intents
+        candidate_intents = filtered_intents if filtered_intents else all_intents
 
         try:
             _LOG.info(
@@ -540,13 +545,23 @@ class Planner:
         decision_path.append(
             {"stage": "bucketize", "type": "planner_bucket", "bucket": bucket}
         )
+        decision_path.append(
+            {
+                "stage": "bucket_gate",
+                "type": "intent_filter",
+                "bucket": bucket,
+                "applied": bucket_gate_applied,
+                "filtered_count": len(candidate_intents),
+                "fallback_to_all": bucket_gate_fallback,
+            }
+        )
         token_score_items: List[Dict[str, Any]] = []
         phrase_score_items: List[Dict[str, Any]] = []
         anti_hits_items: List[Dict[str, Any]] = []
         intent_base_breakdown: List[Dict[str, Any]] = []
 
         # --- scoring base (como já havia) ---
-        for it in self.onto.intents:
+        for it in candidate_intents:
             score = 0.0
             include_hits = [
                 t
@@ -748,7 +763,7 @@ class Planner:
         effective_weight = 0.0
         fusion_used_entities: List[str] = []
 
-        for it in self.onto.intents:
+        for it in candidate_intents:
             base = float(intent_scores.get(it.name, 0.0))
             # Intents podem ter N entidades; todas devem competir
             ents = [e for e in (it.entities or []) if e in bucket_entities]
@@ -840,16 +855,137 @@ class Planner:
             )
             intent_rag_signals[it.name] = best_rag_signal_for_intent
 
-        chosen_intent = None
-        chosen_score = 0.0
+        def _gap_from_scores(scores: Dict[str, float]) -> float:
+            ordered_scores = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
+            if len(ordered_scores) >= 2:
+                return float((ordered_scores[0][1] or 0.0) - (ordered_scores[1][1] or 0.0))
+            if len(ordered_scores) == 1:
+                return float(ordered_scores[0][1] or 0.0)
+            return 0.0
 
-        ranking_source = fused_scores if fused_scores else intent_scores
-        if ranking_source:
-            ordered_ranking = sorted(
-                ((name, float(score or 0.0)) for name, score in ranking_source.items()),
-                key=lambda item: (-item[1], item[0]),
+        def _select_top_intent(intent_names: List[str]):
+            filtered_fused = {k: v for k, v in fused_scores.items() if k in intent_names}
+            filtered_base = {
+                k: v for k, v in intent_scores.items() if k in intent_names
+            }
+            ranking_source = filtered_fused if filtered_fused else filtered_base
+            chosen_name = None
+            chosen_score_val = 0.0
+            if ranking_source:
+                ordered_ranking = sorted(
+                    ((name, float(score or 0.0)) for name, score in ranking_source.items()),
+                    key=lambda item: (-item[1], item[0]),
+                )
+                chosen_name, chosen_score_val = ordered_ranking[0]
+            return {
+                "intent": chosen_name,
+                "score": chosen_score_val,
+                "gap_base": _gap_from_scores(filtered_base),
+                "gap_final": _gap_from_scores(filtered_fused),
+                "ranking_source": ("final" if filtered_fused else "base"),
+            }
+
+        all_candidate_names = [it.name for it in candidate_intents]
+        ticker_present = "ticker_query" in all_candidate_names
+        phase1_candidates = [name for name in all_candidate_names if name != "ticker_query"]
+        decision_path.append(
+            {
+                "stage": "intent_filter",
+                "type": "ticker_phase1",
+                "excluded": ["ticker_query"] if ticker_present else [],
+                "reason": "deferred_until_no_intent_passes" if ticker_present else "ticker_absent",
+            }
+        )
+
+        phase1_selection = _select_top_intent(phase1_candidates)
+
+        thr = thresholds_cfg or {}
+        dfl = thr.get("defaults") or {"min_score": 1.0, "min_gap": 0.5}
+        intents_thr_cfg = thr.get("intents") or {}
+        entities_thr_cfg = thr.get("entities") or {}
+
+        def _resolve_thresholds(intent_name: str | None, entity_name: str | None):
+            intent_thr = intents_thr_cfg.get(intent_name or "", {})
+            entity_thr = entities_thr_cfg.get(entity_name or "", {})
+            min_score_val = float(
+                entity_thr.get("min_score", intent_thr.get("min_score", dfl["min_score"]))
             )
-            chosen_intent, chosen_score = ordered_ranking[0]
+            min_gap_val = float(
+                entity_thr.get("min_gap", intent_thr.get("min_gap", dfl["min_gap"]))
+            )
+            return min_score_val, min_gap_val
+
+        def _evaluate_thresholds(selection: Dict[str, Any]):
+            sel_intent = selection.get("intent")
+            sel_entity = intent_entities.get(sel_intent) if sel_intent else None
+            min_score_val, min_gap_val = _resolve_thresholds(sel_intent, sel_entity)
+            thr_apply_on = _resolve_apply_on(
+                apply_on_cfg, intent=sel_intent, entity=sel_entity
+            )
+            rerank_policy = _resolve_rerank_policy(
+                rag_policy_cfg, intent=sel_intent, entity=sel_entity, bucket=bucket
+            )
+            gate_source_is_final = bool(
+                re_rank_enabled
+                and rag_fusion_applied
+                and rerank_policy.get("enabled", False)
+                and rag_used
+                and (fusion_weight > 0.0)
+                and (thr_apply_on == "final")
+            )
+            score_for_gate_val = float(
+                fused_scores.get(sel_intent or "", 0.0)
+                if gate_source_is_final
+                else intent_scores.get(sel_intent or "", 0.0)
+            )
+            gap_used_val = float(
+                selection.get("gap_final", 0.0)
+                if gate_source_is_final
+                else selection.get("gap_base", 0.0)
+            )
+            gate_reason_val = None
+            if sel_intent is None:
+                gate_reason_val = "no_intent"
+            elif score_for_gate_val < min_score_val:
+                gate_reason_val = "low_score"
+            elif gap_used_val < min_gap_val:
+                gate_reason_val = "low_gap"
+            accepted_val = gate_reason_val is None
+            return {
+                "intent": sel_intent,
+                "entity": sel_entity,
+                "min_score": min_score_val,
+                "min_gap": min_gap_val,
+                "score_for_gate": score_for_gate_val,
+                "gap_used": gap_used_val,
+                "accepted": accepted_val,
+                "reason": gate_reason_val,
+                "gate_source_is_final": gate_source_is_final,
+                "rerank_policy": rerank_policy,
+            }
+
+        phase1_thresholds = _evaluate_thresholds(phase1_selection)
+        final_selection = phase1_selection
+        thresholds_result = phase1_thresholds
+
+        if not phase1_thresholds["accepted"] and ticker_present:
+            decision_path.append(
+                {
+                    "stage": "intent_filter",
+                    "type": "ticker_phase2",
+                    "reintroduced": True,
+                    "reason": "no_intent_passed_thresholds",
+                }
+            )
+            phase2_selection = _select_top_intent(["ticker_query"])
+            phase2_thresholds = _evaluate_thresholds(phase2_selection)
+            final_selection = phase2_selection
+            thresholds_result = phase2_thresholds
+
+        chosen_intent = final_selection.get("intent")
+        chosen_score = float(final_selection.get("score", 0.0))
+        gap_base = float(final_selection.get("gap_base", 0.0))
+        gap_final = float(final_selection.get("gap_final", 0.0))
 
         ordered_combined = sorted(
             combined_intents,
@@ -889,9 +1025,7 @@ class Planner:
             for item in combined_entities
             if abs(float(item["combined"]) - float(item["base"])) > 1e-9
         ]
-        gate_rerank_policy = _resolve_rerank_policy(
-            rag_policy_cfg, intent=chosen_intent, entity=chosen_entity, bucket=bucket
-        )
+        gate_rerank_policy = thresholds_result["rerank_policy"]
 
         if rag_fusion_applied:
             decision_path.append(
@@ -1213,44 +1347,13 @@ class Planner:
             pass
 
         # imediatamente antes do return:
-        thr = thresholds_cfg or {}
-        dfl = thr.get("defaults") or {"min_score": 1.0, "min_gap": 0.5}
-        intent_thr = (thr.get("intents") or {}).get(chosen_intent or "", {})
-        entity_thr = (thr.get("entities") or {}).get(chosen_entity or "", {})
-
-        min_score = float(
-            entity_thr.get("min_score", intent_thr.get("min_score", dfl["min_score"]))
-        )
-        min_gap = float(
-            entity_thr.get("min_gap", intent_thr.get("min_gap", dfl["min_gap"]))
-        )
-
-        # Fonte do gate: base|final (apenas se re-rank estiver ligado)
-        thr_apply_on = _resolve_apply_on(
-            apply_on_cfg, intent=chosen_intent, entity=chosen_entity
-        )
-        gate_source_is_final = bool(
-            re_rank_enabled
-            and rag_fusion_applied
-            and gate_rerank_policy.get("enabled", False)
-            and rag_used
-            and (fusion_weight > 0.0)
-            and (thr_apply_on == "final")
-        )
-        # score usado no gate: base do vencedor ou final do vencedor
-        chosen_base_score = float(intent_scores.get(chosen_intent or "", 0.0))
-        score_for_gate = (
-            float(fused_scores.get(chosen_intent or "", 0.0))
-            if gate_source_is_final
-            else chosen_base_score
-        )
-        gap_used = float(gap_final if gate_source_is_final else gap_base)
-        gate_reason = None
-        if score_for_gate < min_score:
-            gate_reason = "low_score"
-        elif gap_used < min_gap:
-            gate_reason = "low_gap"
-        accepted = gate_reason is None
+        min_score = float(thresholds_result["min_score"])
+        min_gap = float(thresholds_result["min_gap"])
+        gate_source_is_final = bool(thresholds_result["gate_source_is_final"])
+        score_for_gate = float(thresholds_result["score_for_gate"])
+        gap_used = float(thresholds_result["gap_used"])
+        gate_reason = thresholds_result["reason"]
+        accepted = bool(thresholds_result["accepted"])
 
         meta_explain["scoring"]["thresholds_applied"] = {
             "min_score": min_score,
