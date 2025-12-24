@@ -166,6 +166,8 @@ services:
     restart: unless-stopped
     environment:
       - QUALITY_OPS_TOKEN=${QUALITY_OPS_TOKEN:-araquem-secret-bust-2025}
+      - API_URL=${API_URL:-http://localhost:8000}
+      - QUALITY_API_URL=${QUALITY_API_URL:-http://localhost:8000}
       - QUALITY_SAMPLES_GLOB=data/ops/quality/*.json
       - QUALITY_PUSH_SLEEP=0.2
       - QUALITY_AUTH_BEARER=false

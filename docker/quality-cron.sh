@@ -5,9 +5,11 @@ set -eu
 export PYTHONPATH="${PYTHONPATH:-/workspace}"
 
 # -------- Config --------
-API_URL="${QUALITY_API_URL:-http://localhost:8000}"
-API_URL="${API_URL%\"}"; API_URL="${API_URL#\"}"
+API_URL_RAW="${API_URL:-${QUALITY_API_URL:-http://localhost:8000}}"
+API_URL="${API_URL_RAW%\"}"; API_URL="${API_URL#\"}"
 API_URL="$(printf '%s' "$API_URL" | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//')"
+: "${API_URL:?API_URL cannot be empty after normalization}"
+export API_URL
 : "${QUALITY_OPS_TOKEN:?QUALITY_OPS_TOKEN is required}"
 
 WAIT_MAX="${QUALITY_REPORT_WAIT_MAX:-60}"
@@ -28,7 +30,7 @@ if importlib.util.find_spec('yaml') is None:
     subprocess.check_call([sys.executable,'-m','pip','install','--no-cache-dir','pyyaml'])
 PY
 
-echo "🔧 QUALITY_API_URL: ${API_URL}"
+echo "🔧 API_URL (exported): ${API_URL}"
 echo "🔧 QUALITY_OPS_TOKEN: **** (redacted)"
 echo "🔧 QUALITY_PUSH_TIMEOUT_S: ${QUALITY_PUSH_TIMEOUT_S}"
 echo "🔧 QUALITY_PUSH_TIMEOUT_ROUTING_S: ${QUALITY_PUSH_TIMEOUT_ROUTING_S}"
