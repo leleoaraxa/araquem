@@ -962,9 +962,49 @@ class Planner:
                 "rerank_policy": rerank_policy,
             }
 
+        base_phase1 = {k: v for k, v in intent_scores.items() if k in phase1_candidates}
+        final_phase1 = {k: v for k, v in fused_scores.items() if k in phase1_candidates}
+        use_final = bool(final_phase1)
+        scores_phase1 = final_phase1 if use_final else base_phase1
+
+        ordered = sorted(
+            scores_phase1.items(),
+            key=lambda kv: (-float(kv[1] or 0.0), kv[0]),
+        )
+
+        def _gaps_from_order(items: List[tuple[str, Any]]):
+            gaps: Dict[str, float] = {}
+            for idx, (name, score_val) in enumerate(items):
+                score_i = float(score_val or 0.0)
+                if idx + 1 < len(items):
+                    next_score = float(items[idx + 1][1] or 0.0)
+                else:
+                    next_score = 0.0
+                gaps[name] = score_i - next_score
+            return gaps
+
+        base_ordered = sorted(
+            base_phase1.items(),
+            key=lambda kv: (-float(kv[1] or 0.0), kv[0]),
+        )
+        gap_phase1_map = _gaps_from_order(ordered)
+        gap_base_map = _gaps_from_order(base_ordered)
+        gap_final_map = _gaps_from_order(ordered) if use_final else {}
+
         phase1_results = []
-        for intent_name in phase1_candidates:
-            selection = _select_top_intent([intent_name])
+        for intent_name, score_val in ordered:
+            score_i = float(score_val or 0.0)
+            selection = {
+                "intent": intent_name,
+                "score": score_i,
+                "gap_base": (
+                    gap_phase1_map.get(intent_name, 0.0)
+                    if not use_final
+                    else gap_base_map.get(intent_name, 0.0)
+                ),
+                "gap_final": gap_final_map.get(intent_name, 0.0) if use_final else 0.0,
+                "ranking_source": "final" if use_final else "base",
+            }
             thresholds_eval = _evaluate_thresholds(selection)
             phase1_results.append((selection, thresholds_eval))
 
@@ -972,10 +1012,7 @@ class Planner:
             pair for pair in phase1_results if pair[1].get("accepted", False)
         ]
 
-        ranking_source = fused_scores if fused_scores else intent_scores
-
-        def _score_for_ranking(intent_name: Optional[str]) -> float:
-            return float(ranking_source.get(intent_name or "", 0.0))
+        order_index = {name: idx for idx, (name, _) in enumerate(ordered)}
 
         final_selection = None
         thresholds_result = None
@@ -983,10 +1020,7 @@ class Planner:
         if accepted_phase1:
             accepted_phase1_sorted = sorted(
                 accepted_phase1,
-                key=lambda pair: (
-                    -_score_for_ranking(pair[0].get("intent")),
-                    pair[0].get("intent") or "",
-                ),
+                key=lambda pair: order_index.get(pair[0].get("intent"), float("inf")),
             )
             final_selection, thresholds_result = accepted_phase1_sorted[0]
         elif ticker_present:
@@ -1005,10 +1039,7 @@ class Planner:
         elif phase1_results:
             fallback_sorted = sorted(
                 phase1_results,
-                key=lambda pair: (
-                    -_score_for_ranking(pair[0].get("intent")),
-                    pair[0].get("intent") or "",
-                ),
+                key=lambda pair: order_index.get(pair[0].get("intent"), float("inf")),
             )
             final_selection, thresholds_result = fallback_sorted[0]
         else:
