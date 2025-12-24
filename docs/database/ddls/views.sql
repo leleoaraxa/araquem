@@ -1347,6 +1347,35 @@ CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark
     bench_return AS benchmark_return_pct
    FROM pivoted p
   ORDER BY document_number, benchmark_code, ref_date;
+
+-- =====================================================================
+-- VIEW: client_fiis_performance_vs_benchmark_summary
+-- =====================================================================
+CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark_summary AS
+WITH ranked AS (
+    SELECT
+        document_number,
+        benchmark_code,
+        date_reference,
+        portfolio_amount,
+        portfolio_return_pct,
+        benchmark_value,
+        benchmark_return_pct,
+        ROW_NUMBER() OVER (PARTITION BY document_number, benchmark_code ORDER BY date_reference DESC) AS rn
+    FROM public.client_fiis_performance_vs_benchmark
+)
+SELECT
+    document_number,
+    benchmark_code,
+    date_reference,
+    portfolio_amount,
+    portfolio_return_pct,
+    benchmark_value,
+    benchmark_return_pct,
+    (portfolio_return_pct - benchmark_return_pct) AS excess_return_pct
+FROM ranked
+WHERE rn = 1
+ORDER BY document_number, benchmark_code;
 -- =====================================================================
 -- VIEW: dividendos_yield
 -- =====================================================================

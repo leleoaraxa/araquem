@@ -1,0 +1,40 @@
+entity: client_fiis_performance_vs_benchmark_summary
+kind: view
+version: 1
+
+columns:
+  - { name: document_number,       type: string,   nullable: false, desc: "documento do cliente (CPF/CNPJ)" }
+  - { name: benchmark_code,        type: string,   nullable: false, desc: "código do benchmark (IFIX, IFIL, IBOV, CDI)" }
+  - { name: date_reference,        type: date,     nullable: false, desc: "data de referência (mais recente por benchmark)" }
+  - { name: portfolio_amount,      type: number,   nullable: true,  desc: "valor total da carteira na última data" }
+  - { name: portfolio_return_pct,  type: number,   nullable: true,  desc: "retorno acumulado da carteira (%)" }
+  - { name: benchmark_value,       type: number,   nullable: true,  desc: "valor/nível do benchmark na última data" }
+  - { name: benchmark_return_pct,  type: number,   nullable: true,  desc: "retorno acumulado do benchmark (%)" }
+  - { name: excess_return_pct,     type: number,   nullable: true,  desc: "excesso de retorno (carteira - benchmark) em pontos percentuais" }
+
+ordering: [document_number, benchmark_code, date_reference]
+
+presentation:
+  # Importante (LGPD): não expor document_number em visualizações padrão.
+  columns:
+    benchmark_code:        { as: string }
+    date_reference:        { as: date }
+    portfolio_amount:      { as: currency }
+    portfolio_return_pct:  { as: percent, multiply_by_100: false, precision: 4 }
+    benchmark_value:       { as: currency }
+    benchmark_return_pct:  { as: percent, multiply_by_100: false, precision: 4 }
+    excess_return_pct:     { as: percent, multiply_by_100: false, precision: 4 }
+
+  rules: {}
+
+sample_questions:
+  - "resumo da performance da minha carteira de fiis versus o ifix"
+  - "última leitura carteira vs cdi"
+  - "visão resumida carteira de fiis vs ibov"
+
+parking_lot: {}
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false

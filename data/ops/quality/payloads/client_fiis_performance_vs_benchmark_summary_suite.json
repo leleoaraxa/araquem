@@ -1,0 +1,46 @@
+{
+  "suite": "client_fiis_performance_vs_benchmark_summary",
+  "description": "Suíte de testes para o resumo de performance da carteira de FIIs versus benchmarks (última leitura por benchmark)",
+  "payloads": [
+    {
+      "question": "Resumo da performance da minha carteira de FIIs versus o IFIX",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Última leitura da carteira vs CDI",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Performance acumulada da carteira contra o IBOV (resumo)",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Visão resumida carteira de FIIs vs IFIL até hoje",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Excesso de retorno da carteira frente ao benchmark na última data",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Carteira vs IFIX no fechamento do período mais recente",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Resumo carteira vs CDI D-1",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Performance da minha carteira contra IBOV até agora (visão resumida)",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    }
+  ]
+}

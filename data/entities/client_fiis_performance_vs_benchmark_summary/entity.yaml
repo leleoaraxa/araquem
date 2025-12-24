@@ -1,0 +1,137 @@
+id: client_fiis_performance_vs_benchmark_summary
+result_key: client_fiis_performance_vs_benchmark_summary
+sql_view: client_fiis_performance_vs_benchmark_summary
+private: true
+d_minus: 1
+description: >
+  Resumo (última leitura) da performance da carteira de FIIs do cliente frente a benchmarks,
+  retornando apenas o registro mais recente por benchmark e calculando o excesso de retorno.
+
+options:
+  supports_multi_ticker: false
+
+identifiers:
+  - name: document_number
+    description: Documento do cliente (CPF/CNPJ) – fornecido via payload seguro.
+
+default_date_field: date_reference
+
+columns:
+  - name: document_number
+    alias: Documento
+    description: CPF/CNPJ do cliente (PII).
+  - name: benchmark_code
+    alias: Benchmark
+    description: Código do benchmark (IFIX, IFIL, IBOV, CDI).
+  - name: date_reference
+    alias: Data
+    description: Data de referência (mais recente) da performance.
+  - name: portfolio_amount
+    alias: Valor da carteira (R$)
+    description: Valor total da carteira de FIIs do cliente na última data.
+  - name: portfolio_return_pct
+    alias: Retorno carteira (%)
+    description: Retorno acumulado da carteira até a última data, em percentual.
+  - name: benchmark_value
+    alias: Valor benchmark
+    description: Valor/nível do benchmark na última data.
+  - name: benchmark_return_pct
+    alias: Retorno benchmark (%)
+    description: Retorno acumulado do benchmark até a última data, em percentual.
+  - name: excess_return_pct
+    alias: Excesso de retorno (p.p.)
+    description: Diferença entre o retorno da carteira e do benchmark (carteira - benchmark), em pontos percentuais.
+
+presentation:
+  kind: table
+  empty_message: Nenhum dado de performance vs benchmark encontrado para sua carteira.
+
+ask:
+  intents:
+    - client_fiis_performance_vs_benchmark_summary
+  requires_identifiers:
+    - document_number
+  keywords:
+    - resumo
+    - ultima
+    - última
+    - ultima leitura
+    - ultima referencia
+    - última referência
+    - ultimo
+    - último
+    - agregado
+    - agregado por benchmark
+    - carteira
+    - minha
+    - minhas
+    - meu
+    - performance
+    - desempenho
+    - comparacao
+    - comparativo
+    - benchmark
+    - ifix
+    - ifil
+    - ibov
+    - cdi
+  anti_tokens:
+    - historico
+    - historica
+    - serie
+    - serie historica
+    - serie temporal
+    - mes a mes
+    - mensal
+    - linha do tempo
+    - evolucao
+    - evolucao mensal
+    - cada mes
+  phrase_includes:
+    - "resumo da performance da minha carteira"
+    - "ultima leitura da carteira versus o benchmark"
+    - "visao resumida carteira vs benchmark"
+    - "carteira vs ifix resumo"
+    - "carteira vs cdi ultima leitura"
+    - "performance acumulada vs ibov"
+    - "retorno acumulado da carteira contra ifil"
+    - "excesso de retorno da carteira frente ao benchmark"
+  synonyms:
+    benchmark_code:
+      - benchmark
+      - indice
+      - cdi
+      - ifix
+      - ifil
+      - ibov
+    excess_return_pct:
+      - excesso de retorno
+      - retorno acima do benchmark
+      - retorno superando o benchmark
+      - diferencial de retorno
+  weights:
+    identifiers: 2.0
+    keywords: 1.0
+    synonyms: 0.5
+  sample_questions:
+    - "Resumo da performance da minha carteira de FIIs versus o IFIX"
+    - "Última leitura da carteira vs CDI"
+    - "Performance acumulada vs IBOV (resumo)"
+    - "Carteira de FIIs comparada ao IFIL até hoje"
+    - "Excesso de retorno da minha carteira contra o benchmark na última data"
+
+params:
+  required: [document_number]
+  optional: [benchmark_code]
+
+order_by_whitelist:
+  - benchmark_code asc
+  - date_reference desc
+
+aggregations:
+  enabled: false
+
+responses:
+  default:
+    kind: table
+    template: responses/table.md.j2
