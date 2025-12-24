@@ -30,6 +30,7 @@ buckets:
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
     - client_fiis_positions
+    - client_fiis_performance_vs_benchmark_summary
   C:
     - history_market_indicators
     - history_b3_indexes
@@ -425,6 +426,68 @@ intents:
         - valor de fechamento do <ticker>
     entities:
       - client_fiis_performance_vs_benchmark
+      - client_fiis_performance_vs_benchmark_summary
+
+  - name: client_fiis_performance_vs_benchmark_summary
+    tokens:
+      include:
+        - resumo
+        - ultima
+        - última
+        - ultimo
+        - último
+        - ultima leitura
+        - ultima referencia
+        - última referência
+        - agregado
+        - agregado por benchmark
+        - fechamento do periodo
+        - ate hoje
+        - ate agora
+        - d-1
+        - carteira
+        - performance
+        - desempenho
+        - comparacao
+        - comparativo
+        - vs
+        - versus
+        - contra
+        - benchmark
+        - ifix
+        - ifil
+        - cdi
+        - ibov
+      exclude:
+        - historico
+        - historica
+        - serie
+        - serie temporal
+        - serie historica
+        - evolucao
+        - mes a mes
+        - mensal
+        - linha do tempo
+    phrases:
+      include:
+        - resumo da performance da carteira
+        - ultima leitura da carteira versus o benchmark
+        - performance acumulada da minha carteira contra ifix
+        - performance acumulada da minha carteira contra cdi
+        - performance acumulada da minha carteira contra ibov
+        - visao resumida carteira vs benchmark
+        - carteira vs ifix resumo
+        - carteira vs cdi ultima leitura
+        - carteira vs ibov ate hoje
+        - carteira vs ifil ate agora
+        - performance da carteira no fechamento do periodo
+      exclude:
+        - historico de performance
+        - serie historica da carteira
+        - performance mes a mes
+        - evolucao da performance
+    entities:
+      - client_fiis_performance_vs_benchmark_summary
 
   - name: fiis_cadastro
     tokens:

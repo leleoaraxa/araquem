@@ -1,0 +1,17 @@
+{% set rows = rows if rows is defined else [] %}
+
+{% if not rows or rows|length == 0 -%}
+Nenhum dado de performance vs benchmark encontrado para sua carteira.
+{%- else -%}
+  {% set max_date_reference = (rows | map(attribute='date_reference') | max) %}
+  **Performance da sua carteira vs benchmarks (última leitura)**
+
+  - Última referência: {{ max_date_reference|date_br if max_date_reference is not none else '-' }}
+  - A tabela mostra o retorno acumulado da carteira e do benchmark até a última data disponível, e o excesso (carteira - benchmark).
+
+  | Benchmark | Data ref. | Carteira (R$) | Retorno carteira | Benchmark (valor) | Retorno benchmark | Excesso (p.p.) |
+  | --- | --- | ---: | ---: | ---: | ---: | ---: |
+  {%- for r in rows %}
+  | {{ r.benchmark_code or '-' }} | {{ r.date_reference|date_br if r.date_reference is not none else '-' }} | {{ r.portfolio_amount|currency_br if r.portfolio_amount is not none else '-' }} | {{ r.portfolio_return_pct|percent_raw_br if r.portfolio_return_pct is not none else '-' }} | {{ r.benchmark_value|currency_br if r.benchmark_value is not none else '-' }} | {{ r.benchmark_return_pct|percent_raw_br if r.benchmark_return_pct is not none else '-' }} | {{ r.excess_return_pct|percent_raw_br if r.excess_return_pct is not none else '-' }} |
+  {%- endfor %}
+{%- endif %}
