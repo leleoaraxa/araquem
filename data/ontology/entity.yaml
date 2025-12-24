@@ -367,6 +367,13 @@ intents:
         - acao
         - acoes
         - fechamento
+        - resumo
+        - ultima leitura
+        - ate hoje
+        - ate agora
+        - fechamento
+        - fechamento do periodo
+        - d-1
     phrases:
       include:
         - desempenho da carteira
@@ -395,10 +402,6 @@ intents:
         - rentabilidade vs benchmark
         - rentabilidade da minha carteira de fiis versus o ifix
         - rentabilidade da carteira de fiis versus o ifix
-        - carteira melhor ou pior que o cdi
-        - carteira melhor ou pior que o ifix
-        - melhor ou pior que o cdi
-        - melhor ou pior que o ifix
         - tracking difference da carteira
         - comparar o retorno da carteira de fiis com o ifil
         - performance da carteira frente ao ibov
@@ -426,7 +429,6 @@ intents:
         - valor de fechamento do <ticker>
     entities:
       - client_fiis_performance_vs_benchmark
-      - client_fiis_performance_vs_benchmark_summary
 
   - name: client_fiis_performance_vs_benchmark_summary
     tokens:
@@ -481,6 +483,10 @@ intents:
         - carteira vs ibov ate hoje
         - carteira vs ifil ate agora
         - performance da carteira no fechamento do periodo
+        - carteira melhor ou pior que o cdi
+        - carteira melhor ou pior que o ifix
+        - melhor ou pior que o cdi
+        - melhor ou pior que o ifix
       exclude:
         - historico de performance
         - serie historica da carteira
