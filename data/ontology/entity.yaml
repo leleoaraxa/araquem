@@ -65,6 +65,8 @@ intents:
         - yield
         - noticia
         - noticias
+        - manchete
+        - manchetes
         - comunicado
         - processo
         - processos
@@ -76,11 +78,29 @@ intents:
         - imoveis
         - vacancia
         - ocupacao
+        - carteira
+        - posicao
+        - posicoes
+        - versus
+        - vs
+        - comparar
+        - ifix
+        - ifil
+        - ibov
+        - ibovespa
+        - fechamento
+        - ontem
+        - d-1
     phrases:
       include: []
       exclude:
         - fato relevante
         - fatos relevantes
+        - minha carteira
+        - preco medio
+        - minha posicao
+        - performance da minha carteira
+        - ultimos 30 dias
     entities:
       - fiis_precos
       - fiis_dividendos
@@ -116,6 +136,7 @@ intents:
         - meu
         - preco_medio
         - pm
+        - rentabilidade
         - prejuizo
         - ganho
         - lucro
@@ -187,6 +208,10 @@ intents:
         - quantidade em custodia do <ticker>
         - peso do <ticker> na carteira de fiis
         - peso do fii <ticker> na minha carteira
+        - minha posicao em <ticker>
+        - minha posicao no <ticker>
+        - rentabilidade da minha posicao em <ticker>
+        - rentabilidade da minha posicao no <ticker>
         - quantidade em custodia
         - custodia de cotas
         - distribuicao por fundo
@@ -307,6 +332,8 @@ intents:
       include:
         - desempenho
         - performance
+        - rentabilidade
+        - retorno
         - comparacao
         - comparar
         - comparativo
@@ -397,6 +424,11 @@ intents:
         - performance da minha carteira melhor ou pior que o ifix
         - performance da minha carteira de fiis frente ao indice de referencia
         - performance da minha carteira versus o benchmark
+        - retorno da minha carteira de fiis vs ifix
+        - retorno da minha carteira vs ifil
+        - rentabilidade da minha carteira versus o ifix
+        - rentabilidade da minha carteira versus o ifil
+        - comparar o retorno da minha carteira com o ifil
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -442,6 +474,8 @@ intents:
         - d-1
         - carteira
         - performance
+        - rentabilidade
+        - retorno
         - desempenho
         - comparacao
         - comparativo
@@ -483,6 +517,8 @@ intents:
         - fechamento do periodo
         - ate hoje
         - ate agora
+        - resumo da performance da minha carteira versus o ifix
+        - resumo da performance da minha carteira versus o ifil
       exclude:
         - historico de performance
         - serie historica da carteira
@@ -599,6 +635,10 @@ intents:
         - peso no ifil do <ticker>
         - o <ticker> ja fez parte do ifix
         - o <ticker> ja fez parte do ifil
+        - <ticker> faz parte do ifix
+        - <ticker> faz parte do ifil
+        - ja fez parte do ifix
+        - ja fez parte do ifil
         - cnpj do
         - nome do administrador
         - cnpj do administrador
@@ -1312,6 +1352,10 @@ intents:
         - maior patrimonio entre os fiis
         - alavancagem do <ticker>
         - alavancagem do <ticker> segundo ultimo relatorio
+        - <ticker> esta alavancado
+        - <ticker> está alavancado
+        - <ticker> esta alavancado? qual o nivel de alavancagem
+        - <ticker> esta alavancado qual o nivel de alavancagem
         - payout do <ticker>
         - payout e a reserva de dividendos do <ticker>
         - payout e reserva de dividendos do <ticker>
@@ -1860,6 +1904,9 @@ intents:
         - o que aconteceu com o
         - resumo das noticias do
         - noticias sobre fundos imobiliarios
+        - manchetes sobre fiis
+        - noticias recentes sobre fiis
+        - noticias recentes sobre fundos imobiliarios
         - ultima noticia de fii
         - houve alguma noticia sobre o
         - qual foi a noticia mais recente do
@@ -2079,6 +2126,8 @@ intents:
         - ranking de fiis com maior dy em 12 meses
         - quais fiis tem o maior dividend yield em 12 meses
         - quais fiis tem o menor drawdown historico
+        - menor drawdown historico dos fiis
+        - fiis com menor drawdown historico
         - quais fiis tem o maior patrimonio liquido
         - quais fiis tem o maior valor de mercado
         - qual a posicao atual do <ticker> no ranking de usuarios
@@ -2181,20 +2230,25 @@ intents:
         - variacao diaria do ifil
         - historico do ifix
         - historico do ifix nos ultimos
+        - historico do ifil
         - como o ifix se comportou
         - como o ifix se comportou em
         - quanto esta o ifix hoje
+        - historico do ifil nos ultimos 30 dias
         - historico do ibov
         - historico do ibov nos ultimos dias
         - historico do ibov nos ultimos 5 dias uteis
         - ifix ontem
         - ifix do dia
         - ibov do dia
+        - fechamento do ibov ontem
         - variacao do dia
         - variacao diaria
         - do dia
         - ultimos dias
         - ultimos 5 dias uteis
+        - variacao do ifix ontem
+        - quanto o ifil subiu ou caiu ontem
       exclude:
         - fez parte
         - ja fez parte
@@ -2554,6 +2608,10 @@ intents:
         - dy da carteira
         - dy mensal da carteira
         - ranking dos meus fiis
+        - fiis da minha carteira aparecem no ifix
+        - carteira aparece no ifix
+        - posicao da minha carteira no ifix
+        - fiis da minha carteira no ifix
       exclude:
         - peso do <ticker> na minha carteira
         - distribuicao da carteira por fundo
