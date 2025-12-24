@@ -1,6 +1,6 @@
 # app/planner/planner.py
 from __future__ import annotations
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 import re, unicodedata
 import logging
 import os
@@ -177,7 +177,7 @@ def _normalize_apply_on_config(raw: Any) -> Dict[str, Dict[str, str]]:
 
 
 def _resolve_apply_on(
-    apply_on_cfg: Dict[str, Dict[str, str]], intent: str | None, entity: str | None
+    apply_on_cfg: Dict[str, Dict[str, str]], intent: Optional[str], entity: Optional[str]
 ) -> str:
     if not isinstance(apply_on_cfg, dict):
         return "base"
@@ -217,7 +217,7 @@ def _load_rag_policy(path: str = "data/policies/rag.yaml") -> Dict[str, Any]:
 
 
 def _resolve_rerank_policy(
-    policy: Dict[str, Any], *, intent: str | None, entity: str | None, bucket: str
+    policy: Dict[str, Any], *, intent: Optional[str], entity: Optional[str], bucket: str
 ) -> Dict[str, Any]:
     """
     Extrai decisão declarativa sobre rerank/fusão a partir de data/policies/rag.yaml.
@@ -897,14 +897,12 @@ class Planner:
             }
         )
 
-        phase1_selection = _select_top_intent(phase1_candidates)
-
         thr = thresholds_cfg or {}
         dfl = thr.get("defaults") or {"min_score": 1.0, "min_gap": 0.5}
         intents_thr_cfg = thr.get("intents") or {}
         entities_thr_cfg = thr.get("entities") or {}
 
-        def _resolve_thresholds(intent_name: str | None, entity_name: str | None):
+        def _resolve_thresholds(intent_name: Optional[str], entity_name: Optional[str]):
             intent_thr = intents_thr_cfg.get(intent_name or "", {})
             entity_thr = entities_thr_cfg.get(entity_name or "", {})
             min_score_val = float(
@@ -964,11 +962,34 @@ class Planner:
                 "rerank_policy": rerank_policy,
             }
 
-        phase1_thresholds = _evaluate_thresholds(phase1_selection)
-        final_selection = phase1_selection
-        thresholds_result = phase1_thresholds
+        phase1_results = []
+        for intent_name in phase1_candidates:
+            selection = _select_top_intent([intent_name])
+            thresholds_eval = _evaluate_thresholds(selection)
+            phase1_results.append((selection, thresholds_eval))
 
-        if not phase1_thresholds["accepted"] and ticker_present:
+        accepted_phase1 = [
+            pair for pair in phase1_results if pair[1].get("accepted", False)
+        ]
+
+        ranking_source = fused_scores if fused_scores else intent_scores
+
+        def _score_for_ranking(intent_name: Optional[str]) -> float:
+            return float(ranking_source.get(intent_name or "", 0.0))
+
+        final_selection = None
+        thresholds_result = None
+
+        if accepted_phase1:
+            accepted_phase1_sorted = sorted(
+                accepted_phase1,
+                key=lambda pair: (
+                    -_score_for_ranking(pair[0].get("intent")),
+                    pair[0].get("intent") or "",
+                ),
+            )
+            final_selection, thresholds_result = accepted_phase1_sorted[0]
+        elif ticker_present:
             decision_path.append(
                 {
                     "stage": "intent_filter",
@@ -981,11 +1002,21 @@ class Planner:
             phase2_thresholds = _evaluate_thresholds(phase2_selection)
             final_selection = phase2_selection
             thresholds_result = phase2_thresholds
+        elif phase1_results:
+            fallback_sorted = sorted(
+                phase1_results,
+                key=lambda pair: (
+                    -_score_for_ranking(pair[0].get("intent")),
+                    pair[0].get("intent") or "",
+                ),
+            )
+            final_selection, thresholds_result = fallback_sorted[0]
+        else:
+            final_selection = _select_top_intent(phase1_candidates)
+            thresholds_result = _evaluate_thresholds(final_selection)
 
         chosen_intent = final_selection.get("intent")
         chosen_score = float(final_selection.get("score", 0.0))
-        gap_base = float(final_selection.get("gap_base", 0.0))
-        gap_final = float(final_selection.get("gap_final", 0.0))
 
         ordered_combined = sorted(
             combined_intents,
@@ -1046,20 +1077,20 @@ class Planner:
         # --- top2 gap calculado sobre scores base e finais (telemetria M7.4) ---
         # gap_base: ordenado por score base
         ordered_base = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
-        gap_base = 0.0
+        gap_base_global = 0.0
         if len(ordered_base) >= 2:
-            gap_base = float((ordered_base[0][1] or 0.0) - (ordered_base[1][1] or 0.0))
+            gap_base_global = float((ordered_base[0][1] or 0.0) - (ordered_base[1][1] or 0.0))
         elif len(ordered_base) == 1:
-            gap_base = float(ordered_base[0][1] or 0.0)
+            gap_base_global = float(ordered_base[0][1] or 0.0)
         # gap_final: ordenado por score final (fused_scores)
         ordered_final = sorted(fused_scores.items(), key=lambda kv: kv[1], reverse=True)
-        gap_final = 0.0
+        gap_final_global = 0.0
         if len(ordered_final) >= 2:
-            gap_final = float(
+            gap_final_global = float(
                 (ordered_final[0][1] or 0.0) - (ordered_final[1][1] or 0.0)
             )
         elif len(ordered_final) == 1:
-            gap_final = float(ordered_final[0][1] or 0.0)
+            gap_final_global = float(ordered_final[0][1] or 0.0)
 
         # --- trilha de decisão ---
         decision_path.append(
@@ -1212,8 +1243,8 @@ class Planner:
                     else []
                 ),
                 # Mantemos ambos para comparação no M7.4
-                "intent_top2_gap_base": gap_base,
-                "intent_top2_gap_final": gap_final,
+                "intent_top2_gap_base": gap_base_global,
+                "intent_top2_gap_final": gap_final_global,
             },
         }
         if top_entity_name:
@@ -1398,8 +1429,8 @@ class Planner:
                     accepted=("true" if accepted else "false"),
                 )
                 # Mesmo se apply_on=base, coletamos os dois gaps para análise
-                histogram("planner_decision_gap_before", float(gap_base))
-                histogram("planner_decision_gap_after", float(gap_final))
+                histogram("planner_decision_gap_before", float(gap_base_global))
+                histogram("planner_decision_gap_after", float(gap_final_global))
         except Exception:
             pass
 
