@@ -28,18 +28,18 @@
     },
     {
       "question": "Qual FII da minha carteira tem o melhor índice de Sharpe?",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     },
     {
       "question": "Qual FII da minha carteira tem o pior max drawdown?",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     },
     {
       "question": "Qual FII tem o maior peso na minha carteira hoje?",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     },
     {
       "question": "Qual é o DY de 12 meses da minha carteira de FIIs?",
@@ -53,8 +53,8 @@
     },
     {
       "question": "Qual é o peso de cada FII na minha carteira hoje?",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
     },
     {
       "question": "Qual é o total de dividendos dos meus FIIs acumulado em 12 meses?",
@@ -170,6 +170,21 @@
       "question": "Qual foi a rentabilidade da minha carteira de FIIs versus o IFIX em 2024",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "question": "Como o IFIX performou versus o CDI neste ano?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Cenário macro: relação entre Selic, IPCA e o IFIX comparado ao CDI neste semestre",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "question": "Quero apenas a visão consolidada da minha carteira de FIIs, sem comparar com CDI ou IFIX",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
     },
     {
       "question": "distribuição da minha carteira de fiis por fundo",
@@ -1752,6 +1767,16 @@
       "expected_entity": "fiis_yield_history"
     },
     {
+      "question": "Quero a série histórica mês a mês do dividend yield do HGLG11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Histórico mensal de dividend yield do VISC11 em formato de série temporal.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
       "question": "Qual foi o dividend yield do MXRF11 em outubro de 2024?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
@@ -1773,6 +1798,11 @@
     },
     {
       "question": "Serie historica de dy do HGLG11 por mes.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "question": "Evolução ao longo do tempo do dividend yield do MXRF11, mês a mês.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
