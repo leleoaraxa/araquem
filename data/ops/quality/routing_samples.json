@@ -27,21 +27,6 @@
       "expected_entity": "carteira_enriquecida"
     },
     {
-      "question": "Qual FII da minha carteira tem o melhor índice de Sharpe?",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
-      "question": "Qual FII da minha carteira tem o pior max drawdown?",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
-      "question": "Qual FII tem o maior peso na minha carteira hoje?",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
       "question": "Qual é o DY de 12 meses da minha carteira de FIIs?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
@@ -52,17 +37,17 @@
       "expected_entity": "carteira_enriquecida"
     },
     {
-      "question": "Qual é o peso de cada FII na minha carteira hoje?",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
       "question": "Qual é o total de dividendos dos meus FIIs acumulado em 12 meses?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
     {
       "question": "Quanto valem meus FIIs hoje no total?",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "question": "Quero apenas a visão consolidada da minha carteira de FIIs, sem comparar com CDI ou IFIX",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
@@ -117,11 +102,6 @@
       "expected_entity": "client_fiis_dividends_evolution"
     },
     {
-      "question": "renda mensal dos meus fiis",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
       "question": "Renda mensal dos meus FIIs",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
@@ -133,11 +113,6 @@
     },
     {
       "question": "Como foi a performance da minha carteira de FIIs versus o IFIX nos últimos 12 meses",
-      "expected_intent": "client_fiis_performance_vs_benchmark",
-      "expected_entity": "client_fiis_performance_vs_benchmark"
-    },
-    {
-      "question": "comparar o retorno da minha carteira de fiis com o IFIL",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
     },
@@ -162,32 +137,12 @@
       "expected_entity": "client_fiis_performance_vs_benchmark"
     },
     {
-      "question": "qual foi a rentabilidade da minha carteira de fiis versus o IFIX em 2024",
-      "expected_intent": "client_fiis_performance_vs_benchmark",
-      "expected_entity": "client_fiis_performance_vs_benchmark"
-    },
-    {
       "question": "Qual foi a rentabilidade da minha carteira de FIIs versus o IFIX em 2024",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
     },
     {
-      "question": "Resumo da performance da minha carteira de FIIs versus o IFIX",
-      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
-      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
-    },
-    {
-      "question": "Última leitura da carteira vs CDI",
-      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
-      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
-    },
-    {
-      "question": "Performance acumulada da carteira contra o IBOV (resumo)",
-      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
-      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
-    },
-    {
-      "question": "Visão resumida carteira de FIIs vs IFIL até hoje",
+      "question": "Carteira vs IFIX no fechamento do período mais recente",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
@@ -197,12 +152,7 @@
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
-      "question": "Carteira vs IFIX no fechamento do período mais recente",
-      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
-      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
-    },
-    {
-      "question": "Resumo carteira vs CDI D-1",
+      "question": "Performance acumulada da carteira contra o IBOV (resumo)",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
@@ -212,19 +162,24 @@
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
-      "question": "Como o IFIX performou versus o CDI neste ano?",
-      "expected_intent": "history_market_indicators",
-      "expected_entity": "history_market_indicators"
+      "question": "Resumo carteira vs CDI D-1",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
-      "question": "Cenário macro: relação entre Selic, IPCA e o IFIX comparado ao CDI neste semestre",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
+      "question": "Resumo da performance da minha carteira de FIIs versus o IFIX",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
-      "question": "Quero apenas a visão consolidada da minha carteira de FIIs, sem comparar com CDI ou IFIX",
-      "expected_intent": "carteira_enriquecida",
-      "expected_entity": "carteira_enriquecida"
+      "question": "Visão resumida carteira de FIIs vs IFIL até hoje",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
+      "question": "Última leitura da carteira vs CDI",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
       "question": "distribuição da minha carteira de fiis por fundo",
@@ -238,11 +193,6 @@
     },
     {
       "question": "Em qual corretora estão minhas cotas do XPML11",
-      "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
-    },
-    {
-      "question": "minhas posições de FIIs",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
@@ -277,12 +227,35 @@
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "Qual meu preço médio do CPTS11",
+      "question": "Qual FII da minha carteira tem o melhor índice de Sharpe?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
+      "question": "Qual FII da minha carteira tem o pior max drawdown?",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Qual FII tem o maior peso na minha carteira hoje?",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Qual meu preço médio do CPTS11",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions",
+      "expected_tickers": [
+        "CPTS11"
+      ]
+    },
+    {
       "question": "qual meu preço médio do HGLG11 na minha carteira",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "question": "Qual é o peso de cada FII na minha carteira hoje?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
@@ -304,7 +277,10 @@
     {
       "question": "Rentabilidade da minha posição em VISC11",
       "expected_intent": "client_fiis_positions",
-      "expected_entity": "client_fiis_positions"
+      "expected_entity": "client_fiis_positions",
+      "expected_tickers": [
+        "VISC11"
+      ]
     },
     {
       "question": "historico de dividendos e dy do MXRF11",
@@ -317,22 +293,12 @@
       "expected_entity": "dividendos_yield"
     },
     {
-      "question": "O que é dividend yield em FIIs",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
-    },
-    {
       "question": "O que é dividend yield em FIIs?",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
       "question": "Qual o DY de 12 meses do HGLG11",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
-    },
-    {
-      "question": "quanto o CPTS11 pagou de dividendos e dy em 08/2023",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
@@ -385,12 +351,10 @@
       "question": "overview de HGLG11 e RBRF11",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview",
-      "identifiers": {
-        "tickers": [
-          "HGLG11",
-          "RBRF11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11",
+        "RBRF11"
+      ]
     },
     {
       "question": "overview do KNRI11",
@@ -513,14 +477,38 @@
       "expected_entity": "fiis_cadastro"
     },
     {
+      "question": "o FPAB11 já fez parte do IFIX?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro",
+      "expected_tickers": [
+        "FPAB11"
+      ]
+    },
+    {
       "question": "O HGLG11 é um fundo de gestão ativa ou passiva?",
       "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_entity": "fiis_cadastro",
+      "expected_tickers": [
+        "HGLG11"
+      ]
     },
     {
       "question": "patrimônio e número de cotistas do MXRF11",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "peso do MCCI11 no IFIL",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "question": "peso do MCCI11 no IFIX",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro",
+      "expected_tickers": [
+        "MCCI11"
+      ]
     },
     {
       "question": "público alvo do XPML11",
@@ -585,7 +573,10 @@
     {
       "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
       "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_entity": "fiis_cadastro",
+      "expected_tickers": [
+        "HGLG11"
+      ]
     },
     {
       "question": "Qual é o público-alvo do XPLG11?",
@@ -666,13 +657,11 @@
       "question": "dividendos de HGLG11, MXRF11 e HGRE11",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos",
-      "identifiers": {
-        "tickers": [
-          "HGLG11",
-          "MXRF11",
-          "HGRE11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11",
+        "MXRF11",
+        "HGRE11"
+      ]
     },
     {
       "question": "dividendos do CXTL11",
@@ -916,11 +905,6 @@
     },
     {
       "question": "fiis com menor drawdown",
-      "expected_intent": "fiis_financials_risk",
-      "expected_entity": "fiis_financials_risk"
-    },
-    {
-      "question": "max drawdown do MXRF11",
       "expected_intent": "fiis_financials_risk",
       "expected_entity": "fiis_financials_risk"
     },
@@ -1212,12 +1196,19 @@
     {
       "question": "Quais matérias recentes destacaram o desempenho do HGLG11?",
       "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_entity": "fiis_noticias",
+      "expected_tickers": [
+        "HGLG11"
+      ]
     },
     {
       "question": "Quais notícias recentes existem sobre fundos imobiliários logísticos como HGLG11 e XPLG11?",
       "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_entity": "fiis_noticias",
+      "expected_tickers": [
+        "HGLG11",
+        "XPLG11"
+      ]
     },
     {
       "question": "Quais são as últimas notícias do HGLG11?",
@@ -1288,12 +1279,10 @@
       "question": "compare HGLG11 e MXRF11 em termos de preço",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos",
-      "identifiers": {
-        "tickers": [
-          "HGLG11",
-          "MXRF11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11",
+        "MXRF11"
+      ]
     },
     {
       "question": "cotação de fechamento do HGLG11 ontem",
@@ -1314,11 +1303,9 @@
       "question": "IPCA do mês e preço do HGLG11",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos",
-      "identifiers": {
-        "tickers": [
-          "HGLG11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11"
+      ]
     },
     {
       "question": "Me mostra o preço do VINO11 agora",
@@ -1327,11 +1314,6 @@
     },
     {
       "question": "máxima do CXTL11 em 27/10/2025",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
-    },
-    {
-      "question": "máxima e mínima do MXRF11 em 27/10/2025",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
@@ -1374,22 +1356,18 @@
       "question": "preço do HGLG11",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos",
-      "identifiers": {
-        "tickers": [
-          "HGLG11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11"
+      ]
     },
     {
       "question": "preço do HGLG11 ou HCTR11",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos",
-      "identifiers": {
-        "tickers": [
-          "HGLG11",
-          "HCTR11"
-        ]
-      }
+      "expected_tickers": [
+        "HGLG11",
+        "HCTR11"
+      ]
     },
     {
       "question": "preço do MCCI11 hoje",
@@ -1438,11 +1416,6 @@
     },
     {
       "question": "quanto está o HGLG hoje",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
-    },
-    {
-      "question": "quanto está o HGLG11 hoje",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
@@ -1607,21 +1580,6 @@
       "expected_entity": "fiis_rankings"
     },
     {
-      "question": "o FPAB11 já fez parte do IFIX?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
-      "question": "peso do MCCI11 no IFIL",
-      "expected_intent": "fiis_rankings",
-      "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "peso do MCCI11 no IFIX",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
-    },
-    {
       "question": "posicao do HGLG11 no IFIX",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -1777,6 +1735,11 @@
       "expected_entity": "fiis_yield_history"
     },
     {
+      "question": "Evolução ao longo do tempo do dividend yield do MXRF11, mês a mês.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
       "question": "Grafico com o dy mensal do MXRF11 nos ultimos 2 anos.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
@@ -1797,22 +1760,17 @@
       "expected_entity": "fiis_yield_history"
     },
     {
+      "question": "Histórico mensal de dividend yield do VISC11 em formato de série temporal.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
       "question": "Me mostra o historico de dividend yield do MXRF11.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
     {
       "question": "Mostra o dy 12m mes a mes do HGLG11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Quero a série histórica mês a mês do dividend yield do HGLG11.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
-      "question": "Histórico mensal de dividend yield do VISC11 em formato de série temporal.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
@@ -1832,6 +1790,11 @@
       "expected_entity": "fiis_yield_history"
     },
     {
+      "question": "Quero a série histórica mês a mês do dividend yield do HGLG11.",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
       "question": "Quero ver o dy por mes do VISC11.",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
@@ -1842,19 +1805,12 @@
       "expected_entity": "fiis_yield_history"
     },
     {
-      "question": "Evolução ao longo do tempo do dividend yield do MXRF11, mês a mês.",
-      "expected_intent": "fiis_yield_history",
-      "expected_entity": "fiis_yield_history"
-    },
-    {
       "question": "yield do HGRE11",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history",
-      "identifiers": {
-        "tickers": [
-          "HGRE11"
-        ]
-      }
+      "expected_tickers": [
+        "HGRE11"
+      ]
     },
     {
       "question": "como o IFIX se comportou em 2024",
@@ -2102,6 +2058,11 @@
       "expected_entity": "history_market_indicators"
     },
     {
+      "question": "Como o IFIX performou versus o CDI neste ano?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
       "question": "histórico do IPCA nos últimos 24 meses",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
@@ -2197,6 +2158,11 @@
       "expected_entity": "macro_consolidada"
     },
     {
+      "question": "Cenário macro: relação entre Selic, IPCA e o IFIX comparado ao CDI neste semestre",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
       "question": "Como a alta do dólar influencia o cenário para FIIs de recebíveis e fundos em geral?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
@@ -2222,6 +2188,11 @@
       "expected_entity": "macro_consolidada"
     },
     {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
       "question": "Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
@@ -2242,6 +2213,11 @@
       "expected_entity": "macro_consolidada"
     },
     {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
       "question": "Qual é a importância do IPCA e da Selic para quem vive de renda com FIIs?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
@@ -2253,16 +2229,6 @@
     },
     {
       "question": "Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "macro_consolidada",
-      "expected_entity": "macro_consolidada"
-    },
-    {
-      "question": "O que significa IPCA alto para FIIs?",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     }
