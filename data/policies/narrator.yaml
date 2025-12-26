@@ -6,7 +6,7 @@ terms:
 
 narrator:
   model: sirios-narrator:latest
-  llm_enabled: true
+  llm_enabled: false
   shadow: false
 
   # Objetivo operacional:
@@ -24,7 +24,7 @@ narrator:
     C:
       llm_enabled: false
     D:
-      llm_enabled: true
+      llm_enabled: false
       mode: global_post_sql
       max_tokens: 512
       temperature: 0.1
@@ -113,9 +113,9 @@ narrator:
     # Overview / yield / carteira
     # ──────────────────
     fii_overview:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 10
       max_prompt_tokens: 700
       max_output_tokens: 180
@@ -163,9 +163,9 @@ narrator:
       strict_mode: false
 
     macro_consolidada:
-      llm_enabled: true
+      llm_enabled: false
       shadow: false
-      rewrite_only: true
+      rewrite_only: false
       max_llm_rows: 50
       max_prompt_tokens: 1200
       max_output_tokens: 280
@@ -334,6 +334,17 @@ narrator:
       strict_mode: false
 
     client_fiis_performance_vs_benchmark:
+      llm_enabled: false
+      shadow: false
+      rewrite_only: false
+      max_llm_rows: 0
+      use_rag_in_prompt: false
+      use_conversation_context: false
+      rag_fallback_when_no_rows: false
+      concept_with_data_when_rag: false
+      strict_mode: false
+
+    client_fiis_performance_vs_benchmark_summary:
       llm_enabled: false
       shadow: false
       rewrite_only: false

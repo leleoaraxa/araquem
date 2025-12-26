@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-26T11:23:55Z",
+  "generated_at": "2025-12-26T16:27:14Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -106,8 +106,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 53,
-      "sha_all": "7b645bd525d599fe3309450a387f7a988fd1b101831c7a9a653e5c97782077d5"
+      "chunks": 54,
+      "sha_all": "6be57bdd281a4eb3b38b165a6433d082765e70aac6f31b871381a25a30742ab4"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -295,6 +295,222 @@
       "sha_all": "a22fd79ffe2e7a15d609f0d6ebdb45d85e88351fee8d63ed543d25446782a70b"
     },
     {
+      "id": "entity-dividendos-yield",
+      "path": "data/entities/dividendos_yield/dividendos_yield.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos",
+        "yield",
+        "entity:dividendos_yield"
+      ],
+      "chunks": 5,
+      "sha_all": "0dd420ce7c10d8a068aa0ec625492a571b61a3057908ab23b95a71c2f8201dd0"
+    },
+    {
+      "id": "entity-dividendos-yield-hints",
+      "path": "data/entities/dividendos_yield/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos",
+        "yield",
+        "entity:dividendos_yield"
+      ],
+      "chunks": 1,
+      "sha_all": "6b7f8240c8a50a1ff18679fe7711a68f68c5cca6527ea2710c2a02e61cd98791"
+    },
+    {
+      "id": "entity-fiis-yield-history",
+      "path": "data/entities/fiis_yield_history/fiis_yield_history.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos",
+        "yield",
+        "history",
+        "entity:fiis_yield_history"
+      ],
+      "chunks": 3,
+      "sha_all": "41c7af41d16490a5bd385d74702a3304f08433a88e2d256b4f78a66066fb937b"
+    },
+    {
+      "id": "entity-fiis-yield-history-hints",
+      "path": "data/entities/fiis_yield_history/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "dividendos",
+        "yield",
+        "history",
+        "entity:fiis_yield_history"
+      ],
+      "chunks": 1,
+      "sha_all": "61de5d1eb026feaafd5cf013b6f9d3ff33599828500f462f6964d0cebd549afd"
+    },
+    {
+      "id": "entity-fii-overview",
+      "path": "data/entities/fii_overview/fii_overview.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "overview",
+        "entity:fii_overview"
+      ],
+      "chunks": 7,
+      "sha_all": "c42f8cc0c7b709ff1b10606c664a1ef4af185ee93b501bb4d89dba9492a64ebd"
+    },
+    {
+      "id": "entity-fii-overview-hints",
+      "path": "data/entities/fii_overview/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "overview",
+        "entity:fii_overview"
+      ],
+      "chunks": 2,
+      "sha_all": "be62ab5aa339843912ced3950c20cbe976001b3e0e240065cc3f9f5b1431621c"
+    },
+    {
+      "id": "entity-carteira-enriquecida",
+      "path": "data/entities/carteira_enriquecida/carteira_enriquecida.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "carteira",
+        "private",
+        "entity:carteira_enriquecida"
+      ],
+      "chunks": 5,
+      "sha_all": "bedbfbc332b0e0f8e2918c82ce19f3992d6980b981612a65cf5d35008c15705d"
+    },
+    {
+      "id": "entity-carteira-enriquecida-hints",
+      "path": "data/entities/carteira_enriquecida/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "carteira",
+        "private",
+        "entity:carteira_enriquecida"
+      ],
+      "chunks": 1,
+      "sha_all": "fb0604eb6070f186f4a5253749ee1b03d94d06a6eac071c06e8de005c8ed59d8"
+    },
+    {
+      "id": "entity-client-fiis-dividends-evolution",
+      "path": "data/entities/client_fiis_dividends_evolution/client_fiis_dividends_evolution.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "dividendos",
+        "evolution",
+        "entity:client_fiis_dividends_evolution"
+      ],
+      "chunks": 3,
+      "sha_all": "01f30b09861ee2162ccd81fb306266a8a23923026a21bb302e2d70e911f372f1"
+    },
+    {
+      "id": "entity-client-fiis-dividends-evolution-hints",
+      "path": "data/entities/client_fiis_dividends_evolution/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "dividendos",
+        "evolution",
+        "entity:client_fiis_dividends_evolution"
+      ],
+      "chunks": 1,
+      "sha_all": "956a22d3e2f480c4701b5988d44317e94b78a22ed165e79e09ba7db7af366b26"
+    },
+    {
+      "id": "entity-client-fiis-performance-vs-benchmark",
+      "path": "data/entities/client_fiis_performance_vs_benchmark/client_fiis_performance_vs_benchmark.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "performance",
+        "benchmark",
+        "entity:client_fiis_performance_vs_benchmark"
+      ],
+      "chunks": 3,
+      "sha_all": "bfcdc61758958b7c514e7a519ed13a8369c306c3d9b26e6d210b97e00a69e253"
+    },
+    {
+      "id": "entity-client-fiis-performance-vs-benchmark-hints",
+      "path": "data/entities/client_fiis_performance_vs_benchmark/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "performance",
+        "benchmark",
+        "entity:client_fiis_performance_vs_benchmark"
+      ],
+      "chunks": 1,
+      "sha_all": "64c56797aac7960ccd65b0cefd8fe94d06e61515cf0db697a0b7b3d243c54c28"
+    },
+    {
+      "id": "entity-client-fiis-performance-vs-benchmark-summary",
+      "path": "data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "performance",
+        "benchmark",
+        "summary",
+        "entity:client_fiis_performance_vs_benchmark_summary"
+      ],
+      "chunks": 4,
+      "sha_all": "b448dce1681844e3e9fb28727f61a8bad6533de5344ac8077cf21a496822d6d2"
+    },
+    {
+      "id": "entity-client-fiis-performance-vs-benchmark-summary-hints",
+      "path": "data/entities/client_fiis_performance_vs_benchmark_summary/hints.md",
+      "tags": [
+        "entities",
+        "fiis",
+        "private",
+        "performance",
+        "benchmark",
+        "summary",
+        "entity:client_fiis_performance_vs_benchmark_summary"
+      ],
+      "chunks": 1,
+      "sha_all": "a0bc1fbb042e087f84cce18a9332cc530201c0366297b36a468d10164e309566"
+    },
+    {
+      "id": "entity-macro-consolidada",
+      "path": "data/entities/macro_consolidada/macro_consolidada.yaml",
+      "tags": [
+        "entities",
+        "macro",
+        "market",
+        "indicators",
+        "entity:macro_consolidada"
+      ],
+      "chunks": 3,
+      "sha_all": "c46a9fbc8513529b695bdbfff36e9917cd87aec2651aac94463310edccb3d0d2"
+    },
+    {
+      "id": "entity-macro-consolidada-hints",
+      "path": "data/entities/macro_consolidada/hints.md",
+      "tags": [
+        "entities",
+        "macro",
+        "market",
+        "indicators",
+        "entity:macro_consolidada"
+      ],
+      "chunks": 1,
+      "sha_all": "5afed6d503d4090ab05054d9eb7a9e34a34fa520b0fb5388fae33c87404264be"
+    },
+    {
       "id": "entity-client-fiis-positions",
       "path": "data/entities/client_fiis_positions/client_fiis_positions.yaml",
       "tags": [
@@ -424,8 +640,8 @@
         "routing",
         "samples"
       ],
-      "chunks": 60,
-      "sha_all": "4c07ad44c59dbb485bf8e9267ea362b9bf575060f02da681acc716eae99421c0"
+      "chunks": 61,
+      "sha_all": "e21303916ca3aa5c7eb7a73f9ccab6da83e57a4ec9515c68c4d24aae515174ce"
     },
     {
       "id": "q-projection-cadastro",
@@ -678,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1766748403,
+  "last_refresh_epoch": 1766766596,
   "vector_dimension": 768,
-  "total_chunks": 270
+  "total_chunks": 314
 }

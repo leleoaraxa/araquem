@@ -271,6 +271,13 @@ intents:
     bindings:
       document_number: context.client_id
 
+  client_fiis_performance_vs_benchmark_summary:
+    inference: false
+    required:
+      - document_number
+    bindings:
+      document_number: context.client_id
+
   fiis_yield_history:
     compute_on_read:
       window:

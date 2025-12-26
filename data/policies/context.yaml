@@ -26,6 +26,7 @@ context:
     - client_fiis_positions
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
+    - client_fiis_performance_vs_benchmark_summary
     - history_b3_indexes
     - history_currency_rates
     - history_market_indicators
@@ -52,6 +53,7 @@ context:
     - client_fiis_positions
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
+    - client_fiis_performance_vs_benchmark_summary
     - history_b3_indexes
     - history_currency_rates
     - history_market_indicators
@@ -126,6 +128,9 @@ context:
       use_referenced_ticker: false
       use_last_entity: false
     client_fiis_performance_vs_benchmark:
+      use_referenced_ticker: false
+      use_last_entity: false
+    client_fiis_performance_vs_benchmark_summary:
       use_referenced_ticker: false
       use_last_entity: false
     carteira_enriquecida:

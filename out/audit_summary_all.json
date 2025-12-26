@@ -2,26 +2,26 @@
   "suites": {
     "carteira_enriquecida": {
       "total": 14,
-      "gate_ok": 13,
-      "gate_fail": 1,
+      "gate_ok": 14,
+      "gate_fail": 0,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 11,
+          "matches": 14,
           "total": 14,
-          "accuracy": 0.7857142857142857
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 11,
+          "matches": 14,
           "total": 14,
-          "accuracy": 0.7857142857142857
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 11,
+          "matches": 14,
           "total": 14,
-          "accuracy": 0.7857142857142857
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para carteira_enriquecida — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo."
@@ -35,30 +35,30 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 5,
+          "matches": 4,
           "total": 5,
-          "accuracy": 1.0
+          "accuracy": 0.8
         },
         "entity": {
-          "matches": 5,
+          "matches": 4,
           "total": 5,
-          "accuracy": 1.0
+          "accuracy": 0.8
         },
         "both": {
-          "matches": 5,
+          "matches": 4,
           "total": 5,
-          "accuracy": 1.0
+          "accuracy": 0.8
         }
       },
       "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente"
     },
     "client_fiis_performance_vs_benchmark": {
       "total": 5,
-      "gate_ok": 3,
-      "gate_fail": 2,
+      "gate_ok": 5,
+      "gate_fail": 0,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
-      "narrator_used": 2,
+      "narrator_used": 1,
       "accuracy": {
         "intent": {
           "matches": 0,
@@ -80,52 +80,52 @@
     },
     "client_fiis_performance_vs_benchmark_summary": {
       "total": 8,
-      "gate_ok": 7,
-      "gate_fail": 1,
+      "gate_ok": 8,
+      "gate_fail": 0,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
-      "narrator_used": 6,
+      "narrator_used": 7,
       "accuracy": {
         "intent": {
-          "matches": 6,
+          "matches": 7,
           "total": 8,
-          "accuracy": 0.75
+          "accuracy": 0.875
         },
         "entity": {
-          "matches": 6,
+          "matches": 7,
           "total": 8,
-          "accuracy": 0.75
+          "accuracy": 0.875
         },
         "both": {
-          "matches": 6,
+          "matches": 7,
           "total": 8,
-          "accuracy": 0.75
+          "accuracy": 0.875
         }
       },
       "description": "Suíte de testes para o resumo de performance da carteira de FIIs versus benchmarks (última leitura por benchmark)"
     },
     "client_fiis_positions": {
       "total": 7,
-      "gate_ok": 5,
-      "gate_fail": 2,
+      "gate_ok": 7,
+      "gate_fail": 0,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 5,
+          "matches": 7,
           "total": 7,
-          "accuracy": 0.7142857142857143
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 5,
+          "matches": 7,
           "total": 7,
-          "accuracy": 0.7142857142857143
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 5,
+          "matches": 7,
           "total": 7,
-          "accuracy": 0.7142857142857143
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira"
@@ -184,26 +184,26 @@
     },
     "fiis_cadastro": {
       "total": 15,
-      "gate_ok": 12,
-      "gate_fail": 3,
+      "gate_ok": 15,
+      "gate_fail": 0,
       "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 12,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.8
+          "accuracy": 0.8666666666666667
         },
         "entity": {
-          "matches": 12,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.8
+          "accuracy": 0.8666666666666667
         },
         "both": {
-          "matches": 12,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.8
+          "accuracy": 0.8666666666666667
         }
       },
       "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas)."
@@ -288,26 +288,26 @@
     },
     "fiis_financials_snapshot": {
       "total": 15,
-      "gate_ok": 14,
-      "gate_fail": 1,
-      "cache_hit_response": 8,
+      "gate_ok": 15,
+      "gate_fail": 0,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)"
@@ -340,26 +340,26 @@
     },
     "fiis_noticias": {
       "total": 12,
-      "gate_ok": 9,
-      "gate_fail": 3,
-      "cache_hit_response": 6,
+      "gate_ok": 12,
+      "gate_fail": 0,
+      "cache_hit_response": 8,
       "cache_hit_metrics": 0,
       "narrator_used": 1,
       "accuracy": {
         "intent": {
-          "matches": 8,
+          "matches": 11,
           "total": 12,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.9166666666666666
         },
         "entity": {
-          "matches": 8,
+          "matches": 11,
           "total": 12,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.9166666666666666
         },
         "both": {
-          "matches": 8,
+          "matches": 11,
           "total": 12,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.9166666666666666
         }
       },
       "description": "Suíte de testes para fiis_noticias — notícias, fatos relevantes, manchetes e atualizações recentes associadas a FIIs."
@@ -470,26 +470,26 @@
     },
     "history_b3_indexes": {
       "total": 15,
-      "gate_ok": 10,
-      "gate_fail": 5,
-      "cache_hit_response": 6,
+      "gate_ok": 13,
+      "gate_fail": 2,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 10,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.8666666666666667
         },
         "entity": {
-          "matches": 10,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.8666666666666667
         },
         "both": {
-          "matches": 10,
+          "matches": 13,
           "total": 15,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.8666666666666667
         }
       },
       "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1)."
@@ -524,7 +524,7 @@
       "total": 6,
       "gate_ok": 6,
       "gate_fail": 0,
-      "cache_hit_response": 5,
+      "cache_hit_response": 4,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -574,26 +574,26 @@
     },
     "negativos_indices": {
       "total": 4,
-      "gate_ok": 3,
-      "gate_fail": 1,
-      "cache_hit_response": 3,
+      "gate_ok": 4,
+      "gate_fail": 0,
+      "cache_hit_response": 4,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 3,
+          "matches": 4,
           "total": 4,
-          "accuracy": 0.75
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 3,
+          "matches": 4,
           "total": 4,
-          "accuracy": 0.75
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 3,
+          "matches": 4,
           "total": 4,
-          "accuracy": 0.75
+          "accuracy": 1.0
         }
       },
       "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_precos"
@@ -601,26 +601,26 @@
   },
   "overall": {
     "total": 235,
-    "gate_ok": 215,
-    "gate_fail": 20,
-    "cache_hit_response": 99,
+    "gate_ok": 232,
+    "gate_fail": 3,
+    "cache_hit_response": 105,
     "cache_hit_metrics": 0,
     "narrator_used": 37,
     "accuracy": {
       "intent": {
-        "matches": 198,
+        "matches": 212,
         "total": 235,
-        "accuracy": 0.8425531914893617
+        "accuracy": 0.902127659574468
       },
       "entity": {
-        "matches": 198,
+        "matches": 212,
         "total": 235,
-        "accuracy": 0.8425531914893617
+        "accuracy": 0.902127659574468
       },
       "both": {
-        "matches": 198,
+        "matches": 212,
         "total": 235,
-        "accuracy": 0.8425531914893617
+        "accuracy": 0.902127659574468
       }
     }
   }
