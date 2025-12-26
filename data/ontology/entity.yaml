@@ -146,6 +146,9 @@ intents:
         - minhas
         - meu
         - preco_medio
+        - preco medio
+        - preco
+        - medio
         - pm
         - rentabilidade
         - prejuizo
@@ -215,6 +218,7 @@ intents:
         - preco medio de <ticker> na minha carteira
         - preco medio do <ticker> na carteira
         - qual meu preco medio de <ticker>
+        - qual meu preco medio do <ticker>
         - quanto tenho em custodia da minha carteira de fiis
         - quantidade em custodia do <ticker>
         - peso do <ticker> na carteira de fiis
@@ -329,6 +333,8 @@ intents:
         - versus ifix
         - versus ibov
         - versus cdi
+        - total de dividendos dos meus fiis
+        - total de dividendos da minha carteira
         - reserva de dividendos
         - relatorio gerencial
         - preco medio
@@ -360,6 +366,7 @@ intents:
         - cdi
         - ibov
         - ibovespa
+        - carteira
       exclude:
         - cpf
         - cnpj
@@ -521,6 +528,7 @@ intents:
         - carteira melhor ou pior que o ifix
         - melhor ou pior que o cdi
         - melhor ou pior que o ifix
+        - resumo carteira vs cdi d-1
         - ultima leitura
         - ultima referencia
         - agregado por benchmark
@@ -639,10 +647,6 @@ intents:
         - patrimonio e numero de cotistas do <ticker>
         - quantos cotistas tem o <ticker>
         - fundo exclusivo
-        - peso do <ticker> no ifix
-        - peso do <ticker> no ifil
-        - peso no ifix do <ticker>
-        - peso no ifil do <ticker>
         - o <ticker> ja fez parte do ifix
         - o <ticker> ja fez parte do ifil
         - <ticker> faz parte do ifix
@@ -657,8 +661,6 @@ intents:
         - publico alvo
         - numero de cotas
         - numero de cotistas
-        - peso no ifix
-        - peso no ifil
       exclude:
         - cotacao do
         - dividendo do
@@ -1659,6 +1661,11 @@ intents:
         - campeoes
         - lanternas
         - destaques
+        - carteira
+        - minha
+        - minhas
+        - meus
+        - meu
     phrases:
       include:
         - indicador de risco do
@@ -1826,6 +1833,9 @@ intents:
         - negativas
         - ruim
         - ruins
+        - logistico
+        - logisticos
+        - setor
       exclude:
         - snapshot
         - overview
@@ -1934,6 +1944,10 @@ intents:
         - alguma noticia importante sobre <ticker> nesta semana
         - fato relevante
         - fatos relevantes
+        - noticias recentes sobre o setor logistico de fiis
+        - noticias recentes sobre fundos imobiliarios logisticos
+        - noticias recentes sobre hglg11 e xplg11
+        - noticias sobre hglg11 e xplg11
       exclude:
         - minha carteira
         - meus fiis
@@ -2077,6 +2091,10 @@ intents:
         - ifil
         - indice
         - indices
+        - peso
+        - pesos
+        - weight
+        - participacao
       exclude:
         - preco
         - pontos
@@ -2097,7 +2115,6 @@ intents:
         - imprensa
         - comunicado
         - selic
-        - peso
     phrases:
       include:
         - ranking da sirios
@@ -2151,6 +2168,14 @@ intents:
         - pior desempenho
         - posicao no ifix
         - posicao no ifil
+        - peso do <ticker> no ifix
+        - peso do <ticker> no ifil
+        - peso no ifix do <ticker>
+        - peso no ifil do <ticker>
+        - qual o peso do <ticker> no ifix
+        - qual o peso do <ticker> no ifil
+        - peso do <ticker> no ifix e no ifil
+        - peso no ifix e no ifil
       exclude:
         - preco do
         - vacancia do
@@ -2171,13 +2196,6 @@ intents:
         - minha carteira
         - minha carteira de fiis
         - meus fiis
-        - peso do
-        - peso no ifix do
-        - peso no ifil do
-        - peso do <ticker> no ifix
-        - peso do <ticker> no ifil
-        - peso no ifix do <ticker>
-        - peso no ifil do <ticker>
         - o <ticker> ja fez parte do ifix
         - o <ticker> ja fez parte do ifil
         - media do
@@ -2208,6 +2226,10 @@ intents:
         - d-1
         - ontem
         - historico
+        - resumo
+        - variacoes
+        - ultimos
+        - serie
       exclude:
         - peso
         - posicao
@@ -2245,6 +2267,7 @@ intents:
         - como o ifix se comportou em
         - quanto esta o ifix hoje
         - historico do ifil nos ultimos 30 dias
+        - serie historica do ifil nos ultimos 30 dias
         - historico do ibov
         - historico do ibov nos ultimos dias
         - historico do ibov nos ultimos 5 dias uteis
@@ -2259,6 +2282,8 @@ intents:
         - ultimos 5 dias uteis
         - variacao do ifix ontem
         - quanto o ifil subiu ou caiu ontem
+        - resumo das ultimas variacoes do ifix e do ifil
+        - resumo das variacoes recentes do ifix
       exclude:
         - fez parte
         - ja fez parte
@@ -2362,6 +2387,9 @@ intents:
         - usd
         - euro
         - eur
+        - carteira
+        - vs
+        - versus
     phrases:
       include:
         - selic de ontem
@@ -2443,6 +2471,8 @@ intents:
         - minha carteira
         - performance da carteira
         - melhor ou pior que o cdi
+        - carteira vs cdi
+        - carteira versus cdi
         - mesmo dia
         - indice b3
     entities:
@@ -2568,12 +2598,13 @@ intents:
         - rentabilidade
         - total
         - patrimonio
+        - carteira
+        - minha
+        - meu
+        - meus
+        - minhas
       exclude:
         - corretora
-        - ifix
-        - ifil
-        - ibov
-        - cdi
         - benchmark
         - vs
         - versus
@@ -2619,9 +2650,16 @@ intents:
         - dy mensal da carteira
         - ranking dos meus fiis
         - fiis da minha carteira aparecem no ifix
+        - fiis da minha carteira aparecem no ifil
         - carteira aparece no ifix
+        - carteira aparece no ifil
         - posicao da minha carteira no ifix
+        - posicao da minha carteira no ifil
         - fiis da minha carteira no ifix
+        - fiis da minha carteira no ifil
+        - posicao dos meus fiis no ifix
+        - posicao dos meus fiis no ifil
+        - qual fii da minha carteira tem o pior max drawdown
       exclude:
         - peso do <ticker> na minha carteira
         - distribuicao da carteira por fundo
