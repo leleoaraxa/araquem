@@ -18,6 +18,7 @@ narrator_shadow:
     - client_fiis_positions
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
+    - client_fiis_performance_vs_benchmark_summary
 
   # Política de amostragem
   sampling:

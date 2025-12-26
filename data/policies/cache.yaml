@@ -35,6 +35,14 @@ policies:
     - document_number
     - benchmark_code
     - date_reference
+  client_fiis_performance_vs_benchmark_summary:
+    ttl_seconds: 900
+    refresh_at: none
+    scope: prv
+    key_fields:
+    - document_number
+    - benchmark_code
+    - date_reference
   fiis_cadastro:
     ttl_seconds: 86400
     refresh_at: 07:00
