@@ -39,6 +39,17 @@ _PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _ENTITY_ROOT = Path("data/entities")
 
 
+def _entity_yaml_path(entity: str) -> Path:
+    base_dir = _ENTITY_ROOT / str(entity)
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    if new_path.exists():
+        return new_path
+    if legacy_path.exists():
+        return legacy_path
+    return new_path
+
+
 def _strip_accents(text: str) -> str:
     return "".join(
         c for c in unicodedata.normalize("NFD", text) if unicodedata.category(c) != "Mn"
@@ -55,7 +66,7 @@ def _normalize_for_metrics(text: str) -> str:
 def _load_entity_config(entity: Optional[str]) -> Dict[str, Any]:
     if not entity:
         return {}
-    path = _ENTITY_ROOT / str(entity) / "entity.yaml"
+    path = _entity_yaml_path(str(entity))
     if not path.exists():
         LOGGER.warning(
             "entity.yaml ausente para %s em %s; usando config vazia", entity, path
@@ -386,7 +397,7 @@ class Orchestrator:
                         question=question,
                         intent=intent,
                         entity=entity,
-                        entity_yaml_path=f"data/entities/{entity}/entity.yaml",
+                        entity_yaml_path=str(_entity_yaml_path(str(entity))),
                         defaults_yaml_path="data/ops/param_inference.yaml",
                         identifiers=identifiers,
                         client_id=client_id,

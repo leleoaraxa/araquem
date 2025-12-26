@@ -111,7 +111,7 @@
     },
     {
       "id": "entity-fiis-cadastro",
-      "path": "data/entities/fiis_cadastro/entity.yaml",
+      "path": "data/entities/fiis_cadastro/fiis_cadastro.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -135,7 +135,7 @@
     },
     {
       "id": "entity-fiis-dividendos",
-      "path": "data/entities/fiis_dividendos/entity.yaml",
+      "path": "data/entities/fiis_dividendos/fiis_dividendos.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -159,7 +159,7 @@
     },
     {
       "id": "entity-fiis-precos",
-      "path": "data/entities/fiis_precos/entity.yaml",
+      "path": "data/entities/fiis_precos/fiis_precos.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -183,7 +183,7 @@
     },
     {
       "id": "entity-fiis-rankings",
-      "path": "data/entities/fiis_rankings/entity.yaml",
+      "path": "data/entities/fiis_rankings/fiis_rankings.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -195,7 +195,7 @@
     },
     {
       "id": "entity-fiis-imoveis",
-      "path": "data/entities/fiis_imoveis/entity.yaml",
+      "path": "data/entities/fiis_imoveis/fiis_imoveis.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -207,7 +207,7 @@
     },
     {
       "id": "entity-fiis-noticias",
-      "path": "data/entities/fiis_noticias/entity.yaml",
+      "path": "data/entities/fiis_noticias/fiis_noticias.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -219,7 +219,7 @@
     },
     {
       "id": "entity-fiis-processos",
-      "path": "data/entities/fiis_processos/entity.yaml",
+      "path": "data/entities/fiis_processos/fiis_processos.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -231,7 +231,7 @@
     },
     {
       "id": "entity-fiis-financials-snapshot",
-      "path": "data/entities/fiis_financials_snapshot/entity.yaml",
+      "path": "data/entities/fiis_financials_snapshot/fiis_financials_snapshot.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -244,7 +244,7 @@
     },
     {
       "id": "entity-fiis-financials-revenue",
-      "path": "data/entities/fiis_financials_revenue_schedule/entity.yaml",
+      "path": "data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -257,7 +257,7 @@
     },
     {
       "id": "entity-fiis-financials-risk",
-      "path": "data/entities/fiis_financials_risk/entity.yaml",
+      "path": "data/entities/fiis_financials_risk/fiis_financials_risk.yaml",
       "tags": [
         "entities",
         "fiis",
@@ -296,7 +296,7 @@
     },
     {
       "id": "entity-client-fiis-positions",
-      "path": "data/entities/client_fiis_positions/entity.yaml",
+      "path": "data/entities/client_fiis_positions/client_fiis_positions.yaml",
       "tags": [
         "entities",
         "private",
@@ -641,7 +641,7 @@
     },
     {
       "id": "entity-history-b3-indexes",
-      "path": "data/entities/history_b3_indexes/entity.yaml",
+      "path": "data/entities/history_b3_indexes/history_b3_indexes.yaml",
       "tags": [
         "entities",
         "market",
@@ -654,7 +654,7 @@
     },
     {
       "id": "entity-history-currency-rates",
-      "path": "data/entities/history_currency_rates/entity.yaml",
+      "path": "data/entities/history_currency_rates/history_currency_rates.yaml",
       "tags": [
         "entities",
         "fx",
@@ -666,7 +666,7 @@
     },
     {
       "id": "entity-history-market-indicators",
-      "path": "data/entities/history_market_indicators/entity.yaml",
+      "path": "data/entities/history_market_indicators/history_market_indicators.yaml",
       "tags": [
         "entities",
         "market",

@@ -16,6 +16,17 @@ _ENTITY_ROOT = Path("data/entities")
 _FORMATTING_POLICY_PATH = Path("data/policies/formatting.yaml")
 
 
+def _entity_yaml_path(entity: str) -> Path:
+    base_dir = _ENTITY_ROOT / entity
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    if new_path.exists():
+        return new_path
+    if legacy_path.exists():
+        return legacy_path
+    return new_path
+
+
 def _load_formatting_policy() -> Dict[str, Any]:
     try:
         policy = load_yaml_cached(str(_FORMATTING_POLICY_PATH))
@@ -406,7 +417,7 @@ def _extract_ticker(
 def get_entity_presentation_kind(entity: str) -> Optional[str]:
     """Retorna presentation.kind do entity.yaml, se disponível."""
 
-    cfg_path = _ENTITY_ROOT / entity / "entity.yaml"
+    cfg_path = _entity_yaml_path(entity)
     try:
         cfg = load_yaml_cached(str(cfg_path))
     except Exception:
@@ -437,7 +448,7 @@ def render_rows_template(
     identifiers_safe = identifiers if isinstance(identifiers, dict) else {}
 
     # 1) Carrega entity.yaml
-    cfg_path = _ENTITY_ROOT / entity / "entity.yaml"
+    cfg_path = _entity_yaml_path(entity)
     try:
         cfg = load_yaml_cached(str(cfg_path))
     except Exception as exc:

@@ -109,7 +109,10 @@ def build_surface_entry(
     catalog_ids: Set[str],
 ) -> Dict[str, object]:
     entity_dir = root / entity_id
-    entity_yaml_path = entity_dir / "entity.yaml"
+    new_entity_yaml_path = entity_dir / f"{entity_id}.yaml"
+    entity_yaml_path = (
+        new_entity_yaml_path if new_entity_yaml_path.exists() else entity_dir / "entity.yaml"
+    )
     responses_dir = entity_dir / "responses"
     schema_path = Path("data/contracts/entities") / f"{entity_id}.schema.yaml"
     hints_path = entity_dir / "hints.md"

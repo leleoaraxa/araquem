@@ -42,6 +42,17 @@ _FILTER_FIELD_NAMES = ("filters", "filter")
 _DIGIT_RE = re.compile(r"\d")
 
 
+def _entity_yaml_path(entity: str) -> Path:
+    base_dir = _ENTITY_ROOT / entity
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    if new_path.exists():
+        return new_path
+    if legacy_path.exists():
+        return legacy_path
+    return new_path
+
+
 def _json_sanitise(obj: Any) -> Any:
     """
     Normaliza estruturas para algo seguro para JSON / prompts:
@@ -66,7 +77,7 @@ def _json_sanitise(obj: Any) -> Any:
 def _load_entity_config(entity: str) -> Dict[str, Any]:
     if not entity:
         return {}
-    path = _ENTITY_ROOT / entity / "entity.yaml"
+    path = _entity_yaml_path(entity)
     try:
         return load_yaml_cached(str(path)) or {}
     except Exception:
