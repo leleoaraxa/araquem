@@ -339,6 +339,8 @@ intents:
         - indice de referencia
         - comparacao com indice
         - comparacao com benchmark
+        - total de dividendos dos meus fiis em 12 meses
+        - total de dividendos da minha carteira em 12 meses
     entities:
       - client_fiis_dividends_evolution
 
@@ -1712,6 +1714,9 @@ intents:
         - valor da cota
         - peso no ifix
         - peso no ifil
+        - minha carteira
+        - carteira de fiis
+        - meus fiis
     entities:
       - fiis_financials_risk
 
@@ -2662,6 +2667,7 @@ intents:
         - posicao dos meus fiis no ifix
         - posicao dos meus fiis no ifil
         - qual fii da minha carteira tem o pior max drawdown
+        - total de dividendos dos meus fiis em 12 meses
       exclude:
         - peso do <ticker> na minha carteira
         - distribuicao da carteira por fundo
