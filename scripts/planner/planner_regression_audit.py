@@ -253,13 +253,16 @@ def run_catalog(planner: Planner) -> Dict[str, Any]:
 
         agg_params = None
         try:
+            entity_yaml_path = ""
+            if got_entity:
+                base_dir = Path("data/entities") / got_entity
+                new_path = base_dir / f"{got_entity}.yaml"
+                entity_yaml_path = str(new_path if new_path.exists() else base_dir / "entity.yaml")
             agg_params = infer_params(
                 question=question or "",
                 intent=chosen.get("intent"),
                 entity=got_entity,
-                entity_yaml_path=(
-                    f"data/entities/{got_entity}/entity.yaml" if got_entity else ""
-                ),
+                entity_yaml_path=entity_yaml_path,
                 defaults_yaml_path="data/ops/param_inference.yaml",
                 identifiers=identifiers,
                 client_id=None,

@@ -89,7 +89,12 @@ def audit_entities() -> List[EntityAudit]:
     audits: List[EntityAudit] = []
     for entity in sorted(entities.keys()):
         entity_dir = REPO_ROOT / "data/entities" / entity
-        entity_yaml_path = entity_dir / "entity.yaml"
+        new_entity_yaml_path = entity_dir / f"{entity}.yaml"
+        entity_yaml_path = (
+            new_entity_yaml_path
+            if new_entity_yaml_path.exists()
+            else entity_dir / "entity.yaml"
+        )
         has_entity_yaml = entity_yaml_path.exists()
         supports_multi_ticker: Optional[bool] = None
 

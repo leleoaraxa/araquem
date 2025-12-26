@@ -28,6 +28,17 @@ CONFIG_VERSION_PATHS = [
 ]
 
 
+def _entity_yaml_path(entity: str) -> Path:
+    base_dir = ENTITY_ROOT / str(entity)
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    if new_path.exists():
+        return new_path
+    if legacy_path.exists():
+        return legacy_path
+    return new_path
+
+
 class CachePolicies:
     def __init__(self, path: Optional[Path] = None):
         self._status: str = "ok"
@@ -91,7 +102,7 @@ class CachePolicies:
             private_flag = True
 
         if not private_flag:
-            path = self._entity_root / str(entity) / "entity.yaml"
+            path = _entity_yaml_path(str(entity))
             if path.exists():
                 try:
                     data = load_yaml_cached(str(path))

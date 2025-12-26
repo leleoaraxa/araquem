@@ -98,7 +98,8 @@ def load_entities(entity_root: Path) -> Dict[str, dict]:
     for entity_dir in entity_root.iterdir():
         if not entity_dir.is_dir():
             continue
-        entity_file = entity_dir / "entity.yaml"
+        new_entity_file = entity_dir / f"{entity_dir.name}.yaml"
+        entity_file = new_entity_file if new_entity_file.exists() else entity_dir / "entity.yaml"
         data = load_yaml(entity_file)
         if not data:
             continue

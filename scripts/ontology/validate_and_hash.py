@@ -261,7 +261,8 @@ def load_entities(ontology_tokens: Mapping[str, Dict[str, set]]) -> Dict[str, On
     errors: List[str] = []
     entities: Dict[str, OntologyEntity] = {}
     for entity_dir in sorted(ENTITIES_DIR.iterdir()):
-        entity_path = entity_dir / "entity.yaml"
+        new_entity_path = entity_dir / f"{entity_dir.name}.yaml"
+        entity_path = new_entity_path if new_entity_path.is_file() else entity_dir / "entity.yaml"
         if not entity_path.is_file():
             continue
         try:

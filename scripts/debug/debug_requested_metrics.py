@@ -12,7 +12,10 @@ from app.presenter.presenter import present
 
 
 def load_entity_conf(entity: str) -> Dict[str, Any]:
-    path = Path("data/entities") / entity / "entity.yaml"
+    base_dir = Path("data/entities") / entity
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    path = new_path if new_path.exists() else legacy_path
     if not path.exists():
         return {}
     try:

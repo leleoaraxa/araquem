@@ -31,7 +31,14 @@ _METRIC_COLUMN_TYPES = {
 
 
 def _entity_yaml_path(entity: str) -> Path:
-    return ENTITIES_DIR / entity / "entity.yaml"
+    base_dir = ENTITIES_DIR / entity
+    new_path = base_dir / f"{entity}.yaml"
+    legacy_path = base_dir / "entity.yaml"
+    if new_path.exists():
+        return new_path
+    if legacy_path.exists():
+        return legacy_path
+    return new_path
 
 
 def _load_entity_yaml(entity: str) -> dict:
