@@ -167,6 +167,11 @@
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
+      "question": "Resumo carteira vs CDI",
+      "expected_intent": "client_fiis_performance_vs_benchmark_summary",
+      "expected_entity": "client_fiis_performance_vs_benchmark_summary"
+    },
+    {
       "question": "Resumo da performance da minha carteira de FIIs versus o IFIX",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
@@ -1159,6 +1164,11 @@
       "expected_entity": "fiis_noticias"
     },
     {
+      "question": "Notícias recentes sobre FIIs logísticos",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
       "question": "Mostre as últimas manchetes sobre FIIs em geral.",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
@@ -1635,6 +1645,11 @@
       "expected_entity": "fiis_rankings"
     },
     {
+      "question": "Peso do HGLG11 no IFIX e no IFIL",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
       "question": "qual é hoje a posição do HGRU11 no ranking do IFIL?",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
@@ -1919,6 +1934,11 @@
     },
     {
       "question": "Série histórica do IFIL nos últimos 30 dias",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "question": "Histórico do IFIL últimos 30 dias",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
