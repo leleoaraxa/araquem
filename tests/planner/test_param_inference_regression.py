@@ -4,8 +4,8 @@ from app.planner.param_inference import infer_params
 
 
 DEFAULTS_PATH = "data/ops/param_inference.yaml"
-ENTITY_PATH = "data/entities/fiis_dividendos/entity.yaml"
-YIELD_ENTITY_PATH = "data/entities/fiis_yield_history/entity.yaml"
+ENTITY_PATH = "data/entities/fiis_dividendos/fiis_dividendos.yaml"
+YIELD_ENTITY_PATH = "data/entities/fiis_yield_history/fiis_yield_history.yaml"
 
 
 class TestIdentifierTicker:
@@ -232,4 +232,3 @@ class TestComputeOnReadMultiTicker:
             "agg": "avg",
             "window": "months:12",
         }
-

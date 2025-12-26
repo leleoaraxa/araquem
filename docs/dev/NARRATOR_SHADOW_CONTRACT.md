@@ -301,7 +301,7 @@ Exemplo:
   "chunks_sample": [
     {
       "source_id": "entity-fiis-noticias",
-      "path": "data/entities/fiis_noticias/entity.yaml",
+      "path": "data/entities/fiis_noticias/fiis_noticias.yaml",
       "score": 0.6762780183097683,
       "snippet": "Notícias e matérias relevantes sobre FIIs (fonte externa consolidada D-1)..."
     },

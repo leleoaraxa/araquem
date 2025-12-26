@@ -29,4 +29,4 @@
 - Conclusão: os `hints.md` servem apenas como contexto de RAG/embeddings; não há uso em camadas de apresentação ou formatação.
 
 ## Possíveis duplicidades de fonte de verdade
-- Nenhuma entidade possui `sample_questions` nos respectivos `entity.yaml`; apenas blocos `ask` (intents/keywords/synonyms) coexistem com templates de resposta, sem exemplos de perguntas em `templates.md`, logo não há duplicidade entre exemplos de pergunta e templates.【F:data/entities/fiis_cadastro/entity.yaml†L85-L115】
+- Nenhuma entidade possui `sample_questions` nos respectivos `<entity>.yaml`; apenas blocos `ask` (intents/keywords/synonyms) coexistem com templates de resposta, sem exemplos de perguntas em `templates.md`, logo não há duplicidade entre exemplos de pergunta e templates.【F:data/entities/fiis_cadastro/fiis_cadastro.yaml†L85-L115】

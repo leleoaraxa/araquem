@@ -34,7 +34,7 @@
 
 ### 1) Entidade base
 
-* `data/entities/<entity>/entity.yaml`
+* `data/entities/<entity>/<entity>.yaml`
 * `data/contracts/entities/<entity>.schema.yaml`
 * `data/entities/<entity>/template.md`
 * `data/entities/<entity>/responses/*.md.j2`
@@ -85,7 +85,7 @@ Basear-se sempre em: `fiis_*`, `history_*`, `fii_overview`, `client_*`.
 
 ---
 
-## **3) Criar `entity.yaml`**
+## **3) Criar `<entity>.yaml`**
 
 ### **3.1. Campos obrigatórios**
 
@@ -298,7 +298,7 @@ Atualizar:
 
 Antes de responder, o Codex deve garantir:
 
-* entity.yaml ↔ schema ↔ catalog ↔ consistency estão alinhados
+* `<entity>.yaml` ↔ schema ↔ catalog ↔ consistency estão alinhados
 * planner_thresholds e param_inference contemplam a intent
 * quality_projection criado
 * testes de roteamento adicionados
@@ -316,7 +316,7 @@ Antes de responder, o Codex deve garantir:
 
 Entregar somente **arquivos/diffs completos**, incluindo:
 
-* `entity.yaml`
+* `<entity>.yaml`
 * `template.md`
 * `responses/*.md.j2`
 * `hints.md`
