@@ -187,7 +187,7 @@ Blocos de domínio identificados:
    * Defina `entity`, `kind`, `version` e **todas as colunas** com `type`, `nullable`, `desc`.
    * Travar `tolerance` (sem colunas extras/faltando) quando fizer sentido.
 
-3. **YAML da entidade** (`data/entities/<nome>/entity.yaml`)
+3. **YAML da entidade** (`data/entities/<nome>/<nome>.yaml`)
 
    * Preencha `id`, `sql_view`, `result_key`, `description`, `d_minus: 1` (quando for D-1), `default_date_field`.
    * Liste colunas com `alias`/`description`.

@@ -581,7 +581,7 @@ class TestParamInferenceConfig:
             )
         )
 
-        entity_yaml = tmp_path / "entity.yaml"
+        entity_yaml = tmp_path / "fiis_financials_risk.yaml"
         entity_yaml.write_text(
             yaml.safe_dump(
                 {
@@ -613,7 +613,7 @@ class TestParamInferenceConfig:
             "Quero listar preços do MXRF11 no semestre",
             "fiis_precos",
             entity="fiis_precos",
-            entity_yaml_path="data/entities/fiis_precos/entity.yaml",
+            entity_yaml_path="data/entities/fiis_precos/fiis_precos.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
@@ -630,7 +630,7 @@ class TestParamInferenceConfig:
             "Quais dividendos do MXRF11?",
             "fiis_dividendos",
             entity="fiis_dividendos",
-            entity_yaml_path="data/entities/fiis_dividendos/entity.yaml",
+            entity_yaml_path="data/entities/fiis_dividendos/fiis_dividendos.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
@@ -647,7 +647,7 @@ class TestParamInferenceConfig:
             "Quero o cronograma de receitas do MXRF11 no ultimo ano",
             "fiis_financials_revenue_schedule",
             entity="fiis_financials_revenue_schedule",
-            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/entity.yaml",
+            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
@@ -664,7 +664,7 @@ class TestParamInferenceConfig:
             "Mostre o calendario de receitas do HCTR11 no ultimo semestre",
             "fiis_financials_revenue_schedule",
             entity="fiis_financials_revenue_schedule",
-            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/entity.yaml",
+            entity_yaml_path="data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
@@ -1190,7 +1190,7 @@ class TestEntityConfigLoader:
     ):
         entity_dir = tmp_path / "bar"
         entity_dir.mkdir(parents=True)
-        yaml_path = entity_dir / "entity.yaml"
+        yaml_path = entity_dir / "bar.yaml"
         yaml_path.write_text("- 1\n- 2\n")
         monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
         caplog.set_level(logging.ERROR)
@@ -1203,7 +1203,7 @@ class TestEntityConfigLoader:
     def test_load_entity_config_happy_path(self, tmp_path, caplog, monkeypatch):
         entity_dir = tmp_path / "baz"
         entity_dir.mkdir(parents=True)
-        yaml_path = entity_dir / "entity.yaml"
+        yaml_path = entity_dir / "baz.yaml"
         yaml_path.write_text("foo: bar\n")
         monkeypatch.setattr(routing, "_ENTITY_ROOT", tmp_path)
         caplog.set_level(logging.ERROR)

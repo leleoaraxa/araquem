@@ -34,7 +34,7 @@
 
 1. **Fonte de verdade de entidades**:
 
-   * `data/entities/*/entity.yaml`
+   * `data/entities/<entity>/<entity>.yaml`
    * `data/contracts/entities/*.schema.yaml`
    * `data/ontology/*.yaml`
    * views/tabelas reais no Postgres (`sql_view`, `result_key` etc.).
@@ -42,7 +42,7 @@
 2. É **terminantemente proibido**:
 
    * criar colunas, métricas ou entidades “no grito” em `.py`;
-   * colocar regra de negócio só em código sem registro na ontologia / entity.yaml.
+   * colocar regra de negócio só em código sem registro na ontologia / `<entity>.yaml`.
 
 3. Padrão para dados D-1 com atualização diária:
 

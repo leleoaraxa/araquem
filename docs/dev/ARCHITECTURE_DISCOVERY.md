@@ -90,73 +90,73 @@ data/
             routing_samples.json
     entities/
         fiis_precos/
-            entity.yaml
+            fiis_precos.yaml
             templates.md
             responses/
                 table.md.j2
         fiis_cadastro/
-            entity.yaml
+            fiis_cadastro.yaml
             templates.md
             responses/
                 list.md.j2
         history_currency_rates/
-            entity.yaml
+            history_currency_rates.yaml
             templates.md
             responses/
                 list.md.j2
         fiis_financials_risk/
-            entity.yaml
+            fiis_financials_risk.yaml
             hints.md
             templates.md
             responses/
                 summary.md.j2
         fiis_financials_snapshot/
-            entity.yaml
+            fiis_financials_snapshot.yaml
             templates.md
             responses/
                 summary.md.j2
         fiis_noticias/
-            entity.yaml
+            fiis_noticias.yaml
             templates.md
             responses/
                 list.md.j2
         fiis_imoveis/
-            entity.yaml
+            fiis_imoveis.yaml
             templates.md
             responses/
                 list.md.j2
         history_market_indicators/
-            entity.yaml
+            history_market_indicators.yaml
             templates.md
             responses/
                 list.md.j2
         client_fiis_positions/
-            entity.yaml
+            client_fiis_positions.yaml
             templates.md
             responses/
                 table.md.j2
         fiis_rankings/
-            entity.yaml
+            fiis_rankings.yaml
             templates.md
             responses/
                 table.md.j2
         fiis_processos/
-            entity.yaml
+            fiis_processos.yaml
             templates.md
             responses/
                 list.md.j2
         fiis_dividendos/
-            entity.yaml
+            fiis_dividendos.yaml
             templates.md
             responses/
                 table.md.j2
         history_b3_indexes/
-            entity.yaml
+            history_b3_indexes.yaml
             templates.md
             responses/
                 list.md.j2
         fiis_financials_revenue_schedule/
-            entity.yaml
+            fiis_financials_revenue_schedule.yaml
             hints.md
             templates.md
             responses/
@@ -394,7 +394,7 @@ otel-collector/
 - **Entradas/Saídas:** entrada texto livre da pergunta; saída dict com `chosen.intent`, `chosen.entity`, `chosen.score`, `explain` detalhado.
 
 ### `app/builder`
-- **Responsabilidade:** montar SQL parametrizado a partir de `data/entities/<entity>/entity.yaml`. Implementa regras para filtros, agregações e métricas.
+- **Responsabilidade:** montar SQL parametrizado a partir de `data/entities/<entity>/<entity>.yaml`. Implementa regras para filtros, agregações e métricas.
 - **Fluxo de chamada:** `app.orchestrator.routing.route_question` invoca `build_select_for_entity` com identificadores e `agg_params` inferidos.
 - **Entradas/Saídas:** entrada `entity`, `identifiers`, `agg_params`; saída tuple `(sql, params, result_key, return_columns)`.
 
@@ -450,5 +450,5 @@ otel-collector/
 
 ### `data/*`
 - **Responsabilidade:** contratos declarativos consumidos em runtime (ontologia, políticas de cache, thresholds, entidades, dashboards de qualidade).
-- **Fluxo de chamada:** Planner lê `data/ontology/entity.yaml`; Builder e Formatter dependem de `data/entities/<entity>/entity.yaml`; Param inference consome `data/ops/param_inference.yaml`.
+- **Fluxo de chamada:** Planner lê `data/ontology/entity.yaml`; Builder e Formatter dependem de `data/entities/<entity>/<entity>.yaml`; Param inference consome `data/ops/param_inference.yaml`.
 - **Entradas/Saídas:** arquivos YAML/JSON utilizados como fonte de verdade.

@@ -32,7 +32,7 @@ Cobrir **somente** o fluxo **online** do `/ask` (sem alterar comportamento fora 
 * `app/rag/*` (`context_builder.py`, `index_reader.py`, `hints.py`, `ollama_client.py`)
 * `app/observability/*` (instrumentation + metrics + runtime)
 * `data/ontology/entity.yaml`
-* `data/entities/*/entity.yaml` + `responses/*.md.j2`
+* `data/entities/<entity>/<entity>.yaml` + `responses/*.md.j2`
 * `data/contracts/entities/*.schema.yaml`
 * `data/policies/*.yaml` (cache, formatting, narrator, rag, quality)
 * `data/ops/quality/*` (especialmente `routing_samples.json` e projeções)
@@ -76,7 +76,7 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentaçã
    * `app/executor/pg.py`
    * `app/formatter/rows.py`
    * Reaplica planner e gate (score, gap, thresholds YAML), extrai identificadores (`ticker`, `tickers`).
-   * Chama `infer_params` (compute-on-read) e resolve `requested_metrics` via `ask.metrics_synonyms` do `entity.yaml`.
+* Chama `infer_params` (compute-on-read) e resolve `requested_metrics` via `ask.metrics_synonyms` do `<entity>.yaml`.
    * Prepara cache de métricas (`_prepare_metrics_cache_context`), tenta Redis, ou monta SQL (`build_select_for_entity`), executa (`PgExecutor.query`) e formata (`format_rows`).
    * Monta `results` e `meta` (planner, gate, aggregates, requested_metrics, rows_total, elapsed_ms, explain/explain_analytics quando `explain=True`).
    * Constrói **o contexto de RAG canônico** via `rag.context_builder.build_context` e preenche `meta['rag']` (com fallback seguro em caso de erro).
@@ -142,7 +142,7 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentaçã
 
    * Vários comportamentos (principalmente no Orchestrator e Presenter) dependem de:
 
-     * nomes de `result_key` alinhados manualmente com `entity.yaml` e templates;
+    * nomes de `result_key` alinhados manualmente com `<entity>.yaml` e templates;
      * convenções sobre colunas (ex.: ordering vs contratos).
    * Isso ainda não está 100% amarrado em contratos + ontologia.
 
@@ -227,7 +227,7 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentaçã
    * Os arquivos:
 
      * `data/contracts/entities/*.schema.yaml`
-     * `data/entities/*/entity.yaml`
+    * `data/entities/<entity>/<entity>.yaml`
      * `docs/database/ddls/views.sql`
    * em geral batem, mas:
 
@@ -246,7 +246,7 @@ Fluxo lógico atual (2025-11-20, baseado nos lotes analisados e na documentaçã
 
      * em `views.sql`;
      * em `fiis_financials_risk.schema.yaml`;
-     * em `entity.yaml` e templates Jinja.
+    * em `<entity>.yaml` e templates Jinja.
    * É importante garantir que **todos** são usados de forma consistente pelo Narrator e pelas telas.
 
 ### 3.6. Quality e `/ops/quality/report`
@@ -406,7 +406,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
 * Garantir que `facts` é sempre construído de forma:
 
   * coerente com a ontologia (`data/ontology/entity.yaml`);
-  * alinhado às configurações por entidade (`data/entities/*/entity.yaml`);
+  * alinhado às configurações por entidade (`data/entities/<entity>/<entity>.yaml`);
   * adequado para consumo pelo Narrator e pelas telas.
 
 **Ações (conceituais)**
@@ -426,7 +426,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
 **Arquivos previstos para patch futuro**
 
 * `app/presenter/presenter.py`
-* `data/entities/*/entity.yaml` (apenas se for necessário correção de chaves)
+* `data/entities/<entity>/<entity>.yaml` (apenas se for necessário correção de chaves)
 * `data/entities/*/responses/*.md.j2` (ajustes pontuais)
 * `docs/dev/RUNTIME_OVERVIEW.md` (seção FACTS)
 
@@ -499,7 +499,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
 
   * `docs/database/ddls/views.sql`
   * `data/contracts/entities/*.schema.yaml`
-  * `data/entities/*/entity.yaml`
+  * `data/entities/<entity>/<entity>.yaml`
 * está 100% consistente para todas as entidades do DOMÍNIO FIIs.
 
 **Ações (conceituais)**
@@ -509,7 +509,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
    * checar se:
 
      * todas as colunas da view aparecem no contrato `.schema.yaml`;
-     * o `result_key` do `entity.yaml` está alinhado ao que o Orchestrator/presenter usam;
+    * o `result_key` do `<entity>.yaml` está alinhado ao que o Orchestrator/presenter usam;
      * templates `responses/*.md.j2` referenciam somente campos existentes.
 2. Corrigir discrepâncias pontuais:
 
@@ -521,7 +521,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
 
 * `docs/database/ddls/views.sql`
 * `data/contracts/entities/*.schema.yaml`
-* `data/entities/*/entity.yaml`
+* `data/entities/<entity>/<entity>.yaml`
 * `data/entities/*/responses/*.md.j2`
 
 **Testes alvo**

@@ -7,7 +7,7 @@ Preparar a base atual para a camada Narrator/Responder (M10) mantendo previsibil
 
 ### Fase 1 — Normalização de contratos (curto prazo)
 1. **Catalogar contratos YAML essenciais**
-   - Arquivos: `data/ontology/entity.yaml`, `data/entities/**/entity.yaml`, `data/ops/param_inference.yaml`, `data/policies/cache.yaml`.
+   - Arquivos: `data/ontology/entity.yaml`, `data/entities/**/<entity>.yaml`, `data/ops/param_inference.yaml`, `data/policies/cache.yaml`.
    - Ação: criar validador único (script ou rotina de bootstrap) que garanta presença de chaves obrigatórias.
 2. **Definir TypedDicts/Pydantic para payloads internos**
    - Arquivos: `app/planner/planner.py`, `app/orchestrator/routing.py`, `app/api/ask.py`.
@@ -59,7 +59,7 @@ Preparar a base atual para a camada Narrator/Responder (M10) mantendo previsibil
 4. **Canal adicional**: introduzir canal secundário (ex.: WhatsApp) usando mesmo presenter, validando formato.
 
 ## Checklist de validação (quality + narrative gates)
-- [ ] Todos os `entity.yaml` passam em validador (chaves obrigatórias presentes).
+- [ ] Todos os `data/entities/<entity>/<entity>.yaml` passam em validador (chaves obrigatórias presentes).
 - [ ] `PlanResult` tipado cobre intents sem entidade (`None`).
 - [ ] Presenter retorna `PresentResult` consistente com/sem Narrator.
 - [ ] Métricas `sirios_presenter_total` e `sirios_narrator_latency_ms` monitoradas em Grafana.

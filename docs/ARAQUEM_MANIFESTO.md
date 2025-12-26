@@ -86,7 +86,7 @@ Tudo o que faço segue estas 7 leis imutáveis:
 Toda regra nasce em:
 
 * `data/ontology/*.yaml`
-* `data/entities/*/entity.yaml`
+* `data/entities/<entity>/<entity>.yaml`
 * `data/policies/*.yaml`
 
 ### **Lei 2 — SQL é sempre determinístico**
