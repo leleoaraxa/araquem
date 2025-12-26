@@ -147,8 +147,6 @@ intents:
         - meu
         - preco_medio
         - preco medio
-        - preco
-        - medio
         - pm
         - rentabilidade
         - prejuizo
@@ -520,7 +518,9 @@ intents:
         - performance acumulada da minha carteira contra ibov
         - visao resumida carteira vs benchmark
         - carteira vs ifix resumo
+        - resumo carteira vs cdi
         - carteira vs cdi ultima leitura
+        - carteira vs cdi
         - carteira vs ibov ate hoje
         - carteira vs ifil ate agora
         - performance da carteira no fechamento do periodo
@@ -2618,6 +2618,8 @@ intents:
         - peso
         - alocacao
         - cotas
+        - cdi
+        - ibov
     phrases:
       include:
         - carteira consolidada
