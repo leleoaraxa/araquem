@@ -261,6 +261,7 @@ datasets:
       benchmark_return_pct:
         min: -1.0
         max: 1.0
+  # Resumo (última leitura) por benchmark — separado do histórico acima.
   client_fiis_performance_vs_benchmark_summary:
     freshness:
       max_age_hours: 30
