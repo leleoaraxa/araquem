@@ -1617,6 +1617,7 @@ ALTER VIEW public.view_markowitz_universe_stats OWNER TO edge_user;
 ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
 ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
+ALTER VIEW public.client_fiis_performance_vs_benchmark_summary OWNER TO edge_user;
 ALTER VIEW public.dividendos_yield OWNER TO edge_user;
 ALTER VIEW public.carteira_enriquecida OWNER TO edge_user;
 ALTER VIEW public.macro_consolidada OWNER TO edge_user;

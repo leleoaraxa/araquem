@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2025-12-26T16:27:14Z",
+  "generated_at": "2025-12-27T11:42:40Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -568,7 +568,7 @@
         "cache"
       ],
       "chunks": 3,
-      "sha_all": "f99e35e45d9f3378c91e98d838a67ac7d64e97ae9953543247e26727e606a33d"
+      "sha_all": "c69a769d8f6b45fa834aa027a2e9b68ad2772fb5ad3eca90875daa1e82b4c35d"
     },
     {
       "id": "policies-quality",
@@ -577,8 +577,8 @@
         "policies",
         "quality"
       ],
-      "chunks": 5,
-      "sha_all": "e1e255d6aa4f3886f312a492a62318861c30d190c30375ce3b275efa7a3143dd"
+      "chunks": 6,
+      "sha_all": "9cd94cd5e7167f7178d75f1afcef83657770ec2dfee97f146f740cb9f895204c"
     },
     {
       "id": "policies-rag",
@@ -588,7 +588,7 @@
         "rag"
       ],
       "chunks": 2,
-      "sha_all": "ebd4036d81e7566a07077fc54b40d9db98be0b78ea6f9be305befc75872636cd"
+      "sha_all": "94d8bb1d9262764d1d739624774a2bfa694c6faf8711214951104d153ba67697"
     },
     {
       "id": "ops-planner-thresholds",
@@ -598,7 +598,7 @@
         "thresholds"
       ],
       "chunks": 3,
-      "sha_all": "803ffd243866996824b70e5094f8b97dbca7ca493e024b1a16123eb48a91f72f"
+      "sha_all": "262b969c976d7a9f9280858866b4b082d495b86e6a7df8073e251862339b0211"
     },
     {
       "id": "ops-observability",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1766766596,
+  "last_refresh_epoch": 1766835934,
   "vector_dimension": 768,
-  "total_chunks": 314
+  "total_chunks": 315
 }
