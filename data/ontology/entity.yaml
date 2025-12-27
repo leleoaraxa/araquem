@@ -287,6 +287,12 @@ intents:
         - cdi
         - benchmark
         - indice
+        - performance
+        - rentabilidade
+        - retorno
+        - comparacao
+        - comparar
+        - contra
     phrases:
       include:
         - renda mensal
@@ -351,6 +357,16 @@ intents:
         - performance
         - rentabilidade
         - retorno
+        - periodo
+        - período
+        - janela
+        - ultimos
+        - últimos
+        - ano
+        - anual
+        - mes
+        - mês
+        - mensal
         - comparacao
         - comparar
         - comparativo
@@ -405,6 +421,14 @@ intents:
         - acao
         - acoes
         - fechamento
+        - snapshot
+        - consolidado
+        - ultimo
+        - último
+        - ultima
+        - última
+        - referencia
+        - referência
         - resumo
         - fechamento
         - d-1
@@ -447,6 +471,10 @@ intents:
         - rentabilidade da minha carteira versus o ifix
         - rentabilidade da minha carteira versus o ifil
         - comparar o retorno da minha carteira com o ifil
+        - performance da carteira nos ultimos 12 meses
+        - performance da carteira no ultimo mes
+        - rentabilidade da carteira em 2024
+        - desempenho da carteira entre datas
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -474,6 +502,10 @@ intents:
         - taxa de hoje
         - valor do indice
         - ultima leitura
+        - ultima referencia
+        - ultima data
+        - snapshot da carteira
+        - resumo da performance
         - ate hoje
         - ate agora
         - fechamento do periodo
@@ -488,6 +520,12 @@ intents:
         - última
         - ultimo
         - último
+        - leitura
+        - referencia
+        - referência
+        - fechamento
+        - snapshot
+        - consolidado
         - agregado
         - d-1
         - carteira
@@ -510,7 +548,17 @@ intents:
         - historica
         - serie
         - evolucao
+        - intervalo
+        - periodo
+        - período
+        - janela
+        - ultimos
+        - últimos
+        - mes
+        - mês
         - mensal
+        - ano
+        - anual
     phrases:
       include:
         - resumo da performance da carteira
@@ -539,6 +587,11 @@ intents:
         - ate agora
         - resumo da performance da minha carteira versus o ifix
         - resumo da performance da minha carteira versus o ifil
+        - resumo da performance da carteira vs ifix na ultima data
+        - ultima leitura por benchmark
+        - snapshot carteira vs cdi
+        - ultima data da carteira contra ibov
+        - resumo consolidado carteira vs benchmark
       exclude:
         - historico de performance
         - serie historica da carteira
@@ -548,6 +601,10 @@ intents:
         - serie historica
         - mes a mes
         - linha do tempo
+        - performance da carteira nos ultimos 12 meses
+        - performance da carteira no ultimo mes
+        - rentabilidade da carteira em 2024
+        - desempenho da carteira entre datas
     entities:
       - client_fiis_performance_vs_benchmark_summary
 
@@ -2600,7 +2657,6 @@ intents:
         - dividendos
         - proventos
         - rendimento
-        - rentabilidade
         - total
         - patrimonio
         - carteira
@@ -2625,6 +2681,10 @@ intents:
         - cotas
         - cdi
         - ibov
+        - ifix
+        - ifil
+        - retorno
+        - rentabilidade
     phrases:
       include:
         - carteira consolidada
@@ -2683,6 +2743,11 @@ intents:
         - ultimos meses
         - 12 meses
         - peso do
+        - carteira vs
+        - carteira versus
+        - performance da carteira versus
+        - comparacao da carteira com benchmark
+        - minha carteira melhor ou pior que
     entities:
       - carteira_enriquecida
 

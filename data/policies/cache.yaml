@@ -35,6 +35,7 @@ policies:
     - document_number
     - benchmark_code
     - date_reference
+  # Resumo (última leitura) por benchmark — separado do histórico acima.
   client_fiis_performance_vs_benchmark_summary:
     ttl_seconds: 900
     refresh_at: none
