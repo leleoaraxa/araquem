@@ -40,8 +40,16 @@ class GuardClient:
     def __init__(self, *, response: str | None = None, exc: Exception | None = None):
         self.response = response
         self.exc = exc
+        self.timeout = 25.0
+        self.seen_timeout = None
 
     def generate(self, *_: Any, **__: Any) -> str:
+        # registra o timeout que o Narrator setou
+        try:
+            self.seen_timeout = float(getattr(self, "timeout"))
+        except Exception:
+            self.seen_timeout = None
+
         if self.exc:
             raise self.exc
         return self.response or ""
@@ -78,6 +86,8 @@ def test_policy_violation_returns_baseline(monkeypatch: pytest.MonkeyPatch) -> N
     narrator_meta = out["meta"]["narrator"]
     assert narrator_meta["strategy"] == "policy_violation"
     assert "policy_violation" in narrator_meta["error"]
+    # timeout aplicado por policy
+    assert narrator.client.seen_timeout == 6.0
 
 
 def test_timeout_returns_baseline(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -95,3 +105,5 @@ def test_timeout_returns_baseline(monkeypatch: pytest.MonkeyPatch) -> None:
     narrator_meta = out["meta"]["narrator"]
     assert narrator_meta["strategy"] == "llm_failed"
     assert "timeout" in (narrator_meta.get("error") or "")
+    # timeout aplicado por policy mesmo no erro
+    assert narrator.client.seen_timeout == 6.0

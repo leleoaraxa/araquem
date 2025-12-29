@@ -43,6 +43,39 @@ _DIGIT_RE = re.compile(r"\d")
 _URL_RE = re.compile(r"https?://\S+", re.IGNORECASE)
 
 
+def _policy_timeout_seconds(policy_guards: Dict[str, Any]) -> float | None:
+    if not isinstance(policy_guards, dict):
+        return None
+    raw = policy_guards.get("timeout_seconds")
+    if raw is None:
+        return None
+    try:
+        val = float(raw)
+    except (TypeError, ValueError):
+        return None
+    if val <= 0:
+        return None
+    return val
+
+
+def _apply_client_timeout_temporarily(
+    client: Any, timeout_s: float | None
+) -> tuple[bool, float | None]:
+    if client is None or timeout_s is None:
+        return (False, None)
+    if not hasattr(client, "timeout"):
+        return (False, None)
+    try:
+        prev = float(getattr(client, "timeout"))
+    except Exception:
+        prev = None
+    try:
+        setattr(client, "timeout", float(timeout_s))
+        return (True, prev)
+    except Exception:
+        return (False, prev)
+
+
 def _extract_numbers_and_dates(text: str) -> set[str]:
     numbers = set(re.findall(r"\b\d+(?:[.,]\d+)?\b", text))
     dates = set(re.findall(r"\b\d{1,4}[/-]\d{1,2}[/-]\d{1,4}\b", text))
@@ -113,7 +146,9 @@ def _policy_violation_reason(
 
     check_numbers = rewrite_only_default or "change_numbers_or_dates" in invariants
     if check_numbers:
-        if _extract_numbers_and_dates(baseline) != _extract_numbers_and_dates(candidate):
+        if _extract_numbers_and_dates(baseline) != _extract_numbers_and_dates(
+            candidate
+        ):
             return "change_numbers_or_dates"
 
     check_tickers = rewrite_only_default or "change_tickers" in invariants
@@ -1135,7 +1170,9 @@ class Narrator:
 
         # 3) fallback padrão
         baseline_text = deterministic_text or _default_text(entity, effective_facts)
-        policy_guards = _get_policy_guards(self.policy)
+        policy_guards = _get_policy_guards(effective_policy) or _get_policy_guards(
+            self.policy
+        )
         rows_count = len(effective_facts.get("rows") or [])
 
         def _finalize_response(
@@ -1333,7 +1370,25 @@ class Narrator:
         narrator_meta["used"] = True
 
         try:
-            response = self.client.generate(prompt, model=effective_model, stream=False)
+            timeout_s = _policy_timeout_seconds(policy_guards)
+            applied, prev_timeout = _apply_client_timeout_temporarily(
+                self.client, timeout_s
+            )
+            if applied:
+                narrator_meta["policy_timeout_seconds"] = timeout_s
+
+            try:
+                response = self.client.generate(
+                    prompt, model=effective_model, stream=False
+                )
+            finally:
+                if applied:
+                    # restaura timeout anterior para não contaminar outros call sites
+                    if prev_timeout is not None:
+                        try:
+                            setattr(self.client, "timeout", float(prev_timeout))
+                        except Exception:
+                            pass
             candidate = (response or "").strip()
             # Sanitização leve de prefixos comuns (somente em rewrite-only)
             if bool(effective_policy.get("rewrite_only")) and candidate:
