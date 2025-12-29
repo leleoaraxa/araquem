@@ -11,6 +11,7 @@
 | carteira_enriquecida | carteira_enriquecida | ok | ok | ok | ok | ok | Entidade privada; requer document_number do contexto seguro. |
 | client_fiis_dividends_evolution | client_fiis_dividends_evolution | ok | ok | ok | ok | ok | entidade privada de carteira; dados por document_number; RAG/Narrator negados por policy; resposta 100% SQL determinística |
 | client_fiis_performance_vs_benchmark | client_fiis_performance_vs_benchmark | ok | ok | ok | ok | ok | entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI; binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário |
+| client_fiis_performance_vs_benchmark_summary | client_fiis_performance_vs_benchmark_summary | ok | ok | ok | ok | ok | entidade privada dependente de document_number |
 | client_fiis_positions | client_fiis_positions | ok | ok | ok | ok | ok |  |
 | dividendos_yield | dividendos_yield, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fii_overview | fii_overview, ticker_query | ok | policy_present_flag_false | ok | configured_flag_false | ok |  |
@@ -25,9 +26,9 @@
 | fiis_processos | fiis_processos, ticker_query | ok | policy_present_flag_false | ok | configured_flag_false | ok |  |
 | fiis_rankings | fiis_rankings, ticker_query | ok | policy_present_flag_false | ok | ok | ok |  |
 | fiis_yield_history | fiis_yield_history, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
-| history_b3_indexes | history_b3_indexes | ok | policy_present_flag_false | denied_by_context | ok | ok |  |
-| history_currency_rates | history_currency_rates | ok | policy_present_flag_false | denied_by_context | ok | ok |  |
-| history_market_indicators | history_market_indicators | ok | policy_present_flag_false | denied_by_context | ok | ok |  |
+| history_b3_indexes | history_b3_indexes | ok | policy_present_flag_false | ok | ok | ok |  |
+| history_currency_rates | history_currency_rates | ok | policy_present_flag_false | ok | ok | ok |  |
+| history_market_indicators | history_market_indicators | ok | policy_present_flag_false | ok | ok | ok |  |
 | macro_consolidada | macro_consolidada | ok | ok | ok | ok | ok |  |
 
 ## Gaps P0/P1/P2
@@ -35,13 +36,7 @@
 - Nenhum.
 
 ### P1
-- client_fiis_performance_vs_benchmark_summary: Entity referenced in ontology is missing from catalog
-- history_b3_indexes: narrator flag active but denied by context policy
-- history_b3_indexes: narrator flag active but no narrator rule found
-- history_currency_rates: narrator flag active but denied by context policy
-- history_currency_rates: narrator flag active but no narrator rule found
-- history_market_indicators: narrator flag active but denied by context policy
-- history_market_indicators: narrator flag active but no narrator rule found
+- Nenhum.
 
 ### P2
 - dividendos_yield: catalog rag_policy=false but RAG configuration present
@@ -72,7 +67,7 @@
 
 ## Apêndice
 ### Entidades no catálogo
-carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
+carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
 
 ### Entidades na ontologia
 carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
