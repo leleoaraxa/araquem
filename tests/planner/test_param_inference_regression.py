@@ -24,7 +24,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -44,7 +44,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -64,7 +64,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
         }
 
@@ -82,7 +82,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
         }
 
@@ -102,7 +102,7 @@ class TestContextIsolation:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
         }
 
@@ -121,7 +121,7 @@ class TestContextIsolation:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
         }
 
@@ -140,7 +140,7 @@ class TestYamlDefaults:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -158,7 +158,7 @@ class TestYamlDefaults:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
