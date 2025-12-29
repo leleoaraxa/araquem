@@ -9,6 +9,9 @@ narrator:
   llm_enabled: false
   shadow: false
 
+  # policy_guards é um contrato declarativo de governança (não garante aplicação automática).
+  # O enforcement só ocorre quando implementado no runtime, fora deste escopo.
+  # O baseline citado é a resposta pós-SQL formatada (Formatter/Jinja).
   policy_guards:
     # (6) Timeout conservador para o narrador em modo rewrite-only.
     timeout_seconds: 6
@@ -23,6 +26,7 @@ narrator:
       - emit_pipe_tables
     # (9) Fail-closed/fallback determinístico.
     fail_closed:
+      # baseline = resposta pós-SQL formatada (Formatter/Jinja).
       on_violation: return_baseline
       on_error: return_baseline
       on_timeout: return_baseline
