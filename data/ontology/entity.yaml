@@ -92,7 +92,6 @@ intents:
         - ibovespa
         - fechamento
         - ontem
-        - d-1
     phrases:
       include: []
       exclude:
@@ -116,6 +115,10 @@ intents:
         - ultimas noticias
         - ultimas manchetes
         - ultimos 30 dias
+        - minha carteira vs ifix
+        - minha carteira vs ifil
+        - minha carteira versus ifix
+        - minha carteira versus ifil
     entities:
       - fiis_precos
       - fiis_dividendos
@@ -405,6 +408,8 @@ intents:
         - ibov
         - ibovespa
         - carteira
+        - 12
+        - meses
       exclude:
         - cpf
         - cnpj
@@ -499,6 +504,14 @@ intents:
         - performance da carteira no ultimo mes
         - rentabilidade da carteira em 2024
         - desempenho da carteira entre datas
+        - no ultimo mes
+        - nos ultimos 30 dias
+        - minha carteira vs ifix
+        - minha carteira vs ifil
+        - minha carteira versus ifix
+        - minha carteira versus ifil
+        - comparar minha carteira com ifix
+        - comparar minha carteira com ifil
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -554,7 +567,6 @@ intents:
         - consolidado
         - agregado
         - geral
-        - d-1
         - carteira
         - performance
         - rentabilidade
@@ -587,6 +599,14 @@ intents:
         - mensal
         - ano
         - anual
+        - mes
+        - mensal
+        - noticia
+        - noticias
+        - materia
+        - materias
+        - manchete
+        - manchetes
     phrases:
       include:
         - resumo da performance da carteira
@@ -959,7 +979,7 @@ intents:
       - fii_overview
 
   - name: fiis_precos
-    weight: 2
+    weight: 4
     tokens:
       include:
         - preco
@@ -1002,6 +1022,9 @@ intents:
         - usd
         - euro
         - eur
+        - cambio
+        - compra
+        - venda
         - cdi
         - selic
         - ipca
@@ -1079,6 +1102,8 @@ intents:
         - maxima do dia
         - minima do dia
         - preco do dia
+        - subiu ou caiu hoje
+        - variou hoje em porcentagem
       exclude:
         - media de preco
         - retorno no periodo
@@ -1324,14 +1349,14 @@ intents:
         - ranking
         - carteira
         - o que e
-        - o que é
         - significa
         - significado
         - conceito
         - definicao
-        - definição
         - explicacao
-        - explicação
+        - receita
+        - receitas
+        - recebiveis
     phrases:
       include:
         - dy historico
@@ -1388,7 +1413,10 @@ intents:
         - meus fiis
         - minha carteira
         - carteira de fiis
-        - minha carteira de fiis
+        - o que e dividend yield
+        - o que e dy
+        - significado de dividend yield
+        - definicao de dividend yield
     entities:
       - fiis_yield_history
 
@@ -1471,6 +1499,8 @@ intents:
         - calendario
         - ranking
         - top
+        - maiores
+        - menores
         - melhores
         - piores
         - campeoes
@@ -1687,6 +1717,9 @@ intents:
         - estrutura de recebiveis
         - maior 36m
         - acima 36m
+        - curto prazo ou longo prazo
+        - concentradas no curto prazo
+        - concentradas no longo prazo
       exclude:
         - soma de dividendos
         - media de preco
@@ -1945,12 +1978,14 @@ intents:
         - nota
         - atualizacao
         - recente
+        - recentes
         - hoje
         - semana
         - mes
         - ultimo
         - novidade
         - materia
+        - materias
         - manchete
         - reportagem
         - boato
@@ -2085,6 +2120,7 @@ intents:
       - fiis_noticias
 
   - name: fiis_processos
+    weight: 4
     tokens:
       include:
         - processo
@@ -2224,6 +2260,16 @@ intents:
         - pesos
         - weight
         - participacao
+        - dy
+        - 12
+        - patrimonio
+        - patrimonio_liquido
+        - pl
+        - maior
+        - menor
+        - drawdown
+        - mdd
+        - historico
       exclude:
         - preco
         - pontos
@@ -2336,7 +2382,7 @@ intents:
       - fiis_rankings
 
   - name: history_b3_indexes
-    weight: 3
+    weight: 2
     options:
       ignore_tickers: true
     tokens:
@@ -2351,8 +2397,6 @@ intents:
         - fechamento
         - variacao
         - hoje
-        - d1
-        - d-1
         - ontem
         - historico
         - resumo
@@ -2413,6 +2457,7 @@ intents:
         - quanto o ifil subiu ou caiu ontem
         - resumo das ultimas variacoes do ifix e do ifil
         - resumo das variacoes recentes do ifix
+        - d 1
       exclude:
         - fez parte
         - ja fez parte
@@ -2420,7 +2465,7 @@ intents:
       - history_b3_indexes
 
   - name: history_currency_rates
-    weight: 3
+    weight: 5
     options:
       ignore_tickers: true
     tokens:
@@ -2485,7 +2530,6 @@ intents:
         - historico
         - evolucao
         - curva
-        - d-1
         - ipca
         - selic
         - cdi
@@ -2548,8 +2592,9 @@ intents:
         - variacao do cdi em
         - acumulado do cdi neste mes
         - acumulado do cdi nos ultimos meses
-        - cdi d-1
-        - taxa do cdi d-1
+        - d 1
+        - cdi d 1
+        - taxa do cdi d 1
         - cdi do dia
         - cdi de ontem
         - dados de ipca
@@ -2608,6 +2653,7 @@ intents:
       - history_market_indicators
 
   - name: dividendos_yield
+    weight: 4
     tokens:
       include:
         - rendimento_percentual
@@ -2879,6 +2925,12 @@ intents:
         - atual
         - hoje
         - atual
+        - processo
+        - processos
+        - judicial
+        - judiciais
+        - acao
+        - acoes
     phrases:
       include:
         - cenario macro
