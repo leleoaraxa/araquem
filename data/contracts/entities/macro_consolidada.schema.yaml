@@ -1,43 +1,26 @@
 entity: macro_consolidada
 name: macro_consolidada
-description: Histórico consolidado de indicadores macro, índices e câmbio.
 kind: view
+description: Histórico consolidado de indicadores macro, índices e câmbio.
 version: 1
 
-type: object
-properties:
-  ref_date:
-    type: string
-    format: date
-  ipca:
-    type: number
-    nullable: true
-  selic:
-    type: number
-  cdi:
-    type: number
-    nullable: true
-  ifix_points:
-    type: number
-    nullable: true
-  ifix_var_pct:
-    type: number
-    nullable: true
-  ibov_points:
-    type: number
-  ibov_var_pct:
-    type: number
-  usd_buy_amt:
-    type: number
-  usd_sell_amt:
-    type: number
-  usd_var_pct:
-    type: number
-  eur_buy_amt:
-    type: number
-  eur_sell_amt:
-    type: number
-  eur_var_pct:
-    type: number
-required:
-  - ref_date
+columns:
+  - { name: ref_date,       type: date,   nullable: false, desc: "data de referência." }
+  - { name: ipca,           type: number, nullable: true,  desc: "ipca (quando disponível)." }
+  - { name: selic,          type: number, nullable: true,  desc: "taxa selic (quando disponível)." }
+  - { name: cdi,            type: number, nullable: true,  desc: "cdi (quando disponível)." }
+  - { name: ifix_points,    type: number, nullable: true,  desc: "pontos do IFIX (quando disponível)." }
+  - { name: ifix_var_pct,   type: number, nullable: true,  desc: "variação percentual do IFIX (quando disponível)." }
+  - { name: ibov_points,    type: number, nullable: true,  desc: "pontos do IBOV (quando disponível)." }
+  - { name: ibov_var_pct,   type: number, nullable: true,  desc: "variação percentual do IBOV (quando disponível)." }
+  - { name: usd_buy_amt,    type: number, nullable: true,  desc: "USD compra (quando disponível)." }
+  - { name: usd_sell_amt,   type: number, nullable: true,  desc: "USD venda (quando disponível)." }
+  - { name: usd_var_pct,    type: number, nullable: true,  desc: "variação percentual USD (quando disponível)." }
+  - { name: eur_buy_amt,    type: number, nullable: true,  desc: "EUR compra (quando disponível)." }
+  - { name: eur_sell_amt,   type: number, nullable: true,  desc: "EUR venda (quando disponível)." }
+  - { name: eur_var_pct,    type: number, nullable: true,  desc: "variação percentual EUR (quando disponível)." }
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false
