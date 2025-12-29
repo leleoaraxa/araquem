@@ -177,7 +177,9 @@ def _normalize_apply_on_config(raw: Any) -> Dict[str, Dict[str, str]]:
 
 
 def _resolve_apply_on(
-    apply_on_cfg: Dict[str, Dict[str, str]], intent: Optional[str], entity: Optional[str]
+    apply_on_cfg: Dict[str, Dict[str, str]],
+    intent: Optional[str],
+    entity: Optional[str],
 ) -> str:
     if not isinstance(apply_on_cfg, dict):
         return "base"
@@ -238,9 +240,7 @@ def _resolve_rerank_policy(
     rerank_cfg = policy.get("rerank") if isinstance(policy, dict) else {}
     default_enabled = False
     if isinstance(rerank_cfg, dict):
-        default_enabled = bool(
-            (rerank_cfg.get("default") or {}).get("enabled", False)
-        )
+        default_enabled = bool((rerank_cfg.get("default") or {}).get("enabled", False))
     entities_cfg = rerank_cfg.get("entities") if isinstance(rerank_cfg, dict) else {}
     intents_cfg = rerank_cfg.get("intents") if isinstance(rerank_cfg, dict) else {}
     domains_cfg = rerank_cfg.get("domains") if isinstance(rerank_cfg, dict) else {}
@@ -494,7 +494,11 @@ class Planner:
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
         bucket_gate_applied = bool(bucket)
-        filtered_intents = [it for it in all_intents if getattr(it, "bucket", "") == bucket] if bucket else all_intents
+        filtered_intents = (
+            [it for it in all_intents if getattr(it, "bucket", "") == bucket]
+            if bucket
+            else all_intents
+        )
         bucket_gate_fallback = bucket_gate_applied and not filtered_intents
         candidate_intents = filtered_intents if filtered_intents else all_intents
 
@@ -858,13 +862,17 @@ class Planner:
         def _gap_from_scores(scores: Dict[str, float]) -> float:
             ordered_scores = sorted(scores.items(), key=lambda kv: kv[1], reverse=True)
             if len(ordered_scores) >= 2:
-                return float((ordered_scores[0][1] or 0.0) - (ordered_scores[1][1] or 0.0))
+                return float(
+                    (ordered_scores[0][1] or 0.0) - (ordered_scores[1][1] or 0.0)
+                )
             if len(ordered_scores) == 1:
                 return float(ordered_scores[0][1] or 0.0)
             return 0.0
 
         def _select_top_intent(intent_names: List[str]):
-            filtered_fused = {k: v for k, v in fused_scores.items() if k in intent_names}
+            filtered_fused = {
+                k: v for k, v in fused_scores.items() if k in intent_names
+            }
             filtered_base = {
                 k: v for k, v in intent_scores.items() if k in intent_names
             }
@@ -873,7 +881,10 @@ class Planner:
             chosen_score_val = 0.0
             if ranking_source:
                 ordered_ranking = sorted(
-                    ((name, float(score or 0.0)) for name, score in ranking_source.items()),
+                    (
+                        (name, float(score or 0.0))
+                        for name, score in ranking_source.items()
+                    ),
                     key=lambda item: (-item[1], item[0]),
                 )
                 chosen_name, chosen_score_val = ordered_ranking[0]
@@ -887,13 +898,19 @@ class Planner:
 
         all_candidate_names = [it.name for it in candidate_intents]
         ticker_present = "ticker_query" in all_candidate_names
-        phase1_candidates = [name for name in all_candidate_names if name != "ticker_query"]
+        phase1_candidates = [
+            name for name in all_candidate_names if name != "ticker_query"
+        ]
         decision_path.append(
             {
                 "stage": "intent_filter",
                 "type": "ticker_phase1",
                 "excluded": ["ticker_query"] if ticker_present else [],
-                "reason": "deferred_until_no_intent_passes" if ticker_present else "ticker_absent",
+                "reason": (
+                    "deferred_until_no_intent_passes"
+                    if ticker_present
+                    else "ticker_absent"
+                ),
             }
         )
 
@@ -906,7 +923,9 @@ class Planner:
             intent_thr = intents_thr_cfg.get(intent_name or "", {})
             entity_thr = entities_thr_cfg.get(entity_name or "", {})
             min_score_val = float(
-                entity_thr.get("min_score", intent_thr.get("min_score", dfl["min_score"]))
+                entity_thr.get(
+                    "min_score", intent_thr.get("min_score", dfl["min_score"])
+                )
             )
             min_gap_val = float(
                 entity_thr.get("min_gap", intent_thr.get("min_gap", dfl["min_gap"]))
@@ -1110,7 +1129,9 @@ class Planner:
         ordered_base = sorted(intent_scores.items(), key=lambda kv: kv[1], reverse=True)
         gap_base_global = 0.0
         if len(ordered_base) >= 2:
-            gap_base_global = float((ordered_base[0][1] or 0.0) - (ordered_base[1][1] or 0.0))
+            gap_base_global = float(
+                (ordered_base[0][1] or 0.0) - (ordered_base[1][1] or 0.0)
+            )
         elif len(ordered_base) == 1:
             gap_base_global = float(ordered_base[0][1] or 0.0)
         # gap_final: ordenado por score final (fused_scores)
@@ -1210,7 +1231,18 @@ class Planner:
                 return "unknown"
 
             # Seleção de snippets: precisa conter pelo menos 1 token do intent vencedor
-            norm_tokens = [t.lower() for t in winner_tokens if t]
+            norm_tokens = []
+            for t in winner_tokens or []:
+                if t is None:
+                    continue
+                if isinstance(t, str):
+                    s = t.strip()
+                    if s:
+                        norm_tokens.append(s.lower())
+                    continue
+                # fallback seguro: preserva representacao sem quebrar explain-mode
+                norm_tokens.append(str(t).strip().lower())
+
             filtered_snippets: List[str] = []
             matched_tokens: List[str] = []
             for item in rag_raw_results:
