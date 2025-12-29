@@ -13,7 +13,7 @@ from __future__ import annotations
 import dataclasses
 import json
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional, Set, Tuple
+from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional
 
 import yaml
 
@@ -27,6 +27,22 @@ PARAM_INFERENCE_PATH = ROOT / "data/ops/param_inference.yaml"
 
 MARKDOWN_REPORT_PATH = ROOT / "docs/dev/COVERAGE_REPORT_2025_0.md"
 JSON_REPORT_PATH = ROOT / "data/ops/reports/coverage_report_2025_0.json"
+
+SEVERITY_DEFINITIONS: Mapping[str, str] = {
+    "P0": "Quebra contratual ou ausência de fonte: paths inexistentes, schema não tabular, JSON Schema em vez de tabela.",
+    "P1": "Drift entre flags e policies que afeta execução: ontologia sem catálogo, cache/narrator/rag marcados mas sem regra ou bloqueados por contexto.",
+    "P2": "Higiene e aderência: configurações presentes com flag desativada ou intents faltantes em parametrização.",
+}
+
+CHECK_DEFINITIONS: Mapping[str, str] = {
+    "catalog_vs_ontology": "Entidades referenciadas na ontologia devem existir no catálogo.",
+    "paths": "Catálogo deve apontar para entity.yaml e schema existentes.",
+    "schemas": "Schemas devem ser tabulares (bloco columns) e consistentes com o nome da entidade.",
+    "cache_policy": "Flag cache_policy=true exige regra em data/policies/cache.yaml.",
+    "rag_policy": "Flag rag_policy=false não pode ter rota ativa/configuração; flag true requer intents permitidos.",
+    "narrator_policy": "Flag narrator_policy=true exige regra e não pode ser negada por contexto.",
+    "param_inference": "Flag param_inference=true requer intents configurados em data/ops/param_inference.yaml.",
+}
 
 
 def load_yaml(path: Path) -> MutableMapping:
@@ -81,8 +97,11 @@ def collect_catalog(path: Path) -> Mapping[str, Mapping]:
     return data.get("entities", {}) or {}
 
 
-def validate_paths(entity: str, catalog_entry: Mapping, gaps: List[Gap]) -> Dict[str, bool]:
-    results = {"entity_yaml_exists": False, "schema_exists": False}
+def validate_paths(entity: str, catalog_entry: Mapping, gaps: List[Gap]) -> Dict[str, Dict[str, Optional[object]]]:
+    results: Dict[str, Dict[str, Optional[object]]] = {
+        "entity_yaml": {"exists": False, "path": None},
+        "schema": {"exists": False, "path": None},
+    }
     paths = catalog_entry.get("paths", {}) or {}
 
     entity_yaml_path = paths.get("entity_yaml")
@@ -90,8 +109,9 @@ def validate_paths(entity: str, catalog_entry: Mapping, gaps: List[Gap]) -> Dict
 
     if entity_yaml_path:
         full_path = ROOT / entity_yaml_path
-        results["entity_yaml_exists"] = full_path.exists()
-        if not full_path.exists():
+        exists = full_path.exists()
+        results["entity_yaml"] = {"exists": exists, "path": entity_yaml_path}
+        if not exists:
             gaps.append(
                 Gap(
                     priority="P0",
@@ -100,11 +120,14 @@ def validate_paths(entity: str, catalog_entry: Mapping, gaps: List[Gap]) -> Dict
                     message="Entity YAML path missing",
                 )
             )
+    else:
+        gaps.append(Gap(priority="P0", entity=entity, message="Entity YAML path missing in catalog"))
 
     if schema_path:
         full_path = ROOT / schema_path
-        results["schema_exists"] = full_path.exists()
-        if not full_path.exists():
+        exists = full_path.exists()
+        results["schema"] = {"exists": exists, "path": schema_path}
+        if not exists:
             gaps.append(
                 Gap(
                     priority="P0",
@@ -113,6 +136,8 @@ def validate_paths(entity: str, catalog_entry: Mapping, gaps: List[Gap]) -> Dict
                     message="Schema path missing",
                 )
             )
+    else:
+        gaps.append(Gap(priority="P0", entity=entity, message="Schema path missing in catalog"))
 
     return results
 
@@ -122,6 +147,8 @@ def detect_non_tabular_schema(schema_data: Mapping) -> bool:
         return True
     columns = schema_data.get("columns")
     if not isinstance(columns, list):
+        return True
+    if len(columns) == 0:
         return True
     return False
 
@@ -231,9 +258,7 @@ def evaluate_rag(entity: str, intents: List[str], flag: bool, rag_policy: Mappin
         elif not allowed_intents:
             status = "flagged_without_allowed_intents"
             notes.append("no intents allowed for RAG")
-            gaps.append(
-                Gap(priority="P1", entity=entity, message="rag flag active but no intents allowed for RAG")
-            )
+            gaps.append(Gap(priority="P1", entity=entity, message="rag flag active but no intents allowed for RAG"))
         elif not entity_configured:
             status = "flagged_without_entity_config"
             notes.append("allowed intents but entity missing from rag.entities (using default)")
@@ -316,25 +341,19 @@ def evaluate_param_inference(
             status = "flagged_missing_intents"
             notes.append("no intents configured for param inference")
             gaps.append(
-                Gap(priority="P1", entity=entity, message="param_inference flag true but no intents configured")
+                Gap(priority="P2", entity=entity, message="param_inference flag true but no intents configured")
             )
         elif missing_intents:
             status = "partial"
             notes.append(f"intents without param inference: {', '.join(sorted(missing_intents))}")
             gaps.append(
-                Gap(
-                    priority="P2",
-                    entity=entity,
-                    message="some intents missing param inference configuration",
-                )
+                Gap(priority="P2", entity=entity, message="some intents missing param inference configuration")
             )
     else:
         if configured_intents:
             status = "configured_flag_false"
             notes.append("param inference configuration exists while flag is false")
-            gaps.append(
-                Gap(priority="P2", entity=entity, message="param inference config present but flag is false")
-            )
+            gaps.append(Gap(priority="P2", entity=entity, message="param inference config present but flag is false"))
 
     return {
         "status": status,
@@ -352,7 +371,10 @@ def format_coverage_matrix_row(entity: str, record: Mapping) -> str:
     param_inf = record.get("policies", {}).get("param_inference", {}).get("status", "—")
     schema_ok = "ok" if record.get("schema", {}).get("ok") else "issues"
     notes = "; ".join(record.get("notes", [])) or ""
-    return f"| {entity} | {intents} | {cache} | {rag} | {narrator} | {param_inf} | {schema_ok} | {notes} |"
+    bucket = record.get("bucket") or "—"
+    return (
+        f"| {entity} | {bucket} | {intents} | {cache} | {rag} | {narrator} | {param_inf} | {schema_ok} | {notes} |"
+    )
 
 
 def build_reports() -> Dict[str, object]:
@@ -378,15 +400,13 @@ def build_reports() -> Dict[str, object]:
         bucket = entities_to_bucket.get(entity)
 
         path_checks = validate_paths(entity, catalog_entry, gaps)
-        schema_path = catalog_entry.get("paths", {}).get("schema")
+        schema_path_value = catalog_entry.get("paths", {}).get("schema")
+        schema_path = ROOT / schema_path_value if schema_path_value else None
         schema_result: Dict[str, object]
         if schema_path:
-            schema_result = validate_schema(entity, ROOT / schema_path, gaps)
+            schema_result = validate_schema(entity, schema_path, gaps)
         else:
             schema_result = {"ok": False, "issues": ["schema path missing in catalog"]}
-            gaps.append(
-                Gap(priority="P0", entity=entity, message="schema path missing in catalog entry")
-            )
 
         coverage_flags = catalog_entry.get("coverage", {}) or {}
         cache_status = evaluate_cache(entity, coverage_flags.get("cache_policy", False), policies.get("cache"), gaps)
@@ -445,36 +465,16 @@ def build_reports() -> Dict[str, object]:
     }
 
 
-def write_json_report(report: Mapping) -> None:
-    JSON_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    with JSON_REPORT_PATH.open("w", encoding="utf-8") as handle:
-        json.dump(report, handle, indent=2, ensure_ascii=False)
+def write_json_report(report: Mapping, output_path: Path = JSON_REPORT_PATH) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", encoding="utf-8") as handle:
+        json.dump(report, handle, indent=2, ensure_ascii=False, sort_keys=True)
 
 
-def write_markdown_report(report: Mapping) -> None:
-    records: Mapping[str, Mapping] = report["records"]
-    gaps: Mapping[str, List[Mapping]] = report["gaps"]
-    appendix: Mapping[str, List[str]] = report["appendix"]
-
+def _format_gap_lines(gaps: Mapping[str, List[Mapping]]) -> List[str]:
     lines: List[str] = []
-    lines.append("# Coverage Report 2025.0")
-    lines.append("")
-    lines.append("## Resumo executivo")
-    lines.append("- Geração automática a partir de YAML (determinística, ordenação alfabética).")
-    lines.append("- Escopo: Ontologia ↔ Catálogo ↔ Contracts ↔ Policies.")
-    lines.append("- Prioridades: P0 (contrato), P1 (drift flags/policies), P2 (higiene).")
-    lines.append("")
-
-    lines.append("## Matriz de coverage por entidade")
-    lines.append("| entidade | intents | cache | rag | narrator | param_inference | schema_ok | notes |")
-    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- |")
-    for entity in sorted(records.keys()):
-        lines.append(format_coverage_matrix_row(entity, records[entity]))
-    lines.append("")
-
-    lines.append("## Gaps P0/P1/P2")
     for priority in ["P0", "P1", "P2"]:
-        lines.append(f"### {priority}")
+        lines.append(f"### {priority} ({SEVERITY_DEFINITIONS[priority]})")
         if not gaps.get(priority):
             lines.append("- Nenhum.")
         else:
@@ -483,7 +483,11 @@ def write_markdown_report(report: Mapping) -> None:
                 path = f" ({gap.get('path')})" if gap.get("path") else ""
                 lines.append(f"- {scope}: {gap.get('message')}{path}")
         lines.append("")
+    return lines
 
+
+def _format_appendix(appendix: Mapping[str, List[str]]) -> List[str]:
+    lines: List[str] = []
     lines.append("## Apêndice")
     lines.append("### Entidades no catálogo")
     lines.append(", ".join(appendix.get("catalog_entities", [])))
@@ -501,9 +505,71 @@ def write_markdown_report(report: Mapping) -> None:
     lines.append(f"Allow intents: {', '.join(appendix.get('rag_allow_intents', [])) or '—'}")
     lines.append(f"Deny intents: {', '.join(appendix.get('rag_denied_intents', [])) or '—'}")
     lines.append("")
+    return lines
 
-    MARKDOWN_REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    MARKDOWN_REPORT_PATH.write_text("\n".join(lines), encoding="utf-8")
+
+def _format_methodology_section() -> List[str]:
+    lines: List[str] = []
+    lines.append("## Metodologia")
+    lines.append("- Leitura 100% estática dos YAMLs do repositório, sem chamadas externas.")
+    lines.append("- Ordenação determinística (alfabética) para registros, gaps e apêndices.")
+    lines.append("- Checagens aplicadas:")
+    for key, desc in CHECK_DEFINITIONS.items():
+        lines.append(f"  - **{key}**: {desc}")
+    lines.append("- Severidades:")
+    for priority in ["P0", "P1", "P2"]:
+        lines.append(f"  - **{priority}**: {SEVERITY_DEFINITIONS[priority]}")
+    lines.append("")
+    return lines
+
+
+def write_markdown_report(report: Mapping, output_path: Path = MARKDOWN_REPORT_PATH) -> None:
+    records: Mapping[str, Mapping] = report["records"]
+    gaps: Mapping[str, List[Mapping]] = report["gaps"]
+    appendix: Mapping[str, List[str]] = report["appendix"]
+    total_entities = len(records)
+    total_intents = len(appendix.get("ontology_intents", []))
+    gap_counts = {priority: len(gaps.get(priority, [])) for priority in ["P0", "P1", "P2"]}
+
+    lines: List[str] = []
+    lines.append("# Coverage Report 2025.0")
+    lines.append("")
+    lines.append("## Resumo executivo")
+    lines.append("- Geração automática e determinística a partir dos YAMLs versionados.")
+    lines.append(f"- Entidades no catálogo analisadas: {total_entities}. Intents na ontologia: {total_intents}.")
+    lines.append(f"- Gaps identificados: P0={gap_counts['P0']}, P1={gap_counts['P1']}, P2={gap_counts['P2']}.")
+    lines.append("- Escopo: Ontologia ↔ Catálogo ↔ Contracts/Schemas ↔ Policies (cache, rag, narrator, param_inference).")
+    lines.append("")
+
+    lines.append("## Escopo e fontes de verdade (paths)")
+    lines.append(f"- Ontologia: `{ONTOLOGY_PATH.relative_to(ROOT)}`")
+    lines.append(f"- Catálogo: `{CATALOG_PATH.relative_to(ROOT)}`")
+    lines.append(f"- Schemas: `{CONTRACTS_DIR.relative_to(ROOT)}/`")
+    lines.append(f"- Policies: `{POLICIES_DIR.relative_to(ROOT)}/` (cache.yaml, rag.yaml, narrator.yaml, context.yaml)")
+    lines.append(f"- Param inference: `{PARAM_INFERENCE_PATH.relative_to(ROOT)}`")
+    lines.append("")
+
+    lines.extend(_format_methodology_section())
+
+    lines.append("## Matriz de coverage por entidade")
+    lines.append("| entidade | bucket | intents | cache | rag | narrator | param_inference | schema_ok | notes |")
+    lines.append("| --- | --- | --- | --- | --- | --- | --- | --- | --- |")
+    for entity in sorted(records.keys()):
+        lines.append(format_coverage_matrix_row(entity, records[entity]))
+    lines.append("")
+
+    lines.append("## Gaps (P0/P1/P2) e definições")
+    lines.append("- Definições objetivas e exemplos:")
+    lines.append("  - P0: paths inexistentes, schema não tabular ou divergente; impede execução.")
+    lines.append("  - P1: drift de flags vs policies (cache, narrator, rag) ou ontologia sem catálogo; bloqueio lógico.")
+    lines.append("  - P2: higienização (flags desativadas com config ativa, intents sem parametrização).")
+    lines.append("")
+    lines.extend(_format_gap_lines(gaps))
+
+    lines.extend(_format_appendix(appendix))
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> None:
