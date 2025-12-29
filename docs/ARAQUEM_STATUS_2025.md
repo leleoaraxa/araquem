@@ -39,3 +39,68 @@
 * **Compute-on-read como padrão:** parâmetros, janelas e agregações são inferidos a cada requisição via `param_inference.yaml`; não há pré-processamento ou cache obrigatório de respostas.【F:app/planner/param_inference.py†L488-L566】
 * **Contexto determinístico:** histórico e `last_reference` são governados por `context.yaml`; se a policy estiver desligada, o restante do pipeline segue sem impacto operacional (fail-open controlado).【F:app/context/context_manager.py†L202-L315】
 * **RAG e Narrator** permanecem opt-in por policy; no estado atual ambos estão neutros (RAG negado, LLM off), mantendo o `/ask` totalmente determinístico.
+
+## Freeze formal — Araquem 2025.0
+
+### Checklist de freeze 2025.0
+
+#### 1. Contratos & Ontologia
+
+- [ ] Todos os contratos em `data/contracts/entities/*.schema.yaml` têm `entity == filename` e `name == entity`; 44 arquivos ainda preservam o sufixo `.schema` no nome lógico (ex.: `carteira_enriquecida.schema`), quebrando o padrão solicitado.
+- [ ] `description` não vazia em todos os schemas — não revalidado nesta rodada.
+- [ ] Ontologia (`data/ontology/entity.yaml`) sem entidades órfãs — depende de verificação adicional de coverage vs. catalog.
+- [ ] Catálogo (`data/entities/catalog.yaml`) sem drift de coverage vs. policy — requer conferência cruzada com policies e ontologia.
+
+#### 2. Pipeline `/ask`
+
+- [x] Payload do `/ask` imutável por schema/Pydantic.
+- [x] Planner decide apenas por ontologia + thresholds YAML.
+- [x] Builder gera SQL determinístico (compute-on-read).
+- [x] Executor opera em modo read-only (Postgres).
+- [x] Formatter/Presenter expõe somente campos declarados.
+- [x] Cache RT somente quando a policy permite.
+- [x] ContextManager registra turnos e respeita `context.yaml`.
+
+#### 3. RAG / Narrator
+
+- [x] `rag.yaml` com deny ativo para intents atuais e `allow_intents` vazio.【F:data/policies/rag.yaml†L29-L57】
+- [x] `meta.rag.enabled = false` no estado congelado (deny global efetivo).【F:data/policies/rag.yaml†L29-L57】
+- [x] Narrator com `llm_enabled = false` e `shadow = false` no default e buckets.【F:data/policies/narrator.yaml†L7-L176】
+- [x] Nenhuma entidade marcada como Narrator ativa sem policy correspondente (todas permanecem com LLM desligado).【F:data/policies/narrator.yaml†L54-L200】
+
+#### 4. Qualidade & Observabilidade
+
+- [x] Quality gate ativo (score/gap/routed declarativo).
+- [x] Caminhos `gated/unroutable` retornam resposta segura.
+- [x] Métricas OTEL/Prometheus emitidas pelas camadas críticas.
+- [x] Nenhum fallback silencioso identificado.
+
+#### 5. Documentação
+
+- [x] `docs/ARAQUEM_STATUS_2025.md` reflete o runtime atual, incluindo o freeze 2025.0.
+- [x] Nenhum documento em `docs/**` contradiz o status (exceto `docs/database/**`).
+- [x] Não há promessas futuras misturadas ao estado atual.
+
+Status do freeze: **NÃO APTO**
+
+Observações finais:
+
+- Regularizar nomes/descrições dos schemas em `data/contracts/entities/*.schema.yaml` para aderir ao padrão (`entity == filename`/`name == entity`).
+- Revalidar cobertura Ontologia ↔ Catálogo ↔ Policies para fechar os itens pendentes acima.
+
+### Comandos de tag/versionamento (preparados, não executados)
+
+```bash
+git tag -a araquem-2025.0-freeze -m "Freeze formal do estado Araquem 2025.0 — pipeline determinístico, contratos padronizados, RAG/Narrator desligados por policy."
+# Opcional: branch de manutenção (hotfix documental/contratos; sem evolução funcional)
+git checkout -b release/2025.0
+```
+
+### Registro documental do freeze 2025.0
+
+- Data do freeze: 2025-12-29
+- Tag associada: `araquem-2025.0-freeze`
+- Escopo do freeze: pipeline `/ask` determinístico, contratos/ontologia padronizados, ContextManager ativo por policy, RAG e Narrator desligados por policy, quality gate habilitado.
+- Fora do escopo: reativação de RAG/LLM, novas heurísticas implícitas, alteração de policies SQL/cache/contexto, evolução funcional.
+- Referência: auditorias R1–R5 consolidadas neste documento.
+- Confirmações: Nenhuma alteração de runtime foi realizada; este freeze é documental e arquitetural.
