@@ -491,6 +491,7 @@ intents:
         - rentabilidade da carteira de fiis versus o ifix
         - tracking difference da carteira
         - comparar o retorno da carteira de fiis com o ifil
+        - comparar o retorno da minha carteira de fiis com o ifil
         - performance da carteira frente ao ibov
         - performance da minha carteira melhor ou pior que o ifix
         - performance da minha carteira de fiis frente ao indice de referencia
@@ -500,6 +501,8 @@ intents:
         - rentabilidade da minha carteira versus o ifix
         - rentabilidade da minha carteira versus o ifil
         - comparar o retorno da minha carteira com o ifil
+        - minha carteira de fiis esta melhor ou pior que o cdi
+        - minha carteira esta melhor ou pior que o cdi
         - performance da carteira nos ultimos 12 meses
         - performance da carteira no ultimo mes
         - rentabilidade da carteira em 2024
@@ -630,6 +633,8 @@ intents:
         - carteira melhor ou pior que o ifix
         - melhor ou pior que o cdi
         - melhor ou pior que o ifix
+        - resumo da performance da minha carteira de fiis versus o ifix
+        - resumo da performance da minha carteira de fiis versus o ifil
         - resumo carteira vs cdi d-1
         - ultima leitura
         - ultima referencia
@@ -1133,6 +1138,17 @@ intents:
         - preco medio
         - meu preco medio
         - indice de referencia
+        - quanto esta o dolar
+        - quanto esta o euro
+        - quanto esta usd
+        - quanto esta o dolar para compra e venda
+        - cotacao do dolar
+        - cotacao do euro
+        - cotacao do usd
+        - compra e venda do dolar
+        - valor do dolar comercial
+        - dolar comercial hoje
+        - preco do dolar hoje
     entities:
       - fiis_precos
 
@@ -1417,6 +1433,11 @@ intents:
         - o que e dy
         - significado de dividend yield
         - definicao de dividend yield
+        - ranking de dy
+        - ranking de dy 12 meses
+        - ranking de dividend yield
+        - melhor posicao no ranking de dy
+        - top dy 12 meses
     entities:
       - fiis_yield_history
 
@@ -1547,8 +1568,6 @@ intents:
         - patrimonio liquido
         - valor patrimonial
         - numero de cotistas
-        - maior patrimonio
-        - maiores fiis
         - caixa disponivel
         - divida liquida
         - market cap
@@ -1593,6 +1612,12 @@ intents:
         - cdi
         - cronograma
         - calendario
+        - maior patrimonio
+        - maior patrimonio entre os fiis
+        - maiores fiis
+        - fiis com maior patrimonio liquido
+        - quais fiis tem o maior patrimonio liquido
+        - ranking por patrimonio
     entities:
       - fiis_financials_snapshot
 
@@ -2246,6 +2271,16 @@ intents:
         - avaliacao
         - posicao
         - posicoes
+        - posicionamento
+        - ordenacao
+        - ordenar
+        - ordem
+        - classificado
+        - classificados
+        - lider
+        - lideres
+        - lideranca
+        - lanterna
         - classificacao
         - melhores
         - piores
@@ -2265,11 +2300,15 @@ intents:
         - patrimonio
         - patrimonio_liquido
         - pl
+        - patrimonio liquido
+        - valor_de_mercado
+        - valor de mercado
         - maior
         - menor
         - drawdown
         - mdd
         - historico
+        - 12m
       exclude:
         - preco
         - pontos
@@ -2314,6 +2353,13 @@ intents:
         - quais fiis têm o maior dividend yield em 12 meses
         - fiis com o maior dy em 12 meses
         - maior dividend yield em 12 meses
+        - ranking de dy em 12 meses
+        - ranking de dy 12 meses
+        - melhor posicao no ranking de dy 12 meses
+        - posicao no ranking de dy 12 meses
+        - ranking de fiis por dy 12 meses
+        - fiis com melhor dy em 12 meses
+        - fiis com melhor dy 12 meses
         - top 10 fiis por dividend yield
         - quais sao os maiores fiis em patrimonio liquido
         - movimento do <ticker> no ifix
@@ -2321,6 +2367,12 @@ intents:
         - ranking de fiis por patrimonio liquido
         - maior valor de mercado dos fiis
         - maiores fiis por patrimonio
+        - fiis com maior patrimonio liquido
+        - top fiis por patrimonio liquido
+        - maior patrimonio liquido dos fiis
+        - ranking por patrimonio liquido
+        - quais fiis tem o maior patrimonio liquido
+        - quais fiis tem maior pl
         - top fiis por sharpe ratio
         - ranking dos fiis com melhor sharpe ratio
         - top 5 fiis por sharpe ratio
@@ -2477,12 +2529,21 @@ intents:
         - dolar
         - eur
         - euro
+        - usdbrl
+        - usd/brl
+        - brl
+        - real
         - evolucao
         - comercial
         - compra
         - venda
         - cotacao
         - moeda
+        - compra_e_venda
+        - compra e venda
+        - bid
+        - ask
+        - taxa
       exclude:
         - fii
         - interpretacao
@@ -2512,6 +2573,13 @@ intents:
         - variacao do dolar
         - variacao do euro
         - taxas de cambio
+        - quanto esta o dolar para compra e venda
+        - cotacao do dolar para compra e venda
+        - valor do dolar para compra e venda
+        - taxa de compra e venda do dolar
+        - dolar comercial para compra e venda
+        - quanto esta o dolar comercial
+        - dolar turismo hoje
       exclude:
         - fundo imobiliario
         - fundo de investimento imobiliario
@@ -2876,6 +2944,21 @@ intents:
         - peso do
         - carteira vs
         - carteira versus
+        - carteira vs cdi
+        - carteira versus cdi
+        - carteira vs ifix
+        - carteira versus ifix
+        - carteira vs ifil
+        - carteira versus ifil
+        - comparar carteira com cdi
+        - comparar carteira com ifix
+        - comparar carteira com ifil
+        - comparar minha carteira com cdi
+        - comparar minha carteira com ifix
+        - comparar minha carteira com ifil
+        - melhor ou pior que o cdi
+        - melhor ou pior que o ifix
+        - melhor ou pior que o ifil
         - performance da carteira versus
         - comparacao da carteira com benchmark
         - minha carteira melhor ou pior que
