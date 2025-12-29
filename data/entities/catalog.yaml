@@ -154,7 +154,7 @@ entities:
       cache_policy: true
       rag_policy: false
       narrator_policy: false
-      param_inference: true
+      param_inference: false
     identifiers:
       natural_keys:
       - ticker
