@@ -1,4 +1,6 @@
 entity: fiis_noticias
+name: fiis_noticias
+description: Notícias e metadados associados a fundos imobiliários.
 kind: view
 version: 1
 

@@ -1,4 +1,6 @@
 entity: history_b3_indexes
+name: history_b3_indexes
+description: Histórico diário dos índices B3 relevantes para FIIs.
 kind: view
 version: 1
 

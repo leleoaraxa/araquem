@@ -1,4 +1,6 @@
 entity: fiis_financials_revenue_schedule
+name: fiis_financials_revenue_schedule
+description: Distribuição percentual das receitas dos FIIs por faixa de vencimento e indexador.
 kind: view
 version: 1
 

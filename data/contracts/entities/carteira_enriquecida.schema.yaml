@@ -1,6 +1,8 @@
-version: 1
+entity: carteira_enriquecida
 name: carteira_enriquecida
 description: Carteira privada enriquecida com métricas financeiras, risco e rankings.
+kind: view
+version: 1
 
 type: object
 properties:

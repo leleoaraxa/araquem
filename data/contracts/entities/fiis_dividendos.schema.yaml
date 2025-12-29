@@ -1,4 +1,6 @@
 entity: fiis_dividendos
+name: fiis_dividendos
+description: Proventos pagos por FIIs por data de pagamento e data-com.
 kind: view
 version: 1
 

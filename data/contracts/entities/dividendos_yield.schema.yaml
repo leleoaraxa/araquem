@@ -1,4 +1,6 @@
 entity: dividendos_yield
+name: dividendos_yield
+description: Histórico de dividendos e dividend yield mensal dos FIIs.
 kind: view
 version: 1
 

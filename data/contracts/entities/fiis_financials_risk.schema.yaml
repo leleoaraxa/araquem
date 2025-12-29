@@ -1,4 +1,6 @@
 entity: fiis_financials_risk
+name: fiis_financials_risk
+description: Indicadores de risco e retorno dos FIIs, incluindo volatilidade e Sharpe.
 kind: view
 version: 2
 
