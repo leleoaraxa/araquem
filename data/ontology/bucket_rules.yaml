@@ -1,5 +1,6 @@
 ---
-# OBS: buckets temporariamente desativados. Para reativar, ajustar enabled: true nas regras abaixo.
+# Estado atual: buckets neutros por decisão explícita.
+# Não há segmentação A/B/C aplicada; reative somente alterando enabled: true nas regras abaixo.
 terms:
   - name: "bucket_rules"
     kind: "planner"
@@ -15,6 +16,7 @@ defaults:
   token_weight: 1.0
   phrase_weight: 3.0
   min_score: 1.0
+  # Mantém segmentação desativada até decisão futura.
   enabled: false
 
 rules:
