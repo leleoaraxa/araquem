@@ -1,1259 +1,30 @@
 {
-  "records": {
-    "carteira_enriquecida": {
-      "bucket": "B",
-      "intents": [
-        "carteira_enriquecida"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "carteira_enriquecida"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": [
-        "Entidade privada; requer document_number do contexto seguro."
-      ]
-    },
-    "client_fiis_dividends_evolution": {
-      "bucket": "B",
-      "intents": [
-        "client_fiis_dividends_evolution"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "client_fiis_dividends_evolution"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": [
-        "entidade privada de carteira; dados por document_number",
-        "RAG/Narrator negados por policy; resposta 100% SQL determinística"
-      ]
-    },
-    "client_fiis_performance_vs_benchmark": {
-      "bucket": "B",
-      "intents": [
-        "client_fiis_performance_vs_benchmark"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "client_fiis_performance_vs_benchmark"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": [
-        "entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI",
-        "binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário"
-      ]
-    },
-    "client_fiis_performance_vs_benchmark_summary": {
-      "bucket": "B",
-      "intents": [
-        "client_fiis_performance_vs_benchmark_summary"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "client_fiis_performance_vs_benchmark_summary"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": [
-        "entidade privada dependente de document_number"
-      ]
-    },
-    "client_fiis_positions": {
-      "bucket": "B",
-      "intents": [
-        "client_fiis_positions"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "client_fiis_positions"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "dividendos_yield": {
-      "bucket": "A",
-      "intents": [
-        "dividendos_yield",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "dividendos_yield"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fii_overview": {
-      "bucket": "A",
-      "intents": [
-        "fii_overview",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": false
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "configured_flag_false",
-          "configured_intents": [
-            "fii_overview"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "param inference configuration exists while flag is false"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_cadastro": {
-      "bucket": "A",
-      "intents": [
-        "fiis_cadastro",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": false
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "configured_flag_false",
-          "configured_intents": [
-            "fiis_cadastro"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "param inference configuration exists while flag is false"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_dividendos": {
-      "bucket": "A",
-      "intents": [
-        "fiis_dividendos",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_dividendos"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_financials_revenue_schedule": {
-      "bucket": "A",
-      "intents": [
-        "fiis_financials_revenue_schedule",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_financials_revenue_schedule"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_financials_risk": {
-      "bucket": "A",
-      "intents": [
-        "fiis_financials_risk",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_financials_risk"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_financials_snapshot": {
-      "bucket": "A",
-      "intents": [
-        "fiis_financials_snapshot",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": false
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [],
-          "missing_intents": [
-            "fiis_financials_snapshot",
-            "ticker_query"
-          ],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "fiis_imoveis": {
-      "bucket": "A",
-      "intents": [
-        "fiis_imoveis",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_imoveis"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_noticias": {
-      "bucket": "A",
-      "intents": [
-        "fiis_noticias"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "fiis_noticias"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "fiis_precos": {
-      "bucket": "A",
-      "intents": [
-        "fiis_precos",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_precos"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_processos": {
-      "bucket": "A",
-      "intents": [
-        "fiis_processos",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": false
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "configured_flag_false",
-          "configured_intents": [
-            "fiis_processos"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "param inference configuration exists while flag is false"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "fiis_rankings": {
-      "bucket": "A",
-      "intents": [
-        "fiis_rankings",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": false
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [],
-          "missing_intents": [
-            "fiis_rankings",
-            "ticker_query"
-          ],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "fiis_yield_history": {
-      "bucket": "A",
-      "intents": [
-        "fiis_yield_history",
-        "ticker_query"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": true
-        },
-        "param_inference": {
-          "status": "partial",
-          "configured_intents": [
-            "fiis_yield_history"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ]
-        }
-      },
-      "notes": []
-    },
-    "history_b3_indexes": {
-      "bucket": "C",
-      "intents": [
-        "history_b3_indexes"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "history_b3_indexes"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "history_b3_indexes"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "history_currency_rates": {
-      "bucket": "C",
-      "intents": [
-        "history_currency_rates"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "history_currency_rates"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "history_currency_rates"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "history_market_indicators": {
-      "bucket": "C",
-      "intents": [
-        "history_market_indicators"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "policy_present_flag_false",
-          "allowed_intents": [
-            "history_market_indicators"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ]
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "history_market_indicators"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    },
-    "macro_consolidada": {
-      "bucket": "C",
-      "intents": [
-        "macro_consolidada"
-      ],
-      "coverage_flags": {
-        "cache_policy": true,
-        "rag_policy": false,
-        "narrator_policy": false,
-        "param_inference": true
-      },
-      "paths": {
-        "entity_yaml_exists": true,
-        "schema_exists": true
-      },
-      "schema": {
-        "ok": true,
-        "issues": []
-      },
-      "policies": {
-        "cache": "ok",
-        "rag": {
-          "status": "ok",
-          "allowed_intents": [],
-          "notes": []
-        },
-        "narrator": {
-          "status": "ok",
-          "notes": [],
-          "llm_enabled": null,
-          "context_allowed": false
-        },
-        "param_inference": {
-          "status": "ok",
-          "configured_intents": [
-            "macro_consolidada"
-          ],
-          "missing_intents": [],
-          "notes": []
-        }
-      },
-      "notes": []
-    }
-  },
-  "gaps": {
-    "P0": [],
-    "P1": [],
-    "P2": [
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "dividendos_yield",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "dividendos_yield",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fii_overview",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "param inference config present but flag is false",
-        "entity": "fii_overview",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_cadastro",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "param inference config present but flag is false",
-        "entity": "fiis_cadastro",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_dividendos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_dividendos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_financials_revenue_schedule",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_financials_revenue_schedule",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_financials_risk",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_financials_risk",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_financials_snapshot",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_imoveis",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_imoveis",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_precos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_precos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_processos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "param inference config present but flag is false",
-        "entity": "fiis_processos",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_rankings",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "fiis_yield_history",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "some intents missing param inference configuration",
-        "entity": "fiis_yield_history",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "history_b3_indexes",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "history_currency_rates",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P2",
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "entity": "history_market_indicators",
-        "intent": null,
-        "path": null
-      }
-    ]
-  },
   "appendix": {
     "catalog_entities": [
+      "carteira_enriquecida",
+      "client_fiis_dividends_evolution",
+      "client_fiis_performance_vs_benchmark",
+      "client_fiis_performance_vs_benchmark_summary",
+      "client_fiis_positions",
+      "dividendos_yield",
+      "fii_overview",
+      "fiis_cadastro",
+      "fiis_dividendos",
+      "fiis_financials_revenue_schedule",
+      "fiis_financials_risk",
+      "fiis_financials_snapshot",
+      "fiis_imoveis",
+      "fiis_noticias",
+      "fiis_precos",
+      "fiis_processos",
+      "fiis_rankings",
+      "fiis_yield_history",
+      "history_b3_indexes",
+      "history_currency_rates",
+      "history_market_indicators",
+      "macro_consolidada"
+    ],
+    "ontology_entities": [
       "carteira_enriquecida",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
@@ -1302,30 +73,7 @@
       "macro_consolidada",
       "ticker_query"
     ],
-    "ontology_entities": [
-      "carteira_enriquecida",
-      "client_fiis_dividends_evolution",
-      "client_fiis_performance_vs_benchmark",
-      "client_fiis_performance_vs_benchmark_summary",
-      "client_fiis_positions",
-      "dividendos_yield",
-      "fii_overview",
-      "fiis_cadastro",
-      "fiis_dividendos",
-      "fiis_financials_revenue_schedule",
-      "fiis_financials_risk",
-      "fiis_financials_snapshot",
-      "fiis_imoveis",
-      "fiis_noticias",
-      "fiis_precos",
-      "fiis_processos",
-      "fiis_rankings",
-      "fiis_yield_history",
-      "history_b3_indexes",
-      "history_currency_rates",
-      "history_market_indicators",
-      "macro_consolidada"
-    ],
+    "rag_allow_intents": [],
     "rag_denied_intents": [
       "carteira_enriquecida",
       "client_fiis_dividends_evolution",
@@ -1346,7 +94,1391 @@
       "fiis_rankings",
       "fiis_yield_history",
       "macro_consolidada"
-    ],
-    "rag_allow_intents": []
+    ]
+  },
+  "gaps": {
+    "P0": [],
+    "P1": [],
+    "P2": [
+      {
+        "entity": "dividendos_yield",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "dividendos_yield",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fii_overview",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fii_overview",
+        "intent": null,
+        "message": "param inference config present but flag is false",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_cadastro",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_cadastro",
+        "intent": null,
+        "message": "param inference config present but flag is false",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_dividendos",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_dividendos",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_financials_revenue_schedule",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_financials_revenue_schedule",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_financials_risk",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_financials_risk",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_financials_snapshot",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_imoveis",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_imoveis",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_precos",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_precos",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_processos",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_processos",
+        "intent": null,
+        "message": "param inference config present but flag is false",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_rankings",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_yield_history",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_yield_history",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "history_b3_indexes",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "history_currency_rates",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "history_market_indicators",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      }
+    ]
+  },
+  "records": {
+    "carteira_enriquecida": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "carteira_enriquecida"
+      ],
+      "notes": [
+        "Entidade privada; requer document_number do contexto seguro."
+      ],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/carteira_enriquecida/carteira_enriquecida.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/carteira_enriquecida.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "carteira_enriquecida"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "client_fiis_dividends_evolution": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "client_fiis_dividends_evolution"
+      ],
+      "notes": [
+        "entidade privada de carteira; dados por document_number",
+        "RAG/Narrator negados por policy; resposta 100% SQL determinística"
+      ],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/client_fiis_dividends_evolution/client_fiis_dividends_evolution.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/client_fiis_dividends_evolution.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "client_fiis_dividends_evolution"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "client_fiis_performance_vs_benchmark": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "client_fiis_performance_vs_benchmark"
+      ],
+      "notes": [
+        "entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI",
+        "binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário"
+      ],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/client_fiis_performance_vs_benchmark/client_fiis_performance_vs_benchmark.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/client_fiis_performance_vs_benchmark.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "client_fiis_performance_vs_benchmark"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "client_fiis_performance_vs_benchmark_summary": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "client_fiis_performance_vs_benchmark_summary"
+      ],
+      "notes": [
+        "entidade privada dependente de document_number"
+      ],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/client_fiis_performance_vs_benchmark_summary.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "client_fiis_performance_vs_benchmark_summary"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "client_fiis_positions": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "client_fiis_positions"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/client_fiis_positions/client_fiis_positions.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/client_fiis_positions.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "client_fiis_positions"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "dividendos_yield": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "dividendos_yield",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/dividendos_yield/dividendos_yield.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/dividendos_yield.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "dividendos_yield"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fii_overview": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": false,
+        "rag_policy": false
+      },
+      "intents": [
+        "fii_overview",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fii_overview/fii_overview.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fii_overview.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fii_overview"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "param inference configuration exists while flag is false"
+          ],
+          "status": "configured_flag_false"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_cadastro": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": false,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_cadastro",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_cadastro/fiis_cadastro.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_cadastro.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_cadastro"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "param inference configuration exists while flag is false"
+          ],
+          "status": "configured_flag_false"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_dividendos": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_dividendos",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_dividendos/fiis_dividendos.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_dividendos.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_dividendos"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_financials_revenue_schedule": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_financials_revenue_schedule",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_financials_revenue_schedule.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_financials_revenue_schedule"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_financials_risk": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_financials_risk",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_financials_risk/fiis_financials_risk.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_financials_risk.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_financials_risk"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_financials_snapshot": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": false,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_financials_snapshot",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_financials_snapshot/fiis_financials_snapshot.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_financials_snapshot.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [],
+          "missing_intents": [
+            "fiis_financials_snapshot",
+            "ticker_query"
+          ],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_imoveis": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_imoveis",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_imoveis/fiis_imoveis.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_imoveis.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_imoveis"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_noticias": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_noticias"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_noticias/fiis_noticias.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_noticias.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_noticias"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_precos": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_precos",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_precos/fiis_precos.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_precos.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_precos"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_processos": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": false,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_processos",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_processos/fiis_processos.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_processos.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_processos"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "param inference configuration exists while flag is false"
+          ],
+          "status": "configured_flag_false"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_rankings": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": false,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_rankings",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_rankings/fiis_rankings.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_rankings.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [],
+          "missing_intents": [
+            "fiis_rankings",
+            "ticker_query"
+          ],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_yield_history": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_yield_history",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_yield_history/fiis_yield_history.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_yield_history.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_yield_history"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "history_b3_indexes": {
+      "bucket": "C",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "history_b3_indexes"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/history_b3_indexes/history_b3_indexes.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/history_b3_indexes.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "history_b3_indexes"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [
+            "history_b3_indexes"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "history_currency_rates": {
+      "bucket": "C",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "history_currency_rates"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/history_currency_rates/history_currency_rates.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/history_currency_rates.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "history_currency_rates"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [
+            "history_currency_rates"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "history_market_indicators": {
+      "bucket": "C",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "history_market_indicators"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/history_market_indicators/history_market_indicators.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/history_market_indicators.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "history_market_indicators"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [
+            "history_market_indicators"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "macro_consolidada": {
+      "bucket": "C",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "macro_consolidada"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/macro_consolidada/macro_consolidada.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/macro_consolidada.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "macro_consolidada"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    }
   }
 }

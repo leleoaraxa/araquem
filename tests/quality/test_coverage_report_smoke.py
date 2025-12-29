@@ -1,51 +1,38 @@
 import json
 
-from scripts.quality import build_coverage_report
+from scripts.quality import build_coverage_report as coverage
 
 
-def test_build_reports_smoke(tmp_path, monkeypatch):
-    """Ensure the coverage report builder runs and produces expected structure."""
+def test_build_reports_smoke(tmp_path):
+    report = coverage.build_reports()
 
-    # Redirect outputs to a temp directory to keep workspace clean during tests.
-    monkeypatch.setattr(
-        build_coverage_report, "MARKDOWN_REPORT_PATH", tmp_path / "COVERAGE.md"
+    assert set(report.keys()) == {"records", "gaps", "appendix"}
+    assert report["records"]
+    sample_entity = sorted(report["records"].keys())[0]
+    sample_record = report["records"][sample_entity]
+    assert {"bucket", "intents", "coverage_flags", "paths", "schema", "policies", "notes"}.issubset(
+        sample_record.keys()
     )
-    monkeypatch.setattr(
-        build_coverage_report, "JSON_REPORT_PATH", tmp_path / "coverage.json"
-    )
-
-    report = build_coverage_report.build_reports()
-    build_coverage_report.write_json_report(report)
-    build_coverage_report.write_markdown_report(report)
 
     json_path = tmp_path / "coverage.json"
-    md_path = tmp_path / "COVERAGE.md"
+    md_path = tmp_path / "coverage.md"
+    coverage.write_json_report(report, output_path=json_path)
+    coverage.write_markdown_report(report, output_path=md_path)
 
     assert json_path.exists()
     assert md_path.exists()
 
-    with json_path.open("r", encoding="utf-8") as handle:
-        data = json.load(handle)
-
-    # Minimal structural checks to ensure core sections are present.
+    data = json.loads(json_path.read_text(encoding="utf-8"))
     assert set(data.keys()) == {"records", "gaps", "appendix"}
-    assert isinstance(data["records"], dict)
-    assert isinstance(data["gaps"], dict)
-    assert isinstance(data["appendix"], dict)
+    assert set(data["gaps"].keys()) == {"P0", "P1", "P2"}
 
-    # Validate a sample record has expected sub-keys.
-    sample_entity = sorted(data["records"].keys())[0]
-    sample_record = data["records"][sample_entity]
-    assert {"intents", "coverage_flags", "schema", "policies"}.issubset(
-        sample_record.keys()
-    )
-
-    # Ensure markdown content was written with expected sections.
-    content = md_path.read_text(encoding="utf-8")
+    md_content = md_path.read_text(encoding="utf-8")
     for section in [
         "Resumo executivo",
+        "Escopo e fontes de verdade",
+        "Metodologia",
         "Matriz de coverage por entidade",
-        "Gaps P0/P1/P2",
+        "Gaps (P0/P1/P2)",
         "Apêndice",
     ]:
-        assert section in content
+        assert section in md_content
