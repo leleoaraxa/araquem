@@ -36,7 +36,7 @@ def main() -> int:
         )
         return 1
 
-    cmd = [sys.executable, str(DIFF_SCRIPT)]
+    cmd = [sys.executable, str(DIFF_SCRIPT), *sys.argv[1:]]
     proc = subprocess.run(cmd, cwd=str(ROOT))
     return int(proc.returncode)
 
