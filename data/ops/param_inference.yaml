@@ -763,20 +763,6 @@ intents:
           - 60 dias
           - sessenta dias
 
-  fiis_processos:
-    default_agg: list
-    defaults:
-      list:
-        limit: 10
-        order: desc
-    params:
-      ticker:
-        source:
-          - text
-          - context
-        allow_multi_ticker: true
-        context_key: last_reference
-
   fiis_cadastro:
     agg_keywords: {}
     params:
@@ -799,6 +785,30 @@ intents:
 
   fiis_imoveis:
     agg_keywords: {}
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        allow_multi_ticker: true
+        context_key: last_reference
+
+  fiis_rankings:
+    agg_keywords: {}
+    params:
+      ticker:
+        source:
+          - text
+          - context
+        allow_multi_ticker: true
+        context_key: last_reference
+
+  fiis_processos:
+    default_agg: list
+    defaults:
+      list:
+        limit: 10
+        order: desc
     params:
       ticker:
         source:
