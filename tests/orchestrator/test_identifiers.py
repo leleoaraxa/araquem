@@ -23,8 +23,8 @@ def test_extract_identifiers_multiple_tickers() -> None:
         "compare HGLG11, mxrf11 e hglg11 ao mesmo tempo"
     )
 
-    assert identifiers["ticker"] == "HGLG11"
     assert identifiers["tickers"] == ["HGLG11", "MXRF11"]
+    assert identifiers["ticker"] is None  # ticker simples só é preenchido quando há 1 símbolo
 
 
 def test_extract_identifiers_without_ticker() -> None:

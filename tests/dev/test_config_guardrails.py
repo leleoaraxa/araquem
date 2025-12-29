@@ -173,10 +173,12 @@ class TestNarratorPolicyLoader:
         result = narrator_module._load_narrator_policy()
 
         assert result == {
-            "model": "sirios-narrator:latest:instruct",
-            "llm_enabled": True,
-            "shadow": False,
-        }
+            "narrator": {
+                "model": "sirios-narrator:latest:instruct",
+                "llm_enabled": True,
+                "shadow": False,
+            }
+        }  # loader agora retorna o bloco completo sob a chave narrator
 
 
 class TestNarratorShadowPolicy:
@@ -637,7 +639,7 @@ class TestParamInferenceConfig:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 10,
+            "limit": 24,  # default limit para fiis_dividendos passou a 24
             "order": "desc",
             "ticker": "MXRF11",
         }

@@ -20,5 +20,5 @@ def test_build_select_multi_ticker_uses_any() -> None:
     )
 
     assert "ticker = ANY(%(tickers)s)" in sql
-    assert params["ticker"] == "HGLG11"
     assert params["tickers"] == ["HGLG11", "MXRF11"]
+    assert "ticker" not in params  # multi-ticker path usa apenas a lista normalizada

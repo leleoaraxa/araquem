@@ -25,7 +25,7 @@ def test_build_facts_tabular_contract():
     identifiers = {"ticker": "ABCD11"}
     aggregates = {"limit": 1}
 
-    facts, result_key, rows = build_facts(
+    facts, result_key, rows, mismatch_reason = build_facts(
         question="qual o cadastro do abcd11?",
         plan=plan,
         orchestrator_results=orchestrator_results,
@@ -45,6 +45,7 @@ def test_build_facts_tabular_contract():
     assert facts.aggregates == aggregates
     assert facts.identifiers == identifiers
     assert facts.requested_metrics == meta["requested_metrics"]
+    assert mismatch_reason is None  # build_facts agora retorna o motivo de ajuste da result_key
 
 
 def test_build_facts_risk_contract():
@@ -74,7 +75,7 @@ def test_build_facts_risk_contract():
     identifiers = {"ticker": "XPTO11"}
     aggregates = {"limit": 5, "order": "desc"}
 
-    facts, result_key, rows = build_facts(
+    facts, result_key, rows, mismatch_reason = build_facts(
         question="qual o sharpe e beta do xpto11?",
         plan=plan,
         orchestrator_results=orchestrator_results,
@@ -95,3 +96,4 @@ def test_build_facts_risk_contract():
     assert rows == orchestrator_results["financials_risk"]
     assert "sharpe_ratio" in facts.primary
     assert "beta_index" in facts.primary
+    assert mismatch_reason is None  # build_facts agora retorna o motivo de ajuste da result_key
