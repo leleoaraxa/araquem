@@ -1,3 +1,4 @@
+# tests/narrator/test_narrator_bucket_d_llm.py
 from app.narrator.narrator import Narrator
 
 
@@ -50,7 +51,9 @@ def test_bucket_d_triggers_llm(monkeypatch):
         name == "services_narrator_llm_requests_total" and labels.get("outcome") == "ok"
         for name, labels in counters
     )
-    assert any(name == "services_narrator_llm_latency_seconds" for name, *_ in histograms)
+    assert any(
+        name == "services_narrator_llm_latency_seconds" for name, *_ in histograms
+    )
 
 
 def test_other_buckets_skip_llm(monkeypatch):

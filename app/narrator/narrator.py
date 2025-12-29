@@ -586,7 +586,10 @@ def _load_narrator_policy(path: str = str(_NARRATOR_POLICY_PATH)) -> Dict[str, A
                     f"Narrator policy malformada: '{key}' deve ser string não vazia"
                 )
 
-    return cfg
+    # Retorna o YAML completo (fonte de verdade), preservando seções como:
+    # default, entities, buckets, policy_guards, etc.
+    # A validação obrigatória permanece no bloco data["narrator"].
+    return data
 
 
 def _coerce_env_flag(raw: str | None) -> Optional[bool]:
@@ -697,11 +700,18 @@ class Narrator:
             if isinstance(raw_error, str) and raw_error.strip():
                 self._policy_error = raw_error.strip()
 
+            # 1) wrapper (quality push / runtime)
             candidate_policy = policy_payload.get("policy")
             if isinstance(candidate_policy, dict):
                 policy_content = candidate_policy
-            elif "status" not in policy_payload:
-                policy_content = policy_payload
+            else:
+                # 2) YAML com nó raiz "narrator:"
+                candidate_narrator = policy_payload.get("narrator")
+                if isinstance(candidate_narrator, dict):
+                    policy_content = candidate_narrator
+                # 3) policy já flat
+                elif "status" not in policy_payload:
+                    policy_content = policy_payload
 
         self.policy = policy_content
         self.shadow_policy = _load_narrator_shadow_policy()
@@ -786,8 +796,9 @@ class Narrator:
         """Gera narrativa global usando LLM, preservando resultados."""
 
         effective_meta = dict(meta) if isinstance(meta, dict) else {}
-        policy_dict = self.policy if isinstance(self.policy, dict) else {}
-        if not bool(policy_dict.get("llm_enabled", False)):
+        # Usa a mesma resolução de policy do restante do Narrator
+        global_policy = _get_effective_policy(None, self.policy)
+        if not bool(global_policy.get("llm_enabled", False)):
             return effective_meta
 
         bucket_cfg = (

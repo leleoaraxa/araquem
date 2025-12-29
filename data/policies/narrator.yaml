@@ -6,7 +6,7 @@ terms:
 
 narrator:
   model: sirios-narrator:latest
-  llm_enabled: false
+  llm_enabled: true
   shadow: false
 
   # policy_guards é um contrato declarativo de governança (não garante aplicação automática).
@@ -46,7 +46,7 @@ narrator:
     C:
       llm_enabled: false
     D:
-      llm_enabled: false
+      llm_enabled: true
       mode: global_post_sql
       max_tokens: 512
       temperature: 0.1
