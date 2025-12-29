@@ -1,4 +1,6 @@
 entity: fiis_financials_snapshot
+name: fiis_financials_snapshot
+description: Painel de métricas financeiras e de mercado dos FIIs.
 kind: view
 version: 1
 

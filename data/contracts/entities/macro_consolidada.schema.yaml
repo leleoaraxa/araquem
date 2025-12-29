@@ -1,6 +1,8 @@
-version: 1
+entity: macro_consolidada
 name: macro_consolidada
 description: Histórico consolidado de indicadores macro, índices e câmbio.
+kind: view
+version: 1
 
 type: object
 properties:

@@ -1,4 +1,6 @@
 entity: client_fiis_positions
+name: client_fiis_positions
+description: Posições diárias de FIIs por cliente com métricas de preço e rentabilidade.
 kind: view
 version: 1
 

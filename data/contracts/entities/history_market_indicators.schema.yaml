@@ -1,4 +1,6 @@
 entity: history_market_indicators
+name: history_market_indicators
+description: Histórico diário de indicadores de mercado e taxas referenciais.
 kind: view
 version: 1
 

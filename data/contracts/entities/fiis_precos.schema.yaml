@@ -1,4 +1,6 @@
 entity: fiis_precos
+name: fiis_precos
+description: Histórico diário de preços e variações dos FIIs.
 kind: view
 version: 1
 

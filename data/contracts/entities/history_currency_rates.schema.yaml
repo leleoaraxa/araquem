@@ -1,4 +1,6 @@
 entity: history_currency_rates
+name: history_currency_rates
+description: Cotações diárias de moedas estrangeiras com variação percentual.
 kind: view
 version: 1
 

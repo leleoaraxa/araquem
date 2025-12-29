@@ -1,4 +1,6 @@
 entity: fiis_rankings
+name: fiis_rankings
+description: Posições de rankings de FIIs por diversos critérios e fornecedores.
 kind: view
 version: 1
 

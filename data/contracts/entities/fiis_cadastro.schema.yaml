@@ -1,4 +1,6 @@
 entity: fiis_cadastro
+name: fiis_cadastro
+description: Cadastro básico de fundos imobiliários e metadados de mercado.
 kind: view
 version: 1
 

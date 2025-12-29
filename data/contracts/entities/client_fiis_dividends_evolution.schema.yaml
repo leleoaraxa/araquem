@@ -1,4 +1,6 @@
 entity: client_fiis_dividends_evolution
+name: client_fiis_dividends_evolution
+description: Evolução de dividendos do cliente agregada por mês e ativo.
 kind: view
 version: 1
 

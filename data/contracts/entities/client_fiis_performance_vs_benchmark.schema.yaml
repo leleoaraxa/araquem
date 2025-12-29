@@ -1,4 +1,6 @@
 entity: client_fiis_performance_vs_benchmark
+name: client_fiis_performance_vs_benchmark
+description: Comparativo diário da carteira de FIIs do cliente contra benchmarks.
 kind: view
 version: 1
 
