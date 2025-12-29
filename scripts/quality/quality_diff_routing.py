@@ -50,11 +50,33 @@ def preview(text: str, max_len: int = 300) -> str:
     return text if len(text) <= max_len else text[:max_len] + "…"
 
 
+def find_intent_entity_anywhere(obj):
+    if isinstance(obj, dict):
+        intent = obj.get("intent")
+        entity = obj.get("entity")
+        if isinstance(intent, str) and isinstance(entity, str):
+            score = obj.get("score", None)
+            return intent, entity, score
+        for v in obj.values():
+            r = find_intent_entity_anywhere(v)
+            if r:
+                return r
+    elif isinstance(obj, list):
+        for it in obj:
+            r = find_intent_entity_anywhere(it)
+            if r:
+                return r
+    return None
+
+
 def extract_routing(resp: Dict[str, Any]) -> Tuple[Optional[str], Optional[str], Any]:
     intent_paths: Iterable[Sequence[str]] = (
         ("meta", "planner", "chosen", "intent"),
-        ("meta", "route", "intent"),
+        ("meta", "planner", "chosen_intent"),
         ("meta", "routing", "chosen", "intent"),
+        ("meta", "route", "intent"),
+        ("meta", "orchestrator", "route", "intent"),
+        ("route", "intent"),
         ("planner_intent",),
     )
     entity_paths: Iterable[Sequence[str]] = (
@@ -71,12 +93,15 @@ def extract_routing(resp: Dict[str, Any]) -> Tuple[Optional[str], Optional[str],
     intent = pick(resp, *intent_paths, default=None)
     entity = pick(resp, *entity_paths, default=None)
     score = pick(resp, *score_paths, default=None)
+    if intent is None or entity is None:
+        meta = resp.get("meta")
+        r = find_intent_entity_anywhere(meta) if meta is not None else None
+        if r:
+            return r[0], r[1], r[2]
     return intent, entity, score
 
 
-def ask(
-    q: str, api_url: str, timeout: float, disable_rag: bool
-) -> Dict[str, Any]:
+def ask(q: str, api_url: str, timeout: float, disable_rag: bool) -> Dict[str, Any]:
     payload = {
         "question": q,
         "conversation_id": CID,
@@ -91,7 +116,10 @@ def ask(
 
     try:
         r = httpx.post(
-            f"{api_url}/ask", json=payload, timeout=timeout, headers=headers or None
+            f"{api_url}/ask?explain=true",
+            json=payload,
+            timeout=timeout,
+            headers=headers or None,
         )
         r.raise_for_status()
     except httpx.ReadTimeout as exc:
@@ -118,7 +146,9 @@ def ask(
             "error_kind": "request_error",
             "error_message": str(exc),
             "status_code": response.status_code if response else None,
-            "body_preview": preview(response.text) if response and response.text else None,
+            "body_preview": (
+                preview(response.text) if response and response.text else None
+            ),
         }
     except Exception as exc:
         return {
@@ -257,7 +287,7 @@ def main():
 
     OUT.parent.mkdir(parents=True, exist_ok=True)
     output = {
-        "generated_at": datetime.datetime.utcnow().isoformat(),
+        "generated_at": datetime.datetime.now(datetime.UTC).isoformat(),
         "api_url": args.api_url,
         "totals": {
             "samples": len(samples),
