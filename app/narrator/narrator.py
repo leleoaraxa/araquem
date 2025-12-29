@@ -40,6 +40,113 @@ _NARRATOR_SHADOW_POLICY_PATH = Path("data/policies/narrator_shadow.yaml")
 _TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
 _FILTER_FIELD_NAMES = ("filters", "filter")
 _DIGIT_RE = re.compile(r"\d")
+_URL_RE = re.compile(r"https?://\S+", re.IGNORECASE)
+
+
+def _extract_numbers_and_dates(text: str) -> set[str]:
+    numbers = set(re.findall(r"\b\d+(?:[.,]\d+)?\b", text))
+    dates = set(re.findall(r"\b\d{1,4}[/-]\d{1,2}[/-]\d{1,4}\b", text))
+    return numbers.union(dates)
+
+
+def _extract_urls(text: str) -> set[str]:
+    return set(_URL_RE.findall(text))
+
+
+def _contains_pipe_table(text: str) -> bool:
+    if "|" not in text:
+        return False
+    for line in text.splitlines():
+        pipes = line.count("|")
+        if pipes >= 2:
+            return True
+    return False
+
+
+def _contains_markdown_table(text: str) -> bool:
+    if "|" not in text:
+        return False
+    lines = [ln.strip() for ln in text.splitlines() if "|" in ln]
+    for idx, line in enumerate(lines[:-1]):
+        if line.count("|") < 2:
+            continue
+        next_line = lines[idx + 1]
+        if re.match(r"^\|?\s*:?-{3,}", next_line):
+            return True
+    return False
+
+
+def _get_policy_guards(policy: Dict[str, Any] | None) -> Dict[str, Any]:
+    if not isinstance(policy, dict):
+        return {}
+    guards = policy.get("policy_guards")
+    return guards if isinstance(guards, dict) else {}
+
+
+def _fail_closed_action(policy_guards: Dict[str, Any], key: str) -> str:
+    cfg = policy_guards.get("fail_closed") if isinstance(policy_guards, dict) else {}
+    if isinstance(cfg, dict):
+        action = cfg.get(key)
+        if isinstance(action, str) and action.strip():
+            return action.strip()
+    return "return_baseline"
+
+
+def _policy_violation_reason(
+    baseline_text: str,
+    candidate_text: str,
+    policy_guards: Dict[str, Any],
+) -> str | None:
+    if not policy_guards:
+        return None
+
+    invariants_raw = policy_guards.get("invariants_prohibited")
+    invariants = (
+        {str(item) for item in invariants_raw}
+        if isinstance(invariants_raw, (list, tuple, set))
+        else set()
+    )
+    rewrite_only_default = bool(policy_guards.get("rewrite_only_default", False))
+
+    baseline = baseline_text or ""
+    candidate = candidate_text or ""
+
+    check_numbers = rewrite_only_default or "change_numbers_or_dates" in invariants
+    if check_numbers:
+        if _extract_numbers_and_dates(baseline) != _extract_numbers_and_dates(candidate):
+            return "change_numbers_or_dates"
+
+    check_tickers = rewrite_only_default or "change_tickers" in invariants
+    if check_tickers:
+        if set(_TICKER_RE.findall(baseline.upper())) != set(
+            _TICKER_RE.findall(candidate.upper())
+        ):
+            return "change_tickers"
+
+    check_urls = rewrite_only_default or "change_urls" in invariants
+    if check_urls:
+        if _extract_urls(baseline) != _extract_urls(candidate):
+            return "change_urls"
+
+    baseline_has_pipe = _contains_pipe_table(baseline)
+    candidate_has_pipe = _contains_pipe_table(candidate)
+
+    if "emit_pipe_tables" in invariants or (
+        not baseline_has_pipe and candidate_has_pipe
+    ):
+        if candidate_has_pipe and not baseline_has_pipe:
+            return "emit_pipe_tables"
+
+    baseline_has_markdown = _contains_markdown_table(baseline)
+    candidate_has_markdown = _contains_markdown_table(candidate)
+
+    if "emit_markdown_tables" in invariants or (
+        not baseline_has_markdown and candidate_has_markdown
+    ):
+        if candidate_has_markdown and not baseline_has_markdown:
+            return "emit_markdown_tables"
+
+    return None
 
 
 def _entity_yaml_path(entity: str) -> Path:
@@ -1028,6 +1135,7 @@ class Narrator:
 
         # 3) fallback padrão
         baseline_text = deterministic_text or _default_text(entity, effective_facts)
+        policy_guards = _get_policy_guards(self.policy)
         rows_count = len(effective_facts.get("rows") or [])
 
         def _finalize_response(
@@ -1195,6 +1303,7 @@ class Narrator:
         )
 
         t0 = time.perf_counter()
+        policy_violation: str | None = None
         try:
             prompt = build_prompt(
                 question=question,
@@ -1306,8 +1415,15 @@ class Narrator:
                     text = candidate
                     tokens_out = len(candidate.split())
 
+            policy_violation = _policy_violation_reason(
+                baseline_text, text, policy_guards
+            )
+
         except Exception as exc:  # pragma: no cover - caminho excepcional
-            error = f"llm_error: {exc}"
+            error_label = "llm_error"
+            if isinstance(exc, TimeoutError) or "timeout" in str(exc).lower():
+                error_label = "llm_timeout"
+            error = f"{error_label}: {exc}"
             LOGGER.error(
                 "NARRATOR_LLM_ERROR entity=%s intent=%s model=%s error=%s",
                 entity,
@@ -1333,12 +1449,28 @@ class Narrator:
             (text[:120] + "..." if isinstance(text, str) and len(text) > 120 else text),
         )
 
+        if policy_violation:
+            action = _fail_closed_action(policy_guards, "on_violation")
+            narrator_meta["strategy"] = "policy_violation"
+            narrator_meta["error"] = f"policy_violation:{policy_violation}"
+            chosen_text = baseline_text if action == "return_baseline" else text
+            return _finalize_response(
+                chosen_text,
+                tokens_in=tokens_in,
+                tokens_out=tokens_out,
+                latency_ms=elapsed_ms,
+                error=f"policy_violation:{policy_violation}",
+                strategy_override="policy_violation",
+            )
+
         if error:
+            action_key = "on_timeout" if error.startswith("llm_timeout") else "on_error"
+            action = _fail_closed_action(policy_guards, action_key)
             # Fail-safe alinhado ao data/policies/llm_prompts.md:
             # não tentar "salvar" a resposta com baseline potencialmente contaminado.
 
             return _finalize_response(
-                _FAILSAFE_TEXT,
+                baseline_text if action == "return_baseline" else _FAILSAFE_TEXT,
                 tokens_in=tokens_in,
                 tokens_out=tokens_out,
                 latency_ms=elapsed_ms,
