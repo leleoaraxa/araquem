@@ -137,6 +137,51 @@
         "binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário"
       ]
     },
+    "client_fiis_performance_vs_benchmark_summary": {
+      "bucket": "B",
+      "intents": [
+        "client_fiis_performance_vs_benchmark_summary"
+      ],
+      "coverage_flags": {
+        "cache_policy": true,
+        "rag_policy": false,
+        "narrator_policy": false,
+        "param_inference": true
+      },
+      "paths": {
+        "entity_yaml_exists": true,
+        "schema_exists": true
+      },
+      "schema": {
+        "ok": true,
+        "issues": []
+      },
+      "policies": {
+        "cache": "ok",
+        "rag": {
+          "status": "ok",
+          "allowed_intents": [],
+          "notes": []
+        },
+        "narrator": {
+          "status": "ok",
+          "notes": [],
+          "llm_enabled": null,
+          "context_allowed": false
+        },
+        "param_inference": {
+          "status": "ok",
+          "configured_intents": [
+            "client_fiis_performance_vs_benchmark_summary"
+          ],
+          "missing_intents": [],
+          "notes": []
+        }
+      },
+      "notes": [
+        "entidade privada dependente de document_number"
+      ]
+    },
     "client_fiis_positions": {
       "bucket": "B",
       "intents": [
@@ -849,7 +894,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "rag_policy": false,
-        "narrator_policy": true,
+        "narrator_policy": false,
         "param_inference": true
       },
       "paths": {
@@ -872,10 +917,8 @@
           ]
         },
         "narrator": {
-          "status": "denied_by_context",
-          "notes": [
-            "context policy denies narrator history for entity"
-          ],
+          "status": "ok",
+          "notes": [],
           "llm_enabled": null,
           "context_allowed": false
         },
@@ -898,7 +941,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "rag_policy": false,
-        "narrator_policy": true,
+        "narrator_policy": false,
         "param_inference": true
       },
       "paths": {
@@ -921,10 +964,8 @@
           ]
         },
         "narrator": {
-          "status": "denied_by_context",
-          "notes": [
-            "context policy denies narrator history for entity"
-          ],
+          "status": "ok",
+          "notes": [],
           "llm_enabled": null,
           "context_allowed": false
         },
@@ -947,7 +988,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "rag_policy": false,
-        "narrator_policy": true,
+        "narrator_policy": false,
         "param_inference": true
       },
       "paths": {
@@ -970,10 +1011,8 @@
           ]
         },
         "narrator": {
-          "status": "denied_by_context",
-          "notes": [
-            "context policy denies narrator history for entity"
-          ],
+          "status": "ok",
+          "notes": [],
           "llm_enabled": null,
           "context_allowed": false
         },
@@ -1034,57 +1073,7 @@
   },
   "gaps": {
     "P0": [],
-    "P1": [
-      {
-        "priority": "P1",
-        "message": "Entity referenced in ontology is missing from catalog",
-        "entity": "client_fiis_performance_vs_benchmark_summary",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but denied by context policy",
-        "entity": "history_b3_indexes",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but no narrator rule found",
-        "entity": "history_b3_indexes",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but denied by context policy",
-        "entity": "history_currency_rates",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but no narrator rule found",
-        "entity": "history_currency_rates",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but denied by context policy",
-        "entity": "history_market_indicators",
-        "intent": null,
-        "path": null
-      },
-      {
-        "priority": "P1",
-        "message": "narrator flag active but no narrator rule found",
-        "entity": "history_market_indicators",
-        "intent": null,
-        "path": null
-      }
-    ],
+    "P1": [],
     "P2": [
       {
         "priority": "P2",
@@ -1268,6 +1257,7 @@
       "carteira_enriquecida",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
+      "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
       "dividendos_yield",
       "fii_overview",

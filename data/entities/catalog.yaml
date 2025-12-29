@@ -58,6 +58,25 @@ entities:
     - entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI
     - binding de document_number via contexto seguro; benchmark_code pode ser texto
       do usuário
+  client_fiis_performance_vs_benchmark_summary:
+    title: Carteira do cliente – performance vs benchmark (resumo)
+    kind: client
+    bucket: carteira/privado
+    paths:
+      entity_yaml: data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml
+      schema: data/contracts/entities/client_fiis_performance_vs_benchmark_summary.schema.yaml
+    coverage:
+      cache_policy: true
+      rag_policy: false
+      narrator_policy: false
+      param_inference: true
+    identifiers:
+      natural_keys:
+      - document_number
+      - benchmark_code
+      - date_reference
+    notes:
+    - entidade privada dependente de document_number
   fiis_cadastro:
     title: FIIs – Cadastro
     kind: snapshot
@@ -268,7 +287,7 @@ entities:
     coverage:
       cache_policy: true
       rag_policy: false
-      narrator_policy: true
+      narrator_policy: false
       param_inference: true
     identifiers:
       natural_keys:
@@ -284,7 +303,7 @@ entities:
     coverage:
       cache_policy: true
       rag_policy: false
-      narrator_policy: true
+      narrator_policy: false
       param_inference: true
     identifiers:
       natural_keys:
@@ -300,7 +319,7 @@ entities:
     coverage:
       cache_policy: true
       rag_policy: false
-      narrator_policy: true
+      narrator_policy: false
       param_inference: true
     identifiers:
       natural_keys:

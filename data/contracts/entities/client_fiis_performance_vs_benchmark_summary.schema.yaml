@@ -1,6 +1,6 @@
 entity: client_fiis_performance_vs_benchmark_summary
 name: client_fiis_performance_vs_benchmark_summary
-description: Resumo da performance da carteira de FIIs do cliente versus benchmarks.
+description: Resumo (última leitura) da performance da carteira de FIIs do cliente versus benchmarks.
 kind: view
 version: 1
 
@@ -12,7 +12,7 @@ columns:
   - { name: portfolio_return_pct,  type: number,   nullable: true,  desc: "retorno acumulado da carteira (%)" }
   - { name: benchmark_value,       type: number,   nullable: true,  desc: "valor/nível do benchmark na última data" }
   - { name: benchmark_return_pct,  type: number,   nullable: true,  desc: "retorno acumulado do benchmark (%)" }
-  - { name: excess_return_pct,     type: number,   nullable: true,  desc: "excesso de retorno (carteira - benchmark) em pontos percentuais" }
+  - { name: excess_return_pct,     type: number,   nullable: true,  desc: "excesso de retorno (carteira - benchmark) em p.p." }
 
 ordering: [document_number, benchmark_code, date_reference]
 
