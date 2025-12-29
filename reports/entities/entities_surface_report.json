@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-05T14:55:47.014207+00:00",
+  "generated_at": "2025-12-29T20:13:56.114346+00:00",
   "root": "data/entities",
   "entities": [
     {
@@ -9,7 +9,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 327
+        "catalog_line": 346
       },
       "entity_yaml": {
         "exists": true,
@@ -25,7 +25,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/carteira_enriquecida/responses/table.md.j2",
-            "size_bytes": 1168
+            "size_bytes": 1146
           }
         ]
       },
@@ -82,7 +82,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/client_fiis_dividends_evolution/responses/table.md.j2",
-            "size_bytes": 374
+            "size_bytes": 919
           }
         ]
       },
@@ -136,7 +136,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/client_fiis_performance_vs_benchmark/responses/table.md.j2",
-            "size_bytes": 770
+            "size_bytes": 1306
           }
         ]
       },
@@ -171,6 +171,59 @@
       ]
     },
     {
+      "entity_id": "client_fiis_performance_vs_benchmark_summary",
+      "dir_exists": true,
+      "dir_path": "data/entities/client_fiis_performance_vs_benchmark_summary",
+      "catalog": {
+        "listed_in_catalog": false,
+        "catalog_path": "data/entities/catalog.yaml",
+        "catalog_line": 61
+      },
+      "entity_yaml": {
+        "exists": true,
+        "path": "data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml",
+        "parse_ok": true,
+        "schema_path": "data/contracts/entities/client_fiis_performance_vs_benchmark_summary.schema.yaml",
+        "schema_exists": true
+      },
+      "responses": {
+        "dir_exists": true,
+        "dir_path": "data/entities/client_fiis_performance_vs_benchmark_summary/responses",
+        "templates": [
+          {
+            "filename": "table.md.j2",
+            "path": "data/entities/client_fiis_performance_vs_benchmark_summary/responses/table.md.j2",
+            "size_bytes": 1342
+          }
+        ]
+      },
+      "support_files": {
+        "hints_md": {
+          "exists": true,
+          "path": "data/entities/client_fiis_performance_vs_benchmark_summary/hints.md"
+        },
+        "template_md": {
+          "exists": true,
+          "path": "data/entities/client_fiis_performance_vs_benchmark_summary/template.md"
+        },
+        "templates_md": {
+          "exists": false,
+          "path": null
+        }
+      },
+      "db_samples": {
+        "csv_exists": false,
+        "path": null
+      },
+      "golden": {
+        "in_projection_quality": false,
+        "projection_files": []
+      },
+      "tags": [
+        "has_contract_schema"
+      ]
+    },
+    {
       "entity_id": "client_fiis_positions",
       "dir_exists": true,
       "dir_path": "data/entities/client_fiis_positions",
@@ -193,7 +246,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/client_fiis_positions/responses/table.md.j2",
-            "size_bytes": 762
+            "size_bytes": 1097
           }
         ]
       },
@@ -234,7 +287,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 310
+        "catalog_line": 329
       },
       "entity_yaml": {
         "exists": true,
@@ -250,7 +303,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/dividendos_yield/responses/table.md.j2",
-            "size_bytes": 1331
+            "size_bytes": 1830
           }
         ]
       },
@@ -295,7 +348,7 @@
       },
       "entity_yaml": {
         "exists": false,
-        "path": "data/entities/entities/entities.yaml",
+        "path": "data/entities/entities/entity.yaml",
         "parse_ok": false,
         "schema_path": "data/contracts/entities/entities.schema.yaml",
         "schema_exists": false
@@ -338,7 +391,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 111
+        "catalog_line": 130
       },
       "entity_yaml": {
         "exists": true,
@@ -354,7 +407,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fii_overview/responses/table.md.j2",
-            "size_bytes": 1534
+            "size_bytes": 5985
           }
         ]
       },
@@ -395,7 +448,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 61
+        "catalog_line": 80
       },
       "entity_yaml": {
         "exists": true,
@@ -411,7 +464,7 @@
           {
             "filename": "list.md.j2",
             "path": "data/entities/fiis_cadastro/responses/list.md.j2",
-            "size_bytes": 232
+            "size_bytes": 1803
           }
         ]
       },
@@ -452,7 +505,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 77
+        "catalog_line": 96
       },
       "entity_yaml": {
         "exists": true,
@@ -468,7 +521,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fiis_dividendos/responses/table.md.j2",
-            "size_bytes": 1390
+            "size_bytes": 1177
           }
         ]
       },
@@ -509,7 +562,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 144
+        "catalog_line": 163
       },
       "entity_yaml": {
         "exists": true,
@@ -525,7 +578,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fiis_financials_revenue_schedule/responses/table.md.j2",
-            "size_bytes": 2381
+            "size_bytes": 2351
           }
         ]
       },
@@ -566,7 +619,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 161
+        "catalog_line": 180
       },
       "entity_yaml": {
         "exists": true,
@@ -580,9 +633,9 @@
         "dir_path": "data/entities/fiis_financials_risk/responses",
         "templates": [
           {
-            "filename": "summary.md.j2",
-            "path": "data/entities/fiis_financials_risk/responses/summary.md.j2",
-            "size_bytes": 1550
+            "filename": "table.md.j2",
+            "path": "data/entities/fiis_financials_risk/responses/table.md.j2",
+            "size_bytes": 1596
           }
         ]
       },
@@ -623,7 +676,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 127
+        "catalog_line": 146
       },
       "entity_yaml": {
         "exists": true,
@@ -637,9 +690,9 @@
         "dir_path": "data/entities/fiis_financials_snapshot/responses",
         "templates": [
           {
-            "filename": "summary.md.j2",
-            "path": "data/entities/fiis_financials_snapshot/responses/summary.md.j2",
-            "size_bytes": 472
+            "filename": "table.md.j2",
+            "path": "data/entities/fiis_financials_snapshot/responses/table.md.j2",
+            "size_bytes": 3604
           }
         ]
       },
@@ -680,7 +733,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 177
+        "catalog_line": 196
       },
       "entity_yaml": {
         "exists": true,
@@ -694,9 +747,9 @@
         "dir_path": "data/entities/fiis_imoveis/responses",
         "templates": [
           {
-            "filename": "list.md.j2",
-            "path": "data/entities/fiis_imoveis/responses/list.md.j2",
-            "size_bytes": 232
+            "filename": "table.md.j2",
+            "path": "data/entities/fiis_imoveis/responses/table.md.j2",
+            "size_bytes": 1679
           }
         ]
       },
@@ -737,7 +790,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 194
+        "catalog_line": 213
       },
       "entity_yaml": {
         "exists": true,
@@ -753,7 +806,7 @@
           {
             "filename": "list.md.j2",
             "path": "data/entities/fiis_noticias/responses/list.md.j2",
-            "size_bytes": 361
+            "size_bytes": 818
           }
         ]
       },
@@ -794,7 +847,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 211
+        "catalog_line": 230
       },
       "entity_yaml": {
         "exists": true,
@@ -810,7 +863,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fiis_precos/responses/table.md.j2",
-            "size_bytes": 821
+            "size_bytes": 1711
           }
         ]
       },
@@ -851,7 +904,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 228
+        "catalog_line": 247
       },
       "entity_yaml": {
         "exists": true,
@@ -867,7 +920,7 @@
           {
             "filename": "list.md.j2",
             "path": "data/entities/fiis_processos/responses/list.md.j2",
-            "size_bytes": 232
+            "size_bytes": 1519
           }
         ]
       },
@@ -908,7 +961,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 245
+        "catalog_line": 264
       },
       "entity_yaml": {
         "exists": true,
@@ -924,7 +977,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fiis_rankings/responses/table.md.j2",
-            "size_bytes": 390
+            "size_bytes": 2711
           }
         ]
       },
@@ -965,7 +1018,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 94
+        "catalog_line": 113
       },
       "entity_yaml": {
         "exists": true,
@@ -981,7 +1034,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/fiis_yield_history/responses/table.md.j2",
-            "size_bytes": 609
+            "size_bytes": 1352
           }
         ]
       },
@@ -1022,7 +1075,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 261
+        "catalog_line": 280
       },
       "entity_yaml": {
         "exists": true,
@@ -1036,9 +1089,9 @@
         "dir_path": "data/entities/history_b3_indexes/responses",
         "templates": [
           {
-            "filename": "list.md.j2",
-            "path": "data/entities/history_b3_indexes/responses/list.md.j2",
-            "size_bytes": 445
+            "filename": "table.md.j2",
+            "path": "data/entities/history_b3_indexes/responses/table.md.j2",
+            "size_bytes": 1657
           }
         ]
       },
@@ -1079,7 +1132,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 277
+        "catalog_line": 296
       },
       "entity_yaml": {
         "exists": true,
@@ -1093,9 +1146,9 @@
         "dir_path": "data/entities/history_currency_rates/responses",
         "templates": [
           {
-            "filename": "list.md.j2",
-            "path": "data/entities/history_currency_rates/responses/list.md.j2",
-            "size_bytes": 450
+            "filename": "table.md.j2",
+            "path": "data/entities/history_currency_rates/responses/table.md.j2",
+            "size_bytes": 1616
           }
         ]
       },
@@ -1136,7 +1189,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 293
+        "catalog_line": 312
       },
       "entity_yaml": {
         "exists": true,
@@ -1150,9 +1203,9 @@
         "dir_path": "data/entities/history_market_indicators/responses",
         "templates": [
           {
-            "filename": "list.md.j2",
-            "path": "data/entities/history_market_indicators/responses/list.md.j2",
-            "size_bytes": 268
+            "filename": "table.md.j2",
+            "path": "data/entities/history_market_indicators/responses/table.md.j2",
+            "size_bytes": 838
           }
         ]
       },
@@ -1193,7 +1246,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 346
+        "catalog_line": 365
       },
       "entity_yaml": {
         "exists": true,
@@ -1209,7 +1262,7 @@
           {
             "filename": "table.md.j2",
             "path": "data/entities/macro_consolidada/responses/table.md.j2",
-            "size_bytes": 1023
+            "size_bytes": 2699
           }
         ]
       },

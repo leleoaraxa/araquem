@@ -1,5 +1,5 @@
 {
-  "generated_at": "2025-12-05T14:56:00.224398+00:00",
+  "generated_at": "2025-12-29T20:14:10.017252+00:00",
   "entities": [
     {
       "entity_id": "carteira_enriquecida",
@@ -189,8 +189,10 @@
         },
         "embeddings": {
           "index": {
-            "referenced": false,
-            "files": []
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
           }
         },
         "docs": {
@@ -306,6 +308,105 @@
       "suspicious_signals": [
         "entity_has_projection_but_not_in_planner"
       ],
+      "classification": {
+        "lifecycle": "core",
+        "notes": "entity appears in ontology"
+      }
+    },
+    {
+      "entity_id": "client_fiis_performance_vs_benchmark_summary",
+      "used_by": {
+        "ontology": {
+          "referenced": true,
+          "files": [
+            "data/ontology/entity.yaml"
+          ]
+        },
+        "planner": {
+          "referenced": false,
+          "files": []
+        },
+        "orchestrator": {
+          "referenced": false,
+          "files": []
+        },
+        "builder": {
+          "referenced": false,
+          "files": []
+        },
+        "presenter": {
+          "referenced": false,
+          "files": []
+        },
+        "narrator": {
+          "referenced": true,
+          "files": [
+            "data/policies/narrator.yaml",
+            "data/policies/narrator_shadow.yaml"
+          ]
+        },
+        "rag": {
+          "referenced": false,
+          "files": []
+        },
+        "context": {
+          "referenced": true,
+          "files": [
+            "data/policies/context.yaml"
+          ]
+        },
+        "policies": {
+          "rag_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/rag.yaml"
+            ]
+          },
+          "narrator_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/narrator.yaml"
+            ]
+          },
+          "context_policy": {
+            "referenced": true,
+            "files": [
+              "data/policies/context.yaml"
+            ]
+          }
+        },
+        "quality": {
+          "projections": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality/routing_samples.json"
+            ]
+          },
+          "golden_sets": {
+            "referenced": false,
+            "files": []
+          },
+          "experimental_sets": {
+            "referenced": true,
+            "files": [
+              "data/ops/quality_experimental/routing_misses_via_ask.json"
+            ]
+          }
+        },
+        "embeddings": {
+          "index": {
+            "referenced": true,
+            "files": [
+              "data/embeddings/index.yaml"
+            ]
+          }
+        },
+        "docs": {
+          "referenced": false,
+          "files": []
+        }
+      },
+      "suspicious_signals": [],
       "classification": {
         "lifecycle": "core",
         "notes": "entity appears in ontology"
@@ -2360,7 +2461,8 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_macro_consolidada.json"
+              "data/ops/quality/projection_macro_consolidada.json",
+              "data/ops/quality/routing_samples.json"
             ]
           },
           "golden_sets": {
