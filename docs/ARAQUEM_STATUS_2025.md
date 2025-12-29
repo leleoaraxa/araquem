@@ -227,3 +227,10 @@
 * [ ] ❌ Não criar novas entidades/views/projections.
 * [ ] ❌ Não reativar RAG/LLM (shadow ou não) neste lote.
 * [ ] ❌ Não mexer em buckets (continuam neutros até decisão explícita).
+
+## Freeze 2025.0
+
+- Data: 2025-12-29
+- Status: **NÃO APTO** (pendências em contratos/coverage)
+- Documento de freeze: `docs/release/FREEZE_2025_0.md`
+- Observação: nenhum ajuste de runtime faz parte do freeze; é documental/arquitetural.
