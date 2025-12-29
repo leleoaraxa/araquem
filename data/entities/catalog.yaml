@@ -151,7 +151,7 @@ entities:
     coverage:
       cache_policy: true
       rag_policy: false
-      narrator_policy: true
+      narrator_policy: false
       param_inference: true
     identifiers:
       natural_keys:
@@ -267,7 +267,7 @@ entities:
       quality_projection: data/ops/quality/projection_history_b3_indexes.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: true
       param_inference: true
     identifiers:
@@ -283,7 +283,7 @@ entities:
       quality_projection: data/ops/quality/projection_history_currency_rates.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: true
       param_inference: true
     identifiers:
@@ -299,7 +299,7 @@ entities:
       quality_projection: data/ops/quality/projection_history_market_indicators.json
     coverage:
       cache_policy: true
-      rag_policy: true
+      rag_policy: false
       narrator_policy: true
       param_inference: true
     identifiers:

@@ -1,51 +1,61 @@
+entity: dividendos_yield
+kind: view
 version: 1
-name: dividendos_yield
-description: Histórico mensal de dividendos e dividend yield por FII.
 
-type: object
-properties:
-  ticker:
-    type: string
-  display_name:
-    type: string
-  sector:
-    type: string
-  sub_sector:
-    type: string
-  classification:
-    type: string
-  management_type:
-    type: string
-  target_market:
-    type: string
-  traded_until_date:
-    type: string
-    format: date
-  payment_date:
-    type: string
-    format: date
-  dividend_amt:
-    type: number
-  ref_month:
-    type: string
-    format: date
-  month_dividends_amt:
-    type: number
-  month_price_ref:
-    type: number
-  dy_monthly:
-    type: number
-  dy_12m_pct:
-    type: number
-  dy_current_monthly_pct:
-    type: number
-  dividends_12m_amt:
-    type: number
-  last_dividend_amt:
-    type: number
-  last_payment_date:
-    type: string
-    format: date
-required:
-  - ticker
-  - ref_month
+columns:
+  - { name: ticker,                  type: string,  nullable: false, desc: "código do FII (AAAA11)." }
+  - { name: display_name,            type: string,  nullable: true,  desc: "nome completo do fundo imobiliário." }
+  - { name: sector,                  type: string,  nullable: true,  desc: "setor de atuação do FII." }
+  - { name: sub_sector,              type: string,  nullable: true,  desc: "segmento específico dentro do setor." }
+  - { name: classification,          type: string,  nullable: true,  desc: "classificação do portfólio (ex. Tijolo, Papel)." }
+  - { name: management_type,         type: string,  nullable: true,  desc: "tipo de gestão (Ativa/Passiva)." }
+  - { name: target_market,           type: string,  nullable: true,  desc: "público-alvo do fundo." }
+  - { name: traded_until_date,       type: date,    nullable: true,  desc: "último dia com direito ao provento (data-com)." }
+  - { name: payment_date,            type: date,    nullable: true,  desc: "data de pagamento do dividendo." }
+  - { name: dividend_amt,            type: number,  nullable: true,  desc: "valor do dividendo pago por cota." }
+  - { name: ref_month,               type: date,    nullable: false, desc: "mês de referência (primeiro dia do mês)." }
+  - { name: month_dividends_amt,     type: number,  nullable: true,  desc: "soma dos dividendos pagos no mês." }
+  - { name: month_price_ref,         type: number,  nullable: true,  desc: "preço de referência da cota no mês." }
+  - { name: dy_monthly,              type: number,  nullable: true,  desc: "dividend yield mensal calculado para o mês de referência." }
+  - { name: dy_12m_pct,              type: number,  nullable: true,  desc: "dividend yield acumulado em 12 meses." }
+  - { name: dy_current_monthly_pct,  type: number,  nullable: true,  desc: "dividend yield mensal do mês corrente." }
+  - { name: dividends_12m_amt,       type: number,  nullable: true,  desc: "soma de dividendos pagos nos últimos 12 meses." }
+  - { name: last_dividend_amt,       type: number,  nullable: true,  desc: "valor do último dividendo pago." }
+  - { name: last_payment_date,       type: date,    nullable: true,  desc: "data do último pagamento de dividendo." }
+
+ordering: [ticker, ref_month DESC, payment_date DESC]
+
+presentation:
+  columns:
+    ticker:                 { as: string }
+    display_name:           { as: string }
+    sector:                 { as: string }
+    sub_sector:             { as: string }
+    classification:         { as: string }
+    management_type:        { as: string }
+    target_market:          { as: string }
+    traded_until_date:      { as: date }
+    payment_date:           { as: date }
+    dividend_amt:           { as: currency }
+    ref_month:              { as: date }
+    month_dividends_amt:    { as: currency }
+    month_price_ref:        { as: currency }
+    dy_monthly:             { as: percent, multiply_by_100: true, precision: 2 }
+    dy_12m_pct:             { as: percent, multiply_by_100: true, precision: 2 }
+    dy_current_monthly_pct: { as: percent, multiply_by_100: true, precision: 2 }
+    dividends_12m_amt:      { as: currency }
+    last_dividend_amt:      { as: currency }
+    last_payment_date:      { as: date }
+  rules:
+    percent_precision: 2
+
+sample_questions:
+  - "histórico de dividendos e dy do MXRF11 nos últimos 12 meses"
+  - "dy mensal do HGLG11 em 2024-09"
+  - "dividend yield atual do CPTS11"
+  - "comparativo de dy mensal entre HGLG11 e VISC11"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false
