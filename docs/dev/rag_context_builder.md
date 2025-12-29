@@ -4,25 +4,19 @@
 **Papel:** Construir, de forma determinística, o contexto textual utilizado pelo Narrator e pelas camadas de explicabilidade.
 **Fonte de verdade:** `data/policies/rag.yaml` (política de RAG).
 
+> **Estado atual (2025):** RAG está **desligado por policy**. O Context Builder ainda é chamado pelo Orchestrator para gerar o `meta.rag` canônico (indicando `enabled=False` e a razão), mas **não calcula embeddings nem consulta índices**.
+
 ---
 
 # 1. Visão Geral
 
 O **Context Builder** é responsável por:
 
-1. **Verificar se o RAG deve ser habilitado** para uma pergunta, usando as políticas definidas em `rag.yaml`.
-2. **Gerar embeddings da pergunta** usando o `OllamaClient`.
-3. **Consultar o EmbeddingStore** para recuperar os chunks relevantes.
-4. **Normalizar** os chunks (texto + metadados).
-5. Entregar um dicionário determinístico para o Orchestrator (`meta['rag']`) e para o Narrator (via `narrator_rag_context` no Presenter), contendo:
+1. **Aplicar a policy de RAG** para decidir se o recurso pode ser habilitado.
+2. **Gerar o `meta.rag` determinístico** com intent/entity, snapshot da policy e o estado (`enabled`/`reason`).
+3. **Somente quando a policy libera**: gerar embeddings da pergunta e consultar o `EmbeddingStore`.
 
-   * pergunta, intent, entity
-   * coleções utilizadas
-   * chunks retornados
-   * snapshot da policy aplicada
-   * status habilitado/desabilitado e erro (quando existir)
-
-O módulo **nunca chama LLM**. É 100% determinístico e testável.
+Com a policy atual (`allow_intents=[]` e `rerank.enabled=false`), o fluxo encerra no passo 1 e retorna `meta.rag` com `enabled=False` sem chamar `OllamaClient` ou carregar índices. O módulo **nunca chama LLM**.
 
 ---
 
@@ -36,8 +30,8 @@ Planner → Orchestrator → Context Builder → Narrator/Explain
 
 O Context Builder atua exatamente no ponto onde o sistema decide:
 
-* **usar RAG** (para intenções textuais, como notícias); ou
-* **não usar RAG** e seguir com dados SQL estruturados (cadastro, preços, dividendos, métricas…).
+* **não usar RAG** (estado atual, negado por policy) e seguir com dados SQL estruturados; ou
+* **usar RAG** (apenas se a policy for flexibilizada para intents textuais) antes de enviar contexto ao Narrator.
 
 ---
 
@@ -76,64 +70,26 @@ O primeiro gate sempre é o **routing**, localizado em `rag.yaml`:
 ```yaml
 routing:
   deny_intents: [...]
-  allow_intents: [fiis_noticias, fiis_financials_risk, history_market_indicators, history_b3_indexes, history_currency_rates]
+  allow_intents: []
 ```
 
 ### ✔ Verdades importantes
 
-1. **Somente intents declaradas em `allow_intents` podem usar RAG.**
-2. Se `deny_intents` contiver a intent → RAG é desativado *ainda que* esteja em `allow_intents`.
-3. Intents não listadas em `allow_intents` → RAG **off**.
-
-### Exemplo do projeto:
-
-* Intents textuais habilitadas: `fiis_noticias`, `fiis_financials_risk`, `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
-* Intents tabulares (preços, cadastro, dividendos, rankings, processos, snapshots) entram em `deny_intents` e não usam RAG.
-
-Resultado (recorte):
-
-| Intent                      | RAG habilitado? |
-| --------------------------- | --------------- |
-| `fiis_noticias`             | ✅ Sim           |
-| `fiis_financials_risk`      | ✅ Sim           |
-| `history_market_indicators` | ✅ Sim           |
-| `fiis_cadastro`             | ❌ Não (deny)    |
-| `fiis_rankings`             | ❌ Não (deny)    |
-| `client_fiis_positions`     | ❌ Não (deny)    |
+1. **Com `allow_intents=[]`, todas as intents atuais resultam em RAG negado.**
+2. Se no futuro `allow_intents` receber intents textuais, a negação continua valendo para intents presentes em `deny_intents`.
+3. Enquanto a policy seguir vazia, o Context Builder apenas registra `enabled=False` no `meta.rag` e encerra.
 
 ---
 
 # 5. Regras de Profile / Entities (Gate 2)
 
-Se a intent passou pelo routing, o Context Builder aplica as regras:
+Se a intent passar pelo routing (não ocorre no estado atual), o Context Builder aplica as regras:
 
 1. `rag.entities` (se entity estiver mapeada)
 2. `rag.default` (fallback seguro)
 3. `rag.profiles` (para herdar parâmetros por perfil)
 
-No projeto Araquem, usamos perfis e entidades explícitas:
-
-```yaml
-profiles:
-  default: { k: 6, min_score: 0.20, max_context_chars: 12000 }
-  macro:   { k: 4, min_score: 0.10 }
-  risk:    { k: 6, min_score: 0.15 }
-
-rag:
-  entities:
-    fiis_noticias:         { profile: default, collections: [fiis_noticias, concepts-fiis, concepts-risk], max_chunks: 6 }
-    fiis_financials_risk:  { profile: risk,    collections: [concepts-risk, concepts-fiis], max_chunks: 5 }
-    history_market_indicators: { profile: macro, collections: [concepts-macro], max_chunks: 4 }
-    history_b3_indexes:    { profile: macro, collections: [concepts-macro], max_chunks: 4 }
-    history_currency_rates:{ profile: macro, collections: [concepts-macro], max_chunks: 4 }
-  default:
-    profile: default
-    max_chunks: 3
-    collections: [concepts-fiis]
-    min_score: 0.25
-```
-
-Se a entidade não estiver mapeada em `rag.entities`, o builder usa `rag.default` como fallback seguro.
+Com o gate fechado, a seleção de perfis não é utilizada e os parâmetros retornados no `meta.rag` refletem apenas a policy aplicada (incluindo `enabled=False` e `reason`).
 
 ---
 
