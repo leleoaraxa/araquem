@@ -124,7 +124,7 @@
       {
         "entity": "fii_overview",
         "intent": null,
-        "message": "param inference config present but flag is false",
+        "message": "some intents missing param inference configuration",
         "path": null,
         "priority": "P2"
       },
@@ -138,7 +138,7 @@
       {
         "entity": "fiis_cadastro",
         "intent": null,
-        "message": "param inference config present but flag is false",
+        "message": "some intents missing param inference configuration",
         "path": null,
         "priority": "P2"
       },
@@ -229,7 +229,7 @@
       {
         "entity": "fiis_processos",
         "intent": null,
-        "message": "param inference config present but flag is false",
+        "message": "some intents missing param inference configuration",
         "path": null,
         "priority": "P2"
       },
@@ -237,6 +237,13 @@
         "entity": "fiis_rankings",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_rankings",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
         "path": null,
         "priority": "P2"
       },
@@ -596,7 +603,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "narrator_policy": false,
-        "param_inference": false,
+        "param_inference": true,
         "rag_policy": false
       },
       "intents": [
@@ -630,9 +637,9 @@
             "ticker_query"
           ],
           "notes": [
-            "param inference configuration exists while flag is false"
+            "intents without param inference: ticker_query"
           ],
-          "status": "configured_flag_false"
+          "status": "partial"
         },
         "rag": {
           "allowed_intents": [
@@ -654,7 +661,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "narrator_policy": false,
-        "param_inference": false,
+        "param_inference": true,
         "rag_policy": false
       },
       "intents": [
@@ -688,9 +695,9 @@
             "ticker_query"
           ],
           "notes": [
-            "param inference configuration exists while flag is false"
+            "intents without param inference: ticker_query"
           ],
-          "status": "configured_flag_false"
+          "status": "partial"
         },
         "rag": {
           "allowed_intents": [
@@ -1106,7 +1113,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "narrator_policy": false,
-        "param_inference": false,
+        "param_inference": true,
         "rag_policy": false
       },
       "intents": [
@@ -1140,9 +1147,9 @@
             "ticker_query"
           ],
           "notes": [
-            "param inference configuration exists while flag is false"
+            "intents without param inference: ticker_query"
           ],
-          "status": "configured_flag_false"
+          "status": "partial"
         },
         "rag": {
           "allowed_intents": [
@@ -1164,7 +1171,7 @@
       "coverage_flags": {
         "cache_policy": true,
         "narrator_policy": false,
-        "param_inference": false,
+        "param_inference": true,
         "rag_policy": false
       },
       "intents": [
@@ -1191,13 +1198,16 @@
           "status": "ok"
         },
         "param_inference": {
-          "configured_intents": [],
+          "configured_intents": [
+            "fiis_rankings"
+          ],
           "missing_intents": [
-            "fiis_rankings",
             "ticker_query"
           ],
-          "notes": [],
-          "status": "ok"
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
         },
         "rag": {
           "allowed_intents": [

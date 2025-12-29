@@ -3,7 +3,7 @@
 ## Resumo executivo
 - Geração automática e determinística a partir dos YAMLs versionados.
 - Entidades no catálogo analisadas: 22. Intents na ontologia: 23.
-- Gaps identificados: P0=0, P1=0, P2=25.
+- Gaps identificados: P0=0, P1=0, P2=26.
 - Escopo: Ontologia ↔ Catálogo ↔ Contracts/Schemas ↔ Policies (cache, rag, narrator, param_inference).
 
 ## Escopo e fontes de verdade (paths)
@@ -38,8 +38,8 @@
 | client_fiis_performance_vs_benchmark_summary | B | client_fiis_performance_vs_benchmark_summary | ok | ok | ok | ok | ok | entidade privada dependente de document_number |
 | client_fiis_positions | B | client_fiis_positions | ok | ok | ok | ok | ok |  |
 | dividendos_yield | A | dividendos_yield, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
-| fii_overview | A | fii_overview, ticker_query | ok | policy_present_flag_false | ok | configured_flag_false | ok |  |
-| fiis_cadastro | A | fiis_cadastro, ticker_query | ok | policy_present_flag_false | ok | configured_flag_false | ok |  |
+| fii_overview | A | fii_overview, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
+| fiis_cadastro | A | fiis_cadastro, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_dividendos | A | fiis_dividendos, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_financials_revenue_schedule | A | fiis_financials_revenue_schedule, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_financials_risk | A | fiis_financials_risk, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
@@ -47,8 +47,8 @@
 | fiis_imoveis | A | fiis_imoveis, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_noticias | A | fiis_noticias | ok | ok | ok | ok | ok |  |
 | fiis_precos | A | fiis_precos, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
-| fiis_processos | A | fiis_processos, ticker_query | ok | policy_present_flag_false | ok | configured_flag_false | ok |  |
-| fiis_rankings | A | fiis_rankings, ticker_query | ok | policy_present_flag_false | ok | ok | ok |  |
+| fiis_processos | A | fiis_processos, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
+| fiis_rankings | A | fiis_rankings, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_yield_history | A | fiis_yield_history, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | history_b3_indexes | C | history_b3_indexes | ok | policy_present_flag_false | ok | ok | ok |  |
 | history_currency_rates | C | history_currency_rates | ok | policy_present_flag_false | ok | ok | ok |  |
@@ -71,9 +71,9 @@
 - dividendos_yield: catalog rag_policy=false but RAG configuration present
 - dividendos_yield: some intents missing param inference configuration
 - fii_overview: catalog rag_policy=false but RAG configuration present
-- fii_overview: param inference config present but flag is false
+- fii_overview: some intents missing param inference configuration
 - fiis_cadastro: catalog rag_policy=false but RAG configuration present
-- fiis_cadastro: param inference config present but flag is false
+- fiis_cadastro: some intents missing param inference configuration
 - fiis_dividendos: catalog rag_policy=false but RAG configuration present
 - fiis_dividendos: some intents missing param inference configuration
 - fiis_financials_revenue_schedule: catalog rag_policy=false but RAG configuration present
@@ -86,8 +86,9 @@
 - fiis_precos: catalog rag_policy=false but RAG configuration present
 - fiis_precos: some intents missing param inference configuration
 - fiis_processos: catalog rag_policy=false but RAG configuration present
-- fiis_processos: param inference config present but flag is false
+- fiis_processos: some intents missing param inference configuration
 - fiis_rankings: catalog rag_policy=false but RAG configuration present
+- fiis_rankings: some intents missing param inference configuration
 - fiis_yield_history: catalog rag_policy=false but RAG configuration present
 - fiis_yield_history: some intents missing param inference configuration
 - history_b3_indexes: catalog rag_policy=false but RAG configuration present
