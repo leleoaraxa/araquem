@@ -35,19 +35,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 4,
+          "matches": 5,
           "total": 5,
-          "accuracy": 0.8
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 4,
+          "matches": 5,
           "total": 5,
-          "accuracy": 0.8
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 4,
+          "matches": 5,
           "total": 5,
-          "accuracy": 0.8
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente"
@@ -191,19 +191,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 13,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.8666666666666667
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 13,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.8666666666666667
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 13,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.8666666666666667
+          "accuracy": 1.0
         }
       },
       "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas)."
@@ -212,24 +212,24 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 8,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para fiis_dividendos — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento)."
@@ -446,24 +446,24 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 11,
+      "cache_hit_response": 12,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         }
       },
       "description": "Roteiro de perguntas canônicas para rota fiis_yield_history (histórico de dividend yield mensal por FII). Foco: dy historico, dy mensal, dy 12m/24m, sempre com ticker."
@@ -603,24 +603,24 @@
     "total": 235,
     "gate_ok": 229,
     "gate_fail": 6,
-    "cache_hit_response": 105,
+    "cache_hit_response": 107,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {
       "intent": {
-        "matches": 213,
+        "matches": 218,
         "total": 235,
-        "accuracy": 0.9063829787234042
+        "accuracy": 0.9276595744680851
       },
       "entity": {
-        "matches": 213,
+        "matches": 218,
         "total": 235,
-        "accuracy": 0.9063829787234042
+        "accuracy": 0.9276595744680851
       },
       "both": {
-        "matches": 213,
+        "matches": 218,
         "total": 235,
-        "accuracy": 0.9063829787234042
+        "accuracy": 0.9276595744680851
       }
     }
   }
