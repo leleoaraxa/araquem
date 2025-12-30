@@ -10,7 +10,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 
 ### Sumário executivo (achados principais)
 
-1. Todas as 22 entidades possuem YAML principal (`data/entities/<entity>/<entity>.yaml`) e contrato em `data/contracts`; `hints.md` e `template.md` estão presentes em **22/22** pastas, padronizados no singular (`template.md`) sem `templates.md` remanescentes.
+1. Todas as 22 entidades possuem YAML principal (`data/entities/<entity>/<entity>.yaml`) e contrato em `data/contracts`; `hints.md` e `template.md` estão presentes em **22/22** pastas, padronizados no singular (`template.md`) sem `templates.md` remanescentes (runtime mantém fallback para `templates.md` e `data/concepts/*_templates.md` por compatibilidade).
 2. `hints.md` é consumido apenas via **RAG/embeddings → planner** (prefixo `entity-*`); não há uso direto em formatter/presenter.
 3. A camada “render_answer/template-first” agora tem fallback textual em todas as entidades via `template.md`, reduzindo a dependência de Narrator quando o renderer de rows/Jinja não cobre casos de texto livre.
 4. Responses Jinja cobrem todas as entidades; a maioria trata vazios (`empty_message`), porém há falta de padronização em:
@@ -73,10 +73,10 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 ## D) Auditoria de `template.md` (camada “template-first”)
 
 ### Cobertura
-- **Cobertura completa (22/22):** todas as entidades possuem `template.md` (singular); não restam `templates.md` no repositório.
+- **Cobertura completa (22/22):** todas as entidades possuem `template.md` (singular); não restam `templates.md` no repositório, mas o runtime mantém fallback para `templates.md` (compat) e `data/concepts/*_templates.md` (legado).
 
 ### Comportamento quando não existe
-- Com `template.md` padronizado em 22/22, a camada “template-first” mantém fallback textual; remover o arquivo voltaria a deixar a resposta dependente apenas do renderer de rows/Jinja e/ou Narrator (se habilitado por policy).
+- Com `template.md` padronizado em 22/22, a camada “template-first” mantém fallback textual; remover o arquivo voltaria a deixar a resposta dependente apenas do renderer de rows/Jinja e/ou Narrator (se habilitado por policy). Há compatibilidade explícita com `templates.md` e `data/concepts/*_templates.md`, mas o formato canônico é `template.md`.
 
 ### Observações
 - Os `template.md` preservam descrições/exemplos atuais; não há evidência de múltiplos “keys”/variações por template (dependendo do parser, pode limitar reuso).

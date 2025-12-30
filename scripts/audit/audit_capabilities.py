@@ -19,6 +19,8 @@ class EntityAudit:
     supports_multi_ticker: Optional[bool]
     multi_ticker_template: bool
     response_kinds: Set[str]
+    has_template_md: bool
+    has_templates_md: bool
     has_hints_md: bool
     in_quality_suite: bool
     template_paths: List[Path] = field(default_factory=list)
@@ -105,7 +107,9 @@ def audit_entities() -> List[EntityAudit]:
 
         response_kinds, template_paths = detect_response_kinds(entity_dir / "responses")
         multi_ticker_template = detect_multi_ticker_template(template_paths)
-        has_hints_md = (entity_dir / "templates.md").exists()
+        has_template_md = (entity_dir / "template.md").exists()
+        has_templates_md = (entity_dir / "templates.md").exists()
+        has_hints_md = (entity_dir / "hints.md").exists()
 
         contract_root = REPO_ROOT / "data/contracts/entities"
         has_contract = any(contract_root.glob(f"{entity}.*"))
@@ -118,6 +122,8 @@ def audit_entities() -> List[EntityAudit]:
                 supports_multi_ticker=supports_multi_ticker,
                 multi_ticker_template=multi_ticker_template,
                 response_kinds=response_kinds,
+                has_template_md=has_template_md,
+                has_templates_md=has_templates_md,
                 has_hints_md=has_hints_md,
                 in_quality_suite=entity in quality_suites,
                 template_paths=template_paths,
@@ -343,6 +349,8 @@ def render_table(audits: List[EntityAudit]) -> str:
         "supports_multi_ticker",
         "multi_ticker_template",
         "response_kinds",
+        "template_md",
+        "templates_md_legacy",
         "has_hints_md",
         "in_quality_suite",
     ]
@@ -355,6 +363,8 @@ def render_table(audits: List[EntityAudit]) -> str:
             "yes" if audit.supports_multi_ticker else "no" if audit.supports_multi_ticker is not None else "-",
             "yes" if audit.multi_ticker_template else "no",
             ",".join(sorted(audit.response_kinds)) if audit.response_kinds else "-",
+            "yes" if audit.has_template_md else "no",
+            "yes" if audit.has_templates_md else "no",
             "yes" if audit.has_hints_md else "no",
             "yes" if audit.in_quality_suite else "no",
         ]
