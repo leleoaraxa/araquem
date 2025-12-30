@@ -1,7 +1,7 @@
 # Auditoria do repositório `data/` (Araquem)
 
-Data/hora da auditoria: Tue Dec 30 17:09:08 UTC 2025
-Branch/commit: `work @ 8f04f40189804e38f28c2a535b89419a7306b914`
+Data/hora da auditoria: Tue Dec 30 17:57:22 UTC 2025
+Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 
 ## A) Visão geral
 
@@ -10,9 +10,9 @@ Branch/commit: `work @ 8f04f40189804e38f28c2a535b89419a7306b914`
 
 ### Sumário executivo (achados principais)
 
-1. Todas as 22 entidades possuem YAML principal (`data/entities/<entity>/<entity>.yaml`) e contrato em `data/contracts`; **6 não possuem `hints.md`** e **9 não possuem `template.md`**, impactando sinal de RAG e a camada “template-first”.
+1. Todas as 22 entidades possuem YAML principal (`data/entities/<entity>/<entity>.yaml`) e contrato em `data/contracts`; `hints.md` e `template.md` estão presentes em **22/22** pastas, padronizados no singular (`template.md`) sem `templates.md` remanescentes.
 2. `hints.md` é consumido apenas via **RAG/embeddings → planner** (prefixo `entity-*`); não há uso direto em formatter/presenter.
-3. A ausência de `template.md` faz a camada “render_answer/template-first” não produzir texto (fallback), deixando **formatter + Narrator** como únicas fontes de saída textual.
+3. A camada “render_answer/template-first” agora tem fallback textual em todas as entidades via `template.md`, reduzindo a dependência de Narrator quando o renderer de rows/Jinja não cobre casos de texto livre.
 4. Responses Jinja cobrem todas as entidades; a maioria trata vazios (`empty_message`), porém há falta de padronização em:
    - resumo/cabeçalho humano
    - filtros (date/currency/percent)
@@ -30,61 +30,57 @@ Branch/commit: `work @ 8f04f40189804e38f28c2a535b89419a7306b914`
 
 | entity_id | `{entity}.yaml` | `hints.md` | `template.md` | `responses/*.md.j2` | contrato (data/contracts) | docs (docs/dev/entities) | Observação |
 |---|---|---|---|---|---|---|---|
-| carteira_enriquecida | sim | sim | **não** | table | sim | sim | falta `template.md` |
-| client_fiis_dividends_evolution | sim | sim | **não** | table | sim | sim | falta `template.md` |
-| client_fiis_performance_vs_benchmark | sim | sim | **não** | table | sim | sim | falta `template.md` |
-| client_fiis_performance_vs_benchmark_summary | sim | sim | **não** | table | sim | sim | falta `template.md` |
-| client_fiis_positions | sim | **não** | sim | table | sim | sim | falta `hints.md` |
-| dividendos_yield | sim | sim | **não** | table | sim | sim | falta `template.md` |
-| fii_overview | sim | sim | **não** | table | sim | sim | falta `template.md` |
+| carteira_enriquecida | sim | sim | sim | table | sim | sim | completa |
+| client_fiis_dividends_evolution | sim | sim | sim | table | sim | sim | completa |
+| client_fiis_performance_vs_benchmark | sim | sim | sim | table | sim | sim | completa |
+| client_fiis_performance_vs_benchmark_summary | sim | sim | sim | table | sim | sim | completa |
+| client_fiis_positions | sim | sim | sim | table | sim | sim | completa |
+| dividendos_yield | sim | sim | sim | table | sim | sim | completa |
+| fii_overview | sim | sim | sim | table | sim | sim | completa |
 | fiis_cadastro | sim | sim | sim | list | sim | sim | completa |
 | fiis_dividendos | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_revenue_schedule | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_risk | sim | sim | sim | table | sim | sim | completa |
-| fiis_financials_snapshot | sim | **não** | sim | table | sim | sim | falta `hints.md` |
-| fiis_imoveis | sim | **não** | sim | table | sim | sim | falta `hints.md` |
-| fiis_noticias | sim | **não** | sim | list | sim | sim | falta `hints.md` |
+| fiis_financials_snapshot | sim | sim | sim | table | sim | sim | completa |
+| fiis_imoveis | sim | sim | sim | table | sim | sim | completa |
+| fiis_noticias | sim | sim | sim | list | sim | sim | completa |
 | fiis_precos | sim | sim | sim | table | sim | sim | completa |
-| fiis_processos | sim | **não** | sim | list | sim | sim | falta `hints.md` |
-| fiis_rankings | sim | **não** | sim | table | sim | sim | falta `hints.md` |
-| fiis_yield_history | sim | sim | **não** | table | sim | sim | falta `template.md` |
+| fiis_processos | sim | sim | sim | list | sim | sim | completa |
+| fiis_rankings | sim | sim | sim | table | sim | sim | completa |
+| fiis_yield_history | sim | sim | sim | table | sim | sim | completa |
 | history_b3_indexes | sim | sim | sim | table | sim | sim | completa |
 | history_currency_rates | sim | sim | sim | table | sim | sim | completa |
 | history_market_indicators | sim | sim | sim | table | sim | sim | completa |
-| macro_consolidada | sim | sim | **não** | table | sim | sim | falta `template.md` |
+| macro_consolidada | sim | sim | sim | table | sim | sim | completa |
 
 ---
 
 ## C) Auditoria de `hints.md`
 
 ### Cobertura
-- **Com `hints.md` (16):** carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_precos, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada.
-- **Sem `hints.md` (6):** client_fiis_positions, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_processos, fiis_rankings.
+- **Cobertura completa (22/22):** carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada (inclui novos `hints.md` para as seis entidades que não possuíam).
 
 ### Uso real (pipeline)
 - `hints.md` entra como **fonte de embeddings** (doc_id `entity-*-hints`) e é consumido pelo planner via fusão de scores (RAG → entity hints).
 - Não foi identificado consumo direto em formatter/presenter.
 
 ### Gap de padronização
-- Estruturas variam (em geral “O que é” / “Perguntas típicas”), mas sem seção explícita de:
-  - limites (“não responder”, “escopo”)
-  - linguagem e exemplos canônicos
-- Ausência em 6 entidades reduz sinal específico por entidade no rerank/fusão.
+- Base mínima padronizada agora cobre 22/22 entidades (com seções de limites e campos nas adições recentes).
+- Conteúdo legado ainda varia em profundidade, exemplos e linguagem; pode ser harmonizado para reforçar sinal específico por entidade.
 
 ---
 
 ## D) Auditoria de `template.md` (camada “template-first”)
 
 ### Cobertura
-- **Com `template.md` (14):** fiis_precos, fiis_financials_revenue_schedule, fiis_dividendos, fiis_cadastro, fiis_rankings, fiis_processos, history_currency_rates, fiis_financials_snapshot, client_fiis_positions, history_b3_indexes, fiis_imoveis, fiis_financials_risk, history_market_indicators, fiis_noticias.
-- **Sem `template.md` (8):** carteira_enriquecida, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, dividendos_yield, fii_overview, fiis_yield_history, macro_consolidada.
+- **Cobertura completa (22/22):** todas as entidades possuem `template.md` (singular); não restam `templates.md` no repositório.
 
 ### Comportamento quando não existe
-- Quando `template.md` não existe, a camada “template-first” deixa de produzir texto e a resposta depende do renderer de rows/Jinja e/ou Narrator (se habilitado por policy).
+- Com `template.md` padronizado em 22/22, a camada “template-first” mantém fallback textual; remover o arquivo voltaria a deixar a resposta dependente apenas do renderer de rows/Jinja e/ou Narrator (se habilitado por policy).
 
 ### Observações
-- Os `template.md` existentes trazem descrição/exemplos, mas não há evidência de múltiplos “keys”/variações por template (dependendo do parser, pode limitar reuso).
-- Falta padronização entre entidades (o que dificulta escala e automação).
+- Os `template.md` preservam descrições/exemplos atuais; não há evidência de múltiplos “keys”/variações por template (dependendo do parser, pode limitar reuso).
+- A linguagem e a granularidade variam entre entidades; harmonização futura pode facilitar automação.
 
 ---
 
@@ -156,16 +152,20 @@ Branch/commit: `work @ 8f04f40189804e38f28c2a535b89419a7306b914`
 ## J) Recomendações priorizadas (baseadas no diagnóstico acima)
 
 ### P0 (prioridade máxima)
-1. Criar `template.md` para as **8 entidades** sem arquivo, evitando que a camada “template-first” não produza texto.
-2. Adicionar `hints.md` padronizado nas **6 entidades** que não possuem, para cobertura uniforme do sinal de RAG por entidade.
-3. Documentar e implementar rotina de atualização do `data/ontology/ticker_index.yaml` (cron/job), com rastreabilidade de fonte.
+1. Documentar e implementar rotina de atualização do `data/ontology/ticker_index.yaml` (cron/job), com rastreabilidade de fonte.
 
 ### P1 (qualidade e segurança)
-4. Revisar templates Jinja para incluir resumos/cabeçalhos humanos e padronizar filtros (date/currency/percent), principalmente em macro/risco.
-5. Revisar `narrator_shadow.yaml` para cobrir todas as entidades privadas (atuais e futuras) e alinhar com `private:true`.
-6. Refinar `rag.yaml` por entidade para tornar o uso de RAG mais seletivo e previsível.
+1. Revisar templates Jinja para incluir resumos/cabeçalhos humanos e padronizar filtros (date/currency/percent), principalmente em macro/risco.
+2. Revisar `narrator_shadow.yaml` para cobrir todas as entidades privadas (atuais e futuras) e alinhar com `private:true`.
+3. Refinar `rag.yaml` por entidade para tornar o uso de RAG mais seletivo e previsível.
 
 ### P2 (maturidade e automação)
-7. Criar validação pré-deploy cruzando `data/contracts` vs `{entity}.yaml` vs `responses` (colunas/presentation).
-8. Consolidar decisão sobre `data/concepts` (manter como legado documentado vs remover fallback).
-9. Marcar formalmente `data/golden`/`data/ops/quality*` como offline/benchmarks para evitar limpeza acidental.
+1. Criar validação pré-deploy cruzando `data/contracts` vs `{entity}.yaml` vs `responses` (colunas/presentation).
+2. Consolidar decisão sobre `data/concepts` (manter como legado documentado vs remover fallback).
+3. Marcar formalmente `data/golden`/`data/ops/quality*` como offline/benchmarks para evitar limpeza acidental.
+
+---
+
+## K) Validação
+
+- Suporte de checagem local para `template.md` e `hints.md` em todas as entidades: `python scripts/diagnostics/audit_entities_support_files.py`
