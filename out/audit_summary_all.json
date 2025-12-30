@@ -288,26 +288,26 @@
     },
     "fiis_financials_snapshot": {
       "total": 15,
-      "gate_ok": 14,
-      "gate_fail": 1,
-      "cache_hit_response": 14,
+      "gate_ok": 15,
+      "gate_fail": 0,
+      "cache_hit_response": 15,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 14,
+          "matches": 15,
           "total": 15,
-          "accuracy": 0.9333333333333333
+          "accuracy": 1.0
         }
       },
       "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)"
@@ -420,7 +420,7 @@
       "total": 14,
       "gate_ok": 14,
       "gate_fail": 0,
-      "cache_hit_response": 14,
+      "cache_hit_response": 12,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -601,26 +601,26 @@
   },
   "overall": {
     "total": 235,
-    "gate_ok": 234,
-    "gate_fail": 1,
-    "cache_hit_response": 194,
+    "gate_ok": 235,
+    "gate_fail": 0,
+    "cache_hit_response": 193,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {
       "intent": {
-        "matches": 234,
+        "matches": 235,
         "total": 235,
-        "accuracy": 0.9957446808510638
+        "accuracy": 1.0
       },
       "entity": {
-        "matches": 234,
+        "matches": 235,
         "total": 235,
-        "accuracy": 0.9957446808510638
+        "accuracy": 1.0
       },
       "both": {
-        "matches": 234,
+        "matches": 235,
         "total": 235,
-        "accuracy": 0.9957446808510638
+        "accuracy": 1.0
       }
     }
   }

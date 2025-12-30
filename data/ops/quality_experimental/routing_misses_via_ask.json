@@ -1,74 +1,12 @@
 {
-  "generated_at": "2025-12-30T00:25:59.737960+00:00",
+  "generated_at": "2025-12-30T00:48:13.007584+00:00",
   "api_url": "http://localhost:8000",
   "totals": {
     "samples": 235,
-    "misses": 1,
+    "misses": 0,
     "errors": 0
   },
   "errors_summary": {},
-  "misses": [
-    {
-      "idx": 102,
-      "question": "Comparando ALMI11 e HGLG11, qual deles tem maior patrimônio líquido hoje?",
-      "expected_intent": "fiis_financials_snapshot",
-      "expected_entity": "fiis_financials_snapshot",
-      "got_intent": "ticker_query",
-      "got_entity": "fiis_precos",
-      "score": -1.1,
-      "status": {
-        "reason": "gated",
-        "message": "Blocked by threshold: low_score"
-      },
-      "normalized": "comparando almi11 e hglg11  qual deles tem maior patrimonio liquido hoje ",
-      "tokens": [
-        "comparando",
-        "almi11",
-        "e",
-        "hglg11",
-        "qual",
-        "deles",
-        "tem",
-        "maior",
-        "patrimonio",
-        "liquido",
-        "hoje"
-      ],
-      "intent_scores": {
-        "ticker_query": -1.1,
-        "client_fiis_positions": -2.2,
-        "client_fiis_dividends_evolution": -2.2,
-        "client_fiis_performance_vs_benchmark": -2.2,
-        "client_fiis_performance_vs_benchmark_summary": -2.2,
-        "fiis_cadastro": -5.5,
-        "fii_overview": -3.3000000000000003,
-        "fiis_precos": -2.2,
-        "fiis_dividendos": -2.2,
-        "fiis_yield_history": -4.4,
-        "fiis_financials_snapshot": -1.0999999999999996,
-        "fiis_financials_revenue_schedule": -4.4,
-        "fiis_financials_risk": -3.3000000000000003,
-        "fiis_imoveis": -2.2,
-        "fiis_noticias": -2.2,
-        "fiis_processos": -3.3000000000000003,
-        "fiis_rankings": -1.1,
-        "history_b3_indexes": -1.1,
-        "history_currency_rates": -2.2,
-        "history_market_indicators": -2.2,
-        "dividendos_yield": -2.2,
-        "carteira_enriquecida": -1.1,
-        "macro_consolidada": -3.3000000000000003
-      },
-      "thresholds": {
-        "min_score": 0.9,
-        "min_gap": 0.05,
-        "gap": -1.1,
-        "accepted": false,
-        "source": "base",
-        "score_for_gate": -1.1,
-        "reason": "low_score"
-      }
-    }
-  ],
+  "misses": [],
   "errors": []
 }
