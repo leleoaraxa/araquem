@@ -46,11 +46,14 @@ class Config:
     timeout_s: float
     out_dir: str
     print_answer: bool
+    explain: bool
 
 
 def _ask_url(cfg: Config) -> str:
-    # IMPORTANT: use explain=true
-    return cfg.base_url.rstrip("/") + "/ask?explain=true"
+    base = cfg.base_url.rstrip("/") + "/ask"
+    if cfg.explain:
+        return base + "?explain=true"
+    return base
 
 
 def _resolve_suite_paths(args: argparse.Namespace) -> List[str]:
@@ -379,6 +382,7 @@ def _extract_row(
     question: str,
     elapsed_ms_client: float,
     request_error: Optional[str],
+    explain_enabled: bool,
     expected_intent: Optional[str] = None,
     expected_entity: Optional[str] = None,
     suite_name: Optional[str] = None,
@@ -481,6 +485,7 @@ def _extract_row(
         "question": question,
         "http_status": http_status,
         "request_error": request_error,
+        "explain_enabled": explain_enabled,
         "status_reason": status_reason,
         "status_message": status_message,
         "chosen_intent": chosen_intent,
@@ -643,6 +648,20 @@ def main() -> int:
     ap.add_argument("--nickname", default="diagnostics")
     ap.add_argument("--timeout-s", type=float, default=90.0)
     ap.add_argument("--out-dir", default="out")
+    explain_group = ap.add_mutually_exclusive_group()
+    explain_group.add_argument(
+        "--explain",
+        dest="explain",
+        action="store_true",
+        help="Ativa explain nas chamadas (default).",
+    )
+    explain_group.add_argument(
+        "--no-explain",
+        dest="explain",
+        action="store_false",
+        help="Desativa explain para medir cache real.",
+    )
+    ap.set_defaults(explain=True)
     ap.add_argument(
         "--print-answer",
         action="store_true",
@@ -669,6 +688,7 @@ def main() -> int:
         timeout_s=args.timeout_s,
         out_dir=args.out_dir,
         print_answer=args.print_answer,
+        explain=args.explain,
     )
 
     _ensure_out_dir(cfg.out_dir)
@@ -695,6 +715,7 @@ def main() -> int:
                     q,
                     dt_ms,
                     err,
+                    cfg.explain,
                     expected_intent=expected_intent,
                     expected_entity=expected_entity,
                     suite_name=suite_name,
@@ -750,7 +771,7 @@ def main() -> int:
         for q in questions:
             idx += 1
             resp, dt_ms, err = _post_question(cfg, q)
-            row = _extract_row(resp, q, dt_ms, err)
+            row = _extract_row(resp, q, dt_ms, err, cfg.explain)
             row["idx"] = idx
             rows.append(row)
 
