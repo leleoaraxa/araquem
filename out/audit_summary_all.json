@@ -420,7 +420,7 @@
       "total": 14,
       "gate_ok": 14,
       "gate_fail": 0,
-      "cache_hit_response": 12,
+      "cache_hit_response": 14,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -603,7 +603,7 @@
     "total": 235,
     "gate_ok": 235,
     "gate_fail": 0,
-    "cache_hit_response": 193,
+    "cache_hit_response": 195,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {
