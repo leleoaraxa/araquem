@@ -1287,95 +1287,83 @@ CROSS JOIN LATERAL public.calc_fiis_dividends_evolution(d.document_number) AS ev
 -- =====================================================================
 -- VIEW: client_fiis_performance_vs_benchmark
 -- =====================================================================
-CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark
- AS
- WITH docs AS (
-         SELECT DISTINCT equities_positions.document_number
-           FROM equities_positions
-        ), bench AS (
-         SELECT allowed_benchmarks.benchmark_code
-           FROM allowed_benchmarks
-        ), perf_raw AS (
-         SELECT d.document_number,
-            b.benchmark_code,
-            p_1.ref_date,
-            p_1.month_year,
-            p_1.series_id,
-            p_1.series_kind,
-            p_1.cumulative_return,
-            p_1.cumulative_index
-           FROM docs d
-             CROSS JOIN bench b
-             CROSS JOIN LATERAL calc_fiis_performance_vs_benchmark(d.document_number::text, ARRAY[
-                CASE
-                    WHEN upper(b.benchmark_code) = 'IBOV'::text THEN 'IBOVESPA'::text
-                    ELSE upper(b.benchmark_code)
-                END], NULL::date, NULL::date) p_1(ref_date, month_year, series_id, series_kind, cumulative_return, cumulative_index)
-        ), pivoted AS (
-         SELECT perf_raw.document_number,
-            perf_raw.benchmark_code,
-            perf_raw.ref_date,
-            max(
-                CASE
-                    WHEN perf_raw.series_id = 'WALLET'::text THEN perf_raw.cumulative_index
-                    ELSE NULL::numeric
-                END) AS wallet_index,
-            max(
-                CASE
-                    WHEN perf_raw.series_id = 'WALLET'::text THEN perf_raw.cumulative_return
-                    ELSE NULL::numeric
-                END) AS wallet_return,
-            max(
-                CASE
-                    WHEN perf_raw.series_kind = 'INDEX'::text THEN perf_raw.cumulative_index
-                    ELSE NULL::numeric
-                END) AS bench_index,
-            max(
-                CASE
-                    WHEN perf_raw.series_kind = 'INDEX'::text THEN perf_raw.cumulative_return
-                    ELSE NULL::numeric
-                END) AS bench_return
-           FROM perf_raw
-          GROUP BY perf_raw.document_number, perf_raw.benchmark_code, perf_raw.ref_date
-        )
- SELECT document_number,
-    benchmark_code,
-    ref_date AS date_reference,
-    wallet_index AS portfolio_amount,
-    wallet_return AS portfolio_return_pct,
-    bench_index AS benchmark_value,
-    bench_return AS benchmark_return_pct
-   FROM pivoted p
-  ORDER BY document_number, benchmark_code, ref_date;
+CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark AS
+WITH bench AS (
+  SELECT
+    ab.benchmark_code,
+    CASE WHEN upper(ab.benchmark_code) = 'IBOV' THEN 'IBOVESPA' ELSE upper(ab.benchmark_code) END AS bench_arg,
+    CASE WHEN upper(ab.benchmark_code) = 'IBOV' THEN 'IBOV'     ELSE upper(ab.benchmark_code) END AS bench_series_id
+  FROM allowed_benchmarks ab
+),
+bench_args AS (
+  SELECT array_agg(b.bench_arg ORDER BY b.bench_arg) AS indices
+  FROM bench b
+),
+docs AS (
+  -- SUBQUERY simples (não CTE “pesado” com DISTINCT fora de contexto)
+  SELECT ep.document_number
+  FROM equities_positions ep
+  GROUP BY ep.document_number
+),
+perf_raw AS (
+  SELECT
+    d.document_number,
+    p.ref_date,
+    p.month_year,
+    p.series_id,
+    p.series_kind,
+    p.cumulative_return,
+    p.cumulative_index
+  FROM docs d
+  CROSS JOIN bench_args ba
+  CROSS JOIN LATERAL calc_fiis_performance_vs_benchmark(
+    d.document_number::text,
+    ba.indices,
+    NULL::date,
+    NULL::date
+  ) p(ref_date, month_year, series_id, series_kind, cumulative_return, cumulative_index, cumulative_dividends)
+),
+wallet_by_date AS (
+  SELECT document_number, ref_date, cumulative_index AS wallet_index, cumulative_return AS wallet_return
+  FROM perf_raw
+  WHERE series_id = 'WALLET'
+),
+bench_by_date AS (
+  SELECT pr.document_number, pr.ref_date, b.benchmark_code,
+         pr.cumulative_index AS bench_index, pr.cumulative_return AS bench_return
+  FROM perf_raw pr
+  JOIN bench b ON b.bench_series_id = pr.series_id
+  WHERE pr.series_kind = 'INDEX'
+)
+SELECT
+  w.document_number,
+  b.benchmark_code,
+  w.ref_date AS date_reference,
+  w.wallet_index AS portfolio_amount,
+  w.wallet_return AS portfolio_return_pct,
+  b.bench_index AS benchmark_value,
+  b.bench_return AS benchmark_return_pct
+FROM wallet_by_date w
+JOIN bench_by_date b
+  ON b.document_number = w.document_number
+ AND b.ref_date = w.ref_date;
 
 -- =====================================================================
 -- VIEW: client_fiis_performance_vs_benchmark_summary
 -- =====================================================================
 CREATE OR REPLACE VIEW public.client_fiis_performance_vs_benchmark_summary AS
-WITH ranked AS (
-    SELECT
-        document_number,
-        benchmark_code,
-        date_reference,
-        portfolio_amount,
-        portfolio_return_pct,
-        benchmark_value,
-        benchmark_return_pct,
-        ROW_NUMBER() OVER (PARTITION BY document_number, benchmark_code ORDER BY date_reference DESC) AS rn
-    FROM public.client_fiis_performance_vs_benchmark
-)
-SELECT
-    document_number,
-    benchmark_code,
-    date_reference,
-    portfolio_amount,
-    portfolio_return_pct,
-    benchmark_value,
-    benchmark_return_pct,
-    (portfolio_return_pct - benchmark_return_pct) AS excess_return_pct
-FROM ranked
-WHERE rn = 1
-ORDER BY document_number, benchmark_code;
+SELECT DISTINCT ON (document_number, benchmark_code)
+  document_number,
+  benchmark_code,
+  date_reference,
+  portfolio_amount,
+  portfolio_return_pct,
+  benchmark_value,
+  benchmark_return_pct,
+  (portfolio_return_pct - benchmark_return_pct) AS excess_return_pct
+FROM public.client_fiis_performance_vs_benchmark
+ORDER BY document_number, benchmark_code, date_reference DESC;
+
 -- =====================================================================
 -- VIEW: dividendos_yield
 -- =====================================================================
