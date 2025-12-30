@@ -134,7 +134,7 @@
       "total": 5,
       "gate_ok": 5,
       "gate_fail": 0,
-      "cache_hit_response": 5,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -160,7 +160,7 @@
       "total": 12,
       "gate_ok": 12,
       "gate_fail": 0,
-      "cache_hit_response": 12,
+      "cache_hit_response": 8,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -186,7 +186,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -212,7 +212,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -238,7 +238,7 @@
       "total": 12,
       "gate_ok": 12,
       "gate_fail": 0,
-      "cache_hit_response": 11,
+      "cache_hit_response": 4,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -264,7 +264,7 @@
       "total": 5,
       "gate_ok": 5,
       "gate_fail": 0,
-      "cache_hit_response": 5,
+      "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -290,7 +290,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -316,7 +316,7 @@
       "total": 5,
       "gate_ok": 5,
       "gate_fail": 0,
-      "cache_hit_response": 5,
+      "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -342,7 +342,7 @@
       "total": 12,
       "gate_ok": 12,
       "gate_fail": 0,
-      "cache_hit_response": 12,
+      "cache_hit_response": 9,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -368,7 +368,7 @@
       "total": 14,
       "gate_ok": 14,
       "gate_fail": 0,
-      "cache_hit_response": 14,
+      "cache_hit_response": 4,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -394,7 +394,7 @@
       "total": 12,
       "gate_ok": 12,
       "gate_fail": 0,
-      "cache_hit_response": 12,
+      "cache_hit_response": 11,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -420,7 +420,7 @@
       "total": 14,
       "gate_ok": 14,
       "gate_fail": 0,
-      "cache_hit_response": 14,
+      "cache_hit_response": 7,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -446,7 +446,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 10,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -472,7 +472,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 11,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -498,7 +498,7 @@
       "total": 5,
       "gate_ok": 5,
       "gate_fail": 0,
-      "cache_hit_response": 5,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -524,7 +524,7 @@
       "total": 6,
       "gate_ok": 6,
       "gate_fail": 0,
-      "cache_hit_response": 6,
+      "cache_hit_response": 4,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -550,7 +550,7 @@
       "total": 15,
       "gate_ok": 15,
       "gate_fail": 0,
-      "cache_hit_response": 15,
+      "cache_hit_response": 13,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -603,7 +603,7 @@
     "total": 235,
     "gate_ok": 235,
     "gate_fail": 0,
-    "cache_hit_response": 195,
+    "cache_hit_response": 114,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {
