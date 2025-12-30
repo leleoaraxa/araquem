@@ -1096,10 +1096,6 @@ intents:
         - preco de fechamento do <ticker> em <data>
         - valor de fechamento do <ticker>
         - maxima e minima
-        - quanto esta
-        - quanto esta o
-        - quanto ta
-        - quanto ta o
         - como esta na b3
         - preco hoje
         - abertura do dia
@@ -1538,7 +1534,6 @@ intents:
         - quantos cotistas tem o <ticker>
         - liquidez do <ticker>
         - tamanho do fundo
-        - maior patrimonio entre os fiis
         - alavancagem do <ticker>
         - alavancagem do <ticker> segundo ultimo relatorio
         - <ticker> esta alavancado
