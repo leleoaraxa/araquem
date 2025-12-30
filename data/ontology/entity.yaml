@@ -1528,6 +1528,10 @@ intents:
         - patrimonio liquido do <ticker>
         - pl do <ticker>
         - valor patrimonial do <ticker>
+        - comparando <ticker> e <ticker> qual tem maior patrimonio liquido
+        - comparando <ticker> e <ticker> qual deles tem maior patrimonio liquido
+        - entre <ticker> e <ticker> qual tem maior patrimonio liquido
+        - qual deles tem maior patrimonio liquido
         - vp do <ticker>
         - valor patrimonial da cota do <ticker>
         - numero de cotistas do <ticker>
