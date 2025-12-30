@@ -294,3 +294,4 @@ Qualquer exceção a esta diretriz exige, obrigatoriamente:
 * ✔ Pronto para **commit como Guardrails Araquem v2.2.0**
 
 ---
+
