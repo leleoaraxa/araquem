@@ -16,6 +16,7 @@ _FORMATTER = string.Formatter()
 @lru_cache(maxsize=32)
 def _load_templates(entity: str) -> Dict[str, str]:
     candidates = [
+        _ENTITY_TEMPLATE_ROOT / entity / "template.md",
         _ENTITY_TEMPLATE_ROOT / entity / "templates.md",
         _LEGACY_TEMPLATE_ROOT / f"{entity}_templates.md",
     ]

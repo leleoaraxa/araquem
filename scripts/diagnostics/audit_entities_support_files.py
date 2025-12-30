@@ -36,7 +36,7 @@ def audit_entity(entity_dir: Path) -> List[str]:
 
     plural_templates = list(entity_dir.glob("templates.md"))
     if plural_templates:
-        errors.append("found deprecated templates.md (use template.md)")
+        errors.append("found deprecated templates.md (template.md is canonical; remove legacy file)")
 
     hints_path = entity_dir / "hints.md"
     if not hints_path.exists():

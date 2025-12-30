@@ -117,7 +117,14 @@ def build_surface_entry(
     schema_path = Path("data/contracts/entities") / f"{entity_id}.schema.yaml"
     hints_path = entity_dir / "hints.md"
     template_path = entity_dir / "template.md"
-    templates_path = entity_dir / "templates.md"
+    legacy_template_path = entity_dir / "templates.md"
+    template_exists = template_path.exists()
+    legacy_template_exists = legacy_template_path.exists()
+    selected_template_path: Optional[Path] = None
+    if template_exists:
+        selected_template_path = template_path
+    elif legacy_template_exists:
+        selected_template_path = legacy_template_path
     db_sample_path = Path("docs/database/samples") / f"{entity_id}.csv"
 
     projection_files = sorted(
@@ -155,15 +162,19 @@ def build_surface_entry(
                 "path": str(hints_path.as_posix()) if hints_path.exists() else None,
             },
             "template_md": {
-                "exists": template_path.exists(),
+                "exists": template_exists or legacy_template_exists,
                 "path": (
-                    str(template_path.as_posix()) if template_path.exists() else None
+                    str(selected_template_path.as_posix())
+                    if selected_template_path
+                    else None
                 ),
+                "canonical": template_exists,
+                "legacy_fallback": (not template_exists) and legacy_template_exists,
             },
             "templates_md": {
-                "exists": templates_path.exists(),
+                "exists": legacy_template_exists,
                 "path": (
-                    str(templates_path.as_posix()) if templates_path.exists() else None
+                    str(legacy_template_path.as_posix()) if legacy_template_exists else None
                 ),
             },
         },
