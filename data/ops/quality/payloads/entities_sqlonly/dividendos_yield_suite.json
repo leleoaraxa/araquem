@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "dividendos_yield-q1",
-      "question": "Qual foi o DY mensal do HGLG11 em janeiro de 2024?",
+      "question": "Qual foi o dividend yield mensal do HGLG11 especificamente em janeiro de 2024?",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
       "id": "dividendos_yield-q2",
-      "question": "Mostre dividendos e dividend yield do KNRI11 nos últimos 12 meses.",
+      "question": "Liste dividendos pagos e dividend yield do KNRI11 nos últimos 12 meses, mês a mês.",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
       "id": "dividendos_yield-q3",
-      "question": "Quanto o MXRF11 pagou em dividendos no mês de dezembro de 2024?",
+      "question": "Qual o valor de dividendos distribuídos pelo MXRF11 no mês de dezembro de 2024 e o DY correspondente?",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     }

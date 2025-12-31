@@ -4,13 +4,13 @@
   "payloads": [
     {
       "id": "history_market_indicators-q1",
-      "question": "Qual foi a taxa do CDI diária em 2024-12-27?",
+      "question": "Qual foi a taxa diária do CDI em 2024-12-27?",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
     {
       "id": "history_market_indicators-q2",
-      "question": "Quanto está o IPCA acumulado até o dado mais recente de 2024?",
+      "question": "Quanto está o IPCA acumulado até o dado mais recente divulgado em 2024?",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },

@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_noticias-q1",
-      "question": "Quais foram as últimas notícias publicadas sobre o HGLG11?",
+      "question": "Quais foram as últimas notícias divulgadas sobre o HGLG11 na imprensa ou CVM?",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
     },
     {
       "id": "fiis_noticias-q2",
-      "question": "Houve fatos relevantes ou comunicados de mercado recentes do KNRI11?",
+      "question": "Houve fatos relevantes ou comunicados de mercado recentes do KNRI11 registrados publicamente?",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
     },
     {
       "id": "fiis_noticias-q3",
-      "question": "Existem temas recorrentes nas notícias sobre o MXRF11, como emissões ou vacância?",
+      "question": "Quais temas se repetem nas notícias do MXRF11, como novas emissões ou vacância?",
       "expected_intent": "fiis_noticias",
       "expected_entity": "fiis_noticias"
     }
