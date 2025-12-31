@@ -1,0 +1,24 @@
+{
+  "suite": "client_fiis_performance_vs_benchmark",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_performance_vs_benchmark.",
+  "payloads": [
+    {
+      "id": "client_fiis_performance_vs_benchmark-q1",
+      "question": "rentabilidade da minha carteira de fiis versus o IFIX",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "id": "client_fiis_performance_vs_benchmark-q2",
+      "question": "como minha carteira está em relação ao CDI",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    },
+    {
+      "id": "client_fiis_performance_vs_benchmark-q3",
+      "question": "comparar minha carteira de fiis com o IFIL",
+      "expected_intent": "client_fiis_performance_vs_benchmark",
+      "expected_entity": "client_fiis_performance_vs_benchmark"
+    }
+  ]
+}

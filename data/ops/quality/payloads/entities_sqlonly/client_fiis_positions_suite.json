@@ -1,0 +1,24 @@
+{
+  "suite": "client_fiis_positions",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_positions.",
+  "payloads": [
+    {
+      "id": "client_fiis_positions-q1",
+      "question": "Como está distribuída a carteira de FIIs por setor ou classe de ativo?",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "id": "client_fiis_positions-q2",
+      "question": "Quais posições aumentaram ou reduziram desde o último período de referência?",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    },
+    {
+      "id": "client_fiis_positions-q3",
+      "question": "Existe concentração relevante em um único FII ou em poucos emissores?",
+      "expected_intent": "client_fiis_positions",
+      "expected_entity": "client_fiis_positions"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "suite": "dividendos_yield",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para dividendos_yield.",
+  "payloads": [
+    {
+      "id": "dividendos_yield-q1",
+      "question": "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
+    },
+    {
+      "id": "dividendos_yield-q2",
+      "question": "Mostre dividendos e dividend yield do {{ticker}} nos últimos 12 meses.",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
+    },
+    {
+      "id": "dividendos_yield-q3",
+      "question": "Quanto o {{ticker}} pagou em dividendos no mês passado?",
+      "expected_intent": "dividendos_yield",
+      "expected_entity": "dividendos_yield"
+    }
+  ]
+}

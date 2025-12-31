@@ -1,0 +1,24 @@
+{
+  "suite": "carteira_enriquecida",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para carteira_enriquecida.",
+  "payloads": [
+    {
+      "id": "carteira_enriquecida-q1",
+      "question": "Peso do {{ticker}} na minha carteira",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "id": "carteira_enriquecida-q2",
+      "question": "Valor investido em {{ticker}} na carteira",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    },
+    {
+      "id": "carteira_enriquecida-q3",
+      "question": "DY mensal dos meus FIIs",
+      "expected_intent": "carteira_enriquecida",
+      "expected_entity": "carteira_enriquecida"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_financials_risk",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_risk.",
+  "payloads": [
+    {
+      "id": "fiis_financials_risk-q1",
+      "question": "qual o Sharpe do HGRU11?",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "id": "fiis_financials_risk-q2",
+      "question": "beta e R² do KNRI11 em relação ao IFIX",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    },
+    {
+      "id": "fiis_financials_risk-q3",
+      "question": "qual foi o máximo drawdown do MXRF11 nos últimos 12 meses?",
+      "expected_intent": "fiis_financials_risk",
+      "expected_entity": "fiis_financials_risk"
+    }
+  ]
+}

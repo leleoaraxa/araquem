@@ -1,0 +1,24 @@
+{
+  "suite": "history_currency_rates",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_currency_rates.",
+  "payloads": [
+    {
+      "id": "history_currency_rates-q1",
+      "question": "como fechou o dólar ontem?",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "id": "history_currency_rates-q2",
+      "question": "qual a variação do euro na última cotação?",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    },
+    {
+      "id": "history_currency_rates-q3",
+      "question": "mostrar câmbio recente para contextualizar FIIs dolarizados",
+      "expected_intent": "history_currency_rates",
+      "expected_entity": "history_currency_rates"
+    }
+  ]
+}

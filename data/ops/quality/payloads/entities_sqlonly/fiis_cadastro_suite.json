@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_cadastro",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_cadastro.",
+  "payloads": [
+    {
+      "id": "fiis_cadastro-q1",
+      "question": "qual o CNPJ do HGLG11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "id": "fiis_cadastro-q2",
+      "question": "quem administra o VISC11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    },
+    {
+      "id": "fiis_cadastro-q3",
+      "question": "qual o site oficial do MXRF11?",
+      "expected_intent": "fiis_cadastro",
+      "expected_entity": "fiis_cadastro"
+    }
+  ]
+}
