@@ -1,0 +1,24 @@
+{
+  "suite": "history_b3_indexes",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_b3_indexes.",
+  "payloads": [
+    {
+      "id": "history_b3_indexes-q1",
+      "question": "quanto fechou o IFIX ontem?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "id": "history_b3_indexes-q2",
+      "question": "qual foi a variação do IBOV na data X?",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
+      "id": "history_b3_indexes-q3",
+      "question": "mostrar IFIL da semana passada",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    }
+  ]
+}

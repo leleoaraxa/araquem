@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_rankings",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_rankings.",
+  "payloads": [
+    {
+      "id": "fiis_rankings-q1",
+      "question": "Quais FIIs lideram o ranking por rendimento ou dividend yield?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "id": "fiis_rankings-q2",
+      "question": "Como os fundos se posicionam por liquidez ou volume negociado?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    },
+    {
+      "id": "fiis_rankings-q3",
+      "question": "Há rankings por risco, volatilidade ou alavancagem?",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_financials_snapshot",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_snapshot.",
+  "payloads": [
+    {
+      "id": "fiis_financials_snapshot-q1",
+      "question": "Qual o lucro ou resultado distribuível mais recente do FII?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "id": "fiis_financials_snapshot-q2",
+      "question": "Como evoluíram receitas, despesas e margens entre períodos?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    },
+    {
+      "id": "fiis_financials_snapshot-q3",
+      "question": "O FII apresenta alavancagem relevante ou variação de endividamento?",
+      "expected_intent": "fiis_financials_snapshot",
+      "expected_entity": "fiis_financials_snapshot"
+    }
+  ]
+}

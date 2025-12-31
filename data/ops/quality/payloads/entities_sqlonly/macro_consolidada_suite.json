@@ -1,0 +1,24 @@
+{
+  "suite": "macro_consolidada",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para macro_consolidada.",
+  "payloads": [
+    {
+      "id": "macro_consolidada-q1",
+      "question": "IPCA e SELIC no dia {{data}}",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "id": "macro_consolidada-q2",
+      "question": "IFIX e IBOV na semana passada",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    },
+    {
+      "id": "macro_consolidada-q3",
+      "question": "Histórico macro consolidado de {{mês}}",
+      "expected_intent": "macro_consolidada",
+      "expected_entity": "macro_consolidada"
+    }
+  ]
+}

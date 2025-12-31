@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_imoveis",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_imoveis.",
+  "payloads": [
+    {
+      "id": "fiis_imoveis-q1",
+      "question": "Quais imóveis compõem a carteira do FII e onde estão localizados?",
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "id": "fiis_imoveis-q2",
+      "question": "Qual a tipologia (ex.: lajes, galpões, shoppings) dos imóveis listados?",
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
+    },
+    {
+      "id": "fiis_imoveis-q3",
+      "question": "Há informações sobre ocupação, vacância ou contratos em cada ativo?",
+      "expected_intent": "fiis_imoveis",
+      "expected_entity": "fiis_imoveis"
+    }
+  ]
+}

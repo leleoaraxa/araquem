@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_dividendos",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_dividendos.",
+  "payloads": [
+    {
+      "id": "fiis_dividendos-q1",
+      "question": "quais dividendos o MXRF11 pagou neste mês?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "id": "fiis_dividendos-q2",
+      "question": "quando foi o último pagamento do HGLG11?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    },
+    {
+      "id": "fiis_dividendos-q3",
+      "question": "qual o dividendo do CPTS11 com data-com mais recente?",
+      "expected_intent": "fiis_dividendos",
+      "expected_entity": "fiis_dividendos"
+    }
+  ]
+}

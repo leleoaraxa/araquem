@@ -8,7 +8,7 @@ Shape esperado:
   "suite": "<nome>",
   "description": "...",
   "payloads": [
-    { "question": "...", "expected_intent": "...", "expected_entity": "..." },
+    { "id": "...", "question": "...", "expected_intent": "...", "expected_entity": "..." },
     ...
   ]
 }
@@ -75,6 +75,12 @@ def load_suite_file(path: str) -> Dict[str, Any]:
         if not isinstance(q, str) or not q.strip():
             raise SuiteValidationError(f"Payload #{idx} inválido em {path}: campo 'question' vazio")
 
+        payload_id = payload.get("id")
+        if payload_id is not None and not isinstance(payload_id, str):
+            raise SuiteValidationError(
+                f"Payload #{idx} inválido (id deve ser string ou null) em {path}"
+            )
+
         expected_intent = payload.get("expected_intent")
         if expected_intent is not None and not isinstance(expected_intent, str):
             raise SuiteValidationError(
@@ -89,6 +95,7 @@ def load_suite_file(path: str) -> Dict[str, Any]:
 
         normalized_payloads.append(
             {
+                "id": payload_id,
                 "question": q,
                 "expected_intent": expected_intent,
                 "expected_entity": expected_entity,

@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_noticias",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_noticias.",
+  "payloads": [
+    {
+      "id": "fiis_noticias-q1",
+      "question": "Quais foram as últimas notícias publicadas sobre determinado FII?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "id": "fiis_noticias-q2",
+      "question": "Houve fatos relevantes ou comunicados de mercado recentes?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    },
+    {
+      "id": "fiis_noticias-q3",
+      "question": "Existem temas recorrentes (ex.: emissões, aquisições, vacância) nas notícias?",
+      "expected_intent": "fiis_noticias",
+      "expected_entity": "fiis_noticias"
+    }
+  ]
+}

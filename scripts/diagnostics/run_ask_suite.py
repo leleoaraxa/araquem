@@ -388,6 +388,7 @@ def _extract_row(
     suite_name: Optional[str] = None,
     suite_description: Optional[str] = None,
 ) -> Dict[str, Any]:
+    status_status = _safe_get(resp, "status.status")
     status_reason = _safe_get(resp, "status.reason")
     status_message = _safe_get(resp, "status.message")
 
@@ -451,6 +452,9 @@ def _extract_row(
 
     # executor latency do pipeline (se existir) vs client measured
     elapsed_ms_server = _safe_get(resp, "meta.elapsed_ms")
+    answer_text = _safe_get(resp, "answer")
+    if not isinstance(answer_text, str):
+        answer_text = None
 
     http_status = resp.get("_http_status") or 0
 
@@ -486,6 +490,7 @@ def _extract_row(
         "http_status": http_status,
         "request_error": request_error,
         "explain_enabled": explain_enabled,
+        "status_status": status_status,
         "status_reason": status_reason,
         "status_message": status_message,
         "chosen_intent": chosen_intent,
@@ -520,6 +525,7 @@ def _extract_row(
         "narrator_used": narrator_used,
         "narrator_latency_ms": narrator_latency_ms,
         "narrator_error": narrator_error,
+        "answer_text": answer_text,
         "expected_intent": expected_intent,
         "expected_entity": expected_entity,
         "match_intent": match_intent,
@@ -592,6 +598,91 @@ def _collect_stats(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "narrator_used": sum(1 for r in rows if r.get("narrator_used") is True),
         "accuracy": acc,
     }
+
+
+def _top_fail_reasons(rows: List[Dict[str, Any]], limit: int = 3) -> List[Tuple[str, int]]:
+    reason_counts: Dict[str, int] = {}
+    for r in rows:
+        if r.get("case_pass") is False:
+            for reason in r.get("fail_reasons") or []:
+                reason_counts[reason] = reason_counts.get(reason, 0) + 1
+    return sorted(reason_counts.items(), key=lambda x: x[1], reverse=True)[:limit]
+
+
+def _summarize_suites(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    suites: Dict[str, Any] = {}
+    for r in rows:
+        suite = r.get("suite_name") or "-"
+        data = suites.setdefault(
+            suite,
+            {
+                "total": 0,
+                "pass": 0,
+                "fail": 0,
+                "reasons": {},
+                "description": r.get("suite_description"),
+            },
+        )
+        data["total"] += 1
+        if r.get("case_pass") is True:
+            data["pass"] += 1
+        else:
+            data["fail"] += 1
+            for reason in r.get("fail_reasons") or []:
+                data["reasons"][reason] = data["reasons"].get(reason, 0) + 1
+
+    for suite, data in suites.items():
+        top_reasons = sorted(
+            data["reasons"].items(), key=lambda x: x[1], reverse=True
+        )
+        suites[suite]["top_fail_reasons"] = top_reasons[:3]
+    return suites
+
+
+def _print_suite_summary(rows: List[Dict[str, Any]]) -> None:
+    suite_summary = _summarize_suites(rows)
+    if not suite_summary:
+        return
+
+    print("\n=== RESUMO POR SUITE/ENTIDADE ===")
+    for suite, data in sorted(suite_summary.items()):
+        top_reasons = ", ".join(
+            [f"{reason} ({count})" for reason, count in data.get("top_fail_reasons", [])]
+        )
+        print(
+            f"- {suite}: total={data['total']} pass={data['pass']} fail={data['fail']} "
+            f"top_fails=[{top_reasons or '-'}]"
+        )
+
+
+def _evaluate_case(row: Dict[str, Any]) -> Dict[str, Any]:
+    reasons: List[str] = []
+    http_status = row.get("http_status")
+    if not isinstance(http_status, int) or not (200 <= http_status < 300):
+        reasons.append("http_not_ok")
+
+    if row.get("request_error"):
+        reasons.append("request_error")
+
+    status_status = row.get("status_status")
+    if status_status != "ok":
+        reasons.append("status_not_ok")
+
+    expected_entity = row.get("expected_entity")
+    chosen_entity = row.get("chosen_entity")
+    if expected_entity and expected_entity != chosen_entity:
+        reasons.append("entity_mismatch")
+
+    answer_text = row.get("answer_text")
+    if isinstance(answer_text, str):
+        if "{{" in answer_text or "{%" in answer_text:
+            reasons.append("jinja_artifacts")
+        if "None" in answer_text:
+            reasons.append("none_literal")
+
+    row["fail_reasons"] = reasons
+    row["case_pass"] = len(reasons) == 0
+    return row
 
 
 def main() -> int:
@@ -721,7 +812,9 @@ def main() -> int:
                     suite_name=suite_name,
                     suite_description=suite_description,
                 )
+                row["payload_id"] = payload.get("id")
                 row["idx"] = idx
+                row = _evaluate_case(row)
                 rows.append(row)
                 suite_rows.setdefault(suite_name, []).append(row)
 
@@ -773,6 +866,7 @@ def main() -> int:
             resp, dt_ms, err = _post_question(cfg, q)
             row = _extract_row(resp, q, dt_ms, err, cfg.explain)
             row["idx"] = idx
+            row = _evaluate_case(row)
             rows.append(row)
 
             intent = (row.get("chosen_intent") or "-")[:12]
@@ -825,9 +919,24 @@ def main() -> int:
         print(f"Wrote: {all_jsonl}")
         print(f"Wrote: {all_csv}")
 
-        summary_all: Dict[str, Any] = {"suites": {}, "overall": _collect_stats(rows)}
+        summary_all: Dict[str, Any] = {
+            "suites": {},
+            "overall": {
+                **_collect_stats(rows),
+                "pass": sum(1 for r in rows if r.get("case_pass") is True),
+                "fail": sum(1 for r in rows if r.get("case_pass") is False),
+                "top_fail_reasons": _top_fail_reasons(rows),
+            },
+        }
         for suite_name, suite_rows_list in suite_rows.items():
-            summary_all["suites"][suite_name] = _collect_stats(suite_rows_list)
+            summary_all["suites"][suite_name] = {
+                **_collect_stats(suite_rows_list),
+                "pass": sum(1 for r in suite_rows_list if r.get("case_pass") is True),
+                "fail": sum(
+                    1 for r in suite_rows_list if r.get("case_pass") is False
+                ),
+                "top_fail_reasons": _top_fail_reasons(suite_rows_list),
+            }
             if suite_rows_list:
                 summary_all["suites"][suite_name]["description"] = suite_rows_list[0].get(
                     "suite_description"
@@ -837,6 +946,8 @@ def main() -> int:
             json.dump(summary_all, f, ensure_ascii=False, indent=2)
         print(f"Wrote: {summary_path}")
 
+    if suite_mode:
+        _print_suite_summary(rows)
     _print_final_summary(rows)
     return 0
 

@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_financials_revenue_schedule",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_revenue_schedule.",
+  "payloads": [
+    {
+      "id": "fiis_financials_revenue_schedule-q1",
+      "question": "receita com vencimento em 0–3 meses do HGLG11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "id": "fiis_financials_revenue_schedule-q2",
+      "question": "quanto vence em 12 meses do XPML11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    },
+    {
+      "id": "fiis_financials_revenue_schedule-q3",
+      "question": "estrutura de recebíveis do VISC11",
+      "expected_intent": "fiis_financials_revenue_schedule",
+      "expected_entity": "fiis_financials_revenue_schedule"
+    }
+  ]
+}

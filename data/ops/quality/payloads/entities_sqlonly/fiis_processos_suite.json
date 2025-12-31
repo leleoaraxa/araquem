@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_processos",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_processos.",
+  "payloads": [
+    {
+      "id": "fiis_processos-q1",
+      "question": "Existem processos judiciais ou administrativos envolvendo o FII?",
+      "expected_intent": "fiis_processos",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "id": "fiis_processos-q2",
+      "question": "Qual o estágio atual (ex.: em andamento, decisão, acordo) de cada processo?",
+      "expected_intent": "fiis_processos",
+      "expected_entity": "fiis_processos"
+    },
+    {
+      "id": "fiis_processos-q3",
+      "question": "Quais são as partes envolvidas ou a natureza da ação?",
+      "expected_intent": "fiis_processos",
+      "expected_entity": "fiis_processos"
+    }
+  ]
+}

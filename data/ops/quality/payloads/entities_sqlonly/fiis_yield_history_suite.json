@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_yield_history",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_yield_history.",
+  "payloads": [
+    {
+      "id": "fiis_yield_history-q1",
+      "question": "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "id": "fiis_yield_history-q2",
+      "question": "Como tem sido a evolução do DY do {{ticker}} nos últimos 12 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    },
+    {
+      "id": "fiis_yield_history-q3",
+      "question": "Quais FIIs tiveram maior DY médio nos últimos 6 meses?",
+      "expected_intent": "fiis_yield_history",
+      "expected_entity": "fiis_yield_history"
+    }
+  ]
+}

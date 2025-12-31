@@ -1,0 +1,24 @@
+{
+  "suite": "history_market_indicators",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_market_indicators.",
+  "payloads": [
+    {
+      "id": "history_market_indicators-q1",
+      "question": "qual foi o CDI ontem?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "id": "history_market_indicators-q2",
+      "question": "quanto está o IPCA acumulado no último dado?",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    },
+    {
+      "id": "history_market_indicators-q3",
+      "question": "mostrar a SELIC na data X",
+      "expected_intent": "history_market_indicators",
+      "expected_entity": "history_market_indicators"
+    }
+  ]
+}
