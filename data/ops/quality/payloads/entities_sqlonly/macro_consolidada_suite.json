@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "macro_consolidada-q1",
-      "question": "Traga em um único pacote IPCA e SELIC referentes ao dia 2024-12-27",
+      "question": "Painel macro consolidado com IPCA e SELIC da data 2024-12-27 na mesma linha de referência",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     },
     {
       "id": "macro_consolidada-q2",
-      "question": "Apresente IFIX e IBOV consolidados por dia na semana de 2024-12-16 a 2024-12-20",
+      "question": "Quero o painel macro consolidado trazendo CDI, dólar (compra/venda) e IFIX/IBOV por dia entre 2024-12-16 e 2024-12-20",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     },
     {
       "id": "macro_consolidada-q3",
-      "question": "Quero o histórico macro consolidado de novembro de 2024 em um painel único",
+      "question": "Mostre o histórico macro consolidado de novembro de 2024 com IPCA, SELIC e câmbio em um único resumo",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     }

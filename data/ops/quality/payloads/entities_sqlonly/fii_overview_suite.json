@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fii_overview-q1",
-      "question": "Quero um overview sintetizado do HGLG11 com dados atuais em um único quadro",
+      "question": "Quero um overview consolidado D-1 do HGLG11 com cadastro e indicadores principais em um quadro",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     },
     {
       "id": "fii_overview-q2",
-      "question": "Como está o desempenho atual do KNRI11 hoje em termos de preço e indicadores principais?",
+      "question": "Como está o panorama atualizado do KNRI11 hoje em preço, setor e indicadores-chave?",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     },
     {
       "id": "fii_overview-q3",
-      "question": "Me entregue um panorama completo e atualizado do MXRF11 em uma só resposta",
+      "question": "Me entregue uma visão geral única e atualizada do MXRF11 com perfil do fundo e métricas básicas",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     }
