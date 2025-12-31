@@ -112,16 +112,30 @@ if isinstance(_PLACEHOLDERS, list):
             _FIELD_TO_FILTER[field.lower()] = flt
 
 if _FORMAT_DEBUG_ENABLED:
+    resolved_policy_path_obj = None
+    resolved_policy_path_str = None
     try:
-        resolved_policy_path = _FORMATTING_POLICY_PATH.resolve()
+        resolved_policy_path_obj = _FORMATTING_POLICY_PATH.resolve()
+        resolved_policy_path_str = str(resolved_policy_path_obj)
     except Exception as exc:  # pragma: no cover - debug logging only
-        resolved_policy_path = f"{_FORMATTING_POLICY_PATH} (resolve error: {exc})"
+        resolved_policy_path_str = f"{_FORMATTING_POLICY_PATH} (resolve error: {exc})"
 
-    LOGGER.info("[format_debug] formatting policy path: %s", resolved_policy_path)
+    LOGGER.info("[format_debug] formatting policy path: %s", resolved_policy_path_str)
+    # 2.1: checar existência no MESMO path resolvido (evita confusão por CWD/working_dir)
+    exists_on_resolved = None
+    try:
+        if isinstance(resolved_policy_path_obj, Path):
+            exists_on_resolved = resolved_policy_path_obj.exists()
+    except Exception:  # pragma: no cover - debug logging only
+        exists_on_resolved = None
     LOGGER.info(
-        "[format_debug] formatting policy exists: %s",
+        "[format_debug] formatting policy exists (resolved): %s", exists_on_resolved
+    )
+    LOGGER.info(
+        "[format_debug] formatting policy exists (relative): %s",
         _FORMATTING_POLICY_PATH.exists(),
     )
+
     LOGGER.info(
         "[format_debug] formatting policy top-level keys: %s",
         list(_FORMAT_POLICY.keys()) if isinstance(_FORMAT_POLICY, dict) else [],
@@ -398,21 +412,76 @@ _register_jinja_filters()
 def _detect_formatter(column_name: str) -> Optional[Callable[[Any], Any]]:
     lowered = (column_name or "").lower()
 
+    if _FORMAT_DEBUG_ENABLED and lowered in {"benchmark_value", "portfolio_amount"}:
+        # 2.2: diagnóstico do caminho real usado pela detecção
+        placeholder_filter = _FIELD_TO_FILTER.get(lowered)
+        cfg = None
+        ftype = None
+        try:
+            cfg = (
+                _FILTERS_CFG.get(placeholder_filter)
+                if isinstance(_FILTERS_CFG, dict)
+                else None
+            )
+            ftype = cfg.get("type") if isinstance(cfg, dict) else None
+        except Exception:
+            cfg = None
+            ftype = None
+        LOGGER.info(
+            "[format_debug] detect_formatter enter col=%s lowered=%s placeholder_filter=%s filter_cfg_type=%s filter_type=%s",
+            column_name,
+            lowered,
+            placeholder_filter,
+            type(cfg).__name__ if cfg is not None else "None",
+            ftype,
+        )
+
     # 1) Preferência: mapping declarativo em data/policies/formatting.yaml (placeholders)
     filter_name = _FIELD_TO_FILTER.get(lowered)
     if filter_name:
         fmt = _get_filter_formatter(filter_name)
         if fmt:
+            if _FORMAT_DEBUG_ENABLED and lowered in {
+                "benchmark_value",
+                "portfolio_amount",
+            }:
+                LOGGER.info(
+                    "[format_debug] detect_formatter via placeholders col=%s filter_name=%s fmt=%s",
+                    column_name,
+                    filter_name,
+                    getattr(fmt, "__name__", "<callable>"),
+                )
             return fmt
 
     # 2) Fallback legado por sufixo (para campos ainda não mapeados em placeholders)
     if lowered.endswith("_at") or lowered.endswith("_date"):
+        if _FORMAT_DEBUG_ENABLED and lowered in {"benchmark_value", "portfolio_amount"}:
+            LOGGER.info(
+                "[format_debug] detect_formatter via suffix col=%s matched=date",
+                column_name,
+            )
         return _format_date
     if lowered.endswith("_pct") or lowered.endswith("_ratio"):
+        if _FORMAT_DEBUG_ENABLED and lowered in {"benchmark_value", "portfolio_amount"}:
+            LOGGER.info(
+                "[format_debug] detect_formatter via suffix col=%s matched=percent",
+                column_name,
+            )
         return _format_percentage
     if lowered.endswith("_amt"):
+        if _FORMAT_DEBUG_ENABLED and lowered in {"benchmark_value", "portfolio_amount"}:
+            LOGGER.info(
+                "[format_debug] detect_formatter via suffix col=%s matched=currency",
+                column_name,
+            )
         return _format_currency
 
+    if _FORMAT_DEBUG_ENABLED and lowered in {"benchmark_value", "portfolio_amount"}:
+        LOGGER.info(
+            "[format_debug] detect_formatter exit col=%s formatter_found=%s",
+            column_name,
+            False,
+        )
     return None
 
 
@@ -561,7 +630,10 @@ def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str
             if col_value is None:
                 continue
             formatter = _detect_formatter(col_name)
-            if _FORMAT_DEBUG_ENABLED and col_name in {"benchmark_value", "portfolio_amount"}:
+            if _FORMAT_DEBUG_ENABLED and col_name in {
+                "benchmark_value",
+                "portfolio_amount",
+            }:
                 placeholder_filter = _FIELD_TO_FILTER.get(col_name.lower())
                 LOGGER.info(
                     "[format_debug] before format col=%s value=%r type=%s placeholder_filter=%s formatter_found=%s",
@@ -573,7 +645,10 @@ def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str
                 )
             if formatter:
                 item[col_name] = formatter(col_value)
-                if _FORMAT_DEBUG_ENABLED and col_name in {"benchmark_value", "portfolio_amount"}:
+                if _FORMAT_DEBUG_ENABLED and col_name in {
+                    "benchmark_value",
+                    "portfolio_amount",
+                }:
                     LOGGER.info(
                         "[format_debug] after format col=%s value=%r",
                         col_name,
