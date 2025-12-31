@@ -97,8 +97,6 @@ placeholders:
     filter: percent_br
   - field: r_squared
     filter: percent_br
-  - field: dividend_payout_pct
-    filter: percent_br
   - field: leverage_ratio
     filter: number_br
   - field: enterprise_value
