@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_processos-q1",
-      "question": "Existem processos judiciais ou administrativos em nome do HGLG11 em andamento?",
+      "question": "Existem processos judiciais em andamento associados ao HGLG11 e quais números dos processos?",
       "expected_intent": "fiis_processos",
       "expected_entity": "fiis_processos"
     },
     {
       "id": "fiis_processos-q2",
-      "question": "Qual é o estágio atual (andamento, decisão, acordo) de cada processo listado do KNRI11?",
+      "question": "Qual é o estágio atual (instância, julgamento) de cada processo listado do KNRI11?",
       "expected_intent": "fiis_processos",
       "expected_entity": "fiis_processos"
     },
     {
       "id": "fiis_processos-q3",
-      "question": "Quais são as partes envolvidas e a natureza das ações judiciais relacionadas ao MXRF11?",
+      "question": "Quais são as partes envolvidas e o risco de perda das ações judiciais relacionadas ao MXRF11?",
       "expected_intent": "fiis_processos",
       "expected_entity": "fiis_processos"
     }

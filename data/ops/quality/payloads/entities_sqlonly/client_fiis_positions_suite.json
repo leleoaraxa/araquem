@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "client_fiis_positions-q1",
-      "question": "Como está a composição setorial atual das minhas posições de FIIs dentro da carteira?",
+      "question": "Como está a composição setorial e o peso percentual das minhas posições atuais de FIIs na carteira?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
       "id": "client_fiis_positions-q2",
-      "question": "Quais FIIs da minha carteira mudaram de quantidade desde o último fechamento de posições?",
+      "question": "Quais FIIs da minha carteira tiveram variação de quantidade de cotas desde a última data de posição?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
       "id": "client_fiis_positions-q3",
-      "question": "Existe concentração acima do limite em algum FII específico dentro das minhas posições atuais?",
+      "question": "Algum FII excede o limite de concentração nas minhas posições atuais considerando peso e quantidade?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     }

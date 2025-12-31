@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_financials_snapshot-q1",
-      "question": "Qual é o lucro ou resultado distribuível mais recente disponível do HGLG11 em formato de snapshot?",
+      "question": "Mostre o snapshot financeiro mais recente do HGLG11 com market cap, P/BV e caixa total",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
     {
       "id": "fiis_financials_snapshot-q2",
-      "question": "Mostre o balanço resumido do KNRI11 comparando receitas, despesas e margens entre 2023 e 2024",
+      "question": "Quero o último snapshot do KNRI11 destacando enterprise value, patrimônio por cota e cap rate atuais",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     },
     {
       "id": "fiis_financials_snapshot-q3",
-      "question": "O MXRF11 tem alavancagem relevante ou alteração recente do endividamento no último snapshot financeiro?",
+      "question": "No snapshot financeiro atual do MXRF11, qual a alavancagem e o total de passivos registrados?",
       "expected_intent": "fiis_financials_snapshot",
       "expected_entity": "fiis_financials_snapshot"
     }

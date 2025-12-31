@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_rankings-q1",
-      "question": "Mostre o ranking atual de FIIs ordenado por rendimento ou dividend yield",
+      "question": "Mostre o ranking de FIIs ordenado por dividend yield 12m e posição no IFIX (top maiores)",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
       "id": "fiis_rankings-q2",
-      "question": "Liste o ranking de FIIs pela liquidez ou volume negociado diário",
+      "question": "Liste o ranking de FIIs por valor de mercado (market cap) destacando as primeiras posições",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     },
     {
       "id": "fiis_rankings-q3",
-      "question": "Existe um ranking de FIIs baseado em risco, volatilidade ou alavancagem?",
+      "question": "Existe um ranking de FIIs baseado em menor volatilidade ou menor drawdown? Mostre as posições.",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
     }

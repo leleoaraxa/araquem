@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_cadastro-q1",
-      "question": "Qual é o CNPJ cadastral registrado para o HGLG11 na CVM?",
+      "question": "Qual é o CNPJ cadastral registrado para o HGLG11 na CVM e na ficha do fundo?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
       "id": "fiis_cadastro-q2",
-      "question": "Quem consta como administrador fiduciário do VISC11 na ficha cadastral?",
+      "question": "Quem consta como administrador fiduciário do VISC11 segundo o cadastro oficial?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     },
     {
       "id": "fiis_cadastro-q3",
-      "question": "Qual é o site oficial informado no cadastro do MXRF11?",
+      "question": "Qual é o site oficial informado no cadastro e regulamento do MXRF11?",
       "expected_intent": "fiis_cadastro",
       "expected_entity": "fiis_cadastro"
     }

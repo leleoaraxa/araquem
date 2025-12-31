@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "client_fiis_performance_vs_benchmark_summary-q1",
-      "question": "Traga um quadro-resumo da performance da minha carteira de FIIs contra o IFIX no trimestre mais recente",
+      "question": "Traga o quadro-resumo mais recente da performance da minha carteira de FIIs contra o IFIX (última data)",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
       "id": "client_fiis_performance_vs_benchmark_summary-q2",
-      "question": "Mostre o snapshot mais recente comparando minha carteira de FIIs ao CDI",
+      "question": "Mostre o snapshot comparativo mais atual da minha carteira de FIIs versus o CDI, com excesso de retorno",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     },
     {
       "id": "client_fiis_performance_vs_benchmark_summary-q3",
-      "question": "Qual é o acumulado de performance da minha carteira de FIIs versus o IBOV em 2024 em formato de resumo",
+      "question": "Qual é o retorno acumulado da minha carteira de FIIs versus o IBOV na última leitura de 2024 em formato de resumo",
       "expected_intent": "client_fiis_performance_vs_benchmark_summary",
       "expected_entity": "client_fiis_performance_vs_benchmark_summary"
     }

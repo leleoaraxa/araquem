@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_dividendos-q1",
-      "question": "Qual foi o valor de dividendos pago pelo MXRF11 no mês de dezembro de 2024?",
+      "question": "Qual foi o valor do dividendo por cota pago pelo MXRF11 em dezembro de 2024 e a data de pagamento?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
       "id": "fiis_dividendos-q2",
-      "question": "Em que data ocorreu o pagamento de dividendos mais recente do HGLG11?",
+      "question": "Em que data ocorreu o pagamento de dividendos mais recente do HGLG11 e qual foi o valor por cota?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
       "id": "fiis_dividendos-q3",
-      "question": "Qual o montante do dividendo declarado pelo CPTS11 na data-com mais recente?",
+      "question": "Qual o montante do dividendo declarado pelo CPTS11 na última data-com registrada?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     }

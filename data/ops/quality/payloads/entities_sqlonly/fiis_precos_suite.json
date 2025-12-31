@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_precos-q1",
-      "question": "Qual foi o preço de fechamento do HGLG11 no último pregão negociado?",
+      "question": "Qual foi o preço de fechamento do HGLG11 no último pregão (cotação D-1)?",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
       "id": "fiis_precos-q2",
-      "question": "Qual foi a variação percentual do MXRF11 no pregão de 2024-12-27?",
+      "question": "Qual foi a variação percentual diária do MXRF11 no pregão de 2024-12-27?",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     },
     {
       "id": "fiis_precos-q3",
-      "question": "Mostre o candle diário (abertura, máxima, mínima, fechamento) do KNRI11 em 2024-11-15",
+      "question": "Mostre abertura, máxima, mínima e fechamento do KNRI11 em 2024-11-15",
       "expected_intent": "fiis_precos",
       "expected_entity": "fiis_precos"
     }

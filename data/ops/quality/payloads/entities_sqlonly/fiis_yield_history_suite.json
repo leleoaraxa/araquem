@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_yield_history-q1",
-      "question": "Qual foi o dividend yield mensal do VISC11 no mês de março de 2024?",
+      "question": "Qual foi o dividend yield mensal do VISC11 no mês de 2024-03 na série histórica de DY?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
     {
       "id": "fiis_yield_history-q2",
-      "question": "Como foi a evolução do dividend yield do HGLG11 ao longo dos últimos 12 meses?",
+      "question": "Como foi a evolução do dividend yield mensal do HGLG11 ao longo dos últimos 12 meses (histórico)?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
     {
       "id": "fiis_yield_history-q3",
-      "question": "Quais FIIs apresentaram o maior dividend yield médio nos últimos 6 meses?",
+      "question": "Quais FIIs aparecem com maior dividend yield médio na série histórica dos últimos 6 meses?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     }

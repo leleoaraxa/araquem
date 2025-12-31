@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "history_b3_indexes-q1",
-      "question": "Qual foi o valor de fechamento diário do IFIX em 2024-12-27?",
+      "question": "Qual foi o fechamento diário (pontos) do IFIX em 2024-12-27 no histórico de índices da B3?",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
     {
       "id": "history_b3_indexes-q2",
-      "question": "Qual foi a variação percentual diária do IBOV em 2024-11-15?",
+      "question": "Qual foi a variação percentual diária do IBOV em 2024-11-15 segundo o histórico de índices?",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
     {
       "id": "history_b3_indexes-q3",
-      "question": "Mostre a variação diária do IFIL entre 2024-12-16 e 2024-12-20",
+      "question": "Mostre as variações diárias do IFIL no intervalo 2024-12-16 a 2024-12-20 no histórico de índices B3",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     }
