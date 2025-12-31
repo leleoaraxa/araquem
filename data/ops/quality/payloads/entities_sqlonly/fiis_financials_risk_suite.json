@@ -4,13 +4,13 @@
   "payloads": [
     {
       "id": "fiis_financials_risk-q1",
-      "question": "qual o Sharpe do HGRU11?",
+      "question": "Qual é o índice de Sharpe do HGRU11 nos últimos 12 meses?",
       "expected_intent": "fiis_financials_risk",
       "expected_entity": "fiis_financials_risk"
     },
     {
       "id": "fiis_financials_risk-q2",
-      "question": "beta e R² do KNRI11 em relação ao IFIX",
+      "question": "Quais são o beta e o R² do KNRI11 em relação ao IFIX nos últimos 12 meses?",
       "expected_intent": "fiis_financials_risk",
       "expected_entity": "fiis_financials_risk"
     },

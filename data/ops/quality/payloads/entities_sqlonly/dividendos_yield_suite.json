@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "dividendos_yield-q1",
-      "question": "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?",
+      "question": "Qual foi o DY mensal do HGLG11 em janeiro de 2024?",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
       "id": "dividendos_yield-q2",
-      "question": "Mostre dividendos e dividend yield do {{ticker}} nos últimos 12 meses.",
+      "question": "Mostre dividendos e dividend yield do KNRI11 nos últimos 12 meses.",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     },
     {
       "id": "dividendos_yield-q3",
-      "question": "Quanto o {{ticker}} pagou em dividendos no mês passado?",
+      "question": "Quanto o MXRF11 pagou em dividendos no mês de dezembro de 2024?",
       "expected_intent": "dividendos_yield",
       "expected_entity": "dividendos_yield"
     }

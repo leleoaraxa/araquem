@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "macro_consolidada-q1",
-      "question": "IPCA e SELIC no dia {{data}}",
+      "question": "Traga IPCA e SELIC no dia 2024-12-27",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     },
     {
       "id": "macro_consolidada-q2",
-      "question": "IFIX e IBOV na semana passada",
+      "question": "Mostrar IFIX e IBOV na semana de 2024-12-16 a 2024-12-20",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     },
     {
       "id": "macro_consolidada-q3",
-      "question": "Histórico macro consolidado de {{mês}}",
+      "question": "Quero o histórico macro consolidado de novembro de 2024",
       "expected_intent": "macro_consolidada",
       "expected_entity": "macro_consolidada"
     }

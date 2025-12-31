@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "client_fiis_positions-q1",
-      "question": "Como está distribuída a carteira de FIIs por setor ou classe de ativo?",
+      "question": "Como estão distribuídas minhas posições de FIIs por setor na minha carteira?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
       "id": "client_fiis_positions-q2",
-      "question": "Quais posições aumentaram ou reduziram desde o último período de referência?",
+      "question": "Quais posições de FIIs na minha carteira aumentaram ou reduziram desde o último fechamento?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     },
     {
       "id": "client_fiis_positions-q3",
-      "question": "Existe concentração relevante em um único FII ou em poucos emissores?",
+      "question": "Existe concentração relevante em um único FII dentro da minha carteira de FIIs?",
       "expected_intent": "client_fiis_positions",
       "expected_entity": "client_fiis_positions"
     }

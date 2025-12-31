@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "carteira_enriquecida-q1",
-      "question": "Peso do {{ticker}} na minha carteira",
+      "question": "Qual o peso de HGLG11 na minha carteira de FIIs?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
     {
       "id": "carteira_enriquecida-q2",
-      "question": "Valor investido em {{ticker}} na carteira",
+      "question": "Quanto tenho investido em KNRI11 dentro da minha carteira?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
     {
       "id": "carteira_enriquecida-q3",
-      "question": "DY mensal dos meus FIIs",
+      "question": "Mostre o dividend yield mensal consolidado dos meus FIIs na minha carteira",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     }

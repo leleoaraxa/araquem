@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fii_overview-q1",
-      "question": "resumo do HGLG11",
+      "question": "Quero um resumo objetivo do HGLG11?",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     },
     {
       "id": "fii_overview-q2",
-      "question": "como está o KNRI11 hoje?",
+      "question": "Como está o desempenho atual do KNRI11 hoje?",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     },
     {
       "id": "fii_overview-q3",
-      "question": "me dê um overview do MXRF11",
+      "question": "Me dê um overview completo do MXRF11 agora?",
       "expected_intent": "fii_overview",
       "expected_entity": "fii_overview"
     }

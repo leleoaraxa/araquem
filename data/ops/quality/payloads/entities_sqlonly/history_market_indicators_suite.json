@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "history_market_indicators-q1",
-      "question": "qual foi o CDI ontem?",
+      "question": "Qual foi a taxa do CDI diária em 2024-12-27?",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
     {
       "id": "history_market_indicators-q2",
-      "question": "quanto está o IPCA acumulado no último dado?",
+      "question": "Quanto está o IPCA acumulado até o dado mais recente de 2024?",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     },
     {
       "id": "history_market_indicators-q3",
-      "question": "mostrar a SELIC na data X",
+      "question": "Mostre a taxa Selic efetiva diária em 2024-11-15",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
     }
