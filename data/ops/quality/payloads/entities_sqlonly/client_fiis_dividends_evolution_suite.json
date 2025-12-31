@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "client_fiis_dividends_evolution-q1",
-      "question": "Mostre a evolução mensal dos dividendos recebidos na minha carteira de FIIs",
+      "question": "Traga a linha do tempo mensal dos dividendos creditados na minha carteira própria de FIIs",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
     },
     {
       "id": "client_fiis_dividends_evolution-q2",
-      "question": "Como evoluiu a renda dos meus FIIs mês a mês na minha carteira",
+      "question": "Como variou mês a mês a renda distribuída pelos FIIs que possuo na carteira",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
     },
     {
       "id": "client_fiis_dividends_evolution-q3",
-      "question": "Quanto minha carteira de FIIs recebeu de dividendos em cada mês do último ano",
+      "question": "Quanto foi creditado em dividendos em cada mês do último ano apenas para os FIIs da minha carteira",
       "expected_intent": "client_fiis_dividends_evolution",
       "expected_entity": "client_fiis_dividends_evolution"
     }

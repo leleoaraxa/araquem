@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "carteira_enriquecida-q1",
-      "question": "Qual o peso de CTPS11 na minha carteira de FIIs?",
+      "question": "Qual é o peso percentual do CTPS11 dentro da minha carteira completa de FIIs hoje?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
     {
       "id": "carteira_enriquecida-q2",
-      "question": "Quanto tenho investido em CTPS11 dentro da minha carteira?",
+      "question": "Quanto capital em reais está alocado no CTPS11 considerando meu portfólio inteiro de FIIs?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     },
     {
       "id": "carteira_enriquecida-q3",
-      "question": "Mostre o dividend yield mensal consolidado dos meus FIIs na minha carteira",
+      "question": "Qual é o dividend yield médio ponderado da minha carteira de FIIs no fechamento mais recente?",
       "expected_intent": "carteira_enriquecida",
       "expected_entity": "carteira_enriquecida"
     }

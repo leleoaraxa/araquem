@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_imoveis-q1",
-      "question": "Quais imóveis compõem a carteira do HGLG11 e em quais cidades estão localizados?",
+      "question": "Liste os imóveis que compõem o portfólio do HGLG11 com as respectivas cidades de localização",
       "expected_intent": "fiis_imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "id": "fiis_imoveis-q2",
-      "question": "Qual a tipologia dos imóveis do XPML11, como lajes, galpões ou shoppings?",
+      "question": "Qual a tipologia de cada ativo imobiliário do XPML11, indicando se são lajes, galpões ou shoppings",
       "expected_intent": "fiis_imoveis",
       "expected_entity": "fiis_imoveis"
     },
     {
       "id": "fiis_imoveis-q3",
-      "question": "Há informações de ocupação, vacância ou contratos em cada ativo do VISC11?",
+      "question": "Traga ocupação, vacância e status de contratos para cada ativo específico do VISC11",
       "expected_intent": "fiis_imoveis",
       "expected_entity": "fiis_imoveis"
     }

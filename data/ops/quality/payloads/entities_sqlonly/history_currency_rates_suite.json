@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "history_currency_rates-q1",
-      "question": "Quanto estava a cotação do dólar em 2024-12-27?",
+      "question": "Qual foi a cotação de fechamento do dólar em 2024-12-27?",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
       "id": "history_currency_rates-q2",
-      "question": "Qual foi a variação do euro em 2024-12-20 em relação ao dia anterior?",
+      "question": "Qual foi a variação percentual do euro em 2024-12-20 em relação ao dia anterior?",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     },
     {
       "id": "history_currency_rates-q3",
-      "question": "Mostre a taxa de câmbio diária do dólar na semana de 2024-12-16 a 2024-12-20",
+      "question": "Mostre a taxa de câmbio diária do dólar entre 2024-12-16 e 2024-12-20",
       "expected_intent": "history_currency_rates",
       "expected_entity": "history_currency_rates"
     }
