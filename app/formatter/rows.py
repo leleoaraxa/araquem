@@ -1,6 +1,7 @@
 # app/formatter/rows.py
 
 import logging
+import os
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
 from pathlib import Path
@@ -11,6 +12,8 @@ from jinja2 import Environment, StrictUndefined
 from app.utils.filecache import load_yaml_cached
 
 LOGGER = logging.getLogger(__name__)
+
+_FORMAT_DEBUG_ENABLED = os.getenv("FORMAT_DEBUG") == "1"
 
 _ENTITY_ROOT = Path("data/entities")
 _FORMATTING_POLICY_PATH = Path("data/policies/formatting.yaml")
@@ -107,6 +110,44 @@ if isinstance(_PLACEHOLDERS, list):
         flt = ph.get("filter")
         if isinstance(field, str) and isinstance(flt, str):
             _FIELD_TO_FILTER[field.lower()] = flt
+
+if _FORMAT_DEBUG_ENABLED:
+    try:
+        resolved_policy_path = _FORMATTING_POLICY_PATH.resolve()
+    except Exception as exc:  # pragma: no cover - debug logging only
+        resolved_policy_path = f"{_FORMATTING_POLICY_PATH} (resolve error: {exc})"
+
+    LOGGER.info("[format_debug] formatting policy path: %s", resolved_policy_path)
+    LOGGER.info(
+        "[format_debug] formatting policy exists: %s",
+        _FORMATTING_POLICY_PATH.exists(),
+    )
+    LOGGER.info(
+        "[format_debug] formatting policy top-level keys: %s",
+        list(_FORMAT_POLICY.keys()) if isinstance(_FORMAT_POLICY, dict) else [],
+    )
+    LOGGER.info(
+        "[format_debug] formatting policy placeholders count: %s",
+        len(_PLACEHOLDERS) if isinstance(_PLACEHOLDERS, list) else 0,
+    )
+    currency_filter_cfg = (
+        _FILTERS_CFG.get("currency_br") if isinstance(_FILTERS_CFG, dict) else None
+    )
+    LOGGER.info(
+        "[format_debug] filters.currency_br is currency: %s",
+        bool(
+            isinstance(currency_filter_cfg, dict)
+            and currency_filter_cfg.get("type") == "currency"
+        ),
+    )
+    LOGGER.info(
+        "[format_debug] placeholder mapping benchmark_value: %s",
+        _FIELD_TO_FILTER.get("benchmark_value"),
+    )
+    LOGGER.info(
+        "[format_debug] placeholder mapping portfolio_amount: %s",
+        _FIELD_TO_FILTER.get("portfolio_amount"),
+    )
 
 if isinstance(_FORMAT_POLICY, dict):
     _DATE_CFG = _FORMAT_POLICY.get("date_br") or _FORMAT_POLICY.get("date")
@@ -520,7 +561,23 @@ def format_rows(rows: List[Dict[str, Any]], columns: List[str]) -> List[Dict[str
             if col_value is None:
                 continue
             formatter = _detect_formatter(col_name)
+            if _FORMAT_DEBUG_ENABLED and col_name in {"benchmark_value", "portfolio_amount"}:
+                placeholder_filter = _FIELD_TO_FILTER.get(col_name.lower())
+                LOGGER.info(
+                    "[format_debug] before format col=%s value=%r type=%s placeholder_filter=%s formatter_found=%s",
+                    col_name,
+                    col_value,
+                    type(col_value).__name__,
+                    placeholder_filter,
+                    bool(formatter),
+                )
             if formatter:
                 item[col_name] = formatter(col_value)
+                if _FORMAT_DEBUG_ENABLED and col_name in {"benchmark_value", "portfolio_amount"}:
+                    LOGGER.info(
+                        "[format_debug] after format col=%s value=%r",
+                        col_name,
+                        item[col_name],
+                    )
         out.append(item)
     return out
