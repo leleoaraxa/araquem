@@ -2,26 +2,26 @@
   "suites": {
     "carteira_enriquecida": {
       "total": 3,
-      "gate_ok": 3,
-      "gate_fail": 0,
+      "gate_ok": 2,
+      "gate_fail": 1,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 3,
+          "matches": 2,
           "total": 3,
-          "accuracy": 1.0
+          "accuracy": 0.6666666666666666
         },
         "entity": {
-          "matches": 3,
+          "matches": 2,
           "total": 3,
-          "accuracy": 1.0
+          "accuracy": 0.6666666666666666
         },
         "both": {
-          "matches": 3,
+          "matches": 2,
           "total": 3,
-          "accuracy": 1.0
+          "accuracy": 0.6666666666666666
         }
       },
       "pass": 0,
@@ -30,6 +30,10 @@
         [
           "status_not_ok",
           3
+        ],
+        [
+          "entity_mismatch",
+          1
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para carteira_enriquecida."
@@ -43,19 +47,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 1,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.3333333333333333
+          "accuracy": 0.6666666666666666
         },
         "entity": {
-          "matches": 1,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.3333333333333333
+          "accuracy": 0.6666666666666666
         },
         "both": {
-          "matches": 1,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.3333333333333333
+          "accuracy": 0.6666666666666666
         }
       },
       "pass": 0,
@@ -67,15 +71,15 @@
         ],
         [
           "entity_mismatch",
-          2
+          1
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_dividends_evolution."
     },
     "client_fiis_performance_vs_benchmark": {
       "total": 3,
-      "gate_ok": 2,
-      "gate_fail": 1,
+      "gate_ok": 3,
+      "gate_fail": 0,
       "cache_hit_response": 0,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
@@ -157,19 +161,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 0,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.6666666666666666
         },
         "entity": {
-          "matches": 0,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.6666666666666666
         },
         "both": {
-          "matches": 0,
+          "matches": 2,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.6666666666666666
         }
       },
       "pass": 0,
@@ -181,16 +185,16 @@
         ],
         [
           "entity_mismatch",
-          3
+          1
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_positions."
     },
     "dividendos_yield": {
       "total": 3,
-      "gate_ok": 3,
-      "gate_fail": 0,
-      "cache_hit_response": 1,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -339,19 +343,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -363,7 +367,7 @@
         ],
         [
           "entity_mismatch",
-          1
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_revenue_schedule."
@@ -372,7 +376,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 2,
+      "cache_hit_response": 3,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -415,19 +419,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 0,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 0,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 0,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.0
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -439,7 +443,7 @@
         ],
         [
           "entity_mismatch",
-          3
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_snapshot."
@@ -448,7 +452,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 3,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -480,26 +484,26 @@
     },
     "fiis_noticias": {
       "total": 3,
-      "gate_ok": 2,
-      "gate_fail": 1,
-      "cache_hit_response": 0,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 3,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 1.0
         },
         "entity": {
-          "matches": 2,
+          "matches": 3,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 1.0
         },
         "both": {
-          "matches": 2,
+          "matches": 3,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 1.0
         }
       },
       "pass": 0,
@@ -508,10 +512,6 @@
         [
           "status_not_ok",
           3
-        ],
-        [
-          "entity_mismatch",
-          1
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_noticias."
@@ -520,14 +520,14 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 3,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 1.0
         },
         "entity": {
           "matches": 3,
@@ -535,9 +535,9 @@
           "accuracy": 1.0
         },
         "both": {
-          "matches": 2,
+          "matches": 3,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 1.0
         }
       },
       "pass": 0,
@@ -554,7 +554,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -586,26 +586,26 @@
     },
     "fiis_rankings": {
       "total": 3,
-      "gate_ok": 2,
-      "gate_fail": 1,
+      "gate_ok": 1,
+      "gate_fail": 2,
       "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -617,7 +617,7 @@
         ],
         [
           "entity_mismatch",
-          1
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_rankings."
@@ -626,7 +626,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 1,
+      "cache_hit_response": 3,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -658,26 +658,26 @@
     },
     "history_b3_indexes": {
       "total": 3,
-      "gate_ok": 2,
-      "gate_fail": 1,
-      "cache_hit_response": 2,
+      "gate_ok": 1,
+      "gate_fail": 2,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -689,7 +689,7 @@
         ],
         [
           "entity_mismatch",
-          1
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_b3_indexes."
@@ -703,19 +703,19 @@
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -727,7 +727,7 @@
         ],
         [
           "entity_mismatch",
-          1
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_currency_rates."
@@ -736,7 +736,7 @@
       "total": 3,
       "gate_ok": 2,
       "gate_fail": 1,
-      "cache_hit_response": 1,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -772,26 +772,26 @@
     },
     "macro_consolidada": {
       "total": 3,
-      "gate_ok": 2,
-      "gate_fail": 1,
-      "cache_hit_response": 2,
+      "gate_ok": 1,
+      "gate_fail": 2,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
         "intent": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "entity": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         },
         "both": {
-          "matches": 2,
+          "matches": 1,
           "total": 3,
-          "accuracy": 0.6666666666666666
+          "accuracy": 0.3333333333333333
         }
       },
       "pass": 0,
@@ -803,7 +803,7 @@
         ],
         [
           "entity_mismatch",
-          1
+          2
         ]
       ],
       "description": "Suíte SQL-only gerada a partir de perguntas existentes para macro_consolidada."
@@ -811,9 +811,9 @@
   },
   "overall": {
     "total": 66,
-    "gate_ok": 59,
-    "gate_fail": 7,
-    "cache_hit_response": 23,
+    "gate_ok": 56,
+    "gate_fail": 10,
+    "cache_hit_response": 33,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {
@@ -823,9 +823,9 @@
         "accuracy": 0.6060606060606061
       },
       "entity": {
-        "matches": 41,
+        "matches": 40,
         "total": 66,
-        "accuracy": 0.6212121212121212
+        "accuracy": 0.6060606060606061
       },
       "both": {
         "matches": 40,
@@ -842,7 +842,7 @@
       ],
       [
         "entity_mismatch",
-        25
+        26
       ]
     ]
   }
