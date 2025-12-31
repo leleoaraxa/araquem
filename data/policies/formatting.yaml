@@ -193,3 +193,9 @@ placeholders:
     filter: percent_raw_br
   - field: eur_var_pct
     filter: percent_raw_br
+  - field: excess_return_pct
+    filter: percent_raw_br
+  - field: benchmark_value
+    filter: currency_br
+  - field: portfolio_amount
+    filter: currency_br
