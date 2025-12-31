@@ -1,0 +1,853 @@
+{
+  "suites": {
+    "carteira_enriquecida": {
+      "total": 3,
+      "gate_ok": 1,
+      "gate_fail": 2,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "entity": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "both": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          2
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para carteira_enriquecida."
+    },
+    "client_fiis_dividends_evolution": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_dividends_evolution."
+    },
+    "client_fiis_performance_vs_benchmark": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "entity": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "both": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          2
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_performance_vs_benchmark."
+    },
+    "client_fiis_performance_vs_benchmark_summary": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_performance_vs_benchmark_summary."
+    },
+    "client_fiis_positions": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "entity": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "both": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          2
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para client_fiis_positions."
+    },
+    "dividendos_yield": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "entity": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "both": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para dividendos_yield."
+    },
+    "fii_overview": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fii_overview."
+    },
+    "fiis_cadastro": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_cadastro."
+    },
+    "fiis_dividendos": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_dividendos."
+    },
+    "fiis_financials_revenue_schedule": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_revenue_schedule."
+    },
+    "fiis_financials_risk": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "entity": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "both": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          2
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_risk."
+    },
+    "fiis_financials_snapshot": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "entity": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "both": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_financials_snapshot."
+    },
+    "fiis_imoveis": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_imoveis."
+    },
+    "fiis_noticias": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_noticias."
+    },
+    "fiis_precos": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "entity": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        },
+        "both": {
+          "matches": 1,
+          "total": 3,
+          "accuracy": 0.3333333333333333
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          2
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_precos."
+    },
+    "fiis_processos": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_processos."
+    },
+    "fiis_rankings": {
+      "total": 3,
+      "gate_ok": 1,
+      "gate_fail": 2,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "entity": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "both": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_rankings."
+    },
+    "fiis_yield_history": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 2,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "entity": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        },
+        "both": {
+          "matches": 3,
+          "total": 3,
+          "accuracy": 1.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_yield_history."
+    },
+    "history_b3_indexes": {
+      "total": 3,
+      "gate_ok": 2,
+      "gate_fail": 1,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_b3_indexes."
+    },
+    "history_currency_rates": {
+      "total": 3,
+      "gate_ok": 1,
+      "gate_fail": 2,
+      "cache_hit_response": 0,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "entity": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        },
+        "both": {
+          "matches": 0,
+          "total": 3,
+          "accuracy": 0.0
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          3
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_currency_rates."
+    },
+    "history_market_indicators": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 1,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para history_market_indicators."
+    },
+    "macro_consolidada": {
+      "total": 3,
+      "gate_ok": 3,
+      "gate_fail": 0,
+      "cache_hit_response": 2,
+      "cache_hit_metrics": 0,
+      "narrator_used": 0,
+      "accuracy": {
+        "intent": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "entity": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        },
+        "both": {
+          "matches": 2,
+          "total": 3,
+          "accuracy": 0.6666666666666666
+        }
+      },
+      "pass": 0,
+      "fail": 3,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          3
+        ],
+        [
+          "entity_mismatch",
+          1
+        ]
+      ],
+      "description": "Suíte SQL-only gerada a partir de perguntas existentes para macro_consolidada."
+    }
+  },
+  "overall": {
+    "total": 66,
+    "gate_ok": 53,
+    "gate_fail": 13,
+    "cache_hit_response": 5,
+    "cache_hit_metrics": 0,
+    "narrator_used": 0,
+    "accuracy": {
+      "intent": {
+        "matches": 37,
+        "total": 66,
+        "accuracy": 0.5606060606060606
+      },
+      "entity": {
+        "matches": 37,
+        "total": 66,
+        "accuracy": 0.5606060606060606
+      },
+      "both": {
+        "matches": 37,
+        "total": 66,
+        "accuracy": 0.5606060606060606
+      }
+    },
+    "pass": 0,
+    "fail": 66,
+    "top_fail_reasons": [
+      [
+        "status_not_ok",
+        66
+      ],
+      [
+        "entity_mismatch",
+        29
+      ]
+    ]
+  }
+}
