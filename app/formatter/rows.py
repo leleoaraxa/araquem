@@ -2,6 +2,7 @@
 
 import logging
 import os
+import sys
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 import datetime as dt
 from pathlib import Path
@@ -17,6 +18,65 @@ _FORMAT_DEBUG_ENABLED = os.getenv("FORMAT_DEBUG") == "1"
 
 _ENTITY_ROOT = Path("data/entities")
 _FORMATTING_POLICY_PATH = Path("data/policies/formatting.yaml")
+
+
+def _setup_format_debug_file_logger() -> None:
+    """
+    Configura logging em arquivo para diagnóstico de formatação quando FORMAT_DEBUG=1.
+    Não altera regras de detecção/formatadores; apenas garante observabilidade.
+    """
+    if not _FORMAT_DEBUG_ENABLED:
+        return
+
+    # Evita duplicar handlers em reload/import múltiplo
+    for h in list(LOGGER.handlers):
+        try:
+            if isinstance(h, logging.FileHandler) and getattr(
+                h, "baseFilename", ""
+            ).endswith(("format_debug.log",)):
+                return
+        except Exception:
+            continue
+
+    log_path_primary = Path("/logs/format_debug.log")
+    log_path_fallback = Path("/tmp/format_debug.log")
+
+    log_path = log_path_primary
+    try:
+        log_path.parent.mkdir(parents=True, exist_ok=True)
+        # Teste de escrita (abre/fecha) para garantir permissão
+        with log_path.open("a", encoding="utf-8"):
+            pass
+    except Exception:
+        log_path = log_path_fallback
+        try:
+            log_path.parent.mkdir(parents=True, exist_ok=True)
+            with log_path.open("a", encoding="utf-8"):
+                pass
+        except Exception:
+            # Se nem /tmp funcionar, não há como garantir arquivo.
+            # Mantemos o comportamento atual (silencioso), mas deixamos um aviso em stderr.
+            try:
+                sys.stderr.write(
+                    "[format_debug] failed to init file logger (no writable path)\n"
+                )
+            except Exception:
+                pass
+            return
+
+    handler = logging.FileHandler(str(log_path), encoding="utf-8")
+    handler.setLevel(logging.INFO)
+    handler.setFormatter(
+        logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+    )
+
+    LOGGER.addHandler(handler)
+    LOGGER.setLevel(logging.INFO)
+    LOGGER.propagate = False
+    LOGGER.info("[format_debug] file logger initialized path=%s", str(log_path))
+
+
+_setup_format_debug_file_logger()
 
 
 def _entity_yaml_path(entity: str) -> Path:

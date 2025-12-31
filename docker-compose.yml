@@ -17,8 +17,10 @@ services:
       - RAG_INDEX_PATH=data/embeddings/store/embeddings.jsonl
       - OLLAMA_BASE_URL=http://ollama:11434
       - OLLAMA_URL=http://ollama:11434
+      - FORMAT_DEBUG=1
     volumes:
       - ./:/app
+      - ./logs:/logs
     depends_on:
       - redis
       - prometheus
