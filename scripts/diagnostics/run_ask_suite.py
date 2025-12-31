@@ -84,6 +84,35 @@ def _safe_get(d: Dict[str, Any], path: str, default=None):
     return cur if cur is not None else default
 
 
+def _parse_status(body: Dict[str, Any]) -> Tuple[bool, Any, Optional[str]]:
+    status_raw = body.get("status")
+    status_reason = None
+    status_value = None
+
+    if isinstance(status_raw, dict):
+        status_value = status_raw.get("status")
+        status_reason = status_raw.get("reason") or status_raw.get("message")
+    else:
+        status_value = status_raw
+
+    if status_reason is None and isinstance(status_value, str):
+        status_reason = status_value
+
+    status_ok = status_value == "ok"
+    return status_ok, status_raw, status_reason
+
+
+def _selftest_parse_status() -> None:
+    cases = [
+        ({"status": "ok"}, True),
+        ({"status": {"status": "ok"}}, True),
+    ]
+    for payload, expected_ok in cases:
+        ok, raw, _ = _parse_status(payload)
+        assert ok is expected_ok, f"Expected status_ok {expected_ok} for {payload}"
+        assert raw == payload["status"], f"Expected raw {payload['status']}"
+
+
 def _sorted_top2_from_score_map(
     score_map: Dict[Any, Any],
 ) -> Tuple[Optional[str], Optional[str]]:
@@ -242,6 +271,8 @@ def _print_final_summary(rows: List[Dict[str, Any]]) -> None:
         return
 
     total = len(rows)
+    status_ok = sum(1 for r in rows if r.get("status_ok") is True)
+    status_not_ok = sum(1 for r in rows if r.get("status_ok") is False)
     gate_ok = sum(1 for r in rows if r.get("gate_accepted") is True)
     gate_fail = sum(1 for r in rows if r.get("gate_accepted") is False)
     cache_hits_response = sum(1 for r in rows if r.get("cache_hit_response") is True)
@@ -256,6 +287,7 @@ def _print_final_summary(rows: List[Dict[str, Any]]) -> None:
 
     print("\n=== RESULT COMPLETO (SUMÁRIO) ===")
     print(f"Perguntas: {total}")
+    print(f"Status: OK={status_ok} | NOT_OK={status_not_ok}")
     print(f"Gate: OK={gate_ok} | FAIL={gate_fail}")
     print(
         f"Cache hit (response): {cache_hits_response}/{total} "
@@ -388,8 +420,10 @@ def _extract_row(
     suite_name: Optional[str] = None,
     suite_description: Optional[str] = None,
 ) -> Dict[str, Any]:
-    status_status = _safe_get(resp, "status.status")
-    status_reason = _safe_get(resp, "status.reason")
+    status_ok, status_raw, status_reason = _parse_status(resp)
+    status_status = _safe_get(resp, "status.status") or (
+        status_raw if isinstance(status_raw, str) else None
+    )
     status_message = _safe_get(resp, "status.message")
 
     chosen_intent = _safe_get(resp, "meta.intent") or _safe_get(
@@ -491,6 +525,8 @@ def _extract_row(
         "request_error": request_error,
         "explain_enabled": explain_enabled,
         "status_status": status_status,
+        "status_raw": status_raw,
+        "status_ok": status_ok,
         "status_reason": status_reason,
         "status_message": status_message,
         "chosen_intent": chosen_intent,
@@ -664,8 +700,7 @@ def _evaluate_case(row: Dict[str, Any]) -> Dict[str, Any]:
     if row.get("request_error"):
         reasons.append("request_error")
 
-    status_status = row.get("status_status")
-    if status_status != "ok":
+    if row.get("status_ok") is not True:
         reasons.append("status_not_ok")
 
     expected_entity = row.get("expected_entity")
@@ -759,6 +794,8 @@ def main() -> int:
         help="Imprime também o campo answer (útil para debug pontual).",
     )
     args = ap.parse_args()
+
+    _selftest_parse_status()
 
     suite_paths = _resolve_suite_paths(args)
     suite_mode = len(suite_paths) > 0
