@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_financials_revenue_schedule-q1",
-      "question": "receita com vencimento em 0–3 meses do HGLG11",
+      "question": "Qual a receita com vencimento em 0 a 3 meses do HGLG11?",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
       "id": "fiis_financials_revenue_schedule-q2",
-      "question": "quanto vence em 12 meses do XPML11",
+      "question": "Quanto o XPML11 tem a vencer em receitas nos próximos 12 meses?",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     },
     {
       "id": "fiis_financials_revenue_schedule-q3",
-      "question": "estrutura de recebíveis do VISC11",
+      "question": "Mostre a estrutura de recebíveis do VISC11 por faixa de vencimento",
       "expected_intent": "fiis_financials_revenue_schedule",
       "expected_entity": "fiis_financials_revenue_schedule"
     }

@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "history_b3_indexes-q1",
-      "question": "quanto fechou o IFIX ontem?",
+      "question": "Quanto fechou o IFIX em 2024-12-27?",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
     {
       "id": "history_b3_indexes-q2",
-      "question": "qual foi a variação do IBOV na data X?",
+      "question": "Qual foi a variação do IBOV em 2024-11-15?",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     },
     {
       "id": "history_b3_indexes-q3",
-      "question": "mostrar IFIL da semana passada",
+      "question": "Mostrar a variação diária do IFIL na semana de 2024-12-16 a 2024-12-20",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"
     }

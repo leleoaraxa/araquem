@@ -4,13 +4,13 @@
   "payloads": [
     {
       "id": "fiis_yield_history-q1",
-      "question": "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?",
+      "question": "Qual foi o DY mensal do VISC11 em março de 2024?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },
     {
       "id": "fiis_yield_history-q2",
-      "question": "Como tem sido a evolução do DY do {{ticker}} nos últimos 12 meses?",
+      "question": "Como tem sido a evolução do DY do HGLG11 nos últimos 12 meses?",
       "expected_intent": "fiis_yield_history",
       "expected_entity": "fiis_yield_history"
     },

@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "client_fiis_performance_vs_benchmark-q1",
-      "question": "rentabilidade da minha carteira de fiis versus o IFIX",
+      "question": "Compare a rentabilidade da minha carteira de FIIs com o IFIX no último mês",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
     },
     {
       "id": "client_fiis_performance_vs_benchmark-q2",
-      "question": "como minha carteira está em relação ao CDI",
+      "question": "Como minha carteira de FIIs performou frente ao CDI nos últimos 12 meses",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
     },
     {
       "id": "client_fiis_performance_vs_benchmark-q3",
-      "question": "comparar minha carteira de fiis com o IFIL",
+      "question": "Quero comparar a performance da minha carteira de FIIs com o IFIL no ano de 2024",
       "expected_intent": "client_fiis_performance_vs_benchmark",
       "expected_entity": "client_fiis_performance_vs_benchmark"
     }

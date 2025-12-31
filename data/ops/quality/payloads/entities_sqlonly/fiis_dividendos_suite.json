@@ -4,19 +4,19 @@
   "payloads": [
     {
       "id": "fiis_dividendos-q1",
-      "question": "quais dividendos o MXRF11 pagou neste mês?",
+      "question": "Quais dividendos o MXRF11 pagou em dezembro de 2024?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
       "id": "fiis_dividendos-q2",
-      "question": "quando foi o último pagamento do HGLG11?",
+      "question": "Quando foi o último pagamento de dividendos do HGLG11?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     },
     {
       "id": "fiis_dividendos-q3",
-      "question": "qual o dividendo do CPTS11 com data-com mais recente?",
+      "question": "Qual foi o dividendo do CPTS11 na data-com mais recente?",
       "expected_intent": "fiis_dividendos",
       "expected_entity": "fiis_dividendos"
     }
