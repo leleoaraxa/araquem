@@ -197,3 +197,165 @@ placeholders:
     filter: currency_br
   - field: portfolio_amount
     filter: currency_br
+  - field: adj_close_price
+    filter: currency_br
+  - field: admin_fee_due_amt
+    filter: currency_br
+  - field: average_price
+    filter: currency_br
+  - field: cap_rate
+    filter: percent_raw_br
+  - field: cdi
+    filter: number_br
+  - field: created_at
+    filter: datetime_br
+  - field: date_reference
+    filter: date_br
+  - field: dividend_reserve_amt
+    filter: currency_br
+  - field: dividends_12m_amt
+    filter: currency_br
+  - field: dividends_sum
+    filter: currency_br
+  - field: equity_month_ratio
+    filter: percent_raw_br
+  - field: equity_per_share
+    filter: currency_br
+  - field: equity_value
+    filter: currency_br
+  - field: eur_buy_amt
+    filter: number_br
+  - field: eur_sell_amt
+    filter: number_br
+  - field: expected_revenue_amt
+    filter: currency_br
+  - field: growth_rate
+    filter: percent_raw_br
+  - field: ibov_points
+    filter: number_br
+  - field: ibov_points_count
+    filter: number_br
+  - field: ifil_points_count
+    filter: number_br
+  - field: ifix_points
+    filter: number_br
+  - field: ifix_points_count
+    filter: number_br
+  - field: index_date
+    filter: date_br
+  - field: indicator_amt
+    filter: percent_raw_br
+  - field: indicator_date
+    filter: datetime_br
+  - field: ipca
+    filter: number_br
+  - field: ipo_date
+    filter: date_br
+  - field: last_dividend_amt
+    filter: currency_br
+  - field: last_payment_date
+    filter: date_br
+  - field: month_dividends_amt
+    filter: currency_br
+  - field: month_number
+    filter: int_br
+  - field: month_price_ref
+    filter: currency_br
+  - field: perf_fee_due_amt
+    filter: currency_br
+  - field: portfolio_value
+    filter: currency_br
+  - field: position_date
+    filter: date_br
+  - field: position_value
+    filter: currency_br
+  - field: price_book_ratio
+    filter: percent_raw_br
+  - field: price_ref
+    filter: currency_br
+  - field: rank_dividends_12m
+    filter: int_br
+  - field: rank_dy_12m
+    filter: int_br
+  - field: rank_dy_monthly
+    filter: int_br
+  - field: rank_equity
+    filter: int_br
+  - field: rank_low_drawdown
+    filter: int_br
+  - field: rank_low_volatility
+    filter: int_br
+  - field: rank_market_cap
+    filter: int_br
+  - field: rank_sharpe
+    filter: int_br
+  - field: rank_sortino
+    filter: int_br
+  - field: rankings_created_at
+    filter: datetime_br
+  - field: rankings_updated_at
+    filter: datetime_br
+  - field: rate_date
+    filter: date_br
+  - field: ref_date
+    filter: date_br
+  - field: ref_month
+    filter: date_br
+  - field: revenue_due_12_15m_pct
+    filter: percent_br
+  - field: revenue_due_15_18m_pct
+    filter: percent_br
+  - field: revenue_due_18_21m_pct
+    filter: percent_br
+  - field: revenue_due_21_24m_pct
+    filter: percent_br
+  - field: revenue_due_24_27m_pct
+    filter: percent_br
+  - field: revenue_due_27_30m_pct
+    filter: percent_br
+  - field: revenue_due_30_33m_pct
+    filter: percent_br
+  - field: revenue_due_33_36m_pct
+    filter: percent_br
+  - field: revenue_due_3_6m_pct
+    filter: percent_br
+  - field: revenue_due_6_9m_pct
+    filter: percent_br
+  - field: revenue_due_undetermined_pct
+    filter: percent_br
+  - field: revenue_incc_pct
+    filter: percent_br
+  - field: revenue_inpc_pct
+    filter: percent_br
+  - field: revenue_per_share
+    filter: percent_raw_br
+  - field: risk_created_at
+    filter: datetime_br
+  - field: risk_updated_at
+    filter: datetime_br
+  - field: selic
+    filter: number_br
+  - field: shareholders_count
+    filter: number_br
+  - field: shares_count
+    filter: number_br
+  - field: snapshot_created_at
+    filter: datetime_br
+  - field: snapshot_updated_at
+    filter: datetime_br
+  - field: sum_anual_dy_amt
+    filter: currency_br
+  - field: total_dividends
+    filter: currency_br
+  - field: updated_at
+    filter: datetime_br
+  - field: usd_buy_amt
+    filter: number_br
+  - field: usd_sell_amt
+    filter: number_br
+  - field: variation_month_ratio
+    filter: percent_raw_br
+  - field: variation_year_ratio
+    filter: percent_raw_br
+  - field: year_reference
+    filter: int_br

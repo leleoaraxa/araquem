@@ -4,12 +4,12 @@
   {% set latest = rows[0] %}
   **Indicadores de mercado (D-1)**
 
-  Último registro em {{ latest.indicator_date|datetime_br if latest.indicator_date is not none else '-' }}: **{{ latest.indicator_name if latest.indicator_name is not none else '-' }} = {{ latest.indicator_amt|currency_br if latest.indicator_amt is not none else '-' }}**.
+  Último registro em {{ latest.indicator_date if latest.indicator_date is not none else '-' }}: **{{ latest.indicator_name if latest.indicator_name is not none else '-' }} = {{ latest.indicator_amt if latest.indicator_amt is not none else '-' }}**.
 
   | Data | Indicador | Valor |
   | --- | --- | --- |
   {% for r in rows %}
-    | {{ r.indicator_date|datetime_br if r.indicator_date is not none else '-' }} | {{ r.indicator_name if r.indicator_name is not none else '-' }} | {{ r.indicator_amt|currency_br if r.indicator_amt is not none else '-' }} |
+    | {{ r.indicator_date if r.indicator_date is not none else '-' }} | {{ r.indicator_name if r.indicator_name is not none else '-' }} | {{ r.indicator_amt if r.indicator_amt is not none else '-' }} |
   {% endfor %}
 {%- else -%}
   {{ empty_message or "Nenhum registro encontrado." }}

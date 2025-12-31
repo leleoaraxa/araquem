@@ -10,12 +10,12 @@
 
     **Dividendos de {{ ticker }}**
 
-    Último pagamento em {{ latest.payment_date|date_br if latest.payment_date is not none else '-' }}: **{{ latest.dividend_amt|currency_br if latest.dividend_amt is not none else '-' }}** por cota.
+    Último pagamento em {{ latest.payment_date if latest.payment_date is not none else '-' }}: **{{ latest.dividend_amt if latest.dividend_amt is not none else '-' }}** por cota.
 
     | Data de pagamento | Data-com | Valor por cota |
     | --- | --- | --- |
     {% for r in subset %}
-      | {{ r.payment_date|date_br if r.payment_date is not none else '-' }} | {{ r.traded_until_date|date_br if r.traded_until_date is not none else '-' }} | {{ r.dividend_amt|currency_br if r.dividend_amt is not none else '-' }} |
+      | {{ r.payment_date if r.payment_date is not none else '-' }} | {{ r.traded_until_date if r.traded_until_date is not none else '-' }} | {{ r.dividend_amt if r.dividend_amt is not none else '-' }} |
     {% endfor %}
 
     {%- if not loop.last %}

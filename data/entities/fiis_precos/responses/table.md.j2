@@ -13,7 +13,7 @@
 | Data | Código | Preço de fechamento (R$) | Preço ajustado (R$) | Abertura (R$) | Máxima (R$) | Mínima (R$) | Variação diária (%) | Criado em | Atualizado em |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
 {% for r in items %}
-| {{ r.traded_at | date_br if r.traded_at else '-' }} | {{ r.ticker or '-' }} | {{ r.close_price | currency_br if r.close_price is not none else '-' }} | {{ r.adj_close_price | currency_br if r.adj_close_price is not none else '-' }} | {{ r.open_price | currency_br if r.open_price is not none else '-' }} | {{ r.max_price | currency_br if r.max_price is not none else '-' }} | {{ r.min_price | currency_br if r.min_price is not none else '-' }} | {{ r.daily_variation_pct | percent_raw_br if r.daily_variation_pct is not none else '-' }} | {{ r.created_at | datetime_br if r.created_at else '-' }} | {{ r.updated_at | datetime_br if r.updated_at else '-' }} |
+| {{ r.traded_at if r.traded_at else '-' }} | {{ r.ticker or '-' }} | {{ r.close_price if r.close_price is not none else '-' }} | {{ r.adj_close_price if r.adj_close_price is not none else '-' }} | {{ r.open_price if r.open_price is not none else '-' }} | {{ r.max_price if r.max_price is not none else '-' }} | {{ r.min_price if r.min_price is not none else '-' }} | {{ r.daily_variation_pct if r.daily_variation_pct is not none else '-' }} | {{ r.created_at if r.created_at else '-' }} | {{ r.updated_at if r.updated_at else '-' }} |
 {% endfor %}
 
 {% if not loop.last %}

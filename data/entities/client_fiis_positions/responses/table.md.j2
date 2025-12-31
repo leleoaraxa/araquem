@@ -4,12 +4,12 @@
   {% set first = rows[0] %}
   **Posições do cliente em FIIs**
 
-  - Data da posição: **{{ first.position_date|date_br if first.position_date is not none else '-' }}**
+  - Data da posição: **{{ first.position_date if first.position_date is not none else '-' }}**
 
   | Ticker | Quantidade | Disponível | Preço médio | Preço de fechamento | Rentabilidade | Peso na carteira | Corretora |
   | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
   {%- for r in rows %}
-  | {{ r.ticker or '-' }} | {{ r.qty|int_br if r.qty is not none else '-' }} | {{ r.available_quantity|int_br if r.available_quantity is not none else '-' }} | {{ r.average_price|currency_br if r.average_price is not none else '-' }} | {{ r.closing_price|currency_br if r.closing_price is not none else '-' }} | {{ r.profitability_percentage|percent_raw_br if r.profitability_percentage is not none else '-' }} | {{ r.percentage|percent_raw_br if r.percentage is not none else '-' }} | {{ r.participant_name or '-' }} |
+  | {{ r.ticker or '-' }} | {{ r.qty if r.qty is not none else '-' }} | {{ r.available_quantity if r.available_quantity is not none else '-' }} | {{ r.average_price if r.average_price is not none else '-' }} | {{ r.closing_price if r.closing_price is not none else '-' }} | {{ r.profitability_percentage if r.profitability_percentage is not none else '-' }} | {{ r.percentage if r.percentage is not none else '-' }} | {{ r.participant_name or '-' }} |
   {%- endfor %}
 {%- else -%}
   {{ empty_message or "Sem posições disponíveis." }}

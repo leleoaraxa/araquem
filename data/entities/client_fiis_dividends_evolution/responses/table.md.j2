@@ -11,12 +11,12 @@
 **Evolução de dividendos da carteira do cliente**
 
 - Último valor ({{ months_pt.get(latest.month_number, '-') }}/{{ latest.year_reference or '-' }}):
-  **{{ latest.total_dividends|currency_br if latest.total_dividends is not none else '-' }}**
+  **{{ latest.total_dividends if latest.total_dividends is not none else '-' }}**
 
 | Mês | Ano | Dividendos (R$) |
 | --- | --- | ---: |
 {%- for r in rows %}
-| {{ months_pt.get(r.month_number, '-') }} | {{ r.year_reference or '-' }} | {{ r.total_dividends|currency_br if r.total_dividends is not none else '-' }} |
+| {{ months_pt.get(r.month_number, '-') }} | {{ r.year_reference or '-' }} | {{ r.total_dividends if r.total_dividends is not none else '-' }} |
 {%- endfor %}
 {%- else -%}
 {{ empty_message or "Sem histórico de dividendos para exibir." }}
