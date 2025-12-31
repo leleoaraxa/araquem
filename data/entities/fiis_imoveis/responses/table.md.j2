@@ -24,7 +24,7 @@ Dados de imóveis do {{ ticker_label }} não disponíveis no momento.
 | Nome do ativo | Classe | Localização | Área total (m²) | Unidades | Vacância | Inadimplência | Status | Atualizado em |
 | --- | --- | --- | ---: | ---: | --- | --- | --- | --- |
 {% for r in items %}
-| {{ r.asset_name or '-' }} | {{ r.asset_class or '-' }} | {{ r.asset_address or '-' }} | {{ (r.total_area | number_m2_br) ~ ' m²' if r.total_area is not none else '-' }} | {{ r.units_count | int_br if r.units_count is not none else '-' }} | {{ r.vacancy_ratio | percent_raw_br if r.vacancy_ratio is not none else '-' }} | {{ r.non_compliant_ratio | percent_raw_br if r.non_compliant_ratio is not none else '-' }} | {{ r.assets_status or '-' }} | {{ r.updated_at | date_br if r.updated_at else '-' }} |
+| {{ r.asset_name or '-' }} | {{ r.asset_class or '-' }} | {{ r.asset_address or '-' }} | {{ (r.total_area) ~ ' m²' if r.total_area is not none else '-' }} | {{ r.units_count if r.units_count is not none else '-' }} | {{ r.vacancy_ratio if r.vacancy_ratio is not none else '-' }} | {{ r.non_compliant_ratio if r.non_compliant_ratio is not none else '-' }} | {{ r.assets_status or '-' }} | {{ r.updated_at if r.updated_at else '-' }} |
 {% endfor %}
 
 _Fonte: CVM (dados públicos reportados pelos fundos e consolidados pela SIRIOS)._

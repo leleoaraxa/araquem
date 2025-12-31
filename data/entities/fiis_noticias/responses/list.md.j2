@@ -7,7 +7,7 @@
 ### Notícias do {{ ticker }} ({{ items|length }})
 
 {% for r in items %}
-- **{{ r.published_at | datetime_br if r.published_at else '-' }}** — {{ r.title or '-' }}
+- **{{ r.published_at if r.published_at else '-' }}** — {{ r.title or '-' }}
   - Fonte: **{{ r.source or '-' }}**
   - Tags:{% if r.tags is string %} **{{ r.tags }}**{% elif r.tags %} **{{ r.tags | join('; ') }}**{% else %} **-**{% endif %}
   {% if r.description %}

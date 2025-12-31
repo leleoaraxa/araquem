@@ -6,14 +6,14 @@ Nenhum dado de performance vs benchmark encontrado para sua carteira.
 {% set max_date_reference = (rows | map(attribute='date_reference') | max) %}
 **Performance da sua carteira vs benchmarks (última leitura)**
 
-- Última referência: {{ max_date_reference|date_br if max_date_reference is not none else '-' }}
+- Última referência: {{ max_date_reference if max_date_reference is not none else '-' }}
 - A tabela mostra o retorno acumulado da carteira e do benchmark até a última data disponível, e o excesso (carteira - benchmark).
 
 | Benchmark | Data ref. | Carteira (R$) | Retorno carteira | Benchmark (valor) | Retorno benchmark | Excesso (carteira - benchmark) |
 | --- | --- | ---: | ---: | ---: | ---: | ---: |
 {% for r in rows -%}
 | {{ r.benchmark_code or '-' }}
-| {{ r.date_reference|date_br if r.date_reference is not none else '-' }}
+| {{ r.date_reference if r.date_reference is not none else '-' }}
 | {{ r.portfolio_amount if r.portfolio_amount is not none else '-' }}
 | {{ r.portfolio_return_pct if r.portfolio_return_pct is not none else '-' }}
 | {{ r.benchmark_value if r.benchmark_value is not none else '-' }}
