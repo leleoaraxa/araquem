@@ -375,6 +375,7 @@ intents:
       - client_fiis_dividends_evolution
 
   - name: client_fiis_performance_vs_benchmark
+    weight: 7
     tokens:
       include:
         - desempenho
@@ -389,6 +390,7 @@ intents:
         - últimos
         - ano
         - anual
+        - por
         - mes
         - mês
         - mensal
@@ -402,6 +404,7 @@ intents:
         - melhor
         - pior
         - benchmark
+        - benchmarks
         - ifix
         - ifil
         - cdi
@@ -515,6 +518,13 @@ intents:
         - minha carteira versus ifil
         - comparar minha carteira com ifix
         - comparar minha carteira com ifil
+        - rentabilidade da minha carteira de fiis versus o ifil
+        - rentabilidade da minha carteira de fiis versus o ifix
+        - rentabilidade da minha carteira de fiis versus o cdi
+        - rentabilidade da minha carteira de fiis versus o ibov
+        - ao longo de <ano>
+        - por benchmark
+        - versus o ifil ao longo de <ano> por benchmark
       exclude:
         - rentabilidade da minha posicao
         - minha posicao em
@@ -610,6 +620,13 @@ intents:
         - materias
         - manchete
         - manchetes
+        - ipca
+        - igpm
+        - incc
+        - inpc
+        - selic
+        - inflacao
+        - inflação
     phrases:
       include:
         - resumo da performance da carteira
@@ -662,6 +679,9 @@ intents:
         - performance da carteira no ultimo mes
         - rentabilidade da carteira em 2024
         - desempenho da carteira entre datas
+        - ipca
+        - selic
+        - câmbio
     entities:
       - client_fiis_performance_vs_benchmark_summary
 
@@ -1308,6 +1328,9 @@ intents:
         - dividendos
         - provento
         - proventos
+        - pagamento
+        - pago
+        - pagou
         - snapshot
         - indicadores
         - payout
@@ -1458,6 +1481,13 @@ intents:
         - pvp
         - abl
         - vacancia
+        - passivo
+        - passivos
+        - cap
+        - caprate
+        - cap rate
+        - enterprise
+        - enterprise value
       exclude:
         - processo
         - acao
@@ -1579,6 +1609,11 @@ intents:
         - vacancia financeira
         - numero de imoveis
         - numero de ativos
+        - cap rate do <ticker>
+        - enterprise value do <ticker>
+        - patrimonio por cota do <ticker>
+        - passivos do <ticker>
+        - total de passivos do <ticker>
       exclude:
         - patrimonio e numero de cotistas do <ticker>
         - quantos cotistas tem o <ticker>
@@ -1782,7 +1817,7 @@ intents:
       - fiis_financials_revenue_schedule
 
   - name: fiis_financials_risk
-    weight: 5
+    weight: 7
     tokens:
       include:
         - risco
@@ -1891,6 +1926,10 @@ intents:
         - mais volatil hoje
         - sharpe ratio
         - risco historico
+        - maximo drawdown registrado
+        - máximo drawdown registrado
+        - métrica de risco mais recente
+        - drawdown mais recente
       exclude:
         - valor da cota
         - peso no ifix
@@ -2433,7 +2472,7 @@ intents:
       - fiis_rankings
 
   - name: history_b3_indexes
-    weight: 2
+    weight: 6
     options:
       ignore_tickers: true
     tokens:
@@ -2509,6 +2548,13 @@ intents:
         - resumo das ultimas variacoes do ifix e do ifil
         - resumo das variacoes recentes do ifix
         - d 1
+        - variacoes diarias do ifil
+        - variações diárias do ifil
+        - variacoes diarias do ifix
+        - variações diárias do ifix
+        - intervalo <data> a <data>
+        - historico de indices b3
+        - histórico de índices b3
       exclude:
         - fez parte
         - ja fez parte
@@ -2546,6 +2592,8 @@ intents:
       exclude:
         - fii
         - interpretacao
+        - ipca
+        - selic
     phrases:
       include:
         - historico de dolar
@@ -2585,6 +2633,8 @@ intents:
         - impacto nos fiis
         - influencia nos fiis
         - cenario macro
+        - ipca
+        - selic
     entities:
       - history_currency_rates
 
@@ -2720,7 +2770,7 @@ intents:
       - history_market_indicators
 
   - name: dividendos_yield
-    weight: 4
+    weight: 6
     tokens:
       include:
         - rendimento_percentual
@@ -2728,6 +2778,12 @@ intents:
         - comparacao
         - comparar
         - dy
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - pagamento
+        - pago
         - pagou
         - conceito
         - definicao
@@ -2804,6 +2860,10 @@ intents:
         - comparacao de dividendos
         - dy 12 meses
         - dy 12m
+        - dividendo pago e dividend yield
+        - dividendos pagos e dividend yield
+        - dividend yield mensal e o dividendo pago
+        - dividend yield mensal e dividendos pagos
       exclude:
         - historico completo
         - ao longo dos anos
@@ -2989,6 +3049,7 @@ intents:
         - cdi
         - selic
         - ipca
+        - câmbio
         - ifix
         - ibov
         - dolar
@@ -3083,6 +3144,12 @@ intents:
         - impacto da inflacao alta em fiis
         - juros altos em fundos imobiliarios
         - contexto favoravel para fiis
+        - historico macro consolidado
+        - histórico macro consolidado
+        - resumo macro consolidado
+        - ipca selic e cambio em um unico resumo
+        - ipca, selic e cambio em um unico resumo
+        - ipca, selic e câmbio em um único resumo
       exclude:
         - historico
         - evolucao
@@ -3329,7 +3396,6 @@ anti_tokens:
     - relacao entre selic cdi e o desempenho medio dos fiis
     - cdi d-1
   macro_consolidada:
-    - historico
     - evolucao
     - serie temporal
     - serie historica
