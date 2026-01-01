@@ -195,11 +195,6 @@ intents:
         - processo
         - processos
         - judicial
-        - benchmark
-        - ifix
-        - ifil
-        - ibov
-        - cdi
     phrases:
       include:
         - posicao atual
@@ -340,7 +335,6 @@ intents:
         - crescimento da renda
         - dividendos recebidos ao longo do tempo
         - linha do tempo de dividendos
-        - renda mensal
         - historico de dividendos
       exclude:
         - dividendos de <ticker>
@@ -453,7 +447,6 @@ intents:
         - ultima
         - referencia
         - resumo
-        - fechamento
         - d-1
     phrases:
       include:
@@ -512,7 +505,6 @@ intents:
         - comparar minha carteira com ifix
         - comparar minha carteira com ifil
         - rentabilidade da minha carteira de fiis versus o ifil
-        - rentabilidade da minha carteira de fiis versus o ifix
         - rentabilidade da minha carteira de fiis versus o cdi
         - rentabilidade da minha carteira de fiis versus o ibov
         - ao longo de <ano>
@@ -598,8 +590,6 @@ intents:
         - mensal
         - ano
         - anual
-        - mes
-        - mensal
         - noticia
         - noticias
         - materia
@@ -698,8 +688,6 @@ intents:
         - cotistas
         - exclusivo
         - oficial
-        - segmento
-        - segmentos
       exclude:
         - abl
         - alavancagem
@@ -732,7 +720,6 @@ intents:
         - r2
         - noticia
         - noticias
-        - ranking
         - ifix
         - ifil
         - posicao
@@ -888,8 +875,6 @@ intents:
         - fato
         - fatos
         - relevante
-        - ranking
-        - top
         - comunicacao
         - imprensa
         - historico
@@ -946,6 +931,7 @@ intents:
         - panorama do <ticker>
         - panorama geral do <ticker>
         - panorama do fundo <ticker>
+        - panorama do fundo
         - principais pontos do <ticker>
         - pontos principais do <ticker>
         - destaques do <ticker>
@@ -956,8 +942,6 @@ intents:
         - contexto geral do <ticker>
         - situacao geral do <ticker>
         - ficha tecnica resumida do <ticker>
-        - panorama do fundo
-        - panorama do fundo <ticker>
         - situacao do
         - situacao geral do fundo
         - visao geral do
@@ -1006,7 +990,6 @@ intents:
         - pregao
         - hoje
         - ontem
-        - agora
       exclude:
         - dy
         - dividendos
@@ -1039,8 +1022,6 @@ intents:
         - selic
         - ipca
         - inflacao
-        - cambio
-        - ibov
         - ibovespa
         - caixa
         - divida
@@ -1055,9 +1036,6 @@ intents:
         - comparacao
         - vs
         - versus
-        - ifix
-        - ifil
-        - ibov
         - indice
     phrases:
       include:
@@ -1364,8 +1342,6 @@ intents:
         - destaques
         - maior
         - maiores
-        - top
-        - ranking
         - carteira
         - o que e
         - significa
@@ -1512,8 +1488,6 @@ intents:
         - risco
         - mdd
         - max_drawdown
-        - noticia
-        - relevante
         - imprensa
         - indexacao
         - indexado
@@ -1855,10 +1829,6 @@ intents:
         - contratos
         - snapshot
         - overview
-        - ranking
-        - top
-        - melhores
-        - piores
         - campeoes
         - lanternas
         - destaques
@@ -1980,7 +1950,6 @@ intents:
         - metragem do imovel
         - laudo de avaliacao
         - valor do imovel
-        - vacancia do imovel
         - vacancia fisica
         - vacancia financeira
         - ocupacao do imovel
@@ -2093,13 +2062,6 @@ intents:
         - cdi
         - selic
         - inflacao
-        - cotacao
-        - preco
-        - variacao
-        - rendimento
-        - dy
-        - dividendos
-        - carteira
         - risco
         - imoveis
         - abl
@@ -2110,13 +2072,7 @@ intents:
         - ranking
         - peso
         - movimentos
-        - carteira
         - posicoes
-        - preco
-        - cotacao
-        - variacao
-        - alta
-        - baixa
     phrases:
       include:
         - noticias do
@@ -2401,7 +2357,6 @@ intents:
         - quais fiis tem o menor drawdown historico
         - menor drawdown historico dos fiis
         - fiis com menor drawdown historico
-        - quais fiis tem o maior patrimonio liquido
         - quais fiis tem o maior valor de mercado
         - qual a posicao atual do <ticker> no ranking de usuarios
         - posicao atual do <ticker> no ranking de usuarios
@@ -2501,7 +2456,6 @@ intents:
         - variacao do ibov hoje
         - quanto variou o ibov hoje
         - quanto variou o ifix no dia
-        - quanto variou o ifil no dia
         - variacao diaria do ifix
         - variacao diaria do ifil
         - historico do ifix
@@ -2690,20 +2644,14 @@ intents:
         - d 1
         - cdi d 1
         - taxa do cdi d 1
-        - cdi do dia
-        - cdi de ontem
         - dados de ipca
         - dados de selic
         - valor mensal dos indicadores
         - linha do tempo do ipca
         - grafico historico da selic
         - historico mensal do cdi
-        - ipca do dia
         - ipca de hoje
         - selic hoje
-        - selic do dia
-        - igpm de ontem
-        - incc de ontem
         - taxa do incc hoje
         - valor do incc hoje
         - taxa do indicador
@@ -3029,17 +2977,10 @@ intents:
         - cambio
         - comparativo
         - comparar
-        - ultima
-        - ultimas
-        - ultimos
-        - semana
-        - dias
-        - data
       exclude:
         - acumulado
         - atual
         - hoje
-        - atual
         - processo
         - processos
         - judicial
@@ -3065,7 +3006,6 @@ intents:
         - impacto para fundos imobiliarios
         - significado dos indicadores para fiis
         - importancia do macro para fiis
-        - panorama macro consolidado pensando em fiis
         - importancia do ipca e da selic para quem vive de renda com fiis
         - relacao entre selic cdi e o desempenho medio dos fiis
         - cenario macro para fiis hoje
@@ -3073,14 +3013,10 @@ intents:
         - impacto da curva de juros no preco dos fiis
         - o que significa ipca alto para fiis
         - como juros altos costumam afetar fundos imobiliarios
-        - panorama macro consolidado para fiis hoje
-        - como juros altos costumam afetar fundos imobiliarios
-        - o que significa ipca alto para fiis
         - como fiis reagem aos juros
         - como fiis reagem a inflacao
         - efeito da selic
         - efeito do ipca
-        - panorama macro para fiis hoje
         - cdi e selic
         - cdi e selic na ultima semana
         - ifix e ibov na semana
