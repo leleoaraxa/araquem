@@ -139,7 +139,6 @@ intents:
       include:
         - posicao
         - posicoes
-        - atual
         - quantidade
         - cotas
         - custodia
@@ -248,9 +247,6 @@ intents:
         - proventos
         - evolucao
         - historico
-        - mensal
-        - mes
-        - meses
         - crescimento
         - recebeu
         - recebidos
@@ -380,10 +376,6 @@ intents:
         - periodo
         - janela
         - ultimos
-        - ano
-        - anual
-        - mes
-        - mensal
         - comparacao
         - comparar
         - comparativo
@@ -402,7 +394,6 @@ intents:
         - ibovespa
         - carteira
         - 12
-        - meses
       exclude:
         - cpf
         - cnpj
@@ -552,8 +543,6 @@ intents:
       include:
         - resumo
         - sumario
-        - ultima
-        - ultimo
         - leitura
         - referencia
         - fechamento
@@ -988,8 +977,6 @@ intents:
         - minima
         - minimo
         - pregao
-        - hoje
-        - ontem
       exclude:
         - dy
         - dividendos
@@ -1142,9 +1129,6 @@ intents:
         - rendimento
         - distribuicao
         - acumulado
-        - mes
-        - mensal
-        - historico
         - rendimentos
         - pagamento
         - paga
@@ -1279,8 +1263,6 @@ intents:
         - historica
         - serie
         - series
-        - mensal
-        - meses
         - ultimos
         - longo
         - tempo
@@ -1573,7 +1555,6 @@ intents:
         - total de passivos do <ticker>
       exclude:
         - patrimonio e numero de cotistas do <ticker>
-        - quantos cotistas tem o <ticker>
         - nos ultimos
         - soma de
         - media de
@@ -1993,10 +1974,6 @@ intents:
         - atualizacao
         - recente
         - recentes
-        - hoje
-        - semana
-        - mes
-        - ultimo
         - novidade
         - materia
         - materias
@@ -2141,7 +2118,6 @@ intents:
         - indenizacao
         - autor
         - reu
-        - re
         - parte
         - partes
         - distribuicao
@@ -2416,8 +2392,6 @@ intents:
         - pontos
         - fechamento
         - variacao
-        - hoje
-        - ontem
         - historico
         - resumo
         - variacoes
@@ -2582,8 +2556,6 @@ intents:
         - dados
         - taxa
         - valor
-        - atual
-        - atualizado
       exclude:
         - impacto
         - impactar
@@ -2795,7 +2767,6 @@ intents:
         - minha carteira de fiis
         - carteira de fiis
         - dy historico
-        - dy 12m
         - serie historica de dy
         - historico de dy
         - somente dividendos
