@@ -92,6 +92,12 @@ def _parse_status(body: Dict[str, Any]) -> Tuple[bool, Any, Optional[str]]:
     if isinstance(status_raw, dict):
         status_value = status_raw.get("status")
         status_reason = status_raw.get("reason") or status_raw.get("message")
+        # Back-compat: algumas respostas trazem apenas {reason:"ok", message:"ok"}
+        if status_value is None:
+            rr = status_raw.get("reason")
+            mm = status_raw.get("message")
+            if rr == "ok" and (mm == "ok" or mm is None):
+                status_value = "ok"
     else:
         status_value = status_raw
 
@@ -105,7 +111,7 @@ def _parse_status(body: Dict[str, Any]) -> Tuple[bool, Any, Optional[str]]:
 def _selftest_parse_status() -> None:
     cases = [
         ({"status": "ok"}, True),
-        ({"status": {"status": "ok"}}, True),
+        ({"status": {"reason": "ok", "message": "ok"}}, True),
     ]
     for payload, expected_ok in cases:
         ok, raw, _ = _parse_status(payload)
@@ -636,7 +642,9 @@ def _collect_stats(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
     }
 
 
-def _top_fail_reasons(rows: List[Dict[str, Any]], limit: int = 3) -> List[Tuple[str, int]]:
+def _top_fail_reasons(
+    rows: List[Dict[str, Any]], limit: int = 3
+) -> List[Tuple[str, int]]:
     reason_counts: Dict[str, int] = {}
     for r in rows:
         if r.get("case_pass") is False:
@@ -668,9 +676,7 @@ def _summarize_suites(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
                 data["reasons"][reason] = data["reasons"].get(reason, 0) + 1
 
     for suite, data in suites.items():
-        top_reasons = sorted(
-            data["reasons"].items(), key=lambda x: x[1], reverse=True
-        )
+        top_reasons = sorted(data["reasons"].items(), key=lambda x: x[1], reverse=True)
         suites[suite]["top_fail_reasons"] = top_reasons[:3]
     return suites
 
@@ -683,7 +689,10 @@ def _print_suite_summary(rows: List[Dict[str, Any]]) -> None:
     print("\n=== RESUMO POR SUITE/ENTIDADE ===")
     for suite, data in sorted(suite_summary.items()):
         top_reasons = ", ".join(
-            [f"{reason} ({count})" for reason, count in data.get("top_fail_reasons", [])]
+            [
+                f"{reason} ({count})"
+                for reason, count in data.get("top_fail_reasons", [])
+            ]
         )
         print(
             f"- {suite}: total={data['total']} pass={data['pass']} fail={data['fail']} "
@@ -761,7 +770,7 @@ def main() -> int:
     ap.add_argument(
         "--suite",
         default="",
-        help='Nome lógico da suite (resolve para {suite-dir}/{suite}_suite.json).',
+        help="Nome lógico da suite (resolve para {suite-dir}/{suite}_suite.json).",
     )
     ap.add_argument(
         "--all-suites",
@@ -870,7 +879,9 @@ def main() -> int:
                 rag = "Y" if row.get("rag_used") is True else "-"
                 fusion = "Y" if row.get("fusion_used") is True else "-"
                 cache = "Y" if row.get("cache_hit_response") else "N"
-                ms = int(row.get("elapsed_ms_server") or row.get("elapsed_ms_client") or 0)
+                ms = int(
+                    row.get("elapsed_ms_server") or row.get("elapsed_ms_client") or 0
+                )
                 llm_ms = (
                     int(row.get("narrator_latency_ms") or 0)
                     if row.get("narrator_used")
@@ -969,15 +980,13 @@ def main() -> int:
             summary_all["suites"][suite_name] = {
                 **_collect_stats(suite_rows_list),
                 "pass": sum(1 for r in suite_rows_list if r.get("case_pass") is True),
-                "fail": sum(
-                    1 for r in suite_rows_list if r.get("case_pass") is False
-                ),
+                "fail": sum(1 for r in suite_rows_list if r.get("case_pass") is False),
                 "top_fail_reasons": _top_fail_reasons(suite_rows_list),
             }
             if suite_rows_list:
-                summary_all["suites"][suite_name]["description"] = suite_rows_list[0].get(
-                    "suite_description"
-                )
+                summary_all["suites"][suite_name]["description"] = suite_rows_list[
+                    0
+                ].get("suite_description")
         summary_path = os.path.join(cfg.out_dir, "audit_summary_all.json")
         with open(summary_path, "w", encoding="utf-8") as f:
             json.dump(summary_all, f, ensure_ascii=False, indent=2)
