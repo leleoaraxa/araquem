@@ -1,0 +1,37 @@
+ontology_lint:
+  collision_gate:
+    enabled: true
+
+    # Quantos intents um token pode aparecer em tokens.include
+    max_intents_per_token: 3
+
+    # Tokens permitidos acima do threshold (exceções conscientes)
+    allowlist:
+      - ifix
+      - ifil
+      - ibov
+      - cdi
+
+    # Tokens que NUNCA devem aparecer em tokens.include
+    # (mesmo que apareçam só 1 vez)
+    forbidden_tokens:
+      - historico
+      - mensal
+      - mes
+      - meses
+      - ano
+      - anual
+      - hoje
+      - ontem
+      - agora
+      - atual
+      - ultima
+      - ultimo
+
+    # Whitelist para tokens curtos (<= 2 chars)
+    short_token_allowlist:
+      - dy
+      - pm
+      - vs
+      - x
+      - r2
