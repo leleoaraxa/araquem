@@ -24,26 +24,14 @@ import yaml
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ENTITY_PATH = REPO_ROOT / "data" / "ontology" / "entity.yaml"
+CONFIG_PATH = REPO_ROOT / "data" / "ops" / "quality" / "ontology_lint.yaml"
 REPORT_PATH = REPO_ROOT / "out" / "ontology_lint_report.md"
 
 ACCENT_PATTERN = re.compile(r"[áéíóúâêôãõçÁÉÍÓÚÂÊÔÃÕÇ]")
-TEMPORAL_STOPLIST = {
-    "hoje",
-    "ontem",
-    "agora",
-    "atual",
-    "ultima",
-    "ultimo",
-    "mes",
-    "meses",
-    "ano",
-    "anual",
-    "mensal",
-    "dias",
-    "semana",
-    "data",
+COLLISION_SCOPES = {
+    "tokens.include": ["tokens", "include"],
+    "phrases.include": ["phrases", "include"],
 }
-LENGTH_WHITELIST = {"dy", "pm", "vs", "x", "r2", "pl", "vp", "ev"}
 
 
 class LintError(Exception):
@@ -65,6 +53,32 @@ def load_yaml_file(path: Path) -> Mapping:
             return yaml.safe_load(handle)
     except Exception as exc:  # pylint: disable=broad-except
         raise SystemExit(f"Failed to load YAML: {exc}") from exc
+
+
+def load_lint_config(path: Path) -> Mapping[str, object]:
+    if not path.exists():
+        return {}
+    data = load_yaml_file(path)
+    if not isinstance(data, Mapping):
+        return {}
+    if "ontology_lint" in data and isinstance(data["ontology_lint"], Mapping):
+        config: Mapping[str, object] = data["ontology_lint"]
+    else:
+        config = data
+    collision_gate = config.get("collision_gate", {}) if isinstance(config, Mapping) else {}
+    collision_gate_config = collision_gate if isinstance(collision_gate, Mapping) else {}
+    defaults = {
+        "enabled": False,
+        "scope": ["tokens.include"],
+        "max_intents_per_token": 0,
+        "allowlist": [],
+        "forbidden_tokens": [],
+        "short_token_allowlist": [],
+        "forbid_numeric_tokens": True,
+        "min_token_len": 3,
+    }
+    merged_collision_gate = {**defaults, **{k: v for k, v in collision_gate_config.items() if v is not None}}
+    return {"collision_gate": merged_collision_gate}
 
 
 def ensure_list(value: object) -> List[str]:
@@ -154,6 +168,19 @@ def collect_conflicts(intents: Sequence[Mapping]) -> List[Dict[str, str]]:
     return conflicts
 
 
+def collect_collision_data(
+    intents: Sequence[Mapping], scope_paths: Mapping[str, Sequence[str]]
+) -> Dict[str, Dict[str, set[str]]]:
+    collisions: Dict[str, Dict[str, set[str]]] = {scope: defaultdict(set) for scope in scope_paths}
+    for intent in intents:
+        intent_name = str(intent.get("name", "<unknown>"))
+        for scope, path in scope_paths.items():
+            for token in extract_field(intent, path):
+                normalized = normalize_value(token)
+                collisions[scope][normalized].add(intent_name)
+    return collisions
+
+
 def build_token_collision_counts(intents: Sequence[Mapping]) -> Dict[str, int]:
     collisions: Dict[str, set[str]] = defaultdict(set)
     for intent in intents:
@@ -164,28 +191,65 @@ def build_token_collision_counts(intents: Sequence[Mapping]) -> Dict[str, int]:
     return {token: len(intent_set) for token, intent_set in collisions.items()}
 
 
-def collect_suspicious_tokens(
-    intents: Sequence[Mapping], collision_counts: Mapping[str, int]
+def collect_collision_gate_violations(
+    intents: Sequence[Mapping], config: Mapping[str, object]
 ) -> List[Dict[str, object]]:
-    suspicious: List[Dict[str, object]] = []
-    for intent in intents:
-        intent_name = str(intent.get("name", "<unknown>"))
-        for token in extract_field(intent, ["tokens", "include"]):
-            normalized = normalize_value(token)
-            criteria: List[str] = []
-            stripped = token.strip()
-            if re.fullmatch(r"\d+", stripped):
-                criteria.append("numérico puro")
-            if len(stripped) <= 2 and normalized not in LENGTH_WHITELIST:
-                criteria.append("comprimento <= 2")
-            count = collision_counts.get(normalized, 0)
-            if count >= 6:
-                criteria.append(f"alta colisão ({count} intents)")
-            if normalized in TEMPORAL_STOPLIST:
-                criteria.append("stoplist temporal")
-            if criteria:
-                suspicious.append({"intent": intent_name, "token": token, "criteria": criteria})
-    return suspicious
+    collision_gate_cfg = config.get("collision_gate", {}) if isinstance(config, Mapping) else {}
+    enabled = bool(collision_gate_cfg.get("enabled", False))
+    max_intents = int(collision_gate_cfg.get("max_intents_per_token", 0) or 0)
+    if not enabled or max_intents <= 0:
+        return []
+
+    scope = collision_gate_cfg.get("scope", ["tokens.include"])
+    scope_list = scope if isinstance(scope, list) else [scope]
+    scope_paths = {key: COLLISION_SCOPES[key] for key in scope_list if key in COLLISION_SCOPES}
+    if not scope_paths:
+        return []
+
+    collisions = collect_collision_data(intents, scope_paths)
+    allowlist = set(
+        normalize_value(item) for item in collision_gate_cfg.get("allowlist", []) if isinstance(item, str)
+    )
+    forbidden_tokens = set(
+        normalize_value(item) for item in collision_gate_cfg.get("forbidden_tokens", []) if isinstance(item, str)
+    )
+    short_token_allowlist = set(
+        normalize_value(item) for item in collision_gate_cfg.get("short_token_allowlist", []) if isinstance(item, str)
+    )
+    forbid_numeric_tokens = bool(collision_gate_cfg.get("forbid_numeric_tokens", True))
+    min_token_len = int(collision_gate_cfg.get("min_token_len", 3) or 0)
+
+    violations: List[Dict[str, object]] = []
+    for scope_name, token_map in collisions.items():
+        for token, intent_set in token_map.items():
+            intents_sorted = sorted(intent_set)
+            violation_type = None
+            if token in forbidden_tokens:
+                violation_type = "forbidden_token"
+            elif forbid_numeric_tokens and re.fullmatch(r"\d+", token):
+                violation_type = "numeric_token"
+            elif len(token) < min_token_len and token not in short_token_allowlist:
+                violation_type = "short_token"
+            elif len(intent_set) > max_intents and token not in allowlist:
+                violation_type = "too_many_intents"
+
+            if violation_type:
+                violations.append(
+                    {
+                        "type": violation_type,
+                        "field": scope_name,
+                        "token": token,
+                        "intents": intents_sorted,
+                        "count": len(intent_set),
+                        "max": max_intents,
+                    }
+                )
+    return violations
+
+
+def collect_suspicious_tokens(intents: Sequence[Mapping]) -> List[Dict[str, object]]:
+    # Deprecated: replaced by collision gate when enabled. Kept for backward compatibility
+    return []
 
 
 def summarize_totals(
@@ -193,13 +257,16 @@ def summarize_totals(
     duplicates: Mapping[str, Sequence[object]],
     conflicts: Sequence[object],
     suspicious_tokens: Sequence[object],
+    collision_gate_violations: Sequence[object],
 ) -> Dict[str, int]:
-    return {
+    totals = {
         "A": len(accent_hits),
         "B": len(duplicates.get("exact", [])) + len(duplicates.get("normalized", [])),
         "C": len(conflicts),
         "D": len(suspicious_tokens),
     }
+    totals["F"] = len(collision_gate_violations)
+    return totals
 
 
 def format_table(rows: List[Sequence[str]], headers: Sequence[str]) -> str:
@@ -215,8 +282,10 @@ def render_report(
     conflicts: Sequence[Mapping[str, str]],
     suspicious_tokens: Sequence[Mapping[str, object]],
     collision_counts: Mapping[str, int],
+    collision_gate_violations: Sequence[Mapping[str, object]],
+    collision_gate_config: Mapping[str, object],
 ) -> str:
-    totals = summarize_totals(accent_hits, duplicates, conflicts, suspicious_tokens)
+    totals = summarize_totals(accent_hits, duplicates, conflicts, suspicious_tokens, collision_gate_violations)
     timestamp = datetime.now(timezone.utc).isoformat()
 
     lines: List[str] = ["# Ontology Lint Report", f"Gerado em: {timestamp}"]
@@ -280,12 +349,17 @@ def render_report(
         ]
         lines.append(format_table(rows, ("Intent", "Token", "Critérios")))
     else:
-        lines.append("Nenhum token suspeito encontrado.")
+        if collision_gate_config.get("enabled"):
+            lines.append("Substituído pelo Collision Gate.")
+        else:
+            lines.append("Desabilitado por config.")
 
     lines.append("\n## E) Resumo Executivo")
     lines.append(
         "* Totais: "
-        + ", ".join(f"{categoria} = {totals[categoria]}" for categoria in ["A", "B", "C", "D"])
+        + ", ".join(
+            f"{categoria} = {totals[categoria]}" for categoria in ["A", "B", "C", "D", "F"] if categoria in totals
+        )
     )
 
     top_collisions = sorted(
@@ -299,10 +373,50 @@ def render_report(
     else:
         lines.append("\nNenhum token colidente encontrado.")
 
+    lines.append("\n## F) Collision Gate")
+    enabled = bool(collision_gate_config.get("enabled", False))
+    status = "DISABLED"
+    if enabled:
+        status = "FAIL" if collision_gate_violations else "PASS"
+    lines.append(f"Status: {status}")
+
+    if collision_gate_violations:
+        violation_rows = [
+            (
+                item["type"],
+                item.get("field", ""),
+                item.get("token", ""),
+                str(item.get("count", "")),
+                str(item.get("max", "")),
+                ", ".join(item.get("intents", [])),
+            )
+            for item in sorted(
+                collision_gate_violations,
+                key=lambda x: (
+                    x.get("type", ""),
+                    x.get("field", ""),
+                    x.get("token", ""),
+                ),
+            )
+        ]
+        lines.append(format_table(violation_rows, ("Tipo", "Campo", "Token", "#Intents", "Max", "Intents")))
+    else:
+        if enabled:
+            lines.append("Nenhuma violação encontrada.")
+        else:
+            lines.append("Collision Gate desabilitado por config.")
+
+    lines.append("\nTop 20 tokens mais colidentes (informativo):")
+    if top_collisions:
+        rows = [(token, str(count)) for token, count in top_collisions]
+        lines.append(format_table(rows, ("Token", "# Intents")))
+    else:
+        lines.append("Nenhum token colidente encontrado.")
+
     return "\n".join(lines) + "\n"
 
 
-def lint_entity_yaml() -> str:
+def lint_entity_yaml() -> Dict[str, object]:
     if not ENTITY_PATH.exists():
         raise LintError(f"YAML não encontrado em {ENTITY_PATH}")
 
@@ -311,21 +425,40 @@ def lint_entity_yaml() -> str:
     if not isinstance(intents, list):
         raise LintError("Campo 'intents' ausente ou inválido no YAML")
 
+    lint_config = load_lint_config(CONFIG_PATH)
+
     accent_hits = collect_accent_violations(intents)
     duplicates = collect_duplicates(intents)
     conflicts = collect_conflicts(intents)
     collision_counts = build_token_collision_counts(intents)
-    suspicious_tokens = collect_suspicious_tokens(intents, collision_counts)
+    suspicious_tokens = collect_suspicious_tokens(intents)
+    collision_gate_violations = collect_collision_gate_violations(intents, lint_config)
 
-    report = render_report(accent_hits, duplicates, conflicts, suspicious_tokens, collision_counts)
+    report = render_report(
+        accent_hits,
+        duplicates,
+        conflicts,
+        suspicious_tokens,
+        collision_counts,
+        collision_gate_violations,
+        lint_config.get("collision_gate", {}),
+    )
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(report, encoding="utf-8")
-    return report
+    return {
+        "report": report,
+        "violations": {
+            "accents": accent_hits,
+            "duplicates": duplicates,
+            "conflicts": conflicts,
+            "collision_gate": collision_gate_violations,
+        },
+    }
 
 
 def main() -> int:
     try:
-        lint_entity_yaml()
+        result = lint_entity_yaml()
     except LintError as exc:
         print(f"Lint failed: {exc}")
         return 1
@@ -335,8 +468,19 @@ def main() -> int:
         print(f"Erro inesperado: {exc}")
         return 1
     else:
+        violations = result.get("violations", {}) if isinstance(result, Mapping) else {}
+        collision_gate_violations = violations.get("collision_gate", []) if isinstance(violations, Mapping) else []
+        other_failures = any(
+            [
+                violations.get("accents"),
+                violations.get("duplicates", {}).get("exact") if isinstance(violations.get("duplicates"), Mapping) else None,
+                violations.get("duplicates", {}).get("normalized") if isinstance(violations.get("duplicates"), Mapping) else None,
+                violations.get("conflicts"),
+            ]
+        )
+        exit_code = 1 if collision_gate_violations or other_failures else 0
         print(f"Relatório gerado em {REPORT_PATH}")
-        return 0
+        return exit_code
 
 
 if __name__ == "__main__":
