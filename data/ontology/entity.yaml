@@ -146,7 +146,6 @@ intents:
         - peso
         - composicao
         - alocacao
-        - distribuicao
         - ativo
         - minha
         - minhas
@@ -206,6 +205,7 @@ intents:
         - distribuicao da minha carteira de fiis por fundo
         - distribuicao por fii
         - alocacao por fundo
+        - distribuicao da carteira por ativo
         - quanto tenho de <ticker>
         - quantas cotas de <ticker>
         - peso do <ticker> na minha carteira
@@ -244,14 +244,11 @@ intents:
         - renda
         - dividendos
         - proventos
-        - evolucao
-        - historico
         - crescimento
         - recebeu
         - recebidos
         - recebemos
         - cada
-        - carteira
         - minha
         - minhas
         - meu
@@ -330,6 +327,8 @@ intents:
         - dividendos recebidos ao longo do tempo
         - linha do tempo de dividendos
         - historico de dividendos
+        - serie historica de dividendos da carteira
+        - serie historica de dividendos da minha carteira
       exclude:
         - dividendos de <ticker>
         - dividendos do <ticker>
@@ -358,6 +357,9 @@ intents:
         - comparacao com indice
         - comparacao com benchmark
         - total de dividendos dos meus fiis em 12 meses
+        - dividendos totais da carteira de fiis
+        - dividendos totais da minha carteira
+        - proventos da minha carteira de fiis
         - total de dividendos da minha carteira em 12 meses
     entities:
       - client_fiis_dividends_evolution
@@ -1257,7 +1259,6 @@ intents:
       include:
         - dy
         - rendimento
-        - historico
         - historica
         - serie
         - series
@@ -1405,17 +1406,15 @@ intents:
     tokens:
       include:
         - patrimonio
-        - pl
         - patrimonio liquido
-        - vp
         - valor patrimonial
         - valor patrimonial cota
+        - valor da empresa
         - cotistas
         - liquidez
         - alavancagem
         - caixa
         - divida
-        - ev
         - payout
         - p/vp
         - pvp
@@ -2388,7 +2387,6 @@ intents:
         - pontos
         - fechamento
         - variacao
-        - historico
         - resumo
         - variacoes
         - ultimos
@@ -2463,7 +2461,6 @@ intents:
       ignore_tickers: true
     tokens:
       include:
-        - historico
         - serie
         - cambio
         - usd
@@ -2539,7 +2536,6 @@ intents:
       ignore_tickers: true
     tokens:
       include:
-        - historico
         - evolucao
         - curva
         - ipca
@@ -2785,8 +2781,6 @@ intents:
         - consolidado
         - dy
         - yield
-        - dividendos
-        - proventos
         - rendimento
         - total
         - patrimonio
@@ -2935,7 +2929,6 @@ intents:
         - dolar
         - euro
         - cambio
-        - comparativo
         - comparar
       exclude:
         - acumulado
@@ -2981,7 +2974,6 @@ intents:
         - cdi e selic na ultima semana
         - ifix e ibov na semana
         - dolar e euro no mesmo dia
-        - comparativo de cdi e selic
         - como selic em queda impacta fiis de tijolo
         - impacto do dolar volatil nos fiis
         - macro esta favoravel para fiis
@@ -3016,6 +3008,7 @@ intents:
         - resumo macro consolidado
         - ipca selic e cambio em um unico resumo
         - ipca, selic e cambio em um unico resumo
+        - comparativo de cdi e selic
       exclude:
         - historico
         - evolucao
