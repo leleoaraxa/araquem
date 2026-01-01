@@ -384,15 +384,11 @@ intents:
         - retorno
         - frente
         - periodo
-        - período
         - janela
         - ultimos
-        - últimos
         - ano
         - anual
-        - por
         - mes
-        - mês
         - mensal
         - comparacao
         - comparar
@@ -454,11 +450,8 @@ intents:
         - snapshot
         - consolidado
         - ultimo
-        - último
         - ultima
-        - última
         - referencia
-        - referência
         - resumo
         - fechamento
         - d-1
@@ -567,14 +560,10 @@ intents:
       include:
         - resumo
         - sumario
-        - sumário
         - ultima
-        - última
         - ultimo
-        - último
         - leitura
         - referencia
-        - referência
         - fechamento
         - snapshot
         - consolidado
@@ -603,12 +592,9 @@ intents:
         - evolucao
         - intervalo
         - periodo
-        - período
         - janela
         - ultimos
-        - últimos
         - mes
-        - mês
         - mensal
         - ano
         - anual
@@ -626,7 +612,6 @@ intents:
         - inpc
         - selic
         - inflacao
-        - inflação
     phrases:
       include:
         - resumo da performance da carteira
@@ -681,7 +666,7 @@ intents:
         - desempenho da carteira entre datas
         - ipca
         - selic
-        - câmbio
+        - cambio
     entities:
       - client_fiis_performance_vs_benchmark_summary
 
@@ -1319,7 +1304,6 @@ intents:
         - mensal
         - meses
         - ultimos
-        - últimos
         - longo
         - tempo
         - evolucao
@@ -1571,7 +1555,6 @@ intents:
         - alavancagem do <ticker>
         - alavancagem do <ticker> segundo ultimo relatorio
         - <ticker> esta alavancado
-        - <ticker> está alavancado
         - <ticker> esta alavancado? qual o nivel de alavancagem
         - <ticker> esta alavancado qual o nivel de alavancagem
         - payout do <ticker>
@@ -1927,8 +1910,7 @@ intents:
         - sharpe ratio
         - risco historico
         - maximo drawdown registrado
-        - máximo drawdown registrado
-        - métrica de risco mais recente
+        - metrica de risco mais recente
         - drawdown mais recente
       exclude:
         - valor da cota
@@ -2388,7 +2370,6 @@ intents:
         - ranking do ifil
         - posicao do <ticker> no ifix
         - posicao do <ticker> no ifil
-        - quais fiis têm o maior dividend yield em 12 meses
         - fiis com o maior dy em 12 meses
         - maior dividend yield em 12 meses
         - ranking de dy em 12 meses
@@ -2549,12 +2530,9 @@ intents:
         - resumo das variacoes recentes do ifix
         - d 1
         - variacoes diarias do ifil
-        - variações diárias do ifil
         - variacoes diarias do ifix
-        - variações diárias do ifix
         - intervalo <data> a <data>
         - historico de indices b3
-        - histórico de índices b3
       exclude:
         - fez parte
         - ja fez parte
@@ -2787,13 +2765,9 @@ intents:
         - pagou
         - conceito
         - definicao
-        - definição
         - explicacao
-        - explicação
         - significa
         - significado
-        - o que e
-        - o que é
       exclude:
         - meus
         - minha
@@ -3040,7 +3014,6 @@ intents:
         - influencia
         - significado
         - importancia
-        - importância
         - panorama
         - cenario
         - macro
@@ -3049,7 +3022,6 @@ intents:
         - cdi
         - selic
         - ipca
-        - câmbio
         - ifix
         - ibov
         - dolar
@@ -3145,11 +3117,9 @@ intents:
         - juros altos em fundos imobiliarios
         - contexto favoravel para fiis
         - historico macro consolidado
-        - histórico macro consolidado
         - resumo macro consolidado
         - ipca selic e cambio em um unico resumo
         - ipca, selic e cambio em um unico resumo
-        - ipca, selic e câmbio em um único resumo
       exclude:
         - historico
         - evolucao
