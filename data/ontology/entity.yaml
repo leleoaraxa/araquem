@@ -151,7 +151,6 @@ intents:
         - minha
         - minhas
         - meu
-        - preco_medio
         - preco medio
         - pm
         - rentabilidade
@@ -257,7 +256,6 @@ intents:
         - minhas
         - meu
         - mensalmente
-        - mes_a_mes
         - mes a mes
         - por mes
       exclude:
@@ -282,7 +280,7 @@ intents:
         - prejuizo
         - lucro
         - peso
-        - preco_medio
+        - preco medio
         - pm
         - vs
         - versus
@@ -786,10 +784,10 @@ intents:
         - gestor
         - nome
         - razao
-        - razao_social
+        - razao social
         - classe
         - tipo
-        - tipo_de_fundo
+        - tipo de fundo
         - categoria
         - mandato
         - objetivo
@@ -803,7 +801,7 @@ intents:
         - destaques
         - contexto
         - regulamento
-        - publico_alvo
+        - publico alvo
         - politica
         - resumo
         - overview
@@ -816,9 +814,9 @@ intents:
       exclude:
         - pl
         - patrimonio
-        - patrimonio_liquido
+        - patrimonio liquido
         - vp
-        - valor_patrimonial
+        - valor patrimonial
         - vacancia
         - ocupacao
         - contratos
@@ -1013,7 +1011,7 @@ intents:
         - caixa
         - divida
         - dividas
-        - preco_medio
+        - preco medio
         - pm
         - carteira
         - performance
@@ -1153,7 +1151,7 @@ intents:
         - intradiario
         - maximo
         - minimo
-        - historico_preco
+        - historico preco
         - risco
         - volatilidade
         - sharpe
@@ -1280,10 +1278,10 @@ intents:
         - payout
         - alavancagem
         - patrimonio
-        - patrimonio_liquido
+        - patrimonio liquido
         - vp
-        - valor_patrimonial
-        - valor_patrimonial_cota
+        - valor patrimonial
+        - valor patrimonial cota
         - vacancia
         - ocupacao
         - contratos
@@ -1408,10 +1406,10 @@ intents:
       include:
         - patrimonio
         - pl
-        - patrimonio_liquido
+        - patrimonio liquido
         - vp
-        - valor_patrimonial
-        - valor_patrimonial_cota
+        - valor patrimonial
+        - valor patrimonial cota
         - cotistas
         - liquidez
         - alavancagem
@@ -1469,7 +1467,7 @@ intents:
         - volatilidade
         - risco
         - mdd
-        - max_drawdown
+        - max drawdown
         - imprensa
         - indexacao
         - indexado
@@ -1576,7 +1574,7 @@ intents:
         - volatilidade
         - risco
         - mdd
-        - max_drawdown
+        - max drawdown
         - indexacao
         - indexado
         - ipca
@@ -1804,7 +1802,7 @@ intents:
         - gestor
         - administradora
         - patrimonio
-        - patrimonio_liquido
+        - patrimonio liquido
         - pl
         - vacancia
         - contratos
@@ -2125,11 +2123,11 @@ intents:
         - vara
         - tribunal
         - comarca
-        - processo_numero
+        - processo numero
         - classificada
-        - classe_processual
+        - classe processual
         - numero
-        - quantidade_processos
+        - quantidade processos
         - disputas
         - demandas
       exclude:
@@ -2247,9 +2245,7 @@ intents:
         - weight
         - participacao
         - patrimonio
-        - patrimonio_liquido
         - patrimonio liquido
-        - valor_de_mercado
         - valor de mercado
         - maior
         - menor
@@ -2484,7 +2480,6 @@ intents:
         - venda
         - cotacao
         - moeda
-        - compra_e_venda
         - compra e venda
         - bid
         - ask
