@@ -2013,7 +2013,6 @@ intents:
         - ruins
         - logistico
         - logisticos
-        - setor
       exclude:
         - snapshot
         - overview
@@ -2271,11 +2270,8 @@ intents:
         - pesos
         - weight
         - participacao
-        - dy
-        - 12
         - patrimonio
         - patrimonio_liquido
-        - pl
         - patrimonio liquido
         - valor_de_mercado
         - valor de mercado
@@ -2283,8 +2279,6 @@ intents:
         - menor
         - drawdown
         - mdd
-        - historico
-        - 12m
       exclude:
         - preco
         - pontos
