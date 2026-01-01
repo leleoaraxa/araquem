@@ -43,7 +43,7 @@ TEMPORAL_STOPLIST = {
     "semana",
     "data",
 }
-LENGTH_WHITELIST = {"dy", "pm", "vs", "x", "r2"}
+LENGTH_WHITELIST = {"dy", "pm", "vs", "x", "r2", "pl", "vp", "ev"}
 
 
 class LintError(Exception):
