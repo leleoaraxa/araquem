@@ -163,7 +163,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -197,7 +197,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 3,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -231,7 +231,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -260,7 +260,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -289,7 +289,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -394,7 +394,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -428,7 +428,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 1,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -549,7 +549,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 1,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -578,7 +578,7 @@
       "total": 3,
       "gate_ok": 2,
       "gate_fail": 1,
-      "cache_hit_response": 0,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -616,7 +616,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 1,
+      "cache_hit_response": 3,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -645,7 +645,7 @@
       "total": 3,
       "gate_ok": 3,
       "gate_fail": 0,
-      "cache_hit_response": 1,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -679,7 +679,7 @@
       "total": 3,
       "gate_ok": 2,
       "gate_fail": 1,
-      "cache_hit_response": 1,
+      "cache_hit_response": 2,
       "cache_hit_metrics": 0,
       "narrator_used": 0,
       "accuracy": {
@@ -718,7 +718,7 @@
     "total": 66,
     "gate_ok": 60,
     "gate_fail": 6,
-    "cache_hit_response": 4,
+    "cache_hit_response": 24,
     "cache_hit_metrics": 0,
     "narrator_used": 0,
     "accuracy": {

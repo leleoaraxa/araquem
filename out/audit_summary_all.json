@@ -24,6 +24,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 14,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para carteira_enriquecida — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo."
     },
     "client_fiis_dividends_evolution": {
@@ -50,6 +53,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente"
     },
     "client_fiis_performance_vs_benchmark": {
@@ -76,6 +82,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para client_fiis_performance_vs_benchmark — performance da carteira do cliente versus benchmarks"
     },
     "client_fiis_performance_vs_benchmark_summary": {
@@ -102,6 +111,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 8,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para o resumo de performance da carteira de FIIs versus benchmarks (última leitura por benchmark)"
     },
     "client_fiis_positions": {
@@ -128,6 +140,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 7,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira"
     },
     "dividendos_yield": {
@@ -154,6 +169,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para dividendos_yield — histórico de dividendos e dividend yield por FII"
     },
     "fii_overview": {
@@ -180,6 +198,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 12,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Roteiro de perguntas canônicas para rota fii_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético."
     },
     "fiis_cadastro": {
@@ -206,6 +227,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas)."
     },
     "fiis_dividendos": {
@@ -232,6 +256,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_dividendos — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento)."
     },
     "fiis_financials_revenue_schedule": {
@@ -258,6 +285,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 12,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_financials_revenue_schedule — cronograma de receitas futuras por faixa de vencimento e indexador"
     },
     "fiis_financials_risk": {
@@ -284,6 +314,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_financials_risk — indicadores de risco (Sharpe, beta, volatilidade, drawdown)"
     },
     "fiis_financials_snapshot": {
@@ -310,6 +343,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)"
     },
     "fiis_imoveis": {
@@ -336,6 +372,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_imoveis — ativos, endereços, área e vacância dos FIIs"
     },
     "fiis_noticias": {
@@ -362,6 +401,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 12,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_noticias — notícias, fatos relevantes, manchetes e atualizações recentes associadas a FIIs."
     },
     "fiis_precos": {
@@ -388,6 +430,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 14,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_precos — preço hoje, ontem, max/min, variação, ticker sem 11"
     },
     "fiis_processos": {
@@ -414,6 +459,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 12,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_processos — existência de processos, quantidade, status, valor e risco de perda"
     },
     "fiis_rankings": {
@@ -440,6 +488,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 14,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para fiis_rankings — rankings de FIIs por usuários, SIRIOS, IFIX/IFIL e métricas quantitativas (DY, Sharpe, volatilidade, drawdown etc.)"
     },
     "fiis_yield_history": {
@@ -466,6 +517,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Roteiro de perguntas canônicas para rota fiis_yield_history (histórico de dividend yield mensal por FII). Foco: dy historico, dy mensal, dy 12m/24m, sempre com ticker."
     },
     "history_b3_indexes": {
@@ -492,6 +546,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1)."
     },
     "history_currency_rates": {
@@ -518,6 +575,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 5,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para history_currency_rates — câmbio USD/EUR em BRL D-1"
     },
     "history_market_indicators": {
@@ -544,6 +604,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 6,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para history_market_indicators — séries históricas e valores pontuais (hoje, ontem) de indicadores macro como SELIC, CDI, IPCA, IGPM e INCC"
     },
     "macro_consolidada": {
@@ -570,6 +633,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 15,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Suíte de testes para macro_consolidada — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs."
     },
     "negativos_indices": {
@@ -596,6 +662,9 @@
           "accuracy": 1.0
         }
       },
+      "pass": 4,
+      "fail": 0,
+      "top_fail_reasons": [],
       "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_precos"
     }
   },
@@ -622,6 +691,9 @@
         "total": 235,
         "accuracy": 1.0
       }
-    }
+    },
+    "pass": 235,
+    "fail": 0,
+    "top_fail_reasons": []
   }
 }
