@@ -17,9 +17,9 @@ Serve como **fonte de consulta e validação cruzada** dos cálculos historicame
 | Volatility Ratio | `risk.volatility_ratio` | Preços do FII (`fiis_precos`) + IFIX | Compara volatilidade do fundo vs. índice.
 | Max Drawdown (MDD) | `risk.max_drawdown` | Preços do FII (`fiis_precos`) | Avalia pior perda no período solicitado.
 | R² | `risk.r_squared` | Preços do FII (`fiis_precos`) + IFIX | Coeficiente de determinação do ajuste linear.
-| Soma de dividendos | `dividends.dividends_sum` | Pagamentos (`fiis_dividendos`) | Agrega valores do período/janela.
-| Contagem de dividendos | `dividends.dividends_count` | Pagamentos (`fiis_dividendos`) | Número de eventos na janela.
-| DY médio | `dividends.dy_avg` | Dividendos (`fiis_dividendos`) + preços (`fiis_precos`) | Calcula yield médio ponderado.
+| Soma de dividendos | `dividends.dividends_sum` | Pagamentos (`fiis_dividends`) | Agrega valores do período/janela.
+| Contagem de dividendos | `dividends.dividends_count` | Pagamentos (`fiis_dividends`) | Número de eventos na janela.
+| DY médio | `dividends.dy_avg` | Dividendos (`fiis_dividends`) + preços (`fiis_precos`) | Calcula yield médio ponderado.
 | Preço médio | `prices.price_avg` | Preços do FII (`fiis_precos`) | Média de fechamento ajustada pelo período.
 | Retorno no período | `prices.return_period` | Preços do FII (`fiis_precos`) + `CDI` (para comparação opcional) | Percentual acumulado solicitado.
 

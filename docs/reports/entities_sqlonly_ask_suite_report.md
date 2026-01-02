@@ -14,7 +14,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 | fiis_dividends_yields | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_overview | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_registrations | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
-| fiis_dividendos | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| fiis_dividends | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_financials_revenue_schedule | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_financials_risk | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_financials_snapshot | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
@@ -63,9 +63,9 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 - fiis_registrations-q1: "qual o CNPJ do HGLG11?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 - fiis_registrations-q2: "quem administra o VISC11?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
-### fiis_dividendos
-- fiis_dividendos-q1: "quais dividendos o MXRF11 pagou neste mês?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- fiis_dividendos-q2: "quando foi o último pagamento do HGLG11?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### fiis_dividends
+- fiis_dividends-q1: "quais dividendos o MXRF11 pagou neste mês?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- fiis_dividends-q2: "quando foi o último pagamento do HGLG11?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
 ### fiis_financials_revenue_schedule
 - fiis_financials_revenue_schedule-q1: "receita com vencimento em 0–3 meses do HGLG11" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

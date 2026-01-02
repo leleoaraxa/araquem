@@ -145,6 +145,6 @@ A suíte `history_b3_indexes_suite.json` deve garantir que:
 3. Perguntas com “IFIX hoje”, “variou quanto o IBOV ontem” **não** colidam com:
    - `fiis_rankings` (ranking/peso de FIIs),
    - `history_market_indicators` (IPCA, CDI, Selic…),
-   - nem com entidades de FIIs (`fiis_precos`, `fiis_dividendos`, etc.).
+   - nem com entidades de FIIs (`fiis_precos`, `fiis_dividends`, etc.).
 4. As frases de exemplo da ontologia (`sample_questions`) estejam cobertas no JSON de qualidade.
 

@@ -15,7 +15,7 @@ buckets:
     - fiis_dividends_yields
     - fiis_overview
     - fiis_cadastro
-    - fiis_dividendos
+    - fiis_dividends
     - fiis_financials_revenue_schedule
     - fiis_financials_risk
     - fiis_financials_snapshot
@@ -121,7 +121,7 @@ intents:
         - minha carteira versus ifil
     entities:
       - fiis_precos
-      - fiis_dividendos
+      - fiis_dividends
       - fiis_overview
       - fiis_financials_risk
       - fiis_financials_snapshot
@@ -1118,7 +1118,7 @@ intents:
     entities:
       - fiis_precos
 
-  - name: fiis_dividendos
+  - name: fiis_dividends
     weight: 2.5
     tokens:
       include:
@@ -1251,7 +1251,7 @@ intents:
         - minha carteira de fiis
         - carteira de fiis
     entities:
-      - fiis_dividendos
+      - fiis_dividends
 
   - name: fiis_yield_history
     weight: 3
@@ -3296,7 +3296,7 @@ anti_tokens:
   history_b3_indexes:
     - ranking
     - posicao
-  fiis_dividendos:
+  fiis_dividends:
     - ultimo dividendo pago pelo <ticker> e o dy correspondente
     - ultimo dividendo e o dy correspondente
   fiis_dividends_yields:

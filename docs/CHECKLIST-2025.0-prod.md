@@ -132,7 +132,7 @@
 
 * [✔] `data/ops/param_inference.yaml` enriquecido com bloco `compute_on_read` para:
 
-  * [✔] `fiis_dividendos`
+  * [✔] `fiis_dividends`
   * [✔] `fiis_precos`
   * [✔] `fiis_yield_history`
 
@@ -147,7 +147,7 @@
 * [✔] Suporte a **N tickers** no ParamInference, sem “achatar” a lista:
 
   * [✔] Novo helper `_tickers_from_identifiers(...)` para consolidar `ticker` + `tickers: [...]` em lista deduplicada.
-  * [✔] `params.ticker.allow_multi_ticker` em `param_inference.yaml` para intents multi-ticker (`fiis_dividendos`, `fiis_precos`, `fiis_yield_history`).
+  * [✔] `params.ticker.allow_multi_ticker` em `param_inference.yaml` para intents multi-ticker (`fiis_dividends`, `fiis_precos`, `fiis_yield_history`).
   * [✔] Quando `identifiers["tickers"]` tem múltiplos tickers e `allow_multi_ticker=true`, `infer_params` **não** preenche `out["ticker"]` e deixa a lista intacta em `identifiers` — o fan-out continua responsabilidade do Orchestrator.
   * [✔] Quando há somente 1 ticker (texto/contexto), `infer_params` mantém o comportamento mono-ticker (preenche `ticker` normalmente).
 

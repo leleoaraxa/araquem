@@ -333,58 +333,58 @@
     },
     {
       "question": "dividendos do CXTL11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "proventos do CXTL11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "rendimento do CXTL11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "dividendos do FPAB11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "proventos do FPAB11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "rendimento do FPAB11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "dividendos do HGLG11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "proventos do HGLG11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "rendimento do HGLG11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "quanto o MXRF11 distribuiu em 07/2024",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "média de dividendos do HGLG11 nos últimos 12 meses",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "ranking do HGLG11",

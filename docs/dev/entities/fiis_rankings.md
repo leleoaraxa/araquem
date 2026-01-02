@@ -76,7 +76,7 @@ O Planner **não** deve usar `fiis_rankings` quando a pergunta for sobre:
      *(apesar de parecer um ranking, é ranking de preço diário → hoje está mais próximo de `fiis_precos` / futura entidade intraday; por ora, evitar empurrar tudo para `fiis_rankings` se o foco for preço.)*
 
 2. **Dividendos ou yield de um FII específico (nível absoluto)**:
-   - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividendos`
+   - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividends`
    - “Qual o DY do HGLG11 nos últimos 12 meses?” → `fiis_yield_history` / `fiis_dividends_yields`.
 
 3. **Dados financeiros do FII (PL, VP/cota, vacância, caixa, dívida)**:
@@ -166,7 +166,7 @@ Essas perguntas são coerentes com:
 - Anti-conflitos relevantes:
   - Termos de preço puro (quanto está, cotação, variação diária) → `fiis_precos`.
   - Termos de snapshot financeiro (PL, VP/cota, vacância, caixa) → `fiis_financials_snapshot`.
-  - Termos de fluxo de dividendos (“quanto pagou”, “dividendos do HGLG11 em…”) → `fiis_dividendos`, `fiis_yield_history`, `fiis_dividends_yields`.
+  - Termos de fluxo de dividendos (“quanto pagou”, “dividendos do HGLG11 em…”) → `fiis_dividends`, `fiis_yield_history`, `fiis_dividends_yields`.
 
 O Builder deve:
 

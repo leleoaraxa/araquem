@@ -55,7 +55,7 @@ O Planner **não** deve usar `fiis_processos` quando:
 
 1. A pergunta é sobre **desempenho, preço, dividendos ou yield**:
    - “Quanto está o ALMI11 hoje?” → `fiis_precos`
-   - “Quanto o ALMI11 pagou de dividendos esse mês?” → `fiis_dividendos`
+   - “Quanto o ALMI11 pagou de dividendos esse mês?” → `fiis_dividends`
    - “Qual o DY do ALMI11 em 2024?” → `fiis_yield_history` ou `fiis_dividends_yields` (conforme o caso).
 
 2. A pergunta é sobre **riscos quantitativos de mercado** (Sharpe, volatilidade, drawdown etc.):
@@ -145,7 +145,7 @@ Esses exemplos devem ser coerentes com:
 - A ontologia já exclui termos de risco quantitativo, preço, dividendos, ranking e notícias para evitar colisões com:
   - `fiis_financials_risk`
   - `fiis_precos`
-  - `fiis_dividendos` / `fiis_yield_history`
+  - `fiis_dividends` / `fiis_yield_history`
   - `fiis_noticias`
 - Em caso de dúvida entre **risco jurídico** x **risco quantitativo de mercado**:
   - Presença de “processo / ação judicial / causa / tribunal / comarca” → tende a `fiis_processos`.

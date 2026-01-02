@@ -258,7 +258,7 @@ class TestNarratorShadowPolicy:
             monkeypatch.setenv("NARRATOR_SHADOW_GLOBAL", env_override)
 
         narrator = narrator_module.Narrator()
-        effective = narrator.get_effective_policy("fiis_dividendos")
+        effective = narrator.get_effective_policy("fiis_dividends")
 
         assert effective["shadow"] is expected_shadow
         assert effective["shadow_global_enabled"] is expected_shadow
@@ -632,19 +632,19 @@ class TestParamInferenceConfig:
             "ticker": "MXRF11",
         }
 
-    def test_param_inference_canonical_intent_fiis_dividendos(self):
+    def test_param_inference_canonical_intent_fiis_dividends(self):
         result = param_inference.infer_params(
             "Quais dividendos do MXRF11?",
-            "fiis_dividendos",
-            entity="fiis_dividendos",
-            entity_yaml_path="data/entities/fiis_dividendos/fiis_dividendos.yaml",
+            "fiis_dividends",
+            entity="fiis_dividends",
+            entity_yaml_path="data/entities/fiis_dividends/fiis_dividends.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
             "ticker": "MXRF11",
         }

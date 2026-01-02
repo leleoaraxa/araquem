@@ -76,7 +76,7 @@
       "token": "historico",
       "conflicts": [
         "client_fiis_dividends_evolution",
-        "fiis_dividendos",
+        "fiis_dividends",
         "history_currency_rates"
       ]
     },
@@ -86,7 +86,7 @@
       "token": "mensal",
       "conflicts": [
         "client_fiis_dividends_evolution",
-        "fiis_dividendos"
+        "fiis_dividends"
       ]
     },
     {
@@ -104,7 +104,7 @@
       "token": "mes",
       "conflicts": [
         "client_fiis_dividends_evolution",
-        "fiis_dividendos",
+        "fiis_dividends",
         "fiis_noticias"
       ]
     },
@@ -292,11 +292,11 @@
       ]
     },
     {
-      "intent": "fiis_dividendos",
+      "intent": "fiis_dividends",
       "issue": "token_collision",
       "token": "distribuicao",
       "conflicts": [
-        "fiis_dividendos",
+        "fiis_dividends",
         "fiis_financials_revenue_schedule",
         "fiis_processos"
       ]
@@ -499,7 +499,7 @@
       "token": "historico de dividendos",
       "conflicts": [
         "client_fiis_dividends_evolution",
-        "fiis_dividendos"
+        "fiis_dividends"
       ]
     },
     {

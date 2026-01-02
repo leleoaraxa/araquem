@@ -83,8 +83,8 @@
     "id": "rag-negative-002",
     "description": "Pergunta puramente de dividendos — NÃO deve acionar RAG",
     "question": "qual foi o último dividendo do MXRF11?",
-    "expected_intent": "fiis_dividendos",
-    "expected_entity": "fiis_dividendos",
+    "expected_intent": "fiis_dividends",
+    "expected_entity": "fiis_dividends",
     "expect_rag_enabled": false,
     "expect_min_chunks": 0
   },

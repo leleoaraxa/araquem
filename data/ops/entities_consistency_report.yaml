@@ -62,7 +62,7 @@ entities:
     notes:
     - entidade snapshot cadastral; RAG negado e sem narrator
     - sem inferencia temporal por ser dado estatico
-  fiis_dividendos:
+  fiis_dividends:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

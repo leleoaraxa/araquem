@@ -10,7 +10,7 @@ DROP VIEW IF EXISTS fiis_overview;
 DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_registrations;
-DROP VIEW IF EXISTS fiis_dividendos;
+DROP VIEW IF EXISTS fiis_dividends;
 DROP VIEW IF EXISTS fiis_precos;
 DROP VIEW IF EXISTS fiis_rankings;
 DROP VIEW IF EXISTS fiis_imoveis;
@@ -543,9 +543,9 @@ SELECT ticker, price_date as traded_at, close_price, adj_close_price,
 open_price, max_price, min_price, daily_range_pct as daily_variation_pct, created_at, updated_at
 FROM view_fiis_history_prices;
 -- =====================================================================
--- VIEW: fiis_dividendos
+-- VIEW: fiis_dividends
 -- =====================================================================
-CREATE OR REPLACE VIEW fiis_dividendos AS
+CREATE OR REPLACE VIEW fiis_dividends AS
 SELECT ticker, traded_until_date, payment_date, dividend_amt, created_at, updated_at
 FROM view_fiis_history_dividends;
 -- =====================================================================
@@ -1397,7 +1397,7 @@ SELECT
     s.last_dividend_amt,
     s.last_payment_date
 
-FROM fiis_dividendos d
+FROM fiis_dividends d
 LEFT JOIN fiis_yield_history y
        ON y.ticker    = d.ticker
       AND y.ref_month = date_trunc('month', d.payment_date::timestamp)::date
@@ -1587,7 +1587,7 @@ ALTER VIEW public.fiis_overview OWNER TO edge_user;
 ALTER VIEW public.fiis_yield_history OWNER TO edge_user;
 ALTER VIEW public.fiis_markowitz_universe OWNER TO edge_user;
 ALTER VIEW public.fiis_registrations OWNER TO edge_user;
-ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
+ALTER VIEW public.fiis_dividends OWNER TO edge_user;
 ALTER VIEW public.fiis_precos OWNER TO edge_user;
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 ALTER VIEW public.fiis_imoveis OWNER TO edge_user;

@@ -72,7 +72,7 @@ Exemplos de perguntas que devem cair em `fiis_noticias`:
 Perguntas que **não** devem usar `fiis_noticias`:
 
 - Sobre preços: “Quanto está o HGLG11 hoje?” → `fiis_precos`
-- Sobre dividendos: “Quais foram os dividendos do HGLG11 este mês?” → `fiis_dividendos`
+- Sobre dividendos: “Quais foram os dividendos do HGLG11 este mês?” → `fiis_dividends`
 - Sobre risco (Sharpe, drawdown etc.): → `fiis_financials_risk`
 - Sobre snapshot financeiro (payout, alavancagem, vacância, PL etc.): → `fiis_financials_snapshot`
 - Sobre processos judiciais: → `fiis_processos`

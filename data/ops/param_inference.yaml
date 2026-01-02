@@ -7,7 +7,7 @@ description: >
 
 intents:
 
-  fiis_dividendos:
+  fiis_dividends:
     compute_on_read:
       window:
         allowed:

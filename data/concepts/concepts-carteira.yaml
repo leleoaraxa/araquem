@@ -75,7 +75,7 @@ concepts:
       do investidor.
     related_entities:
       - client_fiis_positions
-      - fiis_dividendos
+      - fiis_dividends
       - fiis_financials_snapshot
       - history_market_indicators
     typical_questions:

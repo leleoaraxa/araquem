@@ -132,7 +132,7 @@ Dados privados só são usados com login e token válidos.
 Eu priorizo entidades que respondem 1xN ou 1x1:
 
 * Preço? → `fiis_precos`
-* Dividendos? → `fiis_dividendos`
+* Dividendos? → `fiis_dividends`
 * Risco? → `fiis_financials_risk`
 * Snapshot? → `fiis_financials_snapshot`
 * Imóveis? → `fiis_imoveis`

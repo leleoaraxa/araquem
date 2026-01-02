@@ -82,7 +82,7 @@ Saída:
 
 Usada quando o resultado é **1xN** longo:
 
-* fiis_dividendos
+* fiis_dividends
 * fiis_precos
 * fiis_yield_history
 * client_dividends_evolution

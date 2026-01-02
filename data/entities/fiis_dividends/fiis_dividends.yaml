@@ -1,6 +1,6 @@
-id: fiis_dividendos
+id: fiis_dividends
 result_key: dividendos_fii
-sql_view: fiis_dividendos
+sql_view: fiis_dividends
 private: false
 description: Histórico de proventos (dividendos) por FII
 
@@ -33,7 +33,7 @@ columns:
   description: Data da última atualização do registro.
 ask:
   intents:
-  - fiis_dividendos
+  - fiis_dividends
   requires_identifiers:
     - tickers
   keywords:

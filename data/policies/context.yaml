@@ -13,7 +13,7 @@ context:
     max_turns: 2
     allowed_entities:
     - fiis_precos
-    - fiis_dividendos
+    - fiis_dividends
     - fiis_financials_risk
     - fiis_financials_snapshot
     - fiis_imoveis
@@ -40,7 +40,7 @@ context:
     max_chars: 2000
     allowed_entities:
     - fiis_precos
-    - fiis_dividendos
+    - fiis_dividends
     - fiis_financials_risk
     - fiis_financials_snapshot
     - fiis_imoveis
@@ -64,7 +64,7 @@ context:
     enable_last_ticker: true
     allowed_entities:
     - fiis_precos
-    - fiis_dividendos
+    - fiis_dividends
     - fiis_yield_history
     - fiis_financials_risk
     - fiis_financials_snapshot
@@ -85,7 +85,7 @@ context:
     fiis_precos:
       use_referenced_ticker: true
       use_last_entity: true
-    fiis_dividendos:
+    fiis_dividends:
       use_referenced_ticker: true
       use_last_entity: true
     fiis_yield_history:

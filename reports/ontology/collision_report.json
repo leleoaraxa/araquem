@@ -34,7 +34,7 @@
       ],
       "prohibited_tokens": []
     },
-    "fiis_dividendos": {
+    "fiis_dividends": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_dividends_yields": [
@@ -96,7 +96,7 @@
     "fiis_financials_revenue_schedule": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fiis_dividendos": [
+        "fiis_dividends": [
           "distribuicao"
         ],
         "fiis_financials_snapshot": [
@@ -195,7 +195,7 @@
     "fiis_noticias": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fiis_dividendos": [
+        "fiis_dividends": [
           "mes"
         ],
         "fiis_precos": [
@@ -240,7 +240,7 @@
     "fiis_dividends_yields": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fiis_dividendos": [
+        "fiis_dividends": [
           "dividendos"
         ],
         "fiis_rankings": [
@@ -312,7 +312,7 @@
         "fiis_overview": [
           "indicadores"
         ],
-        "fiis_dividendos": [
+        "fiis_dividends": [
           "acumulado"
         ],
         "fiis_financials_revenue_schedule": [
@@ -421,7 +421,7 @@
     "history_currency_rates": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fiis_dividendos": [
+        "fiis_dividends": [
           "historico"
         ],
         "fiis_noticias": [

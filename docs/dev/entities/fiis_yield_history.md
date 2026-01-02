@@ -68,13 +68,13 @@ Mesmo se o usuário não falar a palavra “preço” explicitamente, mas estive
 
 ---
 
-### 3.2. Perguntas de **dividendos em dinheiro** → fiis_dividendos
+### 3.2. Perguntas de **dividendos em dinheiro** → fiis_dividends
 
 - “Quais foram os **dividendos do HGLG11 nos últimos 12 meses**?”
 - “Quanto o **MXRF11 pagou de dividendos** em 2024?”
 - “Histórico de **proventos do VISC11**.”
 
-Se o foco é **valor pago de dividendos**, e não o DY (%) por mês, a rota é **fiis_dividendos**.
+Se o foco é **valor pago de dividendos**, e não o DY (%) por mês, a rota é **fiis_dividends**.
 
 ---
 
@@ -167,8 +167,8 @@ Abaixo alguns exemplos de como o Planner/Builder devem interpretar perguntas tí
      - “**comparar dividendos e yield**”
    - → isso é **fiis_dividends_yields**, não fiis_yield_history.
 
-2. **Evitar colisão com fiis_dividendos**
-   - Palavras como “**dividendos**, **proventos**, **quanto pagou**” sem foco claro em DY histórico indicam fiis_dividendos.
+2. **Evitar colisão com fiis_dividends**
+   - Palavras como “**dividendos**, **proventos**, **quanto pagou**” sem foco claro em DY histórico indicam fiis_dividends.
    - A entidade fiis_yield_history tem **anti-tokens** para termos como:
      - “dy atual”, “ultimo dy”, “dividendos”, “dividendo”, “provento”, “proventos”, “acumulado”, “rendimento atual”, “yield atual”.
    - Ou seja, perguntas sobre **“DY atual / último DY”** tendem a ser tratadas em outra visão (ex.: fiis_dividends_yields ou snapshot / presenter), não aqui.

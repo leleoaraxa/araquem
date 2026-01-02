@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_dividends",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_dividends.",
+  "payloads": [
+    {
+      "id": "fiis_dividends-q1",
+      "question": "Qual foi o valor do dividendo por cota pago pelo MXRF11 em dezembro de 2024 e a data de pagamento?",
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
+    },
+    {
+      "id": "fiis_dividends-q2",
+      "question": "Em que data ocorreu o pagamento de dividendos mais recente do HGLG11 e qual foi o valor por cota?",
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
+    },
+    {
+      "id": "fiis_dividends-q3",
+      "question": "Qual o montante do dividendo declarado pelo CPTS11 na última data-com registrada?",
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
+    }
+  ]
+}

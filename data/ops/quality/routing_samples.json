@@ -348,78 +348,78 @@
     },
     {
       "question": "Dividendos do HGLG11 em cada mês do último ano",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Dividendos pagos pelo HGLG11 nos últimos 12 meses",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Dividendos que o KNRI11 pagou em janeiro de 2025",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Lista de pagamentos de proventos do VINO11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Me mostra a distribuição de rendimentos do KNRI11 mês a mês",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Me mostra o histórico de dividendos do KNRI11",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Proventos já anunciados do MXRF11 para os próximos meses",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Quais foram os dividendos do HGLG11 com data com em outubro de 2025?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Quais os dividendos do HGLG11 esse mês?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Quais os proventos mensais do HGLG11 em 2025?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Quais proventos o MXRF11 pagou em 2024?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Qual foi o último dividendo pago pelo HGLG11?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Qual é o próximo pagamento de dividendos do MXRF11?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Quanto o MXRF11 distribuiu de dividendos em março de 2025?",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "Total de dividendos do VISC11 nos últimos 6 meses",
-      "expected_intent": "fiis_dividendos",
-      "expected_entity": "fiis_dividendos"
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
     },
     {
       "question": "As receitas do HGLG11 estão mais concentradas no curto prazo ou no longo prazo?",

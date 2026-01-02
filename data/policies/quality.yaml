@@ -31,7 +31,7 @@ datasets:
       daily_variation_pct:
         min: -5.0
         max: 5.0
-  fiis_dividendos:
+  fiis_dividends:
     freshness:
       max_age_hours: 30
     not_null:

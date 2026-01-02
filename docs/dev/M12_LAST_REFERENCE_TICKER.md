@@ -225,7 +225,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 * `fiis_financials_risk`
 * `fiis_financials_revenue_schedule`
 * `fiis_overview`
-* `fiis_dividendos`
+* `fiis_dividends`
 * `fiis_precos`
 * `fiis_yield_history`
 * `fiis_dividends_yields`

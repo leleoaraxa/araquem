@@ -65,17 +65,17 @@ samples:
   - { question: "máxima do HGLG11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
   - { question: "mínima do HGLG11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
   - { question: "variação diária (%) do HGLG11 em 2025-10-27", expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "dividendos do CXTL11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "proventos do CXTL11",   expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "rendimento do CXTL11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "dividendos do FPAB11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "proventos do FPAB11",   expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "rendimento do FPAB11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "dividendos do HGLG11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "proventos do HGLG11",   expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "rendimento do HGLG11",  expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "quanto o MXRF11 distribuiu em 07/2024", expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
-  - { question: "média de dividendos do HGLG11 nos últimos 12 meses", expected_intent: fiis_dividendos, expected_entity: fiis_dividendos }
+  - { question: "dividendos do CXTL11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "proventos do CXTL11",   expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "rendimento do CXTL11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "dividendos do FPAB11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "proventos do FPAB11",   expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "rendimento do FPAB11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "dividendos do HGLG11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "proventos do HGLG11",   expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "rendimento do HGLG11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "quanto o MXRF11 distribuiu em 07/2024", expected_intent: fiis_dividends, expected_entity: fiis_dividends }
+  - { question: "média de dividendos do HGLG11 nos últimos 12 meses", expected_intent: fiis_dividends, expected_entity: fiis_dividends }
   - { question: "ranking do HGLG11",                           expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "posicao do HGLG11 no IFIX",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }
   - { question: "posição do HGLG11 no IFIL",                   expected_intent: fiis_rankings, expected_entity: fiis_rankings }

@@ -57,7 +57,7 @@ policies:
     key_fields:
     - ticker
     - traded_at
-  fiis_dividendos:
+  fiis_dividends:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

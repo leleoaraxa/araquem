@@ -9,7 +9,7 @@
       "fiis_dividends_yields",
       "fiis_overview",
       "fiis_registrations",
-      "fiis_dividendos",
+      "fiis_dividends",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
@@ -33,7 +33,7 @@
       "fiis_dividends_yields",
       "fiis_overview",
       "fiis_registrations",
-      "fiis_dividendos",
+      "fiis_dividends",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
@@ -57,7 +57,7 @@
       "fiis_dividends_yields",
       "fiis_overview",
       "fiis_registrations",
-      "fiis_dividendos",
+      "fiis_dividends",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
@@ -83,7 +83,7 @@
       "fiis_dividends_yields",
       "fiis_overview",
       "fiis_registrations",
-      "fiis_dividendos",
+      "fiis_dividends",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
@@ -143,14 +143,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_dividendos",
+        "entity": "fiis_dividends",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_dividendos",
+        "entity": "fiis_dividends",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -714,7 +714,7 @@
         "ok": true
       }
     },
-    "fiis_dividendos": {
+    "fiis_dividends": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -723,18 +723,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_dividendos",
+        "fiis_dividends",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_dividendos/fiis_dividendos.yaml"
+          "path": "data/entities/fiis_dividends/fiis_dividends.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_dividendos.schema.yaml"
+          "path": "data/contracts/entities/fiis_dividends.schema.yaml"
         }
       },
       "policies": {
@@ -747,7 +747,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_dividendos"
+            "fiis_dividends"
           ],
           "missing_intents": [
             "ticker_query"

@@ -93,13 +93,13 @@ entities:
       natural_keys:
       - ticker
     notes: []
-  fiis_dividendos:
+  fiis_dividends:
     title: FIIs – Dividendos históricos
     kind: historical
     paths:
-      entity_yaml: data/entities/fiis_dividendos/fiis_dividendos.yaml
-      schema: data/contracts/entities/fiis_dividendos.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_dividendos.json
+      entity_yaml: data/entities/fiis_dividends/fiis_dividends.yaml
+      schema: data/contracts/entities/fiis_dividends.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_dividends.json
     coverage:
       cache_policy: true
       rag_policy: false

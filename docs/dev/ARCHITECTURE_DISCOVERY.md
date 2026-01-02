@@ -75,7 +75,7 @@ data/
             README.md
             projection_client_fiis_positions.json
             projection_fiis_registrations.json
-            projection_fiis_dividendos.json
+            projection_fiis_dividends.json
             projection_fiis_financials_revenue_schedule.json
             projection_fiis_financials_risk.json
             projection_fiis_financials_snapshot.json
@@ -145,8 +145,8 @@ data/
             templates.md
             responses/
                 list.md.j2
-        fiis_dividendos/
-            fiis_dividendos.yaml
+        fiis_dividends/
+            fiis_dividends.yaml
             templates.md
             responses/
                 table.md.j2
@@ -165,7 +165,7 @@ data/
         entities/
             client_fiis_positions.schema.yaml
             fiis_registrations.schema.yaml
-            fiis_dividendos.schema.yaml
+            fiis_dividends.schema.yaml
             fiis_financials_revenue_schedule.schema.yaml
             fiis_financials_risk.schema.yaml
             fiis_financials_snapshot.schema.yaml
@@ -312,7 +312,7 @@ docs/
         data_sample/
             client_fiis_positions.csv
             fiis_registrations.csv
-            fiis_dividendos.csv
+            fiis_dividends.csv
             fiis_financials_revenue_schedule.csv
             fiis_financials_risk.csv
             fiis_financials_snapshot.csv

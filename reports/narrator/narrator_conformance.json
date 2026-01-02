@@ -15,23 +15,23 @@
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_dividendos",
+      "entity": "fiis_dividends",
       "field": "current",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data/entities/fiis_dividends/responses/table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_dividendos",
+      "entity": "fiis_dividends",
       "field": "first",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data/entities/fiis_dividends/responses/table.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_dividendos",
+      "entity": "fiis_dividends",
       "field": "multi",
-      "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+      "path": "data/entities/fiis_dividends/responses/table.md.j2",
       "component": "narrator"
     },
     {

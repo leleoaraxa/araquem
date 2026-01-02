@@ -33,11 +33,11 @@ intents:
       - "como se comportou o MXRF11 no último mês?"
       - "qual a variação de hoje do KNRI11?"
 
-  fiis_dividendos:
+  fiis_dividends:
     description: "Histórico de dividendos pagos por FII."
     domain_block: D3
     entities:
-      - fiis_dividendos
+      - fiis_dividends
     ui_pages:
       - fii_detail
       - calculators.financial_freedom

@@ -28,7 +28,7 @@
 
 ---
 
-## **1.2 Dividendos — fiis_dividendos**
+## **1.2 Dividendos — fiis_dividends**
 
 ### Pergunta
 
@@ -36,7 +36,7 @@
 
 ### Fluxo
 
-* Intent: `fiis_dividendos`
+* Intent: `fiis_dividends`
 * SQL retorna as últimas linhas
 * Narrator faz texto claro
 
@@ -177,7 +177,7 @@ Pode ser:
 
 * `fiis_overview`
 * `fiis_precos`
-* `fiis_dividendos`
+* `fiis_dividends`
 * `fiis_financials_risk`
 
 ### Fluxo correto
@@ -264,7 +264,7 @@ A seguir, alguns exemplos reais usados nos testes golden, que demonstram o compo
 | “cnpj do HGLG11”                         | `fiis_registrations`        |
 | “dy do MXRF11 em 2024”                   | `fiis_yield_history`   |
 | “como está o beta do XPLG11?”            | `fiis_financials_risk` |
-| “último dividendo do KNCR11”             | `fiis_dividendos`      |
+| “último dividendo do KNCR11”             | `fiis_dividends`      |
 | “quantos imóveis tem o HGLG11?”          | `fiis_imoveis`         |
 | “posicao do CPTS11 no ranking da SIRIOS” | `fiis_rankings`        |
 | “notícias do HGLG11”                     | `fiis_noticias`        |

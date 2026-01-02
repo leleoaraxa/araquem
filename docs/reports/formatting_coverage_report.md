@@ -9,7 +9,7 @@
 | client_fiis_performance_vs_benchmark | PASS | Cobertura completa |
 | client_fiis_performance_vs_benchmark_summary | PASS | Cobertura completa |
 | fiis_registrations | PASS | Cobertura completa |
-| fiis_dividendos | PASS | Cobertura completa |
+| fiis_dividends | PASS | Cobertura completa |
 | fiis_yield_history | PASS | Cobertura completa |
 | fiis_overview | PASS | Cobertura completa |
 | fiis_financials_snapshot | PASS | Cobertura completa |
@@ -200,7 +200,7 @@ Nenhum ajuste em templates foi necessário.
 | created_at | datetime | Y | datetime_br | - |
 | updated_at | datetime | Y | datetime_br | - |
 
-### fiis_dividendos
+### fiis_dividends
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

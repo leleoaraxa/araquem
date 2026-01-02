@@ -11,8 +11,8 @@ Este script espera um arquivo JSON com um dos formatos:
        "question": "...",
        "facts": { ... },
        "meta": { ... },
-       "intent": "fiis_dividendos",
-       "entity": "fiis_dividendos"
+       "intent": "fiis_dividends",
+       "entity": "fiis_dividends"
      }
    }
 
@@ -21,8 +21,8 @@ Este script espera um arquivo JSON com um dos formatos:
      "question": "...",
      "facts": { ... },
      "meta": { ... },
-     "intent": "fiis_dividendos",
-     "entity": "fiis_dividendos"
+     "intent": "fiis_dividends",
+     "entity": "fiis_dividends"
    }
 
 O objetivo é alinhar o shape de "facts" com o contrato usado em runtime

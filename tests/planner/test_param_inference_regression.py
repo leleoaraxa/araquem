@@ -4,7 +4,7 @@ from app.planner.param_inference import infer_params
 
 
 DEFAULTS_PATH = "data/ops/param_inference.yaml"
-ENTITY_PATH = "data/entities/fiis_dividendos/fiis_dividendos.yaml"
+ENTITY_PATH = "data/entities/fiis_dividends/fiis_dividends.yaml"
 YIELD_ENTITY_PATH = "data/entities/fiis_yield_history/fiis_yield_history.yaml"
 
 
@@ -14,8 +14,8 @@ class TestIdentifierTicker:
 
         result = infer_params(
             "dividendos do HGLG11",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=identifiers,
@@ -24,7 +24,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -34,8 +34,8 @@ class TestIdentifierTicker:
 
         result = infer_params(
             "dividendos do HGLG11",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=identifiers,
@@ -44,7 +44,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -54,8 +54,8 @@ class TestIdentifierTicker:
 
         result = infer_params(
             "dividendos do HGLG11 ou HABT11",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=identifiers,
@@ -64,7 +64,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
         }
 
@@ -72,8 +72,8 @@ class TestIdentifierTicker:
     def test_no_ticker_does_not_break(self, identifiers):
         result = infer_params(
             "dividendos",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=identifiers,
@@ -82,7 +82,7 @@ class TestIdentifierTicker:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
         }
 
@@ -92,8 +92,8 @@ class TestContextIsolation:
         # Mesmo com source: ["text", "context"], ticker só aparece quando presente no texto.
         result = infer_params(
             "dividendos",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers={},
@@ -102,15 +102,15 @@ class TestContextIsolation:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
         }
 
     def test_missing_client_and_conversation_ids_are_noop(self):
         result = infer_params(
             "dividendos",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers={},
@@ -121,7 +121,7 @@ class TestContextIsolation:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
         }
 
@@ -130,8 +130,8 @@ class TestYamlDefaults:
     def test_intent_defaults_are_applied(self):
         result = infer_params(
             "dividendos do HGLG11",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=None,
@@ -140,7 +140,7 @@ class TestYamlDefaults:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -148,8 +148,8 @@ class TestYamlDefaults:
     def test_invalid_window_uses_yaml_fallback(self):
         result = infer_params(
             "qual o DY do HGLG11 na janela de 99 meses?",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers=None,
@@ -158,7 +158,7 @@ class TestYamlDefaults:
         assert result == {
             "agg": "list",
             "window": "months:12",
-            "limit": 24,  # default limit para fiis_dividendos passou a 24
+            "limit": 24,  # default limit para fiis_dividends passou a 24
             "order": "desc",
             "ticker": "HGLG11",
         }
@@ -166,8 +166,8 @@ class TestYamlDefaults:
     def test_limit_and_order_only_when_allowed(self):
         result = infer_params(
             "ultimo dividendo do HGLG11",
-            intent="fiis_dividendos",
-            entity="fiis_dividendos",
+            intent="fiis_dividends",
+            entity="fiis_dividends",
             entity_yaml_path=ENTITY_PATH,
             defaults_yaml_path=DEFAULTS_PATH,
             identifiers={"ticker": "HGLG11"},

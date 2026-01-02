@@ -95,7 +95,7 @@ Histórico diário de preço das cotas de cada FII.
 - *“Quanto fechou o HGLG11 ontem?”*
 - *“Como se comportou o MXRF11 no último mês?”*
 
-### 4.2 Histórico de Dividendos (`fiis_dividendos`)
+### 4.2 Histórico de Dividendos (`fiis_dividends`)
 
 **O que representa**
 Linha do tempo dos proventos pagos por cota.
@@ -376,7 +376,7 @@ ligada ao seu CPF/CNPJ.
 De forma simplificada:
 
 1. **Você faz uma pergunta em linguagem natural.**
-2. A IA identifica a **intent** (ex.: `fiis_dividendos`, `fiis_financials_risk`) e
+2. A IA identifica a **intent** (ex.: `fiis_dividends`, `fiis_financials_risk`) e
    a **entidade** mais adequada.
 3. O sistema consulta as tabelas e views correspondentes, inferindo:
    - Ticker(s);

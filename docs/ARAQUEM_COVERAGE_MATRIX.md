@@ -73,7 +73,7 @@ Mesma natureza do overview (dados cadastrais).
 
 ---
 
-### **📌 fiis_dividendos**
+### **📌 fiis_dividends**
 
 **Tipo:** 1xN
 **Cobertura:** histórico de dividendos

@@ -34,7 +34,7 @@ routing:
   - client_fiis_performance_vs_benchmark_summary
   - fiis_registrations
   - fiis_precos
-  - fiis_dividendos
+  - fiis_dividends
   - fiis_yield_history
   - fiis_imoveis
   - fiis_noticias

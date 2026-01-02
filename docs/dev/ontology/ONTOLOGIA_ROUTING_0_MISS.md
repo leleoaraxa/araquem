@@ -20,7 +20,7 @@ Suítes executadas:
 ```bash
 python scripts/quality/quality_push.py \
   data/ops/quality/payloads/fiis_precos_suite.json \
-  data/ops/quality/payloads/fiis_dividendos_suite.json \
+  data/ops/quality/payloads/fiis_dividends_suite.json \
   data/ops/quality/payloads/fiis_yield_history_suite.json \
   data/ops/quality/payloads/fiis_overview_suite.json \
   data/ops/quality/payloads/fiis_processos_suite.json \

@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-02T14:36:21Z",
+  "generated_at": "2026-01-02T15:57:16Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -107,7 +107,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "5fcb4b8e1bcb48ca3b3a4466e013085f013b5434e5c3f0481a1066c060c017cc"
+      "sha_all": "20b4ba61bb0b5bda2639274502c813d54d9d4dd53e5f6dea4a7fa810a33ff8a8"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -135,24 +135,24 @@
     },
     {
       "id": "entity-fiis-dividendos",
-      "path": "data/entities/fiis_dividendos/fiis_dividendos.yaml",
+      "path": "data/entities/fiis_dividends/fiis_dividends.yaml",
       "tags": [
         "entities",
         "fiis",
         "dividendos",
-        "entity:fiis_dividendos"
+        "entity:fiis_dividends"
       ],
       "chunks": 3,
       "sha_all": "6613f61e235b4124f5a01342de529cfe2ff06cb105d0ed7fe7d87248942c6c4c"
     },
     {
       "id": "entity-fiis-dividendos-hints",
-      "path": "data/entities/fiis_dividendos/hints.md",
+      "path": "data/entities/fiis_dividends/hints.md",
       "tags": [
         "entities",
         "fiis",
         "dividendos",
-        "entity:fiis_dividendos"
+        "entity:fiis_dividends"
       ],
       "chunks": 1,
       "sha_all": "6ec231ece8a9e90bedbff90ea3c2cb1480671bce7b42f9a799335cd7f4e1cb38"
@@ -467,7 +467,7 @@
         "entity:client_fiis_performance_vs_benchmark_summary"
       ],
       "chunks": 4,
-      "sha_all": "b448dce1681844e3e9fb28727f61a8bad6533de5344ac8077cf21a496822d6d2"
+      "sha_all": "705590be7c2cc63084eac67ed5e1f522bd8a821b375924508df27173d00bec0d"
     },
     {
       "id": "entity-client-fiis-performance-vs-benchmark-summary-hints",
@@ -656,7 +656,7 @@
     },
     {
       "id": "q-projection-dividendos",
-      "path": "data/ops/quality/projection_fiis_dividendos.json",
+      "path": "data/ops/quality/projection_fiis_dividends.json",
       "tags": [
         "quality",
         "projection",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1767364746,
+  "last_refresh_epoch": 1767369603,
   "vector_dimension": 768,
   "total_chunks": 296
 }

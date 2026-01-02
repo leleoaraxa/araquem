@@ -63,12 +63,12 @@ include:
     tags: [entities, fiis, cadastro, "entity:fiis_registrations"]
 
   - id: entity-fiis-dividendos
-    path: data/entities/fiis_dividendos/fiis_dividendos.yaml
-    tags: [entities, fiis, dividendos, "entity:fiis_dividendos"]
+    path: data/entities/fiis_dividends/fiis_dividends.yaml
+    tags: [entities, fiis, dividendos, "entity:fiis_dividends"]
 
   - id: entity-fiis-dividendos-hints
-    path: data/entities/fiis_dividendos/hints.md
-    tags: [entities, fiis, dividendos, "entity:fiis_dividendos"]
+    path: data/entities/fiis_dividends/hints.md
+    tags: [entities, fiis, dividendos, "entity:fiis_dividends"]
 
   - id: entity-fiis-precos
     path: data/entities/fiis_precos/fiis_precos.yaml
@@ -235,7 +235,7 @@ include:
     tags: [quality, projection, cadastro]
 
   - id: q-projection-dividendos
-    path: data/ops/quality/projection_fiis_dividendos.json
+    path: data/ops/quality/projection_fiis_dividends.json
     tags: [quality, projection, dividendos]
 
   - id: q-projection-precos

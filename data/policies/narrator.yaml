@@ -248,7 +248,7 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
 
-    fiis_dividendos:
+    fiis_dividends:
       llm_enabled: false
       shadow: false
       rewrite_only: false

@@ -26,15 +26,15 @@
     },
     {
       "question": "preço do MALL11 agora",
-      "not_intent": "fiis_dividendos"
+      "not_intent": "fiis_dividends"
     },
     {
       "question": "site oficial do MAXR11",
-      "not_intent": "fiis_dividendos"
+      "not_intent": "fiis_dividends"
     },
     {
       "question": "quais imóveis do HGRU11",
-      "not_intent": "fiis_dividendos"
+      "not_intent": "fiis_dividends"
     },
     {
       "question": "preço de hoje do XPML11",

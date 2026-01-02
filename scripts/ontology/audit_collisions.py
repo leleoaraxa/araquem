@@ -22,7 +22,7 @@ REPORT_PATH = REPO_ROOT / "reports" / "ontology" / "collision_report.json"
 
 ENTITY_SCOPE: Tuple[str, ...] = (
     "fiis_precos",
-    "fiis_dividendos",
+    "fiis_dividends",
     "fiis_yield_history",
     "fiis_financials_risk",
     "fiis_financials_revenue_schedule",

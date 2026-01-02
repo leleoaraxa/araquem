@@ -1,8 +1,8 @@
-# Entidade: `fiis_dividendos`
+# Entidade: `fiis_dividends`
 
 ## 1. Objetivo
 
-A entidade `fiis_dividendos` responde perguntas sobre **valores de dividendos/proventos por FII ao longo do tempo**, com foco em:
+A entidade `fiis_dividends` responde perguntas sobre **valores de dividendos/proventos por FII ao longo do tempo**, com foco em:
 
 - Histórico de pagamentos (por data ou por mês/ano).
 - Dividendos/proventos de um FII em um determinado período (ex.: ano, últimos 12 meses, últimos N meses).
@@ -16,7 +16,7 @@ Sempre em **valor absoluto por cota** (R$/cota), não em termos percentuais (par
 
 ## 2. Perguntas típicas (CANON)
 
-Exemplos CANON (devem cair em `fiis_dividendos`):
+Exemplos CANON (devem cair em `fiis_dividends`):
 
 1. `lista de proventos do HGLG11`
 2. `dividendos do CXTL11`
@@ -40,8 +40,8 @@ Exemplos CANON (devem cair em `fiis_dividendos`):
 
 ### 3.1. View e contrato
 
-- **View SQL**: `fiis_dividendos`
-- **Contrato em `data/contracts/entities`**: `fiis_dividendos` (tabela/contract padrão da entidade)
+- **View SQL**: `fiis_dividends`
+- **Contrato em `data/contracts/entities`**: `fiis_dividends` (tabela/contract padrão da entidade)
 
 ### 3.2. Colunas principais
 
@@ -65,7 +65,7 @@ Colunas técnicas adicionais (timestamps, chaves internas etc.) não entram na r
 
 ## 4. Regras de roteamento
 
-### 4.1. Deve cair em `fiis_dividendos` quando…
+### 4.1. Deve cair em `fiis_dividends` quando…
 
 1. A pergunta contém **ticker de FII** + algum termo relacionado a **dividendos/proventos/rendimentos em dinheiro**:
    - Tokens típicos: `dividendo`, `dividendos`, `provento`, `proventos`, `rendimento`, `rendimentos`, `distribuicao de rendimentos`, `pagamentos`, `data com`, `data ex`, `quanto distribuiu`, etc.
@@ -77,11 +77,11 @@ Colunas técnicas adicionais (timestamps, chaves internas etc.) não entram na r
 
 Exemplos de rota correta:
 
-- `quais os dividendos do HGLG11 esse mês?` → `fiis_dividendos`
-- `dividendos pagos pelo MXRF11 em 2024` → `fiis_dividendos`
-- `lista de proventos do KNRI11` → `fiis_dividendos`
-- `qual foi o último dividendo do VISC11?` → `fiis_dividendos`
-- `quanto o HGLG11 distribuiu de dividendos em março de 2025?` → `fiis_dividendos`
+- `quais os dividendos do HGLG11 esse mês?` → `fiis_dividends`
+- `dividendos pagos pelo MXRF11 em 2024` → `fiis_dividends`
+- `lista de proventos do KNRI11` → `fiis_dividends`
+- `qual foi o último dividendo do VISC11?` → `fiis_dividends`
+- `quanto o HGLG11 distribuiu de dividendos em março de 2025?` → `fiis_dividends`
 
 ### 4.2. Ticker
 
@@ -92,7 +92,7 @@ Exemplos de rota correta:
 
 ### 4.3. Diferença para DY / Yield / Carteira
 
-- Se a pergunta enfatiza **percentual**, `dy`, `dividend yield`, `dy 12m`, etc., o alvo padrão **não é** `fiis_dividendos`, e sim:
+- Se a pergunta enfatiza **percentual**, `dy`, `dividend yield`, `dy 12m`, etc., o alvo padrão **não é** `fiis_dividends`, e sim:
   - `fiis_yield_history` – histórico de DY.
   - `fiis_dividends_yields` – combinação de dividendos + DY, comparações, etc.
 - Se a pergunta fala de **“meus dividendos”, “minha carteira”, “meus FIIs”**, o alvo deve ser:
@@ -100,11 +100,11 @@ Exemplos de rota correta:
 
 ---
 
-## 5. Casos que **NÃO** devem cair em `fiis_dividendos`
+## 5. Casos que **NÃO** devem cair em `fiis_dividends`
 
 ### 5.1. DY / Yield (percentual)
 
-Devem ir para `fiis_yield_history` ou `fiis_dividends_yields`, não para `fiis_dividendos`:
+Devem ir para `fiis_yield_history` ou `fiis_dividends_yields`, não para `fiis_dividends`:
 
 - `dy do HGLG11 nos últimos 12 meses`
 - `historico de dy do KNRI11`
@@ -114,7 +114,7 @@ Devem ir para `fiis_yield_history` ou `fiis_dividends_yields`, não para `fiis_d
 
 ### 5.2. Dividendos da **minha carteira**
 
-Devem ir para entidades de cliente (não para `fiis_dividendos`):
+Devem ir para entidades de cliente (não para `fiis_dividends`):
 
 - `quanto minha carteira de fiis recebeu de dividendos em cada mes?` → `client_fiis_dividends_evolution`
 - `renda mensal dos meus fiis` → `client_fiis_dividends_evolution` / `client_fiis_enriched_portfolio`
@@ -142,20 +142,20 @@ Perguntas sobre **IPCA, CDI, Selic, IFIX, IFIL, dólar, euro** não devem cair a
 
 ## 6. Colisões principais e como separar
 
-### 6.1. `fiis_dividendos` vs `fiis_yield_history`
+### 6.1. `fiis_dividends` vs `fiis_yield_history`
 
-- **fiis_dividendos**: responde valores **em R$** por cota.
+- **fiis_dividends**: responde valores **em R$** por cota.
   - Perguntas com foco em “quanto pagou”, “valor do dividendo”, “proventos pagos”.
 - **fiis_yield_history**: responde **percentuais de DY**.
   - Perguntas com `dy`, `dividend yield`, `retorno percentual`, `yields`, `dy 12m`, `dy mensal`.
 
 Regra prática:
 
-- Se aparecer `dy`, `dividend yield`, `percentual`, a rota preferencial é `fiis_yield_history` ou `fiis_dividends_yields`, **não** `fiis_dividendos`.
+- Se aparecer `dy`, `dividend yield`, `percentual`, a rota preferencial é `fiis_yield_history` ou `fiis_dividends_yields`, **não** `fiis_dividends`.
 
-### 6.2. `fiis_dividendos` vs `fiis_dividends_yields`
+### 6.2. `fiis_dividends` vs `fiis_dividends_yields`
 
-- **fiis_dividendos**: só valor em dinheiro, por FII, por data/período.
+- **fiis_dividends**: só valor em dinheiro, por FII, por data/período.
 - **fiis_dividends_yields**: perguntas pedindo **dividendos + DY juntos**, ou comparações de **dividendos e dy** entre FIIs.
 
 Exemplos que vão para `fiis_dividends_yields`:
@@ -164,22 +164,22 @@ Exemplos que vão para `fiis_dividends_yields`:
 - `historico de dividendos e dividend yield do MXRF11`
 - `comparar dividendos e dy de HGLG11 e KNRI11`
 
-### 6.3. `fiis_dividendos` vs `client_fiis_dividends_evolution`
+### 6.3. `fiis_dividends` vs `client_fiis_dividends_evolution`
 
-- **fiis_dividendos**: dados públicos, por FII, sem relação com carteira do cliente.
+- **fiis_dividends**: dados públicos, por FII, sem relação com carteira do cliente.
 - **client_fiis_dividends_evolution**: dividendos **da carteira do cliente** (usa `document_number` seguro).
 
 Sinais fortes de cliente:
 
 - `minha carteira`, `meus fiis`, `meus dividendos`, `minha renda`, `quanto eu recebi`, etc.
 
-Esses devem **NÃO** cair em `fiis_dividendos`.
+Esses devem **NÃO** cair em `fiis_dividends`.
 
 ---
 
 ## 7. Resumo operacional
 
-- Usar `fiis_dividendos` para perguntas de **histórico de proventos por FII**, em valor absoluto.
+- Usar `fiis_dividends` para perguntas de **histórico de proventos por FII**, em valor absoluto.
 - Evitar colisões com:
   - `fiis_yield_history` / `fiis_dividends_yields` (percentuais, DY).
   - `client_fiis_dividends_evolution` (minha carteira).

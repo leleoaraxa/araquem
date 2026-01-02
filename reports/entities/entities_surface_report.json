@@ -340,9 +340,9 @@
       ]
     },
     {
-      "entity_id": "fiis_dividendos",
+      "entity_id": "fiis_dividends",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_dividendos",
+      "dir_path": "data/entities/fiis_dividends",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -350,18 +350,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_dividendos/fiis_dividendos.yaml",
+        "path": "data/entities/fiis_dividends/fiis_dividends.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_dividendos.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_dividends.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_dividendos/responses",
+        "dir_path": "data/entities/fiis_dividends/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/fiis_dividendos/responses/table.md.j2",
+            "path": "data/entities/fiis_dividends/responses/table.md.j2",
             "size_bytes": 1129
           }
         ]
@@ -369,11 +369,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_dividendos/hints.md"
+          "path": "data/entities/fiis_dividends/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fiis_dividendos/template.md",
+          "path": "data/entities/fiis_dividends/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -384,12 +384,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_dividendos.csv"
+        "path": "docs/database/samples/fiis_dividends.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_dividendos.json"
+          "data/ops/quality/projection_fiis_dividends.json"
         ]
       },
       "tags": [

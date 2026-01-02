@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "fiis_dividendos",
+  "entity": "fiis_dividends",
   "result_key": "dividendos_fii",
   "must_have_columns": [
     "ticker",

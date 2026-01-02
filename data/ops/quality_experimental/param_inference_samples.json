@@ -5,7 +5,7 @@
       "question": "Qual o último dividendo do XPLG11?",
       "expected": {
         "intent": "dividendos",
-        "entity": "fiis_dividendos",
+        "entity": "fiis_dividends",
         "aggregates": { "agg": "latest", "window": "count:1" }
       }
     },
@@ -13,7 +13,7 @@
       "question": "Média dos últimos 6 meses de dividendos do XPLG11",
       "expected": {
         "intent": "dividendos",
-        "entity": "fiis_dividendos",
+        "entity": "fiis_dividends",
         "aggregates": { "agg": "avg", "window": "months:6" }
       }
     },
@@ -21,7 +21,7 @@
       "question": "Quais foram os 12 últimos dividendos do XPLG11?",
       "expected": {
         "intent": "dividendos",
-        "entity": "fiis_dividendos",
+        "entity": "fiis_dividends",
         "aggregates": { "agg": "list", "window": "count:12", "limit": 12, "order": "desc" }
       }
     },

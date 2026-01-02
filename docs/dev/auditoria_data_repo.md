@@ -38,7 +38,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 | fiis_dividends_yields | sim | sim | sim | table | sim | sim | completa |
 | fiis_overview | sim | sim | sim | table | sim | sim | completa |
 | fiis_registrations | sim | sim | sim | list | sim | sim | completa |
-| fiis_dividendos | sim | sim | sim | table | sim | sim | completa |
+| fiis_dividends | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_revenue_schedule | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_risk | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_snapshot | sim | sim | sim | table | sim | sim | completa |
@@ -58,7 +58,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 ## C) Auditoria de `hints.md`
 
 ### Cobertura
-- **Cobertura completa (22/22):** client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada (inclui novos `hints.md` para as seis entidades que não possuíam).
+- **Cobertura completa (22/22):** client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada (inclui novos `hints.md` para as seis entidades que não possuíam).
 
 ### Uso real (pipeline)
 - `hints.md` entra como **fonte de embeddings** (doc_id `entity-*-hints`) e é consumido pelo planner via fusão de scores (RAG → entity hints).
