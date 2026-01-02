@@ -1,5 +1,5 @@
 version: 2025.0-prod
-timestamp: '2026-01-02T15:47:45.587160+00:00'
+timestamp: '2026-01-02T16:11:50.851892+00:00'
 entity_count: 22
 entities:
 - id: client_fiis_dividends_evolution
@@ -31,7 +31,7 @@ entities:
   tokens: 7996ad945c77b5395fb6d04d83fd97f388bd8836df818b67b4c9548b4fea4e54
   phrases: 4b87d8372993013bc0a8cc4e6ccb637e40e63d436a268d1cb45443bec4fc8e3c
   anti_tokens: 940b8774d9b15e6e98b531d512f11c6073ad6bcae5cfffa9ddeede3d535d4585
-  entity_hash: 1a02bf910379545baf77883bac7f959a0523e494b8c96e8279536763e8c7fa2d
+  entity_hash: 8ce31e875ae1560ef3495994ab5e9089b598fa94d54901270b50dfeca6417a16
 - id: fiis_dividends_yields
   tokens: 4e07240a17127d010e6635d61ca57c3e1f4a084cd732f88955d843e4d9ed54c0
   phrases: bbd11fe9006734689a736a0bfd87cd3cbcd3784399a1cfa3b8870f5d4c47c40f
@@ -112,4 +112,4 @@ entities:
   phrases: 51b9e193f5961d894611bad3cf27d82add881c9cdc0813a366f77db727a8332f
   anti_tokens: 3bfec50a8edcef18f41bef81c14117ae97826057524c2338487bc9db22c0a3bb
   entity_hash: 69e65fcd2874ff89c4750878cf5238dfe344f73ebd4584b1f8265144de975a9c
-ontology_global_hash: a50caf9f3ce6c2691bc40f898f7a394d8aa7937c8861f13ae47ce62cee229f06
+ontology_global_hash: 0632ae0e81e7412cc7c4453e74c2a20a76fc0b3b0a30ece9a95ab41821001356
