@@ -29,7 +29,7 @@
       "question": "Preço atual do MXRF11",
       "expected": {
         "intent": "precos",
-        "entity": "fiis_precos",
+        "entity": "fiis_quota_prices",
         "aggregates": { "agg": "latest", "window": "count:1" }
       }
     },
@@ -37,7 +37,7 @@
       "question": "Preço médio dos últimos 6 meses do HGLG11",
       "expected": {
         "intent": "precos",
-        "entity": "fiis_precos",
+        "entity": "fiis_quota_prices",
         "aggregates": { "agg": "avg", "window": "months:6" }
       }
     },
@@ -45,7 +45,7 @@
       "question": "Liste os últimos 24 preços do KNRI11",
       "expected": {
         "intent": "precos",
-        "entity": "fiis_precos",
+        "entity": "fiis_quota_prices",
         "aggregates": { "agg": "list", "window": "count:24", "limit": 24, "order": "desc" }
       }
     }

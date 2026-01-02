@@ -31,7 +31,7 @@ A entidade `client_fiis_enriched_portfolio` representa a **foto consolidada da c
 
 - **Relacionamentos típicos**:
   - Pode ser combinada com entidades públicas por `ticker`, como:
-    - `fiis_precos` (histórico de preços),
+    - `fiis_quota_prices` (histórico de preços),
     - `fiis_financials_risk` (métricas de risco públicas),
     - `fiis_financials_snapshot` (indicadores financeiros do fundo),
     - `fiis_registrations` / `fiis_overview` (identidade e cadastro do fundo).

@@ -1,5 +1,5 @@
 """
-Audit script for diagnosing multi-ticker queries on fiis_precos.
+Audit script for diagnosing multi-ticker queries on fiis_quota_prices.
 
 It runs the full planner -> orchestrator -> executor pipeline for the
 question "Como está o KNRI11 e o XPLG11 hoje?" and records the SQL,
@@ -109,14 +109,20 @@ def _rank_hypotheses(
         if len(set(iter_tickers)) == 1:
             return ["H1", "H2", "H3", "H4", "H5"]
 
-        param_blobs = [json.dumps(it.get("params", {}), sort_keys=True) for it in loop_iterations]
+        param_blobs = [
+            json.dumps(it.get("params", {}), sort_keys=True) for it in loop_iterations
+        ]
         if len(set(param_blobs)) == 1:
             return ["H2", "H3", "H4", "H5", "H1"]
 
     unique_per_call = [
         tuple(call.get("rows_unique_tickers") or []) for call in executor_calls
     ]
-    if unique_per_call and len(set(unique_per_call)) == 1 and len(unique_per_call[0]) == 1:
+    if (
+        unique_per_call
+        and len(set(unique_per_call)) == 1
+        and len(unique_per_call[0]) == 1
+    ):
         return ["H5", "H4", "H3", "H2", "H1"]
 
     return ["H3", "H2", "H4", "H1", "H5"]
@@ -136,9 +142,13 @@ def run_audit() -> Tuple[Dict[str, Any], Dict[str, Any]]:
     orchestrator_original_build = orchestrator_module.build_select_for_entity
 
     def wrapped_build_select_for_entity(
-        entity: str, identifiers: Dict[str, Any], agg_params: Dict[str, Any] | None = None
+        entity: str,
+        identifiers: Dict[str, Any],
+        agg_params: Dict[str, Any] | None = None,
     ):
-        sql, params, result_key, columns = original_build(entity, identifiers, agg_params)
+        sql, params, result_key, columns = original_build(
+            entity, identifiers, agg_params
+        )
         loop_iterations.append(
             {
                 "ticker": identifiers.get("ticker"),

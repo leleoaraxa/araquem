@@ -9,19 +9,19 @@ Serve como **fonte de consulta e validação cruzada** dos cálculos historicame
 
 | Indicador lógico | Métrica (`metric`) | Origem de dados | Observações |
 | ---------------- | ------------------ | --------------- | ----------- |
-| Beta Índice | `risk.beta_index` | Séries de preços do FII (`fiis_precos`) + benchmark IFIX | Projeção ajusta janela e índice.
-| Sharpe Ratio | `risk.sharpe_ratio` | Preços do FII (`fiis_precos`) + taxa livre (`CDI`) | Considera retorno excedente diário.
-| Sortino Ratio | `risk.sortino_ratio` | Preços do FII (`fiis_precos`) + `CDI` | Penaliza apenas downside volatility.
-| Treynor Ratio | `risk.treynor_ratio` | Preços do FII (`fiis_precos`) + IFIX + `CDI` | Usa beta projetado para ajuste de risco sistemático.
-| Alpha de Jensen | `risk.jensen_alpha` | Preços do FII (`fiis_precos`) + IFIX + `CDI` | Calculado sobre a janela parametrizada.
-| Volatility Ratio | `risk.volatility_ratio` | Preços do FII (`fiis_precos`) + IFIX | Compara volatilidade do fundo vs. índice.
-| Max Drawdown (MDD) | `risk.max_drawdown` | Preços do FII (`fiis_precos`) | Avalia pior perda no período solicitado.
-| R² | `risk.r_squared` | Preços do FII (`fiis_precos`) + IFIX | Coeficiente de determinação do ajuste linear.
+| Beta Índice | `risk.beta_index` | Séries de preços do FII (`fiis_quota_prices`) + benchmark IFIX | Projeção ajusta janela e índice.
+| Sharpe Ratio | `risk.sharpe_ratio` | Preços do FII (`fiis_quota_prices`) + taxa livre (`CDI`) | Considera retorno excedente diário.
+| Sortino Ratio | `risk.sortino_ratio` | Preços do FII (`fiis_quota_prices`) + `CDI` | Penaliza apenas downside volatility.
+| Treynor Ratio | `risk.treynor_ratio` | Preços do FII (`fiis_quota_prices`) + IFIX + `CDI` | Usa beta projetado para ajuste de risco sistemático.
+| Alpha de Jensen | `risk.jensen_alpha` | Preços do FII (`fiis_quota_prices`) + IFIX + `CDI` | Calculado sobre a janela parametrizada.
+| Volatility Ratio | `risk.volatility_ratio` | Preços do FII (`fiis_quota_prices`) + IFIX | Compara volatilidade do fundo vs. índice.
+| Max Drawdown (MDD) | `risk.max_drawdown` | Preços do FII (`fiis_quota_prices`) | Avalia pior perda no período solicitado.
+| R² | `risk.r_squared` | Preços do FII (`fiis_quota_prices`) + IFIX | Coeficiente de determinação do ajuste linear.
 | Soma de dividendos | `dividends.dividends_sum` | Pagamentos (`fiis_dividends`) | Agrega valores do período/janela.
 | Contagem de dividendos | `dividends.dividends_count` | Pagamentos (`fiis_dividends`) | Número de eventos na janela.
-| DY médio | `dividends.dy_avg` | Dividendos (`fiis_dividends`) + preços (`fiis_precos`) | Calcula yield médio ponderado.
-| Preço médio | `prices.price_avg` | Preços do FII (`fiis_precos`) | Média de fechamento ajustada pelo período.
-| Retorno no período | `prices.return_period` | Preços do FII (`fiis_precos`) + `CDI` (para comparação opcional) | Percentual acumulado solicitado.
+| DY médio | `dividends.dy_avg` | Dividendos (`fiis_dividends`) + preços (`fiis_quota_prices`) | Calcula yield médio ponderado.
+| Preço médio | `prices.price_avg` | Preços do FII (`fiis_quota_prices`) | Média de fechamento ajustada pelo período.
+| Retorno no período | `prices.return_period` | Preços do FII (`fiis_quota_prices`) + `CDI` (para comparação opcional) | Percentual acumulado solicitado.
 
 **Sumário**
 - [1. Beta Índice](#-1-beta-índice)

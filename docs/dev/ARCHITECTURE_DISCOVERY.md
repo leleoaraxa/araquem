@@ -81,7 +81,7 @@ data/
             projection_fiis_financials_snapshot.json
             projection_fiis_real_estate.json
             projection_fiis_news.json
-            projection_fiis_precos.json
+            projection_fiis_quota_prices.json
             projection_fiis_processos.json
             projection_fiis_rankings.json
             projection_history_b3_indexes.json
@@ -89,8 +89,8 @@ data/
             projection_history_market_indicators.json
             routing_samples.json
     entities/
-        fiis_precos/
-            fiis_precos.yaml
+        fiis_quota_prices/
+            fiis_quota_prices.yaml
             templates.md
             responses/
                 table.md.j2
@@ -171,7 +171,7 @@ data/
             fiis_financials_snapshot.schema.yaml
             fiis_real_estate.schema.yaml
             fiis_news.schema.yaml
-            fiis_precos.schema.yaml
+            fiis_quota_prices.schema.yaml
             fiis_processos.schema.yaml
             fiis_rankings.schema.yaml
             history_b3_indexes.schema.yaml
@@ -318,7 +318,7 @@ docs/
             fiis_financials_snapshot.csv
             fiis_real_estate.csv
             fiis_news.csv
-            fiis_precos.csv
+            fiis_quota_prices.csv
             fiis_processos.csv
             fiis_rankings.csv
         ddls/

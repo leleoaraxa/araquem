@@ -33,7 +33,7 @@ routing:
   - client_fiis_performance_vs_benchmark
   - client_fiis_performance_vs_benchmark_summary
   - fiis_registrations
-  - fiis_precos
+  - fiis_quota_prices
   - fiis_dividends
   - fiis_yield_history
   - fiis_real_estate

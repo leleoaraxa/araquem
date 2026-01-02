@@ -1,7 +1,7 @@
 {
   "timestamp": "2025-12-05T16:15:35.885109+00:00",
   "entities": {
-    "fiis_precos": {
+    "fiis_quota_prices": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_news": [
@@ -198,7 +198,7 @@
         "fiis_dividends": [
           "mes"
         ],
-        "fiis_precos": [
+        "fiis_quota_prices": [
           "hoje"
         ],
         "history_b3_indexes": [
@@ -325,7 +325,7 @@
           "atualizacao",
           "hoje"
         ],
-        "fiis_precos": [
+        "fiis_quota_prices": [
           "hoje",
           "ontem"
         ],
@@ -377,7 +377,7 @@
         "fiis_news": [
           "hoje"
         ],
-        "fiis_precos": [
+        "fiis_quota_prices": [
           "fechamento",
           "hoje",
           "ontem",
@@ -427,7 +427,7 @@
         "fiis_news": [
           "hoje"
         ],
-        "fiis_precos": [
+        "fiis_quota_prices": [
           "cotacao",
           "hoje",
           "ontem",

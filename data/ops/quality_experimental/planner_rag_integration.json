@@ -6,7 +6,7 @@
   "samples": [
     { "question": "cnpj do MCCI11",  "expect": { "entity_prefix": "fiis_registrations"   } },
     { "question": "dividendos do HGLG11", "expect": { "entity_prefix": "fiis_dividends" } },
-    { "question": "preço do MXRF11", "expect": { "entity_prefix": "fiis_precos"     } },
+    { "question": "preço do MXRF11", "expect": { "entity_prefix": "fiis_quota_prices"     } },
     { "question": "ranking de usuarios do HGLG11", "expect": { "entity_prefix": "fiis_rankings" } }
   ]
 }

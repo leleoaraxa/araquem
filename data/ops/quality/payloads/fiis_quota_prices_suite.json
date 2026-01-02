@@ -1,0 +1,76 @@
+{
+  "suite": "fiis_quota_prices",
+  "description": "Suíte de testes para fiis_quota_prices — preço hoje, ontem, max/min, variação, ticker sem 11",
+  "payloads": [
+    {
+      "question": "Como está o KNRI11 e o XPLG11 hoje?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Como está VINO agora?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Me mostra o preço do VINO11 agora",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Máxima e mínima do MXRF11 em 27/10/2025",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Mínima do HGLG11 no dia 27/10/2025",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "O HGLG11 subiu ou caiu hoje?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Preço de fechamento de ontem do KNRI11",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Qual a cotação atual do KNRI11?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Qual foi a cotação de ontem do VISC11?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Qual foi a máxima do HGLG11 em 27/10/2025?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Qual foi o último preço negociado de XPLG11?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Quanto está o HGLG11 hoje?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Quanto fechou o HGLG11 ontem?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Quanto o KNRI11 variou hoje em porcentagem?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    }
+  ]
+}

@@ -15,7 +15,7 @@
       "fiis_financials_snapshot",
       "fiis_real_estate",
       "fiis_news",
-      "fiis_precos",
+      "fiis_quota_prices",
       "fiis_processos",
       "fiis_rankings",
       "fiis_yield_history",
@@ -39,7 +39,7 @@
       "fiis_financials_snapshot",
       "fiis_real_estate",
       "fiis_news",
-      "fiis_precos",
+      "fiis_quota_prices",
       "fiis_processos",
       "fiis_rankings",
       "fiis_yield_history",
@@ -63,7 +63,7 @@
       "fiis_financials_snapshot",
       "fiis_real_estate",
       "fiis_news",
-      "fiis_precos",
+      "fiis_quota_prices",
       "fiis_processos",
       "fiis_rankings",
       "fiis_yield_history",
@@ -89,7 +89,7 @@
       "fiis_financials_snapshot",
       "fiis_real_estate",
       "fiis_news",
-      "fiis_precos",
+      "fiis_quota_prices",
       "fiis_processos",
       "fiis_rankings",
       "fiis_yield_history",
@@ -206,14 +206,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_precos",
+        "entity": "fiis_quota_prices",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_precos",
+        "entity": "fiis_quota_prices",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -1050,7 +1050,7 @@
         "ok": true
       }
     },
-    "fiis_precos": {
+    "fiis_quota_prices": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -1059,18 +1059,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_precos",
+        "fiis_quota_prices",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_precos/fiis_precos.yaml"
+          "path": "data/entities/fiis_quota_prices/fiis_quota_prices.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_precos.schema.yaml"
+          "path": "data/contracts/entities/fiis_quota_prices.schema.yaml"
         }
       },
       "policies": {
@@ -1083,7 +1083,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_precos"
+            "fiis_quota_prices"
           ],
           "missing_intents": [
             "ticker_query"

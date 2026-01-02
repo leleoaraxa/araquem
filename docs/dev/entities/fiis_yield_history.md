@@ -58,13 +58,13 @@ Palavras-chave importantes que puxam esta entidade (junto com um ticker):
 
 Aqui é onde costumam acontecer colisões semânticas:
 
-### 3.1. Perguntas de **preço/cotação** → fiis_precos
+### 3.1. Perguntas de **preço/cotação** → fiis_quota_prices
 
 - “Quanto está o HGLG11 hoje?”
 - “Como está o MXRF11 na B3 agora?”
 - “Preço histórico do VISC11.”
 
-Mesmo se o usuário não falar a palavra “preço” explicitamente, mas estiver perguntando **“quanto está”**, o destino é **fiis_precos**, nunca fiis_yield_history.
+Mesmo se o usuário não falar a palavra “preço” explicitamente, mas estiver perguntando **“quanto está”**, o destino é **fiis_quota_prices**, nunca fiis_yield_history.
 
 ---
 
@@ -206,7 +206,7 @@ A suíte `fiis_yield_history_suite.json` deve garantir:
      - “dividendos e dy”, “dividendos e yield”, “dy e dividendos”
      - “meus fiis”, “minha carteira”
      - “quanto está”, “preço hoje”
-   - Para evitar que fiis_yield_history concorra com **fiis_dividends_yields**, **client_fiis_enriched_portfolio** ou **fiis_precos**.
+   - Para evitar que fiis_yield_history concorra com **fiis_dividends_yields**, **client_fiis_enriched_portfolio** ou **fiis_quota_prices**.
 
 6. **Integração com o quality gate**
    - Ao rodar:

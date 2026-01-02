@@ -17,7 +17,7 @@
 | fiis_financials_risk | PASS | Cobertura completa |
 | fiis_real_estate | PASS | Cobertura completa |
 | fiis_news | PASS | Cobertura completa |
-| fiis_precos | PASS | Cobertura completa |
+| fiis_quota_prices | PASS | Cobertura completa |
 | fiis_processos | PASS | Cobertura completa |
 | fiis_rankings | PASS | Cobertura completa |
 | history_b3_indexes | PASS | Cobertura completa |
@@ -395,7 +395,7 @@ Nenhum ajuste em templates foi necessário.
 | created_at | datetime | Y | datetime_br | - |
 | updated_at | datetime | Y | datetime_br | - |
 
-### fiis_precos
+### fiis_quota_prices
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

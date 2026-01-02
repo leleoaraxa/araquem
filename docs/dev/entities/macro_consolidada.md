@@ -107,7 +107,7 @@ Use `macro_consolidada` quando a pergunta for sobre:
 
 1. **Preço ou indicadores de FIIs específicos**
    - Perguntas com `ticker` focadas em preço, DY, dividendos, vacância, etc.
-   - Ex.: “Quanto está o HGLG11 hoje?” → `fiis_precos`, não `macro_consolidada`.
+   - Ex.: “Quanto está o HGLG11 hoje?” → `fiis_quota_prices`, não `macro_consolidada`.
    - Ex.: “Qual o DY do MXRF11 nos últimos 12 meses?” → `fiis_yield_history`.
 
 2. **Carteira do cliente ou performance personalizada**

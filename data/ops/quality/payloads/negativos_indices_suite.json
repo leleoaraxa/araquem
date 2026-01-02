@@ -1,6 +1,6 @@
 {
   "suite": "negativos_indices",
-  "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_precos",
+  "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_quota_prices",
   "payloads": [
     {
       "question": "Qual foi o fechamento do IBOV ontem?",

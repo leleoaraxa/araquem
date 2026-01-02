@@ -50,7 +50,7 @@ policies:
     scope: pub
     key_fields:
     - ticker
-  fiis_precos:
+  fiis_quota_prices:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

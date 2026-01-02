@@ -92,7 +92,7 @@ A entidade `fiis_registrations` é ativada pela intent homônima:
     - `numero de cotas emitidas do <ticker>`
     - `numero de cotistas do <ticker>`
 
-A ontologia exclui termos relacionados a **preço, dividendos, risco, ranking, vacância, DY, notícias, etc.**, para evitar colisão com outras intents como `fiis_precos`, `fiis_dividends`, `fiis_financials_snapshot`, `fiis_rankings`, `fiis_real_estate`, `fiis_news`.
+A ontologia exclui termos relacionados a **preço, dividendos, risco, ranking, vacância, DY, notícias, etc.**, para evitar colisão com outras intents como `fiis_quota_prices`, `fiis_dividends`, `fiis_financials_snapshot`, `fiis_rankings`, `fiis_real_estate`, `fiis_news`.
 
 ---
 

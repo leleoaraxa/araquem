@@ -71,12 +71,12 @@ include:
     tags: [entities, fiis, dividendos, "entity:fiis_dividends"]
 
   - id: entity-fiis-precos
-    path: data/entities/fiis_precos/fiis_precos.yaml
-    tags: [entities, fiis, precos, "entity:fiis_precos"]
+    path: data/entities/fiis_quota_prices/fiis_quota_prices.yaml
+    tags: [entities, fiis, precos, "entity:fiis_quota_prices"]
 
   - id: entity-fiis-precos-hints
-    path: data/entities/fiis_precos/hints.md
-    tags: [entities, fiis, precos, "entity:fiis_precos"]
+    path: data/entities/fiis_quota_prices/hints.md
+    tags: [entities, fiis, precos, "entity:fiis_quota_prices"]
 
   - id: entity-fiis-rankings
     path: data/entities/fiis_rankings/fiis_rankings.yaml
@@ -239,7 +239,7 @@ include:
     tags: [quality, projection, dividendos]
 
   - id: q-projection-precos
-    path: data/ops/quality/projection_fiis_precos.json
+    path: data/ops/quality/projection_fiis_quota_prices.json
     tags: [quality, projection, precos]
 
   - id: q-projection-rankings

@@ -54,7 +54,7 @@ Essas perguntas são exatamente as que aparecem (e variam) nos `sample_questions
 O Planner **não** deve usar `fiis_processos` quando:
 
 1. A pergunta é sobre **desempenho, preço, dividendos ou yield**:
-   - “Quanto está o ALMI11 hoje?” → `fiis_precos`
+   - “Quanto está o ALMI11 hoje?” → `fiis_quota_prices`
    - “Quanto o ALMI11 pagou de dividendos esse mês?” → `fiis_dividends`
    - “Qual o DY do ALMI11 em 2024?” → `fiis_yield_history` ou `fiis_dividends_yields` (conforme o caso).
 
@@ -144,7 +144,7 @@ Esses exemplos devem ser coerentes com:
   `processo`, `processos`, `judicial`, `judiciais`, `acao`, `acoes`, `andamento`, `status`, `perda`, `condenacao`, `indenizacao`, `valor da causa` etc.
 - A ontologia já exclui termos de risco quantitativo, preço, dividendos, ranking e notícias para evitar colisões com:
   - `fiis_financials_risk`
-  - `fiis_precos`
+  - `fiis_quota_prices`
   - `fiis_dividends` / `fiis_yield_history`
   - `fiis_news`
 - Em caso de dúvida entre **risco jurídico** x **risco quantitativo de mercado**:

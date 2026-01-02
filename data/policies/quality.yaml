@@ -19,7 +19,7 @@ quality_gates:
     max_misses_absolute: 30
     max_misses_ratio: 0.1
 datasets:
-  fiis_precos:
+  fiis_quota_prices:
     freshness:
       max_age_hours: 30
     not_null:

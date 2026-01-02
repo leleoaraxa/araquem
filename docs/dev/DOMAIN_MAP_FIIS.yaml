@@ -18,11 +18,11 @@ intents:
       - "qual a classificação do KNRI11?"
       - "peso do VISC11 no IFIX"
 
-  fiis_precos:
+  fiis_quota_prices:
     description: "Histórico diário de preços da cota do FII."
     domain_block: D4
     entities:
-      - fiis_precos
+      - fiis_quota_prices
     ui_pages:
       - fii_detail
       - calculators.asset_simulator

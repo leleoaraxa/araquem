@@ -226,7 +226,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 * `fiis_financials_revenue_schedule`
 * `fiis_overview`
 * `fiis_dividends`
-* `fiis_precos`
+* `fiis_quota_prices`
 * `fiis_yield_history`
 * `fiis_dividends_yields`
 * `fiis_real_estate` (quando a intenção é “imóveis desse fundo”)

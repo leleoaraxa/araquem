@@ -1489,7 +1489,7 @@
       }
     },
     {
-      "entity_id": "fiis_precos",
+      "entity_id": "fiis_quota_prices",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -1556,7 +1556,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_precos.json",
+              "data/ops/quality/projection_fiis_quota_prices.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

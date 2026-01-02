@@ -71,9 +71,9 @@ Essas perguntas se alinham diretamente a:
 O Planner **não** deve usar `fiis_rankings` quando a pergunta for sobre:
 
 1. **Preço / cotação / variação diária**:
-   - “Quanto está o HGLG11 hoje?” → `fiis_precos`
+   - “Quanto está o HGLG11 hoje?” → `fiis_quota_prices`
    - “Quais FIIs mais subiram hoje?”
-     *(apesar de parecer um ranking, é ranking de preço diário → hoje está mais próximo de `fiis_precos` / futura entidade intraday; por ora, evitar empurrar tudo para `fiis_rankings` se o foco for preço.)*
+     *(apesar de parecer um ranking, é ranking de preço diário → hoje está mais próximo de `fiis_quota_prices` / futura entidade intraday; por ora, evitar empurrar tudo para `fiis_rankings` se o foco for preço.)*
 
 2. **Dividendos ou yield de um FII específico (nível absoluto)**:
    - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividends`
@@ -164,7 +164,7 @@ Essas perguntas são coerentes com:
   - “ranking”, “rank”, “posição”, “posicao”, “top”, “melhores”, “piores”, “maiores”, “menores”, “destaques”, “campeões”, “lanternas”;
   - menções a Sharpe, Sortino, volatilidade, drawdown, DY 12m, dividendos 12m etc., quando o foco é **ranking global** e não um único fundo.
 - Anti-conflitos relevantes:
-  - Termos de preço puro (quanto está, cotação, variação diária) → `fiis_precos`.
+  - Termos de preço puro (quanto está, cotação, variação diária) → `fiis_quota_prices`.
   - Termos de snapshot financeiro (PL, VP/cota, vacância, caixa) → `fiis_financials_snapshot`.
   - Termos de fluxo de dividendos (“quanto pagou”, “dividendos do HGLG11 em…”) → `fiis_dividends`, `fiis_yield_history`, `fiis_dividends_yields`.
 

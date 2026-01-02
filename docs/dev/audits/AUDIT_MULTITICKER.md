@@ -6,7 +6,7 @@ Command: python scripts/audit/audit_multiticker.py
 
 | label | question | status.reason | gate.reason | gate.top2_gap | gate.min_gap | gate.min_score | intent | entity | result_key | intent_gap_base | intent_gap_final | thr_min_score | thr_min_gap | thr_gap | thr_accepted | thr_source | answer |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| mt_factual_prices | preço de HGLG11 e KNRI11 | ok | None | None | None | None | fiis_precos | fiis_precos | precos_fii | 4.4 | 3.6466989254605355 | 0.9 | 0.0 | 3.6466989254605355 | True | final | | Data | Código | Preço de fechamento (R$) | Preço ajusta... |
+| mt_factual_prices | preço de HGLG11 e KNRI11 | ok | None | None | None | None | fiis_quota_prices | fiis_quota_prices | precos_fii | 4.4 | 3.6466989254605355 | 0.9 | 0.0 | 3.6466989254605355 | True | final | | Data | Código | Preço de fechamento (R$) | Preço ajusta... |
 | mt_factual_dividends | dividendos de HGLG11, KNRI11 e MXRF11 | ok | None | None | None | None | fiis_dividends | fiis_dividends | dividendos_fii | 1.1 | 1.0521463818279453 | 0.9 | 0.15 | 1.0521463818279453 | True | final | **Dividendos de MXRF11**
 
     Último pagamento em 12/12/2... |

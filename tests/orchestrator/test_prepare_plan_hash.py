@@ -5,7 +5,7 @@ import pytest
 from app.orchestrator import routing
 
 
-def _plan(entity: str = "fiis_precos", bucket: str = "") -> dict:
+def _plan(entity: str = "fiis_quota_prices", bucket: str = "") -> dict:
     return {
         "chosen": {
             "intent": "ticker_query",
@@ -28,7 +28,9 @@ def _orchestrator(plan: dict) -> routing.Orchestrator:
     return routing.Orchestrator(planner=planner, executor=executor)
 
 
-def test_plan_hash_changes_with_inferred_params(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_plan_hash_changes_with_inferred_params(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     plan = _plan()
     orchestrator = _orchestrator(plan)
 
@@ -57,7 +59,9 @@ def test_plan_hash_changes_with_inferred_params(monkeypatch: pytest.MonkeyPatch)
 def test_plan_hash_changes_with_last_reference(monkeypatch: pytest.MonkeyPatch) -> None:
     plan = _plan()
     orchestrator = _orchestrator(plan)
-    monkeypatch.setattr(routing, "infer_params", lambda **kwargs: {"metric": "close_price"})
+    monkeypatch.setattr(
+        routing, "infer_params", lambda **kwargs: {"metric": "close_price"}
+    )
 
     bundle_a = orchestrator.prepare_plan(
         "preço do fundo",
@@ -77,10 +81,14 @@ def test_plan_hash_changes_with_last_reference(monkeypatch: pytest.MonkeyPatch) 
     assert bundle_a["plan_hash"] != bundle_b["plan_hash"]
 
 
-def test_plan_hash_changes_between_single_and_multi(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_plan_hash_changes_between_single_and_multi(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     plan = _plan()
     orchestrator = _orchestrator(plan)
-    monkeypatch.setattr(routing, "infer_params", lambda **kwargs: {"metric": "close_price"})
+    monkeypatch.setattr(
+        routing, "infer_params", lambda **kwargs: {"metric": "close_price"}
+    )
 
     single = orchestrator.prepare_plan(
         "preço do HGLG11",

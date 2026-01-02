@@ -47,24 +47,24 @@ samples:
   - { question: "cnpj do administrador do MCCI11",       expected_intent: fiis_registrations, expected_entity: fiis_registrations }
   - { question: "qual o custodiante do MCCI11",          expected_intent: fiis_registrations, expected_entity: fiis_registrations }
   - { question: "url oficial do MCCI11",                 expected_intent: fiis_registrations, expected_entity: fiis_registrations }
-  - { question: "preço do CXTL11 em 2025-10-27",               expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "cotação do CXTL11 em 2025-10-27",             expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "abertura do CXTL11 em 2025-10-27",            expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "máxima do CXTL11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "mínima do CXTL11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "variação diária (%) do CXTL11 em 2025-10-27", expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "preço do FPAB11 em 2025-10-27",               expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "cotação do FPAB11 em 2025-10-27",             expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "abertura do FPAB11 em 2025-10-27",            expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "máxima do FPAB11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "mínima do FPAB11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "variação diária (%) do FPAB11 em 2025-10-27", expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "preço do HGLG11 em 2025-10-27",               expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "cotação do HGLG11 em 2025-10-27",             expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "abertura do HGLG11 em 2025-10-27",            expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "máxima do HGLG11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "mínima do HGLG11 em 2025-10-27",              expected_intent: fiis_precos, expected_entity: fiis_precos }
-  - { question: "variação diária (%) do HGLG11 em 2025-10-27", expected_intent: fiis_precos, expected_entity: fiis_precos }
+  - { question: "preço do CXTL11 em 2025-10-27",               expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "cotação do CXTL11 em 2025-10-27",             expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "abertura do CXTL11 em 2025-10-27",            expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "máxima do CXTL11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "mínima do CXTL11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "variação diária (%) do CXTL11 em 2025-10-27", expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "preço do FPAB11 em 2025-10-27",               expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "cotação do FPAB11 em 2025-10-27",             expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "abertura do FPAB11 em 2025-10-27",            expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "máxima do FPAB11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "mínima do FPAB11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "variação diária (%) do FPAB11 em 2025-10-27", expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "preço do HGLG11 em 2025-10-27",               expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "cotação do HGLG11 em 2025-10-27",             expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "abertura do HGLG11 em 2025-10-27",            expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "máxima do HGLG11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "mínima do HGLG11 em 2025-10-27",              expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
+  - { question: "variação diária (%) do HGLG11 em 2025-10-27", expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
   - { question: "dividendos do CXTL11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
   - { question: "proventos do CXTL11",   expected_intent: fiis_dividends, expected_entity: fiis_dividends }
   - { question: "rendimento do CXTL11",  expected_intent: fiis_dividends, expected_entity: fiis_dividends }
@@ -117,7 +117,7 @@ samples:
   - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
   - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
   - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
-  - { question: "variação diária do XPML11 nos últimos 5 pregões",      expected_intent: fiis_precos, expected_entity: fiis_precos }
+  - { question: "variação diária do XPML11 nos últimos 5 pregões",      expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
   - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }

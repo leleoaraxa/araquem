@@ -14,15 +14,15 @@
     },
     {
       "question": "quem é o administrador do HGLG11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "endereço dos imóveis do RBVA11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "processos do SCPF11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "preço do MALL11 agora",
@@ -86,19 +86,19 @@
     },
     {
       "question": "alavancagem do HGRU11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "estrutura de recebíveis do VISC11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "beta do HGLG11",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "minhas posições",
-      "not_intent": "fiis_precos"
+      "not_intent": "fiis_quota_prices"
     },
     {
       "question": "minhas posições cpf 000",

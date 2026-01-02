@@ -241,30 +241,30 @@
       ]
     },
     {
-      "intent": "fiis_precos",
+      "intent": "fiis_quota_prices",
       "issue": "token_collision",
       "token": "cotacao",
       "conflicts": [
-        "fiis_precos",
+        "fiis_quota_prices",
         "history_currency_rates"
       ]
     },
     {
-      "intent": "fiis_precos",
+      "intent": "fiis_quota_prices",
       "issue": "token_collision",
       "token": "variacao",
       "conflicts": [
-        "fiis_precos",
+        "fiis_quota_prices",
         "history_b3_indexes",
         "history_currency_rates"
       ]
     },
     {
-      "intent": "fiis_precos",
+      "intent": "fiis_quota_prices",
       "issue": "token_collision",
       "token": "fechamento",
       "conflicts": [
-        "fiis_precos",
+        "fiis_quota_prices",
         "history_b3_indexes"
       ]
     },
@@ -274,18 +274,18 @@
       "token": "hoje",
       "conflicts": [
         "fiis_news",
-        "fiis_precos",
+        "fiis_quota_prices",
         "history_b3_indexes",
         "history_currency_rates",
         "history_market_indicators"
       ]
     },
     {
-      "intent": "fiis_precos",
+      "intent": "fiis_quota_prices",
       "issue": "token_collision",
       "token": "ontem",
       "conflicts": [
-        "fiis_precos",
+        "fiis_quota_prices",
         "history_b3_indexes",
         "history_currency_rates",
         "history_market_indicators"

@@ -54,7 +54,9 @@ def test_route_question_runs_single_select_when_multi_supported_batch(
     instrumentation.set_backend(_DummyBackend())
 
     planner = MagicMock()
-    planner.explain.return_value = _plan_with_bucket(bucket="", entity="fiis_precos")
+    planner.explain.return_value = _plan_with_bucket(
+        bucket="", entity="fiis_quota_prices"
+    )
 
     executor = MagicMock()
     captured_identifiers = {}

@@ -286,7 +286,7 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
 
-    fiis_precos:
+    fiis_quota_prices:
       # Desliga LLM: foi o principal causador de 40s+ nos testes (prefácio não compensa).
       llm_enabled: false
       shadow: false

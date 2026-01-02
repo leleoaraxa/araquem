@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_quota_prices",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_quota_prices.",
+  "payloads": [
+    {
+      "id": "fiis_quota_prices-q1",
+      "question": "Qual foi o preço de fechamento do HGLG11 no último pregão (cotação D-1)?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "id": "fiis_quota_prices-q2",
+      "question": "Qual foi a variação percentual diária do MXRF11 no pregão de 2024-12-27?",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "id": "fiis_quota_prices-q3",
+      "question": "Mostre abertura, máxima, mínima e fechamento do KNRI11 em 2024-11-15",
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
+    }
+  ]
+}

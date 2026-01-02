@@ -89,7 +89,7 @@ Mesma natureza do overview (dados cadastrais).
 
 ---
 
-### **📌 fiis_precos**
+### **📌 fiis_quota_prices**
 
 **Tipo:** 1xN
 **Cobertura:** histórico de cotações

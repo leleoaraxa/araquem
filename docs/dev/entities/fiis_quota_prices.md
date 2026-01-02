@@ -1,4 +1,4 @@
-# Entidade: `fiis_precos`
+# Entidade: `fiis_quota_prices`
 
 ## 1. Objetivo da entidade
 
@@ -14,7 +14,7 @@ Foco primário: **perguntas de preço/cotação em janelas curtas (hoje, ontem, 
 
 ## 2. Perguntas típicas (CANON)
 
-Perguntas que **devem** ser roteadas para `fiis_precos`:
+Perguntas que **devem** ser roteadas para `fiis_quota_prices`:
 
 1. "Quanto está o HGLG11 hoje?"
 2. "Qual a cotação atual do KNRI11?"
@@ -38,7 +38,7 @@ Essas perguntas devem ter:
 
 ## 3. Perguntas que NÃO são desta entidade (contraexemplos)
 
-Exemplos de perguntas que **não** devem cair em `fiis_precos`:
+Exemplos de perguntas que **não** devem cair em `fiis_quota_prices`:
 
 - Índices / macro:
   - "Quanto está o IFIX hoje?" → `history_b3_indexes`
@@ -59,7 +59,7 @@ Exemplos de perguntas que **não** devem cair em `fiis_precos`:
 
 ## 4. Tokens principais (positivos)
 
-Tokens e padrões que **reforçam** a intenção `fiis_precos`:
+Tokens e padrões que **reforçam** a intenção `fiis_quota_prices`:
 
 - Termos de preço/cotação:
   - `cotacao`, `preco`, `preço`, `fechamento`, `ultimo preco`, `ultima cotacao`, `ultimo valor`.
@@ -73,14 +73,14 @@ Tokens e padrões que **reforçam** a intenção `fiis_precos`:
 
 Regras de design:
 
-- Se aparecer `AAAA11` + qualquer termo de preço/cotação/variação de curto prazo → forte push para `fiis_precos`.
+- Se aparecer `AAAA11` + qualquer termo de preço/cotação/variação de curto prazo → forte push para `fiis_quota_prices`.
 - Se aparecer `AAAA` sem 11, mas classificado como FII via bucket → tratar semanticamente como `AAAA11`.
 
 ---
 
 ## 5. Anti-tokens e filtros
 
-Palavras que **devem reduzir** o peso de `fiis_precos` quando combinadas com ticker:
+Palavras que **devem reduzir** o peso de `fiis_quota_prices` quando combinadas com ticker:
 
 - Notícias/texto:
   - `noticia`, `noticias`, `fato relevante`, `relatorio`, `comunicado`, `release`, `avisos ao mercado`.
@@ -91,7 +91,7 @@ Palavras que **devem reduzir** o peso de `fiis_precos` quando combinadas com tic
 
 Uso prático:
 
-- Pergunta com `noticias` + `HGLG11` → deve puxar `fiis_news`, e `fiis_precos` recebe penalização.
+- Pergunta com `noticias` + `HGLG11` → deve puxar `fiis_news`, e `fiis_quota_prices` recebe penalização.
 - Pergunta com `risco` + ticker → `fiis_financials_risk` tem prioridade.
 
 ---
@@ -114,7 +114,7 @@ Uso prático:
 
 ---
 
-## 7. Critérios de qualidade para `fiis_precos`
+## 7. Critérios de qualidade para `fiis_quota_prices`
 
 Objetivos mensuráveis:
 
@@ -122,7 +122,7 @@ Objetivos mensuráveis:
   - `top1_accuracy` ≥ 95%;
   - `score_top1` médio ≥ 0.9;
   - `gap_top1_top2` médio ≥ 0.15 contra rivais diretos.
-- Nenhuma pergunta de índices (`IFIX`, `IBOV`, `CDI`, `dólar`) deve cair em `fiis_precos` nos testes de regressão.
+- Nenhuma pergunta de índices (`IFIX`, `IBOV`, `CDI`, `dólar`) deve cair em `fiis_quota_prices` nos testes de regressão.
 
 Quando os critérios **não forem atendidos**:
 
@@ -135,7 +135,7 @@ Quando os critérios **não forem atendidos**:
 ## 8. Checklist operacional de curadoria (para qualquer pessoa da equipe)
 
 1. Rodar o script de qualidade focado em intents relacionadas a preço de FIIs.
-2. Listar todos os misses envolvendo `fiis_precos`.
+2. Listar todos os misses envolvendo `fiis_quota_prices`.
 3. Para cada miss, classificar:
    - `ontologia_fraca` (faltam tokens/anti-tokens);
    - `colisao_com_index` (`history_b3_indexes`, `history_market_indicators`, `history_currency_rates`);

@@ -117,7 +117,7 @@ def _load_policy(
             enabled: true
             max_turns: 2
             allowed_entities:
-              - fiis_precos
+              - fiis_quota_prices
             denied_entities: []
 
           narrator:
@@ -126,7 +126,7 @@ def _load_policy(
             max_turns: 3
             max_chars: 2000
             allowed_entities:
-              - fiis_precos
+              - fiis_quota_prices
             denied_entities: []
 
     Se o arquivo não existir ou estiver inválido, usa DEFAULT_POLICY.

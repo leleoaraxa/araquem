@@ -21,7 +21,7 @@ from scripts.ontology.validate_and_hash import (  # pylint: disable=wrong-import
 REPORT_PATH = REPO_ROOT / "reports" / "ontology" / "collision_report.json"
 
 ENTITY_SCOPE: Tuple[str, ...] = (
-    "fiis_precos",
+    "fiis_quota_prices",
     "fiis_dividends",
     "fiis_yield_history",
     "fiis_financials_risk",

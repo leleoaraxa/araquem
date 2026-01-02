@@ -29,25 +29,25 @@ COLLISION_RULES: Mapping[str, Sequence[str]] = {
     "fiis_financials_snapshot": [
         "fiis_overview",
         "fiis_rankings",
-        "fiis_precos",
+        "fiis_quota_prices",
         "fiis_dividends",
         "fiis_yield_history",
     ],
     "fiis_overview": [
         "fiis_financials_snapshot",
         "fiis_rankings",
-        "fiis_precos",
+        "fiis_quota_prices",
         "fiis_dividends",
         "fiis_yield_history",
     ],
     "fiis_rankings": [
         "fiis_financials_snapshot",
         "fiis_overview",
-        "fiis_precos",
+        "fiis_quota_prices",
         "fiis_dividends",
         "fiis_yield_history",
     ],
-    "fiis_precos": [
+    "fiis_quota_prices": [
         "fiis_financials_snapshot",
         "fiis_overview",
         "fiis_rankings",
@@ -58,14 +58,14 @@ COLLISION_RULES: Mapping[str, Sequence[str]] = {
         "fiis_financials_snapshot",
         "fiis_overview",
         "fiis_rankings",
-        "fiis_precos",
+        "fiis_quota_prices",
         "fiis_yield_history",
     ],
     "fiis_yield_history": [
         "fiis_financials_snapshot",
         "fiis_overview",
         "fiis_rankings",
-        "fiis_precos",
+        "fiis_quota_prices",
         "fiis_dividends",
     ],
 }

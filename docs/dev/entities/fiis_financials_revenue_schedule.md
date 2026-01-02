@@ -49,8 +49,8 @@ Essas perguntas são coerentes com:
 O Planner **não** deve usar `fiis_financials_revenue_schedule` quando:
 
 1. A pergunta é sobre **preço de cota, variação diária ou histórico de preços**:
-   - “Quanto está o HGLG11 hoje?” → `fiis_precos`
-   - “Qual foi a variação do HGLG11 nos últimos 12 meses?” → `fiis_precos` / `fiis_rankings`.
+   - “Quanto está o HGLG11 hoje?” → `fiis_quota_prices`
+   - “Qual foi a variação do HGLG11 nos últimos 12 meses?” → `fiis_quota_prices` / `fiis_rankings`.
 
 2. A pergunta é sobre **dividendos pagos, yield ou histórico de distribuição**:
    - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividends`
@@ -142,7 +142,7 @@ Esses exemplos devem ser coerentes com:
   - menções explícitas a faixas de prazo (“0–3 meses”, “6–9 meses”, “acima de 36 meses”);
   - menções a indexadores (“IPCA”, “IGPM”, “INPC”, “INCC”, “indexadas ao IPCA”).
 - Anti-conflitos relevantes:
-  - Termos de preço (“cota”, “subiu”, “caiu”, “cotação”) → `fiis_precos`.
+  - Termos de preço (“cota”, “subiu”, “caiu”, “cotação”) → `fiis_quota_prices`.
   - Termos de dividendos (“dividendos pagos”, “DY”, “renda mensal”) → `fiis_dividends` / `fiis_yield_history` / `fiis_dividends_yields`.
   - Termos de risco quantitativo (“volatilidade”, “Sharpe”, “drawdown”) → `fiis_financials_risk`.
 - O Builder deve:

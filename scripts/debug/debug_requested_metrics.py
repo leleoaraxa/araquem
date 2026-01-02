@@ -1,4 +1,5 @@
 """Debug helper for requested_metrics extraction and propagation."""
+
 from __future__ import annotations
 
 import json
@@ -68,9 +69,7 @@ def build_case_payload(case_id: str, question: str, entity: str) -> Dict[str, An
             explain=False,
         )
         presenter_meta_requested = presenter_result.facts.requested_metrics
-        narrator_focus = (presenter_result.narrator_meta or {}).get(
-            "focus_metric_key"
-        )
+        narrator_focus = (presenter_result.narrator_meta or {}).get("focus_metric_key")
     except Exception as exc:  # pragma: no cover - debug helper
         notes.append(f"presenter_error={exc}")
 
@@ -91,12 +90,12 @@ def main() -> None:
         {
             "case_id": "case1",
             "question": "Qual o valor de fechamento do XPML11?",
-            "entity": "fiis_precos",
+            "entity": "fiis_quota_prices",
         },
         {
             "case_id": "case2",
             "question": "Me dá preços do XPML11",
-            "entity": "fiis_precos",
+            "entity": "fiis_quota_prices",
         },
         {
             "case_id": "case3",

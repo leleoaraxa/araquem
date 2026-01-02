@@ -11,7 +11,7 @@ DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_registrations;
 DROP VIEW IF EXISTS fiis_dividends;
-DROP VIEW IF EXISTS fiis_precos;
+DROP VIEW IF EXISTS fiis_quota_prices;
 DROP VIEW IF EXISTS fiis_rankings;
 DROP VIEW IF EXISTS fiis_real_estate;
 DROP VIEW IF EXISTS fiis_processos;
@@ -535,13 +535,15 @@ SELECT ticker, fii_cnpj, ticker_full_name as display_name, b3_name, classificati
 	target_market, is_exclusive, isin, ipo_date, website_url, admin_name, admin_cnpj, custodian_name,
 	ifil_weight_pct, ifix_weight_pct, shares_count, shareholders_count, created_at, updated_at
 FROM view_fiis_info;
+
 -- =====================================================================
--- VIEW: fiis_precos
+-- VIEW: fiis_quota_prices
 -- =====================================================================
-CREATE OR REPLACE VIEW fiis_precos AS
+CREATE OR REPLACE VIEW fiis_quota_prices AS
 SELECT ticker, price_date as traded_at, close_price, adj_close_price,
 open_price, max_price, min_price, daily_range_pct as daily_variation_pct, created_at, updated_at
 FROM view_fiis_history_prices;
+
 -- =====================================================================
 -- VIEW: fiis_dividends
 -- =====================================================================
@@ -1135,6 +1137,7 @@ SELECT
   i.updated_at
 FROM view_fiis_info i
 LEFT JOIN fiis_rankings_quant q USING (ticker);
+
 -- =====================================================================
 -- VIEW: fiis_yield_history
 -- =====================================================================
@@ -1162,7 +1165,7 @@ monthly_prices AS (
             fp.traded_at::timestamp              AS traded_ts,
             fp.close_price,
             date_trunc('month', fp.traded_at::timestamp)::date AS month_ref
-        FROM fiis_precos fp
+        FROM fiis_quota_prices fp
     ) p
     ORDER BY
         p.ticker,
@@ -1592,7 +1595,7 @@ ALTER VIEW public.fiis_yield_history OWNER TO edge_user;
 ALTER VIEW public.fiis_markowitz_universe OWNER TO edge_user;
 ALTER VIEW public.fiis_registrations OWNER TO edge_user;
 ALTER VIEW public.fiis_dividends OWNER TO edge_user;
-ALTER VIEW public.fiis_precos OWNER TO edge_user;
+ALTER VIEW public.fiis_quota_prices OWNER TO edge_user;
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 ALTER VIEW public.fiis_real_estate OWNER TO edge_user;
 ALTER VIEW public.fiis_processos OWNER TO edge_user;

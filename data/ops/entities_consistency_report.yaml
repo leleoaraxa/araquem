@@ -158,7 +158,7 @@ entities:
     notes:
     - entidade historical textual; RAG permitido
     - sem bloco de param_inference (janelas tratadas pelo buscador)
-  fiis_precos:
+  fiis_quota_prices:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

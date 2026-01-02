@@ -74,8 +74,8 @@
     "id": "rag-negative-001",
     "description": "Pergunta puramente numérica de preço — NÃO deve acionar RAG",
     "question": "quanto fechou o HGLG11 ontem?",
-    "expected_intent": "fiis_precos",
-    "expected_entity": "fiis_precos",
+    "expected_intent": "fiis_quota_prices",
+    "expected_entity": "fiis_quota_prices",
     "expect_rag_enabled": false,
     "expect_min_chunks": 0
   },

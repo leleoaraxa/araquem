@@ -293,7 +293,9 @@ class TestParamInferenceConfig:
 
         yaml_path = tmp_path / "param_inference_invalid_agg.yaml"
         yaml_path.write_text(
-            yaml.safe_dump({"intents": {"fiis_precos": {"default_agg": "median"}}})
+            yaml.safe_dump(
+                {"intents": {"fiis_quota_prices": {"default_agg": "median"}}}
+            )
         )
 
         with pytest.raises(ValueError, match="default_agg.*desconhecido"):
@@ -304,7 +306,9 @@ class TestParamInferenceConfig:
 
         yaml_path = tmp_path / "param_inference_invalid_window.yaml"
         yaml_path.write_text(
-            yaml.safe_dump({"intents": {"fiis_precos": {"default_window": "ano"}}})
+            yaml.safe_dump(
+                {"intents": {"fiis_quota_prices": {"default_window": "ano"}}}
+            )
         )
 
         with pytest.raises(ValueError, match="default_window.*formato"):
@@ -316,7 +320,7 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_windows_allowed.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {"intents": {"fiis_precos": {"windows_allowed": "months:6"}}}
+                {"intents": {"fiis_quota_prices": {"windows_allowed": "months:6"}}}
             )
         )
 
@@ -328,7 +332,9 @@ class TestParamInferenceConfig:
 
         yaml_path = tmp_path / "param_inference_invalid_agg_priority_type.yaml"
         yaml_path.write_text(
-            yaml.safe_dump({"intents": {"fiis_precos": {"agg_priority": "latest"}}})
+            yaml.safe_dump(
+                {"intents": {"fiis_quota_prices": {"agg_priority": "latest"}}}
+            )
         )
 
         with pytest.raises(ValueError, match="agg_priority.*lista"):
@@ -342,7 +348,7 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_agg_priority_unknown.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {"intents": {"fiis_precos": {"agg_priority": ["avg", "median"]}}}
+                {"intents": {"fiis_quota_prices": {"agg_priority": ["avg", "median"]}}}
             )
         )
 
@@ -357,7 +363,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "agg_priority": ["latest", "list", "avg", "sum"]
                         }
                     }
@@ -377,7 +383,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "agg_keywords": {"median": {"include": ["mediana"]}}
                         }
                     }
@@ -385,7 +391,9 @@ class TestParamInferenceConfig:
             )
         )
 
-        with pytest.raises(ValueError, match="agg 'median' desconhecido.*fiis_precos"):
+        with pytest.raises(
+            ValueError, match="agg 'median' desconhecido.*fiis_quota_prices"
+        ):
             param_inference._load_yaml(yaml_path)
 
     def test_param_inference_invalid_agg_keywords_include_type_raises(
@@ -398,7 +406,9 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {"agg_keywords": {"list": {"include": "listar"}}}
+                        "fiis_quota_prices": {
+                            "agg_keywords": {"list": {"include": "listar"}}
+                        }
                     }
                 }
             )
@@ -419,7 +429,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "agg_keywords": {"list": {"include": ["ok", 123]}}
                         }
                     }
@@ -438,7 +448,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "window_keywords": {"dias": {7: ["ultima semana"]}}
                         }
                     }
@@ -446,7 +456,7 @@ class TestParamInferenceConfig:
             )
         )
 
-        with pytest.raises(ValueError, match="kind desconhecido.*fiis_precos"):
+        with pytest.raises(ValueError, match="kind desconhecido.*fiis_quota_prices"):
             param_inference._load_yaml(yaml_path)
 
     def test_param_inference_invalid_window_keywords_key_not_int_raises(
@@ -461,7 +471,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "window_keywords": {"months": {"zero": ["texto"]}}
                         }
                     }
@@ -484,7 +494,7 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {
+                        "fiis_quota_prices": {
                             "window_keywords": {"months": {"-1": ["texto"]}}
                         }
                     }
@@ -507,7 +517,9 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {"window_keywords": {"months": {6: "texto"}}}
+                        "fiis_quota_prices": {
+                            "window_keywords": {"months": {6: "texto"}}
+                        }
                     }
                 }
             )
@@ -528,7 +540,9 @@ class TestParamInferenceConfig:
             yaml.safe_dump(
                 {
                     "intents": {
-                        "fiis_precos": {"window_keywords": {"months": {6: ["ok", 123]}}}
+                        "fiis_quota_prices": {
+                            "window_keywords": {"months": {6: ["ok", 123]}}
+                        }
                     }
                 }
             )
@@ -545,7 +559,11 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_list_limit.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {"intents": {"fiis_precos": {"defaults": {"list": {"limit": -5}}}}}
+                {
+                    "intents": {
+                        "fiis_quota_prices": {"defaults": {"list": {"limit": -5}}}
+                    }
+                }
             )
         )
 
@@ -558,7 +576,11 @@ class TestParamInferenceConfig:
         yaml_path = tmp_path / "param_inference_invalid_list_order.yaml"
         yaml_path.write_text(
             yaml.safe_dump(
-                {"intents": {"fiis_precos": {"defaults": {"list": {"order": "down"}}}}}
+                {
+                    "intents": {
+                        "fiis_quota_prices": {"defaults": {"list": {"order": "down"}}}
+                    }
+                }
             )
         )
 
@@ -615,12 +637,12 @@ class TestParamInferenceConfig:
             "order": "asc",
         }
 
-    def test_param_inference_canonical_intent_fiis_precos(self):
+    def test_param_inference_canonical_intent_fiis_quota_prices(self):
         result = param_inference.infer_params(
             "Quero listar preços do MXRF11 no semestre",
-            "fiis_precos",
-            entity="fiis_precos",
-            entity_yaml_path="data/entities/fiis_precos/fiis_precos.yaml",
+            "fiis_quota_prices",
+            entity="fiis_quota_prices",
+            entity_yaml_path="data/entities/fiis_quota_prices/fiis_quota_prices.yaml",
             defaults_yaml_path="data/ops/param_inference.yaml",
         )
 
@@ -699,10 +721,10 @@ class TestOntologyLoader:
             "weights": {"token": 1.0, "phrase": 2.0},
             "intents": [
                 {
-                    "name": "fiis_precos",
+                    "name": "fiis_quota_prices",
                     "tokens": {"include": ["preco"], "exclude": []},
                     "phrases": {"include": [], "exclude": []},
-                    "entities": ["fiis_precos"],
+                    "entities": ["fiis_quota_prices"],
                 }
             ],
             "anti_tokens": {"generic": ["fiis"]},
@@ -737,7 +759,7 @@ class TestOntologyLoader:
 
     def test_load_ontology_intents_not_list_raises(self, tmp_path: Path):
         data = self._base_ontology()
-        data["intents"] = {"name": "fiis_precos"}
+        data["intents"] = {"name": "fiis_quota_prices"}
         yaml_path = self._write_ontology(
             tmp_path, data, "ontology_intents_not_list.yaml"
         )
@@ -852,10 +874,10 @@ class TestOntologyLoader:
             "anti_tokens": {"generic": ["fiis", "fundo imobiliario"]},
             "intents": [
                 {
-                    "name": "fiis_precos",
+                    "name": "fiis_quota_prices",
                     "tokens": {"include": ["preco", "cotacao"], "exclude": []},
                     "phrases": {"include": [], "exclude": []},
-                    "entities": ["fiis_precos"],
+                    "entities": ["fiis_quota_prices"],
                 }
             ],
         }
@@ -869,12 +891,12 @@ class TestOntologyLoader:
         assert ontology.anti_tokens["generic"] == ["fiis", "fundo imobiliario"]
         assert len(ontology.intents) == 1
         intent = ontology.intents[0]
-        assert intent.name == "fiis_precos"
+        assert intent.name == "fiis_quota_prices"
         assert set(intent.tokens_include) == {"preco", "cotacao"}
         assert intent.tokens_exclude == []
         assert intent.phrases_include == []
         assert intent.phrases_exclude == []
-        assert intent.entities == ["fiis_precos"]
+        assert intent.entities == ["fiis_quota_prices"]
 
 
 class TestPlannerThresholds:

@@ -78,7 +78,7 @@ a tomar decisões melhores.
 
 ## 4. Preço e Renda: Cotas e Dividendos
 
-### 4.1 Evolução de Preço da Cota (`fiis_precos`)
+### 4.1 Evolução de Preço da Cota (`fiis_quota_prices`)
 
 **O que representa**
 Histórico diário de preço das cotas de cada FII.

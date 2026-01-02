@@ -243,93 +243,93 @@
     },
     {
       "question": "preço do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "cotação do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "abertura do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "máxima do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "mínima do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "variação diária (%) do CXTL11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "preço do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "cotação do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "abertura do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "máxima do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "mínima do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "variação diária (%) do FPAB11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "preço do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "cotação do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "abertura do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "máxima do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "mínima do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "variação diária (%) do HGLG11 em 2025-10-27",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "dividendos do CXTL11",
@@ -593,8 +593,8 @@
     },
     {
       "question": "variação diária do XPML11 nos últimos 5 pregões",
-      "expected_intent": "fiis_precos",
-      "expected_entity": "fiis_precos"
+      "expected_intent": "fiis_quota_prices",
+      "expected_entity": "fiis_quota_prices"
     },
     {
       "question": "o MXRF11 tem processos relevantes",

@@ -22,7 +22,7 @@ Blocos de domínio identificados:
 | client_fiis_positions | client_fiis_positions | Posições do cliente em FIIs, com quantidades e valores por data. | documento do cliente, data da posição, ticker, nome do FII, participante, quantidade, preço de fechamento, variação em valor, quantidade disponível | “quais são minhas posições em FIIs?”, “quantas cotas tenho do MXRF11?”, “carteira de fundos imobiliários por corretora” | não identificado |
 | fiis_registrations | fiis_registrations | Dados cadastrais 1×1 de cada FII: identificação, administração, classificação e participação em índices. | ticker, CNPJ, nome de exibição, nome B3, classificação/setor, tipo de gestão, público-alvo, ISIN, datas e pesos IFIX/IFIL, número de cotas/cotistas | “qual o CNPJ do KNRI11?”, “quem é o administrador do HGLG11?”, “peso do VISC11 no IFIX” | não identificado |
 | fiis_dividends | fiis_dividends | Histórico de proventos pagos por FII com datas e valores por cota. | ticker, data de pagamento, valor do dividendo por cota, data-com | “quando foi pago o último dividendo do MXRF11?”, “qual o valor por cota dos proventos de agosto?” | não identificado |
-| fiis_precos | fiis_precos | Série diária de preços de cotas de FIIs, com OHLC e variação. | ticker, data de negociação, preço de fechamento (ajustado), abertura, máxima, mínima, variação diária | “qual o preço de fechamento do KNRI11 ontem?”, “quanto o HGLG11 variou hoje?” | não identificado |
+| fiis_quota_prices | fiis_quota_prices | Série diária de preços de cotas de FIIs, com OHLC e variação. | ticker, data de negociação, preço de fechamento (ajustado), abertura, máxima, mínima, variação diária | “qual o preço de fechamento do KNRI11 ontem?”, “quanto o HGLG11 variou hoje?” | não identificado |
 | fiis_financials_snapshot | fiis_financials_snapshot | Snapshot D-1 de indicadores financeiros e operacionais do FII. | DY mensal/anual, último dividendo e data, market cap, enterprise value, P/VP, patrimônio e receita por cota, payout, cap rate, alavancagem, caixa, passivos, variação mês/ano | “qual o dividend yield do VISC11?”, “qual a alavancagem do HGRU11?”, “quanto é o market cap do HGLG11?” | não identificado |
 | fiis_financials_risk | fiis_financials_risk | Indicadores de risco (volatilidade e índices de risco-retorno) em D-1. | volatilidade, Sharpe, Treynor, Alfa de Jensen, beta, Sortino, drawdown, R² | “qual o Sharpe do KNRI11?”, “quão volátil está o MXRF11?” | não identificado |
 | fiis_financials_revenue_schedule | fiis_financials_revenue_schedule | Estrutura de vencimento de recebíveis e indexadores de receita. | percentuais de receita por buckets de vencimento (0–3m … >36m/indeterminado), percentuais indexados a IGPM/IPCA/INPC/INCC | “quanto das receitas vence em até 6 meses do HGLG11?”, “qual percentual indexado ao IPCA?” | não identificado |
@@ -59,8 +59,8 @@ Blocos de domínio identificados:
 - **Relações:** complementa preços e snapshots financeiros (DY, payout) para análises de retorno.
 - **Telas/funcionalidades:** não identificado.
 
-### 3.4 fiis_precos
-- **Intent associada:** fiis_precos.
+### 3.4 fiis_quota_prices
+- **Intent associada:** fiis_quota_prices.
 - **Tipo de dado:** série diária OHLC e variação.
 - **Objetivo de negócio:** acompanhar cotação e volatilidade diária dos FIIs.
 - **Principais campos:** ticker, data de negociação, preços de fechamento (ajustado), abertura, máxima, mínima, variação diária.
@@ -164,7 +164,7 @@ Blocos de domínio identificados:
 - **Capítulo 1 – Introdução a Fundos Imobiliários:** contextualizar FIIs e objetivos do guia.
 - **Capítulo 2 – Universo de FIIs na SIRIOS:** explicar como a SIRIOS organiza intents e entidades (cadastro, preços, dividendos, indicadores, risco).
 - **Capítulo 3 – Cadastro e Classificação dos Fundos (fiis_registrations):** identificação, classificação, governança e participação em índices.
-- **Capítulo 4 – Preço e Rendimentos (fiis_precos, fiis_dividends):** histórico de cotação, proventos e datas-com.
+- **Capítulo 4 – Preço e Rendimentos (fiis_quota_prices, fiis_dividends):** histórico de cotação, proventos e datas-com.
 - **Capítulo 5 – Indicadores Financeiros e Valuation (fiis_financials_snapshot):** DY, payout, market cap, P/VP, caixa, passivos e crescimento.
 - **Capítulo 6 – Risco e Performance Ajustada (fiis_financials_risk):** volatilidade, Sharpe, Treynor, Sortino, drawdown, beta, R².
 - **Capítulo 7 – Recebíveis e Indexadores (fiis_financials_revenue_schedule):** prazos de receitas e exposição a indexadores.

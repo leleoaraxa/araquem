@@ -159,24 +159,24 @@
     },
     {
       "id": "entity-fiis-precos",
-      "path": "data/entities/fiis_precos/fiis_precos.yaml",
+      "path": "data/entities/fiis_quota_prices/fiis_quota_prices.yaml",
       "tags": [
         "entities",
         "fiis",
         "precos",
-        "entity:fiis_precos"
+        "entity:fiis_quota_prices"
       ],
       "chunks": 5,
       "sha_all": "addf7c124baefb7bf566b16ea7553a1abdb425e84c3c16cb06f0c799b7e31226"
     },
     {
       "id": "entity-fiis-precos-hints",
-      "path": "data/entities/fiis_precos/hints.md",
+      "path": "data/entities/fiis_quota_prices/hints.md",
       "tags": [
         "entities",
         "fiis",
         "precos",
-        "entity:fiis_precos"
+        "entity:fiis_quota_prices"
       ],
       "chunks": 1,
       "sha_all": "800f3d487ea5edbb2e0f3cce6366cdde7c2460c7474b7297f846804d7931eeb4"
@@ -667,7 +667,7 @@
     },
     {
       "id": "q-projection-precos",
-      "path": "data/ops/quality/projection_fiis_precos.json",
+      "path": "data/ops/quality/projection_fiis_quota_prices.json",
       "tags": [
         "quality",
         "projection",

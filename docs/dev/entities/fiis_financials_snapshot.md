@@ -15,7 +15,7 @@ Ela responde perguntas do tipo:
 Diferente de:
 
 - `fiis_dividends`: histórico de pagamentos de dividendos (por data/pagamento).
-- `fiis_precos`: preço / cotação por dia.
+- `fiis_quota_prices`: preço / cotação por dia.
 - `fiis_real_estate`: detalhes por imóvel ou ativo (endereço, tipo, etc.).
 - `fiis_financials_revenue_schedule`: cronograma de receitas futuras por bucket/prazo.
 
@@ -157,7 +157,7 @@ Na ontologia (`data/ontology/entity.yaml`), o intent `fiis_financials_snapshot` 
   - “receita total do <ticker>”, “contratos do <ticker>”, “imoveis do <ticker>” (no contexto financeiro consolidado).
 
 - **Excludes principais** (para evitar colisão com outras entidades):
-  - Termos de **preço** e variação intradiária → `fiis_precos` (preco, cotacao, variacao, alta, baixa, hoje, ontem).
+  - Termos de **preço** e variação intradiária → `fiis_quota_prices` (preco, cotacao, variacao, alta, baixa, hoje, ontem).
   - Termos de **dividendos / DY** → `fiis_dividends`, `fiis_yield_history`, `fiis_dividends_yields` (dividendo, dividendos, dy, yield, provento).
   - Termos de **notícias, processos, ranking** → roteados para `fiis_news`, `fiis_processos`, `fiis_rankings`.
   - Termos de **macro / índices / câmbio** → `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.

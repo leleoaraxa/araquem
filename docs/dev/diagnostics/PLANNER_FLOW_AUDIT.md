@@ -7,17 +7,17 @@
 - Scoring base por tokens/phrases + anti-penalty, fusão opcional com RAG, e gate por thresholds.
 
 ## Casos com 1 ticker vs multi ticker
-- **Como está KNRI11 e XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_precos (accepted=True)
-- **Preço do KNRI11 e do XPLG11 hoje** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_precos / fiis_precos (accepted=True)
+- **Como está KNRI11 e XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_quota_prices (accepted=True)
+- **Preço do KNRI11 e do XPLG11 hoje** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_quota_prices / fiis_quota_prices (accepted=True)
 - **Dividendos de KNRI11 e XPLG11** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_registrations (accepted=False)
 - **Quais são os imóveis do KNRI11 e XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_real_estate / fiis_real_estate (accepted=True)
 - **Tem notícias do KNRI11 e do XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_news / fiis_news (accepted=True)
 - **Como está KNRI11 agora?** — tickers: ['KNRI11'] → chosen: ticker_query / fiis_dividends (accepted=False)
-- **Preço do KNRI11 hoje** — tickers: ['KNRI11'] → chosen: fiis_precos / fiis_precos (accepted=True)
+- **Preço do KNRI11 hoje** — tickers: ['KNRI11'] → chosen: fiis_quota_prices / fiis_quota_prices (accepted=True)
 - **Dividendos do KNRI11** — tickers: ['KNRI11'] → chosen: fiis_dividends / fiis_dividends (accepted=True)
 - **Imóveis do KNRI11** — tickers: ['KNRI11'] → chosen: fiis_real_estate / fiis_real_estate (accepted=True)
 - **Notícias do KNRI11** — tickers: ['KNRI11'] → chosen: fiis_news / fiis_news (accepted=True)
-- **Como está hoje?** — tickers: [] → chosen: fiis_precos / fiis_precos (accepted=True)
+- **Como está hoje?** — tickers: [] → chosen: fiis_quota_prices / fiis_quota_prices (accepted=True)
 - **Quais são os melhores FIIs no ranking?** — tickers: [] → chosen: fiis_rankings / fiis_rankings (accepted=True)
 - **Qual foi o valor do IPCA em março de 2025?** — tickers: [] → chosen: history_market_indicators / history_market_indicators (accepted=True)
 - **Como está KNRI agora?** — tickers: ['KNRI11'] → chosen: ticker_query / fiis_dividends (accepted=False)

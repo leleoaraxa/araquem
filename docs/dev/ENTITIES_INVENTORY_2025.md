@@ -15,7 +15,7 @@
 | fiis_financials_risk | risco | Indicadores de risco (volatilidade, Sharpe, beta, MDD etc.) D-1 | “volatilidade do HGLG11”, “Sharpe do HGRU11” | Resumo narrativo/summary com métricas; agregações | Não | RAG: permitido / Narrator: desabilitado | D-1 | - | sim |
 | fiis_real_estate | propriedades | Imóveis/ativos do FII com área, vacância, inadimplência | “quais imóveis compõem o HGLG11”, “vacância do portfólio do VISC11” | Lista de ativos com classe, endereço, área, vacância | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
 | fiis_news | noticias | Notícias D-1 sobre FIIs com título, fonte e link | “notícias sobre VISC11”, “manchetes recentes do HGLG11” | Lista de manchetes com data/hora e link | Não | RAG: permitido / Narrator: desabilitado | D-1 | published_at | lista apenas |
-| fiis_precos | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | traded_at | sim |
+| fiis_quota_prices | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | traded_at | sim |
 | fiis_processos | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
 | fiis_rankings | rankings | Posições dos FIIs em rankings (DY, valor de mercado, Sharpe etc.) | “posição do HGLG11 no IFIX”, “top FIIs por DY 12m” | Tabela com posições em múltiplos rankings | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
 | fiis_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | não |
@@ -310,9 +310,9 @@ Notícias e matérias D-1 sobre FIIs, consolidando fonte, título, tags e links.
 - Pública; RAG permitido (coleções de notícias e conceitos); Narrator desabilitado.
 - Relatório indica entidade textual histórica com RAG permitido e sem narrator.
 
-### 1.12. fiis_precos
+### 1.12. fiis_quota_prices
 
-**Intent:** fiis_precos
+**Intent:** fiis_quota_prices
 
 **Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
 

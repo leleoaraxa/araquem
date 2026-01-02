@@ -227,13 +227,13 @@ entities:
       - ticker
       - published_at
     notes: []
-  fiis_precos:
+  fiis_quota_prices:
     title: FIIs – Preços diários
     kind: historical
     paths:
-      entity_yaml: data/entities/fiis_precos/fiis_precos.yaml
-      schema: data/contracts/entities/fiis_precos.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_precos.json
+      entity_yaml: data/entities/fiis_quota_prices/fiis_quota_prices.yaml
+      schema: data/contracts/entities/fiis_quota_prices.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_quota_prices.json
     coverage:
       cache_policy: true
       rag_policy: false

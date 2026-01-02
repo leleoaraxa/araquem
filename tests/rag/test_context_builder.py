@@ -48,7 +48,7 @@ def rag_policy_base() -> Dict[str, Any]:
             "deny_intents": [
                 "client_fiis_positions",
                 "fiis_registrations",
-                "fiis_precos",
+                "fiis_quota_prices",
                 "fiis_dividends",
                 "fiis_rankings",
                 "fiis_real_estate",

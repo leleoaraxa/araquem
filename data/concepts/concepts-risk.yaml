@@ -39,7 +39,7 @@ concepts:
       comportamento da cota no tempo.
     related_entities:
       - fiis_financials_risk
-      - fiis_precos
+      - fiis_quota_prices
       - history_b3_indexes
     interpretation:
       - "volatilidade baixa: preço mais estável, menor variação diária"
@@ -127,7 +127,7 @@ concepts:
       pior momento da janela.
     related_entities:
       - fiis_financials_risk
-      - fiis_precos
+      - fiis_quota_prices
     interpretation:
       - "MDD alto (em valor absoluto): o fundo já passou por quedas profundas"
       - "MDD mais contido: quedas históricas menos severas"

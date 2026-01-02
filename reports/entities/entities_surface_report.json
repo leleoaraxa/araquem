@@ -812,9 +812,9 @@
       ]
     },
     {
-      "entity_id": "fiis_precos",
+      "entity_id": "fiis_quota_prices",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_precos",
+      "dir_path": "data/entities/fiis_quota_prices",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -822,18 +822,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_precos/fiis_precos.yaml",
+        "path": "data/entities/fiis_quota_prices/fiis_quota_prices.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_precos.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_quota_prices.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_precos/responses",
+        "dir_path": "data/entities/fiis_quota_prices/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/fiis_precos/responses/table.md.j2",
+            "path": "data/entities/fiis_quota_prices/responses/table.md.j2",
             "size_bytes": 1586
           }
         ]
@@ -841,11 +841,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_precos/hints.md"
+          "path": "data/entities/fiis_quota_prices/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fiis_precos/template.md",
+          "path": "data/entities/fiis_quota_prices/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -856,12 +856,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_precos.csv"
+        "path": "docs/database/samples/fiis_quota_prices.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_precos.json"
+          "data/ops/quality/projection_fiis_quota_prices.json"
         ]
       },
       "tags": [

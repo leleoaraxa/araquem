@@ -6,7 +6,7 @@
 
 # **1. Perguntas com ticker (dados factuais)**
 
-## **1.1 Preço — fiis_precos**
+## **1.1 Preço — fiis_quota_prices**
 
 ### Pergunta
 
@@ -15,7 +15,7 @@
 ### Fluxo do Araquem
 
 * Tokens: `preço`, `HGLG11`
-* Planner → `fiis_precos` (score alto)
+* Planner → `fiis_quota_prices` (score alto)
 * Builder gera SQL determinística
 * Executor traz valor da view
 * Narrator formata texto curto
@@ -176,7 +176,7 @@ São respondidas via:
 Pode ser:
 
 * `fiis_overview`
-* `fiis_precos`
+* `fiis_quota_prices`
 * `fiis_dividends`
 * `fiis_financials_risk`
 
