@@ -328,7 +328,7 @@ datasets:
       indicator_amt:
         min: -5.0
         max: 30.0
-  dividendos_yield:
+  fiis_dividends_yields:
     freshness:
       max_age_hours: 30
     not_null:

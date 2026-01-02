@@ -114,13 +114,13 @@ include:
     path: data/entities/fiis_financials_revenue_schedule/hints.md
     tags: [entities, fiis, financials, revenue, "entity:fiis_financials_revenue_schedule"]
 
-  - id: entity-dividendos-yield
-    path: data/entities/dividendos_yield/dividendos_yield.yaml
-    tags: [entities, fiis, dividendos, yield, "entity:dividendos_yield"]
+  - id: entity-dividends-yields
+    path: data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml
+    tags: [entities, fiis, dividendos, yield, "entity:fiis_dividends_yields"]
 
-  - id: entity-dividendos-yield-hints
-    path: data/entities/dividendos_yield/hints.md
-    tags: [entities, fiis, dividendos, yield, "entity:dividendos_yield"]
+  - id: entity-dividends-yields-hints
+    path: data/entities/fiis_dividends_yields/hints.md
+    tags: [entities, fiis, dividendos, yield, "entity:fiis_dividends_yields"]
 
   - id: entity-fiis-yield-history
     path: data/entities/fiis_yield_history/fiis_yield_history.yaml
@@ -290,8 +290,8 @@ include:
     path: data/ops/quality/projection_fiis_yield_history.json
     tags: [quality, projection, yield]
 
-  - id: q-projection-dividendos-yield
-    path: data/ops/quality/projection_dividendos_yield.json
+  - id: q-projection-dividends-yields
+    path: data/ops/quality/projection_fiis_dividends_yields.json
     tags: [quality, projection, dividendos, yield]
 
   - id: q-projection-carteira-enriquecida

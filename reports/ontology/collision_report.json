@@ -37,7 +37,7 @@
     "fiis_dividendos": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "dividendos_yield": [
+        "fiis_dividends_yields": [
           "dividendos"
         ],
         "fiis_financials_revenue_schedule": [
@@ -70,7 +70,7 @@
           "dy 12m",
           "dy mensal"
         ],
-        "dividendos_yield": [
+        "fiis_dividends_yields": [
           "dividend yield",
           "dy",
           "yield"
@@ -157,7 +157,7 @@
     "fiis_rankings": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "dividendos_yield": [
+        "fiis_dividends_yields": [
           "comparacao",
           "comparar"
         ],
@@ -237,7 +237,7 @@
       ],
       "prohibited_tokens": []
     },
-    "dividendos_yield": {
+    "fiis_dividends_yields": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_dividendos": [

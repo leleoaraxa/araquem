@@ -624,7 +624,7 @@ intents:
         20:
           - ultimos 20 dias
 
-  dividendos_yield:
+  fiis_dividends_yields:
     default_agg: list
     default_window: "months:12"
     windows_allowed:

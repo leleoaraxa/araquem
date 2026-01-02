@@ -22,7 +22,7 @@ entities:
   phrases: 16d78056afaf1b38a188273bacfda9b0e9c06e822d88d61606e997ebee69d21d
   anti_tokens: 83c7279b3db495b9bf31eb2cddd429d77cd0beef19bae0390e2e343b52c83635
   entity_hash: aea065118c02f92f0a4d044e1832b6ca6d52c5022bb52dafa050783e4b04cf23
-- id: dividendos_yield
+- id: fiis_dividends_yields
   tokens: cbb0fb2cf93fb04d2732487c4bf44b7609508b6d3274a53aae39c61ba902d1a2
   phrases: fcdeb79502ff527ca1183dd6a01944630d13968d0e96ab199a8dfd377ddfd8f6
   anti_tokens: 90f0df8dd60714e6a9458fe380fd779580d2f4296a7a6787b39c4e83a767d191

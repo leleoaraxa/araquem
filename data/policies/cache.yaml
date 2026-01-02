@@ -141,7 +141,7 @@ policies:
     key_fields:
     - ticker
     - ref_month
-  dividendos_yield:
+  fiis_dividends_yields:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

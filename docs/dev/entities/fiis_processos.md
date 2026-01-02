@@ -56,7 +56,7 @@ O Planner **não** deve usar `fiis_processos` quando:
 1. A pergunta é sobre **desempenho, preço, dividendos ou yield**:
    - “Quanto está o ALMI11 hoje?” → `fiis_precos`
    - “Quanto o ALMI11 pagou de dividendos esse mês?” → `fiis_dividendos`
-   - “Qual o DY do ALMI11 em 2024?” → `fiis_yield_history` ou `dividendos_yield` (conforme o caso).
+   - “Qual o DY do ALMI11 em 2024?” → `fiis_yield_history` ou `fiis_dividends_yields` (conforme o caso).
 
 2. A pergunta é sobre **riscos quantitativos de mercado** (Sharpe, volatilidade, drawdown etc.):
    - “Qual o Sharpe do ALMI11?” → `fiis_financials_risk`

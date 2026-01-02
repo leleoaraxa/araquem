@@ -11,7 +11,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 | client_fiis_performance_vs_benchmark | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | client_fiis_performance_vs_benchmark_summary | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | client_fiis_positions | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
-| dividendos_yield | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| fiis_dividends_yields | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fii_overview | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_cadastro | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_dividendos | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
@@ -51,9 +51,9 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 - client_fiis_positions-q1: "Como está distribuída a carteira de FIIs por setor ou classe de ativo?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 - client_fiis_positions-q2: "Quais posições aumentaram ou reduziram desde o último período de referência?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
-### dividendos_yield
-- dividendos_yield-q1: "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- dividendos_yield-q2: "Mostre dividendos e dividend yield do {{ticker}} nos últimos 12 meses." — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### fiis_dividends_yields
+- fiis_dividends_yields-q1: "Qual foi o DY mensal do {{ticker}} em {{mês/ano}}?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- fiis_dividends_yields-q2: "Mostre dividendos e dividend yield do {{ticker}} nos últimos 12 meses." — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
 ### fii_overview
 - fii_overview-q1: "resumo do HGLG11" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

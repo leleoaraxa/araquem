@@ -10,7 +10,7 @@ A entidade `fiis_dividendos` responde perguntas sobre **valores de dividendos/pr
 - Próximo dividendo já anunciado (quando disponível na base).
 - Total de dividendos pagos em um intervalo (quando o builder fizer agregação).
 
-Sempre em **valor absoluto por cota** (R$/cota), não em termos percentuais (para percentuais, o alvo é `fiis_yield_history` ou `dividendos_yield`).
+Sempre em **valor absoluto por cota** (R$/cota), não em termos percentuais (para percentuais, o alvo é `fiis_yield_history` ou `fiis_dividends_yields`).
 
 ---
 
@@ -88,13 +88,13 @@ Exemplos de rota correta:
 - Ticker deve ser reconhecido pelo intent `ticker_query` como um `AAAA11`.
 - Perguntas sem ticker tendem a ser:
   - de carteira (`minha carteira`, `meus fiis`) → outras entidades (`client_fiis_dividends_evolution`, `client_fiis_enriched_portfolio`);
-  - de ranking de dividendos/dy → `fiis_rankings` / `dividendos_yield`.
+  - de ranking de dividendos/dy → `fiis_rankings` / `fiis_dividends_yields`.
 
 ### 4.3. Diferença para DY / Yield / Carteira
 
 - Se a pergunta enfatiza **percentual**, `dy`, `dividend yield`, `dy 12m`, etc., o alvo padrão **não é** `fiis_dividendos`, e sim:
   - `fiis_yield_history` – histórico de DY.
-  - `dividendos_yield` – combinação de dividendos + DY, comparações, etc.
+  - `fiis_dividends_yields` – combinação de dividendos + DY, comparações, etc.
 - Se a pergunta fala de **“meus dividendos”, “minha carteira”, “meus FIIs”**, o alvo deve ser:
   - `client_fiis_dividends_evolution` ou `client_fiis_enriched_portfolio`.
 
@@ -104,7 +104,7 @@ Exemplos de rota correta:
 
 ### 5.1. DY / Yield (percentual)
 
-Devem ir para `fiis_yield_history` ou `dividendos_yield`, não para `fiis_dividendos`:
+Devem ir para `fiis_yield_history` ou `fiis_dividends_yields`, não para `fiis_dividendos`:
 
 - `dy do HGLG11 nos últimos 12 meses`
 - `historico de dy do KNRI11`
@@ -122,7 +122,7 @@ Devem ir para entidades de cliente (não para `fiis_dividendos`):
 
 ### 5.3. Comparações/Rankings
 
-Quando o foco é **ranking/comparação de FIIs**, o alvo é `fiis_rankings` ou `dividendos_yield`:
+Quando o foco é **ranking/comparação de FIIs**, o alvo é `fiis_rankings` ou `fiis_dividends_yields`:
 
 - `top fiis por dividend yield`
 - `fiis com maior rendimento em dividendos`
@@ -151,14 +151,14 @@ Perguntas sobre **IPCA, CDI, Selic, IFIX, IFIL, dólar, euro** não devem cair a
 
 Regra prática:
 
-- Se aparecer `dy`, `dividend yield`, `percentual`, a rota preferencial é `fiis_yield_history` ou `dividendos_yield`, **não** `fiis_dividendos`.
+- Se aparecer `dy`, `dividend yield`, `percentual`, a rota preferencial é `fiis_yield_history` ou `fiis_dividends_yields`, **não** `fiis_dividendos`.
 
-### 6.2. `fiis_dividendos` vs `dividendos_yield`
+### 6.2. `fiis_dividendos` vs `fiis_dividends_yields`
 
 - **fiis_dividendos**: só valor em dinheiro, por FII, por data/período.
-- **dividendos_yield**: perguntas pedindo **dividendos + DY juntos**, ou comparações de **dividendos e dy** entre FIIs.
+- **fiis_dividends_yields**: perguntas pedindo **dividendos + DY juntos**, ou comparações de **dividendos e dy** entre FIIs.
 
-Exemplos que vão para `dividendos_yield`:
+Exemplos que vão para `fiis_dividends_yields`:
 
 - `dividendos e dy do HGLG11`
 - `historico de dividendos e dividend yield do MXRF11`
@@ -181,7 +181,7 @@ Esses devem **NÃO** cair em `fiis_dividendos`.
 
 - Usar `fiis_dividendos` para perguntas de **histórico de proventos por FII**, em valor absoluto.
 - Evitar colisões com:
-  - `fiis_yield_history` / `dividendos_yield` (percentuais, DY).
+  - `fiis_yield_history` / `fiis_dividends_yields` (percentuais, DY).
   - `client_fiis_dividends_evolution` (minha carteira).
   - `macro_consolidada` / `history_*` (IPCA, CDI, IFIX, dólar/euro).
 - O quality suite desta entidade vai focar em **perguntas CANON de proventos por FII** com ticker explícito.

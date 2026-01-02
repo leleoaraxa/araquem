@@ -77,7 +77,7 @@
   * [✔] `client_fiis_performance_vs_benchmark`
   * [✔] `fii_overview`
   * [✔] `fiis_yield_history`
-  * [✔] Compostas: `dividendos_yield`, `client_fiis_enriched_portfolio`, `macro_consolidada`
+  * [✔] Compostas: `fiis_dividends_yields`, `client_fiis_enriched_portfolio`, `macro_consolidada`
 * [✔] `routing_samples.json` atualizado com compostas e multi-turno.
 
 **🟦 Falta**

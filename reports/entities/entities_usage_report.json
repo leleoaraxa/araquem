@@ -524,7 +524,7 @@
       }
     },
     {
-      "entity_id": "dividendos_yield",
+      "entity_id": "fiis_dividends_yields",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -589,7 +589,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_dividendos_yield.json",
+              "data/ops/quality/projection_fiis_dividends_yields.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

@@ -1,8 +1,8 @@
-# Entidade `dividendos_yield`
+# Entidade `fiis_dividends_yields`
 
 ## 1. Visão geral
 
-`dividendos_yield` consolida o histórico mensal de dividendos e dividend yield (DY) dos FIIs, junto com dados cadastrais básicos do fundo. Combina pagamento, datas e indicadores de yield em uma única visão.
+`fiis_dividends_yields` consolida o histórico mensal de dividendos e dividend yield (DY) dos FIIs, junto com dados cadastrais básicos do fundo. Combina pagamento, datas e indicadores de yield em uma única visão.
 
 Responde perguntas como:
 - “Histórico de dividendos e DY do MXRF11.”
@@ -11,11 +11,11 @@ Responde perguntas como:
 
 ## 2. Origem dos dados e contrato
 
-- **View/Tabela base**: `dividendos_yield`.
+- **View/Tabela base**: `fiis_dividends_yields`.
 - **Chave lógica**: `(ticker, ref_month, payment_date)`.
 - **Granularidade temporal**: registros mensais e por pagamento.
 
-Campos principais (do contrato `dividendos_yield.schema.yaml`):
+Campos principais (do contrato `fiis_dividends_yields.schema.yaml`):
 - Identificação: `ticker`, `display_name`, `sector`, `sub_sector`, `classification`, `management_type`, `target_market`.
 - Datas: `traded_until_date` (data-com), `payment_date`, `ref_month`, `last_payment_date`.
 - Valores e yield: `dividend_amt`, `month_dividends_amt`, `month_price_ref`, `dy_monthly`, `dy_12m_pct`, `dy_current_monthly_pct`, `dividends_12m_amt`, `last_dividend_amt`.
@@ -31,7 +31,7 @@ Campos principais (do contrato `dividendos_yield.schema.yaml`):
 - **Dividendos e preço**: `dividend_amt`, `month_dividends_amt`, `month_price_ref`, `dividends_12m_amt`, `last_dividend_amt`.
 - **Indicadores de DY**: `dy_monthly`, `dy_current_monthly_pct`, `dy_12m_pct`.
 
-## 5. Exemplos de perguntas que devem cair em `dividendos_yield`
+## 5. Exemplos de perguntas que devem cair em `fiis_dividends_yields`
 
 - “Histórico de dividendos e DY do MXRF11.”
 - “Quanto o CPTS11 pagou de dividendos e DY em 08/2023?”

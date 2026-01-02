@@ -198,28 +198,28 @@
     },
     {
       "question": "Histórico de dividendos e dy do MXRF11",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "O que é dividend yield em FIIs",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "Qual o DY de 12 meses do HGLG11",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "Quanto o CPTS11 pagou de dividendos e dy em 08/2023",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "Último dividendo pago pelo VISC11 e o dy correspondente",
-      "expected_intent": "dividendos_yield",
-      "expected_entity": "dividendos_yield"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "Apresenta um overview detalhado do HGLG11.",

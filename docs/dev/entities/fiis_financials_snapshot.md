@@ -158,7 +158,7 @@ Na ontologia (`data/ontology/entity.yaml`), o intent `fiis_financials_snapshot` 
 
 - **Excludes principais** (para evitar colisão com outras entidades):
   - Termos de **preço** e variação intradiária → `fiis_precos` (preco, cotacao, variacao, alta, baixa, hoje, ontem).
-  - Termos de **dividendos / DY** → `fiis_dividendos`, `fiis_yield_history`, `dividendos_yield` (dividendo, dividendos, dy, yield, provento).
+  - Termos de **dividendos / DY** → `fiis_dividendos`, `fiis_yield_history`, `fiis_dividends_yields` (dividendo, dividendos, dy, yield, provento).
   - Termos de **notícias, processos, ranking** → roteados para `fiis_noticias`, `fiis_processos`, `fiis_rankings`.
   - Termos de **macro / índices / câmbio** → `history_market_indicators`, `history_b3_indexes`, `history_currency_rates`.
 

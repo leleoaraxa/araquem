@@ -54,7 +54,7 @@ O Planner **não** deve usar `fiis_financials_revenue_schedule` quando:
 
 2. A pergunta é sobre **dividendos pagos, yield ou histórico de distribuição**:
    - “Quanto o HGLG11 pagou de dividendos este mês?” → `fiis_dividendos`
-   - “Qual o DY médio do HGLG11 em 2024?” → `fiis_yield_history` ou `dividendos_yield`.
+   - “Qual o DY médio do HGLG11 em 2024?” → `fiis_yield_history` ou `fiis_dividends_yields`.
 
 3. A pergunta é sobre **indicadores de risco de mercado** (volatilidade, Sharpe, drawdown etc.):
    - “Qual o risco do HGLG11?” (em termos de volatilidade) → `fiis_financials_risk`.
@@ -143,7 +143,7 @@ Esses exemplos devem ser coerentes com:
   - menções a indexadores (“IPCA”, “IGPM”, “INPC”, “INCC”, “indexadas ao IPCA”).
 - Anti-conflitos relevantes:
   - Termos de preço (“cota”, “subiu”, “caiu”, “cotação”) → `fiis_precos`.
-  - Termos de dividendos (“dividendos pagos”, “DY”, “renda mensal”) → `fiis_dividendos` / `fiis_yield_history` / `dividendos_yield`.
+  - Termos de dividendos (“dividendos pagos”, “DY”, “renda mensal”) → `fiis_dividendos` / `fiis_yield_history` / `fiis_dividends_yields`.
   - Termos de risco quantitativo (“volatilidade”, “Sharpe”, “drawdown”) → `fiis_financials_risk`.
 - O Builder deve:
   - usar sempre o `ticker` normalizado (AAAA11) como filtro principal;

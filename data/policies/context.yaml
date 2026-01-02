@@ -32,7 +32,7 @@ context:
     - history_market_indicators
     - client_fiis_enriched_portfolio
     - macro_consolidada
-    - dividendos_yield
+    - fiis_dividends_yields
   narrator:
     enabled: true
     inject_history: true
@@ -59,7 +59,7 @@ context:
     - history_market_indicators
     - client_fiis_enriched_portfolio
     - macro_consolidada
-    - dividendos_yield
+    - fiis_dividends_yields
   last_reference:
     enable_last_ticker: true
     allowed_entities:
@@ -74,7 +74,7 @@ context:
     - fiis_processos
     - fiis_noticias
     - fiis_cadastro
-    - dividendos_yield
+    - fiis_dividends_yields
     max_age_turns: 3
     bucket_ttl:
       A: 4
@@ -136,7 +136,7 @@ context:
     client_fiis_enriched_portfolio:
       use_referenced_ticker: false
       use_last_entity: false
-    dividendos_yield:
+    fiis_dividends_yields:
       use_referenced_ticker: true
       use_last_entity: true
     macro_consolidada:

@@ -326,13 +326,13 @@ entities:
       - indicator_date
       - indicator_name
     notes: []
-  dividendos_yield:
+  fiis_dividends_yields:
     title: FIIs – Dividendos + DY (composta)
     kind: historical
     paths:
-      entity_yaml: data/entities/dividendos_yield/dividendos_yield.yaml
-      schema: data/contracts/entities/dividendos_yield.schema.yaml
-      quality_projection: data/ops/quality/projection_dividendos_yield.json
+      entity_yaml: data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml
+      schema: data/contracts/entities/fiis_dividends_yields.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_dividends_yields.json
     coverage:
       cache_policy: true
       rag_policy: false

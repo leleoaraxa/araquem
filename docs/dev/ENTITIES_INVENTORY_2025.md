@@ -487,11 +487,11 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 ---
 
-## dividendos_yield
+## fiis_dividends_yields
 
 **Tipo:** histórica (métrica composta, pública, multi-ticker).
 **Grão:** `{ticker, ref_month}`; `result_key: ticker`; `default_date_field: ref_month`.
-**Fonte:** view `public.dividendos_yield` + CSV `docs/database/samples/dividendos_yield.csv`.
+**Fonte:** view `public.fiis_dividends_yields` + CSV `docs/database/samples/fiis_dividends_yields.csv`.
 **Escopo:** dividendos pagos, DY mensal/12m, cadastro do FII, último pagamento.
 
 **O que retorna (colunas principais)**

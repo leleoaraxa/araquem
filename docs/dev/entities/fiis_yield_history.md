@@ -78,13 +78,13 @@ Se o foco é **valor pago de dividendos**, e não o DY (%) por mês, a rota é *
 
 ---
 
-### 3.3. Perguntas de **dividendos + DY / comparações de DY** → dividendos_yield
+### 3.3. Perguntas de **dividendos + DY / comparações de DY** → fiis_dividends_yields
 
 - “Me mostra **dividendos e DY do HGLG11**.”
 - “Comparação de **dividendos e dividend yield** entre HGLG11 e MXRF11.”
 - “Quero ver um comparativo de **dividendos e dy** dos principais FIIs de logística.”
 
-Esses casos devem cair em **dividendos_yield** (comparativo / pacote dividendos + DY), não em fiis_yield_history.
+Esses casos devem cair em **fiis_dividends_yields** (comparativo / pacote dividendos + DY), não em fiis_yield_history.
 
 ---
 
@@ -160,18 +160,18 @@ Abaixo alguns exemplos de como o Planner/Builder devem interpretar perguntas tí
 
 ## 5. Pontos de atenção semântica
 
-1. **Evitar colisão com dividendos_yield**
+1. **Evitar colisão com fiis_dividends_yields**
    - Se a pergunta trouxer expressões como:
      - “**dividendos e dy**”
      - “**comparacao de dividendos e dy**”
      - “**comparar dividendos e yield**”
-   - → isso é **dividendos_yield**, não fiis_yield_history.
+   - → isso é **fiis_dividends_yields**, não fiis_yield_history.
 
 2. **Evitar colisão com fiis_dividendos**
    - Palavras como “**dividendos**, **proventos**, **quanto pagou**” sem foco claro em DY histórico indicam fiis_dividendos.
    - A entidade fiis_yield_history tem **anti-tokens** para termos como:
      - “dy atual”, “ultimo dy”, “dividendos”, “dividendo”, “provento”, “proventos”, “acumulado”, “rendimento atual”, “yield atual”.
-   - Ou seja, perguntas sobre **“DY atual / último DY”** tendem a ser tratadas em outra visão (ex.: dividendos_yield ou snapshot / presenter), não aqui.
+   - Ou seja, perguntas sobre **“DY atual / último DY”** tendem a ser tratadas em outra visão (ex.: fiis_dividends_yields ou snapshot / presenter), não aqui.
 
 3. **Evitar confusão com índices de mercado (history_b3_indexes)**
    - Perguntas como:
@@ -206,7 +206,7 @@ A suíte `fiis_yield_history_suite.json` deve garantir:
      - “dividendos e dy”, “dividendos e yield”, “dy e dividendos”
      - “meus fiis”, “minha carteira”
      - “quanto está”, “preço hoje”
-   - Para evitar que fiis_yield_history concorra com **dividendos_yield**, **client_fiis_enriched_portfolio** ou **fiis_precos**.
+   - Para evitar que fiis_yield_history concorra com **fiis_dividends_yields**, **client_fiis_enriched_portfolio** ou **fiis_precos**.
 
 6. **Integração com o quality gate**
    - Ao rodar:

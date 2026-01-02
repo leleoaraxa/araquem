@@ -228,7 +228,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 * `fiis_dividendos`
 * `fiis_precos`
 * `fiis_yield_history`
-* `dividendos_yield`
+* `fiis_dividends_yields`
 * `fiis_imoveis` (quando a intenção é “imóveis desse fundo”)
 
 **Entidades que NÃO devem usar last_reference** (regra geral):

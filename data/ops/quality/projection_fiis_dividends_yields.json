@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "dividendos_yield",
+  "entity": "fiis_dividends_yields",
   "result_key": "ticker",
   "must_have_columns": [
     "ticker",

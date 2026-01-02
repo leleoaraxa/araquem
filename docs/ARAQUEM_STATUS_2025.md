@@ -36,7 +36,7 @@
 
 * [✔] `docs/ARAQUEM_STATUS_2025.md` consolidado como fonte única do estado atual (pós R1–R5).
 * [✔] Catálogo (`data/entities/catalog.yaml`) alinhado em pontos críticos (ex.: remover drift de `rag_policy` em `history_*` e `narrator_policy` indevido em `fiis_financials_revenue_schedule`).
-* [✔] Contrato de `dividendos_yield` migrado para padrão tabular (R1 resolvido no nível de schema).
+* [✔] Contrato de `fiis_dividends_yields` migrado para padrão tabular (R1 resolvido no nível de schema).
 
 **🟦 Falta (bloqueios para “freeze apto”)**
 

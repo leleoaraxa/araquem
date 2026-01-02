@@ -23,7 +23,7 @@
 | history_b3_indexes | PASS | Cobertura completa |
 | history_currency_rates | PASS | Cobertura completa |
 | history_market_indicators | PASS | Cobertura completa |
-| dividendos_yield | PASS | Cobertura completa |
+| fiis_dividends_yields | PASS | Cobertura completa |
 | client_fiis_enriched_portfolio | PASS | Cobertura completa |
 | macro_consolidada | PASS | Cobertura completa |
 
@@ -490,7 +490,7 @@ Nenhum ajuste em templates foi necessário.
 | created_at | datetime | Y | datetime_br | - |
 | updated_at | datetime | Y | datetime_br | - |
 
-### dividendos_yield
+### fiis_dividends_yields
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

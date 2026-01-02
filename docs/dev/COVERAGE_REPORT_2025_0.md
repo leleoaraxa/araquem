@@ -37,7 +37,7 @@
 | client_fiis_performance_vs_benchmark | B | client_fiis_performance_vs_benchmark | ok | ok | ok | ok | ok | entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI; binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário |
 | client_fiis_performance_vs_benchmark_summary | B | client_fiis_performance_vs_benchmark_summary | ok | ok | ok | ok | ok | entidade privada dependente de document_number |
 | client_fiis_positions | B | client_fiis_positions | ok | ok | ok | ok | ok |  |
-| dividendos_yield | A | dividendos_yield, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
+| fiis_dividends_yields | A | fiis_dividends_yields, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fii_overview | A | fii_overview, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_cadastro | A | fiis_cadastro, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_dividendos | A | fiis_dividendos, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
@@ -68,8 +68,8 @@
 - Nenhum.
 
 ### P2 (Higiene e aderência: configurações presentes com flag desativada ou intents faltantes em parametrização.)
-- dividendos_yield: catalog rag_policy=false but RAG configuration present
-- dividendos_yield: some intents missing param inference configuration
+- fiis_dividends_yields: catalog rag_policy=false but RAG configuration present
+- fiis_dividends_yields: some intents missing param inference configuration
 - fii_overview: catalog rag_policy=false but RAG configuration present
 - fii_overview: some intents missing param inference configuration
 - fiis_cadastro: catalog rag_policy=false but RAG configuration present
@@ -97,14 +97,14 @@
 
 ## Apêndice
 ### Entidades no catálogo
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
 
 ### Entidades na ontologia
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
 
 ### Intents na ontologia
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada, ticker_query
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada, ticker_query
 
 ### Policies RAG (routing)
 Allow intents: —
-Deny intents: client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, dividendos_yield, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, macro_consolidada
+Deny intents: client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fii_overview, fiis_cadastro, fiis_dividendos, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_imoveis, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, macro_consolidada

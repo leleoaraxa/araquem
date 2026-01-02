@@ -12,7 +12,7 @@ weights:
 
 buckets:
   A:
-    - dividendos_yield
+    - fiis_dividends_yields
     - fii_overview
     - fiis_cadastro
     - fiis_dividendos
@@ -130,7 +130,7 @@ intents:
       - fiis_yield_history
       - fiis_processos
       - fiis_imoveis
-      - dividendos_yield
+      - fiis_dividends_yields
       - fiis_cadastro
     weight: 10
 
@@ -2652,7 +2652,7 @@ intents:
     entities:
       - history_market_indicators
 
-  - name: dividendos_yield
+  - name: fiis_dividends_yields
     weight: 6
     tokens:
       include:
@@ -2765,7 +2765,7 @@ intents:
         - pagou de dividendos
         - o que e
     entities:
-      - dividendos_yield
+      - fiis_dividends_yields
 
   - name: client_fiis_enriched_portfolio
     weight: 3
@@ -3302,7 +3302,7 @@ anti_tokens:
   fiis_dividendos:
     - ultimo dividendo pago pelo <ticker> e o dy correspondente
     - ultimo dividendo e o dy correspondente
-  dividendos_yield:
+  fiis_dividends_yields:
     - dy historico
     - dy 12m
     - serie historica de dy

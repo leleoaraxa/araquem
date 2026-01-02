@@ -6,7 +6,7 @@
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "dividendos_yield",
+      "fiis_dividends_yields",
       "fii_overview",
       "fiis_cadastro",
       "fiis_dividendos",
@@ -30,7 +30,7 @@
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "dividendos_yield",
+      "fiis_dividends_yields",
       "fii_overview",
       "fiis_cadastro",
       "fiis_dividendos",
@@ -54,7 +54,7 @@
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "dividendos_yield",
+      "fiis_dividends_yields",
       "fii_overview",
       "fiis_cadastro",
       "fiis_dividendos",
@@ -80,7 +80,7 @@
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "dividendos_yield",
+      "fiis_dividends_yields",
       "fii_overview",
       "fiis_cadastro",
       "fiis_dividendos",
@@ -101,14 +101,14 @@
     "P1": [],
     "P2": [
       {
-        "entity": "dividendos_yield",
+        "entity": "fiis_dividends_yields",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "dividendos_yield",
+        "entity": "fiis_dividends_yields",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -540,7 +540,7 @@
         "ok": true
       }
     },
-    "dividendos_yield": {
+    "fiis_dividends_yields": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -549,18 +549,18 @@
         "rag_policy": false
       },
       "intents": [
-        "dividendos_yield",
+        "fiis_dividends_yields",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/dividendos_yield/dividendos_yield.yaml"
+          "path": "data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/dividendos_yield.schema.yaml"
+          "path": "data/contracts/entities/fiis_dividends_yields.schema.yaml"
         }
       },
       "policies": {
@@ -573,7 +573,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "dividendos_yield"
+            "fiis_dividends_yields"
           ],
           "missing_intents": [
             "ticker_query"

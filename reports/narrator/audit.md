@@ -3,7 +3,7 @@
 ## 1. Ontologia — Estado Atual
 - **Status:** Parcialmente estável. Buckets e intents existem, mas há sobreposições e redundâncias que podem gerar ambiguidade.
 - **Colisões/Exemplos:**
-  - `ticker_query` inclui `dividendos_yield` duas vezes e mistura entidades heterogêneas (preço, dividendos, riscos, imóveis), ampliando a superfície de roteamento 【F:data/ontology/entity.yaml†L41-L64】.
+  - `ticker_query` inclui `fiis_dividends_yields` duas vezes e mistura entidades heterogêneas (preço, dividendos, riscos, imóveis), ampliando a superfície de roteamento 【F:data/ontology/entity.yaml†L41-L64】.
   - Termos amplos em `client_fiis_positions` incluem `<ticker>` com intenções de peso/quantidade, mas excluem palavras de risco/benchmark; ainda assim, a cobertura extensa pode capturar perguntas sobre desempenho ou rankings por engano 【F:data/ontology/entity.yaml†L66-L160】.
 - **Amplitude vs. especificidade:**
   - Entidades de bucket A são específicas (preços, dividendos, rankings), mas agrupadas em uma única intent “ticker_query”, tornando-a muito ampla para desambiguação fina.

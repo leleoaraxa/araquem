@@ -230,7 +230,7 @@ entities:
     notes:
     - entidade historical macro; RAG permitido
     - param_inference cobre janelas curtas
-  dividendos_yield:
+  fiis_dividends_yields:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

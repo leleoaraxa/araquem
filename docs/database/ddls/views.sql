@@ -1,7 +1,7 @@
 -- =====================================================================
 -- DROP VIEW
 -- =====================================================================
-DROP VIEW IF EXISTS dividendos_yield;
+DROP VIEW IF EXISTS fiis_dividends_yields;
 DROP VIEW IF EXISTS client_fiis_enriched_portfolio;
 DROP VIEW IF EXISTS macro_consolidada;
 DROP VIEW IF EXISTS client_fiis_dividends_evolution;
@@ -1365,9 +1365,9 @@ FROM public.client_fiis_performance_vs_benchmark
 ORDER BY document_number, benchmark_code, date_reference DESC;
 
 -- =====================================================================
--- VIEW: dividendos_yield
+-- VIEW: fiis_dividends_yields
 -- =====================================================================
-CREATE OR REPLACE VIEW dividendos_yield AS
+CREATE OR REPLACE VIEW fiis_dividends_yields AS
 SELECT
     d.ticker,
 
@@ -1606,7 +1606,7 @@ ALTER VIEW public.view_markowitz_frontier_plot OWNER TO edge_user;
 ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark_summary OWNER TO edge_user;
-ALTER VIEW public.dividendos_yield OWNER TO edge_user;
+ALTER VIEW public.fiis_dividends_yields OWNER TO edge_user;
 ALTER VIEW public.client_fiis_enriched_portfolio OWNER TO edge_user;
 ALTER VIEW public.macro_consolidada OWNER TO edge_user;
 -- =====================================================================
