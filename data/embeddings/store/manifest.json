@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-02T18:38:48Z",
+  "generated_at": "2026-01-02T19:02:47Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -107,7 +107,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "12adcf07e0d445c8edf438a61871dd68fdee228a347f037334614cfd9ebd12d5"
+      "sha_all": "38e3693e4f982f1b93b6ff89515e998f27a53a7e0eb9e45d2988fd149018ee2e"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -495,7 +495,7 @@
         "entity:consolidated_macroeconomic"
       ],
       "chunks": 3,
-      "sha_all": "c46a9fbc8513529b695bdbfff36e9917cd87aec2651aac94463310edccb3d0d2"
+      "sha_all": "5edbca012f63361b2062a2ae7ea8b4023b30a6be9dddbb293555166d5bc244bd"
     },
     {
       "id": "entity-macro-consolidada-hints",
@@ -568,7 +568,7 @@
         "cache"
       ],
       "chunks": 3,
-      "sha_all": "cafaba9c4d0f99088e9e9c5de125e3856ae416c4583077fcb0b78bc78c666e9a"
+      "sha_all": "6f148bc72c61f339ae51b8320a853bc330b619ee43c8e483145166fac0e71dd2"
     },
     {
       "id": "policies-quality",
@@ -578,7 +578,7 @@
         "quality"
       ],
       "chunks": 6,
-      "sha_all": "a2cb5463b72d54a8e4da4b6f31708b1a4a547683865af27b7a8e123b3956e255"
+      "sha_all": "8160d66dfa393e5b8d583934e6e7d3390d18179fb9219d419b29d57dc6580d80"
     },
     {
       "id": "policies-rag",
@@ -588,7 +588,7 @@
         "rag"
       ],
       "chunks": 2,
-      "sha_all": "8b041ab109bb6f0ea0854987414fe5c53b1a6913d991f23e4c9af80392310b18"
+      "sha_all": "193ca14b48fdb9163b891e89e7720416567ae4a0590cb626b33c1816a6a936fa"
     },
     {
       "id": "ops-planner-thresholds",
@@ -598,7 +598,7 @@
         "thresholds"
       ],
       "chunks": 3,
-      "sha_all": "56104af72f34f4fd758e95961a2e53936abdc1c9872cc731612b0da4ace38fb2"
+      "sha_all": "ca574bd4fa13fc1ddc9af1df6b4eee4610f1373d4835ef21a857dbb1506c005b"
     },
     {
       "id": "ops-observability",
@@ -641,7 +641,7 @@
         "samples"
       ],
       "chunks": 35,
-      "sha_all": "8c20e7fffc13351e2080ec0b9225c0b87ff01c5cff2c061ee26e470a2aee0879"
+      "sha_all": "4b1ad7b1cfc19e89af7ec00648b7055689ec3b9bbb331999ef41e35218a4e6c7"
     },
     {
       "id": "q-projection-cadastro",
@@ -842,7 +842,7 @@
         "historical"
       ],
       "chunks": 1,
-      "sha_all": "d5582a62f88de93fb2736b6b2275fe91bd38f7bcf424520a207af68e93a589ce"
+      "sha_all": "15661ea171ce9a179caaaf255ca766cbab2be2fd15ae8cefaab078eba3aeec28"
     },
     {
       "id": "q-m66-projection",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1767379289,
+  "last_refresh_epoch": 1767380728,
   "vector_dimension": 768,
   "total_chunks": 296
 }
