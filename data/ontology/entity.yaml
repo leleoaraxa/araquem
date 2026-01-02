@@ -14,7 +14,7 @@ buckets:
   A:
     - fiis_dividends_yields
     - fiis_overview
-    - fiis_registrations
+    - fiis_cadastro
     - fiis_dividendos
     - fiis_financials_revenue_schedule
     - fiis_financials_risk
@@ -131,7 +131,7 @@ intents:
       - fiis_processos
       - fiis_imoveis
       - fiis_dividends_yields
-      - fiis_registrations
+      - fiis_cadastro
     weight: 10
 
   - name: client_fiis_positions
@@ -393,7 +393,7 @@ intents:
         - ibov
         - ibovespa
         - carteira
-        - 12
+        - "12"
       exclude:
         - cpf
         - cnpj
@@ -649,7 +649,7 @@ intents:
     entities:
       - client_fiis_performance_vs_benchmark_summary
 
-  - name: fiis_registrations
+  - name: fiis_cadastro
     tokens:
       include:
         - cadastro
@@ -776,7 +776,7 @@ intents:
         - posicao no ifix
         - posicao no ifil
     entities:
-      - fiis_registrations
+      - fiis_cadastro
 
   - name: fiis_overview
     weight: 3
@@ -1258,7 +1258,6 @@ intents:
     tokens:
       include:
         - dy
-        - rendimento
         - historica
         - serie
         - series
@@ -1405,8 +1404,6 @@ intents:
     weight: 5
     tokens:
       include:
-        - patrimonio
-        - patrimonio liquido
         - valor patrimonial
         - valor patrimonial cota
         - valor da empresa
