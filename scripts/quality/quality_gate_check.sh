@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "🔎 validating ontology manifest..."
+echo "🔎 [check] validating ontology manifest..."
 python scripts/ontology/validate_and_hash.py --check
 echo "✅ ontology manifest ok"
 
