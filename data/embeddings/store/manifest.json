@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-02T15:57:16Z",
+  "generated_at": "2026-01-02T16:18:47Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -71,7 +71,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "c5d5936de1aaefd141991e94fc8a78e4f5a838736b9e1455d004c64fbe753225"
+      "sha_all": "bd37e2357003117fb1692f2952dd00e796bf48ff3b6c8f26b6291244c46700a9"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -96,7 +96,7 @@
         "fiis"
       ],
       "chunks": 15,
-      "sha_all": "1e0b74d155e413fcde2ddf018f4bc2f64275a71544bd78da1a84dd04f6975b04"
+      "sha_all": "db2f3167b65f6292def4a0b9897758740a84e0a306bec5e7d9b5b4b621316e63"
     },
     {
       "id": "ontology-entity",
@@ -107,7 +107,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "20b4ba61bb0b5bda2639274502c813d54d9d4dd53e5f6dea4a7fa810a33ff8a8"
+      "sha_all": "e17f74aca9cd34499b096ac1f37a9f8c35aa8aca7eab760853665031c566b4b0"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -143,7 +143,7 @@
         "entity:fiis_dividends"
       ],
       "chunks": 3,
-      "sha_all": "6613f61e235b4124f5a01342de529cfe2ff06cb105d0ed7fe7d87248942c6c4c"
+      "sha_all": "2b94b3209961e1f10458589f5d02137b5141bef35c5443c0b00f6d77c92a8938"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -195,12 +195,12 @@
     },
     {
       "id": "entity-fiis-imoveis",
-      "path": "data/entities/fiis_imoveis/fiis_imoveis.yaml",
+      "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml",
       "tags": [
         "entities",
         "fiis",
         "imoveis",
-        "entity:fiis_imoveis"
+        "entity:fiis_real_estate"
       ],
       "chunks": 3,
       "sha_all": "913018811e3a5d566fd73e5ae250a3281360e7b2504eaafece2e22c553fdeff5"
@@ -568,7 +568,7 @@
         "cache"
       ],
       "chunks": 3,
-      "sha_all": "09c3e370bf2c0e5fc16732fcf12b3651eebcb55c3353855a76331434ef04c5dd"
+      "sha_all": "10a2a8667e04ade7b7417a927cb3151234292763d3a1e89b34c1c970dd87c13b"
     },
     {
       "id": "policies-quality",
@@ -578,7 +578,7 @@
         "quality"
       ],
       "chunks": 6,
-      "sha_all": "362ba0f72d9b28c51f6f4dfb6dc8e7e9abee06509ff21041e922a7c9954f573b"
+      "sha_all": "550532132e3c42adcaeaa447762ec4c9d4fc09902acefafb2326179a8ff7c8a8"
     },
     {
       "id": "policies-rag",
@@ -588,7 +588,7 @@
         "rag"
       ],
       "chunks": 2,
-      "sha_all": "c65cf5bc9cac694784ea1ce001767c7b596c27469d7b235670e94716b02e8fa5"
+      "sha_all": "4ddad351ffcec384987736e486bfc9df1d2636dc0c386ecdaa6b9ef38492bcce"
     },
     {
       "id": "ops-planner-thresholds",
@@ -598,7 +598,7 @@
         "thresholds"
       ],
       "chunks": 3,
-      "sha_all": "abe27bc8f58efc1088dff14a9435cec688d46e7623c6c4529612543896f2fd43"
+      "sha_all": "80c97fd08cbaa41a50e933677ebad156ae8c4b70f49c8cd784987e8c0292c407"
     },
     {
       "id": "ops-observability",
@@ -619,7 +619,7 @@
         "quality"
       ],
       "chunks": 16,
-      "sha_all": "221103cc6ab41e167919d08e2f41ea4556292207710c8a22d81ecb7ad31d8dfb"
+      "sha_all": "b1208464985313d4faa04a04942742ed92a964d03d5393244edf89ed3ee5e6e0"
     },
     {
       "id": "golden-m68-collisions",
@@ -641,7 +641,7 @@
         "samples"
       ],
       "chunks": 35,
-      "sha_all": "1ead7b784fe41bbb7505cbaea4cb0130ba1ae6cb9cca3a4f32b94d35a8ce32d9"
+      "sha_all": "1e5ca199cbca73bc92a0eae1999d4b8371f08c18523abab1c7c56f2f6d42e20e"
     },
     {
       "id": "q-projection-cadastro",
@@ -663,7 +663,7 @@
         "dividendos"
       ],
       "chunks": 1,
-      "sha_all": "41b0e72854fe21bc1eba31a74f521a738eff7b924c3fa54452f9e929683d0921"
+      "sha_all": "55569e2e30f8a6e83243357d738f1cd9bebaa9c966a530d3b2ef200c33b74a4f"
     },
     {
       "id": "q-projection-precos",
@@ -689,7 +689,7 @@
     },
     {
       "id": "q-projection-imoveis",
-      "path": "data/ops/quality/projection_fiis_imoveis.json",
+      "path": "data/ops/quality/projection_fiis_real_estate.json",
       "tags": [
         "quality",
         "projection",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1767369603,
+  "last_refresh_epoch": 1767370887,
   "vector_dimension": 768,
   "total_chunks": 296
 }

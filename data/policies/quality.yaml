@@ -58,7 +58,7 @@ datasets:
       dy_monthly:
         min: 0.0
         max: 0.2
-  fiis_imoveis:
+  fiis_real_estate:
     not_null:
     - ticker
     - asset_name

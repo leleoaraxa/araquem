@@ -16,7 +16,7 @@ context:
     - fiis_dividends
     - fiis_financials_risk
     - fiis_financials_snapshot
-    - fiis_imoveis
+    - fiis_real_estate
     - fiis_rankings
     - fiis_processos
     - fiis_noticias
@@ -43,7 +43,7 @@ context:
     - fiis_dividends
     - fiis_financials_risk
     - fiis_financials_snapshot
-    - fiis_imoveis
+    - fiis_real_estate
     - fiis_rankings
     - fiis_processos
     - fiis_noticias
@@ -69,7 +69,7 @@ context:
     - fiis_financials_risk
     - fiis_financials_snapshot
     - fiis_overview
-    - fiis_imoveis
+    - fiis_real_estate
     - fiis_rankings
     - fiis_processos
     - fiis_noticias
@@ -100,7 +100,7 @@ context:
     fiis_overview:
       use_referenced_ticker: true
       use_last_entity: true
-    fiis_imoveis:
+    fiis_real_estate:
       use_referenced_ticker: true
       use_last_entity: true
     fiis_rankings:

@@ -68,7 +68,7 @@ O Planner **não** deve usar `fiis_financials_revenue_schedule` quando:
    - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_noticias`.
 
 6. A pergunta é sobre **imóveis / portfólio físico**:
-   - “Quais são os imóveis do HGLG11?” → `fiis_imoveis`.
+   - “Quais são os imóveis do HGLG11?” → `fiis_real_estate`.
 
 Regra prática:
 Se o foco é **como e quando as receitas contratadas do FII estão distribuídas no tempo e por indexador**, a entidade correta é `fiis_financials_revenue_schedule`.

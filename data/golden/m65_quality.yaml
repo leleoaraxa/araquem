@@ -114,9 +114,9 @@ samples:
   - { question: "sortino ratio do XPML11",                              expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "max drawdown do MXRF11",                               expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
   - { question: "r2 do HGLG11",                      expected_intent: fiis_financials_risk, expected_entity: fiis_financials_risk }
-  - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
-  - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
-  - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_imoveis, expected_entity: fiis_imoveis }
+  - { question: "quantos imóveis o HGLG11 possui na carteira",          expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
+  - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
+  - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
   - { question: "variação diária do XPML11 nos últimos 5 pregões",      expected_intent: fiis_precos, expected_entity: fiis_precos }
   - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }

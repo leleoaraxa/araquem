@@ -70,7 +70,7 @@ O Planner **não** deve usar `fiis_processos` quando:
    - “Teve alguma notícia recente sobre o ALMI11?” → `fiis_noticias`.
 
 5. A pergunta é sobre **imóveis/portfólio físico**:
-   - “Quais imóveis o ALMI11 possui?” → `fiis_imoveis`.
+   - “Quais imóveis o ALMI11 possui?” → `fiis_real_estate`.
 
 Regra prática:
 Se o foco é **litígio judicial** (ação, processo, causa, risco de perda em tribunal) → `fiis_processos`.

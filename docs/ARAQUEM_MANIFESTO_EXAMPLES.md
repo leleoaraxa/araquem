@@ -265,7 +265,7 @@ A seguir, alguns exemplos reais usados nos testes golden, que demonstram o compo
 | “dy do MXRF11 em 2024”                   | `fiis_yield_history`   |
 | “como está o beta do XPLG11?”            | `fiis_financials_risk` |
 | “último dividendo do KNCR11”             | `fiis_dividends`      |
-| “quantos imóveis tem o HGLG11?”          | `fiis_imoveis`         |
+| “quantos imóveis tem o HGLG11?”          | `fiis_real_estate`         |
 | “posicao do CPTS11 no ranking da SIRIOS” | `fiis_rankings`        |
 | “notícias do HGLG11”                     | `fiis_noticias`        |
 

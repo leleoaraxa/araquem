@@ -16,7 +16,7 @@ Diferente de:
 
 - `fiis_dividends`: histórico de pagamentos de dividendos (por data/pagamento).
 - `fiis_precos`: preço / cotação por dia.
-- `fiis_imoveis`: detalhes por imóvel ou ativo (endereço, tipo, etc.).
+- `fiis_real_estate`: detalhes por imóvel ou ativo (endereço, tipo, etc.).
 - `fiis_financials_revenue_schedule`: cronograma de receitas futuras por bucket/prazo.
 
 Aqui a visão é **agregada no tempo (D-1) e no fundo (por ticker)**, com métricas de estrutura de capital, patrimônio, receitas, ABL e vacância.
@@ -177,7 +177,7 @@ Resumindo: sempre que o usuário perguntar sobre **fundamentos financeiros agreg
    - A lógica de apresentação deve deixar claro quando a métrica é zero real vs. dado ausente.
 
 3. **Diferença para outras entidades**
-   - Vacância/ABL aqui são indicadores consolidados; detalhes por imóvel ficam em `fiis_imoveis`.
+   - Vacância/ABL aqui são indicadores consolidados; detalhes por imóvel ficam em `fiis_real_estate`.
    - Receitas futuras (por bucket) ficam em `fiis_financials_revenue_schedule`.
    - Indicadores de risco quantitativos (Sharpe, MDD, etc.) ficam em `fiis_financials_risk`.
 

@@ -578,18 +578,18 @@
     },
     {
       "question": "quantos imóveis o HGLG11 possui na carteira",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "onde ficam os galpões do XPLG11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "lista de imóveis do XPML11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "variação diária do XPML11 nos últimos 5 pregões",

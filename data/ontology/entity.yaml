@@ -19,7 +19,7 @@ buckets:
     - fiis_financials_revenue_schedule
     - fiis_financials_risk
     - fiis_financials_snapshot
-    - fiis_imoveis
+    - fiis_real_estate
     - fiis_noticias
     - fiis_precos
     - fiis_processos
@@ -129,7 +129,7 @@ intents:
       - fiis_rankings
       - fiis_yield_history
       - fiis_processos
-      - fiis_imoveis
+      - fiis_real_estate
       - fiis_dividends_yields
       - fiis_cadastro
     weight: 10
@@ -1867,7 +1867,7 @@ intents:
     entities:
       - fiis_financials_risk
 
-  - name: fiis_imoveis
+  - name: fiis_real_estate
     tokens:
       include:
         - imovel
@@ -1948,7 +1948,7 @@ intents:
         - no ultimo relatorio gerencial do
         - relatorio gerencial
     entities:
-      - fiis_imoveis
+      - fiis_real_estate
 
   - name: fiis_noticias
     tokens:

@@ -1168,7 +1168,7 @@
       }
     },
     {
-      "entity_id": "fiis_imoveis",
+      "entity_id": "fiis_real_estate",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -1233,7 +1233,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_imoveis.json",
+              "data/ops/quality/projection_fiis_real_estate.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

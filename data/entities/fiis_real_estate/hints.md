@@ -1,4 +1,4 @@
-# fiis_imoveis — Hints
+# fiis_real_estate — Hints
 
 ## O que é
 Inventário de imóveis e ativos lastreados pelos FIIs, com atributos básicos de localização, tipologia e ocupação para consultas descritivas.

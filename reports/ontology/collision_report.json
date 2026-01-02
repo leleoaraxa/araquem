@@ -138,7 +138,7 @@
         "fiis_financials_revenue_schedule": [
           "receita"
         ],
-        "fiis_imoveis": [
+        "fiis_real_estate": [
           "imoveis",
           "imoveis do <ticker>",
           "ocupacao"
@@ -175,7 +175,7 @@
       ],
       "prohibited_tokens": []
     },
-    "fiis_imoveis": {
+    "fiis_real_estate": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_financials_snapshot": [

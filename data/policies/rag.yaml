@@ -36,7 +36,7 @@ routing:
   - fiis_precos
   - fiis_dividends
   - fiis_yield_history
-  - fiis_imoveis
+  - fiis_real_estate
   - fiis_noticias
   - fiis_rankings
   - fiis_processos

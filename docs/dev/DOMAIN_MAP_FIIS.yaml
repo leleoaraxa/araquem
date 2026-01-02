@@ -88,11 +88,11 @@ intents:
       - "quanto das receitas vence em até 6 meses do HGLG11?"
       - "qual percentual da receita do KNRI11 é indexado ao IPCA?"
 
-  fiis_imoveis:
+  fiis_real_estate:
     description: "Lista de imóveis/ativos do portfólio do FII."
     domain_block: D8
     entities:
-      - fiis_imoveis
+      - fiis_real_estate
     ui_pages:
       - fii_detail
     examples:

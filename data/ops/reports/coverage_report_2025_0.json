@@ -13,7 +13,7 @@
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_imoveis",
+      "fiis_real_estate",
       "fiis_noticias",
       "fiis_precos",
       "fiis_processos",
@@ -37,7 +37,7 @@
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_imoveis",
+      "fiis_real_estate",
       "fiis_noticias",
       "fiis_precos",
       "fiis_processos",
@@ -61,7 +61,7 @@
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_imoveis",
+      "fiis_real_estate",
       "fiis_noticias",
       "fiis_precos",
       "fiis_processos",
@@ -87,7 +87,7 @@
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_imoveis",
+      "fiis_real_estate",
       "fiis_noticias",
       "fiis_precos",
       "fiis_processos",
@@ -192,14 +192,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_imoveis",
+        "entity": "fiis_real_estate",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_imoveis",
+        "entity": "fiis_real_estate",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -943,7 +943,7 @@
         "ok": true
       }
     },
-    "fiis_imoveis": {
+    "fiis_real_estate": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -952,18 +952,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_imoveis",
+        "fiis_real_estate",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_imoveis/fiis_imoveis.yaml"
+          "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_imoveis.schema.yaml"
+          "path": "data/contracts/entities/fiis_real_estate.schema.yaml"
         }
       },
       "policies": {
@@ -976,7 +976,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_imoveis"
+            "fiis_real_estate"
           ],
           "missing_intents": [
             "ticker_query"

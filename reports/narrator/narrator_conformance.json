@@ -36,16 +36,16 @@
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_imoveis",
+      "entity": "fiis_real_estate",
       "field": "key",
-      "path": "data/entities/fiis_imoveis/responses/list.md.j2",
+      "path": "data/entities/fiis_real_estate/responses/list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_imoveis",
+      "entity": "fiis_real_estate",
       "field": "value",
-      "path": "data/entities/fiis_imoveis/responses/list.md.j2",
+      "path": "data/entities/fiis_real_estate/responses/list.md.j2",
       "component": "narrator"
     },
     {

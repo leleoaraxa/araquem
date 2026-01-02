@@ -37,7 +37,7 @@ python scripts/quality/quality_push.py \
   data/ops/quality/payloads/client_fiis_performance_vs_benchmark_suite.json \
   data/ops/quality/payloads/fiis_dividends_yields_suite.json \
   data/ops/quality/payloads/fiis_financials_risk_suite.json \
-  data/ops/quality/payloads/fiis_imoveis_suite.json \
+  data/ops/quality/payloads/fiis_real_estate_suite.json \
   data/ops/quality/payloads/history_market_indicators_suite.json \
   data/ops/quality/payloads/negativos_indices_suite.json
 ````

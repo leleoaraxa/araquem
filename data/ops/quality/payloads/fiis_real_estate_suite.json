@@ -1,0 +1,31 @@
+{
+  "suite": "fiis_real_estate",
+  "description": "Suíte de testes para fiis_real_estate — ativos, endereços, área e vacância dos FIIs",
+  "payloads": [
+    {
+      "question": "Quais ativos do MXRF11 estão inadimplentes",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
+    },
+    {
+      "question": "Quais endereços fazem parte do VISC11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
+    },
+    {
+      "question": "Quais imóveis compõem o HGLG11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
+    },
+    {
+      "question": "Qual o tamanho em metros quadrados dos imóveis do KNRI11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
+    },
+    {
+      "question": "Vacância dos ativos do XPML11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
+    }
+  ]
+}

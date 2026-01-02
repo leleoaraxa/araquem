@@ -635,9 +635,9 @@
       ]
     },
     {
-      "entity_id": "fiis_imoveis",
+      "entity_id": "fiis_real_estate",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_imoveis",
+      "dir_path": "data/entities/fiis_real_estate",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -645,18 +645,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_imoveis/fiis_imoveis.yaml",
+        "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_imoveis.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_real_estate.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_imoveis/responses",
+        "dir_path": "data/entities/fiis_real_estate/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/fiis_imoveis/responses/table.md.j2",
+            "path": "data/entities/fiis_real_estate/responses/table.md.j2",
             "size_bytes": 1611
           }
         ]
@@ -664,11 +664,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_imoveis/hints.md"
+          "path": "data/entities/fiis_real_estate/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fiis_imoveis/template.md",
+          "path": "data/entities/fiis_real_estate/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -679,12 +679,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_imoveis.csv"
+        "path": "docs/database/samples/fiis_real_estate.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_imoveis.json"
+          "data/ops/quality/projection_fiis_real_estate.json"
         ]
       },
       "tags": [

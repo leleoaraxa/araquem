@@ -1,6 +1,6 @@
-id: fiis_imoveis
+id: fiis_real_estate
 result_key: imoveis_fii
-sql_view: fiis_imoveis
+sql_view: fiis_real_estate
 private: false
 description: Imóveis e propriedades de FIIs (dados operacionais 1×N)
 
@@ -51,7 +51,7 @@ columns:
   description: Data da última atualização do registro.
 ask:
   intents:
-    - fiis_imoveis
+    - fiis_real_estate
   requires_identifiers:
     - tickers
   keywords:

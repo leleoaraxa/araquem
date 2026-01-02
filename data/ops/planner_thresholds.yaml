@@ -28,7 +28,7 @@ planner:
       fiis_overview:
         min_score: 1.0
         min_gap: 0.2
-      fiis_imoveis:
+      fiis_real_estate:
         min_score: 0.85
         min_gap: 0.1
       fiis_processos:
@@ -98,7 +98,7 @@ planner:
       fiis_overview:
         min_score: 1.0
         min_gap: 0.2
-      fiis_imoveis:
+      fiis_real_estate:
         min_score: 0.85
         min_gap: 0.1
       fiis_processos:

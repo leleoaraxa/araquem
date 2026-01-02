@@ -18,7 +18,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 | fiis_financials_revenue_schedule | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_financials_risk | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_financials_snapshot | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
-| fiis_imoveis | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| fiis_real_estate | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_noticias | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_precos | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_processos | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
@@ -79,9 +79,9 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 - fiis_financials_snapshot-q1: "Qual o lucro ou resultado distribuível mais recente do FII?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 - fiis_financials_snapshot-q2: "Como evoluíram receitas, despesas e margens entre períodos?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
-### fiis_imoveis
-- fiis_imoveis-q1: "Quais imóveis compõem a carteira do FII e onde estão localizados?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- fiis_imoveis-q2: "Qual a tipologia (ex.: lajes, galpões, shoppings) dos imóveis listados?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### fiis_real_estate
+- fiis_real_estate-q1: "Quais imóveis compõem a carteira do FII e onde estão localizados?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- fiis_real_estate-q2: "Qual a tipologia (ex.: lajes, galpões, shoppings) dos imóveis listados?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
 ### fiis_noticias
 - fiis_noticias-q1: "Quais foram as últimas notícias publicadas sobre determinado FII?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

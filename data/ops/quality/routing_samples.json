@@ -583,28 +583,28 @@
     },
     {
       "question": "Quais ativos do MXRF11 estão inadimplentes",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Quais endereços fazem parte do VISC11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Quais imóveis compõem o HGLG11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Qual o tamanho em metros quadrados dos imóveis do KNRI11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Vacância dos ativos do XPML11",
-      "expected_intent": "fiis_imoveis",
-      "expected_entity": "fiis_imoveis"
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Houve algum fato relevante envolvendo contratos ou locatários do HGLG11?",

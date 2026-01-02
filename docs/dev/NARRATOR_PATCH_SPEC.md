@@ -278,7 +278,7 @@ GET /ask?question=imoveis%20do%20HGLG11&explain=true
 
 Verificar:
 
-* `fiis_imoveis` continua funcionando como antes.
+* `fiis_real_estate` continua funcionando como antes.
 * Se `llm_enabled` global estiver ativo, comportamento de LLM para outras entidades permanece inalterado (exceto risco, que foi explicitamente travado).
 
 ---

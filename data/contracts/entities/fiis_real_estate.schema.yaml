@@ -1,5 +1,5 @@
-entity: fiis_imoveis
-name: fiis_imoveis
+entity: fiis_real_estate
+name: fiis_real_estate
 description: Ativos imobiliários de cada FII com características e métricas de ocupação.
 kind: view
 version: 1

@@ -1,215 +1,244 @@
 question,http_status,request_error,explain_enabled,status_status,status_raw,status_ok,status_reason,status_message,chosen_intent,chosen_entity,planner_score,gate_accepted,gate_source,gate_reason,gate_min_score,gate_min_gap,gate_gap,score_for_gate,intent_top2_gap_base,intent_top2_gap_final,intent_top1,intent_top2,scoring_mode,scoring_keys,rows_total,result_key,cache_hit,cache_hit_response,cache_hit_metrics,cache_layer,cache_ttl,cache_key,rag_used,fusion_used,elapsed_ms_server,elapsed_ms_total_est,elapsed_ms_client,narrator_used,narrator_latency_ms,narrator_error,answer_text,expected_intent,expected_entity,match_intent,match_entity,match_both,suite_name,suite_description,payload_id,idx,fail_reasons,case_pass
-o FPAB11 já fez parte do IFIX?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.6500000000000004,True,base,,1.0,0.2,4.4,1.6500000000000004,4.4,4.4,fiis_registrations,client_fiis_performance_vs_benchmark,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:7976452b700b2cb36b12573220f3e67ea43878156526e06530b72822b6f8fb59,True,False,655,655.0,838.107,False,,,"**FPAB11 — Fundo Investimento Imobiliario Projeto Gua Branca**
+Dividendos do HGLG11 em cada mês do último ano,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,6.049999999999999,True,base,,0.9,0.15,6.599999999999999,6.049999999999999,6.599999999999999,6.599999999999999,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:45b9dab388e4649396bef1669227f12f60eac6add149acd76f9f0cfb29c715fd,True,False,1359,1359.0,1566.68,False,,,"**Dividendos de HGLG11**
 
-- CNPJ do fundo: **03.251.720/0001-18**
-- Nome de pregão (B3): **FII A Branca**
-- Classificação / gestão: **Tijolo / Definida**
-- Setor / Subsetor: **Lajes Corporativas / Escritórios**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRFPABCTF011**
-- Data de IPO: **29/12/2023**
-- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
-- CNPJ do administrador: **59.281.253/0001-23**
-- Custodiante: **Banco Btg Pactual S A**
-- Peso no IFIX / IFIL: **0,00% / 0,00%**
-- Nº de cotas / cotistas: **750.000 / 0**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,1,[],True
-O HGLG11 é um fundo de gestão ativa ou passiva?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.1,True,base,,1.0,0.2,1.1,1.1,0.0,0.0,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,278,278.0,450.021,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+    Último pagamento em 15/01/2026: **R$ 1,10** por cota.
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,2,[],True
-peso do MCCI11 no IFIX,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_rankings,fiis_rankings,1.6500000000000004,True,base,,1.0,0.2,2.2,1.6500000000000004,2.2,2.2,fiis_rankings,client_fiis_positions,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,rankings_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_rankings:plan:6c94c2e75fc4c4a2d2a3b33edef0fea4e73af5aa0cacf136d66caa7a2e659866,True,False,296,296.0,403.381,False,,,"| Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| MCCI11 | 0 | 0 | 0 | 0 | 28 | 0 | 28 | 0 | 154 | 161 | 98 | 33 | 40 | 109 | 115 | 84 | 126 | 22/05/2024 00:00 | 02/01/2026 00:00 |",fiis_rankings,fiis_rankings,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,3,[],True
-Qual foi a data do IPO do ALMI11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,4.4,True,base,,1.0,0.2,4.4,4.4,3.3000000000000003,3.3000000000000003,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:767fd789d1b68c49f232bc1031ded359d4a7e8ac799d80ffd647cdc62dc31636,True,False,393,393.0,554.54,False,,,"**ALMI11 — Fundo Investimento Imobiliario FII Torre Almirante**
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,1,[],True
+Dividendos pagos pelo HGLG11 nos últimos 12 meses,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,10.449999999999998,True,base,,0.9,0.15,8.799999999999997,10.449999999999998,8.799999999999997,8.799999999999997,fiis_dividends,fiis_yield_history,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:d035a1fdd383a5e74a5ba3f3de77b99d78aeba5d8a3c990924f7ebe572895974,True,False,331,331.0,550.492,False,,,"**Dividendos de HGLG11**
 
-- CNPJ do fundo: **07.122.725/0001-00**
-- Nome de pregão (B3): **FII Torre Al**
-- Classificação / gestão: **Tijolo / Definida**
-- Setor / Subsetor: **Lajes Corporativas / Escritórios**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRALMICTF003**
-- Data de IPO: **19/11/2004**
-- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
-- CNPJ do administrador: **59.281.253/0001-23**
-- Custodiante: **Banco Btg Pactual S A**
-- Peso no IFIX / IFIL: **0,00% / 0,00%**
-- Nº de cotas / cotistas: **111.177 / 0**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,4,[],True
-Qual o CNPJ do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,10.999999999999998,True,base,,1.0,0.2,10.999999999999998,10.999999999999998,9.899999999999999,9.899999999999999,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,214,214.0,326.054,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+    Último pagamento em 18/03/2025: **R$ 1,10** por cota.
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,5,[],True
-Qual é a classificação oficial do XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,2.2,True,base,,1.0,0.2,1.1,2.2,1.1,1.1,fiis_registrations,fiis_rankings,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,283,283.0,342.816,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,10 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,10 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,10 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,10 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,2,[],True
+Dividendos que o KNRI11 pagou em janeiro de 2025,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,1.1,True,base,,0.9,0.2,2.2,1.1,0.0,0.0,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,12,ticker,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends_yields:plan:deea8557b367e4b30b3549567c2cdaadafe90252e97bfe2a09debff1845c2863,True,False,303,303.0,464.014,False,,,"**Dividendos e yield do KNRI11**
 
-- CNPJ do fundo: **26.502.794/0001-85**
-- Nome de pregão (B3): **FII XP Log**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRXPLGCTF002**
-- Data de IPO: **01/06/2018**
-- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
-- CNPJ do administrador: **22.610.500/0001-88**
-- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
-- Peso no IFIX / IFIL: **2,30% / 2,61%**
-- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,6,[],True
-Qual é o administrador e o CNPJ do administrador do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,28.599999999999998,True,base,,1.0,0.2,28.599999999999998,28.599999999999998,27.499999999999996,27.499999999999996,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,186,186.0,309.426,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 1,25**
+- DY mensal: **0,81%**
+- DY 12 meses: **7,80%**
+- Dividendos acumulados 12m: **R$ 12,00**
+- Último dividendo pago: **R$ 1,25** em **15/01/2026**
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,7,[],True
-Qual é o código ISIN do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,4.4,True,base,,1.0,0.2,4.4,4.4,3.3000000000000003,3.3000000000000003,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,192,192.0,349.681,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 1,25 | 0,81% | 7,80% || 01/12/2025 | R$ 1,00 | 0,81% | 7,80% || 01/11/2025 | R$ 1,00 | 0,81% | 7,80% || 01/10/2025 | R$ 1,00 | 0,81% | 7,80% || 01/09/2025 | R$ 1,00 | 0,81% | 7,80% || 01/08/2025 | R$ 1,00 | 0,81% | 7,80% || 01/07/2025 | R$ 1,00 | 0,81% | 7,80% || 01/06/2025 | R$ 1,00 | 0,81% | 7,80% || 01/05/2025 | R$ 1,00 | 0,81% | 7,80% || 01/04/2025 | R$ 1,00 | 0,81% | 7,80% || 01/03/2025 | R$ 1,00 | 0,81% | 7,80% || 01/02/2025 | R$ 1,00 | 0,81% | 7,80% |",fiis_dividends,fiis_dividends,False,False,False,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,3,['entity_mismatch'],False
+Lista de pagamentos de proventos do VINO11,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,10.999999999999998,True,base,,0.9,0.15,9.899999999999999,10.999999999999998,9.899999999999999,9.899999999999999,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:51c8719c5fe120e553ec321c2d34f8626292a97f86d603703470b98f8c752e71,True,False,267,267.0,379.196,False,,,"**Dividendos de VINO11**
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,8,[],True
-Qual é o nome de exibição do fundo ALMI11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,4.4,8.8,4.4,4.4,fiis_registrations,fiis_overview,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:767fd789d1b68c49f232bc1031ded359d4a7e8ac799d80ffd647cdc62dc31636,True,False,151,151.0,259.354,False,,,"**ALMI11 — Fundo Investimento Imobiliario FII Torre Almirante**
+    Último pagamento em 18/03/2025: **R$ 0,05** por cota.
 
-- CNPJ do fundo: **07.122.725/0001-00**
-- Nome de pregão (B3): **FII Torre Al**
-- Classificação / gestão: **Tijolo / Definida**
-- Setor / Subsetor: **Lajes Corporativas / Escritórios**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRALMICTF003**
-- Data de IPO: **19/11/2004**
-- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
-- CNPJ do administrador: **59.281.253/0001-23**
-- Custodiante: **Banco Btg Pactual S A**
-- Peso no IFIX / IFIL: **0,00% / 0,00%**
-- Nº de cotas / cotistas: **111.177 / 0**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,9,[],True
-Qual é o nome de pregão do HGLG11 na B3?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,7.699999999999999,True,base,,1.0,0.2,6.6,7.699999999999999,6.6,6.6,fiis_registrations,fiis_precos,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,187,187.0,317.781,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 0,05 |
+      | 12/12/2025 | 28/11/2025 | R$ 0,05 |
+      | 14/11/2025 | 31/10/2025 | R$ 0,05 |
+      | 14/10/2025 | 30/09/2025 | R$ 0,05 |
+      | 12/09/2025 | 29/08/2025 | R$ 0,05 |
+      | 14/08/2025 | 31/07/2025 | R$ 0,05 |
+      | 14/07/2025 | 30/06/2025 | R$ 0,09 |
+      | 13/06/2025 | 30/05/2025 | R$ 0,05 |
+      | 15/05/2025 | 30/04/2025 | R$ 0,05 |
+      | 14/04/2025 | 31/03/2025 | R$ 0,05 |
+      | 18/03/2025 | 28/02/2025 | R$ 0,05 |
+      | 14/02/2025 | 31/01/2025 | R$ 0,05 |
+      | 15/01/2025 | 30/12/2024 | R$ 0,05 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,4,[],True
+Me mostra a distribuição de rendimentos do KNRI11 mês a mês,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,4.4,True,base,,0.9,0.15,2.2000000000000006,4.4,2.2000000000000006,2.2000000000000006,fiis_dividends,fiis_yield_history,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:6c2e2cc25129858a29e149d2723a25e1a39dbace8bf8cf70fe7ac9d38c7ffc60,True,False,276,276.0,397.947,False,,,"**Dividendos de KNRI11**
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,10,[],True
-Qual é o peso do HGLG11 no IFIX e no IFIL?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_rankings,fiis_rankings,15.950000000000001,True,base,,1.0,0.2,17.6,15.950000000000001,17.6,17.6,fiis_rankings,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,rankings_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_rankings:plan:6ff2d1c228205c29e90d6d9578ffa7e551f64277b3d121088af839e6b33adcab,True,False,229,229.0,289.988,False,,,"| Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
-| HGLG11 | 0 | 0 | 0 | 0 | 4 | 0 | 4 | 0 | 260 | 314 | 61 | 4 | 4 | 208 | 226 | 29 | 26 | 22/05/2024 00:00 | 02/01/2026 00:00 |",fiis_rankings,fiis_rankings,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,11,[],True
-Qual é o público-alvo do XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,8.8,8.8,7.700000000000001,7.700000000000001,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,170,170.0,334.259,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
+    Último pagamento em 18/03/2025: **R$ 1,00** por cota.
 
-- CNPJ do fundo: **26.502.794/0001-85**
-- Nome de pregão (B3): **FII XP Log**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRXPLGCTF002**
-- Data de IPO: **01/06/2018**
-- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
-- CNPJ do administrador: **22.610.500/0001-88**
-- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
-- Peso no IFIX / IFIL: **2,30% / 2,61%**
-- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,12,[],True
-Qual é o setor e o subsetor do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,5.500000000000001,8.8,5.500000000000001,5.500000000000001,fiis_registrations,fiis_overview,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,160,160.0,333.454,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,25 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,00 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,00 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,00 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,00 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,00 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,00 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,00 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,00 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,00 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,00 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,00 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,00 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,5,[],True
+Me mostra o histórico de dividendos do KNRI11,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,9.349999999999998,True,base,,0.9,0.15,9.899999999999997,9.349999999999998,9.899999999999997,9.899999999999997,fiis_dividends,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:6c2e2cc25129858a29e149d2723a25e1a39dbace8bf8cf70fe7ac9d38c7ffc60,True,False,149,149.0,261.006,False,,,"**Dividendos de KNRI11**
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,13,[],True
-Qual é o site oficial do fundo XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,5.5,True,base,,1.0,0.2,5.5,5.5,4.4,4.4,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,138,138.0,279.651,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
+    Último pagamento em 18/03/2025: **R$ 1,00** por cota.
 
-- CNPJ do fundo: **26.502.794/0001-85**
-- Nome de pregão (B3): **FII XP Log**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRXPLGCTF002**
-- Data de IPO: **01/06/2018**
-- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
-- CNPJ do administrador: **22.610.500/0001-88**
-- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
-- Peso no IFIX / IFIL: **2,30% / 2,61%**
-- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,14,[],True
-Quantas cotas emitidas e quantos cotistas o HGLG11 possui?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.6500000000000001,True,base,,1.0,0.2,1.1,1.6500000000000001,1.1,1.1,fiis_registrations,client_fiis_positions,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,187,187.0,328.909,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,25 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,00 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,00 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,00 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,00 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,00 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,00 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,00 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,00 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,00 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,00 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,00 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,00 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,6,[],True
+Proventos já anunciados do MXRF11 para os próximos meses,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,7.699999999999999,True,base,,0.9,0.15,6.6,7.699999999999999,6.6,6.6,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:9b7b67f1f345eff465d87926046bd32a451c289bd2898b42b0ad407b48a7cbb1,True,False,250,250.0,426.587,False,,,"**Dividendos de MXRF11**
 
-- CNPJ do fundo: **11.728.688/0001-47**
-- Nome de pregão (B3): **FII HGLG Pax**
-- Classificação / gestão: **Tijolo / Ativa**
-- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- Público-alvo: **Investidores Em Geral**
-- Fundo exclusivo: **Não**
-- Código ISIN: **BRHGLGCTF004**
-- Data de IPO: **03/05/2010**
-- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
-- CNPJ do administrador: **45.246.410/0001-55**
-- Custodiante: **Banco Genial S.A.**
-- Peso no IFIX / IFIL: **3,71% / 4,21%**
-- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
-- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,15,[],True
+    Último pagamento em 18/03/2025: **R$ 0,09** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 0,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 0,10 |
+      | 07/11/2025 | 31/10/2025 | R$ 0,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 0,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 0,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 0,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 0,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 0,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 0,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 0,09 |
+      | 18/03/2025 | 28/02/2025 | R$ 0,09 |
+      | 14/02/2025 | 31/01/2025 | R$ 0,09 |
+      | 14/01/2025 | 30/12/2024 | R$ 0,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,7,[],True
+Quais foram os dividendos do HGLG11 com data com em outubro de 2025?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,9.899999999999999,True,base,,0.9,0.15,9.899999999999999,9.899999999999999,9.899999999999999,9.899999999999999,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:d035a1fdd383a5e74a5ba3f3de77b99d78aeba5d8a3c990924f7ebe572895974,True,False,186,186.0,301.904,False,,,"**Dividendos de HGLG11**
+
+    Último pagamento em 18/03/2025: **R$ 1,10** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,10 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,10 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,10 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,10 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,8,[],True
+Quais os dividendos do HGLG11 esse mês?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,16.5,True,base,,0.9,0.15,16.5,16.5,16.5,16.5,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:d035a1fdd383a5e74a5ba3f3de77b99d78aeba5d8a3c990924f7ebe572895974,True,False,157,157.0,306.964,False,,,"**Dividendos de HGLG11**
+
+    Último pagamento em 18/03/2025: **R$ 1,10** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,10 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,10 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,10 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,10 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,9,[],True
+Quais os proventos mensais do HGLG11 em 2025?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,7.699999999999999,True,base,,0.9,0.15,6.6,7.699999999999999,6.6,6.6,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:d035a1fdd383a5e74a5ba3f3de77b99d78aeba5d8a3c990924f7ebe572895974,True,False,151,151.0,292.531,False,,,"**Dividendos de HGLG11**
+
+    Último pagamento em 18/03/2025: **R$ 1,10** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 1,10 |
+      | 14/11/2025 | 31/10/2025 | R$ 1,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 1,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 1,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 1,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 1,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 1,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 1,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 1,10 |
+      | 18/03/2025 | 28/02/2025 | R$ 1,10 |
+      | 14/02/2025 | 31/01/2025 | R$ 1,10 |
+      | 15/01/2025 | 30/12/2024 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,10,[],True
+Quais proventos o MXRF11 pagou em 2024?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,5.5,True,base,,0.9,0.15,3.3,5.5,3.3,3.3,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:9b7b67f1f345eff465d87926046bd32a451c289bd2898b42b0ad407b48a7cbb1,True,False,162,162.0,284.711,False,,,"**Dividendos de MXRF11**
+
+    Último pagamento em 18/03/2025: **R$ 0,09** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 0,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 0,10 |
+      | 07/11/2025 | 31/10/2025 | R$ 0,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 0,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 0,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 0,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 0,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 0,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 0,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 0,09 |
+      | 18/03/2025 | 28/02/2025 | R$ 0,09 |
+      | 14/02/2025 | 31/01/2025 | R$ 0,09 |
+      | 14/01/2025 | 30/12/2024 | R$ 0,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,11,[],True
+Qual foi o último dividendo pago pelo HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,4.95,True,base,,0.9,0.15,3.3,4.95,3.3,3.3,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:45b9dab388e4649396bef1669227f12f60eac6add149acd76f9f0cfb29c715fd,True,False,163,163.0,325.573,False,,,"**Dividendos de HGLG11**
+
+    Último pagamento em 15/01/2026: **R$ 1,10** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 1,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,12,[],True
+Qual é o próximo pagamento de dividendos do MXRF11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,7.700000000000001,True,base,,0.9,0.15,6.600000000000001,7.700000000000001,6.600000000000001,6.600000000000001,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:9b7b67f1f345eff465d87926046bd32a451c289bd2898b42b0ad407b48a7cbb1,True,False,163,163.0,376.156,False,,,"**Dividendos de MXRF11**
+
+    Último pagamento em 18/03/2025: **R$ 0,09** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 0,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 0,10 |
+      | 07/11/2025 | 31/10/2025 | R$ 0,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 0,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 0,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 0,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 0,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 0,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 0,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 0,09 |
+      | 18/03/2025 | 28/02/2025 | R$ 0,09 |
+      | 14/02/2025 | 31/01/2025 | R$ 0,09 |
+      | 14/01/2025 | 30/12/2024 | R$ 0,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,13,[],True
+Quanto o MXRF11 distribuiu de dividendos em março de 2025?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,1.1,True,base,,0.9,0.15,1.1,1.1,1.1,1.1,fiis_dividends,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,13,dividendos_fii,True,True,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:9b7b67f1f345eff465d87926046bd32a451c289bd2898b42b0ad407b48a7cbb1,True,False,210,210.0,364.323,False,,,"**Dividendos de MXRF11**
+
+    Último pagamento em 18/03/2025: **R$ 0,09** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | 15/01/2026 | 30/12/2025 | R$ 0,10 |
+      | 12/12/2025 | 28/11/2025 | R$ 0,10 |
+      | 07/11/2025 | 31/10/2025 | R$ 0,10 |
+      | 14/10/2025 | 30/09/2025 | R$ 0,10 |
+      | 12/09/2025 | 29/08/2025 | R$ 0,10 |
+      | 14/08/2025 | 31/07/2025 | R$ 0,10 |
+      | 14/07/2025 | 30/06/2025 | R$ 0,10 |
+      | 13/06/2025 | 30/05/2025 | R$ 0,10 |
+      | 15/05/2025 | 30/04/2025 | R$ 0,10 |
+      | 14/04/2025 | 31/03/2025 | R$ 0,09 |
+      | 18/03/2025 | 28/02/2025 | R$ 0,09 |
+      | 14/02/2025 | 31/01/2025 | R$ 0,09 |
+      | 14/01/2025 | 30/12/2024 | R$ 0,10 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,14,[],True
+Total de dividendos do VISC11 nos últimos 6 meses,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends,fiis_dividends,9.899999999999999,True,base,,0.9,0.15,9.899999999999999,9.899999999999999,9.899999999999999,9.899999999999999,fiis_dividends,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,dividendos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-43e1634c:pub:fiis_dividends:plan:1bb1efe818476a65759ac9b34f06c194fdcab31e3b757c8f81f91e97836ff679,True,False,253,253.0,387.033,False,,,"**Dividendos de VISC11**
+
+    Último pagamento em -: **R$ 5,67** por cota.
+
+    | Data de pagamento | Data-com | Valor por cota |
+    | --- | --- | --- |
+      | - | - | R$ 5,67 |",fiis_dividends,fiis_dividends,True,True,True,fiis_dividends,"Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",,15,[],True

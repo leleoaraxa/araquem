@@ -218,7 +218,7 @@ A agenda de receitas futuras do fundo e como elas estão indexadas.
 
 ---
 
-## 8. Imóveis e Portfólio Físico (`fiis_imoveis`)
+## 8. Imóveis e Portfólio Físico (`fiis_real_estate`)
 
 **O que representa**
 A lista de ativos físicos do fundo.

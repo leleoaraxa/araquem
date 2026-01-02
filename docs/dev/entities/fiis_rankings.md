@@ -87,7 +87,7 @@ O Planner **não** deve usar `fiis_rankings` quando a pergunta for sobre:
    - “Como está distribuída a receita futura do HGLG11?” → `fiis_financials_revenue_schedule`.
 
 5. **Imóveis / portfólio físico**:
-   - “Quais são os imóveis do HGLG11?” → `fiis_imoveis`.
+   - “Quais são os imóveis do HGLG11?” → `fiis_real_estate`.
 
 6. **Notícias / fatos relevantes**:
    - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_noticias`.

@@ -163,7 +163,7 @@ Mesma natureza do overview (dados cadastrais).
 
 ---
 
-### **📌 fiis_imoveis**
+### **📌 fiis_real_estate**
 
 **Tipo:** 1xN
 **Cobertura:** imóveis reais

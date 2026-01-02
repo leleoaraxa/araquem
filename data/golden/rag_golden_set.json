@@ -20,7 +20,7 @@
   {
     "id": "portfolio_concentracao_imovel",
     "question": "como avaliar se um FII está concentrado demais em um único imóvel ou região?",
-    "expected_intent": "fiis_imoveis",
+    "expected_intent": "fiis_real_estate",
     "expect_rag": false
   },
   {

@@ -62,27 +62,27 @@
     },
     {
       "question": "qual o administrador do VISC11",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "dividendos do VISC11",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "notícias do VISC11",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "preço do HGLG11 agora",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "últimas notícias do KNRI11",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "payout do VISC11",
-      "not_intent": "fiis_imoveis"
+      "not_intent": "fiis_real_estate"
     },
     {
       "question": "alavancagem do HGRU11",

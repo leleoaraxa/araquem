@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "fiis_imoveis",
+  "entity": "fiis_real_estate",
   "result_key": "imoveis_fii",
   "must_have_columns": [
     "ticker",

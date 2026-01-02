@@ -1,8 +1,8 @@
-# Entidade `fiis_imoveis`
+# Entidade `fiis_real_estate`
 
 ## 1. Visão geral
 
-`fiis_imoveis` lista os imóveis e ativos operacionais de cada FII, com informações de nome, classe, endereço, área, unidades, vacância e status. Base D-1, com múltiplas linhas por fundo.
+`fiis_real_estate` lista os imóveis e ativos operacionais de cada FII, com informações de nome, classe, endereço, área, unidades, vacância e status. Base D-1, com múltiplas linhas por fundo.
 
 Perguntas típicas:
 - “Quais imóveis compõem o HGLG11?”
@@ -11,11 +11,11 @@ Perguntas típicas:
 
 ## 2. Origem dos dados e contrato
 
-- **View/Tabela base**: `fiis_imoveis`.
+- **View/Tabela base**: `fiis_real_estate`.
 - **Chave lógica**: `(ticker, asset_name)`.
 - **Granularidade**: nível de ativo/imóvel do FII.
 
-Campos principais (do contrato `fiis_imoveis.schema.yaml`):
+Campos principais (do contrato `fiis_real_estate.schema.yaml`):
 - Identificação: `ticker`, `asset_name`, `asset_class`, `asset_address`.
 - Métricas físicas: `total_area`, `units_count`.
 - Ocupação e risco: `vacancy_ratio`, `non_compliant_ratio`, `assets_status`.
@@ -32,7 +32,7 @@ Campos principais (do contrato `fiis_imoveis.schema.yaml`):
 - **Ocupação/risco**: `vacancy_ratio`, `non_compliant_ratio`, `assets_status`.
 - **Metadados**: `created_at`, `updated_at`.
 
-## 5. Exemplos de perguntas que devem cair em `fiis_imoveis`
+## 5. Exemplos de perguntas que devem cair em `fiis_real_estate`
 
 - “Quais imóveis o HGLG11 possui?”
 - “Vacância dos ativos do XPML11.”

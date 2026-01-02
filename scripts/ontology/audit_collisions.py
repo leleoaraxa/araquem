@@ -28,7 +28,7 @@ ENTITY_SCOPE: Tuple[str, ...] = (
     "fiis_financials_revenue_schedule",
     "fiis_financials_snapshot",
     "fiis_rankings",
-    "fiis_imoveis",
+    "fiis_real_estate",
     "fiis_noticias",
     "fiis_overview",
     "fiis_dividends_yields",

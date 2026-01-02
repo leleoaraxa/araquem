@@ -134,7 +134,7 @@ entities:
     notes:
     - view composta D-1 com overview do FII (cadastro + snapshot + risco + rankings)
     - consultas determinísticas via SQL; RAG negado no roteador
-  fiis_imoveis:
+  fiis_real_estate:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

@@ -95,7 +95,7 @@ A tabela abaixo resume as colunas expostas em `fiis_overview`. O schema completo
 | `has_noticias` | `boolean` | Indica se há notícias recentes mapeadas para o fundo (`fiis_noticias`). |
 | `has_risk_metrics` | `boolean` | Indica se há métricas de risco calculadas (`fiis_financials_risk`). |
 | `has_revenue_schedule` | `boolean` | Indica se há cronograma de receitas disponível (`fiis_financials_revenue_schedule`). |
-| `has_properties` | `boolean` | Indica se há imóveis detalhados na entidade `fiis_imoveis`. |
+| `has_properties` | `boolean` | Indica se há imóveis detalhados na entidade `fiis_real_estate`. |
 | `vacancy_physical` | `numeric` | Vacância física consolidada (quando disponível). |
 | `vacancy_economic` | `numeric` | Vacância econômica consolidada (quando disponível). |
 | `properties_count` | `integer` | Número de propriedades/captações vinculadas ao fundo. |

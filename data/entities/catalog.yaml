@@ -193,13 +193,13 @@ entities:
       natural_keys:
       - ticker
     notes: []
-  fiis_imoveis:
+  fiis_real_estate:
     title: FIIs – Imóveis e propriedades
     kind: snapshot
     paths:
-      entity_yaml: data/entities/fiis_imoveis/fiis_imoveis.yaml
-      schema: data/contracts/entities/fiis_imoveis.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_imoveis.json
+      entity_yaml: data/entities/fiis_real_estate/fiis_real_estate.yaml
+      schema: data/contracts/entities/fiis_real_estate.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_real_estate.json
     coverage:
       cache_policy: true
       rag_policy: false

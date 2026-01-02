@@ -159,7 +159,7 @@ fiis_processos | `_render_fiis_processos` | Descreve processos com risco, valore
 fiis_financials_revenue_schedule | `_render_fiis_financials_revenue_schedule` | Resume prazos de receita com percentuais e comentários.
 fiis_financials_risk | `_render_fiis_financials_risk` | Lista métricas de risco; vazio em modo conceito.
 fiis_financials_snapshot | `_render_fiis_financials_snapshot` | Destaca caixa, market cap, yield e alavancagem.
-fiis_imoveis | `_render_fiis_imoveis` | Detalha imóveis com localidade e vacância.
+fiis_real_estate | `_render_fiis_real_estate` | Detalha imóveis com localidade e vacância.
 * (outros) | `_fallback_render` | Mensagem padrão com contagem e linhas formatadas.
 
 

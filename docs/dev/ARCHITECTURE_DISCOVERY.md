@@ -79,7 +79,7 @@ data/
             projection_fiis_financials_revenue_schedule.json
             projection_fiis_financials_risk.json
             projection_fiis_financials_snapshot.json
-            projection_fiis_imoveis.json
+            projection_fiis_real_estate.json
             projection_fiis_noticias.json
             projection_fiis_precos.json
             projection_fiis_processos.json
@@ -120,8 +120,8 @@ data/
             templates.md
             responses/
                 list.md.j2
-        fiis_imoveis/
-            fiis_imoveis.yaml
+        fiis_real_estate/
+            fiis_real_estate.yaml
             templates.md
             responses/
                 list.md.j2
@@ -169,7 +169,7 @@ data/
             fiis_financials_revenue_schedule.schema.yaml
             fiis_financials_risk.schema.yaml
             fiis_financials_snapshot.schema.yaml
-            fiis_imoveis.schema.yaml
+            fiis_real_estate.schema.yaml
             fiis_noticias.schema.yaml
             fiis_precos.schema.yaml
             fiis_processos.schema.yaml
@@ -316,7 +316,7 @@ docs/
             fiis_financials_revenue_schedule.csv
             fiis_financials_risk.csv
             fiis_financials_snapshot.csv
-            fiis_imoveis.csv
+            fiis_real_estate.csv
             fiis_noticias.csv
             fiis_precos.csv
             fiis_processos.csv

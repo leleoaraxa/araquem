@@ -51,7 +51,7 @@ def rag_policy_base() -> Dict[str, Any]:
                 "fiis_precos",
                 "fiis_dividends",
                 "fiis_rankings",
-                "fiis_imoveis",
+                "fiis_real_estate",
                 "fiis_processos",
                 "fiis_financials_snapshot",
                 "fiis_financials_revenue_schedule",

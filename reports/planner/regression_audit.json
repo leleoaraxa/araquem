@@ -343,7 +343,7 @@
       "token": "ocupacao",
       "conflicts": [
         "fiis_financials_snapshot",
-        "fiis_imoveis"
+        "fiis_real_estate"
       ]
     },
     {
@@ -352,7 +352,7 @@
       "token": "imoveis",
       "conflicts": [
         "fiis_financials_snapshot",
-        "fiis_imoveis"
+        "fiis_real_estate"
       ]
     },
     {
@@ -535,7 +535,7 @@
       "token": "imoveis do <ticker>",
       "conflicts": [
         "fiis_financials_snapshot",
-        "fiis_imoveis"
+        "fiis_real_estate"
       ]
     }
   ]
