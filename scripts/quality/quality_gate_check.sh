@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "🔎 validating ontology manifest..."
+python scripts/ontology/validate_and_hash.py --check
+echo "✅ ontology manifest ok"
+
 echo "[check] validating data contracts..."
 python scripts/core/validate_data_contracts.py
 
