@@ -1,0 +1,66 @@
+question,http_status,request_error,explain_enabled,status_status,status_raw,status_ok,status_reason,status_message,chosen_intent,chosen_entity,planner_score,gate_accepted,gate_source,gate_reason,gate_min_score,gate_min_gap,gate_gap,score_for_gate,intent_top2_gap_base,intent_top2_gap_final,intent_top1,intent_top2,scoring_mode,scoring_keys,rows_total,result_key,cache_hit,cache_hit_response,cache_hit_metrics,cache_layer,cache_ttl,cache_key,rag_used,fusion_used,elapsed_ms_server,elapsed_ms_total_est,elapsed_ms_client,narrator_used,narrator_latency_ms,narrator_error,answer_text,expected_intent,expected_entity,match_intent,match_entity,match_both,suite_name,suite_description,payload_id,idx,fail_reasons,case_pass
+Histórico de dividendos e dy do MXRF11,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,15.95,True,base,,0.9,0.2,12.1,15.95,12.1,12.1,fiis_dividends_yields,fiis_dividendos,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,12,ticker,True,True,,response,86400,araquem:dev-20251030:cfg-9bd99d26:pub:fiis_dividends_yields:plan:8ddc2c74794260dc3cd8c5c34e3da475d343d71112b8ca5fca6075df7230a600,True,False,207,207.0,395.412,False,,,"**Dividendos e yield do MXRF11**
+
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 0,10**
+- DY mensal: **1,05%**
+- DY 12 meses: **12,26%**
+- Dividendos acumulados 12m: **R$ 1,17**
+- Último dividendo pago: **R$ 0,10** em **15/01/2026**
+
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 0,10 | 1,05% | 12,26% || 01/12/2025 | R$ 0,10 | 1,05% | 12,26% || 01/11/2025 | R$ 0,10 | 1,05% | 12,26% || 01/10/2025 | R$ 0,10 | 1,05% | 12,26% || 01/09/2025 | R$ 0,10 | 1,05% | 12,26% || 01/08/2025 | R$ 0,10 | 1,05% | 12,26% || 01/07/2025 | R$ 0,10 | 1,05% | 12,26% || 01/06/2025 | R$ 0,10 | 1,05% | 12,26% || 01/05/2025 | R$ 0,10 | 1,05% | 12,26% || 01/04/2025 | R$ 0,09 | 1,05% | 12,26% || 01/03/2025 | R$ 0,09 | 1,05% | 12,26% || 01/02/2025 | R$ 0,09 | 1,05% | 12,26% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,fiis_dividends_yields,Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII,,1,[],True
+O que é dividend yield em FIIs,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,2.75,True,base,,0.9,0.2,2.2,2.75,2.2,2.2,fiis_dividends_yields,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,12,ticker,True,True,,response,86400,araquem:dev-20251030:cfg-9bd99d26:pub:fiis_dividends_yields:plan:8ddc2c74794260dc3cd8c5c34e3da475d343d71112b8ca5fca6075df7230a600,True,False,283,283.0,411.819,False,,,"**Dividendos e yield do MXRF11**
+
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 0,10**
+- DY mensal: **1,05%**
+- DY 12 meses: **12,26%**
+- Dividendos acumulados 12m: **R$ 1,17**
+- Último dividendo pago: **R$ 0,10** em **15/01/2026**
+
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 0,10 | 1,05% | 12,26% || 01/12/2025 | R$ 0,10 | 1,05% | 12,26% || 01/11/2025 | R$ 0,10 | 1,05% | 12,26% || 01/10/2025 | R$ 0,10 | 1,05% | 12,26% || 01/09/2025 | R$ 0,10 | 1,05% | 12,26% || 01/08/2025 | R$ 0,10 | 1,05% | 12,26% || 01/07/2025 | R$ 0,10 | 1,05% | 12,26% || 01/06/2025 | R$ 0,10 | 1,05% | 12,26% || 01/05/2025 | R$ 0,10 | 1,05% | 12,26% || 01/04/2025 | R$ 0,09 | 1,05% | 12,26% || 01/03/2025 | R$ 0,09 | 1,05% | 12,26% || 01/02/2025 | R$ 0,09 | 1,05% | 12,26% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,fiis_dividends_yields,Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII,,2,[],True
+Qual o DY de 12 meses do HGLG11,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,12.649999999999999,True,base,,0.9,0.2,9.899999999999999,12.649999999999999,9.899999999999999,9.899999999999999,fiis_dividends_yields,fiis_yield_history,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,12,ticker,False,False,,response,86400,araquem:dev-20251030:cfg-9bd99d26:pub:fiis_dividends_yields:plan:ab750058f8390097be2120f15a4a25a06a551f9fe082dcd0739b6a89c7a2d879,True,False,260,260.0,443.385,False,,,"**Dividendos e yield do HGLG11**
+
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 1,10**
+- DY mensal: **0,70%**
+- DY 12 meses: **8,38%**
+- Dividendos acumulados 12m: **R$ 13,20**
+- Último dividendo pago: **R$ 1,10** em **15/01/2026**
+
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 1,10 | 0,70% | 8,38% || 01/12/2025 | R$ 1,10 | 0,70% | 8,38% || 01/11/2025 | R$ 1,10 | 0,70% | 8,38% || 01/10/2025 | R$ 1,10 | 0,70% | 8,38% || 01/09/2025 | R$ 1,10 | 0,70% | 8,38% || 01/08/2025 | R$ 1,10 | 0,70% | 8,38% || 01/07/2025 | R$ 1,10 | 0,70% | 8,38% || 01/06/2025 | R$ 1,10 | 0,70% | 8,38% || 01/05/2025 | R$ 1,10 | 0,70% | 8,38% || 01/04/2025 | R$ 1,10 | 0,70% | 8,38% || 01/03/2025 | R$ 1,10 | 0,70% | 8,38% || 01/02/2025 | R$ 1,10 | 0,70% | 8,38% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,fiis_dividends_yields,Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII,,3,[],True
+Quanto o CPTS11 pagou de dividendos e dy em 08/2023,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,4.4,True,base,,0.9,0.2,5.5,4.4,5.5,5.5,fiis_dividends_yields,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,11,ticker,False,False,,response,86400,araquem:dev-20251030:cfg-9bd99d26:pub:fiis_dividends_yields:plan:4838140cfcb2b6d72dd90731dcd48066a1dc1c2e7e0736f1a7e9af1c37d9cead,True,False,256,256.0,325.191,False,,,"**Dividendos e yield do CPTS11**
+
+- Mês de referência: **01/12/2025**
+- Data-com (cutoff): **10/12/2025**
+- Data de pagamento: **17/12/2025**
+- Dividendo por cota: **R$ 0,09**
+- DY mensal: **1,16%**
+- DY 12 meses: **13,07%**
+- Dividendos acumulados 12m: **R$ 1,01**
+- Último dividendo pago: **R$ 0,09** em **17/12/2025**
+
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/12/2025 | R$ 0,09 | 1,16% | 13,07% || 01/11/2025 | R$ 0,09 | 1,16% | 13,07% || 01/10/2025 | R$ 0,09 | 1,16% | 13,07% || 01/09/2025 | R$ 0,09 | 1,16% | 13,07% || 01/08/2025 | R$ 0,09 | 1,16% | 13,07% || 01/07/2025 | R$ 0,09 | 1,16% | 13,07% || 01/06/2025 | R$ 0,09 | 1,16% | 13,07% || 01/05/2025 | R$ 0,09 | 1,16% | 13,07% || 01/04/2025 | R$ 0,08 | 1,16% | 13,07% || 01/03/2025 | R$ 0,08 | 1,16% | 13,07% || 01/02/2025 | R$ 0,08 | 1,16% | 13,07% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,fiis_dividends_yields,Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII,,4,[],True
+Último dividendo pago pelo VISC11 e o dy correspondente,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,8.25,True,base,,0.9,0.2,5.5,8.25,5.5,5.5,fiis_dividends_yields,fiis_dividendos,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,ticker,False,False,,response,86400,araquem:dev-20251030:cfg-9bd99d26:pub:fiis_dividends_yields:plan:e8985f1f8066e8431fa5e75096b2fd90476a055d9c0d3f42c066280373d7dda5,True,False,322,322.0,394.605,False,,,"**Dividendos e yield do VISC11**
+
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 0,81**
+- DY mensal: **0,74%**
+- DY 12 meses: **8,86%**
+- Dividendos acumulados 12m: **R$ 9,66**
+- Último dividendo pago: **R$ 0,81** em **15/01/2026**
+
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 0,81 | 0,74% | 8,86% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,fiis_dividends_yields,Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII,,5,[],True
