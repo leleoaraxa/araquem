@@ -173,7 +173,7 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
 
-    carteira_enriquecida:
+    client_fiis_enriched_portfolio:
       llm_enabled: false
       shadow: false
       rewrite_only: false

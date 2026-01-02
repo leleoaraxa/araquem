@@ -16,7 +16,7 @@
 - **Padrão e prontidão:**
   - Templates de tabela geralmente apresentam cabeçalho Markdown e iteração de `rows`, com mensagem de vazio. Ex.: `fiis_precos` abre com frase narrativa antes da tabela 【F:data/entities/fiis_precos/responses/table.md.j2†L1-L16】.
   - Alguns templates misturam resumo textual e bullets com métricas (ex.: snapshot financeiro) em vez de tabela pura, o que exige cautela para Narrator consumir diretamente 【F:data/entities/fiis_financials_snapshot/responses/table.md.j2†L1-L27】.
-- **Entidades OK (padrão tabular/lista simples):** `fiis_processos`, `fiis_rankings`, `history_b3_indexes`, `history_currency_rates`, `history_market_indicators`, `macro_consolidada`, `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`, `carteira_enriquecida` (seguem tabela ou lista com empty message).
+- **Entidades OK (padrão tabular/lista simples):** `fiis_processos`, `fiis_rankings`, `history_b3_indexes`, `history_currency_rates`, `history_market_indicators`, `macro_consolidada`, `client_fiis_dividends_evolution`, `client_fiis_performance_vs_benchmark`, `client_fiis_enriched_portfolio` (seguem tabela ou lista com empty message).
 - **Entidades problemáticas:**
   - `fiis_precos`: narrativa inicial com preço e variação antes da tabela, pode conflitar com camada de Narrator.【F:data/entities/fiis_precos/responses/table.md.j2†L1-L16】
   - `fiis_financials_snapshot`: bullet list rica em narrativa e interpretação, não apenas FACTS tabulares.【F:data/entities/fiis_financials_snapshot/responses/table.md.j2†L1-L27】

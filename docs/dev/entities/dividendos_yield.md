@@ -42,4 +42,4 @@ Campos principais (do contrato `dividendos_yield.schema.yaml`):
 ## 6. Observações
 
 - Indicadores de yield são mensais ou acumulados em 12 meses conforme colunas específicas.
-- A visão é por FII; perguntas sobre carteira do cliente devem ir para intents `client_*` ou `carteira_enriquecida`.
+- A visão é por FII; perguntas sobre carteira do cliente devem ir para intents `client_*` ou `client_fiis_enriched_portfolio`.

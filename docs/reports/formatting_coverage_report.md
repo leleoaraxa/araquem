@@ -24,7 +24,7 @@
 | history_currency_rates | PASS | Cobertura completa |
 | history_market_indicators | PASS | Cobertura completa |
 | dividendos_yield | PASS | Cobertura completa |
-| carteira_enriquecida | PASS | Cobertura completa |
+| client_fiis_enriched_portfolio | PASS | Cobertura completa |
 | macro_consolidada | PASS | Cobertura completa |
 
 ## Placeholders adicionados
@@ -514,7 +514,7 @@ Nenhum ajuste em templates foi necessário.
 | last_dividend_amt | number | Y | currency_br | - |
 | last_payment_date | date | Y | date_br | - |
 
-### carteira_enriquecida
+### client_fiis_enriched_portfolio
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

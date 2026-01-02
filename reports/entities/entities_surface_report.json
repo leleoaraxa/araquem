@@ -3,9 +3,9 @@
   "root": "data/entities",
   "entities": [
     {
-      "entity_id": "carteira_enriquecida",
+      "entity_id": "client_fiis_enriched_portfolio",
       "dir_exists": true,
-      "dir_path": "data/entities/carteira_enriquecida",
+      "dir_path": "data/entities/client_fiis_enriched_portfolio",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -13,18 +13,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/carteira_enriquecida/carteira_enriquecida.yaml",
+        "path": "data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/carteira_enriquecida.schema.yaml",
+        "schema_path": "data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/carteira_enriquecida/responses",
+        "dir_path": "data/entities/client_fiis_enriched_portfolio/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/carteira_enriquecida/responses/table.md.j2",
+            "path": "data/entities/client_fiis_enriched_portfolio/responses/table.md.j2",
             "size_bytes": 1146
           }
         ]
@@ -32,11 +32,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/carteira_enriquecida/hints.md"
+          "path": "data/entities/client_fiis_enriched_portfolio/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/carteira_enriquecida/template.md"
+          "path": "data/entities/client_fiis_enriched_portfolio/template.md"
         },
         "templates_md": {
           "exists": false,
@@ -45,12 +45,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/carteira_enriquecida.csv"
+        "path": "docs/database/samples/client_fiis_enriched_portfolio.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_carteira_enriquecida.json"
+          "data/ops/quality/projection_client_fiis_enriched_portfolio.json"
         ]
       },
       "tags": [

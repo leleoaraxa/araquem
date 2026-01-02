@@ -344,7 +344,7 @@ datasets:
       dy_12m_pct:
         min: 0.0
         max: 2.0
-  carteira_enriquecida:
+  client_fiis_enriched_portfolio:
     freshness:
       max_age_minutes: 30
     not_null:

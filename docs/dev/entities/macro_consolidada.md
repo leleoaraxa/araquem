@@ -112,7 +112,7 @@ Use `macro_consolidada` quando a pergunta for sobre:
 
 2. **Carteira do cliente ou performance personalizada**
    - Ex.: “Como está a rentabilidade da minha carteira de FIIs vs IFIX?” → `client_fiis_performance_vs_benchmark`.
-   - Ex.: “Dividendos mensais da minha carteira?” → `client_fiis_dividends_evolution` / `carteira_enriquecida`.
+   - Ex.: “Dividendos mensais da minha carteira?” → `client_fiis_dividends_evolution` / `client_fiis_enriched_portfolio`.
 
 3. **Histórico puro de um único indicador**
    - Ex.: “Histórico do IFIX nos últimos 6 meses” → `history_b3_indexes`.
@@ -144,6 +144,6 @@ Essas perguntas devem ser usadas como referência para curadoria de `routing_sam
 - **Evitar colisões**:
   - Numérico puro → entidades `history_*`.
   - Ativo específico (FII) → entidades de FIIs (`fiis_*`, `fii_overview`).
-  - Carteira/cliente → entidades `client_*` / `carteira_enriquecida`.
+  - Carteira/cliente → entidades `client_*` / `client_fiis_enriched_portfolio`.
 
 Com isso, `macro_consolidada` fica claramente posicionada como o “hub macro para FIIs” dentro da ontologia.

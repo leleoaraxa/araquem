@@ -1,7 +1,7 @@
 {
   "appendix": {
     "catalog_entities": [
-      "carteira_enriquecida",
+      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
@@ -25,7 +25,7 @@
       "macro_consolidada"
     ],
     "ontology_entities": [
-      "carteira_enriquecida",
+      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
@@ -49,7 +49,7 @@
       "macro_consolidada"
     ],
     "ontology_intents": [
-      "carteira_enriquecida",
+      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
@@ -75,7 +75,7 @@
     ],
     "rag_allow_intents": [],
     "rag_denied_intents": [
-      "carteira_enriquecida",
+      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
@@ -285,7 +285,7 @@
     ]
   },
   "records": {
-    "carteira_enriquecida": {
+    "client_fiis_enriched_portfolio": {
       "bucket": "B",
       "coverage_flags": {
         "cache_policy": true,
@@ -294,7 +294,7 @@
         "rag_policy": false
       },
       "intents": [
-        "carteira_enriquecida"
+        "client_fiis_enriched_portfolio"
       ],
       "notes": [
         "Entidade privada; requer document_number do contexto seguro."
@@ -302,11 +302,11 @@
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/carteira_enriquecida/carteira_enriquecida.yaml"
+          "path": "data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/carteira_enriquecida.schema.yaml"
+          "path": "data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml"
         }
       },
       "policies": {
@@ -319,7 +319,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "carteira_enriquecida"
+            "client_fiis_enriched_portfolio"
           ],
           "missing_intents": [],
           "notes": [],

@@ -87,7 +87,7 @@ Exemplos de rota correta:
 
 - Ticker deve ser reconhecido pelo intent `ticker_query` como um `AAAA11`.
 - Perguntas sem ticker tendem a ser:
-  - de carteira (`minha carteira`, `meus fiis`) → outras entidades (`client_fiis_dividends_evolution`, `carteira_enriquecida`);
+  - de carteira (`minha carteira`, `meus fiis`) → outras entidades (`client_fiis_dividends_evolution`, `client_fiis_enriched_portfolio`);
   - de ranking de dividendos/dy → `fiis_rankings` / `dividendos_yield`.
 
 ### 4.3. Diferença para DY / Yield / Carteira
@@ -96,7 +96,7 @@ Exemplos de rota correta:
   - `fiis_yield_history` – histórico de DY.
   - `dividendos_yield` – combinação de dividendos + DY, comparações, etc.
 - Se a pergunta fala de **“meus dividendos”, “minha carteira”, “meus FIIs”**, o alvo deve ser:
-  - `client_fiis_dividends_evolution` ou `carteira_enriquecida`.
+  - `client_fiis_dividends_evolution` ou `client_fiis_enriched_portfolio`.
 
 ---
 
@@ -117,7 +117,7 @@ Devem ir para `fiis_yield_history` ou `dividendos_yield`, não para `fiis_divide
 Devem ir para entidades de cliente (não para `fiis_dividendos`):
 
 - `quanto minha carteira de fiis recebeu de dividendos em cada mes?` → `client_fiis_dividends_evolution`
-- `renda mensal dos meus fiis` → `client_fiis_dividends_evolution` / `carteira_enriquecida`
+- `renda mensal dos meus fiis` → `client_fiis_dividends_evolution` / `client_fiis_enriched_portfolio`
 - `dividendos da minha carteira no último ano`
 
 ### 5.3. Comparações/Rankings

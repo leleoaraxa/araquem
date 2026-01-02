@@ -88,13 +88,13 @@ Esses casos devem cair em **dividendos_yield** (comparativo / pacote dividendos 
 
 ---
 
-### 3.4. Perguntas de **DY da carteira / meus FIIs** → carteira_enriquecida
+### 3.4. Perguntas de **DY da carteira / meus FIIs** → client_fiis_enriched_portfolio
 
 - “Qual o **DY dos meus FIIs**?”
 - “DY mensal da **minha carteira de FIIs**.”
 - “Renda e DY dos **meus FIIs**.”
 
-Aqui o alvo é a visão **da carteira do cliente**, não de um único FII → entidade correta: **carteira_enriquecida**.
+Aqui o alvo é a visão **da carteira do cliente**, não de um único FII → entidade correta: **client_fiis_enriched_portfolio**.
 
 ---
 
@@ -206,7 +206,7 @@ A suíte `fiis_yield_history_suite.json` deve garantir:
      - “dividendos e dy”, “dividendos e yield”, “dy e dividendos”
      - “meus fiis”, “minha carteira”
      - “quanto está”, “preço hoje”
-   - Para evitar que fiis_yield_history concorra com **dividendos_yield**, **carteira_enriquecida** ou **fiis_precos**.
+   - Para evitar que fiis_yield_history concorra com **dividendos_yield**, **client_fiis_enriched_portfolio** ou **fiis_precos**.
 
 6. **Integração com o quality gate**
    - Ao rodar:

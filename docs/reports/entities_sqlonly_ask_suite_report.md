@@ -6,7 +6,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 
 | Entidade | Total | Pass | Fail | Top-3 falhas |
 | --- | --- | --- | --- | --- |
-| carteira_enriquecida | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| client_fiis_enriched_portfolio | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | client_fiis_dividends_evolution | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | client_fiis_performance_vs_benchmark | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | client_fiis_performance_vs_benchmark_summary | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
@@ -31,9 +31,9 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 
 ## Falhas amostradas (1–2 por entidade)
 
-### carteira_enriquecida
-- carteira_enriquecida-q1: "Peso do {{ticker}} na minha carteira" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- carteira_enriquecida-q2: "Valor investido em {{ticker}} na carteira" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### client_fiis_enriched_portfolio
+- client_fiis_enriched_portfolio-q1: "Peso do {{ticker}} na minha carteira" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- client_fiis_enriched_portfolio-q2: "Valor investido em {{ticker}} na carteira" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
 ### client_fiis_dividends_evolution
 - client_fiis_dividends_evolution-q1: "evolução dos dividendos da minha carteira" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

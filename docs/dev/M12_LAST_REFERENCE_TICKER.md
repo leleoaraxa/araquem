@@ -242,7 +242,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 * Entidades amarradas ao cliente (`document_number`):
 
   * `client_fiis_*`
-  * `carteira_enriquecida`
+  * `client_fiis_enriched_portfolio`
 
 Essas ficam fora de `last_reference.allowed_entities` e/ou nem têm `params.ticker` declarado.
 

@@ -45,7 +45,7 @@ routing:
   - fiis_financials_risk
   - fii_overview
   - dividendos_yield
-  - carteira_enriquecida
+  - client_fiis_enriched_portfolio
   - macro_consolidada
   allow_intents: []
   notes: >

@@ -90,15 +90,15 @@
     },
     {
       "type": "shadow_private_entity_not_listed",
-      "entity": "carteira_enriquecida",
+      "entity": "client_fiis_enriched_portfolio",
       "detail": "Private entity missing from shadow redaction allowlist",
       "component": "narrator"
     },
     {
       "type": "shadow_sensitive_field_referenced",
-      "entity": "carteira_enriquecida",
+      "entity": "client_fiis_enriched_portfolio",
       "field": "document_number",
-      "path": "data/entities/carteira_enriquecida/responses/table.md.j2",
+      "path": "data/entities/client_fiis_enriched_portfolio/responses/table.md.j2",
       "component": "narrator"
     },
     {

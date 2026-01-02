@@ -1,8 +1,8 @@
-# carteira_enriquecida — Carteira privada enriquecida com métricas financeiras, risco e rankings
+# client_fiis_enriched_portfolio — Carteira privada enriquecida com métricas financeiras, risco e rankings
 
 ## 1. Objetivo da entidade
 
-A entidade `carteira_enriquecida` representa a **foto consolidada da carteira de FIIs do cliente em uma data de posição**, já enriquecida com:
+A entidade `client_fiis_enriched_portfolio` representa a **foto consolidada da carteira de FIIs do cliente em uma data de posição**, já enriquecida com:
 
 - valores financeiros (por ativo e carteira total),
 - pesos relativos na carteira,
@@ -35,11 +35,11 @@ A entidade `carteira_enriquecida` representa a **foto consolidada da carteira de
     - `fiis_financials_risk` (métricas de risco públicas),
     - `fiis_financials_snapshot` (indicadores financeiros do fundo),
     - `fiis_cadastro` / `fii_overview` (identidade e cadastro do fundo).
-  - No entanto, para perguntas do tipo **“minha carteira”, “meus FIIs”, “valor investido”**, a entidade padrão deve ser `carteira_enriquecida`.
+  - No entanto, para perguntas do tipo **“minha carteira”, “meus FIIs”, “valor investido”**, a entidade padrão deve ser `client_fiis_enriched_portfolio`.
 
 - **Privacidade**:
   - `document_number` é PII e **nunca** deve ser inferido a partir de texto livre.
-  - O roteador só deve chegar em `carteira_enriquecida` quando a pergunta for claramente sobre:
+  - O roteador só deve chegar em `client_fiis_enriched_portfolio` quando a pergunta for claramente sobre:
     - “minha carteira de FIIs”,
     - “meus FIIs”,
     - “valor investido / peso / DY dos meus FIIs”,
@@ -47,11 +47,11 @@ A entidade `carteira_enriquecida` representa a **foto consolidada da carteira de
 
 ---
 
-## 3. Colunas e contrato (`carteira_enriquecida.schema.yaml`)
+## 3. Colunas e contrato (`client_fiis_enriched_portfolio.schema.yaml`)
 
 ### 3.1. Metadados do schema
 
-- `name`: `carteira_enriquecida`
+- `name`: `client_fiis_enriched_portfolio`
 - `description`: `Carteira privada enriquecida com métricas financeiras, risco e rankings.`
 - `type`: `object`
 - `required`:
@@ -97,9 +97,9 @@ A entidade `carteira_enriquecida` representa a **foto consolidada da carteira de
 
 ## 4. Usos típicos e exemplos de perguntas
 
-### 4.1. Perguntas-alvo para `carteira_enriquecida`
+### 4.1. Perguntas-alvo para `client_fiis_enriched_portfolio`
 
-Exemplos de perguntas que devem **rotear para `carteira_enriquecida`**:
+Exemplos de perguntas que devem **rotear para `client_fiis_enriched_portfolio`**:
 
 - “Me mostra a **visão consolidada da minha carteira de FIIs**.”
 - “Quais são os **FIIs da minha carteira** e o **valor investido em cada um**?”
@@ -120,4 +120,4 @@ Exemplos de perguntas que devem **rotear para `carteira_enriquecida`**:
 
 Em caso de dúvida, use a seguinte regra prática:
 
-- Se a pergunta fala em **“visão consolidada / meus FIIs / carteira de FIIs + DY / Sharpe / rankings internos”**, o alvo preferencial é `carteira_enriquecida`.
+- Se a pergunta fala em **“visão consolidada / meus FIIs / carteira de FIIs + DY / Sharpe / rankings internos”**, o alvo preferencial é `client_fiis_enriched_portfolio`.

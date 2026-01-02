@@ -66,7 +66,7 @@
     "fiis_yield_history": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "carteira_enriquecida": [
+        "client_fiis_enriched_portfolio": [
           "dy 12m",
           "dy mensal"
         ],
@@ -264,7 +264,7 @@
       ],
       "prohibited_tokens": []
     },
-    "carteira_enriquecida": {
+    "client_fiis_enriched_portfolio": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_yield_history": [

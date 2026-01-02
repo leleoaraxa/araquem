@@ -30,7 +30,7 @@ context:
     - history_b3_indexes
     - history_currency_rates
     - history_market_indicators
-    - carteira_enriquecida
+    - client_fiis_enriched_portfolio
     - macro_consolidada
     - dividendos_yield
   narrator:
@@ -57,7 +57,7 @@ context:
     - history_b3_indexes
     - history_currency_rates
     - history_market_indicators
-    - carteira_enriquecida
+    - client_fiis_enriched_portfolio
     - macro_consolidada
     - dividendos_yield
   last_reference:
@@ -133,7 +133,7 @@ context:
     client_fiis_performance_vs_benchmark_summary:
       use_referenced_ticker: false
       use_last_entity: false
-    carteira_enriquecida:
+    client_fiis_enriched_portfolio:
       use_referenced_ticker: false
       use_last_entity: false
     dividendos_yield:

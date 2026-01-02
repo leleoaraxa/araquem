@@ -36,8 +36,8 @@ Posições privadas do cliente em FIIs, incluindo quantidades, preços, rentabil
 
 **O que ela atende (perguntas comuns)**
 
-- “quais FIIs da minha carteira estão dando lucro”  
-- “qual o peso do HGLG11 na minha carteira”  
+- “quais FIIs da minha carteira estão dando lucro”
+- “qual o peso do HGLG11 na minha carteira”
 - “em qual corretora estão minhas cotas do MXRF11”
 
 **Como ela responde**
@@ -63,8 +63,8 @@ Evolução mensal dos dividendos recebidos na carteira de FIIs do cliente (reque
 
 **O que ela atende (perguntas comuns)**
 
-- “evolução dos meus dividendos em FIIs”  
-- “quanto minha carteira recebeu de dividendos mês a mês”  
+- “evolução dos meus dividendos em FIIs”
+- “quanto minha carteira recebeu de dividendos mês a mês”
 - “renda mensal dos meus FIIs”
 
 **Como ela responde**
@@ -90,8 +90,8 @@ Série temporal de performance da carteira de FIIs do cliente comparada a benchm
 
 **O que ela atende (perguntas comuns)**
 
-- “performance da minha carteira de FIIs versus o IFIX”  
-- “minha carteira está melhor ou pior que o CDI”  
+- “performance da minha carteira de FIIs versus o IFIX”
+- “minha carteira está melhor ou pior que o CDI”
 - “comparar o retorno da minha carteira com o IFIL”
 
 **Como ela responde**
@@ -116,8 +116,8 @@ Dados cadastrais estáticos de cada FII (CNPJ, administrador, classificação, s
 
 **O que ela atende (perguntas comuns)**
 
-- “segmento do HGLG11”  
-- “qual o CNPJ do MXRF11”  
+- “segmento do HGLG11”
+- “qual o CNPJ do MXRF11”
 - “quem é o custodiante do XPML11”
 
 **Como ela responde**
@@ -143,7 +143,7 @@ Histórico de proventos (dividendos) pagos por FII, com datas de pagamento e dat
 
 **O que ela atende (perguntas comuns)**
 
-- “quanto o MXRF11 distribuiu em 07/2024”  
+- “quanto o MXRF11 distribuiu em 07/2024”
 - “média de dividendos do HGLG11 nos últimos 12 meses”
 
 **Como ela responde**
@@ -169,8 +169,8 @@ Histórico mensal de dividendos por cota, preço de referência e dividend yield
 
 **O que ela atende (perguntas comuns)**
 
-- “historico de dividend yield do MXRF11 nos últimos 12 meses”  
-- “evolução do DY do KNRI11”  
+- “historico de dividend yield do MXRF11 nos últimos 12 meses”
+- “evolução do DY do KNRI11”
 - “DY mensal do HGLG11 em 2024-05”
 
 **Como ela responde**
@@ -194,8 +194,8 @@ Snapshot D-1 de indicadores financeiros do FII (payout, alavancagem, EV, market 
 
 **O que ela atende (perguntas comuns)**
 
-- “qual o market cap do MXRF11”  
-- “quanto foi o último dividendo do HGLG11”  
+- “qual o market cap do MXRF11”
+- “quanto foi o último dividendo do HGLG11”
 - “qual o payout do MCCI11”
 
 **Como ela responde**
@@ -220,8 +220,8 @@ Estrutura temporal dos recebíveis do FII por buckets de vencimento e indexadore
 
 **O que ela atende (perguntas comuns)**
 
-- “como está distribuída a receita futura do MXRF11 por índice”  
-- “cronograma de recebíveis do CPTS11”  
+- “como está distribuída a receita futura do MXRF11 por índice”
+- “cronograma de recebíveis do CPTS11”
 - “qual a exposição do VISC11 a IPCA e IGPM”
 
 **Como ela responde**
@@ -246,8 +246,8 @@ Indicadores de risco quantitativo do FII (volatilidade, Sharpe, Treynor, Jensen,
 
 **O que ela atende (perguntas comuns)**
 
-- “volatilidade do HGLG11”  
-- “Índice de Treynor do HGLG11”  
+- “volatilidade do HGLG11”
+- “Índice de Treynor do HGLG11”
 - “Sharpe do HGRU11”
 
 **Como ela responde**
@@ -271,8 +271,8 @@ Imóveis e ativos operacionais dos FIIs com classe, localização, área, unidad
 
 **O que ela atende (perguntas comuns)**
 
-- “quais imóveis compõem o HGLG11”  
-- “onde ficam os galpões do XPLG11”  
+- “quais imóveis compõem o HGLG11”
+- “onde ficam os galpões do XPLG11”
 - “qual a vacância do portfólio do VISC11”
 
 **Como ela responde**
@@ -296,8 +296,8 @@ Notícias e matérias D-1 sobre FIIs, consolidando fonte, título, tags e links.
 
 **O que ela atende (perguntas comuns)**
 
-- “quais notícias saíram sobre VISC11”  
-- “tem alguma matéria recente citando HGLG11”  
+- “quais notícias saíram sobre VISC11”
+- “tem alguma matéria recente citando HGLG11”
 - “últimas manchetes do setor de shoppings”
 
 **Como ela responde**
@@ -321,8 +321,8 @@ Série diária de preços por FII (abertura, máxima, mínima, fechamento, varia
 
 **O que ela atende (perguntas comuns)**
 
-- “como fechou o HGLG11 hoje”  
-- “qual foi a variação do MXRF11 ontem”  
+- “como fechou o HGLG11 hoje”
+- “qual foi a variação do MXRF11 ontem”
 - “variação diária do XPML11 nos últimos 5 pregões”
 
 **Como ela responde**
@@ -346,8 +346,8 @@ Processos judiciais associados a FIIs, com números, julgamento, instância, val
 
 **O que ela atende (perguntas comuns)**
 
-- “o VISC11 tem processos em andamento?”  
-- “qual o risco de perda do HGLG11 em ações judiciais?”  
+- “o VISC11 tem processos em andamento?”
+- “qual o risco de perda do HGLG11 em ações judiciais?”
 - “há causas relevantes envolvendo MXRF11?”
 
 **Como ela responde**
@@ -371,8 +371,8 @@ Rankings que posicionam FIIs por popularidade, índices IFIX/IFIL, dividend yiel
 
 **O que ela atende (perguntas comuns)**
 
-- “qual a posição do HGLG11 no IFIX?”  
-- “como o KNRI11 está no ranking de Sharpe?”  
+- “qual a posição do HGLG11 no IFIX?”
+- “como o KNRI11 está no ranking de Sharpe?”
 - “quais FIIs lideram o DY de 12 meses?”
 
 **Como ela responde**
@@ -396,8 +396,8 @@ Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros, risc
 
 **O que ela atende (perguntas comuns)**
 
-- “resumo do HGLG11”  
-- “overview do KNRI11”  
+- “resumo do HGLG11”
+- “overview do KNRI11”
 - “como está o MXRF11 hoje?”
 
 **Como ela responde**
@@ -421,8 +421,8 @@ Histórico D-1 dos índices IBOV, IFIX e IFIL com pontos e variação diária.
 
 **O que ela atende (perguntas comuns)**
 
-- “histórico do IFIX nos últimos 6 meses”  
-- “como o IFIX se comportou em 2024”  
+- “histórico do IFIX nos últimos 6 meses”
+- “como o IFIX se comportou em 2024”
 - “variação do IBOV hoje”
 
 **Como ela responde**
@@ -446,8 +446,8 @@ Taxas de câmbio D-1 de USD/EUR em BRL, com compra/venda e variação diária.
 
 **O que ela atende (perguntas comuns)**
 
-- “como fechou o dólar ontem?”  
-- “qual a variação do euro na última cotação?”  
+- “como fechou o dólar ontem?”
+- “qual a variação do euro na última cotação?”
 - “câmbio recente para FIIs dolarizados”
 
 **Como ela responde**
@@ -471,8 +471,8 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 **O que ela atende (perguntas comuns)**
 
-- “qual foi o CDI ontem?”  
-- “quanto está o IPCA na última leitura?”  
+- “qual foi o CDI ontem?”
+- “quanto está o IPCA na última leitura?”
 - “mostrar a SELIC na data X”
 
 **Como ela responde**
@@ -489,9 +489,9 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 ## dividendos_yield
 
-**Tipo:** histórica (métrica composta, pública, multi-ticker).  
-**Grão:** `{ticker, ref_month}`; `result_key: ticker`; `default_date_field: ref_month`.  
-**Fonte:** view `public.dividendos_yield` + CSV `docs/database/samples/dividendos_yield.csv`.  
+**Tipo:** histórica (métrica composta, pública, multi-ticker).
+**Grão:** `{ticker, ref_month}`; `result_key: ticker`; `default_date_field: ref_month`.
+**Fonte:** view `public.dividendos_yield` + CSV `docs/database/samples/dividendos_yield.csv`.
 **Escopo:** dividendos pagos, DY mensal/12m, cadastro do FII, último pagamento.
 
 **O que retorna (colunas principais)**
@@ -500,17 +500,17 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 - `dy_monthly`, `dy_12m_pct`, `dy_current_monthly_pct`, `dividends_12m_amt`, `last_dividend_amt`, `last_payment_date`
 
 **Privacidade e políticas**
-- Pública; `requires_identifiers: [ticker]`; `supports_multi_ticker: true`.  
-- RAG negado; Narrator desabilitado; param_inference com janelas 3–24m e contagem.  
+- Pública; `requires_identifiers: [ticker]`; `supports_multi_ticker: true`.
+- RAG negado; Narrator desabilitado; param_inference com janelas 3–24m e contagem.
 - Qualidade: range para DY e dividendo; cache público diário.
 
 ---
 
-## carteira_enriquecida
+## client_fiis_enriched_portfolio
 
-**Tipo:** histórica (privada, multi-ticker).  
-**Grão:** `{document_number, position_date, ticker}`; `result_key: document_number`; `default_date_field: position_date`.  
-**Fonte:** view `public.carteira_enriquecida` + CSV `docs/database/samples/carteira_enriquecida.csv`.  
+**Tipo:** histórica (privada, multi-ticker).
+**Grão:** `{document_number, position_date, ticker}`; `result_key: document_number`; `default_date_field: position_date`.
+**Fonte:** view `public.client_fiis_enriched_portfolio` + CSV `docs/database/samples/client_fiis_enriched_portfolio.csv`.
 **Escopo:** posição do cliente com cadastro do FII, métricas de risco, DY e rankings.
 
 **O que retorna (colunas principais)**
@@ -520,17 +520,17 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 - `volatility_ratio`, `sharpe_ratio`, `sortino_ratio`, `max_drawdown`, `beta_index`, `sirios_rank_position`, `ifix_rank_position`, `rank_dy_12m`, `rank_sharpe`
 
 **Privacidade e políticas**
-- `private: true`; `requires_identifiers: [document_number]` com binding `context.client_id`; inferência desabilitada.  
-- RAG e Narrator negados; cache escopo `prv`; contexto proibido para ticker/data.  
+- `private: true`; `requires_identifiers: [document_number]` com binding `context.client_id`; inferência desabilitada.
+- RAG e Narrator negados; cache escopo `prv`; contexto proibido para ticker/data.
 - Qualidade: frescor 30m, ranges para pesos, DY, risco.
 
 ---
 
 ## macro_consolidada
 
-**Tipo:** histórica (macro).  
-**Grão:** `{ref_date}`; `result_key: ref_date`; `default_date_field: ref_date`.  
-**Fonte:** view `public.macro_consolidada` + CSV `docs/database/samples/macro_consolidada.csv`.  
+**Tipo:** histórica (macro).
+**Grão:** `{ref_date}`; `result_key: ref_date`; `default_date_field: ref_date`.
+**Fonte:** view `public.macro_consolidada` + CSV `docs/database/samples/macro_consolidada.csv`.
 **Escopo:** IPCA, SELIC/CDI, IFIX/IBOV, dólar/euro (compra, venda, variações) por data.
 
 **O que retorna (colunas principais)**
@@ -538,6 +538,6 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 - `usd_buy_amt`, `usd_sell_amt`, `usd_var_pct`, `eur_buy_amt`, `eur_sell_amt`, `eur_var_pct`
 
 **Privacidade e políticas**
-- Pública; sem identificadores; janelas padrão de histórico (1–12 meses e contagens).  
-- RAG e Narrator negados; cache público diário; qualidade com ranges para variações e câmbio.  
+- Pública; sem identificadores; janelas padrão de histórico (1–12 meses e contagens).
+- RAG e Narrator negados; cache público diário; qualidade com ranges para variações e câmbio.
 - Param_inference habilitado com janelas curtas e contagens.

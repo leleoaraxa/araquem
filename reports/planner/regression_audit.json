@@ -311,11 +311,11 @@
       ]
     },
     {
-      "intent": "carteira_enriquecida",
+      "intent": "client_fiis_enriched_portfolio",
       "issue": "token_collision",
       "token": "dy mensal",
       "conflicts": [
-        "carteira_enriquecida",
+        "client_fiis_enriched_portfolio",
         "fiis_yield_history"
       ]
     },

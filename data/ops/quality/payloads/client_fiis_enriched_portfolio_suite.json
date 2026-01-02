@@ -1,0 +1,76 @@
+{
+  "suite": "client_fiis_enriched_portfolio",
+  "description": "Suíte de testes para client_fiis_enriched_portfolio — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo.",
+  "payloads": [
+    {
+      "question": "Me mostra a visão consolidada da minha carteira de FIIs.",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Quais FIIs da minha carteira aparecem no IFIX e qual a posição de cada um no índice?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Quais setores mais pesam na minha carteira de FIIs?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Quais são os FIIs da minha carteira e o valor investido em cada um?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual FII da minha carteira tem o melhor índice de Sharpe?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual FII da minha carteira tem o pior max drawdown?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual FII tem o maior peso na minha carteira hoje?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual é o DY de 12 meses da minha carteira de FIIs?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual é o DY mensal dos meus FIIs?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual é o peso de cada FII na minha carteira hoje?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Qual é o total de dividendos dos meus FIIs acumulado em 12 meses?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Quanto valem meus FIIs hoje no total?",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Ranking dos meus FIIs por DY de 12 meses.",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Ranking dos meus FIIs por Sharpe.",
+      "expected_intent": "client_fiis_enriched_portfolio",
+      "expected_entity": "client_fiis_enriched_portfolio"
+    }
+  ]
+}
