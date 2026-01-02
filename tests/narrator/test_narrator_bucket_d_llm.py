@@ -37,7 +37,7 @@ def test_bucket_d_triggers_llm(monkeypatch):
 
     enriched_meta = narrator.render_global_post_sql(
         question="Como estão os indicadores macro?",
-        entity="macro_consolidada",
+        entity="consolidated_macroeconomic",
         bucket="D",
         results=results,
         meta=meta,
@@ -63,7 +63,7 @@ def test_other_buckets_skip_llm(monkeypatch):
 
     enriched_meta = narrator.render_global_post_sql(
         question="Pergunta genérica",
-        entity="macro_consolidada",
+        entity="consolidated_macroeconomic",
         bucket="A",
         results={"rows": [{"x": 1}]},
         meta={},

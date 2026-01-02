@@ -389,7 +389,7 @@
       "conflicts": [
         "fiis_financials_revenue_schedule",
         "history_market_indicators",
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ]
     },
     {
@@ -463,7 +463,7 @@
       "token": "cambio",
       "conflicts": [
         "history_currency_rates",
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ]
     },
     {
@@ -472,7 +472,7 @@
       "token": "selic",
       "conflicts": [
         "history_market_indicators",
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ]
     },
     {
@@ -481,7 +481,7 @@
       "token": "juros",
       "conflicts": [
         "history_market_indicators",
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ]
     },
     {
@@ -490,7 +490,7 @@
       "token": "inflacao",
       "conflicts": [
         "history_market_indicators",
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ]
     },
     {

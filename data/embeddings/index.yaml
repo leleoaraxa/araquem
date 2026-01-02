@@ -171,12 +171,12 @@ include:
     tags: [entities, fiis, private, performance, benchmark, summary, "entity:client_fiis_performance_vs_benchmark_summary"]
 
   - id: entity-macro-consolidada
-    path: data/entities/macro_consolidada/macro_consolidada.yaml
-    tags: [entities, macro, market, indicators, "entity:macro_consolidada"]
+    path: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml
+    tags: [entities, macro, market, indicators, "entity:consolidated_macroeconomic"]
 
   - id: entity-macro-consolidada-hints
-    path: data/entities/macro_consolidada/hints.md
-    tags: [entities, macro, market, indicators, "entity:macro_consolidada"]
+    path: data/entities/consolidated_macroeconomic/hints.md
+    tags: [entities, macro, market, indicators, "entity:consolidated_macroeconomic"]
 
   - id: entity-client-fiis-positions
     path: data/entities/client_fiis_positions/client_fiis_positions.yaml
@@ -299,7 +299,7 @@ include:
     tags: [quality, projection, private, carteira]
 
   - id: q-projection-macro-consolidada
-    path: data/ops/quality/projection_macro_consolidada.json
+    path: data/ops/quality/projection_consolidated_macroeconomic.json
     tags: [quality, projection, macro, historical]
 
   - id: q-m66-projection

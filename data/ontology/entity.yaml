@@ -35,7 +35,7 @@ buckets:
     - history_market_indicators
     - history_b3_indexes
     - history_currency_rates
-    - macro_consolidada
+    - consolidated_macroeconomic
   D: []
 
 intents:
@@ -2897,7 +2897,7 @@ intents:
     entities:
       - client_fiis_enriched_portfolio
 
-  - name: macro_consolidada
+  - name: consolidated_macroeconomic
     weight: 5
     options:
       ignore_tickers: true
@@ -3019,7 +3019,7 @@ intents:
         - ultima atualizacao
         - longo prazo
     entities:
-      - macro_consolidada
+      - consolidated_macroeconomic
 
 anti_tokens:
   generic:
@@ -3251,7 +3251,7 @@ anti_tokens:
     - ipca selic cdi ifix dolar
     - relacao entre selic cdi e o desempenho medio dos fiis
     - cdi d-1
-  macro_consolidada:
+  consolidated_macroeconomic:
     - evolucao
     - serie temporal
     - serie historica

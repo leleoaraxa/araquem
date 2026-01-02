@@ -702,7 +702,7 @@ intents:
     bindings:
       document_number: context.client_id
 
-  macro_consolidada:
+  consolidated_macroeconomic:
     default_agg: list
     default_window: "months:6"
     windows_allowed:

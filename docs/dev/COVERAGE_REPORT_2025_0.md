@@ -53,7 +53,7 @@
 | history_b3_indexes | C | history_b3_indexes | ok | policy_present_flag_false | ok | ok | ok |  |
 | history_currency_rates | C | history_currency_rates | ok | policy_present_flag_false | ok | ok | ok |  |
 | history_market_indicators | C | history_market_indicators | ok | policy_present_flag_false | ok | ok | ok |  |
-| macro_consolidada | C | macro_consolidada | ok | ok | ok | ok | ok |  |
+| consolidated_macroeconomic | C | consolidated_macroeconomic | ok | ok | ok | ok | ok |  |
 
 ## Gaps (P0/P1/P2) e definições
 - Definições objetivas e exemplos:
@@ -97,14 +97,14 @@
 
 ## Apêndice
 ### Entidades no catálogo
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, consolidated_macroeconomic
 
 ### Entidades na ontologia
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, consolidated_macroeconomic
 
 ### Intents na ontologia
-client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada, ticker_query
+client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, consolidated_macroeconomic, ticker_query
 
 ### Policies RAG (routing)
 Allow intents: —
-Deny intents: client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, macro_consolidada
+Deny intents: client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_quota_prices, fiis_legal_proceedings, fiis_rankings, fiis_yield_history, consolidated_macroeconomic

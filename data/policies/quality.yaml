@@ -377,7 +377,7 @@ datasets:
       max_drawdown:
         min: 0.0
         max: 1.0
-  macro_consolidada:
+  consolidated_macroeconomic:
     freshness:
       max_age_hours: 30
     not_null:

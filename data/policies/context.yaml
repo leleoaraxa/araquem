@@ -31,7 +31,7 @@ context:
     - history_currency_rates
     - history_market_indicators
     - client_fiis_enriched_portfolio
-    - macro_consolidada
+    - consolidated_macroeconomic
     - fiis_dividends_yields
   narrator:
     enabled: true
@@ -58,7 +58,7 @@ context:
     - history_currency_rates
     - history_market_indicators
     - client_fiis_enriched_portfolio
-    - macro_consolidada
+    - consolidated_macroeconomic
     - fiis_dividends_yields
   last_reference:
     enable_last_ticker: true
@@ -139,6 +139,6 @@ context:
     fiis_dividends_yields:
       use_referenced_ticker: true
       use_last_entity: true
-    macro_consolidada:
+    consolidated_macroeconomic:
       use_referenced_ticker: false
       use_last_entity: false

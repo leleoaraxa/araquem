@@ -25,7 +25,7 @@
 | history_market_indicators | PASS | Cobertura completa |
 | fiis_dividends_yields | PASS | Cobertura completa |
 | client_fiis_enriched_portfolio | PASS | Cobertura completa |
-| macro_consolidada | PASS | Cobertura completa |
+| consolidated_macroeconomic | PASS | Cobertura completa |
 
 ## Placeholders adicionados
 
@@ -548,7 +548,7 @@ Nenhum ajuste em templates foi necessário.
 | rank_dy_12m | integer | Y | int_br | - |
 | rank_sharpe | integer | Y | int_br | - |
 
-### macro_consolidada
+### consolidated_macroeconomic
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

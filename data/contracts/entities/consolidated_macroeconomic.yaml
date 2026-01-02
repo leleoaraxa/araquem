@@ -1,5 +1,5 @@
-entity: macro_consolidada
-name: macro_consolidada
+entity: consolidated_macroeconomic
+name: consolidated_macroeconomic
 kind: view
 description: Histórico consolidado de indicadores macro, índices e câmbio.
 version: 1

@@ -156,7 +156,7 @@ policies:
     - document_number
     - position_date
     - ticker
-  macro_consolidada:
+  consolidated_macroeconomic:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

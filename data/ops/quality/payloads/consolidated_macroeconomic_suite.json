@@ -1,0 +1,81 @@
+{
+  "suite": "consolidated_macroeconomic",
+  "description": "Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",
+  "payloads": [
+    {
+      "question": "Cenário macro atual: juros, inflação e câmbio estão favoráveis ou desfavoráveis para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a alta do dólar influencia o cenário para FIIs de recebíveis e fundos em geral?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a queda da Selic tende a impactar FIIs de tijolo?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Me dá um panorama macro consolidado (IPCA, Selic, CDI, IFIX e dólar) pensando em FIIs hoje.",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Me explica o cenário de juros e inflação no Brasil em 2025 e o impacto para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "O ambiente de juros e inflação em 2025 está mais favorável para FIIs de tijolo ou de papel?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é a importância do IPCA e da Selic para quem vive de renda com FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é a relação entre Selic, CDI e o desempenho médio dos FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    }
+  ]
+}

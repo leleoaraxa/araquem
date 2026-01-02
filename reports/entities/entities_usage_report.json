@@ -2366,7 +2366,7 @@
       }
     },
     {
-      "entity_id": "macro_consolidada",
+      "entity_id": "consolidated_macroeconomic",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -2431,7 +2431,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_macro_consolidada.json",
+              "data/ops/quality/projection_consolidated_macroeconomic.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

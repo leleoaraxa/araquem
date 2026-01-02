@@ -46,7 +46,7 @@ routing:
   - fiis_overview
   - fiis_dividends_yields
   - client_fiis_enriched_portfolio
-  - macro_consolidada
+  - consolidated_macroeconomic
   allow_intents: []
   notes: >
     RAG é ativado somente para domínios textuais do Bucket D.

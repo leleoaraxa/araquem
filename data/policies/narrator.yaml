@@ -51,7 +51,7 @@ narrator:
       max_tokens: 512
       temperature: 0.1
       entities:
-        - macro_consolidada
+        - consolidated_macroeconomic
   default:
     # Default agora é SQL-first: LLM somente quando uma entidade habilitar explicitamente.
     llm_enabled: false
@@ -184,7 +184,7 @@ narrator:
       concept_with_data_when_rag: false
       strict_mode: false
 
-    macro_consolidada:
+    consolidated_macroeconomic:
       llm_enabled: false
       shadow: false
       rewrite_only: false

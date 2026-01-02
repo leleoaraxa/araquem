@@ -1284,9 +1284,9 @@
       ]
     },
     {
-      "entity_id": "macro_consolidada",
+      "entity_id": "consolidated_macroeconomic",
       "dir_exists": true,
-      "dir_path": "data/entities/macro_consolidada",
+      "dir_path": "data/entities/consolidated_macroeconomic",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -1294,18 +1294,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/macro_consolidada/macro_consolidada.yaml",
+        "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/macro_consolidada.schema.yaml",
+        "schema_path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/macro_consolidada/responses",
+        "dir_path": "data/entities/consolidated_macroeconomic/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/macro_consolidada/responses/table.md.j2",
+            "path": "data/entities/consolidated_macroeconomic/responses/table.md.j2",
             "size_bytes": 2431
           }
         ]
@@ -1313,11 +1313,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/macro_consolidada/hints.md"
+          "path": "data/entities/consolidated_macroeconomic/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/macro_consolidada/template.md",
+          "path": "data/entities/consolidated_macroeconomic/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -1328,12 +1328,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/macro_consolidada.csv"
+        "path": "docs/database/samples/consolidated_macroeconomic.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_macro_consolidada.json"
+          "data/ops/quality/projection_consolidated_macroeconomic.json"
         ]
       },
       "tags": [

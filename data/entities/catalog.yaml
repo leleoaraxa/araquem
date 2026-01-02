@@ -362,13 +362,13 @@ entities:
       - ticker
     notes:
     - Entidade privada; requer document_number do contexto seguro.
-  macro_consolidada:
+  consolidated_macroeconomic:
     title: Mercado – Macro consolidada
     kind: historical
     paths:
-      entity_yaml: data/entities/macro_consolidada/macro_consolidada.yaml
-      schema: data/contracts/entities/macro_consolidada.schema.yaml
-      quality_projection: data/ops/quality/projection_macro_consolidada.json
+      entity_yaml: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml
+      schema: data/contracts/entities/consolidated_macroeconomic.schema.yaml
+      quality_projection: data/ops/quality/projection_consolidated_macroeconomic.json
     coverage:
       cache_policy: true
       rag_policy: false

@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-02T18:31:57Z",
+  "generated_at": "2026-01-02T18:38:48Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -486,26 +486,26 @@
     },
     {
       "id": "entity-macro-consolidada",
-      "path": "data/entities/macro_consolidada/macro_consolidada.yaml",
+      "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
       "tags": [
         "entities",
         "macro",
         "market",
         "indicators",
-        "entity:macro_consolidada"
+        "entity:consolidated_macroeconomic"
       ],
       "chunks": 3,
       "sha_all": "c46a9fbc8513529b695bdbfff36e9917cd87aec2651aac94463310edccb3d0d2"
     },
     {
       "id": "entity-macro-consolidada-hints",
-      "path": "data/entities/macro_consolidada/hints.md",
+      "path": "data/entities/consolidated_macroeconomic/hints.md",
       "tags": [
         "entities",
         "macro",
         "market",
         "indicators",
-        "entity:macro_consolidada"
+        "entity:consolidated_macroeconomic"
       ],
       "chunks": 1,
       "sha_all": "5afed6d503d4090ab05054d9eb7a9e34a34fa520b0fb5388fae33c87404264be"
@@ -834,7 +834,7 @@
     },
     {
       "id": "q-projection-macro-consolidada",
-      "path": "data/ops/quality/projection_macro_consolidada.json",
+      "path": "data/ops/quality/projection_consolidated_macroeconomic.json",
       "tags": [
         "quality",
         "projection",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1767378881,
+  "last_refresh_epoch": 1767379289,
   "vector_dimension": 768,
   "total_chunks": 296
 }

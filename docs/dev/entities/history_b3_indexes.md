@@ -19,7 +19,7 @@ Responder perguntas sobre:
 
 - Peso/posição de FIIs no IFIX/IFIL (vai para `fiis_rankings` / `fiis_registrations`).
 - Comparações de desempenho de carteira vs IFIX/IFIL (vai para `client_fiis_performance_vs_benchmark`).
-- Análises macroeconômicas gerais (IPCA, CDI, Selic, etc.) – isso é `history_market_indicators` / `macro_consolidada`.
+- Análises macroeconômicas gerais (IPCA, CDI, Selic, etc.) – isso é `history_market_indicators` / `consolidated_macroeconomic`.
 
 ---
 
@@ -124,7 +124,7 @@ Se for sobre **peso de um FII específico** no IFIX/IFIL como atributo cadastral
 
 → Preferência para **`fiis_registrations`** / `fiis_rankings` (conforme contratos) – nunca `history_b3_indexes`.
 
-### 4.3. `history_market_indicators` / `macro_consolidada`
+### 4.3. `history_market_indicators` / `consolidated_macroeconomic`
 
 Se falar de **IPCA, CDI, Selic, IGPM, INPC** etc:
 
@@ -132,7 +132,7 @@ Se falar de **IPCA, CDI, Selic, IGPM, INPC** etc:
 - “CDI acumulado no ano.”
 - “Taxa Selic ontem.”
 
-→ Vai para **`history_market_indicators`** ou **`macro_consolidada`**, não `history_b3_indexes`.
+→ Vai para **`history_market_indicators`** ou **`consolidated_macroeconomic`**, não `history_b3_indexes`.
 
 ---
 

@@ -254,7 +254,7 @@ entities:
     notes:
     - entidade privada; exige document_number do contexto seguro
     - RAG e narrator negados; cache com escopo privado
-  macro_consolidada:
+  consolidated_macroeconomic:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

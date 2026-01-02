@@ -1,6 +1,6 @@
-id: macro_consolidada
+id: consolidated_macroeconomic
 result_key: ref_date
-sql_view: macro_consolidada
+sql_view: consolidated_macroeconomic
 private: false
 description: Histórico consolidado de indicadores macroeconômicos, índices de mercado e câmbio por data de referência.
 
@@ -56,7 +56,7 @@ presentation:
 
 ask:
   intents:
-    - macro_consolidada
+    - consolidated_macroeconomic
   requires_identifiers: []
   keywords:
     - ano

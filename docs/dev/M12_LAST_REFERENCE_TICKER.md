@@ -238,7 +238,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
   * `history_b3_indexes`
   * `history_currency_rates`
   * `history_market_indicators`
-  * `macro_consolidada`
+  * `consolidated_macroeconomic`
 * Entidades amarradas ao cliente (`document_number`):
 
   * `client_fiis_*`

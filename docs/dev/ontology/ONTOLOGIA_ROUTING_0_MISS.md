@@ -7,7 +7,7 @@ Este documento registra o baseline de roteamento da ontologia do Araquem com **0
 - Ajustes na ontologia (`data/ontology/entity.yaml`) com uso consistente de:
   - Placeholders `\<ticker>` e `(sem ticker)`
   - Tokens e phrases por entidade
-  - Anti-tokens setoriais (`macro_consolidada`, `client_*`, `client_fiis_enriched_portfolio`, etc.)
+  - Anti-tokens setoriais (`consolidated_macroeconomic`, `client_*`, `client_fiis_enriched_portfolio`, etc.)
 - Atualização do Planner (`app/planner/planner.py`) para:
   - Resolver ticker uma vez por pergunta (`resolve_ticker_from_text`)
   - Aplicar matching placeholder-aware em tokens e phrases
@@ -30,7 +30,7 @@ python scripts/quality/quality_push.py \
   data/ops/quality/payloads/fiis_news_suite.json \
   data/ops/quality/payloads/fiis_registrations_suite.json \
   data/ops/quality/payloads/history_b3_indexes_suite.json \
-  data/ops/quality/payloads/macro_consolidada_suite.json \
+  data/ops/quality/payloads/consolidated_macroeconomic_suite.json \
   data/ops/quality/payloads/client_fiis_enriched_portfolio_suite.json \
   data/ops/quality/payloads/client_fiis_positions_suite.json \
   data/ops/quality/payloads/history_currency_rates_suite.json \

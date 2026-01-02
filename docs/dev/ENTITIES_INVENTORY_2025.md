@@ -526,11 +526,11 @@ Indicadores macroeconômicos (IPCA, CDI, SELIC, IGPM etc.) em base D-1.
 
 ---
 
-## macro_consolidada
+## consolidated_macroeconomic
 
 **Tipo:** histórica (macro).
 **Grão:** `{ref_date}`; `result_key: ref_date`; `default_date_field: ref_date`.
-**Fonte:** view `public.macro_consolidada` + CSV `docs/database/samples/macro_consolidada.csv`.
+**Fonte:** view `public.consolidated_macroeconomic` + CSV `docs/database/samples/consolidated_macroeconomic.csv`.
 **Escopo:** IPCA, SELIC/CDI, IFIX/IBOV, dólar/euro (compra, venda, variações) por data.
 
 **O que retorna (colunas principais)**

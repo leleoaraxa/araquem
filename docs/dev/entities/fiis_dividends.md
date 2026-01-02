@@ -133,7 +133,7 @@ Quando o foco é **ranking/comparação de FIIs**, o alvo é `fiis_rankings` ou 
 
 Perguntas sobre **IPCA, CDI, Selic, IFIX, IFIL, dólar, euro** não devem cair aqui:
 
-- `impacto do ipca alto nos fiis` → `macro_consolidada`
+- `impacto do ipca alto nos fiis` → `consolidated_macroeconomic`
 - `historico do ipca nos ultimos anos` → `history_market_indicators`
 - `quanto variou o ifix hoje?` → `history_b3_indexes`
 - `variacao diaria do dolar` → `history_currency_rates`
@@ -183,5 +183,5 @@ Esses devem **NÃO** cair em `fiis_dividends`.
 - Evitar colisões com:
   - `fiis_yield_history` / `fiis_dividends_yields` (percentuais, DY).
   - `client_fiis_dividends_evolution` (minha carteira).
-  - `macro_consolidada` / `history_*` (IPCA, CDI, IFIX, dólar/euro).
+  - `consolidated_macroeconomic` / `history_*` (IPCA, CDI, IFIX, dólar/euro).
 - O quality suite desta entidade vai focar em **perguntas CANON de proventos por FII** com ticker explícito.

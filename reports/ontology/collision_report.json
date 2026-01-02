@@ -112,7 +112,7 @@
           "inpc",
           "ipca"
         ],
-        "macro_consolidada": [
+        "consolidated_macroeconomic": [
           "ipca"
         ]
       },
@@ -279,7 +279,7 @@
       ],
       "prohibited_tokens": []
     },
-    "macro_consolidada": {
+    "consolidated_macroeconomic": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_financials_revenue_schedule": [
@@ -341,7 +341,7 @@
           "hoje",
           "ontem"
         ],
-        "macro_consolidada": [
+        "consolidated_macroeconomic": [
           "inflacao",
           "ipca",
           "juros",
@@ -447,7 +447,7 @@
           "hoje",
           "ontem"
         ],
-        "macro_consolidada": [
+        "consolidated_macroeconomic": [
           "cambio",
           "dolar"
         ]

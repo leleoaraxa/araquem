@@ -22,7 +22,7 @@
       "history_b3_indexes",
       "history_currency_rates",
       "history_market_indicators",
-      "macro_consolidada"
+      "consolidated_macroeconomic"
     ],
     "ontology_entities": [
       "client_fiis_enriched_portfolio",
@@ -46,7 +46,7 @@
       "history_b3_indexes",
       "history_currency_rates",
       "history_market_indicators",
-      "macro_consolidada"
+      "consolidated_macroeconomic"
     ],
     "ontology_intents": [
       "client_fiis_enriched_portfolio",
@@ -70,7 +70,7 @@
       "history_b3_indexes",
       "history_currency_rates",
       "history_market_indicators",
-      "macro_consolidada",
+      "consolidated_macroeconomic",
       "ticker_query"
     ],
     "rag_allow_intents": [],
@@ -93,7 +93,7 @@
       "fiis_legal_proceedings",
       "fiis_rankings",
       "fiis_yield_history",
-      "macro_consolidada"
+      "consolidated_macroeconomic"
     ]
   },
   "gaps": {
@@ -1441,7 +1441,7 @@
         "ok": true
       }
     },
-    "macro_consolidada": {
+    "consolidated_macroeconomic": {
       "bucket": "C",
       "coverage_flags": {
         "cache_policy": true,
@@ -1450,17 +1450,17 @@
         "rag_policy": false
       },
       "intents": [
-        "macro_consolidada"
+        "consolidated_macroeconomic"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/macro_consolidada/macro_consolidada.yaml"
+          "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/macro_consolidada.schema.yaml"
+          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
         }
       },
       "policies": {
@@ -1473,7 +1473,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "macro_consolidada"
+            "consolidated_macroeconomic"
           ],
           "missing_intents": [],
           "notes": [],

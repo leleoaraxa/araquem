@@ -3,7 +3,7 @@
 -- =====================================================================
 DROP VIEW IF EXISTS fiis_dividends_yields;
 DROP VIEW IF EXISTS client_fiis_enriched_portfolio;
-DROP VIEW IF EXISTS macro_consolidada;
+DROP VIEW IF EXISTS consolidated_macroeconomic;
 DROP VIEW IF EXISTS client_fiis_dividends_evolution;
 DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
 DROP VIEW IF EXISTS fiis_overview;
@@ -1493,9 +1493,9 @@ LEFT JOIN fiis_rankings rk
        ON rk.ticker = wt.ticker;
 
 -- =====================================================================
--- VIEW: macro_consolidada
+-- VIEW: consolidated_macroeconomic
 -- =====================================================================
-CREATE OR REPLACE VIEW macro_consolidada AS
+CREATE OR REPLACE VIEW consolidated_macroeconomic AS
 WITH ind AS (
     SELECT
         indicator_date::date AS ref_date,
@@ -1615,5 +1615,5 @@ ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark_summary OWNER TO edge_user;
 ALTER VIEW public.fiis_dividends_yields OWNER TO edge_user;
 ALTER VIEW public.client_fiis_enriched_portfolio OWNER TO edge_user;
-ALTER VIEW public.macro_consolidada OWNER TO edge_user;
+ALTER VIEW public.consolidated_macroeconomic OWNER TO edge_user;
 -- =====================================================================

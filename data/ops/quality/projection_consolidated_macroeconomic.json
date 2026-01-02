@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "macro_consolidada",
+  "entity": "consolidated_macroeconomic",
   "result_key": "ref_date",
   "must_have_columns": [
     "ref_date",

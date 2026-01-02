@@ -12,7 +12,7 @@ Command: python scripts/audit/audit_multiticker.py
     Último pagamento em 12/12/2... |
 | mt_conceptual_compare | compare HGLG11 e KNRI11 em setor, renda e risco | gated | low_gap | 0.0 | 0.2 | 0.85 | client_fiis_dividends_evolution | fiis_financials_risk | None | 0.0 | 0.0 | 0.85 | 0.2 | 0.0 | False | final | Não consegui decidir com segurança entre rotas possíveis ... |
 | mt_conceptual_macro | como CDI versus DY 12m impacta FIIs como HGLG11 e MXRF11 | gated | low_score | 0.0 | 0.1 | 0.8 | client_fiis_performance_vs_benchmark | client_fiis_performance_vs_benchmark | None | 0.0 | 0.0 | 0.8 | 0.1 | 0.0 | False | final | Não consegui decidir com segurança entre rotas possíveis ... |
-| mt_conceptual_no_ticker | como CDI vs DY 12m afeta FIIs (sem tickers) | ok | None | None | None | None | macro_consolidada | macro_consolidada | ref_date | 1.1 | 0.9349999999999998 | 0.9 | 0.2 | 0.9349999999999998 | False | final | **Último registro em 14/11/2025**
+| mt_conceptual_no_ticker | como CDI vs DY 12m afeta FIIs (sem tickers) | ok | None | None | None | None | consolidated_macroeconomic | consolidated_macroeconomic | ref_date | 1.1 | 0.9349999999999998 | 0.9 | 0.2 | 0.9349999999999998 | False | final | **Último registro em 14/11/2025**
 
   - IPCA: **-**
   - Ju... |

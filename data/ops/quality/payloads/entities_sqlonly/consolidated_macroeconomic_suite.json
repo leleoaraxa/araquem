@@ -1,0 +1,24 @@
+{
+  "suite": "consolidated_macroeconomic",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para consolidated_macroeconomic.",
+  "payloads": [
+    {
+      "id": "consolidated_macroeconomic-q1",
+      "question": "Painel macro consolidado com IPCA e SELIC da data 2024-12-27 na mesma linha de referência",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "id": "consolidated_macroeconomic-q2",
+      "question": "Quero o painel macro consolidado trazendo CDI, dólar (compra/venda) e IFIX/IBOV por dia entre 2024-12-16 e 2024-12-20",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "id": "consolidated_macroeconomic-q3",
+      "question": "Mostre o histórico macro consolidado de novembro de 2024 com IPCA, SELIC e câmbio em um único resumo",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    }
+  ]
+}

@@ -27,7 +27,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 | history_b3_indexes | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | history_currency_rates | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | history_market_indicators | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
-| macro_consolidada | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| consolidated_macroeconomic | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 
 ## Falhas amostradas (1–2 por entidade)
 
@@ -115,6 +115,6 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 - history_market_indicators-q1: "qual foi o CDI ontem?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 - history_market_indicators-q2: "quanto está o IPCA acumulado no último dado?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
-### macro_consolidada
-- macro_consolidada-q1: "IPCA e SELIC no dia {{data}}" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- macro_consolidada-q2: "IFIX e IBOV na semana passada" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### consolidated_macroeconomic
+- consolidated_macroeconomic-q1: "IPCA e SELIC no dia {{data}}" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- consolidated_macroeconomic-q2: "IFIX e IBOV na semana passada" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

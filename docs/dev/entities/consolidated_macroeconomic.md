@@ -1,8 +1,8 @@
-# Entidade: `macro_consolidada`
+# Entidade: `consolidated_macroeconomic`
 
 ## 1. Objetivo
 
-A entidade `macro_consolidada` centraliza, em uma única série temporal, os principais indicadores macroeconômicos e de mercado utilizados pelo Araquem para responder perguntas de **cenário macro**, **taxa de juros**, **inflação**, **índices de bolsa** e **câmbio**, bem como para explicar o impacto desse ambiente em **FIIs**.
+A entidade `consolidated_macroeconomic` centraliza, em uma única série temporal, os principais indicadores macroeconômicos e de mercado utilizados pelo Araquem para responder perguntas de **cenário macro**, **taxa de juros**, **inflação**, **índices de bolsa** e **câmbio**, bem como para explicar o impacto desse ambiente em **FIIs**.
 
 Ela é a base numérica para o Narrator gerar respostas do tipo:
 
@@ -16,9 +16,9 @@ A ideia é ter uma **foto D-1 consolidada** de IPCA, Selic, CDI, IFIX, IBOV, dó
 
 ## 2. Metadados da entidade
 
-- **id**: `macro_consolidada`
-- **result_key**: `macro_consolidada`
-- **sql_view / tabela base**: `macro_consolidada`
+- **id**: `consolidated_macroeconomic`
+- **result_key**: `consolidated_macroeconomic`
+- **sql_view / tabela base**: `consolidated_macroeconomic`
 - **Descrição (contrato)**: Histórico consolidado de indicadores macro, índices e câmbio (IPCA, Selic, CDI, IFIX, IBOV, USD, EUR), em base diária.
 
 - **Chave temporal principal**:
@@ -30,7 +30,7 @@ A ideia é ter uma **foto D-1 consolidada** de IPCA, Selic, CDI, IFIX, IBOV, dó
 
 ### 3.1. Estrutura do schema
 
-Contrato em `data/contracts/macro_consolidada.schema.yaml` (versão 1):
+Contrato em `data/contracts/consolidated_macroeconomic.schema.yaml` (versão 1):
 
 - **Tipo raiz**: `object`
 - **Descrição**: Histórico consolidado de indicadores macro, índices e câmbio.
@@ -63,11 +63,11 @@ Observações:
 
 ---
 
-## 4. Papel da `macro_consolidada` no roteamento
+## 4. Papel da `consolidated_macroeconomic` no roteamento
 
-### 4.1. Quando deve cair em `macro_consolidada`
+### 4.1. Quando deve cair em `consolidated_macroeconomic`
 
-Use `macro_consolidada` quando a pergunta for sobre:
+Use `consolidated_macroeconomic` quando a pergunta for sobre:
 
 1. **Cenário macroeconômico e FIIs**:
    - Impacto de **juros altos/baixos** em FIIs.
@@ -89,25 +89,25 @@ Use `macro_consolidada` quando a pergunta for sobre:
 
 - **vs. `history_market_indicators`**
   - `history_market_indicators` é mais **numérica/histórica** para um indicador específico (IPCA, CDI, Selic etc., janelas, acumulados).
-  - `macro_consolidada` é o **hub conceitual** de macro, com ênfase em **FIIs**, cenário e narrativa.
-  - Perguntas conceituais como “O que significa IPCA alto para FIIs?” → `macro_consolidada`.
+  - `consolidated_macroeconomic` é o **hub conceitual** de macro, com ênfase em **FIIs**, cenário e narrativa.
+  - Perguntas conceituais como “O que significa IPCA alto para FIIs?” → `consolidated_macroeconomic`.
   - Perguntas puramente numéricas como “Qual foi o IPCA de março de 2025?” → `history_market_indicators`.
 
 - **vs. `history_b3_indexes`**
   - `history_b3_indexes` fala de **pontos/variação de IFIX/IFIL/IBOV** com foco em histórico de índices.
-  - `macro_consolidada` traz IFIX/IBOV junto com juros, inflação e câmbio, para responder sobre o **cenário macro geral**.
+  - `consolidated_macroeconomic` traz IFIX/IBOV junto com juros, inflação e câmbio, para responder sobre o **cenário macro geral**.
 
 - **vs. `history_currency_rates`**
   - `history_currency_rates` responde “quanto está o dólar/euro hoje” ou série histórica específica.
-  - `macro_consolidada` responde perguntas do tipo “como a alta do dólar entra no cenário macro para FIIs”.
+  - `consolidated_macroeconomic` responde perguntas do tipo “como a alta do dólar entra no cenário macro para FIIs”.
 
 ---
 
-## 5. Casos que NÃO devem cair em `macro_consolidada`
+## 5. Casos que NÃO devem cair em `consolidated_macroeconomic`
 
 1. **Preço ou indicadores de FIIs específicos**
    - Perguntas com `ticker` focadas em preço, DY, dividendos, vacância, etc.
-   - Ex.: “Quanto está o HGLG11 hoje?” → `fiis_quota_prices`, não `macro_consolidada`.
+   - Ex.: “Quanto está o HGLG11 hoje?” → `fiis_quota_prices`, não `consolidated_macroeconomic`.
    - Ex.: “Qual o DY do MXRF11 nos últimos 12 meses?” → `fiis_yield_history`.
 
 2. **Carteira do cliente ou performance personalizada**
@@ -121,9 +121,9 @@ Use `macro_consolidada` quando a pergunta for sobre:
 
 ---
 
-## 6. Exemplos canônicos de perguntas (macro_consolidada)
+## 6. Exemplos canônicos de perguntas (consolidated_macroeconomic)
 
-Alguns exemplos alinhados à ontologia (intent `macro_consolidada`):
+Alguns exemplos alinhados à ontologia (intent `consolidated_macroeconomic`):
 
 - “O que significa IPCA alto para FIIs?”
 - “Como juros altos costumam afetar fundos imobiliários?”
@@ -133,7 +133,7 @@ Alguns exemplos alinhados à ontologia (intent `macro_consolidada`):
 - “Como a alta do dólar pode afetar FIIs de recebíveis?”
 - “Me dá um panorama macro (Selic, IPCA, CDI, IFIX e dólar) pensando em FIIs.”
 
-Essas perguntas devem ser usadas como referência para curadoria de `routing_samples.json` e para testes em `macro_consolidada_suite.json`.
+Essas perguntas devem ser usadas como referência para curadoria de `routing_samples.json` e para testes em `consolidated_macroeconomic_suite.json`.
 
 ---
 
@@ -146,4 +146,4 @@ Essas perguntas devem ser usadas como referência para curadoria de `routing_sam
   - Ativo específico (FII) → entidades de FIIs (`fiis_*`, `fiis_overview`).
   - Carteira/cliente → entidades `client_*` / `client_fiis_enriched_portfolio`.
 
-Com isso, `macro_consolidada` fica claramente posicionada como o “hub macro para FIIs” dentro da ontologia.
+Com isso, `consolidated_macroeconomic` fica claramente posicionada como o “hub macro para FIIs” dentro da ontologia.

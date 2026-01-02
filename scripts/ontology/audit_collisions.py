@@ -33,7 +33,7 @@ ENTITY_SCOPE: Tuple[str, ...] = (
     "fiis_overview",
     "fiis_dividends_yields",
     "client_fiis_enriched_portfolio",
-    "macro_consolidada",
+    "consolidated_macroeconomic",
     "history_market_indicators",
     "history_b3_indexes",
     "history_currency_rates",

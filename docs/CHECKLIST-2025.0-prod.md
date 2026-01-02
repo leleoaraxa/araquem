@@ -77,7 +77,7 @@
   * [✔] `client_fiis_performance_vs_benchmark`
   * [✔] `fiis_overview`
   * [✔] `fiis_yield_history`
-  * [✔] Compostas: `fiis_dividends_yields`, `client_fiis_enriched_portfolio`, `macro_consolidada`
+  * [✔] Compostas: `fiis_dividends_yields`, `client_fiis_enriched_portfolio`, `consolidated_macroeconomic`
 * [✔] `routing_samples.json` atualizado com compostas e multi-turno.
 
 **🟦 Falta**
@@ -187,7 +187,7 @@
   * [✔] Seção `buckets` adicionada:
 
     * [✔] Buckets `A`, `B`, `C` com `llm_enabled: false` (SQL-only).
-    * [✔] Bucket `D` com `llm_enabled: true`, `mode: global_post_sql`, `max_tokens` e `temperature` declarados, e `entities: [macro_consolidada]` como alvo inicial.
+    * [✔] Bucket `D` com `llm_enabled: true`, `mode: global_post_sql`, `max_tokens` e `temperature` declarados, e `entities: [consolidated_macroeconomic]` como alvo inicial.
 
 * [✔] `sirios-narrator:latest` integrado ao `app/narrator/narrator.py`.
 
@@ -210,7 +210,7 @@
 
   * [✔] Usa `bucket_policy` derivada de `narrator.buckets` para decidir se o bucket/entidade podem usar LLM em modo global pós-SQL.
   * [✔] Compacta `results/meta` em um `facts_payload` seguro (máx. N linhas e M colunas, sem blobs gigantes nem `meta` inútil).
-  * [✔] Chama o LLM apenas quando `bucket="D"`, `mode="global_post_sql"` e a entidade está na lista permitida do bucket (ex.: `macro_consolidada`).
+  * [✔] Chama o LLM apenas quando `bucket="D"`, `mode="global_post_sql"` e a entidade está na lista permitida do bucket (ex.: `consolidated_macroeconomic`).
   * [✔] Escreve a narrativa em `meta["narrative"]`, **sem alterar `results`**.
 
 * [✔] Novo prompt `build_bucket_d_global_prompt(...)` em `app/narrator/prompts.py`:
@@ -223,7 +223,7 @@
 
 * [✔] Novos testes em `tests/narrator/test_narrator_bucket_d_llm.py` garantindo:
 
-  * [✔] Bucket `D` com `entity="macro_consolidada"` dispara o LLM, enriquece `meta["narrative"]` e preserva `results` intacto.
+  * [✔] Bucket `D` com `entity="consolidated_macroeconomic"` dispara o LLM, enriquece `meta["narrative"]` e preserva `results` intacto.
   * [✔] Buckets não-D (ex.: A) **não** disparam LLM, mesmo com a mesma entidade.
   * [✔] Métricas `services_narrator_llm_requests_total` e `services_narrator_llm_latency_seconds` são emitidas corretamente.
 
