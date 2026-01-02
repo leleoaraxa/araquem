@@ -139,12 +139,12 @@ include:
     tags: [entities, fiis, overview, "entity:fii_overview"]
 
   - id: entity-carteira-enriquecida
-    path: data/entities/carteira_enriquecida/carteira_enriquecida.yaml
-    tags: [entities, fiis, carteira, private, "entity:carteira_enriquecida"]
+    path: data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml
+    tags: [entities, fiis, carteira, private, "entity:client_fiis_enriched_portfolio"]
 
   - id: entity-carteira-enriquecida-hints
-    path: data/entities/carteira_enriquecida/hints.md
-    tags: [entities, fiis, carteira, private, "entity:carteira_enriquecida"]
+    path: data/entities/client_fiis_enriched_portfolio/hints.md
+    tags: [entities, fiis, carteira, private, "entity:client_fiis_enriched_portfolio"]
 
   - id: entity-client-fiis-dividends-evolution
     path: data/entities/client_fiis_dividends_evolution/client_fiis_dividends_evolution.yaml
@@ -295,7 +295,7 @@ include:
     tags: [quality, projection, dividendos, yield]
 
   - id: q-projection-carteira-enriquecida
-    path: data/ops/quality/projection_carteira_enriquecida.json
+    path: data/ops/quality/projection_client_fiis_enriched_portfolio.json
     tags: [quality, projection, private, carteira]
 
   - id: q-projection-macro-consolidada

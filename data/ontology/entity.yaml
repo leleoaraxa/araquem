@@ -26,7 +26,7 @@ buckets:
     - fiis_yield_history
     - fiis_rankings
   B:
-    - carteira_enriquecida
+    - client_fiis_enriched_portfolio
     - client_fiis_dividends_evolution
     - client_fiis_performance_vs_benchmark
     - client_fiis_positions
@@ -2767,7 +2767,7 @@ intents:
     entities:
       - dividendos_yield
 
-  - name: carteira_enriquecida
+  - name: client_fiis_enriched_portfolio
     weight: 3
     tokens:
       include:
@@ -2898,7 +2898,7 @@ intents:
         - comparacao da carteira com benchmark
         - minha carteira melhor ou pior que
     entities:
-      - carteira_enriquecida
+      - client_fiis_enriched_portfolio
 
   - name: macro_consolidada
     weight: 5
@@ -3037,7 +3037,7 @@ anti_tokens:
     - quanto esta hoje
     - hoje (sem ticker)
     - agora (sem ticker)
-  carteira_enriquecida:
+  client_fiis_enriched_portfolio:
     - historico
     - evolucao
     - minhas posicoes mes a mes

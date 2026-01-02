@@ -343,13 +343,13 @@ entities:
       - ticker
       - ref_month
     notes: []
-  carteira_enriquecida:
+  client_fiis_enriched_portfolio:
     title: Carteira privada – posição enriquecida
     kind: historical
     paths:
-      entity_yaml: data/entities/carteira_enriquecida/carteira_enriquecida.yaml
-      schema: data/contracts/entities/carteira_enriquecida.schema.yaml
-      quality_projection: data/ops/quality/projection_carteira_enriquecida.json
+      entity_yaml: data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml
+      schema: data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml
+      quality_projection: data/ops/quality/projection_client_fiis_enriched_portfolio.json
     coverage:
       cache_policy: true
       rag_policy: false

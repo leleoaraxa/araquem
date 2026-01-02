@@ -1,6 +1,6 @@
-id: carteira_enriquecida
+id: client_fiis_enriched_portfolio
 result_key: document_number
-sql_view: carteira_enriquecida
+sql_view: client_fiis_enriched_portfolio
 private: true
 description: >
   Visão privada e composta da carteira do cliente, cruzando posição, cadastro do FII,
@@ -107,7 +107,7 @@ columns:
 
 ask:
   intents:
-    - carteira_enriquecida
+    - client_fiis_enriched_portfolio
   requires_identifiers:
     - document_number
   keywords:

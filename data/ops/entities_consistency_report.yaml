@@ -242,7 +242,7 @@ entities:
     notes:
     - entidade pública composta de dividendos + DY; consultas via SQL
     - RAG bloqueado e narrator desligado
-  carteira_enriquecida:
+  client_fiis_enriched_portfolio:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

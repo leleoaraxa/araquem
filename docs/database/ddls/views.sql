@@ -2,7 +2,7 @@
 -- DROP VIEW
 -- =====================================================================
 DROP VIEW IF EXISTS dividendos_yield;
-DROP VIEW IF EXISTS carteira_enriquecida;
+DROP VIEW IF EXISTS client_fiis_enriched_portfolio;
 DROP VIEW IF EXISTS macro_consolidada;
 DROP VIEW IF EXISTS client_fiis_dividends_evolution;
 DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
@@ -1410,9 +1410,9 @@ ORDER BY
     d.payment_date DESC;
 
 -- =====================================================================
--- VIEW: carteira_enriquecida
+-- VIEW: client_fiis_enriched_portfolio
 -- =====================================================================
-CREATE OR REPLACE VIEW carteira_enriquecida AS
+CREATE OR REPLACE VIEW client_fiis_enriched_portfolio AS
 WITH base AS (
     SELECT
         p.document_number,
@@ -1607,6 +1607,6 @@ ALTER VIEW public.client_fiis_dividends_evolution OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark OWNER TO edge_user;
 ALTER VIEW public.client_fiis_performance_vs_benchmark_summary OWNER TO edge_user;
 ALTER VIEW public.dividendos_yield OWNER TO edge_user;
-ALTER VIEW public.carteira_enriquecida OWNER TO edge_user;
+ALTER VIEW public.client_fiis_enriched_portfolio OWNER TO edge_user;
 ALTER VIEW public.macro_consolidada OWNER TO edge_user;
 -- =====================================================================

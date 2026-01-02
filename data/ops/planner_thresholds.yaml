@@ -70,7 +70,7 @@ planner:
       dividendos_yield:
         min_score: 0.9
         min_gap: 0.2
-      carteira_enriquecida:
+      client_fiis_enriched_portfolio:
         min_score: 0.9
         min_gap: 0.2
       macro_consolidada:
@@ -140,7 +140,7 @@ planner:
       dividendos_yield:
         min_score: 0.9
         min_gap: 0.2
-      carteira_enriquecida:
+      client_fiis_enriched_portfolio:
         min_score: 0.9
         min_gap: 0.2
       macro_consolidada:

@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "carteira_enriquecida",
+  "entity": "client_fiis_enriched_portfolio",
   "result_key": "document_number",
   "must_have_columns": [
     "document_number",

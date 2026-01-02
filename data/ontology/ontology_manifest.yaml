@@ -2,7 +2,7 @@ version: 2025.0-prod
 timestamp: '2025-12-04T12:22:53.492669+00:00'
 entity_count: 21
 entities:
-- id: carteira_enriquecida
+- id: client_fiis_enriched_portfolio
   tokens: 915d3c373b5ad7b0408be2ba3396abb669ee339a71f7f85ee7a257f374baa236
   phrases: 14bf2bab1e82c5e4227b082e940a32f0067ef667717976c54b4c60b78e4b1ce3
   anti_tokens: c9ebe363015cff8034841dba914291999f83425a89932eaad880653e6eb4aff1
