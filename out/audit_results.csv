@@ -1,245 +1,215 @@
 question,http_status,request_error,explain_enabled,status_status,status_raw,status_ok,status_reason,status_message,chosen_intent,chosen_entity,planner_score,gate_accepted,gate_source,gate_reason,gate_min_score,gate_min_gap,gate_gap,score_for_gate,intent_top2_gap_base,intent_top2_gap_final,intent_top1,intent_top2,scoring_mode,scoring_keys,rows_total,result_key,cache_hit,cache_hit_response,cache_hit_metrics,cache_layer,cache_ttl,cache_key,rag_used,fusion_used,elapsed_ms_server,elapsed_ms_total_est,elapsed_ms_client,narrator_used,narrator_latency_ms,narrator_error,answer_text,expected_intent,expected_entity,match_intent,match_entity,match_both,suite_name,suite_description,payload_id,idx,fail_reasons,case_pass
-Apresenta um overview detalhado do HGLG11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,4.4,True,base,,1.0,0.2,3.3000000000000003,4.4,3.3000000000000003,3.3000000000000003,fiis_overview,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,False,False,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:82892a88e768816c0014fecf854fa89cd066a4114ba48430c79b7f31b4f613f9,True,False,239,239.0,427.129,False,,,"### Overview do HGLG11
+o FPAB11 já fez parte do IFIX?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.6500000000000004,True,base,,1.0,0.2,4.4,1.6500000000000004,4.4,4.4,fiis_registrations,client_fiis_performance_vs_benchmark,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:7976452b700b2cb36b12573220f3e67ea43878156526e06530b72822b6f8fb59,True,False,655,655.0,838.107,False,,,"**FPAB11 — Fundo Investimento Imobiliario Projeto Gua Branca**
 
-- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- DY mensal / 12m: **0,70% / 8,38%**
+- CNPJ do fundo: **03.251.720/0001-18**
+- Nome de pregão (B3): **FII A Branca**
+- Classificação / gestão: **Tijolo / Definida**
+- Setor / Subsetor: **Lajes Corporativas / Escritórios**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRFPABCTF011**
+- Data de IPO: **29/12/2023**
+- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
+- CNPJ do administrador: **59.281.253/0001-23**
+- Custodiante: **Banco Btg Pactual S A**
+- Peso no IFIX / IFIL: **0,00% / 0,00%**
+- Nº de cotas / cotistas: **750.000 / 0**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,1,[],True
+O HGLG11 é um fundo de gestão ativa ou passiva?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.1,True,base,,1.0,0.2,1.1,1.1,0.0,0.0,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,278,278.0,450.021,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,2,[],True
+peso do MCCI11 no IFIX,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_rankings,fiis_rankings,1.6500000000000004,True,base,,1.0,0.2,2.2,1.6500000000000004,2.2,2.2,fiis_rankings,client_fiis_positions,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,rankings_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_rankings:plan:6c94c2e75fc4c4a2d2a3b33edef0fea4e73af5aa0cacf136d66caa7a2e659866,True,False,296,296.0,403.381,False,,,"| Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| MCCI11 | 0 | 0 | 0 | 0 | 28 | 0 | 28 | 0 | 154 | 161 | 98 | 33 | 40 | 109 | 115 | 84 | 126 | 22/05/2024 00:00 | 02/01/2026 00:00 |",fiis_rankings,fiis_rankings,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,3,[],True
+Qual foi a data do IPO do ALMI11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,4.4,True,base,,1.0,0.2,4.4,4.4,3.3000000000000003,3.3000000000000003,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:767fd789d1b68c49f232bc1031ded359d4a7e8ac799d80ffd647cdc62dc31636,True,False,393,393.0,554.54,False,,,"**ALMI11 — Fundo Investimento Imobiliario FII Torre Almirante**
 
-**Detalhes**
+- CNPJ do fundo: **07.122.725/0001-00**
+- Nome de pregão (B3): **FII Torre Al**
+- Classificação / gestão: **Tijolo / Definida**
+- Setor / Subsetor: **Lajes Corporativas / Escritórios**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRALMICTF003**
+- Data de IPO: **19/11/2004**
+- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
+- CNPJ do administrador: **59.281.253/0001-23**
+- Custodiante: **Banco Btg Pactual S A**
+- Peso no IFIX / IFIL: **0,00% / 0,00%**
+- Nº de cotas / cotistas: **111.177 / 0**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,4,[],True
+Qual o CNPJ do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,10.999999999999998,True,base,,1.0,0.2,10.999999999999998,10.999999999999998,9.899999999999999,9.899999999999999,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,214,214.0,326.054,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,1,[],True
-"Comparativo de overview entre HGLG11, MXRF11 e VISC11.",200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,9.899999999999999,True,base,,1.0,0.2,8.799999999999999,9.899999999999999,8.799999999999999,8.799999999999999,fiis_overview,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,9,fiis_overview,False,False,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:2a77967867dfb4f2037bc1ca225e9f67608495f6e3dee7462c721044c0f47e03,True,False,408,408.0,545.298,False,,,"### Overview do HGLG11
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,5,[],True
+Qual é a classificação oficial do XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,2.2,True,base,,1.0,0.2,1.1,2.2,1.1,1.1,fiis_registrations,fiis_rankings,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,283,283.0,342.816,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
 
-- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- DY mensal / 12m: **0,70% / 8,38%**
+- CNPJ do fundo: **26.502.794/0001-85**
+- Nome de pregão (B3): **FII XP Log**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRXPLGCTF002**
+- Data de IPO: **01/06/2018**
+- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
+- CNPJ do administrador: **22.610.500/0001-88**
+- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
+- Peso no IFIX / IFIL: **2,30% / 2,61%**
+- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,6,[],True
+Qual é o administrador e o CNPJ do administrador do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,28.599999999999998,True,base,,1.0,0.2,28.599999999999998,28.599999999999998,27.499999999999996,27.499999999999996,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,186,186.0,309.426,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,7,[],True
+Qual é o código ISIN do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,4.4,True,base,,1.0,0.2,4.4,4.4,3.3000000000000003,3.3000000000000003,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,192,192.0,349.681,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-**Detalhes**
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,8,[],True
+Qual é o nome de exibição do fundo ALMI11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,4.4,8.8,4.4,4.4,fiis_registrations,fiis_overview,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:767fd789d1b68c49f232bc1031ded359d4a7e8ac799d80ffd647cdc62dc31636,True,False,151,151.0,259.354,False,,,"**ALMI11 — Fundo Investimento Imobiliario FII Torre Almirante**
 
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
+- CNPJ do fundo: **07.122.725/0001-00**
+- Nome de pregão (B3): **FII Torre Al**
+- Classificação / gestão: **Tijolo / Definida**
+- Setor / Subsetor: **Lajes Corporativas / Escritórios**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRALMICTF003**
+- Data de IPO: **19/11/2004**
+- Site oficial: **[Acessar site](https://www.btgpactual.com)**- Administrador: **Btg Pactual Servicos Financeiros S/A Dtvm**
+- CNPJ do administrador: **59.281.253/0001-23**
+- Custodiante: **Banco Btg Pactual S A**
+- Peso no IFIX / IFIL: **0,00% / 0,00%**
+- Nº de cotas / cotistas: **111.177 / 0**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,9,[],True
+Qual é o nome de pregão do HGLG11 na B3?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,7.699999999999999,True,base,,1.0,0.2,6.6,7.699999999999999,6.6,6.6,fiis_registrations,fiis_precos,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,187,187.0,317.781,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,10,[],True
+Qual é o peso do HGLG11 no IFIX e no IFIL?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_rankings,fiis_rankings,15.950000000000001,True,base,,1.0,0.2,17.6,15.950000000000001,17.6,17.6,fiis_rankings,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,rankings_fii,False,False,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_rankings:plan:6ff2d1c228205c29e90d6d9578ffa7e551f64277b3d121088af839e6b33adcab,True,False,229,229.0,289.988,False,,,"| Código | Ranking usuários | Mov. usuários | Ranking Sírios | Mov. Sírios | Ranking IFIX | Mov. IFIX | Ranking IFIL | Mov. IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Rank Sharpe | Rank Sortino | Rank menor volatilidade | Rank menor drawdown | Criado em | Atualizado em |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| HGLG11 | 0 | 0 | 0 | 0 | 4 | 0 | 4 | 0 | 260 | 314 | 61 | 4 | 4 | 208 | 226 | 29 | 26 | 22/05/2024 00:00 | 02/01/2026 00:00 |",fiis_rankings,fiis_rankings,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,11,[],True
+Qual é o público-alvo do XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,8.8,8.8,7.700000000000001,7.700000000000001,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,170,170.0,334.259,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
 
----
+- CNPJ do fundo: **26.502.794/0001-85**
+- Nome de pregão (B3): **FII XP Log**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRXPLGCTF002**
+- Data de IPO: **01/06/2018**
+- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
+- CNPJ do administrador: **22.610.500/0001-88**
+- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
+- Peso no IFIX / IFIL: **2,30% / 2,61%**
+- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,12,[],True
+Qual é o setor e o subsetor do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,8.8,True,base,,1.0,0.2,5.500000000000001,8.8,5.500000000000001,5.500000000000001,fiis_registrations,fiis_overview,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,160,160.0,333.454,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-### Overview do MXRF11
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,13,[],True
+Qual é o site oficial do fundo XPLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,5.5,True,base,,1.0,0.2,5.5,5.5,4.4,4.4,fiis_registrations,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:17149d46f5983ab54f422d50df8f0050293b9fe7b146404adff5830484efdcaf,True,False,138,138.0,279.651,False,,,"**XPLG11 — XP Log Fundo Investimento Imobiliario FII**
 
-- Nome: **Maxi Renda Fundo Investimento Imobiliario FII**
-- Classificação e gestão: **Papel / Ativa**
-- Setor e subsetor: **Títulos e Valores Mobiliários / Logística**
-- DY mensal / 12m: **1,05% / 12,26%**
+- CNPJ do fundo: **26.502.794/0001-85**
+- Nome de pregão (B3): **FII XP Log**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Logística**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRXPLGCTF002**
+- Data de IPO: **01/06/2018**
+- Site oficial: **[Acessar site](https://www.vortx.com.br)**- Administrador: **Vórtx Dtvm Ltda**
+- CNPJ do administrador: **22.610.500/0001-88**
+- Custodiante: **Vortx Distribuidora De Titulos E Valores Mobiliarios Ltda**
+- Peso no IFIX / IFIL: **2,30% / 2,61%**
+- Nº de cotas / cotistas: **31.175.931 / 26.497.349,97**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,14,[],True
+Quantas cotas emitidas e quantos cotistas o HGLG11 possui?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_registrations,fiis_registrations,1.6500000000000001,True,base,,1.0,0.2,1.1,1.6500000000000001,1.1,1.1,fiis_registrations,client_fiis_positions,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,cadastro_fii,True,True,,response,86400,araquem:dev-20251030:cfg-c6a33385:pub:fiis_registrations:plan:a922eb9a2e2c86b14ef13732352d33fbe6252c1faace80a6fad34597d993a010,True,False,187,187.0,328.909,False,,,"**HGLG11 — Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
 
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-
-
----
-
-### Overview do VISC11
-
-- Nome: **Vinci Shopping Centers Fundo Invest Imobiliario FII**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Shoppings / Shoppings**
-- DY mensal / 12m: **0,74% / 8,86%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,2,[],True
-Ficha resumo do fundo MXRF11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,10.999999999999998,True,base,,1.0,0.2,9.899999999999999,10.999999999999998,9.899999999999999,9.899999999999999,fiis_overview,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,False,False,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:b17d9b1fca71da8daa444134de027a6d70988096ddd060f827a48ef8708923ac,True,False,383,383.0,558.895,False,,,"### Overview do MXRF11
-
-- Nome: **Maxi Renda Fundo Investimento Imobiliario FII**
-- Classificação e gestão: **Papel / Ativa**
-- Setor e subsetor: **Títulos e Valores Mobiliários / Logística**
-- DY mensal / 12m: **1,05% / 12,26%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,3,[],True
-Ficha tecnica resumida do VISC11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,9.899999999999999,True,base,,1.0,0.2,9.899999999999999,9.899999999999999,8.799999999999999,8.799999999999999,fiis_overview,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,False,False,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:a67dbcbdb8ee47bd5543c7a985ebf0e5ba8c1430dadad2cb7316776080d9b7e5,True,False,237,237.0,338.484,False,,,"### Overview do VISC11
-
-- Nome: **Vinci Shopping Centers Fundo Invest Imobiliario FII**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Shoppings / Shoppings**
-- DY mensal / 12m: **0,74% / 8,86%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,4,[],True
-Me mostre um panorama geral do HGLG11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,10.999999999999998,True,base,,1.0,0.2,9.899999999999999,10.999999999999998,9.899999999999999,9.899999999999999,fiis_overview,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:82892a88e768816c0014fecf854fa89cd066a4114ba48430c79b7f31b4f613f9,True,False,167,167.0,325.181,False,,,"### Overview do HGLG11
-
-- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- DY mensal / 12m: **0,70% / 8,38%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,5,[],True
-Panorama do fundo MXRF11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,10.999999999999998,True,base,,1.0,0.2,9.899999999999999,10.999999999999998,9.899999999999999,9.899999999999999,fiis_overview,macro_consolidada,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:b17d9b1fca71da8daa444134de027a6d70988096ddd060f827a48ef8708923ac,True,False,141,141.0,570.24,False,,,"### Overview do MXRF11
-
-- Nome: **Maxi Renda Fundo Investimento Imobiliario FII**
-- Classificação e gestão: **Papel / Ativa**
-- Setor e subsetor: **Títulos e Valores Mobiliários / Logística**
-- DY mensal / 12m: **1,05% / 12,26%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,6,[],True
-Principais pontos do fundo MXRF11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,8.8,True,base,,1.0,0.2,7.700000000000001,8.8,7.700000000000001,7.700000000000001,fiis_overview,history_b3_indexes,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:b17d9b1fca71da8daa444134de027a6d70988096ddd060f827a48ef8708923ac,True,False,161,161.0,338.866,False,,,"### Overview do MXRF11
-
-- Nome: **Maxi Renda Fundo Investimento Imobiliario FII**
-- Classificação e gestão: **Papel / Ativa**
-- Setor e subsetor: **Títulos e Valores Mobiliários / Logística**
-- DY mensal / 12m: **1,05% / 12,26%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,7,[],True
-Quais os destaques do VISC11 hoje?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,10.999999999999998,True,base,,1.0,0.2,10.999999999999998,10.999999999999998,9.899999999999999,9.899999999999999,fiis_overview,ticker_query,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:a67dbcbdb8ee47bd5543c7a985ebf0e5ba8c1430dadad2cb7316776080d9b7e5,True,False,161,161.0,329.103,False,,,"### Overview do VISC11
-
-- Nome: **Vinci Shopping Centers Fundo Invest Imobiliario FII**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Shoppings / Shoppings**
-- DY mensal / 12m: **0,74% / 8,86%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,8,[],True
-Quero um resumo completo do HGLG11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,10.999999999999998,True,base,,1.0,0.2,9.899999999999999,10.999999999999998,9.899999999999999,9.899999999999999,fiis_overview,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:82892a88e768816c0014fecf854fa89cd066a4114ba48430c79b7f31b4f613f9,True,False,144,144.0,289.66,False,,,"### Overview do HGLG11
-
-- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- DY mensal / 12m: **0,70% / 8,38%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,9,[],True
-Resumo dos principais indicadores de HGLG11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,6.6,True,base,,1.0,0.2,5.5,6.6,5.5,5.5,fiis_overview,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:82892a88e768816c0014fecf854fa89cd066a4114ba48430c79b7f31b4f613f9,True,False,157,157.0,445.1,False,,,"### Overview do HGLG11
-
-- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
-- DY mensal / 12m: **0,70% / 8,38%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,38% | R$ 1,10 | 15/01/2026 | R$ 6.634.211.404,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 4,95% | 0,00% | 33,17% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 40.600.112,01 | 0,03% | 0,00% | 1,49 | -0,98 | -0,09 | 8,66% | 3,71% | 4,21% | 0 | 0 | 4 | 4 | 260 | 314 | 61 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,10,[],True
-Resumo geral do MXRF11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,7.1499999999999995,True,base,,1.0,0.2,5.499999999999999,7.1499999999999995,5.499999999999999,5.499999999999999,fiis_overview,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:b17d9b1fca71da8daa444134de027a6d70988096ddd060f827a48ef8708923ac,True,False,136,136.0,340.283,False,,,"### Overview do MXRF11
-
-- Nome: **Maxi Renda Fundo Investimento Imobiliario FII**
-- Classificação e gestão: **Papel / Ativa**
-- Setor e subsetor: **Títulos e Valores Mobiliários / Logística**
-- DY mensal / 12m: **1,05% / 12,26%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| MXRF11 | Maxi Renda Fundo Investimento Imobiliario FII | Papel | Títulos e Valores Mobiliários | Logística | Ativa | 1,05% | 12,26% | R$ 0,10 | 15/01/2026 | R$ 4.390.971.326,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| MXRF11 | Investidores Em Geral | Não | R$ 1,17 | 1,06% | R$ 9,03 | 0,07% | 0,00% | 5,04% | 0,00% | 0,01 | R$ 4.154.120.032,00 | 460.269.531 | 45.172.971,18 | 0,01% | 0,00% | 1,28 | -1,63 | -0,13 | 9,89% | 2,90% | 3,29% | 0 | 0 | 7 | 7 | 152 | 186 | 275 | 7 | 7 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,11,[],True
-Visao geral do VISC11 como investimento.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,9.899999999999999,True,base,,1.0,0.2,8.799999999999999,9.899999999999999,8.799999999999999,8.799999999999999,fiis_overview,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-a14016d5:pub:fiis_overview:plan:a67dbcbdb8ee47bd5543c7a985ebf0e5ba8c1430dadad2cb7316776080d9b7e5,True,False,268,268.0,401.202,False,,,"### Overview do VISC11
-
-- Nome: **Vinci Shopping Centers Fundo Invest Imobiliario FII**
-- Classificação e gestão: **Tijolo / Ativa**
-- Setor e subsetor: **Shoppings / Shoppings**
-- DY mensal / 12m: **0,74% / 8,86%**
-
-| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
-| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| VISC11 | Vinci Shopping Centers Fundo Invest Imobiliario FII | Tijolo | Shoppings | Shoppings | Ativa | 0,74% | 8,86% | R$ 0,81 | 15/01/2026 | R$ 3.143.474.906,00 | 02/01/2026 00:00 |
-
-**Detalhes**
-
-| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
-| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
-| VISC11 | Investidores Em Geral | Não | R$ 9,66 | 0,88% | R$ 123,41 | 1,47% | 0,00% | -2,27% | 0,00% | 0,19 | R$ 3.557.630.811,00 | 28.828.640 | 23.417.562,73 | 0,01% | 0,00% | 2 | -0,66 | -0,06 | 18,90% | 2,19% | 2,49% | 0 | 0 | 10 | 10 | 243 | 302 | 128 | 12 | 8 | 22/05/2024 00:00 | 22/05/2024 00:00 | 02/01/2026 00:00 | 02/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,fiis_overview,"Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",,12,[],True
+- CNPJ do fundo: **11.728.688/0001-47**
+- Nome de pregão (B3): **FII HGLG Pax**
+- Classificação / gestão: **Tijolo / Ativa**
+- Setor / Subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- Público-alvo: **Investidores Em Geral**
+- Fundo exclusivo: **Não**
+- Código ISIN: **BRHGLGCTF004**
+- Data de IPO: **03/05/2010**
+- Site oficial: **[Acessar site](https://www.bancogenial.com/)**- Administrador: **Banco Genial S.A.**
+- CNPJ do administrador: **45.246.410/0001-55**
+- Custodiante: **Banco Genial S.A.**
+- Peso no IFIX / IFIL: **3,71% / 4,21%**
+- Nº de cotas / cotistas: **42.404.675 / 40.600.112,01**- Criado em: **22/05/2024 00:00**
+- Atualizado em: **02/01/2026 00:00**",fiis_registrations,fiis_registrations,True,True,True,fiis_registrations,"Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",,15,[],True

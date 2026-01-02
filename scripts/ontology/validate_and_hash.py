@@ -1,3 +1,4 @@
+# scripts/ontology/validate_and_hash.py
 import argparse
 import hashlib
 import sys
@@ -5,7 +6,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Mapping, MutableMapping, Sequence
 
-import yaml  # type: ignore
+import yaml
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
