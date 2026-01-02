@@ -16,7 +16,7 @@
       "fiis_real_estate",
       "fiis_news",
       "fiis_quota_prices",
-      "fiis_processos",
+      "fiis_legal_proceedings",
       "fiis_rankings",
       "fiis_yield_history",
       "history_b3_indexes",
@@ -40,7 +40,7 @@
       "fiis_real_estate",
       "fiis_news",
       "fiis_quota_prices",
-      "fiis_processos",
+      "fiis_legal_proceedings",
       "fiis_rankings",
       "fiis_yield_history",
       "history_b3_indexes",
@@ -64,7 +64,7 @@
       "fiis_real_estate",
       "fiis_news",
       "fiis_quota_prices",
-      "fiis_processos",
+      "fiis_legal_proceedings",
       "fiis_rankings",
       "fiis_yield_history",
       "history_b3_indexes",
@@ -90,7 +90,7 @@
       "fiis_real_estate",
       "fiis_news",
       "fiis_quota_prices",
-      "fiis_processos",
+      "fiis_legal_proceedings",
       "fiis_rankings",
       "fiis_yield_history",
       "macro_consolidada"
@@ -220,14 +220,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_processos",
+        "entity": "fiis_legal_proceedings",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_processos",
+        "entity": "fiis_legal_proceedings",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -1108,7 +1108,7 @@
         "ok": true
       }
     },
-    "fiis_processos": {
+    "fiis_legal_proceedings": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -1117,18 +1117,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_processos",
+        "fiis_legal_proceedings",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_processos/fiis_processos.yaml"
+          "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_processos.schema.yaml"
+          "path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml"
         }
       },
       "policies": {
@@ -1141,7 +1141,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_processos"
+            "fiis_legal_proceedings"
           ],
           "missing_intents": [
             "ticker_query"

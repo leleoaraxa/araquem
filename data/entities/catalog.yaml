@@ -244,13 +244,13 @@ entities:
       - ticker
       - traded_at
     notes: []
-  fiis_processos:
+  fiis_legal_proceedings:
     title: FIIs – Processos judiciais
     kind: snapshot
     paths:
-      entity_yaml: data/entities/fiis_processos/fiis_processos.yaml
-      schema: data/contracts/entities/fiis_processos.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_processos.json
+      entity_yaml: data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml
+      schema: data/contracts/entities/fiis_legal_proceedings.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_legal_proceedings.json
     coverage:
       cache_policy: true
       rag_policy: false

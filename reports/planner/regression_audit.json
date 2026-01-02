@@ -298,7 +298,7 @@
       "conflicts": [
         "fiis_dividends",
         "fiis_financials_revenue_schedule",
-        "fiis_processos"
+        "fiis_legal_proceedings"
       ]
     },
     {
@@ -420,11 +420,11 @@
       ]
     },
     {
-      "intent": "fiis_processos",
+      "intent": "fiis_legal_proceedings",
       "issue": "token_collision",
       "token": "valor",
       "conflicts": [
-        "fiis_processos",
+        "fiis_legal_proceedings",
         "history_market_indicators"
       ]
     },

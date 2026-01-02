@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "fiis_processos",
+  "entity": "fiis_legal_proceedings",
   "result_key": "processos_fii",
   "must_have_columns": [
     "ticker",

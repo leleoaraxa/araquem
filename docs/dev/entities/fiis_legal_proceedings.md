@@ -1,8 +1,8 @@
-# Entidade: `fiis_processos`
+# Entidade: `fiis_legal_proceedings`
 
 ## 1. Objetivo
 
-A entidade `fiis_processos` consolida **informações de processos judiciais** associados a cada FII (por ticker).
+A entidade `fiis_legal_proceedings` consolida **informações de processos judiciais** associados a cada FII (por ticker).
 Ela responde perguntas como:
 
 - Se um fundo tem ou não processos.
@@ -12,7 +12,7 @@ Ela responde perguntas como:
 
 Camada de dados:
 
-- **View SQL**: `fiis_processos`
+- **View SQL**: `fiis_legal_proceedings`
 - **Grão**: 1 linha por processo judicial por FII (`ticker` + `process_id` / `process_number`).
 - **Atualização**: foto D-1 (conforme política geral da base judicial).
 
@@ -20,7 +20,7 @@ Camada de dados:
 
 ## 2. Quando usar esta entidade (roteamento ideal)
 
-O Planner deve priorizar `fiis_processos` quando a pergunta envolver, de forma clara, **processos, ações judiciais ou litígios** ligados a um FII específico ou a um conjunto de FIIs.
+O Planner deve priorizar `fiis_legal_proceedings` quando a pergunta envolver, de forma clara, **processos, ações judiciais ou litígios** ligados a um FII específico ou a um conjunto de FIIs.
 
 Padrões de intenção típicos:
 
@@ -45,13 +45,13 @@ Padrões de intenção típicos:
   - “Quais são os principais fatos dos processos do ALMI11?”
   - “Resumo das ações judiciais do ALMI11.”
 
-Essas perguntas são exatamente as que aparecem (e variam) nos `sample_questions` do schema e na ontologia da intenção `fiis_processos`.
+Essas perguntas são exatamente as que aparecem (e variam) nos `sample_questions` do schema e na ontologia da intenção `fiis_legal_proceedings`.
 
 ---
 
 ## 3. Quando **não** usar (anti-conflitos)
 
-O Planner **não** deve usar `fiis_processos` quando:
+O Planner **não** deve usar `fiis_legal_proceedings` quando:
 
 1. A pergunta é sobre **desempenho, preço, dividendos ou yield**:
    - “Quanto está o ALMI11 hoje?” → `fiis_quota_prices`
@@ -73,14 +73,14 @@ O Planner **não** deve usar `fiis_processos` quando:
    - “Quais imóveis o ALMI11 possui?” → `fiis_real_estate`.
 
 Regra prática:
-Se o foco é **litígio judicial** (ação, processo, causa, risco de perda em tribunal) → `fiis_processos`.
+Se o foco é **litígio judicial** (ação, processo, causa, risco de perda em tribunal) → `fiis_legal_proceedings`.
 Se o foco é **qualquer outra dimensão do fundo** (preço, yield, vacância, patrimônio, notícia, etc.) → outra entidade específica.
 
 ---
 
 ## 4. Colunas e semântica dos campos
 
-Fonte: `data/contracts/fiis_processos.schema.yaml`.
+Fonte: `data/contracts/fiis_legal_proceedings.schema.yaml`.
 
 | Coluna                   | Tipo / Exemplo                                   | Semântica prática                                                                                          |
 |--------------------------|--------------------------------------------------|------------------------------------------------------------------------------------------------------------|
@@ -117,7 +117,7 @@ Recomendações para o Narrator / Presenter:
 
 ## 5. Exemplos de perguntas-alvo (Planner / Routing)
 
-Sugestões de perguntas que **devem** cair em `fiis_processos`:
+Sugestões de perguntas que **devem** cair em `fiis_legal_proceedings`:
 
 1. “O ALMI11 tem processos judiciais em aberto?”
 2. “Quais processos existem contra o ALMI11?”
@@ -132,8 +132,8 @@ Sugestões de perguntas que **devem** cair em `fiis_processos`:
 
 Esses exemplos devem ser coerentes com:
 
-- `intents.fiis_processos.tokens` e `intents.fiis_processos.phrases` na ontologia.
-- `sample_questions` do schema `fiis_processos.schema.yaml`.
+- `intents.fiis_legal_proceedings.tokens` e `intents.fiis_legal_proceedings.phrases` na ontologia.
+- `sample_questions` do schema `fiis_legal_proceedings.schema.yaml`.
 
 ---
 
@@ -148,7 +148,7 @@ Esses exemplos devem ser coerentes com:
   - `fiis_dividends` / `fiis_yield_history`
   - `fiis_news`
 - Em caso de dúvida entre **risco jurídico** x **risco quantitativo de mercado**:
-  - Presença de “processo / ação judicial / causa / tribunal / comarca” → tende a `fiis_processos`.
+  - Presença de “processo / ação judicial / causa / tribunal / comarca” → tende a `fiis_legal_proceedings`.
   - Presença de “Sharpe / volatilidade / beta / drawdown / mdd” → `fiis_financials_risk`.
 
 ---

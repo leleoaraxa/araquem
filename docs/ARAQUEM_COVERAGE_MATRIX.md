@@ -177,7 +177,7 @@ Mesma natureza do overview (dados cadastrais).
 
 ---
 
-### **📌 fiis_processos**
+### **📌 fiis_legal_proceedings**
 
 **Tipo:** 1xN
 **Cobertura:** processos judiciais

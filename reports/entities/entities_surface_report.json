@@ -871,9 +871,9 @@
       ]
     },
     {
-      "entity_id": "fiis_processos",
+      "entity_id": "fiis_legal_proceedings",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_processos",
+      "dir_path": "data/entities/fiis_legal_proceedings",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -881,18 +881,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_processos/fiis_processos.yaml",
+        "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_processos.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_processos/responses",
+        "dir_path": "data/entities/fiis_legal_proceedings/responses",
         "templates": [
           {
             "filename": "list.md.j2",
-            "path": "data/entities/fiis_processos/responses/list.md.j2",
+            "path": "data/entities/fiis_legal_proceedings/responses/list.md.j2",
             "size_bytes": 1472
           }
         ]
@@ -900,11 +900,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_processos/hints.md"
+          "path": "data/entities/fiis_legal_proceedings/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fiis_processos/template.md",
+          "path": "data/entities/fiis_legal_proceedings/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -915,12 +915,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_processos.csv"
+        "path": "docs/database/samples/fiis_legal_proceedings.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_processos.json"
+          "data/ops/quality/projection_fiis_legal_proceedings.json"
         ]
       },
       "tags": [

@@ -16,7 +16,7 @@
 | fiis_real_estate | propriedades | Imóveis/ativos do FII com área, vacância, inadimplência | “quais imóveis compõem o HGLG11”, “vacância do portfólio do VISC11” | Lista de ativos com classe, endereço, área, vacância | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
 | fiis_news | noticias | Notícias D-1 sobre FIIs com título, fonte e link | “notícias sobre VISC11”, “manchetes recentes do HGLG11” | Lista de manchetes com data/hora e link | Não | RAG: permitido / Narrator: desabilitado | D-1 | published_at | lista apenas |
 | fiis_quota_prices | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | traded_at | sim |
-| fiis_processos | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
+| fiis_legal_proceedings | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
 | fiis_rankings | rankings | Posições dos FIIs em rankings (DY, valor de mercado, Sharpe etc.) | “posição do HGLG11 no IFIX”, “top FIIs por DY 12m” | Tabela com posições em múltiplos rankings | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
 | fiis_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | não |
 | history_b3_indexes | indices | Histórico D-1 de IBOV/IFIX/IFIL (pontos e variação) | “histórico do IFIX”, “variação do IBOV hoje” | Lista de datas com pontos e variações; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | index_date | sim |
@@ -335,9 +335,9 @@ Série diária de preços por FII (abertura, máxima, mínima, fechamento, varia
 - Pública; RAG negado; Narrator desabilitado.
 - Relatório: entidade histórica de preços, RAG negado, janelas em param inference.
 
-### 1.13. fiis_processos
+### 1.13. fiis_legal_proceedings
 
-**Intent:** fiis_processos
+**Intent:** fiis_legal_proceedings
 
 **Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
 

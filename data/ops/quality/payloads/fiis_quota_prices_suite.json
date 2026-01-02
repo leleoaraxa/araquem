@@ -8,7 +8,7 @@
       "expected_entity": "fiis_quota_prices"
     },
     {
-      "question": "Como está VINO agora?",
+      "question": "Como está o preço do VINO agora?",
       "expected_intent": "fiis_quota_prices",
       "expected_entity": "fiis_quota_prices"
     },

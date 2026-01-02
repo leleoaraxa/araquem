@@ -50,15 +50,15 @@
     },
     {
       "question": "preço do RBFF11",
-      "not_intent": "fiis_processos"
+      "not_intent": "fiis_legal_proceedings"
     },
     {
       "question": "cnpj do RBFF11",
-      "not_intent": "fiis_processos"
+      "not_intent": "fiis_legal_proceedings"
     },
     {
       "question": "dividendos do RBFF11",
-      "not_intent": "fiis_processos"
+      "not_intent": "fiis_legal_proceedings"
     },
     {
       "question": "qual o administrador do VISC11",

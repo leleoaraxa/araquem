@@ -84,7 +84,7 @@ policies:
     key_fields:
     - ticker
     - published_at
-  fiis_processos:
+  fiis_legal_proceedings:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

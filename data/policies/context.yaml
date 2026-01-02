@@ -18,7 +18,7 @@ context:
     - fiis_financials_snapshot
     - fiis_real_estate
     - fiis_rankings
-    - fiis_processos
+    - fiis_legal_proceedings
     - fiis_news
     - fiis_overview
     - fiis_yield_history
@@ -45,7 +45,7 @@ context:
     - fiis_financials_snapshot
     - fiis_real_estate
     - fiis_rankings
-    - fiis_processos
+    - fiis_legal_proceedings
     - fiis_news
     - fiis_overview
     - fiis_yield_history
@@ -71,7 +71,7 @@ context:
     - fiis_overview
     - fiis_real_estate
     - fiis_rankings
-    - fiis_processos
+    - fiis_legal_proceedings
     - fiis_news
     - fiis_registrations
     - fiis_dividends_yields
@@ -106,7 +106,7 @@ context:
     fiis_rankings:
       use_referenced_ticker: true
       use_last_entity: true
-    fiis_processos:
+    fiis_legal_proceedings:
       use_referenced_ticker: true
       use_last_entity: true
     fiis_news:

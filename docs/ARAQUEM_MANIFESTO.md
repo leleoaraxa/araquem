@@ -136,7 +136,7 @@ Eu priorizo entidades que respondem 1xN ou 1x1:
 * Risco? → `fiis_financials_risk`
 * Snapshot? → `fiis_financials_snapshot`
 * Imóveis? → `fiis_real_estate`
-* Processos? → `fiis_processos`
+* Processos? → `fiis_legal_proceedings`
 
 ### **4.2 Perguntas conceituais (sem ticker)**
 

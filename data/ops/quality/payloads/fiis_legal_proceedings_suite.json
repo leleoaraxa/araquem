@@ -1,0 +1,66 @@
+{
+  "suite": "fiis_legal_proceedings",
+  "description": "Suíte de testes para fiis_legal_proceedings — existência de processos, quantidade, status, valor e risco de perda",
+  "payloads": [
+    {
+      "question": "Desde quando existem processos contra o ALMI11 e como está o andamento deles?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Me dá um resumo das ações judiciais envolvendo o ALMI11.",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "O ALMI11 tem processos judiciais em aberto?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais processos existem contra o ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais são os principais fatos dos processos do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais são os processos do ALMI11 em 1ª instância?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o risco de perda dos processos judiciais do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o status das ações judiciais do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o valor total das causas dos processos do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quanto o ALMI11 pode perder se perder todas as ações judiciais?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quantos processos judiciais o ALMI11 possui hoje?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    }
+  ]
+}

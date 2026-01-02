@@ -22,8 +22,8 @@
           "refId": "A"
         },
         {
-          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_processos\"}[5m]))",
-          "legendFormat": "fiis_processos",
+          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_legal_proceedings\"}[5m]))",
+          "legendFormat": "fiis_legal_proceedings",
           "refId": "B"
         },
         {
@@ -46,7 +46,7 @@
       "datasource": null,
       "options": {
         "mode": "markdown",
-        "content": "// TODO: bind sirios_responder_latency_seconds para fiis_real_estate\\n// TODO: bind sirios_responder_latency_seconds para fiis_processos\\n// TODO: bind sirios_responder_latency_seconds para fiis_news"
+        "content": "// TODO: bind sirios_responder_latency_seconds para fiis_real_estate\\n// TODO: bind sirios_responder_latency_seconds para fiis_legal_proceedings\\n// TODO: bind sirios_responder_latency_seconds para fiis_news"
       }
     }
   ]

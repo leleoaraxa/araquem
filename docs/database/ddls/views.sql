@@ -14,7 +14,7 @@ DROP VIEW IF EXISTS fiis_dividends;
 DROP VIEW IF EXISTS fiis_quota_prices;
 DROP VIEW IF EXISTS fiis_rankings;
 DROP VIEW IF EXISTS fiis_real_estate;
-DROP VIEW IF EXISTS fiis_processos;
+DROP VIEW IF EXISTS fiis_legal_proceedings;
 DROP VIEW IF EXISTS fiis_news;
 DROP VIEW IF EXISTS fiis_financials_snapshot;
 DROP VIEW IF EXISTS fiis_financials_risk;
@@ -570,9 +570,9 @@ SELECT
 FROM view_fiis_history_assets;
 
 -- =====================================================================
--- VIEW: fiis_processos
+-- VIEW: fiis_legal_proceedings
 -- =====================================================================
-CREATE OR REPLACE VIEW fiis_processos AS
+CREATE OR REPLACE VIEW fiis_legal_proceedings AS
 SELECT
     ticker,
     process_number,
@@ -1598,7 +1598,7 @@ ALTER VIEW public.fiis_dividends OWNER TO edge_user;
 ALTER VIEW public.fiis_quota_prices OWNER TO edge_user;
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 ALTER VIEW public.fiis_real_estate OWNER TO edge_user;
-ALTER VIEW public.fiis_processos OWNER TO edge_user;
+ALTER VIEW public.fiis_legal_proceedings OWNER TO edge_user;
 ALTER VIEW public.fiis_news OWNER TO edge_user;
 ALTER VIEW public.fiis_financials_snapshot OWNER TO edge_user;
 ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;

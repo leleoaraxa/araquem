@@ -303,7 +303,7 @@ narrator:
         usando os dados como âncora factual. Proibido: tabelas, pipes (|), markdown tabular,
         repetir o texto base, ou listar colunas/linhas. Não invente dados; não altere números/datas.
 
-    fiis_processos:
+    fiis_legal_proceedings:
       llm_enabled: false
       shadow: false
       rewrite_only: false

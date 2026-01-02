@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_legal_proceedings",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_legal_proceedings.",
+  "payloads": [
+    {
+      "id": "fiis_legal_proceedings-q1",
+      "question": "Existem processos judiciais em andamento associados ao HGLG11 e quais números dos processos?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "id": "fiis_legal_proceedings-q2",
+      "question": "Qual é o estágio atual (instância, julgamento) de cada processo listado do KNRI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "id": "fiis_legal_proceedings-q3",
+      "question": "Quais são as partes envolvidas e o risco de perda das ações judiciais relacionadas ao MXRF11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    }
+  ]
+}

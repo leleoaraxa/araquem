@@ -75,7 +75,7 @@ Perguntas que **não** devem usar `fiis_news`:
 - Sobre dividendos: “Quais foram os dividendos do HGLG11 este mês?” → `fiis_dividends`
 - Sobre risco (Sharpe, drawdown etc.): → `fiis_financials_risk`
 - Sobre snapshot financeiro (payout, alavancagem, vacância, PL etc.): → `fiis_financials_snapshot`
-- Sobre processos judiciais: → `fiis_processos`
+- Sobre processos judiciais: → `fiis_legal_proceedings`
 
 ---
 

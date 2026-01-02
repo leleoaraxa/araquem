@@ -44,7 +44,11 @@ def _load_response(filename: str):
 
 def _present_from_response(response: dict, narrator_text: str):
     plan = {
-        "chosen": {"intent": "fiis_processos", "entity": "fiis_processos", "score": 1.0}
+        "chosen": {
+            "intent": "fiis_legal_proceedings",
+            "entity": "fiis_legal_proceedings",
+            "score": 1.0,
+        }
     }
     meta = response.get("meta") or {}
     results = response.get("results") or {}

@@ -31,7 +31,7 @@ planner:
       fiis_real_estate:
         min_score: 0.85
         min_gap: 0.1
-      fiis_processos:
+      fiis_legal_proceedings:
         min_score: 0.85
         min_gap: 0.1
       fiis_news:
@@ -101,7 +101,7 @@ planner:
       fiis_real_estate:
         min_score: 0.85
         min_gap: 0.1
-      fiis_processos:
+      fiis_legal_proceedings:
         min_score: 0.85
         min_gap: 0.1
       fiis_news:

@@ -21,7 +21,7 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 | fiis_real_estate | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_news | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_quota_prices | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
-| fiis_processos | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
+| fiis_legal_proceedings | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_rankings | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | fiis_yield_history | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
 | history_b3_indexes | 3 | 0 | 3 | http_not_ok (3), request_error (3), status_not_ok (3) |
@@ -91,9 +91,9 @@ Execução das suites geradas a partir de perguntas existentes, rodadas contra o
 - fiis_quota_prices-q1: "como fechou o HGLG11 hoje?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 - fiis_quota_prices-q2: "qual foi a variação do MXRF11 ontem?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
-### fiis_processos
-- fiis_processos-q1: "Existem processos judiciais ou administrativos envolvendo o FII?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
-- fiis_processos-q2: "Qual o estágio atual (ex.: em andamento, decisão, acordo) de cada processo?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+### fiis_legal_proceedings
+- fiis_legal_proceedings-q1: "Existem processos judiciais ou administrativos envolvendo o FII?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
+- fiis_legal_proceedings-q2: "Qual o estágio atual (ex.: em andamento, decisão, acordo) de cada processo?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus
 
 ### fiis_rankings
 - fiis_rankings-q1: "Quais FIIs lideram o ranking por rendimento ou dividend yield?" — falhas: http_not_ok, request_error, status_not_ok, entity_mismatch; erro: HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /ask?explain=true (Caused by NewConnectionError("HTTPConnection(host='localhost', port=8000): Failed to establish a new connection: [Errno 111] Connection refus

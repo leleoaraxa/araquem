@@ -23,7 +23,7 @@ python scripts/quality/quality_push.py \
   data/ops/quality/payloads/fiis_dividends_suite.json \
   data/ops/quality/payloads/fiis_yield_history_suite.json \
   data/ops/quality/payloads/fiis_overview_suite.json \
-  data/ops/quality/payloads/fiis_processos_suite.json \
+  data/ops/quality/payloads/fiis_legal_proceedings_suite.json \
   data/ops/quality/payloads/fiis_financials_revenue_schedule_suite.json \
   data/ops/quality/payloads/fiis_rankings_suite.json \
   data/ops/quality/payloads/fiis_financials_snapshot_suite.json \

@@ -170,7 +170,7 @@ entities:
     notes:
     - entidade historical de precos; RAG negado
     - param_inference define janelas padrao
-  fiis_processos:
+  fiis_legal_proceedings:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

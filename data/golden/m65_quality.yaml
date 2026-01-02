@@ -118,9 +118,9 @@ samples:
   - { question: "onde ficam os galpões do XPLG11",                      expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
   - { question: "lista de imóveis do XPML11",                           expected_intent: fiis_real_estate, expected_entity: fiis_real_estate }
   - { question: "variação diária do XPML11 nos últimos 5 pregões",      expected_intent: fiis_quota_prices, expected_entity: fiis_quota_prices }
-  - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
-  - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }
-  - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }
+  - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_legal_proceedings, expected_entity: fiis_legal_proceedings }
+  - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_legal_proceedings, expected_entity: fiis_legal_proceedings }
+  - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_legal_proceedings, expected_entity: fiis_legal_proceedings }
   - { question: "últimas notícias do MXRF11",                           expected_intent: fiis_news, expected_entity: fiis_news }
   - { question: "notícias recentes sobre HGLG11",                       expected_intent: fiis_news, expected_entity: fiis_news }
   - { question: "notícias do XPML11 nos últimos 30 dias",expected_intent: fiis_news, expected_entity: fiis_news }

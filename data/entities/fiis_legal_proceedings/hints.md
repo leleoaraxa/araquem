@@ -1,4 +1,4 @@
-# fiis_processos — Hints
+# fiis_legal_proceedings — Hints
 
 ## O que é
 Panorama de processos ou ações envolvendo FIIs, incluindo status e partes públicas, para apoiar análises de risco e governança.

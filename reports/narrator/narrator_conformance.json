@@ -64,16 +64,16 @@
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_processos",
+      "entity": "fiis_legal_proceedings",
       "field": "key",
-      "path": "data/entities/fiis_processos/responses/list.md.j2",
+      "path": "data/entities/fiis_legal_proceedings/responses/list.md.j2",
       "component": "narrator"
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_processos",
+      "entity": "fiis_legal_proceedings",
       "field": "value",
-      "path": "data/entities/fiis_processos/responses/list.md.j2",
+      "path": "data/entities/fiis_legal_proceedings/responses/list.md.j2",
       "component": "narrator"
     },
     {

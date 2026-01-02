@@ -242,7 +242,7 @@ A lista de ativos físicos do fundo.
 
 ---
 
-## 9. Notícias e Risco Qualitativo (`fiis_news`, `fiis_processos`)
+## 9. Notícias e Risco Qualitativo (`fiis_news`, `fiis_legal_proceedings`)
 
 ### 9.1 Notícias de FIIs (`fiis_news`)
 
@@ -261,7 +261,7 @@ Ajuda a responder:
 - *“Quais as últimas notícias sobre o HGLG11?”*
 - *“O que saiu hoje sobre IFIX?”*
 
-### 9.2 Processos judiciais (`fiis_processos`)
+### 9.2 Processos judiciais (`fiis_legal_proceedings`)
 
 **O que representa**
 Processos relevantes associados ao fundo.

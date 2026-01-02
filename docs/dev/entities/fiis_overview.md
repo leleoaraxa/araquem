@@ -91,7 +91,7 @@ A tabela abaixo resume as colunas expostas em `fiis_overview`. O schema completo
 | `sirios_rank_position` | `integer` | Posição do fundo em ranking proprietário SIRIOS. |
 | `sirios_rank_score` | `numeric` | Score numérico do ranking proprietário SIRIOS. |
 | `rank_bucket` | `text` | Faixa do ranking (ex.: Top 10, Top 50, Long tail). |
-| `has_processos` | `boolean` | Indica se há processos judiciais mapeados para o fundo (`fiis_processos`). |
+| `has_processos` | `boolean` | Indica se há processos judiciais mapeados para o fundo (`fiis_legal_proceedings`). |
 | `has_noticias` | `boolean` | Indica se há notícias recentes mapeadas para o fundo (`fiis_news`). |
 | `has_risk_metrics` | `boolean` | Indica se há métricas de risco calculadas (`fiis_financials_risk`). |
 | `has_revenue_schedule` | `boolean` | Indica se há cronograma de receitas disponível (`fiis_financials_revenue_schedule`). |
@@ -114,4 +114,4 @@ Observações importantes:
 - Campos de preço e rendimento (`last_price`, `dy_12m`, `dy_24m` etc.) sempre refletem a **última data disponível** nas bases de preços e dividendos.
 - Campos de risco (`vol_12m`, `sharpe_12m`, `beta`, `max_drawdown`, etc.) são calculados em janelas padronizadas e documentadas nas funções de risco.
 - Campos de ranking (`ifix_weight`, `ifil_weight`, `sirios_rank_position`, etc.) são "foto do dia" dos índices e rankings internos.
-- Campos de flags (`has_processos`, `has_noticias`, `has_risk_metrics`, etc.) indicam se existem informações complementares em outras entidades, mas o detalhamento é sempre feito nas entidades específicas (`fiis_processos`, `fiis_news`, `fiis_financials_risk` etc.).
+- Campos de flags (`has_processos`, `has_noticias`, `has_risk_metrics`, etc.) indicam se existem informações complementares em outras entidades, mas o detalhamento é sempre feito nas entidades específicas (`fiis_legal_proceedings`, `fiis_news`, `fiis_financials_risk` etc.).

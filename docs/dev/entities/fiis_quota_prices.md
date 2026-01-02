@@ -27,7 +27,7 @@ Perguntas que **devem** ser roteadas para `fiis_quota_prices`:
 9. "Preço mínimo do VINO11 em 10/09/2023"
 10. "O HGLG11 subiu ou caiu hoje?"
 11. "Quanto o KNRI11 variou hoje em porcentagem?"
-12. "Como está VINO agora?" (sem `11`, mas contexto de FII)
+12. "Como está o preço VINO agora?" (sem `11`, mas contexto de FII)
 
 Essas perguntas devem ter:
 

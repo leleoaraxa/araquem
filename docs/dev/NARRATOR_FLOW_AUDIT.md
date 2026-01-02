@@ -155,7 +155,7 @@ Preencher uma tabela com base no render_narrative real:
 Entidade / result_key | Função renderer | Observações
 --- | --- | ---
 client_fiis_positions | `_render_client_fiis_positions` | Lista posições com valores aproximados e total.
-fiis_processos | `_render_fiis_processos` | Descreve processos com risco, valores e resumo.
+fiis_legal_proceedings | `_render_fiis_legal_proceedings` | Descreve processos com risco, valores e resumo.
 fiis_financials_revenue_schedule | `_render_fiis_financials_revenue_schedule` | Resume prazos de receita com percentuais e comentários.
 fiis_financials_risk | `_render_fiis_financials_risk` | Lista métricas de risco; vazio em modo conceito.
 fiis_financials_snapshot | `_render_fiis_financials_snapshot` | Destaca caixa, market cap, yield e alavancagem.

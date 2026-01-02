@@ -82,7 +82,7 @@ data/
             projection_fiis_real_estate.json
             projection_fiis_news.json
             projection_fiis_quota_prices.json
-            projection_fiis_processos.json
+            projection_fiis_legal_proceedings.json
             projection_fiis_rankings.json
             projection_history_b3_indexes.json
             projection_history_currency_rates.json
@@ -140,8 +140,8 @@ data/
             templates.md
             responses/
                 table.md.j2
-        fiis_processos/
-            fiis_processos.yaml
+        fiis_legal_proceedings/
+            fiis_legal_proceedings.yaml
             templates.md
             responses/
                 list.md.j2
@@ -172,7 +172,7 @@ data/
             fiis_real_estate.schema.yaml
             fiis_news.schema.yaml
             fiis_quota_prices.schema.yaml
-            fiis_processos.schema.yaml
+            fiis_legal_proceedings.schema.yaml
             fiis_rankings.schema.yaml
             history_b3_indexes.schema.yaml
             history_currency_rates.schema.yaml
@@ -319,7 +319,7 @@ docs/
             fiis_real_estate.csv
             fiis_news.csv
             fiis_quota_prices.csv
-            fiis_processos.csv
+            fiis_legal_proceedings.csv
             fiis_rankings.csv
         ddls/
             tables.sql

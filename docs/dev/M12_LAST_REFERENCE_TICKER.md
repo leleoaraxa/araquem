@@ -157,20 +157,20 @@ Definir **como o Araquem herda o último ticker mencionado** em uma conversa par
 > “Quantos processos tem ele?”
 
 1. /ask chega **sem ticker no texto**.
-2. Planner roteia para `fiis_processos`.
-3. `infer_params(..., intent="fiis_processos", entity="fiis_processos", ...)`:
+2. Planner roteia para `fiis_legal_proceedings`.
+3. `infer_params(..., intent="fiis_legal_proceedings", entity="fiis_legal_proceedings", ...)`:
 
    * `source: text` → nenhum ticker.
    * `source: context` → chama:
 
      ```python
-     _ticker_from_context("fiis_processos", client_id, conversation_id)
+     _ticker_from_context("fiis_legal_proceedings", client_id, conversation_id)
      ```
    * `context_manager` verifica:
 
      * contexto habilitado
      * last_reference habilitado
-     * `fiis_processos` permitido em `last_reference.allowed_entities`
+     * `fiis_legal_proceedings` permitido em `last_reference.allowed_entities`
      * idade ≤ `max_age_turns`
    * Se tudo OK → devolve `"HGLG11"`.
 4. Builder recebe `params = {"agg": "list", ..., "ticker": "HGLG11"}` e monta a SQL filtrando o ticker.
@@ -221,7 +221,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 
 * `fiis_registrations`
 * `fiis_news`
-* `fiis_processos`
+* `fiis_legal_proceedings`
 * `fiis_financials_risk`
 * `fiis_financials_revenue_schedule`
 * `fiis_overview`

@@ -91,8 +91,8 @@ include:
     tags: [entities, fiis, noticias, "entity:fiis_news"]
 
   - id: entity-fiis-processos
-    path: data/entities/fiis_processos/fiis_processos.yaml
-    tags: [entities, fiis, processos, "entity:fiis_processos"]
+    path: data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml
+    tags: [entities, fiis, processos, "entity:fiis_legal_proceedings"]
 
   - id: entity-fiis-financials-snapshot
     path: data/entities/fiis_financials_snapshot/fiis_financials_snapshot.yaml
@@ -255,7 +255,7 @@ include:
     tags: [quality, projection, noticias]
 
   - id: q-projection-processos
-    path: data/ops/quality/projection_fiis_processos.json
+    path: data/ops/quality/projection_fiis_legal_proceedings.json
     tags: [quality, projection, processos]
 
   - id: q-projection-fin-snapshot

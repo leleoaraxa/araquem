@@ -1601,7 +1601,7 @@
       }
     },
     {
-      "entity_id": "fiis_processos",
+      "entity_id": "fiis_legal_proceedings",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -1666,7 +1666,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_processos.json",
+              "data/ops/quality/projection_fiis_legal_proceedings.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

@@ -1,5 +1,5 @@
-entity: fiis_processos
-name: fiis_processos
+entity: fiis_legal_proceedings
+name: fiis_legal_proceedings
 description: Processos judiciais associados a fundos imobiliários e seus indicadores de risco.
 kind: view
 version: 1

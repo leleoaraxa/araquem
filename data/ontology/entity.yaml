@@ -22,7 +22,7 @@ buckets:
     - fiis_real_estate
     - fiis_news
     - fiis_quota_prices
-    - fiis_processos
+    - fiis_legal_proceedings
     - fiis_yield_history
     - fiis_rankings
   B:
@@ -128,7 +128,7 @@ intents:
       - fiis_financials_revenue_schedule
       - fiis_rankings
       - fiis_yield_history
-      - fiis_processos
+      - fiis_legal_proceedings
       - fiis_real_estate
       - fiis_dividends_yields
       - fiis_cadastro
@@ -2090,7 +2090,7 @@ intents:
     entities:
       - fiis_news
 
-  - name: fiis_processos
+  - name: fiis_legal_proceedings
     weight: 4
     tokens:
       include:
@@ -2202,7 +2202,7 @@ intents:
         - panorama macro
         - cenario macro
     entities:
-      - fiis_processos
+      - fiis_legal_proceedings
 
   - name: fiis_rankings
     weight: 6
@@ -3335,7 +3335,7 @@ anti_tokens:
     - top
     - melhores
     - piores
-  fiis_processos:
+  fiis_legal_proceedings:
     - selic
     - cdi
     - desempenho medio dos fiis

@@ -1,6 +1,6 @@
-id: fiis_processos
+id: fiis_legal_proceedings
 result_key: processos_fii
-sql_view: fiis_processos
+sql_view: fiis_legal_proceedings
 private: false
 description: Processos judiciais associados a FIIs (dados 1×N com risco e andamento)
 
@@ -59,7 +59,7 @@ presentation:
   empty_message: Nenhum processo encontrado.
 ask:
   intents:
-    - fiis_processos
+    - fiis_legal_proceedings
   requires_identifiers:
     - tickers
   keywords:

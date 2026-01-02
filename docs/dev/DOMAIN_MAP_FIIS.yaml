@@ -100,11 +100,11 @@ intents:
       - "qual a vacância dos ativos do KNRI11?"
       - "onde ficam os imóveis do HGLG11?"
 
-  fiis_processos:
+  fiis_legal_proceedings:
     description: "Processos judiciais associados ao FII."
     domain_block: D9
     entities:
-      - fiis_processos
+      - fiis_legal_proceedings
     ui_pages:
       - fii_detail
     examples:
