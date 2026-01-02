@@ -14,7 +14,7 @@ buckets:
   A:
     - fiis_dividends_yields
     - fiis_overview
-    - fiis_cadastro
+    - fiis_registrations
     - fiis_dividends
     - fiis_financials_revenue_schedule
     - fiis_financials_risk
@@ -131,7 +131,7 @@ intents:
       - fiis_legal_proceedings
       - fiis_real_estate
       - fiis_dividends_yields
-      - fiis_cadastro
+      - fiis_registrations
     weight: 10
 
   - name: client_fiis_positions
@@ -649,7 +649,7 @@ intents:
     entities:
       - client_fiis_performance_vs_benchmark_summary
 
-  - name: fiis_cadastro
+  - name: fiis_registrations
     tokens:
       include:
         - cadastro
@@ -776,7 +776,7 @@ intents:
         - posicao no ifix
         - posicao no ifil
     entities:
-      - fiis_cadastro
+      - fiis_registrations
 
   - name: fiis_overview
     weight: 3
