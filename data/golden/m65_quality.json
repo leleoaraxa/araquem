@@ -3,243 +3,243 @@
   "samples": [
     {
       "question": "cnpj do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do MAXR11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do MAXR11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do MAXR11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do MAXR11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do MAXR11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do MANA11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do MANA11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do MANA11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do MANA11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do MANA11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do LVBI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do LVBI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do LVBI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do LVBI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do LVBI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do LTMT11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do LTMT11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do LTMT11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do LTMT11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do LTMT11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do LRDI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "administrador do LRDI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "custodiante do LRDI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "site do LRDI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "assembleia do LRDI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "nome de exibição do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "nome de pregão (B3) do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "classificação do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "setor do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "subsetor do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "tipo de gestão do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "público-alvo do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "MCCI11 é fundo exclusivo?",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "código ISIN do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "data do IPO do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "peso do MCCI11 no IFIL",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "peso do MCCI11 no IFIX",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "número de cotas emitidas do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "quantos cotistas tem o MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "qual o nome do administrador do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "cnpj do administrador do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "qual o custodiante do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "url oficial do MCCI11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "preço do CXTL11 em 2025-10-27",
@@ -468,8 +468,8 @@
     },
     {
       "question": "quais fiis são do setor de logística",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "quais são os maiores fiis em patrimonio liquido",
@@ -493,8 +493,8 @@
     },
     {
       "question": "segmento do HGLG11",
-      "expected_intent": "fiis_cadastro",
-      "expected_entity": "fiis_cadastro"
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "patrimônio líquido do HGLG11",

@@ -20,7 +20,7 @@ Blocos de domínio identificados:
 | intent | entity | descrição_negócio | principais_campos | exemplos_de_perguntas_do_usuário | telas_relacionadas |
 | --- | --- | --- | --- | --- | --- |
 | client_fiis_positions | client_fiis_positions | Posições do cliente em FIIs, com quantidades e valores por data. | documento do cliente, data da posição, ticker, nome do FII, participante, quantidade, preço de fechamento, variação em valor, quantidade disponível | “quais são minhas posições em FIIs?”, “quantas cotas tenho do MXRF11?”, “carteira de fundos imobiliários por corretora” | não identificado |
-| fiis_cadastro | fiis_cadastro | Dados cadastrais 1×1 de cada FII: identificação, administração, classificação e participação em índices. | ticker, CNPJ, nome de exibição, nome B3, classificação/setor, tipo de gestão, público-alvo, ISIN, datas e pesos IFIX/IFIL, número de cotas/cotistas | “qual o CNPJ do KNRI11?”, “quem é o administrador do HGLG11?”, “peso do VISC11 no IFIX” | não identificado |
+| fiis_registrations | fiis_registrations | Dados cadastrais 1×1 de cada FII: identificação, administração, classificação e participação em índices. | ticker, CNPJ, nome de exibição, nome B3, classificação/setor, tipo de gestão, público-alvo, ISIN, datas e pesos IFIX/IFIL, número de cotas/cotistas | “qual o CNPJ do KNRI11?”, “quem é o administrador do HGLG11?”, “peso do VISC11 no IFIX” | não identificado |
 | fiis_dividendos | fiis_dividendos | Histórico de proventos pagos por FII com datas e valores por cota. | ticker, data de pagamento, valor do dividendo por cota, data-com | “quando foi pago o último dividendo do MXRF11?”, “qual o valor por cota dos proventos de agosto?” | não identificado |
 | fiis_precos | fiis_precos | Série diária de preços de cotas de FIIs, com OHLC e variação. | ticker, data de negociação, preço de fechamento (ajustado), abertura, máxima, mínima, variação diária | “qual o preço de fechamento do KNRI11 ontem?”, “quanto o HGLG11 variou hoje?” | não identificado |
 | fiis_financials_snapshot | fiis_financials_snapshot | Snapshot D-1 de indicadores financeiros e operacionais do FII. | DY mensal/anual, último dividendo e data, market cap, enterprise value, P/VP, patrimônio e receita por cota, payout, cap rate, alavancagem, caixa, passivos, variação mês/ano | “qual o dividend yield do VISC11?”, “qual a alavancagem do HGRU11?”, “quanto é o market cap do HGLG11?” | não identificado |
@@ -43,8 +43,8 @@ Blocos de domínio identificados:
 - **Relações:** ticker conecta com entidades públicas (cadastro, preços, dividendos) para enriquecer visão de carteira.
 - **Telas/funcionalidades:** não identificado.
 
-### 3.2 fiis_cadastro
-- **Intent associada:** fiis_cadastro.
+### 3.2 fiis_registrations
+- **Intent associada:** fiis_registrations.
 - **Tipo de dado:** cadastro 1×1 de FII.
 - **Objetivo de negócio:** identificar o fundo, administrador, classificações, público-alvo e participação em índices.
 - **Principais campos:** ticker, CNPJ do FII e do administrador, nomes de exibição/pregão, classificação/setor/subsetor, tipo de gestão, público-alvo, ISIN, data de IPO, site, pesos IFIX/IFIL, número de cotas e cotistas.
@@ -163,7 +163,7 @@ Blocos de domínio identificados:
 ## 5. Mapa de Domínios para o Futuro fiis.md V1
 - **Capítulo 1 – Introdução a Fundos Imobiliários:** contextualizar FIIs e objetivos do guia.
 - **Capítulo 2 – Universo de FIIs na SIRIOS:** explicar como a SIRIOS organiza intents e entidades (cadastro, preços, dividendos, indicadores, risco).
-- **Capítulo 3 – Cadastro e Classificação dos Fundos (fiis_cadastro):** identificação, classificação, governança e participação em índices.
+- **Capítulo 3 – Cadastro e Classificação dos Fundos (fiis_registrations):** identificação, classificação, governança e participação em índices.
 - **Capítulo 4 – Preço e Rendimentos (fiis_precos, fiis_dividendos):** histórico de cotação, proventos e datas-com.
 - **Capítulo 5 – Indicadores Financeiros e Valuation (fiis_financials_snapshot):** DY, payout, market cap, P/VP, caixa, passivos e crescimento.
 - **Capítulo 6 – Risco e Performance Ajustada (fiis_financials_risk):** volatilidade, Sharpe, Treynor, Sortino, drawdown, beta, R².

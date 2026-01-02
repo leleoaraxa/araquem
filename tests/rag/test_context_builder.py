@@ -47,7 +47,7 @@ def rag_policy_base() -> Dict[str, Any]:
         "routing": {
             "deny_intents": [
                 "client_fiis_positions",
-                "fiis_cadastro",
+                "fiis_registrations",
                 "fiis_precos",
                 "fiis_dividendos",
                 "fiis_rankings",
@@ -110,8 +110,8 @@ def test_get_rag_policy_denies_intents_in_deny_list(
     """Intents listadas em deny_intents devem ter RAG desabilitado."""
 
     snapshot = context_builder.get_rag_policy(
-        entity="fiis_cadastro",
-        intent="fiis_cadastro",
+        entity="fiis_registrations",
+        intent="fiis_registrations",
         compute_mode=None,
         has_ticker=False,
         policy=rag_policy_base,
@@ -187,16 +187,16 @@ def test_build_context_returns_disabled_when_rag_not_enabled(
     """
     ctx = context_builder.build_context(
         question="qual o administrador do HGLG11?",
-        intent="fiis_cadastro",  # está em deny_intents
-        entity="fiis_cadastro",
+        intent="fiis_registrations",  # está em deny_intents
+        entity="fiis_registrations",
         policy=rag_policy_base,
     )
 
     assert ctx["enabled"] is False
     assert ctx["chunks"] == []
     assert ctx["total_chunks"] == 0
-    assert ctx["intent"] == "fiis_cadastro"
-    assert ctx["entity"] == "fiis_cadastro"
+    assert ctx["intent"] == "fiis_registrations"
+    assert ctx["entity"] == "fiis_registrations"
     assert ctx["policy"]["reason"] == "intent_denied"
 
 

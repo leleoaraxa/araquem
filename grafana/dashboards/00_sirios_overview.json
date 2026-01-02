@@ -298,7 +298,7 @@
         "refresh": 1,
         "includeAll": true,
         "multi": false,
-        "current": {"selected": false,"text": "fiis_cadastro","value": "fiis_cadastro"}
+        "current": {"selected": false,"text": "fiis_registrations","value": "fiis_registrations"}
       },
       {
         "name": "intent",

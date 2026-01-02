@@ -230,8 +230,8 @@
         "refresh": 1,
         "current": {
           "selected": false,
-          "text": "fiis_cadastro",
-          "value": "fiis_cadastro"
+          "text": "fiis_registrations",
+          "value": "fiis_registrations"
         }
       }
     ]

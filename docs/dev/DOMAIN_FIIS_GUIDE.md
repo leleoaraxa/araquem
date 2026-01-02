@@ -50,7 +50,7 @@ a tomar decisões melhores.
 
 ---
 
-## 3. Identidade do Fundo e Classificação (`fiis_cadastro`)
+## 3. Identidade do Fundo e Classificação (`fiis_registrations`)
 
 **O que representa**
 É a “identidade oficial” do fundo dentro da SIRIOS: tudo que define quem ele é.

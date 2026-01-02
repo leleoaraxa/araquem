@@ -77,13 +77,13 @@ entities:
       - date_reference
     notes:
     - entidade privada dependente de document_number
-  fiis_cadastro:
+  fiis_registrations:
     title: FIIs – Cadastro
     kind: snapshot
     paths:
-      entity_yaml: data/entities/fiis_cadastro/fiis_cadastro.yaml
-      schema: data/contracts/entities/fiis_cadastro.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_cadastro.json
+      entity_yaml: data/entities/fiis_registrations/fiis_registrations.yaml
+      schema: data/contracts/entities/fiis_registrations.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_registrations.json
     coverage:
       cache_policy: true
       rag_policy: false

@@ -732,8 +732,8 @@ def _evaluate_case(row: Dict[str, Any]) -> Dict[str, Any]:
 def main() -> int:
     examples = (
         "Exemplos:\\n"
-        "  python scripts/diagnostics/run_ask_suite.py --suite fiis_cadastro --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
-        "  python scripts/diagnostics/run_ask_suite.py --suite-path data/ops/quality/payloads/fiis_cadastro_suite.json --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
+        "  python scripts/diagnostics/run_ask_suite.py --suite fiis_registrations --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
+        "  python scripts/diagnostics/run_ask_suite.py --suite-path data/ops/quality/payloads/fiis_registrations_suite.json --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
         "  python scripts/diagnostics/run_ask_suite.py --all-suites --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
         "  python scripts/diagnostics/run_ask_suite.py --inline --questions 5 --base-url http://localhost:8000 --conversation-id X --client-id Y"
     )

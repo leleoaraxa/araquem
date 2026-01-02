@@ -17,7 +17,7 @@ Responder perguntas sobre:
 
 **Não faz parte do escopo:**
 
-- Peso/posição de FIIs no IFIX/IFIL (vai para `fiis_rankings` / `fiis_cadastro`).
+- Peso/posição de FIIs no IFIX/IFIL (vai para `fiis_rankings` / `fiis_registrations`).
 - Comparações de desempenho de carteira vs IFIX/IFIL (vai para `client_fiis_performance_vs_benchmark`).
 - Análises macroeconômicas gerais (IPCA, CDI, Selic, etc.) – isso é `history_market_indicators` / `macro_consolidada`.
 
@@ -115,14 +115,14 @@ Se a pergunta envolver **posição/peso de FIIs** no IFIX/IFIL:
 
 → Deve ir para **`fiis_rankings`** (não `history_b3_indexes`).
 
-### 4.2. `fiis_cadastro`
+### 4.2. `fiis_registrations`
 
 Se for sobre **peso de um FII específico** no IFIX/IFIL como atributo cadastral:
 
 - “Qual o peso do HGLG11 no IFIX e no IFIL?”
 - “Peso do MXRF11 no IFIX.”
 
-→ Preferência para **`fiis_cadastro`** / `fiis_rankings` (conforme contratos) – nunca `history_b3_indexes`.
+→ Preferência para **`fiis_registrations`** / `fiis_rankings` (conforme contratos) – nunca `history_b3_indexes`.
 
 ### 4.3. `history_market_indicators` / `macro_consolidada`
 

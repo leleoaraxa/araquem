@@ -1,6 +1,6 @@
-id: fiis_cadastro
+id: fiis_registrations
 result_key: cadastro_fii
-sql_view: fiis_cadastro
+sql_view: fiis_registrations
 private: false
 description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificação e
   atributos básicos)
@@ -85,7 +85,7 @@ columns:
   description: Data da última atualização do registro.
 ask:
   intents:
-    - fiis_cadastro
+    - fiis_registrations
   requires_identifiers:
     - tickers
   keywords:

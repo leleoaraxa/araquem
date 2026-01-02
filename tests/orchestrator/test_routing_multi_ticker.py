@@ -32,7 +32,7 @@ class _DummyBackend:
         return "dummy-trace"
 
 
-def _plan_with_bucket(bucket: str = "", entity: str = "fiis_cadastro") -> dict:
+def _plan_with_bucket(bucket: str = "", entity: str = "fiis_registrations") -> dict:
     return {
         "chosen": {
             "intent": "ticker_query",
@@ -73,7 +73,9 @@ def test_route_question_runs_single_select_when_multi_supported_batch(
             ["ticker", "value"],
         )
 
-    monkeypatch.setattr(routing, "build_select_for_entity", fake_build_select_for_entity)
+    monkeypatch.setattr(
+        routing, "build_select_for_entity", fake_build_select_for_entity
+    )
 
     executor.query.return_value = [{"ticker": "HGLG11", "value": "HGLG11"}]
 
@@ -84,7 +86,9 @@ def test_route_question_runs_single_select_when_multi_supported_batch(
     assert executor.query.call_count == 1
     assert captured_identifiers.get("ticker") is None
     assert captured_identifiers.get("tickers") == ["HGLG11", "MXRF11"]
-    assert response["results"]["result_key"] == [{"ticker": "HGLG11", "value": "HGLG11"}]
+    assert response["results"]["result_key"] == [
+        {"ticker": "HGLG11", "value": "HGLG11"}
+    ]
 
 
 def test_route_question_uses_first_ticker_when_multi_disabled(
@@ -112,7 +116,9 @@ def test_route_question_uses_first_ticker_when_multi_disabled(
             ["ticker"],
         )
 
-    monkeypatch.setattr(routing, "build_select_for_entity", fake_build_select_for_entity)
+    monkeypatch.setattr(
+        routing, "build_select_for_entity", fake_build_select_for_entity
+    )
 
     executor.query.return_value = [{"ticker": "HGLG11"}]
 

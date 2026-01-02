@@ -504,7 +504,7 @@ Cada etapa abaixo é pensada para virar **um patch Codex separado**, com escopo 
 
 **Ações (conceituais)**
 
-1. Para cada entidade (client_fiis_positions, fiis_cadastro, ..., history_market_indicators):
+1. Para cada entidade (client_fiis_positions, fiis_registrations, ..., history_market_indicators):
 
    * checar se:
 

@@ -10,7 +10,7 @@ planner:
       intents: {}
       entities: {}
     intents:
-      fiis_cadastro:
+      fiis_registrations:
         min_score: 1.0
         min_gap: 0.2
       fiis_precos:
@@ -80,7 +80,7 @@ planner:
         min_score: 0.95
         min_gap: 0.2
     entities:
-      fiis_cadastro:
+      fiis_registrations:
         min_score: 1.0
         min_gap: 0.2
       fiis_precos:

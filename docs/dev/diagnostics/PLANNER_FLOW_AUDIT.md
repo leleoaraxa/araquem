@@ -9,7 +9,7 @@
 ## Casos com 1 ticker vs multi ticker
 - **Como está KNRI11 e XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_precos (accepted=True)
 - **Preço do KNRI11 e do XPLG11 hoje** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_precos / fiis_precos (accepted=True)
-- **Dividendos de KNRI11 e XPLG11** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_cadastro (accepted=False)
+- **Dividendos de KNRI11 e XPLG11** — tickers: ['KNRI11', 'XPLG11'] → chosen: ticker_query / fiis_registrations (accepted=False)
 - **Quais são os imóveis do KNRI11 e XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_imoveis / fiis_imoveis (accepted=True)
 - **Tem notícias do KNRI11 e do XPLG11?** — tickers: ['KNRI11', 'XPLG11'] → chosen: fiis_noticias / fiis_noticias (accepted=True)
 - **Como está KNRI11 agora?** — tickers: ['KNRI11'] → chosen: ticker_query / fiis_dividendos (accepted=False)
@@ -21,7 +21,7 @@
 - **Quais são os melhores FIIs no ranking?** — tickers: [] → chosen: fiis_rankings / fiis_rankings (accepted=True)
 - **Qual foi o valor do IPCA em março de 2025?** — tickers: [] → chosen: history_market_indicators / history_market_indicators (accepted=True)
 - **Como está KNRI agora?** — tickers: ['KNRI11'] → chosen: ticker_query / fiis_dividendos (accepted=False)
-- **Dividendos de XPLG** — tickers: ['XPLG11'] → chosen: ticker_query / fiis_cadastro (accepted=False)
+- **Dividendos de XPLG** — tickers: ['XPLG11'] → chosen: ticker_query / fiis_registrations (accepted=False)
 
 ## Onde falha e por quê (com evidência)
 - Como está KNRI11 e XPLG11?: warnings={'regex_like_token_detected': False, 'regex_like_tokens': [], 'multiword_token_detected': True, 'multiword_tokens': ['0 3m', '12 18m', '12 meses', '18 24m', '24 30m', '24 meses', '3 6m', '30 36m', '6 12m', 'abertura do dia', 'acima 36m', 'ambiente de inflacao', 'ambiente de juros', 'ambiente macro', 'ao longo dos anos', 'cada mes', 'caixa disponivel', 'carteira de fiis', 'cenario macro', 'cenario macro atual', 'cenario macro para fiis', 'centro comercial', 'cnpj do', 'cnpj do administrador', 'como esta na b3', 'como fiis reagem', 'como foi a performance da minha carteira de fiis versus o ifix nos ultimos 12 meses', 'comparacao de dividendos', 'comparar com cdi', 'comparar com ibov'], 'multi_ticker_downcast': False, 'bucket_filtered_entities': False, 'gate_apply_on_mismatch': False} | bucket= | gate={'min_score': 0.9, 'min_gap': 0.0, 'gap': 1.0143384861561107, 'accepted': True, 'source': 'final'}

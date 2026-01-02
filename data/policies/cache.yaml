@@ -44,7 +44,7 @@ policies:
     - document_number
     - benchmark_code
     - date_reference
-  fiis_cadastro:
+  fiis_registrations:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

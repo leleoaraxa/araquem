@@ -2,15 +2,15 @@
   "samples": [
     {
       "question": "preço do MCCI11 hoje",
-      "not_intent": "fiis_cadastro"
+      "not_intent": "fiis_registrations"
     },
     {
       "question": "dividendo do HGLG11",
-      "not_intent": "fiis_cadastro"
+      "not_intent": "fiis_registrations"
     },
     {
       "question": "notícias do KNRI11",
-      "not_intent": "fiis_cadastro"
+      "not_intent": "fiis_registrations"
     },
     {
       "question": "quem é o administrador do HGLG11",

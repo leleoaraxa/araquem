@@ -228,7 +228,12 @@ class TestNarratorShadowPolicy:
         ],
     )
     def test_narrator_shadow_policy_env_allowlist_and_override(
-        self, tmp_path: Path, monkeypatch, env_label: str, env_override: str | None, expected_shadow: bool
+        self,
+        tmp_path: Path,
+        monkeypatch,
+        env_label: str,
+        env_override: str | None,
+        expected_shadow: bool,
     ):
         import yaml
 
@@ -1160,7 +1165,7 @@ class TestContextPolicy:
                     "context": {
                         "planner": {
                             "enabled": True,
-                            "allowed_entities": ["fiis_cadastro"],
+                            "allowed_entities": ["fiis_registrations"],
                             "denied_entities": [],
                         }
                     }
@@ -1274,7 +1279,11 @@ class TestCachePrivacyPolicies:
 
     def test_no_private_hardcode_in_cache_entrypoints(self):
         files = [Path("app/cache/rt_cache.py"), Path("app/api/ask.py")]
-        forbidden = [".startswith(\"client_\"", "client_fiis_positions", "client_fiis_dividends_evolution"]
+        forbidden = [
+            '.startswith("client_"',
+            "client_fiis_positions",
+            "client_fiis_dividends_evolution",
+        ]
 
         for file_path in files:
             content = file_path.read_text(encoding="utf-8")

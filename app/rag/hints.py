@@ -10,7 +10,7 @@ _PREFIX = re.compile(r"^entity-([a-z0-9_\-]+)")
 def entity_hints_from_rag(results: List[Dict]) -> Dict[str, float]:
     """
     Consolida scores por entidade com base no prefixo do doc_id do índice RAG.
-    Ex.: 'entity-fiis-cadastro:...' -> chave 'fiis_cadastro'
+    Ex.: 'entity-fiis-cadastro:...' -> chave 'fiis_registrations'
     """
     agg: Dict[str, float] = {}
     for r in results or []:

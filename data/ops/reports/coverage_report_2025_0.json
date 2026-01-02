@@ -8,7 +8,7 @@
       "client_fiis_positions",
       "fiis_dividends_yields",
       "fiis_overview",
-      "fiis_cadastro",
+      "fiis_registrations",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
@@ -32,7 +32,7 @@
       "client_fiis_positions",
       "fiis_dividends_yields",
       "fiis_overview",
-      "fiis_cadastro",
+      "fiis_registrations",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
@@ -56,7 +56,7 @@
       "client_fiis_positions",
       "fiis_dividends_yields",
       "fiis_overview",
-      "fiis_cadastro",
+      "fiis_registrations",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
@@ -82,7 +82,7 @@
       "client_fiis_positions",
       "fiis_dividends_yields",
       "fiis_overview",
-      "fiis_cadastro",
+      "fiis_registrations",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
@@ -129,14 +129,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_cadastro",
+        "entity": "fiis_registrations",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_cadastro",
+        "entity": "fiis_registrations",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -656,7 +656,7 @@
         "ok": true
       }
     },
-    "fiis_cadastro": {
+    "fiis_registrations": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -665,18 +665,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_cadastro",
+        "fiis_registrations",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_cadastro/fiis_cadastro.yaml"
+          "path": "data/entities/fiis_registrations/fiis_registrations.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_cadastro.schema.yaml"
+          "path": "data/contracts/entities/fiis_registrations.schema.yaml"
         }
       },
       "policies": {
@@ -689,7 +689,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_cadastro"
+            "fiis_registrations"
           ],
           "missing_intents": [
             "ticker_query"

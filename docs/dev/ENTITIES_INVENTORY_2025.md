@@ -7,7 +7,7 @@
 | client_fiis_positions | carteira | Posições do cliente em FIIs com quantidades, preços e peso na carteira | “quais FIIs da minha carteira estão dando lucro”, “qual o peso do HGLG11 na minha carteira” | Tabela por ticker com qty como valor | Sim | RAG: negado / Narrator: desabilitado | D-1 | position_date | não |
 | client_fiis_dividends_evolution | dividendos | Evolução mensal de dividendos da carteira do cliente | “evolução dos meus dividendos”, “renda mensal dos meus FIIs” | Tabela com ano, mês e total de dividendos | Sim | RAG: negado / Narrator: desabilitado | histórico | - | não |
 | client_fiis_performance_vs_benchmark | performance | Série de performance da carteira vs benchmark (IFIX/IFIL/IBOV/CDI) | “performance da minha carteira vs IFIX”, “minha carteira está melhor que o CDI” | Tabela com data, valor e retornos carteira/benchmark | Sim | RAG: negado / Narrator: desabilitado | histórico | date_reference | não |
-| fiis_cadastro | cadastro | Dados cadastrais 1×1 do FII (cnpj, admin, setor, site) | “segmento do HGLG11”, “qual o CNPJ do MXRF11” | Lista simples ticker → nome | Não | RAG: negado / Narrator: desabilitado | D-1 | - | não |
+| fiis_registrations | cadastro | Dados cadastrais 1×1 do FII (cnpj, admin, setor, site) | “segmento do HGLG11”, “qual o CNPJ do MXRF11” | Lista simples ticker → nome | Não | RAG: negado / Narrator: desabilitado | D-1 | - | não |
 | fiis_dividendos | dividendos | Histórico de proventos pagos por FII | “quanto o MXRF11 distribuiu em 07/2024”, “média de dividendos do HGLG11” | Tabela/markdown com datas e valores; agregações habilitadas | Não | RAG: negado / Narrator: desabilitado | histórico | payment_date | sim |
 | fiis_yield_history | yield | Histórico mensal de dividendos, preço ref. e DY | “histórico de DY do MXRF11”, “evolução do DY do KNRI11” | Tabela com mês, dividendos, preço e DY; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | ref_month | sim |
 | fiis_financials_snapshot | snapshot | Snapshot D-1 de indicadores financeiros (payout, EV, caixa, dívida) | “qual o market cap do MXRF11”, “payout do MCCI11” | Resumo/summary com métricas financeiras; agregações | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | sim |
@@ -105,9 +105,9 @@ Série temporal de performance da carteira de FIIs do cliente comparada a benchm
 - `private: true`; exige `document_number`.
 - RAG negado; Narrator desabilitado; notas de privacidade no relatório.
 
-### 1.4. fiis_cadastro
+### 1.4. fiis_registrations
 
-**Intent:** fiis_cadastro
+**Intent:** fiis_registrations
 
 **Contexto:** não usa contexto conversacional (sem herança de ticker/entidade).
 

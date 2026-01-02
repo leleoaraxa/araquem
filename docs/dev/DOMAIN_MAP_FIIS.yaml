@@ -3,11 +3,11 @@ domain: fiis
 
 intents:
 
-  fiis_cadastro:
+  fiis_registrations:
     description: "Identidade e dados cadastrais de um FII."
     domain_block: D1
     entities:
-      - fiis_cadastro
+      - fiis_registrations
     ui_pages:
       - fii_detail
       - fii_catalog

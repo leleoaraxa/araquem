@@ -9,7 +9,7 @@ DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
 DROP VIEW IF EXISTS fiis_overview;
 DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
-DROP VIEW IF EXISTS fiis_cadastro;
+DROP VIEW IF EXISTS fiis_registrations;
 DROP VIEW IF EXISTS fiis_dividendos;
 DROP VIEW IF EXISTS fiis_precos;
 DROP VIEW IF EXISTS fiis_rankings;
@@ -528,9 +528,9 @@ ORDER BY ht.date_taxes DESC;
 -- =====================================================================
 CREATE UNIQUE INDEX idx_history_currency_rates ON history_currency_rates(rate_date);
 -- =====================================================================
--- VIEW: fiis_cadastro
+-- VIEW: fiis_registrations
 -- =====================================================================
-CREATE OR REPLACE VIEW fiis_cadastro AS
+CREATE OR REPLACE VIEW fiis_registrations AS
 SELECT ticker, fii_cnpj, ticker_full_name as display_name, b3_name, classification, sector, sub_sector, management_type,
 	target_market, is_exclusive, isin, ipo_date, website_url, admin_name, admin_cnpj, custodian_name,
 	ifil_weight_pct, ifix_weight_pct, shares_count, shareholders_count, created_at, updated_at
@@ -794,7 +794,7 @@ SELECT
     cad.ifix_weight_pct,
     cad.created_at,
     cad.updated_at
-FROM fiis_cadastro cad
+FROM fiis_registrations cad
 WHERE cad.ipo_date::date <= (CURRENT_DATE - INTERVAL '5 years');
 -- =========================================
 -- TABLE: fiis_markowitz_monthly_returns
@@ -1259,7 +1259,7 @@ SELECT
     rk.created_at AS rankings_created_at,
     rk.updated_at AS rankings_updated_at
 
-FROM fiis_cadastro c
+FROM fiis_registrations c
 LEFT JOIN fiis_financials_snapshot s
        ON s.ticker = c.ticker
 LEFT JOIN fiis_financials_risk r
@@ -1401,7 +1401,7 @@ FROM fiis_dividendos d
 LEFT JOIN fiis_yield_history y
        ON y.ticker    = d.ticker
       AND y.ref_month = date_trunc('month', d.payment_date::timestamp)::date
-LEFT JOIN fiis_cadastro c
+LEFT JOIN fiis_registrations c
        ON c.ticker    = d.ticker
 LEFT JOIN fiis_financials_snapshot s
        ON s.ticker    = d.ticker
@@ -1476,7 +1476,7 @@ SELECT
     rk.rank_sharpe
 
 FROM with_totals wt
-LEFT JOIN fiis_cadastro c
+LEFT JOIN fiis_registrations c
        ON c.ticker = wt.ticker
 LEFT JOIN fiis_financials_snapshot s
        ON s.ticker = wt.ticker
@@ -1586,7 +1586,7 @@ ALTER MATERIALIZED VIEW public.client_fiis_positions OWNER TO edge_user;
 ALTER VIEW public.fiis_overview OWNER TO edge_user;
 ALTER VIEW public.fiis_yield_history OWNER TO edge_user;
 ALTER VIEW public.fiis_markowitz_universe OWNER TO edge_user;
-ALTER VIEW public.fiis_cadastro OWNER TO edge_user;
+ALTER VIEW public.fiis_registrations OWNER TO edge_user;
 ALTER VIEW public.fiis_dividendos OWNER TO edge_user;
 ALTER VIEW public.fiis_precos OWNER TO edge_user;
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;

@@ -66,7 +66,7 @@ Abaixo a matriz **oficial**, consolidada com base:
 
 ---
 
-### **📌 fiis_cadastro**
+### **📌 fiis_registrations**
 
 Mesma natureza do overview (dados cadastrais).
 **Usado como fallback técnico interno.**

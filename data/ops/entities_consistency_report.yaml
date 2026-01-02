@@ -50,7 +50,7 @@ entities:
     - entidade privada de carteira; consultas deterministicas via SQL; RAG/Narrator
       negados
     - dados sensíveis por document_number; cache deve respeitar isolamento por cliente
-  fiis_cadastro:
+  fiis_registrations:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

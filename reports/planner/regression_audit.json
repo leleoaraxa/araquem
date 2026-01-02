@@ -58,7 +58,7 @@
       "token": "custodia",
       "conflicts": [
         "client_fiis_positions",
-        "fiis_cadastro"
+        "fiis_registrations"
       ]
     },
     {
@@ -143,7 +143,7 @@
       "token": "ifix",
       "conflicts": [
         "client_fiis_performance_vs_benchmark",
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_rankings",
         "history_b3_indexes"
       ]
@@ -154,7 +154,7 @@
       "token": "ifil",
       "conflicts": [
         "client_fiis_performance_vs_benchmark",
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_rankings",
         "history_b3_indexes"
       ]
@@ -183,7 +183,7 @@
       "token": "cnpj",
       "conflicts": [
         "fiis_overview",
-        "fiis_cadastro"
+        "fiis_registrations"
       ]
     },
     {
@@ -192,7 +192,7 @@
       "token": "administrador",
       "conflicts": [
         "fiis_overview",
-        "fiis_cadastro"
+        "fiis_registrations"
       ]
     },
     {
@@ -201,7 +201,7 @@
       "token": "administradora",
       "conflicts": [
         "fiis_overview",
-        "fiis_cadastro"
+        "fiis_registrations"
       ]
     },
     {
@@ -210,24 +210,24 @@
       "token": "nome",
       "conflicts": [
         "fiis_overview",
-        "fiis_cadastro"
+        "fiis_registrations"
       ]
     },
     {
-      "intent": "fiis_cadastro",
+      "intent": "fiis_registrations",
       "issue": "token_collision",
       "token": "setor",
       "conflicts": [
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_financials_snapshot"
       ]
     },
     {
-      "intent": "fiis_cadastro",
+      "intent": "fiis_registrations",
       "issue": "token_collision",
       "token": "peso",
       "conflicts": [
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_rankings"
       ]
     },
@@ -503,20 +503,20 @@
       ]
     },
     {
-      "intent": "fiis_cadastro",
+      "intent": "fiis_registrations",
       "issue": "phrase_collision",
       "token": "peso no ifix do",
       "conflicts": [
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_rankings"
       ]
     },
     {
-      "intent": "fiis_cadastro",
+      "intent": "fiis_registrations",
       "issue": "phrase_collision",
       "token": "peso no ifil do",
       "conflicts": [
-        "fiis_cadastro",
+        "fiis_registrations",
         "fiis_rankings"
       ]
     },

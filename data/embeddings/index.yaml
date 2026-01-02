@@ -55,12 +55,12 @@ include:
 
   # ── Entidades (contratos YAML das views) ───────────────────────────────────
   - id: entity-fiis-cadastro
-    path: data/entities/fiis_cadastro/fiis_cadastro.yaml
-    tags: [entities, fiis, cadastro, "entity:fiis_cadastro"]
+    path: data/entities/fiis_registrations/fiis_registrations.yaml
+    tags: [entities, fiis, cadastro, "entity:fiis_registrations"]
 
   - id: entity-fiis-cadastro-hints
-    path: data/entities/fiis_cadastro/hints.md
-    tags: [entities, fiis, cadastro, "entity:fiis_cadastro"]
+    path: data/entities/fiis_registrations/hints.md
+    tags: [entities, fiis, cadastro, "entity:fiis_registrations"]
 
   - id: entity-fiis-dividendos
     path: data/entities/fiis_dividendos/fiis_dividendos.yaml
@@ -231,7 +231,7 @@ include:
     tags: [quality, routing, samples]
 
   - id: q-projection-cadastro
-    path: data/ops/quality/projection_fiis_cadastro.json
+    path: data/ops/quality/projection_fiis_registrations.json
     tags: [quality, projection, cadastro]
 
   - id: q-projection-dividendos

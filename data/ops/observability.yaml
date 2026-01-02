@@ -67,7 +67,7 @@ alerts:
 
 variables:
   default_job: "araquem-api"
-  default_entity: "fiis_cadastro"
+  default_entity: "fiis_registrations"
   default_intent: "cadastro"
   default_store: "embeddings.jsonl"
 

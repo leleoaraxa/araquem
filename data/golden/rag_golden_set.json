@@ -32,7 +32,7 @@
   {
     "id": "fiis_o_que_sao_tipos",
     "question": "o que é um fundo imobiliário e quais os tipos mais comuns, como tijolo, papel e híbrido?",
-    "expected_intent": "fiis_cadastro",
+    "expected_intent": "fiis_registrations",
     "expect_rag": true
   },
   {

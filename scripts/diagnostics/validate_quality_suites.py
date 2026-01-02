@@ -35,17 +35,25 @@ def _resolve_suite_paths(args: argparse.Namespace) -> List[str]:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Valida contratos Suite v2 para *_suite.json")
+    parser = argparse.ArgumentParser(
+        description="Valida contratos Suite v2 para *_suite.json"
+    )
     parser.add_argument(
         "--suite-dir",
         default="data/ops/quality/payloads",
         help="Diretório onde ficam as suites (default=data/ops/quality/payloads)",
     )
     parser.add_argument(
-        "--suite-glob", default="*_suite.json", help="Glob para descobrir suites (default='*_suite.json')"
+        "--suite-glob",
+        default="*_suite.json",
+        help="Glob para descobrir suites (default='*_suite.json')",
     )
-    parser.add_argument("--suite", help="Nome lógico da suite (ex.: fiis_cadastro)")
-    parser.add_argument("--suite-path", help="Caminho completo para um *_suite.json específico")
+    parser.add_argument(
+        "--suite", help="Nome lógico da suite (ex.: fiis_registrations)"
+    )
+    parser.add_argument(
+        "--suite-path", help="Caminho completo para um *_suite.json específico"
+    )
     return parser.parse_args()
 
 

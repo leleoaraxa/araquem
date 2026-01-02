@@ -5,7 +5,11 @@ from app.presenter.presenter import build_facts
 
 def test_build_facts_tabular_contract():
     plan = {
-        "chosen": {"intent": "fiis_cadastro", "entity": "fiis_cadastro", "score": 0.91}
+        "chosen": {
+            "intent": "fiis_registrations",
+            "entity": "fiis_registrations",
+            "score": 0.91,
+        }
     }
     orchestrator_results = {
         "cadastro_fii": [
@@ -45,7 +49,9 @@ def test_build_facts_tabular_contract():
     assert facts.aggregates == aggregates
     assert facts.identifiers == identifiers
     assert facts.requested_metrics == meta["requested_metrics"]
-    assert mismatch_reason is None  # build_facts agora retorna o motivo de ajuste da result_key
+    assert (
+        mismatch_reason is None
+    )  # build_facts agora retorna o motivo de ajuste da result_key
 
 
 def test_build_facts_risk_contract():
@@ -96,4 +102,6 @@ def test_build_facts_risk_contract():
     assert rows == orchestrator_results["financials_risk"]
     assert "sharpe_ratio" in facts.primary
     assert "beta_index" in facts.primary
-    assert mismatch_reason is None  # build_facts agora retorna o motivo de ajuste da result_key
+    assert (
+        mismatch_reason is None
+    )  # build_facts agora retorna o motivo de ajuste da result_key

@@ -763,7 +763,7 @@ intents:
           - 60 dias
           - sessenta dias
 
-  fiis_cadastro:
+  fiis_registrations:
     agg_keywords: {}
     params:
       ticker:

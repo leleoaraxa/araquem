@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "fiis_cadastro",
+  "entity": "fiis_registrations",
   "result_key": "cadastro_fii",
   "must_have_columns": ["ticker", "fii_cnpj", "display_name", "admin_name", "admin_cnpj", "website_url"],
   "samples": [

@@ -1,7 +1,7 @@
 [
   {
     "q": "cnpj do MCCI11",
-    "expected_ids": ["docs/fiis_cadastro.md#MCCI11"]
+    "expected_ids": ["docs/fiis_registrations.md#MCCI11"]
   },
   {
     "q": "preço do HGLG11 ontem",

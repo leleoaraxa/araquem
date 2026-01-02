@@ -442,9 +442,9 @@
       ]
     },
     {
-      "entity_id": "fiis_cadastro",
+      "entity_id": "fiis_registrations",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_cadastro",
+      "dir_path": "data/entities/fiis_registrations",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -452,18 +452,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_cadastro/fiis_cadastro.yaml",
+        "path": "data/entities/fiis_registrations/fiis_registrations.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_cadastro.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_registrations.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_cadastro/responses",
+        "dir_path": "data/entities/fiis_registrations/responses",
         "templates": [
           {
             "filename": "list.md.j2",
-            "path": "data/entities/fiis_cadastro/responses/list.md.j2",
+            "path": "data/entities/fiis_registrations/responses/list.md.j2",
             "size_bytes": 1803
           }
         ]
@@ -471,7 +471,7 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_cadastro/hints.md"
+          "path": "data/entities/fiis_registrations/hints.md"
         },
         "template_md": {
           "exists": false,
@@ -479,17 +479,17 @@
         },
         "templates_md": {
           "exists": true,
-          "path": "data/entities/fiis_cadastro/templates.md"
+          "path": "data/entities/fiis_registrations/templates.md"
         }
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_cadastro.csv"
+        "path": "docs/database/samples/fiis_registrations.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_cadastro.json"
+          "data/ops/quality/projection_fiis_registrations.json"
         ]
       },
       "tags": [

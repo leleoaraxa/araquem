@@ -20,7 +20,7 @@
 - **Entidades problemáticas:**
   - `fiis_precos`: narrativa inicial com preço e variação antes da tabela, pode conflitar com camada de Narrator.【F:data/entities/fiis_precos/responses/table.md.j2†L1-L16】
   - `fiis_financials_snapshot`: bullet list rica em narrativa e interpretação, não apenas FACTS tabulares.【F:data/entities/fiis_financials_snapshot/responses/table.md.j2†L1-L27】
-  - `fiis_noticias`/`fiis_cadastro` (listas) podem trazer textos longos; necessidade de garantir que o Narrator mantenha factualidade.
+  - `fiis_noticias`/`fiis_registrations` (listas) podem trazer textos longos; necessidade de garantir que o Narrator mantenha factualidade.
 
 ## 3. Narrator — Prontidão Real
 - **Status:** Pronto, mas com ressalvas. Existe Modelfile dedicado e prompt claro, porém depende de FACTS limpos.

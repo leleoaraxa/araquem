@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_registrations",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_registrations.",
+  "payloads": [
+    {
+      "id": "fiis_registrations-q1",
+      "question": "Qual é o CNPJ cadastral registrado para o HGLG11 na CVM e na ficha do fundo?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "id": "fiis_registrations-q2",
+      "question": "Quem consta como administrador fiduciário do VISC11 segundo o cadastro oficial?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "id": "fiis_registrations-q3",
+      "question": "Qual é o site oficial informado no cadastro e regulamento do MXRF11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ concepts:
       camada privada, ligada ao CPF/CNPJ do cliente.
     related_entities:
       - client_fiis_positions
-      - fiis_cadastro
+      - fiis_registrations
       - fiis_financials_snapshot
       - fiis_financials_risk
     typical_questions:
@@ -32,7 +32,7 @@ concepts:
       estratégias. Ajuda a evitar concentração excessiva em poucos ativos.
     related_entities:
       - client_fiis_positions
-      - fiis_cadastro
+      - fiis_registrations
       - fiis_financials_snapshot
     typical_metrics:
       - "peso de cada FII na carteira (%)"

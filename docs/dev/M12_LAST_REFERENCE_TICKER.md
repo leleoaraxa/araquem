@@ -192,10 +192,10 @@ Mesma lógica da pergunta 2, mas agora com:
 
 > “CNPJ do HGLG11?”
 
-* Intent/entity: `fiis_cadastro`
+* Intent/entity: `fiis_registrations`
 * Ticker via texto.
 * Resposta sai com ticker.
-* `update_last_reference(..., ticker="HGLG11", entity="fiis_cadastro")`.
+* `update_last_reference(..., ticker="HGLG11", entity="fiis_registrations")`.
 
 **Pergunta 2**
 
@@ -219,7 +219,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 
 **Entidades típicas que devem herdar ticker via contexto**:
 
-* `fiis_cadastro`
+* `fiis_registrations`
 * `fiis_noticias`
 * `fiis_processos`
 * `fiis_financials_risk`

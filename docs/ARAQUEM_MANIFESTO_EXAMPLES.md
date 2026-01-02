@@ -261,7 +261,7 @@ A seguir, alguns exemplos reais usados nos testes golden, que demonstram o compo
 
 | Pergunta                                 | Entidade esperada      |
 | ---------------------------------------- | ---------------------- |
-| “cnpj do HGLG11”                         | `fiis_cadastro`        |
+| “cnpj do HGLG11”                         | `fiis_registrations`        |
 | “dy do MXRF11 em 2024”                   | `fiis_yield_history`   |
 | “como está o beta do XPLG11?”            | `fiis_financials_risk` |
 | “último dividendo do KNCR11”             | `fiis_dividendos`      |

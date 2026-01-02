@@ -73,7 +73,7 @@ context:
     - fiis_rankings
     - fiis_processos
     - fiis_noticias
-    - fiis_cadastro
+    - fiis_registrations
     - fiis_dividends_yields
     max_age_turns: 3
     bucket_ttl:

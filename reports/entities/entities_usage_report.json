@@ -848,7 +848,7 @@
       }
     },
     {
-      "entity_id": "fiis_cadastro",
+      "entity_id": "fiis_registrations",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -916,7 +916,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_cadastro.json",
+              "data/ops/quality/projection_fiis_registrations.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

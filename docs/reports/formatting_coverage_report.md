@@ -8,7 +8,7 @@
 | client_fiis_dividends_evolution | PASS | Cobertura completa |
 | client_fiis_performance_vs_benchmark | PASS | Cobertura completa |
 | client_fiis_performance_vs_benchmark_summary | PASS | Cobertura completa |
-| fiis_cadastro | PASS | Cobertura completa |
+| fiis_registrations | PASS | Cobertura completa |
 | fiis_dividendos | PASS | Cobertura completa |
 | fiis_yield_history | PASS | Cobertura completa |
 | fiis_overview | PASS | Cobertura completa |
@@ -173,7 +173,7 @@ Nenhum ajuste em templates foi necessário.
 | benchmark_return_pct | number | Y | percent_raw_br | - |
 | excess_return_pct | number | Y | percent_raw_br | - |
 
-### fiis_cadastro
+### fiis_registrations
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

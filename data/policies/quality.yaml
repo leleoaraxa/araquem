@@ -221,7 +221,7 @@ datasets:
     - title
     - url
     - published_at
-  fiis_cadastro:
+  fiis_registrations:
     not_null:
     - ticker
     - fii_cnpj

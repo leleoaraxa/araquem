@@ -32,7 +32,7 @@ routing:
   - client_fiis_dividends_evolution
   - client_fiis_performance_vs_benchmark
   - client_fiis_performance_vs_benchmark_summary
-  - fiis_cadastro
+  - fiis_registrations
   - fiis_precos
   - fiis_dividendos
   - fiis_yield_history

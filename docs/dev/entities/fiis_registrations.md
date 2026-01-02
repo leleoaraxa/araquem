@@ -1,8 +1,8 @@
-# Entidade `fiis_cadastro`
+# Entidade `fiis_registrations`
 
 ## Visão geral
 
-A entidade `fiis_cadastro` expõe os **dados cadastrais estáticos** de cada FII listado, incluindo:
+A entidade `fiis_registrations` expõe os **dados cadastrais estáticos** de cada FII listado, incluindo:
 
 - Identificação básica: `ticker`, `fii_cnpj`, nomes de exibição e de pregão na B3
 - Classificação e segmentação: `classification`, `sector`, `sub_sector`, `management_type`, `target_market`, `is_exclusive`
@@ -17,9 +17,9 @@ A entidade `fiis_cadastro` expõe os **dados cadastrais estáticos** de cada FII
 
 ## Metadados técnicos
 
-- **id / intent principal**: `fiis_cadastro`
-- **result_key** (no payload do `/ask`): `fiis_cadastro`
-- **Origem física**: view/tabela `fiis_cadastro` (schema público)
+- **id / intent principal**: `fiis_registrations`
+- **result_key** (no payload do `/ask`): `fiis_registrations`
+- **Origem física**: view/tabela `fiis_registrations` (schema público)
 - **Grão**: 1 linha por `ticker`
 - **Identificadores principais**:
   - `ticker` – código do FII no padrão `AAAA11`
@@ -70,9 +70,9 @@ A entidade é usada para responder perguntas do tipo:
 
 ## Relação com a ontologia / intents
 
-A entidade `fiis_cadastro` é ativada pela intent homônima:
+A entidade `fiis_registrations` é ativada pela intent homônima:
 
-- **Intent**: `fiis_cadastro`
+- **Intent**: `fiis_registrations`
 - **Bucket**: `B` (grupo de entidades mais “estruturais / comparativas”)
 - **Vocabulário-chave**:
   - Tokens típicos: `cadastro`, `cnpj`, `administrador`, `custodiante`, `site`, `url`, `nome de pregão`, `classificacao`, `setor`, `subsetor`, `gestao`, `publico alvo`, `isin`, `ipo`, `peso no ifix`, `peso no ifil`, `numero de cotas`, `numero de cotistas`, `fundo exclusivo` etc.
@@ -98,7 +98,7 @@ A ontologia exclui termos relacionados a **preço, dividendos, risco, ranking, v
 
 ## Exemplos de perguntas esperadas
 
-Alguns exemplos de perguntas que devem rotear para `fiis_cadastro`:
+Alguns exemplos de perguntas que devem rotear para `fiis_registrations`:
 
 1. **CNPJ / identificação**
    - “Qual o CNPJ do HGLG11?”
@@ -133,4 +133,4 @@ Alguns exemplos de perguntas que devem rotear para `fiis_cadastro`:
    - “O ALMI11 é um fundo exclusivo?”
 
 Esses exemplos devem ser refletidos no arquivo de qualidade
-`data/ops/quality/payloads/fiis_cadastro_suite.json` para garantir o roteamento correto.
+`data/ops/quality/payloads/fiis_registrations_suite.json` para garantir o roteamento correto.
