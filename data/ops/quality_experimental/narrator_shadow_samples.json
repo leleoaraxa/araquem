@@ -46,8 +46,8 @@
     },
     {
       "id": "news_recent_with_ticker_001",
-      "entity": "fiis_noticias",
-      "intent": "fiis_noticias",
+      "entity": "fiis_news",
+      "intent": "fiis_news",
       "category": "news_with_ticker",
       "question": "Resuma as ultimas noticias relevantes do MXRF11.",
       "mode": "data",
@@ -60,8 +60,8 @@
     },
     {
       "id": "news_negative_with_ticker_001",
-      "entity": "fiis_noticias",
-      "intent": "fiis_noticias",
+      "entity": "fiis_news",
+      "intent": "fiis_news",
       "category": "news_with_ticker",
       "question": "Teve alguma noticia negativa recente sobre HGLG11?",
       "mode": "data",

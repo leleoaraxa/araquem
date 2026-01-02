@@ -207,12 +207,12 @@
     },
     {
       "id": "entity-fiis-noticias",
-      "path": "data/entities/fiis_noticias/fiis_noticias.yaml",
+      "path": "data/entities/fiis_news/fiis_news.yaml",
       "tags": [
         "entities",
         "fiis",
         "noticias",
-        "entity:fiis_noticias"
+        "entity:fiis_news"
       ],
       "chunks": 4,
       "sha_all": "221cb76fd92756eddd73369986b39c6f1bb5ec1a239e2dca5eb02f5e612ef0d3"
@@ -700,7 +700,7 @@
     },
     {
       "id": "q-projection-noticias",
-      "path": "data/ops/quality/projection_fiis_noticias.json",
+      "path": "data/ops/quality/projection_fiis_news.json",
       "tags": [
         "quality",
         "projection",

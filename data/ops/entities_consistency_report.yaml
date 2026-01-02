@@ -146,7 +146,7 @@ entities:
     notes:
     - entidade snapshot de propriedades; RAG negado
     - sem inferencia temporal (cadastro estatico)
-  fiis_noticias:
+  fiis_news:
     has_schema: true
     has_quality_projection: true
     in_quality_policy: true

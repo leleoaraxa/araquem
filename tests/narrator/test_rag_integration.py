@@ -77,12 +77,12 @@ def test_narrator_passes_rag_context_to_build_prompt(
     question = "quais são as últimas notícias do HGLG11?"
     facts = {"rows": [{"dummy": 1}]}
     meta = {
-        "entity": "fiis_noticias",
-        "intent": "fiis_noticias",
+        "entity": "fiis_news",
+        "intent": "fiis_news",
         "rag": {
             "enabled": True,
-            "intent": "fiis_noticias",
-            "entity": "fiis_noticias",
+            "intent": "fiis_news",
+            "entity": "fiis_news",
             "chunks": [
                 {
                     "text": "Primeira notícia sobre HGLG11",
@@ -95,7 +95,7 @@ def test_narrator_passes_rag_context_to_build_prompt(
                     "doc_id": "doc-2",
                 },
             ],
-            "policy": {"max_chunks": 5, "collections": ["fiis_noticias"]},
+            "policy": {"max_chunks": 5, "collections": ["fiis_news"]},
         },
     }
 
@@ -108,14 +108,14 @@ def test_narrator_passes_rag_context_to_build_prompt(
 
     # 4) build_prompt foi chamado com o rag bruto vindo do meta
     assert captured["question"] == question
-    assert captured["meta"].get("entity") == "fiis_noticias"
-    assert captured["meta"].get("intent") == "fiis_noticias"
+    assert captured["meta"].get("entity") == "fiis_news"
+    assert captured["meta"].get("intent") == "fiis_news"
 
     rag = captured.get("rag")
     assert isinstance(rag, dict)
     assert rag.get("enabled") is True
-    assert rag.get("intent") == "fiis_noticias"
-    assert rag.get("entity") == "fiis_noticias"
+    assert rag.get("intent") == "fiis_news"
+    assert rag.get("entity") == "fiis_news"
     assert len(rag.get("chunks") or []) == 2
 
 

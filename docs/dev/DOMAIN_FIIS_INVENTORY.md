@@ -28,7 +28,7 @@ Blocos de domínio identificados:
 | fiis_financials_revenue_schedule | fiis_financials_revenue_schedule | Estrutura de vencimento de recebíveis e indexadores de receita. | percentuais de receita por buckets de vencimento (0–3m … >36m/indeterminado), percentuais indexados a IGPM/IPCA/INPC/INCC | “quanto das receitas vence em até 6 meses do HGLG11?”, “qual percentual indexado ao IPCA?” | não identificado |
 | fiis_real_estate | fiis_real_estate | Imóveis e ativos operacionais do portfólio do FII. | nome do ativo, classe do ativo, endereço/localização, área total, número de unidades, vacância, inadimplência, status | “quais imóveis compõem o portfólio do VISC11?”, “qual a vacância dos ativos do KNRI11?” | não identificado |
 | fiis_processos | fiis_processos | Processos judiciais associados ao FII, com risco e andamento. | número do processo, fase de julgamento, instância, data de início, valor da causa, partes, risco de perda, análise de impacto | “o MXRF11 tem processos judiciais em andamento?”, “qual o risco de perda do processo X?” | não identificado |
-| fiis_noticias | fiis_noticias | Notícias D-1 ligadas a FIIs, com fonte e links. | fonte, título, tags, descrição, URL e imagem, data de publicação | “quais as últimas notícias do HGLG11?”, “tem matéria recente sobre o IFIX?” | não identificado |
+| fiis_news | fiis_news | Notícias D-1 ligadas a FIIs, com fonte e links. | fonte, título, tags, descrição, URL e imagem, data de publicação | “quais as últimas notícias do HGLG11?”, “tem matéria recente sobre o IFIX?” | não identificado |
 | fiis_rankings | fiis_rankings | posições e movimentos em rankings (usuários, SIRIOS, IFIX, IFIL). | contagem de posições e movimentos líquidos para usuários, SIRIOS, IFIX, IFIL | “em que posição o VISC11 aparece nos rankings da SIRIOS?”, “quais FIIs mais subiram no IFIX?” | não identificado |
 | history_b3_indexes | history_b3_indexes | Pontos e variação diária de índices B3 (IBOV, IFIX, IFIL) D-1. | data, pontos e variação de IBOV, IFIX e IFIL | “quanto fechou o IFIX ontem?”, “qual a variação do IBOV no dia?” | não identificado |
 | history_currency_rates | history_currency_rates | Cotações D-1 de USD/EUR em BRL, compra/venda e variação. | data, dólar compra/venda e variação, euro compra/venda e variação | “qual a cotação do dólar ontem?”, “como fechou o euro (venda)?” | não identificado |
@@ -107,8 +107,8 @@ Blocos de domínio identificados:
 - **Relações:** ticker vincula a cadastro e snapshots para impacto em valuation; notícias podem referenciar processos.
 - **Telas/funcionalidades:** não identificado.
 
-### 3.10 fiis_noticias
-- **Intent associada:** fiis_noticias.
+### 3.10 fiis_news
+- **Intent associada:** fiis_news.
 - **Tipo de dado:** notícias e matérias D-1 sobre FIIs.
 - **Objetivo de negócio:** informar eventos recentes e contexto qualitativo.
 - **Principais campos:** fonte, título, tags, descrição, URL, imagem, data de publicação.
@@ -155,7 +155,7 @@ Blocos de domínio identificados:
 - Não menciona cronograma de recebíveis e indexadores de receita (fiis_financials_revenue_schedule).
 - Cobertura superficial ou ausente de métricas quantitativas de risco avançado (Sharpe, Treynor, Jensen, Sortino, drawdown, R²) já modeladas em fiis_financials_risk.
 - Não trata de processos judiciais (fiis_processos) nem de potenciais impactos legais.
-- Não inclui notícias como fonte de contexto (fiis_noticias).
+- Não inclui notícias como fonte de contexto (fiis_news).
 - Rankings (IFIX/IFIL, rankings de usuários/SIRIOS) não aparecem.
 - Macrocontexto e benchmarks (history_b3_indexes, history_market_indicators, history_currency_rates) não são mencionados.
 - Integração de dados financeiros de snapshot (market cap, EV, payout, alavancagem, caixa, passivos) e reservas de dividendos não está presente.
@@ -169,7 +169,7 @@ Blocos de domínio identificados:
 - **Capítulo 6 – Risco e Performance Ajustada (fiis_financials_risk):** volatilidade, Sharpe, Treynor, Sortino, drawdown, beta, R².
 - **Capítulo 7 – Recebíveis e Indexadores (fiis_financials_revenue_schedule):** prazos de receitas e exposição a indexadores.
 - **Capítulo 8 – Imóveis e Portfólio Físico (fiis_real_estate):** ativos, localização, vacância, inadimplência e status.
-- **Capítulo 9 – Notícias e Eventos (fiis_noticias, fiis_processos):** notícias recentes e processos judiciais com riscos e impactos.
+- **Capítulo 9 – Notícias e Eventos (fiis_news, fiis_processos):** notícias recentes e processos judiciais com riscos e impactos.
 - **Capítulo 10 – Rankings e Popularidade (fiis_rankings):** posições e movimentos em rankings de usuários, SIRIOS, IFIX e IFIL.
 - **Capítulo 11 – Contexto de Mercado e Macroeconomia (history_b3_indexes, history_market_indicators, history_currency_rates):** índices de mercado, taxas macro e câmbio como benchmarks.
 - **Capítulo 12 – Minha Carteira de FIIs (client_fiis_positions):** visão do investidor sobre posições, quantidades e valores (com controles de privacidade).

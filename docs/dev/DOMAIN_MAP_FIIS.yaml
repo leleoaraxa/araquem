@@ -112,11 +112,11 @@ intents:
       - "qual o risco de perda do processo do HGLG11?"
       - "qual o valor da causa do processo do RBRF11?"
 
-  fiis_noticias:
+  fiis_news:
     description: "Notícias recentes relacionadas a FIIs."
     domain_block: D9
     entities:
-      - fiis_noticias
+      - fiis_news
     ui_pages:
       - news
       - fii_detail

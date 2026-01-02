@@ -213,7 +213,7 @@ datasets:
         min: 1
       rank_dy_12m:
         min: 1
-  fiis_noticias:
+  fiis_news:
     freshness:
       max_age_hours: 30
     not_null:

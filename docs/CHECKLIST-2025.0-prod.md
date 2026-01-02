@@ -95,7 +95,7 @@
 * [✔] `rag.yaml` revisto (versão 2): perfis `default`, `macro`, `risk`.
 * [✔] RAG permitido apenas para intents textuais:
 
-  * `fiis_noticias`
+  * `fiis_news`
   * `fiis_financials_risk`
   * `history_market_indicators` / `history_b3_indexes` / `history_currency_rates` (macro/índices/moedas)
 * [✔] RAG **negado** para tudo numérico e privado.
@@ -179,7 +179,7 @@
   * [✔] Entidades com LLM+shadow:
 
     * `fiis_financials_risk`
-    * `fiis_noticias`
+    * `fiis_news`
     * `history_market_indicators`
     * `history_b3_indexes`
     * `history_currency_rates`
@@ -261,7 +261,7 @@
 * [✔] Snippet RAG limitado por entidade via `rag_snippet_max_chars` em `narrator.yaml`:
 
   * [✔] `fiis_financials_risk`: 280 chars
-  * [✔] `fiis_noticias`: 320 chars
+  * [✔] `fiis_news`: 320 chars
   * [✔] `history_*`: 260 chars
 
 * [✔] Policy `prefer_concept_when_no_ticker` ativada nas entidades macro, preparando terreno para perguntas conceituais (IPCA, juros, câmbio) sem ticker.
@@ -319,7 +319,7 @@
   * [✔] Bloco de `sampling`:
 
     * [✔] `default` (rate=1.0, `only_when_llm_used`, `only_when_answer_nonempty`, `always_on_llm_error`).
-    * [✔] Overrides por entidade (`fiis_financials_risk`, `fiis_noticias`, `history_market_indicators`).
+    * [✔] Overrides por entidade (`fiis_financials_risk`, `fiis_news`, `history_market_indicators`).
 
   * [✔] Bloco de `redaction` (mask_fields, max_rows_sample, max_chars).
 

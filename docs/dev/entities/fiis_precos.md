@@ -32,7 +32,7 @@ Perguntas que **devem** ser roteadas para `fiis_precos`:
 Essas perguntas devem ter:
 
 - `score_top1` alto (idealmente > 0.9);
-- `gap` confortável em relação a rivais (`history_b3_indexes`, `fiis_noticias` etc.), idealmente > 0.15.
+- `gap` confortável em relação a rivais (`history_b3_indexes`, `fiis_news` etc.), idealmente > 0.15.
 
 ---
 
@@ -47,9 +47,9 @@ Exemplos de perguntas que **não** devem cair em `fiis_precos`:
   - "Como está o dólar hoje?" → `history_currency_rates`
 
 - Notícias:
-  - "Quais as últimas notícias do HGLG11?" → `fiis_noticias`
-  - "Teve fato relevante do KNRI11 hoje?" → `fiis_noticias`
-  - "Resumo das notícias recentes sobre VINO11" → `fiis_noticias`
+  - "Quais as últimas notícias do HGLG11?" → `fiis_news`
+  - "Teve fato relevante do KNRI11 hoje?" → `fiis_news`
+  - "Resumo das notícias recentes sobre VINO11" → `fiis_news`
 
 - Fundamentos / risco:
   - "Qual o risco do HGLG11 hoje?" → `fiis_financials_risk`
@@ -91,7 +91,7 @@ Palavras que **devem reduzir** o peso de `fiis_precos` quando combinadas com tic
 
 Uso prático:
 
-- Pergunta com `noticias` + `HGLG11` → deve puxar `fiis_noticias`, e `fiis_precos` recebe penalização.
+- Pergunta com `noticias` + `HGLG11` → deve puxar `fiis_news`, e `fiis_precos` recebe penalização.
 - Pergunta com `risco` + ticker → `fiis_financials_risk` tem prioridade.
 
 ---
@@ -103,7 +103,7 @@ Uso prático:
   - Tokens positivos: `ifix`, `ibov`, `ibovespa`, `cdi`, `selic`, `ifil`, `indice`.
   - Anti-tokens: foco em não responder perguntas de FIIs padrão `AAAA11`.
 
-- `fiis_noticias`
+- `fiis_news`
   - Foco: notícias, fatos relevantes, comunicados de FIIs.
   - Tokens positivos: `noticia`, `noticias`, `fato relevante`, `release`, `comunicado`.
   - Deve perder peso quando a pergunta é explicitamente de cotação/preço.
@@ -139,7 +139,7 @@ Quando os critérios **não forem atendidos**:
 3. Para cada miss, classificar:
    - `ontologia_fraca` (faltam tokens/anti-tokens);
    - `colisao_com_index` (`history_b3_indexes`, `history_market_indicators`, `history_currency_rates`);
-   - `colisao_com_news` (`fiis_noticias`);
+   - `colisao_com_news` (`fiis_news`);
    - `gabarito_duvidoso`.
 4. Propor ajustes:
    - adicionar/remover tokens/anti-tokens;

@@ -4,7 +4,7 @@
     "fiis_precos": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fiis_noticias": [
+        "fiis_news": [
           "hoje"
         ],
         "history_b3_indexes": [
@@ -43,7 +43,7 @@
         "fiis_financials_revenue_schedule": [
           "distribuicao"
         ],
-        "fiis_noticias": [
+        "fiis_news": [
           "mes"
         ],
         "history_currency_rates": [
@@ -192,7 +192,7 @@
       ],
       "prohibited_tokens": []
     },
-    "fiis_noticias": {
+    "fiis_news": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_dividends": [
@@ -321,7 +321,7 @@
           "inpc",
           "ipca"
         ],
-        "fiis_noticias": [
+        "fiis_news": [
           "atualizacao",
           "hoje"
         ],
@@ -374,7 +374,7 @@
           "indice",
           "indices"
         ],
-        "fiis_noticias": [
+        "fiis_news": [
           "hoje"
         ],
         "fiis_precos": [
@@ -424,7 +424,7 @@
         "fiis_dividends": [
           "historico"
         ],
-        "fiis_noticias": [
+        "fiis_news": [
           "hoje"
         ],
         "fiis_precos": [

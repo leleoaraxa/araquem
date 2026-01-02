@@ -9,7 +9,7 @@
 > Apenas entidades em **shadow mode**:
 >
 > * `fiis_financials_risk`
-> * `fiis_noticias`
+> * `fiis_news`
 > * `history_market_indicators`
 > * `history_b3_indexes`
 > * `history_currency_rates`
@@ -91,7 +91,7 @@ Essas devem cair em `fiis_financials_revenue_schedule`.
 
 ---
 
-# 3) 📰 Perguntas sobre **NOTÍCIAS** (fiis_noticias — 3.218 itens)
+# 3) 📰 Perguntas sobre **NOTÍCIAS** (fiis_news — 3.218 itens)
 
 ## 3.1 Perguntas diretas sobre notícia
 

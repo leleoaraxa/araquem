@@ -60,7 +60,7 @@ flows:
       - "Me dá um overview dele."
       - "Com base nisso tudo, esse FII parece adequado para renda mensal?"
 
-  # 6) Como interpretar notícias negativas (conceitual + fiis_noticias)
+  # 6) Como interpretar notícias negativas (conceitual + fiis_news)
   - id: interpretar_noticias_negativas
     description: "Interpretação de notícia negativa sobre FIIs"
     client_id: "shadow-v0-news-interpret"

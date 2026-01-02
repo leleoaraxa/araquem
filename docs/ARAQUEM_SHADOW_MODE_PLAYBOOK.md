@@ -62,7 +62,7 @@ Razão importante para o finetune futuro.
 
 Testar cada classe de entidade textual:
 
-* fiis_noticias
+* fiis_news
 * fiis_financials_risk
 * history_market_indicators
 * history_b3_indexes
@@ -89,7 +89,7 @@ Exemplo reduzido:
 
 ```yaml
 entities:
-  fiis_noticias:
+  fiis_news:
     llm_enabled: true
     shadow: true
     max_llm_rows: 5
@@ -136,7 +136,7 @@ Estrutura:
   {
     "question": "como interpretar uma notícia negativa sobre um FII?",
     "expected_strategy": "noticias",
-    "entity": "fiis_noticias"
+    "entity": "fiis_news"
   },
   {
     "question": "o que significa IPCA alto para FIIs?",

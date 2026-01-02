@@ -90,7 +90,7 @@ O Planner **não** deve usar `fiis_rankings` quando a pergunta for sobre:
    - “Quais são os imóveis do HGLG11?” → `fiis_real_estate`.
 
 6. **Notícias / fatos relevantes**:
-   - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_noticias`.
+   - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_news`.
 
 Regra prática:
 Se o foco é **“quem está em primeiro / último / top N, posição, ranking, destaque, campeões, lanternas, melhor/pior desempenho relativo”**, a entidade correta é `fiis_rankings`.

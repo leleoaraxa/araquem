@@ -121,9 +121,9 @@ samples:
   - { question: "o MXRF11 tem processos relevantes",                    expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "processos judiciais do HGLG11",                        expected_intent: fiis_processos, expected_entity: fiis_processos }
   - { question: "quais fiis da carteira têm mais processos",            expected_intent: fiis_processos, expected_entity: fiis_processos }
-  - { question: "últimas notícias do MXRF11",                           expected_intent: fiis_noticias, expected_entity: fiis_noticias }
-  - { question: "notícias recentes sobre HGLG11",                       expected_intent: fiis_noticias, expected_entity: fiis_noticias }
-  - { question: "notícias do XPML11 nos últimos 30 dias",expected_intent: fiis_noticias, expected_entity: fiis_noticias }
+  - { question: "últimas notícias do MXRF11",                           expected_intent: fiis_news, expected_entity: fiis_news }
+  - { question: "notícias recentes sobre HGLG11",                       expected_intent: fiis_news, expected_entity: fiis_news }
+  - { question: "notícias do XPML11 nos últimos 30 dias",expected_intent: fiis_news, expected_entity: fiis_news }
   - { question: "minhas posições em fiis na b3",                        expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
   - { question: "peso do MXRF11 na minha carteira de fiis",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }
   - { question: "rentabilidade da minha posição em HGLG11",             expected_intent: client_fiis_positions, expected_entity: client_fiis_positions }

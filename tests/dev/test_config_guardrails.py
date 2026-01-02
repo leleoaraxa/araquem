@@ -1275,7 +1275,7 @@ class TestCachePrivacyPolicies:
         policies = CachePolicies()
 
         assert policies.is_private_entity("client_fiis_positions") is True
-        assert policies.is_private_entity("fiis_noticias") is False
+        assert policies.is_private_entity("fiis_news") is False
 
     def test_no_private_hardcode_in_cache_entrypoints(self):
         files = [Path("app/cache/rt_cache.py"), Path("app/api/ask.py")]

@@ -16,7 +16,7 @@
 | fiis_financials_revenue_schedule | PASS | Cobertura completa |
 | fiis_financials_risk | PASS | Cobertura completa |
 | fiis_real_estate | PASS | Cobertura completa |
-| fiis_noticias | PASS | Cobertura completa |
+| fiis_news | PASS | Cobertura completa |
 | fiis_precos | PASS | Cobertura completa |
 | fiis_processos | PASS | Cobertura completa |
 | fiis_rankings | PASS | Cobertura completa |
@@ -380,7 +380,7 @@ Nenhum ajuste em templates foi necessário.
 | created_at | datetime | Y | datetime_br | - |
 | updated_at | datetime | Y | datetime_br | - |
 
-### fiis_noticias
+### fiis_news
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

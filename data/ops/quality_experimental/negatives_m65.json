@@ -38,15 +38,15 @@
     },
     {
       "question": "preço de hoje do XPML11",
-      "not_intent": "fiis_noticias"
+      "not_intent": "fiis_news"
     },
     {
       "question": "cnpj do HGRE11",
-      "not_intent": "fiis_noticias"
+      "not_intent": "fiis_news"
     },
     {
       "question": "dividendo recente do GGRC11",
-      "not_intent": "fiis_noticias"
+      "not_intent": "fiis_news"
     },
     {
       "question": "preço do RBFF11",
@@ -102,7 +102,7 @@
     },
     {
       "question": "minhas posições cpf 000",
-      "not_intent": "fiis_noticias"
+      "not_intent": "fiis_news"
      }
   ]
 }

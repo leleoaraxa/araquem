@@ -104,7 +104,7 @@ Saída:
 
 ## **📰 Estratégia 3 — “Notícias & Sentimento Descritivo”**
 
-Usada para **fiis_noticias**.
+Usada para **fiis_news**.
 
 Regras:
 
@@ -229,7 +229,7 @@ Saída:
 | ------------------------- | --------------------- |
 | Entidade 1x1              | Direta                |
 | Entidade 1xN              | Tendência             |
-| fiis_noticias             | Notícias & Sentimento |
+| fiis_news             | Notícias & Sentimento |
 | concepts-*                | Conceito              |
 | score abaixo do threshold | Desambiguação         |
 | perguntas vagas           | Desambiguação         |

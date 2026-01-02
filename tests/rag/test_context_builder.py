@@ -38,10 +38,10 @@ def rag_policy_base() -> Dict[str, Any]:
             },
         },
         "entities": {
-            "fiis_noticias": {
+            "fiis_news": {
                 "k": 5,
                 "min_score": 0.20,
-                "collections": ["fiis_noticias"],
+                "collections": ["fiis_news"],
             }
         },
         "routing": {
@@ -58,7 +58,7 @@ def rag_policy_base() -> Dict[str, Any]:
                 "fiis_financials_risk",
             ],
             "allow_intents": [
-                "fiis_noticias",
+                "fiis_news",
             ],
             "notes": "RAG restrito a conteúdos textuais; dados tabulares seguem via SQL.",
         },
@@ -73,7 +73,7 @@ def rag_policy_with_entities(rag_policy_base: Dict[str, Any]) -> Dict[str, Any]:
     policy["rag"] = {
         "profiles": copy.deepcopy(policy["profiles"]),
         "entities": {
-            "fiis_noticias": {
+            "fiis_news": {
                 # Poderia ter overrides específicos aqui (k, min_score, collections, etc.).
             }
         },
@@ -94,8 +94,8 @@ def test_get_rag_policy_returns_disabled_when_no_policy(
     monkeypatch.setattr(context_builder, "load_rag_policy", lambda: {})
 
     snapshot = context_builder.get_rag_policy(
-        entity="fiis_noticias",
-        intent="fiis_noticias",
+        entity="fiis_news",
+        intent="fiis_news",
         compute_mode=None,
         has_ticker=False,
         policy=None,
@@ -136,21 +136,21 @@ def test_get_rag_policy_denies_intents_not_in_allow_list(
     assert snapshot == {"enabled": False, "reason": "intent_not_allowed"}
 
 
-def test_get_rag_policy_allows_fiis_noticias_with_profiles(
+def test_get_rag_policy_allows_fiis_news_with_profiles(
     rag_policy_base: Dict[str, Any],
 ) -> None:
-    """Com a policy atual, apenas fiis_noticias tem RAG habilitado."""
+    """Com a policy atual, apenas fiis_news tem RAG habilitado."""
 
     snapshot = context_builder.get_rag_policy(
-        entity="fiis_noticias",
-        intent="fiis_noticias",
+        entity="fiis_news",
+        intent="fiis_news",
         compute_mode=None,
         has_ticker=True,
         policy=rag_policy_base,
     )
 
     assert snapshot["enabled"] is True
-    assert snapshot["collections"] == ["fiis_noticias"]
+    assert snapshot["collections"] == ["fiis_news"]
     assert snapshot["has_ticker"] is True
 
 
@@ -229,7 +229,7 @@ class _DummyEmbedder:
         return [[0.1, 0.2, 0.3]]
 
 
-def test_build_context_enabled_for_fiis_noticias(
+def test_build_context_enabled_for_fiis_news(
     monkeypatch: pytest.MonkeyPatch, rag_policy_base: Dict[str, Any]
 ) -> None:
     """Quando RAG está habilitado, build_context deve consultar o store e
@@ -242,14 +242,14 @@ def test_build_context_enabled_for_fiis_noticias(
             "score": 0.95,
             "doc_id": "doc-1",
             "chunk_id": "chunk-1",
-            "collection": "fiis_noticias",
+            "collection": "fiis_news",
         },
         {
             "content": "Notícia 2 sobre FIIs logísticos",
             "score": 0.88,
             "doc_id": "doc-2",
             "chunk_id": "chunk-2",
-            "collection": "fiis_noticias",
+            "collection": "fiis_news",
         },
     ]
     dummy_store = _DummyStore(fake_results)
@@ -270,15 +270,15 @@ def test_build_context_enabled_for_fiis_noticias(
     # Act
     ctx = context_builder.build_context(
         question="quais são as últimas notícias do HGLG11?",
-        intent="fiis_noticias",
-        entity="fiis_noticias",
+        intent="fiis_news",
+        entity="fiis_news",
         policy=rag_policy_base,
     )
 
     # Assert: RAG habilitado e chunks retornados
     assert ctx["enabled"] is True
-    assert ctx["intent"] == "fiis_noticias"
-    assert ctx["entity"] == "fiis_noticias"
+    assert ctx["intent"] == "fiis_news"
+    assert ctx["entity"] == "fiis_news"
 
     # Verifica que os chunks foram normalizados com 'text' e 'score'
     assert ctx["total_chunks"] == 2
@@ -293,8 +293,8 @@ def test_build_context_enabled_for_fiis_noticias(
     assert pytest.approx(policy_snapshot["min_score"], rel=1e-6) == 0.20
     # max_tokens deriva de max_context_chars (12000), se parseado com sucesso
     assert policy_snapshot.get("max_tokens") in (None, 12000)
-    # collections deve refletir a config da entity fiis_noticias
-    assert policy_snapshot["collections"] == ["fiis_noticias"]
+    # collections deve refletir a config da entity fiis_news
+    assert policy_snapshot["collections"] == ["fiis_news"]
 
     # Garante que o embedder foi chamado com a pergunta
     assert dummy_embedder.last_texts == ["quais são as últimas notícias do HGLG11?"]
@@ -325,14 +325,14 @@ def test_build_context_returns_policy_on_error(
 
     ctx = context_builder.build_context(
         question="quais são as últimas notícias do HGLG11?",
-        intent="fiis_noticias",
-        entity="fiis_noticias",
+        intent="fiis_news",
+        entity="fiis_news",
         policy=rag_policy_base,
     )
 
     assert ctx["enabled"] is False
     assert ctx["policy"]["reason"] == "error"
-    assert ctx["policy"]["collections"] == ["fiis_noticias"]
+    assert ctx["policy"]["collections"] == ["fiis_news"]
     assert ctx["policy"]["max_chunks"] == 5
     assert pytest.approx(ctx["policy"]["min_score"], rel=1e-6) == 0.20
     assert ctx["policy"].get("max_tokens") in (None, 12000)

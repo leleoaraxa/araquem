@@ -43,7 +43,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 | fiis_financials_risk | sim | sim | sim | table | sim | sim | completa |
 | fiis_financials_snapshot | sim | sim | sim | table | sim | sim | completa |
 | fiis_real_estate | sim | sim | sim | table | sim | sim | completa |
-| fiis_noticias | sim | sim | sim | list | sim | sim | completa |
+| fiis_news | sim | sim | sim | list | sim | sim | completa |
 | fiis_precos | sim | sim | sim | table | sim | sim | completa |
 | fiis_processos | sim | sim | sim | list | sim | sim | completa |
 | fiis_rankings | sim | sim | sim | table | sim | sim | completa |
@@ -58,7 +58,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 ## C) Auditoria de `hints.md`
 
 ### Cobertura
-- **Cobertura completa (22/22):** client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_noticias, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada (inclui novos `hints.md` para as seis entidades que não possuíam).
+- **Cobertura completa (22/22):** client_fiis_enriched_portfolio, client_fiis_dividends_evolution, client_fiis_performance_vs_benchmark, client_fiis_performance_vs_benchmark_summary, client_fiis_positions, fiis_dividends_yields, fiis_overview, fiis_registrations, fiis_dividends, fiis_financials_revenue_schedule, fiis_financials_risk, fiis_financials_snapshot, fiis_real_estate, fiis_news, fiis_precos, fiis_processos, fiis_rankings, fiis_yield_history, history_b3_indexes, history_currency_rates, history_market_indicators, macro_consolidada (inclui novos `hints.md` para as seis entidades que não possuíam).
 
 ### Uso real (pipeline)
 - `hints.md` entra como **fonte de embeddings** (doc_id `entity-*-hints`) e é consumido pelo planner via fusão de scores (RAG → entity hints).
@@ -88,7 +88,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 
 ### Kinds
 - `table.md.j2`: maioria
-- `list.md.j2`: `fiis_registrations`, `fiis_processos`, `fiis_noticias`
+- `list.md.j2`: `fiis_registrations`, `fiis_processos`, `fiis_news`
 
 ### Padronização (pontos bons)
 - Tratamento de vazio (`empty_message`) presente na maioria.

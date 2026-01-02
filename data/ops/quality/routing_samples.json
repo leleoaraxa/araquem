@@ -608,63 +608,63 @@
     },
     {
       "question": "Houve algum fato relevante envolvendo contratos ou locatários do HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Me atualize com as notícias mais recentes sobre o setor logístico de FIIs.",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Mostre as últimas manchetes sobre FIIs em geral.",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "O que saiu na mídia sobre o HGLG11 no último mês?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Quais foram as três últimas notícias publicadas sobre o HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Quais foram as últimas notícias do XPLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Quais matérias recentes destacaram o desempenho do HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Quais notícias recentes existem sobre fundos imobiliários logísticos como HGLG11 e XPLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Quais são as últimas notícias do HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Resuma as principais notícias do HGLG11 desta semana.",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Tem alguma notícia negativa recente sobre o HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Teve algum fato relevante recente do HGLG11?",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "Como está VINO agora?",

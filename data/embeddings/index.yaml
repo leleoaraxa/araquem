@@ -87,8 +87,8 @@ include:
     tags: [entities, fiis, imoveis, "entity:fiis_real_estate"]
 
   - id: entity-fiis-noticias
-    path: data/entities/fiis_noticias/fiis_noticias.yaml
-    tags: [entities, fiis, noticias, "entity:fiis_noticias"]
+    path: data/entities/fiis_news/fiis_news.yaml
+    tags: [entities, fiis, noticias, "entity:fiis_news"]
 
   - id: entity-fiis-processos
     path: data/entities/fiis_processos/fiis_processos.yaml
@@ -251,7 +251,7 @@ include:
     tags: [quality, projection, imoveis]
 
   - id: q-projection-noticias
-    path: data/ops/quality/projection_fiis_noticias.json
+    path: data/ops/quality/projection_fiis_news.json
     tags: [quality, projection, noticias]
 
   - id: q-projection-processos

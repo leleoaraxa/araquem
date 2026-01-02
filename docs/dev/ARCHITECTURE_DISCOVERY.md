@@ -80,7 +80,7 @@ data/
             projection_fiis_financials_risk.json
             projection_fiis_financials_snapshot.json
             projection_fiis_real_estate.json
-            projection_fiis_noticias.json
+            projection_fiis_news.json
             projection_fiis_precos.json
             projection_fiis_processos.json
             projection_fiis_rankings.json
@@ -115,8 +115,8 @@ data/
             templates.md
             responses/
                 summary.md.j2
-        fiis_noticias/
-            fiis_noticias.yaml
+        fiis_news/
+            fiis_news.yaml
             templates.md
             responses/
                 list.md.j2
@@ -170,7 +170,7 @@ data/
             fiis_financials_risk.schema.yaml
             fiis_financials_snapshot.schema.yaml
             fiis_real_estate.schema.yaml
-            fiis_noticias.schema.yaml
+            fiis_news.schema.yaml
             fiis_precos.schema.yaml
             fiis_processos.schema.yaml
             fiis_rankings.schema.yaml
@@ -317,7 +317,7 @@ docs/
             fiis_financials_risk.csv
             fiis_financials_snapshot.csv
             fiis_real_estate.csv
-            fiis_noticias.csv
+            fiis_news.csv
             fiis_precos.csv
             fiis_processos.csv
             fiis_rankings.csv

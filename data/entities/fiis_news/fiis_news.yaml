@@ -1,6 +1,6 @@
-id: fiis_noticias
+id: fiis_news
 result_key: noticias_fii
-sql_view: fiis_noticias
+sql_view: fiis_news
 private: false
 description: Notícias e matérias relevantes sobre FIIs (fonte externa consolidada D-1)
 
@@ -37,7 +37,7 @@ presentation:
 
 ask:
   intents:
-    - fiis_noticias
+    - fiis_news
   requires_identifiers:
     - tickers
   keywords:

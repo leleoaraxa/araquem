@@ -31,7 +31,7 @@ Toda pergunta recebida cai sempre em **uma** das categorias abaixo:
 | **B. Factual com ticker**     | Ticker explícito             | “DY do HGLG11”                | entidade + Narrator    |
 | **C. Follow-up contextual**   | Sem ticker, mas com contexto | “E o risco?”                  | context + entidade     |
 | **D. Privada (carteira)**     | Pergunta “para mim”          | “Estou ganhando da inflação?” | entidades client_*     |
-| **E. Notícia**                | Palavra-chave do domínio     | “notícia do XPML11”           | fiis_noticias          |
+| **E. Notícia**                | Palavra-chave do domínio     | “notícia do XPML11”           | fiis_news          |
 | **F. Ambígua/perigosa**       | Rec, melhor, comprar/vender  | “Qual fundo é melhor?”        | fallback seguro        |
 | **G. Meta (sobre o Araquem)** | Como funciona                | “O que você sabe fazer?”      | resposta institucional |
 
@@ -203,7 +203,7 @@ Mesma natureza do overview (dados cadastrais).
 
 ---
 
-### **📌 fiis_noticias**
+### **📌 fiis_news**
 
 **Tipo:** 1xN
 **Cobertura:** notícias relacionadas ao FII
@@ -336,7 +336,7 @@ Todas são respondidas **via Narrator**.
 | ------------------------------------------------------- | ---------------------------------------- | ------------------------------------------------- |
 | IPCA conceitual roteando para revenue_schedule          | **aconteceu nos testes**                 | reforçar tokens em concepts-macro como prioridade |
 | perguntas sobre “melhores FIIs”                         | risco regulatório                        | criar modo desambiguação                          |
-| notícias sem ticker                                     | hoje cai em fiis_noticias mas pode dar 0 | permitir Narrator responder com conceito          |
+| notícias sem ticker                                     | hoje cai em fiis_news mas pode dar 0 | permitir Narrator responder com conceito          |
 | perguntas “me recomende”                                | proibido                                 | criar respostas seguras padrão                    |
 | perguntas extremamente técnicas sobre taxonomia de FIIs | poucos conceitos hoje                    | expandir concepts-fiis                            |
 
@@ -352,7 +352,7 @@ Todas são respondidas **via Narrator**.
 | “% indexado ao IPCA do HGLG11” | Factual com ticker | revenue_schedule          | leve     | OK     |
 | “DY do MXRF11”                 | Factual            | fiis_yield_history        | leve     | OK     |
 | “CNPJ do KNRI11”               | Factual            | overview                  | leve     | OK     |
-| “Notícias negativas do VISC11” | Notícias           | fiis_noticias             | moderado | OK     |
+| “Notícias negativas do VISC11” | Notícias           | fiis_news             | moderado | OK     |
 | “Melhor fundo para investir?”  | Ambígua            | fallback                  | seguro   | OK     |
 | “Minha renda está crescendo?”  | Privada            | client_dividends          | moderado | OK     |
 

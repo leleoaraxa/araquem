@@ -105,7 +105,7 @@
       "conflicts": [
         "client_fiis_dividends_evolution",
         "fiis_dividends",
-        "fiis_noticias"
+        "fiis_news"
       ]
     },
     {
@@ -269,11 +269,11 @@
       ]
     },
     {
-      "intent": "fiis_noticias",
+      "intent": "fiis_news",
       "issue": "token_collision",
       "token": "hoje",
       "conflicts": [
-        "fiis_noticias",
+        "fiis_news",
         "fiis_precos",
         "history_b3_indexes",
         "history_currency_rates",
@@ -411,11 +411,11 @@
       ]
     },
     {
-      "intent": "fiis_noticias",
+      "intent": "fiis_news",
       "issue": "token_collision",
       "token": "atualizacao",
       "conflicts": [
-        "fiis_noticias",
+        "fiis_news",
         "history_market_indicators"
       ]
     },

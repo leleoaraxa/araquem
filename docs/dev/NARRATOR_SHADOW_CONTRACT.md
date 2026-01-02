@@ -107,7 +107,7 @@ A decisão de registrar um evento de shadow é feita com base em:
        entities:
          fiis_financials_risk:
            rate: 0.5
-         fiis_noticias:
+         fiis_news:
            rate: 0.3
      redaction:
        enabled: true
@@ -228,8 +228,8 @@ Exemplo:
 
 ```jsonc
 "routing": {
-  "intent": "fiis_noticias",
-  "entity": "fiis_noticias",
+  "intent": "fiis_news",
+  "entity": "fiis_news",
   "planner_score": 1.5039417027464652,
   "tokens": ["como","interpretar","uma","noticia","negativa","sobre","um","fii"],
   "thresholds": {
@@ -255,11 +255,11 @@ Campos recomendados:
 
 Origem: Formatter + Executor (resumo dos dados retornados).
 
-Exemplo para `fiis_noticias`:
+Exemplo para `fiis_news`:
 
 ```jsonc
 "facts": {
-  "entity": "fiis_noticias",
+  "entity": "fiis_news",
   "rows_total": 3,
   "rows_sample": [
     {
@@ -297,11 +297,11 @@ Exemplo:
 ```jsonc
 "rag": {
   "enabled": true,
-  "collections": ["fiis_noticias","concepts-fiis","concepts-risk"],
+  "collections": ["fiis_news","concepts-fiis","concepts-risk"],
   "chunks_sample": [
     {
       "source_id": "entity-fiis-noticias",
-      "path": "data/entities/fiis_noticias/fiis_noticias.yaml",
+      "path": "data/entities/fiis_news/fiis_news.yaml",
       "score": 0.6762780183097683,
       "snippet": "Notícias e matérias relevantes sobre FIIs (fonte externa consolidada D-1)..."
     },
@@ -399,7 +399,7 @@ Exemplo:
   "reason": "rate_hit",
   "policy_version": 1,
   "sampling_config": {
-    "entity": "fiis_noticias",
+    "entity": "fiis_news",
     "rate": 0.3,
     "only_when_llm_used": true,
     "only_when_answer_nonempty": true,

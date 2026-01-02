@@ -1,4 +1,4 @@
-# fiis_noticias — Hints
+# fiis_news — Hints
 
 ## O que é
 Coleção de notícias e comunicados públicos relacionados a FIIs, usada para contextualizar eventos recentes, movimentos de mercado e fatos relevantes.

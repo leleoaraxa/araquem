@@ -1,8 +1,8 @@
-# Entidade `fiis_noticias`
+# Entidade `fiis_news`
 
 ## 1. Visão geral
 
-A entidade `fiis_noticias` concentra notícias e fatos relevantes públicos associados a fundos imobiliários (FIIs).
+A entidade `fiis_news` concentra notícias e fatos relevantes públicos associados a fundos imobiliários (FIIs).
 Ela é usada para responder perguntas do tipo:
 
 - “Quais são as últimas notícias do HGLG11?”
@@ -17,7 +17,7 @@ Trata-se de uma visão textual, focada em títulos, resumos e metadados (fonte, 
 
 ## 2. Origem e grain
 
-- **View / tabela lógica**: `fiis_noticias`
+- **View / tabela lógica**: `fiis_news`
 - **Grain (nível de detalhe)**: 1 linha por **`ticker` + notícia** (título/URL únicos).
 - **Chave natural** (conceitual):
   - `ticker` + `source` + `title` + `published_at`
@@ -56,12 +56,12 @@ Trata-se de uma visão textual, focada em títulos, resumos e metadados (fonte, 
 
 ## 4. Uso típico no /ask
 
-A entidade `fiis_noticias` é a **fonte principal** para perguntas de notícias e fatos relevantes.
+A entidade `fiis_news` é a **fonte principal** para perguntas de notícias e fatos relevantes.
 No roteamento, ela é escolhida quando a pergunta contém termos como:
 
 - “notícia”, “notícias”, “fato relevante”, “fatos relevantes”, “novidades”, “manchete”, “reportagem”, “o que saiu na mídia sobre…”.
 
-Exemplos de perguntas que devem cair em `fiis_noticias`:
+Exemplos de perguntas que devem cair em `fiis_news`:
 
 - “Quais são as últimas notícias do HGLG11?”
 - “Teve algum fato relevante recente do HGLG11?”
@@ -69,7 +69,7 @@ Exemplos de perguntas que devem cair em `fiis_noticias`:
 - “Tem alguma notícia negativa recente sobre o HGLG11?”
 - “Quais são as últimas notícias sobre fundos imobiliários logísticos?”
 
-Perguntas que **não** devem usar `fiis_noticias`:
+Perguntas que **não** devem usar `fiis_news`:
 
 - Sobre preços: “Quanto está o HGLG11 hoje?” → `fiis_precos`
 - Sobre dividendos: “Quais foram os dividendos do HGLG11 este mês?” → `fiis_dividends`
@@ -109,6 +109,6 @@ Sugestões de perguntas canônicas para uso em `routing_samples.json` e suítes 
 9. “Houve algum fato relevante envolvendo contratos ou locatários do HGLG11?”
 10. “Quais notícias recentes destacaram o desempenho do HGLG11?”
 
-Essas perguntas reforçam os tokens e frases definidas na ontologia (`fiis_noticias`) e ajudam a manter o roteamento estável.
+Essas perguntas reforçam os tokens e frases definidas na ontologia (`fiis_news`) e ajudam a manter o roteamento estável.
 
 ---

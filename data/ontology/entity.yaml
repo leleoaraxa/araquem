@@ -20,7 +20,7 @@ buckets:
     - fiis_financials_risk
     - fiis_financials_snapshot
     - fiis_real_estate
-    - fiis_noticias
+    - fiis_news
     - fiis_precos
     - fiis_processos
     - fiis_yield_history
@@ -1950,7 +1950,7 @@ intents:
     entities:
       - fiis_real_estate
 
-  - name: fiis_noticias
+  - name: fiis_news
     tokens:
       include:
         - noticia
@@ -2088,7 +2088,7 @@ intents:
         - meus fiis
         - minha renda
     entities:
-      - fiis_noticias
+      - fiis_news
 
   - name: fiis_processos
     weight: 4

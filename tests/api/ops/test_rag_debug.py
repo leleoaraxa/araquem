@@ -46,8 +46,8 @@ def _patch_orchestrator(monkeypatch: pytest.MonkeyPatch) -> Dict[str, Any]:
     meta = {
         "planner": {
             "chosen": {
-                "entity": "fiis_noticias",
-                "intent": "fiis_noticias",
+                "entity": "fiis_news",
+                "intent": "fiis_news",
                 "score": 1.0,
             }
         },
@@ -55,8 +55,8 @@ def _patch_orchestrator(monkeypatch: pytest.MonkeyPatch) -> Dict[str, Any]:
         "aggregates": {},
         "rag": {
             "enabled": True,
-            "intent": "fiis_noticias",
-            "entity": "fiis_noticias",
+            "intent": "fiis_news",
+            "entity": "fiis_news",
             "chunks": [{"text": "chunk-1"}],
         },
     }

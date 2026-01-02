@@ -135,7 +135,7 @@ Definir **como o Araquem herda o último ticker mencionado** em uma conversa par
 > “Quais são as últimas notícias do HGLG11?”
 
 1. Orchestrator extrai `ticker = "HGLG11"`.
-2. Planner roteia para `fiis_noticias`.
+2. Planner roteia para `fiis_news`.
 3. Param inference (se configurado para ticker) vê:
 
    * `source: text` → encontra `HGLG11`
@@ -147,8 +147,8 @@ Definir **como o Araquem herda o último ticker mencionado** em uma conversa par
    context_manager.update_last_reference(
        client_id, conversation_id,
        ticker="HGLG11",
-       entity="fiis_noticias",
-       intent="fiis_noticias",
+       entity="fiis_news",
+       intent="fiis_news",
    )
    ```
 
@@ -220,7 +220,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 **Entidades típicas que devem herdar ticker via contexto**:
 
 * `fiis_registrations`
-* `fiis_noticias`
+* `fiis_news`
 * `fiis_processos`
 * `fiis_financials_risk`
 * `fiis_financials_revenue_schedule`

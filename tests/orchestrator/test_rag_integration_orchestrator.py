@@ -11,13 +11,13 @@ from app.orchestrator import routing
 
 
 class FakePlanner:
-    """Planner fake que sempre retorna fiis_noticias com score alto."""
+    """Planner fake que sempre retorna fiis_news com score alto."""
 
     def explain(self, question: str) -> Dict[str, Any]:
         return {
             "chosen": {
-                "intent": "fiis_noticias",
-                "entity": "fiis_noticias",
+                "intent": "fiis_news",
+                "entity": "fiis_news",
                 "score": 1.0,
             },
             "explain": {},
@@ -37,7 +37,7 @@ class FakeExecutor:
 
 
 def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) -> None:
-    """Quando o planner escolhe fiis_noticias, o Orchestrator deve
+    """Quando o planner escolhe fiis_news, o Orchestrator deve
     chamar build_rag_context e anexar meta.rag.
     """
 
@@ -72,7 +72,7 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
         agg_params: Dict[str, Any] | None = None,
     ):
         # sql, params, result_key, return_columns
-        return "SELECT 1", {}, "fiis_noticias_view", []
+        return "SELECT 1", {}, "fiis_news_view", []
 
     monkeypatch.setattr(
         routing,
@@ -100,7 +100,7 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
             "entity": entity,
             "chunks": [],
             "total_chunks": 0,
-            "policy": {"max_chunks": 5, "collections": ["fiis_noticias"]},
+            "policy": {"max_chunks": 5, "collections": ["fiis_news"]},
         }
 
     # Patch do alias importado no routing.py (build_rag_context)
@@ -115,10 +115,10 @@ def test_route_question_attaches_rag_context(monkeypatch: pytest.MonkeyPatch) ->
     # 7) Verifica que meta.rag existe e segue o contrato mínimo
     assert isinstance(rag, dict)
     assert rag.get("enabled") is True
-    assert rag.get("intent") == "fiis_noticias"
-    assert rag.get("entity") == "fiis_noticias"
+    assert rag.get("intent") == "fiis_news"
+    assert rag.get("entity") == "fiis_news"
 
     # Garante que o Orchestrator passou os parâmetros corretos para o builder de RAG
     assert captured["question"] == "quais são as últimas notícias do HGLG11?"
-    assert captured["intent"] == "fiis_noticias"
-    assert captured["entity"] == "fiis_noticias"
+    assert captured["intent"] == "fiis_news"
+    assert captured["entity"] == "fiis_news"

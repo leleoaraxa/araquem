@@ -222,7 +222,7 @@ Regras:
 
 * Nunca inventar notícia real
 * Narrador deve explicar **como interpretar notícias**, não o conteúdo
-* Dados de notícias vêm só de `fiis_noticias`
+* Dados de notícias vêm só de `fiis_news`
 * Conteúdo textual real de notícia nunca deve ser gerado pelo LLM
 
 Modelo:

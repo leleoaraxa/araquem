@@ -15,7 +15,7 @@ DROP VIEW IF EXISTS fiis_precos;
 DROP VIEW IF EXISTS fiis_rankings;
 DROP VIEW IF EXISTS fiis_real_estate;
 DROP VIEW IF EXISTS fiis_processos;
-DROP VIEW IF EXISTS fiis_noticias;
+DROP VIEW IF EXISTS fiis_news;
 DROP VIEW IF EXISTS fiis_financials_snapshot;
 DROP VIEW IF EXISTS fiis_financials_risk;
 DROP VIEW IF EXISTS fiis_financials_revenue_schedule;
@@ -585,10 +585,11 @@ SELECT
     created_at,
     updated_at
 FROM view_fiis_history_judicial;
+
 -- =====================================================================
--- VIEW: fiis_noticias
+-- VIEW: fiis_news
 -- =====================================================================
-CREATE OR REPLACE VIEW fiis_noticias AS
+CREATE OR REPLACE VIEW fiis_news AS
 SELECT
     ticker,
     source,
@@ -601,6 +602,7 @@ SELECT
 	created_at,
     updated_at
 FROM view_fiis_history_news;
+
 -- =====================================================================
 -- VIEW: fiis_financials
 -- =====================================================================
@@ -1594,7 +1596,7 @@ ALTER VIEW public.fiis_precos OWNER TO edge_user;
 ALTER VIEW public.fiis_rankings OWNER TO edge_user;
 ALTER VIEW public.fiis_real_estate OWNER TO edge_user;
 ALTER VIEW public.fiis_processos OWNER TO edge_user;
-ALTER VIEW public.fiis_noticias OWNER TO edge_user;
+ALTER VIEW public.fiis_news OWNER TO edge_user;
 ALTER VIEW public.fiis_financials_snapshot OWNER TO edge_user;
 ALTER VIEW public.fiis_financials_risk OWNER TO edge_user;
 ALTER VIEW public.fiis_financials_revenue_schedule OWNER TO edge_user;

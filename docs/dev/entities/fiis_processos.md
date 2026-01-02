@@ -67,7 +67,7 @@ O Planner **não** deve usar `fiis_processos` quando:
    - “Qual o patrimônio líquido do ALMI11?” → `fiis_financials_snapshot`.
 
 4. A pergunta é sobre **notícias, fatos relevantes, comunicados**:
-   - “Teve alguma notícia recente sobre o ALMI11?” → `fiis_noticias`.
+   - “Teve alguma notícia recente sobre o ALMI11?” → `fiis_news`.
 
 5. A pergunta é sobre **imóveis/portfólio físico**:
    - “Quais imóveis o ALMI11 possui?” → `fiis_real_estate`.
@@ -146,7 +146,7 @@ Esses exemplos devem ser coerentes com:
   - `fiis_financials_risk`
   - `fiis_precos`
   - `fiis_dividends` / `fiis_yield_history`
-  - `fiis_noticias`
+  - `fiis_news`
 - Em caso de dúvida entre **risco jurídico** x **risco quantitativo de mercado**:
   - Presença de “processo / ação judicial / causa / tribunal / comarca” → tende a `fiis_processos`.
   - Presença de “Sharpe / volatilidade / beta / drawdown / mdd” → `fiis_financials_risk`.

@@ -242,9 +242,9 @@ A lista de ativos físicos do fundo.
 
 ---
 
-## 9. Notícias e Risco Qualitativo (`fiis_noticias`, `fiis_processos`)
+## 9. Notícias e Risco Qualitativo (`fiis_news`, `fiis_processos`)
 
-### 9.1 Notícias de FIIs (`fiis_noticias`)
+### 9.1 Notícias de FIIs (`fiis_news`)
 
 **O que representa**
 Noticiário D-1 relacionado ao universo de FIIs.

@@ -34,7 +34,7 @@ planner:
       fiis_processos:
         min_score: 0.85
         min_gap: 0.1
-      fiis_noticias:
+      fiis_news:
         min_score: 0.8
         min_gap: 0.1
       fiis_financials_risk:
@@ -104,7 +104,7 @@ planner:
       fiis_processos:
         min_score: 0.85
         min_gap: 0.1
-      fiis_noticias:
+      fiis_news:
         min_score: 0.8
         min_gap: 0.1
       fiis_financials_risk:

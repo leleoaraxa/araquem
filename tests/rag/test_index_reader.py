@@ -46,13 +46,13 @@ def embeddings_jsonl(
             "id": "row-1",
             "embedding": [1.0, 0.0],
             "text": "primeiro chunk",
-            "collection": "fiis_noticias",
+            "collection": "fiis_news",
         },
         {
             "id": "row-2",
             "embedding": [0.0, 1.0],
             "text": "segundo chunk",
-            "collection": "fiis_noticias",
+            "collection": "fiis_news",
         },
         {
             "id": "row-3",

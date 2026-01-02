@@ -65,7 +65,7 @@ O Planner **não** deve usar `fiis_financials_revenue_schedule` quando:
    - “Qual o segmento, CNPJ e administrador do fundo?” → `fiis_overview` / `fiis_registrations`.
 
 5. A pergunta é sobre **notícias, fatos relevantes ou comunicados**:
-   - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_noticias`.
+   - “Teve alguma notícia recente sobre o HGLG11?” → `fiis_news`.
 
 6. A pergunta é sobre **imóveis / portfólio físico**:
    - “Quais são os imóveis do HGLG11?” → `fiis_real_estate`.

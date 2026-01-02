@@ -27,7 +27,7 @@ python scripts/quality/quality_push.py \
   data/ops/quality/payloads/fiis_financials_revenue_schedule_suite.json \
   data/ops/quality/payloads/fiis_rankings_suite.json \
   data/ops/quality/payloads/fiis_financials_snapshot_suite.json \
-  data/ops/quality/payloads/fiis_noticias_suite.json \
+  data/ops/quality/payloads/fiis_news_suite.json \
   data/ops/quality/payloads/fiis_registrations_suite.json \
   data/ops/quality/payloads/history_b3_indexes_suite.json \
   data/ops/quality/payloads/macro_consolidada_suite.json \

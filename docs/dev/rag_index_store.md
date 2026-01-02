@@ -35,7 +35,7 @@ Cada linha do arquivo `embeddings.jsonl` é um JSON com, no mínimo:
 Campos típicos usados em outras camadas:
 
 * `text` / `content` / `body` / `snippet`: conteúdo textual do chunk.
-* `collection`: coleção à qual o chunk pertence (ex.: `fiis_noticias`).
+* `collection`: coleção à qual o chunk pertence (ex.: `fiis_news`).
 * `id`, `doc_id`, `chunk_id`, `entity`, `tags`, etc.: metadados adicionais.
 
 Exemplo ilustrativo de uma linha:
@@ -45,8 +45,8 @@ Exemplo ilustrativo de uma linha:
   "id": "row-1",
   "embedding": [0.12, -0.03, 0.44, ...],
   "text": "Notícia relevante sobre HGLG11...",
-  "collection": "fiis_noticias",
-  "entity": "fiis_noticias",
+  "collection": "fiis_news",
+  "entity": "fiis_news",
   "doc_id": "doc-123",
   "chunk_id": "chunk-001"
 }
@@ -255,8 +255,8 @@ E depois normaliza os resultados via `_normalize_chunk`, montando o contexto fin
 
 O campo `collection` de cada linha é utilizado como metadado (`used_collections` e `policy.collections`), e é configurado indiretamente via:
 
-* `data/policies/rag.yaml` → `entities.fiis_noticias.collections = ["fiis_noticias"]`
-* pipeline de indexação → coloca `collection="fiis_noticias"` em cada chunk de notícias.
+* `data/policies/rag.yaml` → `entities.fiis_news.collections = ["fiis_news"]`
+* pipeline de indexação → coloca `collection="fiis_news"` em cada chunk de notícias.
 
 ---
 

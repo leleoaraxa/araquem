@@ -1,6 +1,6 @@
 {
   "type": "projection",
-  "entity": "fiis_noticias",
+  "entity": "fiis_news",
   "result_key": "noticias_fii",
   "must_have_columns": [
     "ticker",

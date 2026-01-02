@@ -1276,7 +1276,7 @@
       }
     },
     {
-      "entity_id": "fiis_noticias",
+      "entity_id": "fiis_news",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -1341,7 +1341,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fiis_noticias.json",
+              "data/ops/quality/projection_fiis_news.json",
               "data/ops/quality/routing_samples.json"
             ]
           },

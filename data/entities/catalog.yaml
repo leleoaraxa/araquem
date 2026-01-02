@@ -210,13 +210,13 @@ entities:
       - ticker
       - asset_name
     notes: []
-  fiis_noticias:
+  fiis_news:
     title: FIIs – Notícias (D-1)
     kind: historical
     paths:
-      entity_yaml: data/entities/fiis_noticias/fiis_noticias.yaml
-      schema: data/contracts/entities/fiis_noticias.schema.yaml
-      quality_projection: data/ops/quality/projection_fiis_noticias.json
+      entity_yaml: data/entities/fiis_news/fiis_news.yaml
+      schema: data/contracts/entities/fiis_news.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_news.json
     coverage:
       cache_policy: true
       rag_policy: false

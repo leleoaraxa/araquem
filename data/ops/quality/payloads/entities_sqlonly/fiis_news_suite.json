@@ -1,0 +1,24 @@
+{
+  "suite": "fiis_news",
+  "description": "Suíte SQL-only gerada a partir de perguntas existentes para fiis_news.",
+  "payloads": [
+    {
+      "id": "fiis_news-q1",
+      "question": "Quais foram as últimas notícias ou fatos relevantes publicados sobre o HGLG11 com fonte e data?",
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
+    },
+    {
+      "id": "fiis_news-q2",
+      "question": "Houve comunicados de mercado recentes do KNRI11 registrados publicamente?",
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
+    },
+    {
+      "id": "fiis_news-q3",
+      "question": "Quais temas se repetem nas notícias do MXRF11, como novas emissões ou vacância, segundo as matérias?",
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
+    }
+  ]
+}

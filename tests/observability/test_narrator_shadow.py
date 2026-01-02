@@ -57,7 +57,7 @@ def _make_narrator_policy() -> dict:
             "shadow": True,
             "default": {"llm_enabled": True, "shadow": True, "model": "sirios"},
             "entities": {
-                "fiis_noticias": {
+                "fiis_news": {
                     "llm_enabled": True,
                     "shadow": True,
                     "rag_snippet_max_chars": 120,
@@ -106,19 +106,32 @@ def _base_event(entity: str) -> shadow.NarratorShadowEvent:
             "model": "sirios",
             "strategy": "llm_shadow",
             "latency_ms": 10,
-            "effective_policy": {"rag_snippet_max_chars": 50, "llm_enabled": True, "shadow": True},
+            "effective_policy": {
+                "rag_snippet_max_chars": 50,
+                "llm_enabled": True,
+                "shadow": True,
+            },
         },
-        presenter={"answer_final": "resposta final", "answer_baseline": "baseline", "rows_used": 1, "style": "executivo"},
+        presenter={
+            "answer_final": "resposta final",
+            "answer_baseline": "baseline",
+            "rows_used": 1,
+            "style": "executivo",
+        },
     )
 
 
-def test_shadow_sampling_public_entity(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_shadow_sampling_public_entity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     policy = _make_shadow_policy(tmp_path, rate=1.0)
     monkeypatch.setattr(shadow, "_load_shadow_policy", lambda path=None: policy)
-    monkeypatch.setattr(shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy())
+    monkeypatch.setattr(
+        shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy()
+    )
     monkeypatch.setattr(shadow.random, "random", lambda: 0.05)
 
-    event = _base_event("fiis_noticias")
+    event = _base_event("fiis_news")
     shadow.collect_narrator_shadow(event)
 
     shadow_file = _shadow_file(tmp_path)
@@ -132,13 +145,17 @@ def test_shadow_sampling_public_entity(tmp_path: Path, monkeypatch: pytest.Monke
     assert record["facts"]["rows_total"] == 1
 
 
-def test_shadow_forces_on_llm_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_shadow_forces_on_llm_error(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     policy = _make_shadow_policy(tmp_path, rate=0.0)
     monkeypatch.setattr(shadow, "_load_shadow_policy", lambda path=None: policy)
-    monkeypatch.setattr(shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy())
+    monkeypatch.setattr(
+        shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy()
+    )
     monkeypatch.setattr(shadow.random, "random", lambda: 0.99)
 
-    event = _base_event("fiis_noticias")
+    event = _base_event("fiis_news")
     event.narrator["error"] = "timeout"
 
     shadow.collect_narrator_shadow(event)
@@ -148,10 +165,14 @@ def test_shadow_forces_on_llm_error(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     assert record["narrator"]["error"] == "timeout"
 
 
-def test_shadow_applies_redaction_for_private_entity(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+def test_shadow_applies_redaction_for_private_entity(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
     policy = _make_shadow_policy(tmp_path, rate=1.0)
     monkeypatch.setattr(shadow, "_load_shadow_policy", lambda path=None: policy)
-    monkeypatch.setattr(shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy())
+    monkeypatch.setattr(
+        shadow, "_load_narrator_policy", lambda path=None: _make_narrator_policy()
+    )
     monkeypatch.setattr(shadow.random, "random", lambda: 0.01)
 
     event = _base_event("client_fiis_positions")

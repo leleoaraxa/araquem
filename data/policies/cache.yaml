@@ -77,7 +77,7 @@ policies:
     key_fields:
     - ticker
     - asset_name
-  fiis_noticias:
+  fiis_news:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

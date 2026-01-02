@@ -78,9 +78,9 @@
     },
     {
       "type": "template_missing_field",
-      "entity": "fiis_noticias",
+      "entity": "fiis_news",
       "field": "md",
-      "path": "data/entities/fiis_noticias/responses/list.md.j2",
+      "path": "data/entities/fiis_news/responses/list.md.j2",
       "component": "narrator"
     },
     {

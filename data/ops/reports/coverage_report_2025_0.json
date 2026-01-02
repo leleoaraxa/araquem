@@ -14,7 +14,7 @@
       "fiis_financials_risk",
       "fiis_financials_snapshot",
       "fiis_real_estate",
-      "fiis_noticias",
+      "fiis_news",
       "fiis_precos",
       "fiis_processos",
       "fiis_rankings",
@@ -38,7 +38,7 @@
       "fiis_financials_risk",
       "fiis_financials_snapshot",
       "fiis_real_estate",
-      "fiis_noticias",
+      "fiis_news",
       "fiis_precos",
       "fiis_processos",
       "fiis_rankings",
@@ -62,7 +62,7 @@
       "fiis_financials_risk",
       "fiis_financials_snapshot",
       "fiis_real_estate",
-      "fiis_noticias",
+      "fiis_news",
       "fiis_precos",
       "fiis_processos",
       "fiis_rankings",
@@ -88,7 +88,7 @@
       "fiis_financials_risk",
       "fiis_financials_snapshot",
       "fiis_real_estate",
-      "fiis_noticias",
+      "fiis_news",
       "fiis_precos",
       "fiis_processos",
       "fiis_rankings",
@@ -1001,7 +1001,7 @@
         "ok": true
       }
     },
-    "fiis_noticias": {
+    "fiis_news": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -1010,17 +1010,17 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_noticias"
+        "fiis_news"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_noticias/fiis_noticias.yaml"
+          "path": "data/entities/fiis_news/fiis_news.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_noticias.schema.yaml"
+          "path": "data/contracts/entities/fiis_news.schema.yaml"
         }
       },
       "policies": {
@@ -1033,7 +1033,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_noticias"
+            "fiis_news"
           ],
           "missing_intents": [],
           "notes": [],

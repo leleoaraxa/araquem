@@ -27,8 +27,8 @@
           "refId": "B"
         },
         {
-          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_noticias\"}[5m]))",
-          "legendFormat": "fiis_noticias",
+          "expr": "sum(rate(sirios_sql_rows_returned_total{entity=\"fiis_news\"}[5m]))",
+          "legendFormat": "fiis_news",
           "refId": "C"
         }
       ],
@@ -46,7 +46,7 @@
       "datasource": null,
       "options": {
         "mode": "markdown",
-        "content": "// TODO: bind sirios_responder_latency_seconds para fiis_real_estate\\n// TODO: bind sirios_responder_latency_seconds para fiis_processos\\n// TODO: bind sirios_responder_latency_seconds para fiis_noticias"
+        "content": "// TODO: bind sirios_responder_latency_seconds para fiis_real_estate\\n// TODO: bind sirios_responder_latency_seconds para fiis_processos\\n// TODO: bind sirios_responder_latency_seconds para fiis_news"
       }
     }
   ]

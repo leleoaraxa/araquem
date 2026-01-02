@@ -613,18 +613,18 @@
     },
     {
       "question": "últimas notícias do MXRF11",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "notícias recentes sobre HGLG11",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "notícias do XPML11 nos últimos 30 dias",
-      "expected_intent": "fiis_noticias",
-      "expected_entity": "fiis_noticias"
+      "expected_intent": "fiis_news",
+      "expected_entity": "fiis_news"
     },
     {
       "question": "minhas posições em fiis na b3",

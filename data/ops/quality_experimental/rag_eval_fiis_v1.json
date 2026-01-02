@@ -3,30 +3,30 @@
     "id": "rag-fiis-noticias-001",
     "description": "Notícias recentes de um FII específico",
     "question": "quais as últimas notícias do HGLG11?",
-    "expected_intent": "fiis_noticias",
-    "expected_entity": "fiis_noticias",
+    "expected_intent": "fiis_news",
+    "expected_entity": "fiis_news",
     "expect_rag_enabled": true,
-    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_collections_contains": ["fiis_news", "concepts-fiis"],
     "expect_min_chunks": 1
   },
   {
     "id": "rag-fiis-noticias-002",
     "description": "Notícias ligadas ao IFIX, ainda dentro do domínio FIIs",
     "question": "o que saiu hoje sobre IFIX?",
-    "expected_intent": "fiis_noticias",
-    "expected_entity": "fiis_noticias",
+    "expected_intent": "fiis_news",
+    "expected_entity": "fiis_news",
     "expect_rag_enabled": true,
-    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_collections_contains": ["fiis_news", "concepts-fiis"],
     "expect_min_chunks": 1
   },
   {
     "id": "rag-fiis-noticias-003",
     "description": "Fundos de papel, ainda recortados como FIIs",
     "question": "tem notícia nova sobre fundos de papel?",
-    "expected_intent": "fiis_noticias",
-    "expected_entity": "fiis_noticias",
+    "expected_intent": "fiis_news",
+    "expected_entity": "fiis_news",
     "expect_rag_enabled": true,
-    "expect_collections_contains": ["fiis_noticias", "concepts-fiis"],
+    "expect_collections_contains": ["fiis_news", "concepts-fiis"],
     "expect_min_chunks": 1
   },
   {
@@ -37,7 +37,7 @@
     "expected_entity": "fiis_financials_risk",
     "expect_rag_enabled": true,
     "expect_collections_contains": ["concepts-risk"],
-    "expect_collections_not_contains": ["fiis_noticias"],
+    "expect_collections_not_contains": ["fiis_news"],
     "expect_min_chunks": 1
   },
   {

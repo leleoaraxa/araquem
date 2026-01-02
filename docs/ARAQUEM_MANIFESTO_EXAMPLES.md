@@ -211,7 +211,7 @@ Nesse caso:
 
 * Sem ticker
 * Sem referência clara
-* `fiis_noticias` exige ticker → SQL vazia
+* `fiis_news` exige ticker → SQL vazia
 * RAG retorna conceitos
 * Ideal: **não responder com dados falsos**
 * Narrator sozinho não resolve sem o FII
@@ -267,7 +267,7 @@ A seguir, alguns exemplos reais usados nos testes golden, que demonstram o compo
 | “último dividendo do KNCR11”             | `fiis_dividends`      |
 | “quantos imóveis tem o HGLG11?”          | `fiis_real_estate`         |
 | “posicao do CPTS11 no ranking da SIRIOS” | `fiis_rankings`        |
-| “notícias do HGLG11”                     | `fiis_noticias`        |
+| “notícias do HGLG11”                     | `fiis_news`        |
 
 ---
 
