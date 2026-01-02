@@ -43,7 +43,7 @@ routing:
   - fiis_financials_snapshot
   - fiis_financials_revenue_schedule
   - fiis_financials_risk
-  - fii_overview
+  - fiis_overview
   - fiis_dividends_yields
   - client_fiis_enriched_portfolio
   - macro_consolidada

@@ -12,13 +12,13 @@
       "id": "overview_001",
       "group": "overview",
       "question": "Me dá um overview do HGLG11.",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "single_ticker", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true,
@@ -30,13 +30,13 @@
       "id": "overview_002",
       "group": "overview",
       "question": "Resumo completo do fundo KNRI11, por favor.",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "single_ticker", "natural_language", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true
@@ -47,13 +47,13 @@
       "id": "overview_003",
       "group": "overview",
       "question": "Compare rapidamente HGLG11 e KNRI11 em termos de setor, renda e risco.",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "multi_ticker", "comparacao", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true,
@@ -65,17 +65,17 @@
       "id": "overview_004",
       "group": "overview",
       "question": "Que tipo de informação o Araquem traz no overview de um FII?",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "conceptual", "no_ticker", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true,
-          "reason": "resposta deve se apoiar nos hints de fii_overview e concepts-fiis/concepts-risk."
+          "reason": "resposta deve se apoiar nos hints de fiis_overview e concepts-fiis/concepts-risk."
         }
       }
     },
@@ -225,13 +225,13 @@
       "id": "combo_001",
       "group": "combo",
       "question": "Juros em queda e IPCA controlado ajudam ou atrapalham fundos como HGLG11 e KNRI11? Explique usando risco e dividendos.",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "risk", "macro", "multi_ticker", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true,
@@ -243,13 +243,13 @@
       "id": "combo_002",
       "group": "combo",
       "question": "Quero uma visão integrada: como o Araquem cruza overview, métricas de risco e histórico macro para responder perguntas sobre FIIs?",
-      "entity": "fii_overview",
-      "intent": "fii_overview",
+      "entity": "fiis_overview",
+      "intent": "fiis_overview",
       "tags": ["overview", "risk", "macro", "conceptual", "rag_expected"],
       "expected": {
         "route": {
-          "entity": "fii_overview",
-          "intent": "fii_overview"
+          "entity": "fiis_overview",
+          "intent": "fiis_overview"
         },
         "rag": {
           "should_use": true

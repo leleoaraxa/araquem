@@ -122,7 +122,7 @@ entities:
     notes:
     - snapshot de risco; RAG permitido com colecoes conceituais
     - narrator configurado em modo deterministico
-  fii_overview:
+  fiis_overview:
     has_schema: true
     has_quality_projection: false
     in_quality_policy: true

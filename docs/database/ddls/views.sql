@@ -6,7 +6,7 @@ DROP VIEW IF EXISTS client_fiis_enriched_portfolio;
 DROP VIEW IF EXISTS macro_consolidada;
 DROP VIEW IF EXISTS client_fiis_dividends_evolution;
 DROP VIEW IF EXISTS client_fiis_performance_vs_benchmark;
-DROP VIEW IF EXISTS fii_overview;
+DROP VIEW IF EXISTS fiis_overview;
 DROP VIEW IF EXISTS fiis_yield_history;
 DROP VIEW IF EXISTS fiis_markowitz_universe;
 DROP VIEW IF EXISTS fiis_cadastro;
@@ -1182,9 +1182,9 @@ LEFT JOIN monthly_prices mp
    AND mp.ref_month = m.ref_month;
 
 -- =====================================================================
--- VIEW: fiis_yield_history
+-- VIEW: fiis_overview
 -- =====================================================================
-CREATE OR REPLACE VIEW fii_overview AS
+CREATE OR REPLACE VIEW fiis_overview AS
 SELECT
     c.ticker,
 
@@ -1583,7 +1583,7 @@ ALTER MATERIALIZED VIEW public.market_index_series OWNER TO edge_user;
 ALTER MATERIALIZED VIEW public.fiis_rankings_quant OWNER TO edge_user;
 ALTER MATERIALIZED VIEW public.client_fiis_positions OWNER TO edge_user;
 -- =====================================================================
-ALTER VIEW public.fii_overview OWNER TO edge_user;
+ALTER VIEW public.fiis_overview OWNER TO edge_user;
 ALTER VIEW public.fiis_yield_history OWNER TO edge_user;
 ALTER VIEW public.fiis_markowitz_universe OWNER TO edge_user;
 ALTER VIEW public.fiis_cadastro OWNER TO edge_user;

@@ -385,9 +385,9 @@
       ]
     },
     {
-      "entity_id": "fii_overview",
+      "entity_id": "fiis_overview",
       "dir_exists": true,
-      "dir_path": "data/entities/fii_overview",
+      "dir_path": "data/entities/fiis_overview",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
@@ -395,18 +395,18 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fii_overview/fii_overview.yaml",
+        "path": "data/entities/fiis_overview/fiis_overview.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fii_overview.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_overview.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fii_overview/responses",
+        "dir_path": "data/entities/fiis_overview/responses",
         "templates": [
           {
             "filename": "table.md.j2",
-            "path": "data/entities/fii_overview/responses/table.md.j2",
+            "path": "data/entities/fiis_overview/responses/table.md.j2",
             "size_bytes": 5985
           }
         ]
@@ -414,11 +414,11 @@
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fii_overview/hints.md"
+          "path": "data/entities/fiis_overview/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fii_overview/template.md"
+          "path": "data/entities/fiis_overview/template.md"
         },
         "templates_md": {
           "exists": false,
@@ -427,12 +427,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fii_overview.csv"
+        "path": "docs/database/samples/fiis_overview.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fii_overview.json"
+          "data/ops/quality/projection_fiis_overview.json"
         ]
       },
       "tags": [

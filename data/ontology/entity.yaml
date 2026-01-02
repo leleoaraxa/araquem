@@ -13,7 +13,7 @@ weights:
 buckets:
   A:
     - fiis_dividends_yields
-    - fii_overview
+    - fiis_overview
     - fiis_cadastro
     - fiis_dividendos
     - fiis_financials_revenue_schedule
@@ -122,7 +122,7 @@ intents:
     entities:
       - fiis_precos
       - fiis_dividendos
-      - fii_overview
+      - fiis_overview
       - fiis_financials_risk
       - fiis_financials_snapshot
       - fiis_financials_revenue_schedule
@@ -778,7 +778,7 @@ intents:
     entities:
       - fiis_cadastro
 
-  - name: fii_overview
+  - name: fiis_overview
     weight: 3
     tokens:
       include:
@@ -959,7 +959,7 @@ intents:
         - maiores fiis
         - top fiis
     entities:
-      - fii_overview
+      - fiis_overview
 
   - name: fiis_precos
     weight: 4

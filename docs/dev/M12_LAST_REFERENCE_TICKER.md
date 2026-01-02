@@ -208,7 +208,7 @@ Mesma lógica da pergunta 2, mas agora com:
 
 > “E o overview dele?”
 
-* Intent/entity: `fii_overview`
+* Intent/entity: `fiis_overview`
 * `params.ticker` herdado do contexto (`HGLG11`).
 
 Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_check_news_processos_risk.py`) são justamente a **prova de contrato** do M12.
@@ -224,7 +224,7 @@ Os teus scripts de sanity check (`context_sanity_check.py` e `context_sanity_che
 * `fiis_processos`
 * `fiis_financials_risk`
 * `fiis_financials_revenue_schedule`
-* `fii_overview`
+* `fiis_overview`
 * `fiis_dividendos`
 * `fiis_precos`
 * `fiis_yield_history`

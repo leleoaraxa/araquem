@@ -134,7 +134,7 @@ narrator:
     # ──────────────────
     # Overview / yield / carteira
     # ──────────────────
-    fii_overview:
+    fiis_overview:
       llm_enabled: false
       shadow: false
       rewrite_only: false

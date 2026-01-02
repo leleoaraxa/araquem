@@ -1,7 +1,7 @@
 {
   "type": "projection",
-  "entity": "fii_overview",
-  "result_key": "fii_overview",
+  "entity": "fiis_overview",
+  "result_key": "fiis_overview",
   "must_have_columns": [
     "ticker",
     "dy_12m_pct",

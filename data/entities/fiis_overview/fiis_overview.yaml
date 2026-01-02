@@ -1,6 +1,6 @@
-id: fii_overview
-result_key: fii_overview
-sql_view: fii_overview
+id: fiis_overview
+result_key: fiis_overview
+sql_view: fiis_overview
 private: false
 description: >
   Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros,
@@ -214,7 +214,7 @@ presentation:
 
 ask:
   intents:
-    - fii_overview
+    - fiis_overview
   requires_identifiers:
     - tickers
   keywords:

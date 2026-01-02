@@ -1,5 +1,5 @@
-entity: fii_overview
-name: fii_overview
+entity: fiis_overview
+name: fiis_overview
 description: Visão geral de fundamentos e indicadores financeiros dos FIIs.
 kind: view
 version: 1

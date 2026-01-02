@@ -1,5 +1,5 @@
 ## Descrição
-`fii_overview` traz a visão consolidada (D-1) de cada FII: cadastro básico, indicadores financeiros, métricas de risco e posições em rankings.
+`fiis_overview` traz a visão consolidada (D-1) de cada FII: cadastro básico, indicadores financeiros, métricas de risco e posições em rankings.
 
 ## Exemplos de perguntas
 - "resumo do HGLG11"

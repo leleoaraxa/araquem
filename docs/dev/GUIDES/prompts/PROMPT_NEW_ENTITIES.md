@@ -81,7 +81,7 @@ Snapshot D-1, histórico (metrics), compute-on-read, composite, overview, macro/
 
 ## **2) Buscar padrão equivalente**
 
-Basear-se sempre em: `fiis_*`, `history_*`, `fii_overview`, `client_*`.
+Basear-se sempre em: `fiis_*`, `history_*`, `fiis_overview`, `client_*`.
 
 ---
 

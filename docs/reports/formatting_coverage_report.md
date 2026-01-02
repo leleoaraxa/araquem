@@ -11,7 +11,7 @@
 | fiis_cadastro | PASS | Cobertura completa |
 | fiis_dividendos | PASS | Cobertura completa |
 | fiis_yield_history | PASS | Cobertura completa |
-| fii_overview | PASS | Cobertura completa |
+| fiis_overview | PASS | Cobertura completa |
 | fiis_financials_snapshot | PASS | Cobertura completa |
 | fiis_financials_revenue_schedule | PASS | Cobertura completa |
 | fiis_financials_risk | PASS | Cobertura completa |
@@ -221,7 +221,7 @@ Nenhum ajuste em templates foi necessário.
 | price_ref | number | Y | currency_br | - |
 | dy_monthly | number | Y | percent_raw_br | - |
 
-### fii_overview
+### fiis_overview
 
 | Coluna | Tipo | Placeholder? | Filtro | Fallback |
 | --- | --- | --- | --- | --- |

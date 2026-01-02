@@ -7,7 +7,7 @@
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
       "fiis_dividends_yields",
-      "fii_overview",
+      "fiis_overview",
       "fiis_cadastro",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
@@ -31,7 +31,7 @@
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
       "fiis_dividends_yields",
-      "fii_overview",
+      "fiis_overview",
       "fiis_cadastro",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
@@ -55,7 +55,7 @@
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
       "fiis_dividends_yields",
-      "fii_overview",
+      "fiis_overview",
       "fiis_cadastro",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
@@ -81,7 +81,7 @@
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
       "fiis_dividends_yields",
-      "fii_overview",
+      "fiis_overview",
       "fiis_cadastro",
       "fiis_dividendos",
       "fiis_financials_revenue_schedule",
@@ -115,14 +115,14 @@
         "priority": "P2"
       },
       {
-        "entity": "fii_overview",
+        "entity": "fiis_overview",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fii_overview",
+        "entity": "fiis_overview",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -598,7 +598,7 @@
         "ok": true
       }
     },
-    "fii_overview": {
+    "fiis_overview": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -607,18 +607,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fii_overview",
+        "fiis_overview",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fii_overview/fii_overview.yaml"
+          "path": "data/entities/fiis_overview/fiis_overview.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fii_overview.schema.yaml"
+          "path": "data/contracts/entities/fiis_overview.schema.yaml"
         }
       },
       "policies": {
@@ -631,7 +631,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fii_overview"
+            "fiis_overview"
           ],
           "missing_intents": [
             "ticker_query"

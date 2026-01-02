@@ -1,0 +1,66 @@
+{
+  "suite": "fiis_overview",
+  "description": "Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",
+  "payloads": [
+    {
+      "question": "Apresenta um overview detalhado do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Comparativo de overview entre HGLG11, MXRF11 e VISC11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Ficha resumo do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Ficha tecnica resumida do VISC11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Me mostre um panorama geral do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Panorama do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Principais pontos do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Quais os destaques do VISC11 hoje?",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Quero um resumo completo do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Resumo dos principais indicadores de HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Resumo geral do MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Visao geral do VISC11 como investimento.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    }
+  ]
+}

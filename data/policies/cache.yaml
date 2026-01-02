@@ -128,7 +128,7 @@ policies:
     key_fields:
     - indicator_date
     - indicator_name
-  fii_overview:
+  fiis_overview:
     ttl_seconds: 86400
     refresh_at: 07:00
     scope: pub

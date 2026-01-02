@@ -132,7 +132,7 @@
     "fiis_financials_snapshot": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fii_overview": [
+        "fiis_overview": [
           "setor do <ticker>"
         ],
         "fiis_financials_revenue_schedule": [
@@ -220,7 +220,7 @@
       ],
       "prohibited_tokens": []
     },
-    "fii_overview": {
+    "fiis_overview": {
       "invalid_tokens": [],
       "conflicts_with": {
         "fiis_financials_snapshot": [
@@ -309,7 +309,7 @@
     "history_market_indicators": {
       "invalid_tokens": [],
       "conflicts_with": {
-        "fii_overview": [
+        "fiis_overview": [
           "indicadores"
         ],
         "fiis_dividendos": [

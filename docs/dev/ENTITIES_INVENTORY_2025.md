@@ -18,7 +18,7 @@
 | fiis_precos | precos | Série diária de preços (abertura, máxima, mínima, fechamento, variação) | “como fechou o HGLG11 hoje”, “variação diária do XPML11” | Tabela/markdown com candles diários; agregações | Não | RAG: negado / Narrator: desabilitado | histórico | traded_at | sim |
 | fiis_processos | processos | Processos judiciais relacionados a FIIs com risco e valores | “processos do VISC11”, “risco de perda do HGLG11 em ações” | Lista de processos com número, fase, risco, valores | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
 | fiis_rankings | rankings | Posições dos FIIs em rankings (DY, valor de mercado, Sharpe etc.) | “posição do HGLG11 no IFIX”, “top FIIs por DY 12m” | Tabela com posições em múltiplos rankings | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | lista apenas |
-| fii_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | não |
+| fiis_overview | overview | Visão consolidada D-1 (cadastro + finanças + risco + rank) | “resumo do HGLG11”, “overview do MXRF11” | Tabela com principais indicadores financeiros e de risco | Não | RAG: negado / Narrator: desabilitado | D-1 | updated_at | não |
 | history_b3_indexes | indices | Histórico D-1 de IBOV/IFIX/IFIL (pontos e variação) | “histórico do IFIX”, “variação do IBOV hoje” | Lista de datas com pontos e variações; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | index_date | sim |
 | history_currency_rates | moedas | Câmbio D-1 USD/EUR em BRL com compra/venda e variação | “cotação do dólar”, “variação do euro hoje” | Lista de datas com taxas e variações; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | rate_date | sim |
 | history_market_indicators | macro | Indicadores macro (IPCA, CDI, SELIC, IGPM etc.) D-1 | “CDI de ontem”, “IPCA na última leitura” | Lista de indicadores com data e valor; agregações | Não | RAG: permitido / Narrator: desabilitado | histórico | indicator_date | sim |
@@ -385,9 +385,9 @@ Rankings que posicionam FIIs por popularidade, índices IFIX/IFIL, dividend yiel
 - Pública; RAG negado; Narrator desabilitado.
 - Relatório: ranking determinístico sem inferência temporal.
 
-### 1.15. fii_overview
+### 1.15. fiis_overview
 
-**Intent:** fii_overview
+**Intent:** fiis_overview
 
 **Contexto:** usa contexto conversacional (herda ticker e última entidade de FII para perguntas encadeadas).
 

@@ -171,7 +171,7 @@ datasets:
       r_squared:
         min: 0.0
         max: 1.0
-  fii_overview:
+  fiis_overview:
     freshness:
       max_age_hours: 30
     not_null:

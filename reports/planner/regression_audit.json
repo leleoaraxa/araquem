@@ -178,38 +178,38 @@
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "token_collision",
       "token": "cnpj",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_cadastro"
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "token_collision",
       "token": "administrador",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_cadastro"
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "token_collision",
       "token": "administradora",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_cadastro"
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "token_collision",
       "token": "nome",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_cadastro"
       ]
     },
@@ -232,11 +232,11 @@
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "token_collision",
       "token": "indicadores",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "history_market_indicators"
       ]
     },
@@ -521,11 +521,11 @@
       ]
     },
     {
-      "intent": "fii_overview",
+      "intent": "fiis_overview",
       "issue": "phrase_collision",
       "token": "setor do <ticker>",
       "conflicts": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_financials_snapshot"
       ]
     },

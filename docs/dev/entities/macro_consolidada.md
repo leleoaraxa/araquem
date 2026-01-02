@@ -143,7 +143,7 @@ Essas perguntas devem ser usadas como referência para curadoria de `routing_sam
 - **Uso principal**: responder perguntas conceituais e de cenário macro relacionadas a FIIs, usando números reais (IPCA, Selic, CDI, IFIX, IBOV, USD, EUR) como base para o Narrator.
 - **Evitar colisões**:
   - Numérico puro → entidades `history_*`.
-  - Ativo específico (FII) → entidades de FIIs (`fiis_*`, `fii_overview`).
+  - Ativo específico (FII) → entidades de FIIs (`fiis_*`, `fiis_overview`).
   - Carteira/cliente → entidades `client_*` / `client_fiis_enriched_portfolio`.
 
 Com isso, `macro_consolidada` fica claramente posicionada como o “hub macro para FIIs” dentro da ontologia.

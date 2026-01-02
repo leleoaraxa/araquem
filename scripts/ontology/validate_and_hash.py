@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Iterable, List, Mapping, MutableMapping, Sequence
 
-import yaml
+import yaml  # type: ignore
 
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -26,13 +26,13 @@ REQUIRED_KEYS = {
 
 COLLISION_RULES: Mapping[str, Sequence[str]] = {
     "fiis_financials_snapshot": [
-        "fii_overview",
+        "fiis_overview",
         "fiis_rankings",
         "fiis_precos",
         "fiis_dividendos",
         "fiis_yield_history",
     ],
-    "fii_overview": [
+    "fiis_overview": [
         "fiis_financials_snapshot",
         "fiis_rankings",
         "fiis_precos",
@@ -41,28 +41,28 @@ COLLISION_RULES: Mapping[str, Sequence[str]] = {
     ],
     "fiis_rankings": [
         "fiis_financials_snapshot",
-        "fii_overview",
+        "fiis_overview",
         "fiis_precos",
         "fiis_dividendos",
         "fiis_yield_history",
     ],
     "fiis_precos": [
         "fiis_financials_snapshot",
-        "fii_overview",
+        "fiis_overview",
         "fiis_rankings",
         "fiis_dividendos",
         "fiis_yield_history",
     ],
     "fiis_dividendos": [
         "fiis_financials_snapshot",
-        "fii_overview",
+        "fiis_overview",
         "fiis_rankings",
         "fiis_precos",
         "fiis_yield_history",
     ],
     "fiis_yield_history": [
         "fiis_financials_snapshot",
-        "fii_overview",
+        "fiis_overview",
         "fiis_rankings",
         "fiis_precos",
         "fiis_dividendos",
@@ -77,7 +77,9 @@ class ValidationError(Exception):
 class OntologyEntity:
     def __init__(self, raw: Mapping, source: Path):
         if not isinstance(raw, Mapping):
-            raise ValidationError(f"Entity file {source} must contain a mapping at the root")
+            raise ValidationError(
+                f"Entity file {source} must contain a mapping at the root"
+            )
         self.raw = raw
         self.source = source
         self._validate_structure()
@@ -257,12 +259,16 @@ def load_ontology_tokens() -> Dict[str, Dict[str, set]]:
     return ontology
 
 
-def load_entities(ontology_tokens: Mapping[str, Dict[str, set]]) -> Dict[str, OntologyEntity]:
+def load_entities(
+    ontology_tokens: Mapping[str, Dict[str, set]],
+) -> Dict[str, OntologyEntity]:
     errors: List[str] = []
     entities: Dict[str, OntologyEntity] = {}
     for entity_dir in sorted(ENTITIES_DIR.iterdir()):
         new_entity_path = entity_dir / f"{entity_dir.name}.yaml"
-        entity_path = new_entity_path if new_entity_path.is_file() else entity_dir / "entity.yaml"
+        entity_path = (
+            new_entity_path if new_entity_path.is_file() else entity_dir / "entity.yaml"
+        )
         if not entity_path.is_file():
             continue
         try:
@@ -272,7 +278,9 @@ def load_entities(ontology_tokens: Mapping[str, Dict[str, set]]) -> Dict[str, On
             errors.append(f"Failed to load {entity_path}: {exc}")
             continue
         if not isinstance(raw, MutableMapping):
-            errors.append(f"Entity file {entity_path} must contain a mapping at the root")
+            errors.append(
+                f"Entity file {entity_path} must contain a mapping at the root"
+            )
             continue
         entity_id = raw.get("id")
         if not isinstance(entity_id, str):
@@ -280,10 +288,14 @@ def load_entities(ontology_tokens: Mapping[str, Dict[str, set]]) -> Dict[str, On
             continue
         ontology_entry = ontology_tokens.get(entity_id, {})
         merged_raw: Dict[str, object] = dict(raw)
-        merged_raw.setdefault("intent", _select_intent(ontology_entry.get("intents", set()), entity_id))
+        merged_raw.setdefault(
+            "intent", _select_intent(ontology_entry.get("intents", set()), entity_id)
+        )
         merged_raw.setdefault("tokens", list(ontology_entry.get("tokens", set())))
         merged_raw.setdefault("phrases", list(ontology_entry.get("phrases", set())))
-        merged_raw.setdefault("anti_tokens", list(ontology_entry.get("anti_tokens", set())))
+        merged_raw.setdefault(
+            "anti_tokens", list(ontology_entry.get("anti_tokens", set()))
+        )
         try:
             entity = OntologyEntity(merged_raw, entity_path)
         except ValidationError as exc:
@@ -308,7 +320,9 @@ def validate_collisions(entities: Mapping[str, OntologyEntity]) -> None:
         for peer_id in forbidden_peers:
             if peer_id not in entities:
                 continue
-            overlap = set(entities[entity_id].tokens).intersection(entities[peer_id].tokens)
+            overlap = set(entities[entity_id].tokens).intersection(
+                entities[peer_id].tokens
+            )
             if overlap:
                 joined = ", ".join(sorted(overlap))
                 errors.append(
@@ -318,7 +332,9 @@ def validate_collisions(entities: Mapping[str, OntologyEntity]) -> None:
             raise ValidationError("\n".join(errors))
 
 
-def build_manifest(entities: Mapping[str, OntologyEntity], timestamp: str | None = None) -> Dict:
+def build_manifest(
+    entities: Mapping[str, OntologyEntity], timestamp: str | None = None
+) -> Dict:
     entity_records = []
     entity_hashes: List[str] = []
     for entity_id in sorted(entities):
@@ -340,7 +356,9 @@ def build_manifest(entities: Mapping[str, OntologyEntity], timestamp: str | None
         "timestamp": manifest_timestamp,
         "entity_count": len(entity_records),
         "entities": entity_records,
-        "ontology_global_hash": hashlib.sha256(global_payload.encode("utf-8")).hexdigest(),
+        "ontology_global_hash": hashlib.sha256(
+            global_payload.encode("utf-8")
+        ).hexdigest(),
     }
 
 
@@ -368,7 +386,9 @@ def run_generation(check_only: bool = False) -> None:
     manifest = build_manifest(entities, timestamp=timestamp_override)
     if check_only:
         if not MANIFEST_PATH.exists():
-            raise ValidationError("Manifest is missing. Please generate it before running --check.")
+            raise ValidationError(
+                "Manifest is missing. Please generate it before running --check."
+            )
         if existing_manifest != manifest:
             raise ValidationError(
                 "Manifest on disk is outdated. Please regenerate ontology_manifest.yaml."

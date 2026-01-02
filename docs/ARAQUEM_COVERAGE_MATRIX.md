@@ -52,7 +52,7 @@ Abaixo a matriz **oficial**, consolidada com base:
 
 ## **2.1. Entidades de FIIs (públicas)**
 
-### **📌 fii_overview**
+### **📌 fiis_overview**
 
 **Tipo:** 1x1
 **Cobertura:** Dados cadastrais

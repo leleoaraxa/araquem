@@ -743,7 +743,7 @@
       }
     },
     {
-      "entity_id": "fii_overview",
+      "entity_id": "fiis_overview",
       "used_by": {
         "ontology": {
           "referenced": true,
@@ -808,7 +808,7 @@
           "projections": {
             "referenced": true,
             "files": [
-              "data/ops/quality/projection_fii_overview.json",
+              "data/ops/quality/projection_fiis_overview.json",
               "data/ops/quality/rag_overview_risk_macro.json",
               "data/ops/quality/routing_samples.json"
             ]

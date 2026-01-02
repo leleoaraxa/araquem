@@ -25,7 +25,7 @@ planner:
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
-      fii_overview:
+      fiis_overview:
         min_score: 1.0
         min_gap: 0.2
       fiis_imoveis:
@@ -95,7 +95,7 @@ planner:
       fiis_financials_snapshot:
         min_score: 1.0
         min_gap: 0.2
-      fii_overview:
+      fiis_overview:
         min_score: 1.0
         min_gap: 0.2
       fiis_imoveis:

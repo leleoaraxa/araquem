@@ -34,7 +34,7 @@ A entidade `client_fiis_enriched_portfolio` representa a **foto consolidada da c
     - `fiis_precos` (histórico de preços),
     - `fiis_financials_risk` (métricas de risco públicas),
     - `fiis_financials_snapshot` (indicadores financeiros do fundo),
-    - `fiis_cadastro` / `fii_overview` (identidade e cadastro do fundo).
+    - `fiis_cadastro` / `fiis_overview` (identidade e cadastro do fundo).
   - No entanto, para perguntas do tipo **“minha carteira”, “meus FIIs”, “valor investido”**, a entidade padrão deve ser `client_fiis_enriched_portfolio`.
 
 - **Privacidade**:

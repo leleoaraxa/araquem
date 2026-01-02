@@ -63,7 +63,7 @@ O Planner **não** deve usar `fiis_processos` quando:
    - “Qual o risco do ALMI11 comparado ao IFIX?” → `fiis_financials_risk` / `fiis_rankings`.
 
 3. A pergunta é sobre **fundamentos, cadastro ou snapshot financeiro**:
-   - “Qual o CNPJ do ALMI11?” → `fiis_cadastro` ou `fii_overview`
+   - “Qual o CNPJ do ALMI11?” → `fiis_cadastro` ou `fiis_overview`
    - “Qual o patrimônio líquido do ALMI11?” → `fiis_financials_snapshot`.
 
 4. A pergunta é sobre **notícias, fatos relevantes, comunicados**:

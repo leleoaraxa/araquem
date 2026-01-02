@@ -1,8 +1,8 @@
-# Entidade `fii_overview`
+# Entidade `fiis_overview`
 
 ## 1. Descrição e escopo
 
-A entidade `fii_overview` consolida, em **uma linha por FII**, os principais indicadores cadastrais, de preço, rendimento, risco e ranking utilizados pela SIRIOS para dar uma visão executiva do fundo.
+A entidade `fiis_overview` consolida, em **uma linha por FII**, os principais indicadores cadastrais, de preço, rendimento, risco e ranking utilizados pela SIRIOS para dar uma visão executiva do fundo.
 
 Ela funciona como um **"painel 360°" determinístico** para perguntas do tipo:
 
@@ -19,15 +19,15 @@ Características gerais:
 
 A rota canônica de atendimento dessas perguntas é:
 
-- `intent`: `fii_overview`
-- `entity`: `fii_overview`
-- `sql_view`: `fii_overview`
+- `intent`: `fiis_overview`
+- `entity`: `fiis_overview`
+- `sql_view`: `fiis_overview`
 
 ---
 
 ## 2. Exemplos canônicos de perguntas
 
-Abaixo alguns exemplos que **devem** ser roteados para `fii_overview`:
+Abaixo alguns exemplos que **devem** ser roteados para `fiis_overview`:
 
 1. "resumo do HGLG11"
 2. "overview do KNRI11"
@@ -43,14 +43,14 @@ Abaixo alguns exemplos que **devem** ser roteados para `fii_overview`:
 Essas perguntas devem:
 
 - Identificar corretamente o(s) `ticker(s)` citado(s).
-- Selecionar as linhas correspondentes em `fii_overview`.
+- Selecionar as linhas correspondentes em `fiis_overview`.
 - Permitir que o Narrator monte textos resumidos usando esses campos como fatos determinísticos.
 
 ---
 
 ## 3. Colunas e contratos
 
-A tabela abaixo resume as colunas expostas em `fii_overview`. O schema completo está em `data/contracts/fii_overview.schema.yaml` e é a fonte da verdade.
+A tabela abaixo resume as colunas expostas em `fiis_overview`. O schema completo está em `data/contracts/fiis_overview.schema.yaml` e é a fonte da verdade.
 
 | Campo | Tipo | Descrição |
 |---|---|---|

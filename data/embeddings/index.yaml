@@ -131,12 +131,12 @@ include:
     tags: [entities, fiis, dividendos, yield, history, "entity:fiis_yield_history"]
 
   - id: entity-fii-overview
-    path: data/entities/fii_overview/fii_overview.yaml
-    tags: [entities, fiis, overview, "entity:fii_overview"]
+    path: data/entities/fiis_overview/fiis_overview.yaml
+    tags: [entities, fiis, overview, "entity:fiis_overview"]
 
   - id: entity-fii-overview-hints
-    path: data/entities/fii_overview/hints.md
-    tags: [entities, fiis, overview, "entity:fii_overview"]
+    path: data/entities/fiis_overview/hints.md
+    tags: [entities, fiis, overview, "entity:fiis_overview"]
 
   - id: entity-carteira-enriquecida
     path: data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml
@@ -283,7 +283,7 @@ include:
     tags: [quality, projection, private]
 
   - id: q-projection-fii-overview
-    path: data/ops/quality/projection_fii_overview.json
+    path: data/ops/quality/projection_fiis_overview.json
     tags: [quality, projection, overview]
 
   - id: q-projection-fiis-yield-history

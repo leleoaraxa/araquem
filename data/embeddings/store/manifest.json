@@ -350,24 +350,24 @@
     },
     {
       "id": "entity-fii-overview",
-      "path": "data/entities/fii_overview/fii_overview.yaml",
+      "path": "data/entities/fiis_overview/fiis_overview.yaml",
       "tags": [
         "entities",
         "fiis",
         "overview",
-        "entity:fii_overview"
+        "entity:fiis_overview"
       ],
       "chunks": 7,
       "sha_all": "c42f8cc0c7b709ff1b10606c664a1ef4af185ee93b501bb4d89dba9492a64ebd"
     },
     {
       "id": "entity-fii-overview-hints",
-      "path": "data/entities/fii_overview/hints.md",
+      "path": "data/entities/fiis_overview/hints.md",
       "tags": [
         "entities",
         "fiis",
         "overview",
-        "entity:fii_overview"
+        "entity:fiis_overview"
       ],
       "chunks": 2,
       "sha_all": "be62ab5aa339843912ced3950c20cbe976001b3e0e240065cc3f9f5b1431621c"
@@ -788,7 +788,7 @@
     },
     {
       "id": "q-projection-fii-overview",
-      "path": "data/ops/quality/projection_fii_overview.json",
+      "path": "data/ops/quality/projection_fiis_overview.json",
       "tags": [
         "quality",
         "projection",

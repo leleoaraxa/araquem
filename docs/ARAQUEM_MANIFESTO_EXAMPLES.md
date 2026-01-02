@@ -175,7 +175,7 @@ São respondidas via:
 
 Pode ser:
 
-* `fii_overview`
+* `fiis_overview`
 * `fiis_precos`
 * `fiis_dividendos`
 * `fiis_financials_risk`

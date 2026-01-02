@@ -127,13 +127,13 @@ entities:
       - ticker
       - ref_month
     notes: []
-  fii_overview:
+  fiis_overview:
     title: FIIs – Visão consolidada (overview)
     kind: snapshot
     paths:
-      entity_yaml: data/entities/fii_overview/fii_overview.yaml
-      schema: data/contracts/entities/fii_overview.schema.yaml
-      quality_projection: data/ops/quality/projection_fii_overview.json
+      entity_yaml: data/entities/fiis_overview/fiis_overview.yaml
+      schema: data/contracts/entities/fiis_overview.schema.yaml
+      quality_projection: data/ops/quality/projection_fiis_overview.json
     coverage:
       cache_policy: true
       rag_policy: false
