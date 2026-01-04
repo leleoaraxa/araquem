@@ -7,12 +7,11 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile.api
-    container_name: araquem_api
     restart: always
     env_file:
       - .env.stage
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - redis
       - ollama
@@ -23,6 +22,19 @@ services:
     # Se você quiser evitar bind de código em stage, remova o volume abaixo.
     volumes:
       - ./:/app:ro
+    networks:
+      - araquem_network
+
+  gateway:
+    image: nginx:1.27-alpine
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./deploy/docker/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
     networks:
       - araquem_network
 

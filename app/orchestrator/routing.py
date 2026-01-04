@@ -9,7 +9,12 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Any, Dict, List, Optional
 from uuid import uuid4
 
-from app.cache.rt_cache import build_plan_hash, make_cache_key
+from app.cache.rt_cache import (
+    build_plan_hash,
+    is_cacheable_payload,
+    make_cache_key,
+    make_plan_cache_key,
+)
 from app.planner import planner as planner_module
 from app.planner.planner import Planner
 from app.planner.ticker_index import extract_tickers_from_text
@@ -138,6 +143,12 @@ def _extract_ticker_identifiers(question: str) -> List[str]:
 
 
 _TH_PATH = os.getenv("PLANNER_THRESHOLDS_PATH", "data/ops/planner_thresholds.yaml")
+
+def _env_int(var_name: str, default: int) -> int:
+    try:
+        return int(os.getenv(var_name, default))
+    except (TypeError, ValueError):
+        return default
 
 
 def _load_thresholds(path: str) -> Dict[str, Any]:
@@ -717,6 +728,91 @@ class Orchestrator:
         skip_sql = bool(prepared.get("skip_sql"))
         compute_mode = prepared.get("compute_mode") or ("conceptual" if skip_sql else "sql")
 
+        plan_cache_key: Optional[str] = None
+        plan_cache_hit = False
+        plan_cache_written = False
+        plan_cache_ttl: Optional[int] = None
+        plan_cache_enabled = False
+        plan_hash = prepared.get("plan_hash")
+        scope = prepared.get("scope") or ""
+        plan_cache_policy = self._cache_policies.get(entity) if self._cache_policies else None
+        is_private_entity = (
+            self._cache_policies.is_private_entity(entity) if self._cache_policies else False
+        )
+        namespace = None
+        if is_private_entity:
+            if client_id:
+                namespace = f"client:{client_id}"
+            else:
+                namespace = None
+
+        if (
+            self._cache is not None
+            and plan_cache_policy
+            and not skip_sql
+            and plan_hash
+            and plan_cache_policy.get("ttl_seconds")
+        ):
+            try:
+                plan_cache_ttl = int(plan_cache_policy.get("ttl_seconds", 0) or 0)
+            except (TypeError, ValueError):
+                plan_cache_ttl = 0
+
+            if plan_cache_ttl and plan_cache_ttl > 0:
+                if not is_private_entity or namespace:
+                    plan_cache_enabled = True
+                    build_id = os.getenv("BUILD_ID", "dev")
+                    plan_cache_key = make_plan_cache_key(
+                        build_id,
+                        scope,
+                        entity,
+                        plan_hash,
+                        namespace=namespace,
+                    )
+                    try:
+                        cached_plan_payload = self._cache.get_json(plan_cache_key)
+                    except Exception:
+                        LOGGER.warning("Falha ao consultar cache de plano", exc_info=True)
+                        cached_plan_payload = None
+
+                    if isinstance(cached_plan_payload, dict):
+                        plan_cache_hit = True
+                        meta_payload = cached_plan_payload.get("meta") or {}
+                        compute_meta = meta_payload.get("compute") or {}
+                        compute_meta.update(
+                            {
+                                "plan_cache_hit": True,
+                                "plan_cache_written": False,
+                                "cache_key": plan_cache_key,
+                            }
+                        )
+                        meta_payload["compute"] = compute_meta
+                        cached_plan_payload["meta"] = meta_payload
+                        return cached_plan_payload
+
+                    lock_key = f"{plan_cache_key}:lock"
+                    lock_ttl_ms = _env_int("CACHE_SINGLEFLIGHT_LOCK_TTL_MS", 15000)
+                    lock_acquired = self._cache.acquire_lock(lock_key, lock_ttl_ms)
+                    if not lock_acquired:
+                        waited_payload = self._cache.wait_for_key(
+                            plan_cache_key,
+                            _env_int("CACHE_SINGLEFLIGHT_MAX_WAIT_MS", 2000),
+                            _env_int("CACHE_SINGLEFLIGHT_STEP_MS", 100),
+                        )
+                        if isinstance(waited_payload, dict):
+                            meta_payload = waited_payload.get("meta") or {}
+                            compute_meta = meta_payload.get("compute") or {}
+                            compute_meta.update(
+                                {
+                                    "plan_cache_hit": True,
+                                    "plan_cache_written": False,
+                                    "cache_key": plan_cache_key,
+                                }
+                            )
+                            meta_payload["compute"] = compute_meta
+                            waited_payload["meta"] = meta_payload
+                            return waited_payload
+
         cache_ctx = None
         if not multi_ticker_enabled:
             cache_ctx = self._prepare_metrics_cache_context(
@@ -973,8 +1069,33 @@ class Orchestrator:
                 "error": str(exc),
             }
 
-        return {
+        payload = {
             "status": {"reason": "ok", "message": "ok"},
             "results": results,
             "meta": meta,
         }
+
+        if (
+            self._cache is not None
+            and plan_cache_enabled
+            and plan_cache_key
+            and isinstance(plan_cache_ttl, int)
+            and plan_cache_ttl > 0
+            and not plan_cache_hit
+            and is_cacheable_payload(payload)
+        ):
+            try:
+                self._cache.set_json(plan_cache_key, payload, ttl_seconds=plan_cache_ttl)
+                plan_cache_written = True
+            except Exception:
+                LOGGER.warning("Falha ao gravar payload no plan-cache", exc_info=True)
+
+        compute_meta = meta.get("compute") or {}
+        if plan_cache_key and "cache_key" not in compute_meta:
+            compute_meta["cache_key"] = plan_cache_key
+        compute_meta["plan_cache_hit"] = bool(plan_cache_hit)
+        compute_meta["plan_cache_written"] = bool(plan_cache_written)
+        meta["compute"] = compute_meta
+        payload["meta"] = meta
+
+        return payload

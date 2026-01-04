@@ -4,10 +4,12 @@ from __future__ import annotations
 import logging
 import os
 import re
+import threading
 import time
 from decimal import Decimal
 from pathlib import Path
 from typing import Any, Dict, Iterable, Optional
+from contextlib import contextmanager
 
 from app.narrator.canonical import extract_canonical_value
 from app.narrator.formatter import build_narrator_text
@@ -41,6 +43,39 @@ _TICKER_RE = re.compile(r"\b([A-Z]{4}\d{2})\b", re.IGNORECASE)
 _FILTER_FIELD_NAMES = ("filters", "filter")
 _DIGIT_RE = re.compile(r"\d")
 _URL_RE = re.compile(r"https?://\S+", re.IGNORECASE)
+_NARRATOR_SEMAPHORE: threading.Semaphore | None = None
+_NARRATOR_SEMAPHORE_SIZE = 0
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
+def _get_narrator_semaphore() -> threading.Semaphore:
+    global _NARRATOR_SEMAPHORE, _NARRATOR_SEMAPHORE_SIZE
+    desired = max(1, _env_int("NARRATOR_MAX_CONCURRENCY", 1))
+    if _NARRATOR_SEMAPHORE is None or desired != _NARRATOR_SEMAPHORE_SIZE:
+        _NARRATOR_SEMAPHORE = threading.Semaphore(desired)
+        _NARRATOR_SEMAPHORE_SIZE = desired
+    return _NARRATOR_SEMAPHORE
+
+
+@contextmanager
+def _narrator_llm_slot(timeout_s: float = 0):
+    semaphore = _get_narrator_semaphore()
+    acquired = False
+    try:
+        acquired = semaphore.acquire(timeout=timeout_s)
+        yield acquired
+    finally:
+        if acquired:
+            try:
+                semaphore.release()
+            except ValueError:
+                pass
 
 
 def _policy_timeout_seconds(policy_guards: Dict[str, Any]) -> float | None:
@@ -851,20 +886,25 @@ class Narrator:
 
         t0 = time.perf_counter()
         outcome = "ok"
-        try:
-            response = client.generate(
-                prompt,
-                model=model,
-                stream=False,
-                temperature=temperature,
-                max_tokens=max_tokens,
-            )
-            narrative = (response or "").strip()
-            if narrative:
-                effective_meta["narrative"] = narrative
-        except Exception as exc:  # pragma: no cover - caminho excepcional
-            effective_meta["narrative_error"] = str(exc)
-            outcome = "error"
+        with _narrator_llm_slot(timeout_s=0) as acquired:
+            if not acquired:
+                effective_meta["narrative_error"] = "narrator_concurrency_limit"
+                effective_meta["narrative_overload"] = True
+                return effective_meta
+            try:
+                response = client.generate(
+                    prompt,
+                    model=model,
+                    stream=False,
+                    temperature=temperature,
+                    max_tokens=max_tokens,
+                )
+                narrative = (response or "").strip()
+                if narrative:
+                    effective_meta["narrative"] = narrative
+            except Exception as exc:  # pragma: no cover - caminho excepcional
+                effective_meta["narrative_error"] = str(exc)
+                outcome = "error"
         latency_s = time.perf_counter() - t0
 
         entity_label = str(entity or "")
@@ -1380,123 +1420,134 @@ class Narrator:
 
         narrator_meta["used"] = True
 
-        try:
-            timeout_s = _policy_timeout_seconds(policy_guards)
-            applied, prev_timeout = _apply_client_timeout_temporarily(
-                self.client, timeout_s
-            )
-            if applied:
-                narrator_meta["policy_timeout_seconds"] = timeout_s
+        with _narrator_llm_slot(timeout_s=0) as acquired:
+            if not acquired:
+                return _finalize_response(
+                    baseline_text,
+                    tokens_in=tokens_in,
+                    tokens_out=tokens_out,
+                    latency_ms=(time.perf_counter() - t0) * 1000.0,
+                    error="llm_concurrency_limited",
+                    strategy_override="llm_concurrency_limited",
+                )
 
             try:
-                response = self.client.generate(
-                    prompt, model=effective_model, stream=False
+                timeout_s = _policy_timeout_seconds(policy_guards)
+                applied, prev_timeout = _apply_client_timeout_temporarily(
+                    self.client, timeout_s
                 )
-            finally:
                 if applied:
-                    # restaura timeout anterior para não contaminar outros call sites
-                    if prev_timeout is not None:
-                        try:
-                            setattr(self.client, "timeout", float(prev_timeout))
-                        except Exception:
-                            pass
-            candidate = (response or "").strip()
-            # Sanitização leve de prefixos comuns (somente em rewrite-only)
-            if bool(effective_policy.get("rewrite_only")) and candidate:
-                for prefix in (
-                    "**SAÍDA**",
-                    "SAÍDA",
-                    "**OUTPUT**",
-                    "OUTPUT",
-                    "RESPOSTA",
-                    "**RESPOSTA**",
-                ):
-                    if candidate.startswith(prefix):
-                        candidate = candidate[len(prefix) :].lstrip(" \n:-—")
-                        break
+                    narrator_meta["policy_timeout_seconds"] = timeout_s
 
-            if candidate:
-                if rewrite_only:
-                    rendered_text = effective_facts.get("rendered_text", "").strip()
-                    intro = candidate.strip()
-                    intro_lines = intro.splitlines()
-                    invalid_intro = False
-
-                    if not intro:
-                        invalid_intro = True
-                    if "|" in intro or re.search(r"\n\s*\|", intro):
-                        invalid_intro = True
-                    if any(line.count("|") >= 2 for line in intro_lines):
-                        invalid_intro = True
-                    if re.search(r"TEXTO_BASE", intro, re.IGNORECASE):
-                        invalid_intro = True
-                    if len(intro_lines) > 5:
-                        invalid_intro = True
-                    digit_count = sum(1 for ch in intro if ch.isdigit())
-                    if digit_count > 6:
-                        if not effective_facts.get("llm_canonical_value"):
-                            invalid_intro = True
-                    if re.search(r"\d+(?:º|°)", intro):
-                        invalid_intro = True
-                    if re.search(
-                        r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE
-                    ):
-                        invalid_intro = True
-
-                    canonical_value = effective_facts.get("llm_canonical_value")
-                    canonical_str = (
-                        str(canonical_value).strip()
-                        if canonical_value is not None
-                        else ""
+                try:
+                    response = self.client.generate(
+                        prompt, model=effective_model, stream=False
                     )
-                    has_digits = bool(_DIGIT_RE.search(intro))
+                finally:
+                    if applied:
+                        # restaura timeout anterior para não contaminar outros call sites
+                        if prev_timeout is not None:
+                            try:
+                                setattr(self.client, "timeout", float(prev_timeout))
+                            except Exception:
+                                pass
+                candidate = (response or "").strip()
+                # Sanitização leve de prefixos comuns (somente em rewrite-only)
+                if bool(effective_policy.get("rewrite_only")) and candidate:
+                    for prefix in (
+                        "**SAÍDA**",
+                        "SAÍDA",
+                        "**OUTPUT**",
+                        "OUTPUT",
+                        "RESPOSTA",
+                        "**RESPOSTA**",
+                    ):
+                        if candidate.startswith(prefix):
+                            candidate = candidate[len(prefix) :].lstrip(" \n:-—")
+                            break
 
-                    if canonical_str:
-                        if has_digits:
-                            if canonical_str in intro:
-                                intro_without_canonical = intro.replace(
-                                    canonical_str, "", 1
-                                )
-                                if _DIGIT_RE.search(intro_without_canonical):
-                                    invalid_intro = True
-                            else:
+                if candidate:
+                    if rewrite_only:
+                        rendered_text = effective_facts.get("rendered_text", "").strip()
+                        intro = candidate.strip()
+                        intro_lines = intro.splitlines()
+                        invalid_intro = False
+
+                        if not intro:
+                            invalid_intro = True
+                        if "|" in intro or re.search(r"\n\s*\|", intro):
+                            invalid_intro = True
+                        if any(line.count("|") >= 2 for line in intro_lines):
+                            invalid_intro = True
+                        if re.search(r"TEXTO_BASE", intro, re.IGNORECASE):
+                            invalid_intro = True
+                        if len(intro_lines) > 5:
+                            invalid_intro = True
+                        digit_count = sum(1 for ch in intro if ch.isdigit())
+                        if digit_count > 6:
+                            if not effective_facts.get("llm_canonical_value"):
                                 invalid_intro = True
-                    elif has_digits:
-                        invalid_intro = True
+                        if re.search(r"\d+(?:º|°)", intro):
+                            invalid_intro = True
+                        if re.search(
+                            r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE
+                        ):
+                            invalid_intro = True
 
-                    if invalid_intro or not rendered_text:
-                        LOGGER.warning(
-                            "LLM rewrite-only violou contrato (intro inválido). Fallback para baseline."
+                        canonical_value = effective_facts.get("llm_canonical_value")
+                        canonical_str = (
+                            str(canonical_value).strip()
+                            if canonical_value is not None
+                            else ""
                         )
-                        text = rendered_text or baseline_text
-                        tokens_out = 0
-                        llm_intro_used = False
-                        llm_intro_tokens = 0
+                        has_digits = bool(_DIGIT_RE.search(intro))
+
+                        if canonical_str:
+                            if has_digits:
+                                if canonical_str in intro:
+                                    intro_without_canonical = intro.replace(
+                                        canonical_str, "", 1
+                                    )
+                                    if _DIGIT_RE.search(intro_without_canonical):
+                                        invalid_intro = True
+                                else:
+                                    invalid_intro = True
+                        elif has_digits:
+                            invalid_intro = True
+
+                        if invalid_intro or not rendered_text:
+                            LOGGER.warning(
+                                "LLM rewrite-only violou contrato (intro inválido). Fallback para baseline."
+                            )
+                            text = rendered_text or baseline_text
+                            tokens_out = 0
+                            llm_intro_used = False
+                            llm_intro_tokens = 0
+                        else:
+                            text = f"{intro}\n\n{rendered_text}" if intro else rendered_text
+                            tokens_out = len(text.split())
+                            llm_intro_used = True
+                            llm_intro_tokens = len(intro.split())
                     else:
-                        text = f"{intro}\n\n{rendered_text}" if intro else rendered_text
-                        tokens_out = len(text.split())
-                        llm_intro_used = True
-                        llm_intro_tokens = len(intro.split())
-                else:
-                    text = candidate
-                    tokens_out = len(candidate.split())
+                        text = candidate
+                        tokens_out = len(candidate.split())
 
-            policy_violation = _policy_violation_reason(
-                baseline_text, text, policy_guards
-            )
+                policy_violation = _policy_violation_reason(
+                    baseline_text, text, policy_guards
+                )
 
-        except Exception as exc:  # pragma: no cover - caminho excepcional
-            error_label = "llm_error"
-            if isinstance(exc, TimeoutError) or "timeout" in str(exc).lower():
-                error_label = "llm_timeout"
-            error = f"{error_label}: {exc}"
-            LOGGER.error(
-                "NARRATOR_LLM_ERROR entity=%s intent=%s model=%s error=%s",
-                entity,
-                intent,
-                effective_model,
-                exc,
-            )
+            except Exception as exc:  # pragma: no cover - caminho excepcional
+                error_label = "llm_error"
+                if isinstance(exc, TimeoutError) or "timeout" in str(exc).lower():
+                    error_label = "llm_timeout"
+                error = f"{error_label}: {exc}"
+                LOGGER.error(
+                    "NARRATOR_LLM_ERROR entity=%s intent=%s model=%s error=%s",
+                    entity,
+                    intent,
+                    effective_model,
+                    exc,
+                )
 
         elapsed_ms = (time.perf_counter() - t0) * 1000.0
         narrator_meta["latency_ms"] = elapsed_ms
