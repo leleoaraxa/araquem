@@ -886,6 +886,8 @@ class Narrator:
 
         t0 = time.perf_counter()
         outcome = "ok"
+        entity_label = str(entity or "")
+        bucket_label = str(bucket or "")
         with _narrator_llm_slot(timeout_s=0) as acquired:
             if not acquired:
                 latency_s = time.perf_counter() - t0
@@ -1433,6 +1435,8 @@ class Narrator:
 
         narrator_meta["used"] = True
 
+        entity_label = str(entity or "")
+        bucket_label = str(bucket or "")
         with _narrator_llm_slot(timeout_s=0) as acquired:
             if not acquired:
                 latency_s = time.perf_counter() - t0

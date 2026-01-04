@@ -785,7 +785,7 @@ class Orchestrator:
                             {
                                 "plan_cache_hit": True,
                                 "plan_cache_written": False,
-                                "cache_key": plan_cache_key,
+                                "plan_cache_key": plan_cache_key,
                             }
                         )
                         meta_payload["compute"] = compute_meta
@@ -811,7 +811,7 @@ class Orchestrator:
                                 {
                                     "plan_cache_hit": True,
                                     "plan_cache_written": False,
-                                    "cache_key": plan_cache_key,
+                                    "plan_cache_key": plan_cache_key,
                                 }
                             )
                             meta_payload["compute"] = compute_meta
@@ -1096,7 +1096,10 @@ class Orchestrator:
                 LOGGER.warning("Falha ao gravar payload no plan-cache", exc_info=True)
 
         if plan_lock_acquired and plan_lock_key:
-            self._cache.release_lock(plan_lock_key, self._cache.lock_token)
+            try:
+                self._cache.release_lock(plan_lock_key, self._cache.lock_token)
+            except Exception:
+                pass
 
         compute_meta = meta.get("compute") or {}
         if plan_cache_key:
