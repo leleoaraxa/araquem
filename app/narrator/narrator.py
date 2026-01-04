@@ -888,6 +888,19 @@ class Narrator:
         outcome = "ok"
         with _narrator_llm_slot(timeout_s=0) as acquired:
             if not acquired:
+                latency_s = time.perf_counter() - t0
+                counter(
+                    "services_narrator_llm_requests_total",
+                    outcome="overload",
+                    bucket=bucket_label,
+                    entity=entity_label,
+                )
+                histogram(
+                    "services_narrator_llm_latency_seconds",
+                    latency_s,
+                    bucket=bucket_label,
+                    entity=entity_label,
+                )
                 effective_meta["narrative_error"] = "narrator_concurrency_limit"
                 effective_meta["narrative_overload"] = True
                 return effective_meta
@@ -1422,6 +1435,19 @@ class Narrator:
 
         with _narrator_llm_slot(timeout_s=0) as acquired:
             if not acquired:
+                latency_s = time.perf_counter() - t0
+                counter(
+                    "services_narrator_llm_requests_total",
+                    outcome="overload",
+                    bucket=bucket_label,
+                    entity=entity_label,
+                )
+                histogram(
+                    "services_narrator_llm_latency_seconds",
+                    latency_s,
+                    bucket=bucket_label,
+                    entity=entity_label,
+                )
                 return _finalize_response(
                     baseline_text,
                     tokens_in=tokens_in,
