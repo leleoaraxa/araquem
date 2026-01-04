@@ -1,6 +1,7 @@
 # app/cache/rt_cache.py
 import logging
 import os, json, hashlib, time, datetime as dt
+from uuid import uuid4
 from decimal import Decimal
 from functools import lru_cache
 from typing import Any, Dict, Iterable, Optional, Tuple
@@ -121,6 +122,7 @@ class RedisCache:
     def __init__(self, url: Optional[str] = None):
         self._url = url or os.getenv("REDIS_URL", "redis://localhost:6379/0")
         self._cli = redis.from_url(self._url, decode_responses=True)
+        self._lock_token = uuid4().hex
 
     @property
     def raw(self):
@@ -161,6 +163,55 @@ class RedisCache:
 
     def delete(self, key: str) -> int:
         return self._cli.delete(key)
+
+    def acquire_lock(self, key: str, ttl_ms: int) -> bool:
+        try:
+            ttl_ms_int = int(ttl_ms)
+        except (TypeError, ValueError):
+            ttl_ms_int = 0
+
+        if ttl_ms_int <= 0:
+            return False
+
+        try:
+            return bool(self._cli.set(key, self._lock_token, nx=True, px=ttl_ms_int))
+        except Exception:
+            return False
+
+    def release_lock(self, key: str, value: str) -> None:
+        try:
+            script = """
+            if redis.call("get", KEYS[1]) == ARGV[1] then
+                return redis.call("del", KEYS[1])
+            end
+            return 0
+            """
+            self._cli.eval(script, 1, key, value)
+        except Exception:
+            # best-effort
+            pass
+
+    def wait_for_key(self, key: str, max_wait_ms: int, step_ms: int) -> Optional[Any]:
+        try:
+            remaining_ms = int(max_wait_ms)
+        except (TypeError, ValueError):
+            remaining_ms = 0
+
+        try:
+            step_ms_int = int(step_ms)
+        except (TypeError, ValueError):
+            step_ms_int = 0
+
+        if remaining_ms <= 0 or step_ms_int <= 0:
+            return None
+
+        deadline = time.perf_counter() + (remaining_ms / 1000.0)
+        while time.perf_counter() < deadline:
+            val = self.get_json(key)
+            if val is not None:
+                return val
+            time.sleep(step_ms_int / 1000.0)
+        return None
 
 
 def _stable_hash(obj: Any) -> str:
@@ -381,10 +432,11 @@ def make_cache_key(
 
 
 def make_plan_cache_key(
-    build_id: str, scope: str, entity: str, plan_hash: str
+    build_id: str, scope: str, entity: str, plan_hash: str, *, namespace: Optional[str] = None
 ) -> str:
     cfg_version = get_config_version()
-    return f"araquem:{build_id}:{cfg_version}:{scope}:{entity}:plan:{plan_hash}"
+    base = f"araquem:{build_id}:{cfg_version}:{scope}:{entity}:plan"
+    return f"{base}:{namespace}:{plan_hash}" if namespace else f"{base}:{plan_hash}"
 
 
 def _mk_hit_guard(key: str) -> str:
