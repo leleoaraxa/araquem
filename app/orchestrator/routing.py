@@ -733,6 +733,8 @@ class Orchestrator:
         plan_cache_written = False
         plan_cache_ttl: Optional[int] = None
         plan_cache_enabled = False
+        plan_lock_key: Optional[str] = None
+        plan_lock_acquired: bool = False
         plan_hash = prepared.get("plan_hash")
         scope = prepared.get("scope") or ""
         plan_cache_policy = self._cache_policies.get(entity) if self._cache_policies else None
@@ -793,6 +795,9 @@ class Orchestrator:
                     lock_key = f"{plan_cache_key}:lock"
                     lock_ttl_ms = _env_int("CACHE_SINGLEFLIGHT_LOCK_TTL_MS", 15000)
                     lock_acquired = self._cache.acquire_lock(lock_key, lock_ttl_ms)
+                    if lock_acquired:
+                        plan_lock_key = lock_key
+                        plan_lock_acquired = True
                     if not lock_acquired:
                         waited_payload = self._cache.wait_for_key(
                             plan_cache_key,
@@ -1090,11 +1095,16 @@ class Orchestrator:
             except Exception:
                 LOGGER.warning("Falha ao gravar payload no plan-cache", exc_info=True)
 
+        if plan_lock_acquired and plan_lock_key:
+            self._cache.release_lock(plan_lock_key, self._cache.lock_token)
+
         compute_meta = meta.get("compute") or {}
-        if plan_cache_key and "cache_key" not in compute_meta:
-            compute_meta["cache_key"] = plan_cache_key
+        if plan_cache_key:
+            compute_meta.setdefault("plan_cache_key", plan_cache_key)
         compute_meta["plan_cache_hit"] = bool(plan_cache_hit)
         compute_meta["plan_cache_written"] = bool(plan_cache_written)
+        if metrics_cache_key:
+            compute_meta.setdefault("metrics_cache_key", metrics_cache_key)
         meta["compute"] = compute_meta
         payload["meta"] = meta
 

@@ -125,6 +125,10 @@ class RedisCache:
         self._lock_token = uuid4().hex
 
     @property
+    def lock_token(self) -> str:
+        return self._lock_token
+
+    @property
     def raw(self):
         # acesso controlado para operações utilitárias (scan/set nx)
         return self._cli

@@ -24,6 +24,12 @@ services:
       - ./:/app:ro
     networks:
       - araquem_network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8000/healthz >/dev/null || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+      start_period: 10s
 
   gateway:
     image: nginx:1.27-alpine
