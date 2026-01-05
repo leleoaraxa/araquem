@@ -16,7 +16,7 @@ Infra **mínima, segura e funcional**.
 
 ---
 
-# 🟩 **1. Decisão Inicial (Aprovação do Leleo)**
+# 🟩 **1. Decisão Inicial**
 
 O relatório mapeou 3 opções de compute.
 A recomendação realista para **Stage**, considerando simplicidade + fidelidade ao compose, é:
@@ -206,7 +206,7 @@ E assim por diante.
 Na EC2:
 
 ```bash
-git clone https://github.com/leleoaraxa/araquem
+git clone https://gitlab.com/sirios/araquem
 cd araquem
 ```
 
