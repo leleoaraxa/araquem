@@ -1294,7 +1294,7 @@
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
+        "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
         "parse_ok": true,
         "schema_path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
         "schema_exists": true

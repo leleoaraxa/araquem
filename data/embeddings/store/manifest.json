@@ -486,7 +486,7 @@
     },
     {
       "id": "entity-macro-consolidada",
-      "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
+      "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
       "tags": [
         "entities",
         "macro",

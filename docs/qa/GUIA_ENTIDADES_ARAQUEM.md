@@ -7,32 +7,33 @@ Este guia lista as entidades suportadas pelo Araquem, descreve o que cada uma é
 - Use o **Mapa rápido** para localizar rapidamente a entidade.
 - Consulte o **Catálogo detalhado** para ver descrição, finalidade, campos e exemplos reais.
 - Os exemplos são literais e têm **path + índice** da fonte de qualidade.
+- Regra do Produto/Operação: document_number é transportado via payload.client_id (plano pago) e não vem do texto do usuário.
 
 ## Mapa rápido
-| entity_id | title | kind | requer_identificador_cliente | como_o_identificador_chega | observacao | chaves/identificadores | onde definido |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| client_fiis_positions | Carteira do cliente – posições em FIIs | client | sim | Regra do Produto/Operação: via payload.client_id (plano pago) | Regra do Produto/Operação: não vem do texto do usuário | document_number, position_date, ticker | data/entities/client_fiis_positions/client_fiis_positions.yaml; data/contracts/entities/client_fiis_positions.schema.yaml; data/ontology/entity.yaml |
-| client_fiis_dividends_evolution | Carteira do cliente – evolução dos dividendos | client | sim | Regra do Produto/Operação: via payload.client_id (plano pago) | Regra do Produto/Operação: não vem do texto do usuário | document_number, year_reference, month_number | data/entities/client_fiis_dividends_evolution/client_fiis_dividends_evolution.yaml; data/contracts/entities/client_fiis_dividends_evolution.schema.yaml; data/ontology/entity.yaml |
-| client_fiis_performance_vs_benchmark | Carteira do cliente – performance vs benchmark | client | sim | Regra do Produto/Operação: via payload.client_id (plano pago) | Regra do Produto/Operação: não vem do texto do usuário | document_number, benchmark_code, date_reference | data/entities/client_fiis_performance_vs_benchmark/client_fiis_performance_vs_benchmark.yaml; data/contracts/entities/client_fiis_performance_vs_benchmark.schema.yaml; data/ontology/entity.yaml |
-| client_fiis_performance_vs_benchmark_summary | Carteira do cliente – performance vs benchmark (resumo) | client | sim | Regra do Produto/Operação: via payload.client_id (plano pago) | Regra do Produto/Operação: não vem do texto do usuário | document_number, benchmark_code, date_reference | data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml; data/contracts/entities/client_fiis_performance_vs_benchmark_summary.schema.yaml; data/ontology/entity.yaml |
-| fiis_registrations | FIIs – Cadastro | snapshot | nao | não se aplica | — | ticker | data/entities/fiis_registrations/fiis_registrations.yaml; data/contracts/entities/fiis_registrations.schema.yaml; data/ontology/entity.yaml |
-| fiis_dividends | FIIs – Dividendos históricos | historical | nao | não se aplica | — | ticker, payment_date | data/entities/fiis_dividends/fiis_dividends.yaml; data/contracts/entities/fiis_dividends.schema.yaml; data/ontology/entity.yaml |
-| fiis_yield_history | FIIs – Dividend yield mensal | historical | nao | não se aplica | — | ticker, ref_month | data/entities/fiis_yield_history/fiis_yield_history.yaml; data/contracts/entities/fiis_yield_history.schema.yaml; data/ontology/entity.yaml |
-| fiis_overview | FIIs – Visão consolidada (overview) | snapshot | nao | não se aplica | — | ticker | data/entities/fiis_overview/fiis_overview.yaml; data/contracts/entities/fiis_overview.schema.yaml; data/ontology/entity.yaml |
-| fiis_financials_snapshot | FIIs – Indicadores financeiros (snapshot D-1) | snapshot | nao | não se aplica | — | ticker, updated_at | data/entities/fiis_financials_snapshot/fiis_financials_snapshot.yaml; data/contracts/entities/fiis_financials_snapshot.schema.yaml; data/ontology/entity.yaml |
-| fiis_financials_revenue_schedule | FIIs – Cronograma de receitas e indexadores | snapshot | nao | não se aplica | — | ticker, updated_at | data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml; data/contracts/entities/fiis_financials_revenue_schedule.schema.yaml; data/ontology/entity.yaml |
-| fiis_financials_risk | FIIs – Indicadores de risco (D-1) | snapshot | nao | não se aplica | — | ticker | data/entities/fiis_financials_risk/fiis_financials_risk.yaml; data/contracts/entities/fiis_financials_risk.schema.yaml; data/ontology/entity.yaml |
-| fiis_real_estate | FIIs – Imóveis e propriedades | snapshot | nao | não se aplica | — | ticker, asset_name | data/entities/fiis_real_estate/fiis_real_estate.yaml; data/contracts/entities/fiis_real_estate.schema.yaml; data/ontology/entity.yaml |
-| fiis_news | FIIs – Notícias (D-1) | historical | nao | não se aplica | — | ticker, published_at | data/entities/fiis_news/fiis_news.yaml; data/contracts/entities/fiis_news.schema.yaml; data/ontology/entity.yaml |
-| fiis_quota_prices | FIIs – Preços diários | historical | nao | não se aplica | — | ticker, traded_at | data/entities/fiis_quota_prices/fiis_quota_prices.yaml; data/contracts/entities/fiis_quota_prices.schema.yaml; data/ontology/entity.yaml |
-| fiis_legal_proceedings | FIIs – Processos judiciais | snapshot | nao | não se aplica | — | ticker, process_number | data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml; data/contracts/entities/fiis_legal_proceedings.schema.yaml; data/ontology/entity.yaml |
-| fiis_rankings | FIIs – Rankings e posições | snapshot | nao | não se aplica | — | ticker | data/entities/fiis_rankings/fiis_rankings.yaml; data/contracts/entities/fiis_rankings.schema.yaml; data/ontology/entity.yaml |
-| history_b3_indexes | Mercado – Índices B3 (D-1) | historical | nao | não se aplica | — | index_date | data/entities/history_b3_indexes/history_b3_indexes.yaml; data/contracts/entities/history_b3_indexes.schema.yaml; data/ontology/entity.yaml |
-| history_currency_rates | Mercado – Taxas de câmbio (D-1) | historical | nao | não se aplica | — | rate_date | data/entities/history_currency_rates/history_currency_rates.yaml; data/contracts/entities/history_currency_rates.schema.yaml; data/ontology/entity.yaml |
-| history_market_indicators | Mercado – Indicadores macro (D-1) | historical | nao | não se aplica | — | indicator_date, indicator_name | data/entities/history_market_indicators/history_market_indicators.yaml; data/contracts/entities/history_market_indicators.schema.yaml; data/ontology/entity.yaml |
-| fiis_dividends_yields | FIIs – Dividendos + DY (composta) | historical | nao | não se aplica | — | ticker, ref_month | data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml; data/contracts/entities/fiis_dividends_yields.schema.yaml; data/ontology/entity.yaml |
-| client_fiis_enriched_portfolio | Carteira privada – posição enriquecida | historical | sim | Regra do Produto/Operação: via payload.client_id (plano pago) | Regra do Produto/Operação: não vem do texto do usuário | document_number, position_date, ticker | data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml; data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml; data/ontology/entity.yaml |
-| consolidated_macroeconomic | Mercado – Macro consolidada | historical | nao | não se aplica | — | ref_date | data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml; data/contracts/entities/consolidated_macroeconomic.schema.yaml; data/ontology/entity.yaml |
+| entity_id | title | kind_catalogo | escopo | requer_identificador_cliente | como_o_identificador_chega | observacao | chaves/identificadores | onde definido |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| client_fiis_positions | Carteira do cliente – posições em FIIs | client | client | sim | via payload.client_id (plano pago) | não vem do texto do usuário | document_number, position_date, ticker | data/entities/client_fiis_positions/client_fiis_positions.yaml; data/contracts/entities/client_fiis_positions.schema.yaml; data/ontology/entity.yaml |
+| client_fiis_dividends_evolution | Carteira do cliente – evolução dos dividendos | client | client | sim | via payload.client_id (plano pago) | não vem do texto do usuário | document_number, year_reference, month_number | data/entities/client_fiis_dividends_evolution/client_fiis_dividends_evolution.yaml; data/contracts/entities/client_fiis_dividends_evolution.schema.yaml; data/ontology/entity.yaml |
+| client_fiis_performance_vs_benchmark | Carteira do cliente – performance vs benchmark | client | client | sim | via payload.client_id (plano pago) | não vem do texto do usuário | document_number, benchmark_code, date_reference | data/entities/client_fiis_performance_vs_benchmark/client_fiis_performance_vs_benchmark.yaml; data/contracts/entities/client_fiis_performance_vs_benchmark.schema.yaml; data/ontology/entity.yaml |
+| client_fiis_performance_vs_benchmark_summary | Carteira do cliente – performance vs benchmark (resumo) | client | client | sim | via payload.client_id (plano pago) | não vem do texto do usuário | document_number, benchmark_code, date_reference | data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml; data/contracts/entities/client_fiis_performance_vs_benchmark_summary.schema.yaml; data/ontology/entity.yaml |
+| fiis_registrations | FIIs – Cadastro | snapshot | public | nao | não se aplica | — | ticker | data/entities/fiis_registrations/fiis_registrations.yaml; data/contracts/entities/fiis_registrations.schema.yaml; data/ontology/entity.yaml |
+| fiis_dividends | FIIs – Dividendos históricos | historical | public | nao | não se aplica | — | ticker, payment_date | data/entities/fiis_dividends/fiis_dividends.yaml; data/contracts/entities/fiis_dividends.schema.yaml; data/ontology/entity.yaml |
+| fiis_yield_history | FIIs – Dividend yield mensal | historical | public | nao | não se aplica | — | ticker, ref_month | data/entities/fiis_yield_history/fiis_yield_history.yaml; data/contracts/entities/fiis_yield_history.schema.yaml; data/ontology/entity.yaml |
+| fiis_overview | FIIs – Visão consolidada (overview) | snapshot | public | nao | não se aplica | — | ticker | data/entities/fiis_overview/fiis_overview.yaml; data/contracts/entities/fiis_overview.schema.yaml; data/ontology/entity.yaml |
+| fiis_financials_snapshot | FIIs – Indicadores financeiros (snapshot D-1) | snapshot | public | nao | não se aplica | — | ticker, updated_at | data/entities/fiis_financials_snapshot/fiis_financials_snapshot.yaml; data/contracts/entities/fiis_financials_snapshot.schema.yaml; data/ontology/entity.yaml |
+| fiis_financials_revenue_schedule | FIIs – Cronograma de receitas e indexadores | snapshot | public | nao | não se aplica | — | ticker, updated_at | data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml; data/contracts/entities/fiis_financials_revenue_schedule.schema.yaml; data/ontology/entity.yaml |
+| fiis_financials_risk | FIIs – Indicadores de risco (D-1) | snapshot | public | nao | não se aplica | — | ticker | data/entities/fiis_financials_risk/fiis_financials_risk.yaml; data/contracts/entities/fiis_financials_risk.schema.yaml; data/ontology/entity.yaml |
+| fiis_real_estate | FIIs – Imóveis e propriedades | snapshot | public | nao | não se aplica | — | ticker, asset_name | data/entities/fiis_real_estate/fiis_real_estate.yaml; data/contracts/entities/fiis_real_estate.schema.yaml; data/ontology/entity.yaml |
+| fiis_news | FIIs – Notícias (D-1) | historical | public | nao | não se aplica | — | ticker, published_at | data/entities/fiis_news/fiis_news.yaml; data/contracts/entities/fiis_news.schema.yaml; data/ontology/entity.yaml |
+| fiis_quota_prices | FIIs – Preços diários | historical | public | nao | não se aplica | — | ticker, traded_at | data/entities/fiis_quota_prices/fiis_quota_prices.yaml; data/contracts/entities/fiis_quota_prices.schema.yaml; data/ontology/entity.yaml |
+| fiis_legal_proceedings | FIIs – Processos judiciais | snapshot | public | nao | não se aplica | — | ticker, process_number | data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml; data/contracts/entities/fiis_legal_proceedings.schema.yaml; data/ontology/entity.yaml |
+| fiis_rankings | FIIs – Rankings e posições | snapshot | public | nao | não se aplica | — | ticker | data/entities/fiis_rankings/fiis_rankings.yaml; data/contracts/entities/fiis_rankings.schema.yaml; data/ontology/entity.yaml |
+| history_b3_indexes | Mercado – Índices B3 (D-1) | historical | public | nao | não se aplica | — | index_date | data/entities/history_b3_indexes/history_b3_indexes.yaml; data/contracts/entities/history_b3_indexes.schema.yaml; data/ontology/entity.yaml |
+| history_currency_rates | Mercado – Taxas de câmbio (D-1) | historical | public | nao | não se aplica | — | rate_date | data/entities/history_currency_rates/history_currency_rates.yaml; data/contracts/entities/history_currency_rates.schema.yaml; data/ontology/entity.yaml |
+| history_market_indicators | Mercado – Indicadores macro (D-1) | historical | public | nao | não se aplica | — | indicator_date, indicator_name | data/entities/history_market_indicators/history_market_indicators.yaml; data/contracts/entities/history_market_indicators.schema.yaml; data/ontology/entity.yaml |
+| fiis_dividends_yields | FIIs – Dividendos + DY (composta) | historical | public | nao | não se aplica | — | ticker, ref_month | data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml; data/contracts/entities/fiis_dividends_yields.schema.yaml; data/ontology/entity.yaml |
+| client_fiis_enriched_portfolio | Carteira privada – posição enriquecida | historical | client | sim | via payload.client_id (plano pago) | não vem do texto do usuário | document_number, position_date, ticker | data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml; data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml; data/ontology/entity.yaml |
+| consolidated_macroeconomic | Mercado – Macro consolidada | historical | public | nao | não se aplica | — | ref_date | data/contracts/entities/consolidated_macroeconomic.schema.yaml; data/ontology/entity.yaml |
 
 ## Catálogo detalhado
 ### client_fiis_positions
@@ -1072,14 +1073,14 @@ Regra do Produto/Operação: document_number é transportado via payload.client_
 - entity_id: `consolidated_macroeconomic`
 - title: Mercado – Macro consolidada (fonte: data/entities/catalog.yaml)
 - kind: historical (fonte: data/entities/catalog.yaml)
-- Fonte(s): data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml; data/contracts/entities/consolidated_macroeconomic.schema.yaml; data/entities/catalog.yaml; data/ontology/entity.yaml
+- Fonte(s): data/contracts/entities/consolidated_macroeconomic.schema.yaml; data/entities/catalog.yaml; data/ontology/entity.yaml
 
 **Definição (o que é)**
 Histórico consolidado de indicadores macroeconômicos, índices de mercado e câmbio por data de referência.
-(fonte: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml)
+(fonte: data/contracts/entities/consolidated_macroeconomic.schema.yaml)
 
 **Finalidade (para que serve)**
-Atende ao(s) intent(s): consolidated_macroeconomic. (fonte: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml)
+Atende ao(s) intent(s): consolidated_macroeconomic. (fonte: data/contracts/entities/consolidated_macroeconomic.schema.yaml)
 
 **Campos / contratos (visão do testador)**
 - Schema: data/contracts/entities/consolidated_macroeconomic.schema.yaml
@@ -1089,11 +1090,15 @@ Atende ao(s) intent(s): consolidated_macroeconomic. (fonte: data/entities/consol
   - `selic`: taxa selic (quando disponível)
   - `cdi`: cdi (quando disponível)
   - `ifix_points`: pontos do IFIX (quando disponível)
+  - `ifix_var_pct`: variação percentual do IFIX (quando disponível)
   - `ibov_points`: pontos do IBOV (quando disponível)
+  - `ibov_var_pct`: variação percentual do IBOV (quando disponível)
   - `usd_buy_amt`: USD compra (quando disponível)
   - `usd_sell_amt`: USD venda (quando disponível)
+  - `usd_var_pct`: variação percentual USD (quando disponível)
   - `eur_buy_amt`: EUR compra (quando disponível)
   - `eur_sell_amt`: EUR venda (quando disponível)
+  - `eur_var_pct`: variação percentual EUR (quando disponível)
 
 **Exemplos reais de perguntas**
 - Pergunta: “Cenário macro atual: juros, inflação e câmbio estão favoráveis ou desfavoráveis para FIIs?”
@@ -1113,7 +1118,7 @@ Atende ao(s) intent(s): consolidated_macroeconomic. (fonte: data/entities/consol
   - expected_entity: consolidated_macroeconomic; expected_intent: consolidated_macroeconomic
 
 **Observações de teste**
-default_date_field: ref_date. Entidade marcada como não privada (private: false). (fonte: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml)
+default_date_field: ref_date. Entidade marcada como não privada (private: false). (fonte: data/contracts/entities/consolidated_macroeconomic.schema.yaml)
 
 ## Apêndice A — Inventário de fontes lidas
 - data/contracts/entities/client_fiis_dividends_evolution.schema.yaml
@@ -1144,7 +1149,6 @@ default_date_field: ref_date. Entidade marcada como não privada (private: false
 - data/entities/client_fiis_performance_vs_benchmark/client_fiis_performance_vs_benchmark.yaml
 - data/entities/client_fiis_performance_vs_benchmark_summary/client_fiis_performance_vs_benchmark_summary.yaml
 - data/entities/client_fiis_positions/client_fiis_positions.yaml
-- data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml
 - data/entities/fiis_dividends/fiis_dividends.yaml
 - data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml
 - data/entities/fiis_financials_revenue_schedule/fiis_financials_revenue_schedule.yaml

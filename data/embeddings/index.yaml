@@ -171,7 +171,7 @@ include:
     tags: [entities, fiis, private, performance, benchmark, summary, "entity:client_fiis_performance_vs_benchmark_summary"]
 
   - id: entity-macro-consolidada
-    path: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml
+    path: data/contracts/entities/consolidated_macroeconomic.schema.yaml
     tags: [entities, macro, market, indicators, "entity:consolidated_macroeconomic"]
 
   - id: entity-macro-consolidada-hints

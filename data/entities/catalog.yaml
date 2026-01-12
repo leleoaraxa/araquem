@@ -366,7 +366,7 @@ entities:
     title: Mercado – Macro consolidada
     kind: historical
     paths:
-      entity_yaml: data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml
+      entity_yaml: data/contracts/entities/consolidated_macroeconomic.schema.yaml
       schema: data/contracts/entities/consolidated_macroeconomic.schema.yaml
       quality_projection: data/ops/quality/projection_consolidated_macroeconomic.json
     coverage:
