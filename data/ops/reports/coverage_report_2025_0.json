@@ -1456,7 +1456,7 @@
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml"
+          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
         },
         "schema": {
           "exists": true,
