@@ -442,6 +442,9 @@ O build step deve falhar (sem escrever output) se ocorrer qualquer um:
 * [ ] `name` vazio → erro.
 * [ ] Glossário com valor não-string → erro.
 * [ ] Arquivo fora do índice → erro.
+* [ ] `aliases` presente e não-array → erro.
+* [ ] `domain` ausente no índice → erro.
+* [ ] `domain` fora do conjunto permitido pelo índice (`catalog.yaml`) → erro.
 
 **Falhas comuns a barrar**
 
