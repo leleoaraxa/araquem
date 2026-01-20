@@ -49,11 +49,12 @@ routing:
   - consolidated_macroeconomic
   allow_intents: []
   notes: >
-    RAG é ativado somente para domínios textuais do Bucket D.
+    RAG é ativado somente para entidades textuais elegíveis do Bucket D
+    (ex.: concepts_catalog).
     Buckets A, B e C permanecem puramente SQL; dados numéricos
     continuam sem RAG. Já existe entidade textual elegível e
     configurada (concepts_catalog) no Bucket D, então o RAG
-    está disponível para esses domínios, enquanto intents
+    está disponível para essas entidades, enquanto intents
     específicas adicionais seguem opcionais.
 rerank:
   default:
