@@ -29,6 +29,13 @@ DEFAULT_JSONL = (
 DEFAULT_CSV = (
     REPO_ROOT / "data" / "entities" / "concepts_catalog" / "concepts_catalog.csv"
 )
+DEFAULT_MD = (
+    REPO_ROOT
+    / "data"
+    / "entities"
+    / "concepts_catalog"
+    / "concepts_catalog_embeddings.md"
+)
 
 SCHEMA_COLUMNS = [
     "concept_id",
@@ -389,6 +396,46 @@ def _write_csv(rows: Iterable[Dict[str, Any]], path: Path) -> None:
             writer.writerow(record)
 
 
+def _clean_text(value: Optional[Any]) -> str:
+    if value is None:
+        return ""
+    if not isinstance(value, str):
+        raise ValueError("Valor não-string fornecido para serialização textual.")
+    return re.sub(r"\s+", " ", value).strip()
+
+
+def _format_aliases(aliases: Any) -> str:
+    if not aliases:
+        return ""
+    if not isinstance(aliases, list):
+        raise ValueError("aliases presente e não-array.")
+    for item in aliases:
+        if not isinstance(item, str):
+            raise ValueError("aliases contém item não-string.")
+    return "; ".join(_clean_text(item) for item in aliases if item.strip())
+
+
+def _write_md(rows: Iterable[Dict[str, Any]], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        for idx, row in enumerate(rows):
+            if idx:
+                handle.write("\n")
+            handle.write(f"concept_id: {_clean_text(row.get('concept_id'))}\n")
+            handle.write(f"domain: {_clean_text(row.get('domain'))}\n")
+            handle.write(f"section: {_clean_text(row.get('section'))}\n")
+            handle.write(f"concept_type: {_clean_text(row.get('concept_type'))}\n")
+            handle.write(f"name: {_clean_text(row.get('name'))}\n")
+            handle.write(f"description: {_clean_text(row.get('description'))}\n")
+            handle.write(f"aliases: {_format_aliases(row.get('aliases'))}\n")
+            handle.write(f"details_md: {_clean_text(row.get('details_md'))}\n")
+            source_file = _clean_text(row.get("source_file"))
+            source_path = _clean_text(row.get("source_path"))
+            handle.write(f"source_file: {source_file}\n")
+            handle.write(f"source_path: {source_path}\n")
+            handle.write(f"version: {_clean_text(row.get('version'))}\n")
+
+
 def build_catalog(
     catalog_entries: List[CatalogEntry],
     version: str,
@@ -447,6 +494,7 @@ def main() -> int:
     parser.add_argument("--catalog", default=str(CATALOG_PATH))
     parser.add_argument("--out-jsonl", default=str(DEFAULT_JSONL))
     parser.add_argument("--out-csv", default=str(DEFAULT_CSV))
+    parser.add_argument("--out-md", default=str(DEFAULT_MD))
     args = parser.parse_args()
 
     version = _load_build_id()
@@ -464,6 +512,7 @@ def main() -> int:
     serialized = [_serialize_row(r) for r in rows]
     _write_jsonl(serialized, Path(args.out_jsonl))
     _write_csv(serialized, Path(args.out_csv))
+    _write_md(serialized, Path(args.out_md))
     return 0
 
 
