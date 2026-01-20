@@ -1,0 +1,46 @@
+entity: concepts_catalog
+name: concepts_catalog
+description: Catálogo de conceitos com termos, tipos e descrições por domínio.
+kind: view
+version: 1
+
+columns:
+  - { name: concept_id,   type: string, nullable: false, desc: "identificador único do conceito." }
+  - { name: domain,       type: string, nullable: false, desc: "domínio principal do conceito." }
+  - { name: section,      type: string, nullable: true,  desc: "seção ou subdivisão do domínio." }
+  - { name: concept_type, type: string, nullable: false, desc: "tipo do conceito." }
+  - { name: name,         type: string, nullable: false, desc: "nome do conceito." }
+  - { name: description,  type: string, nullable: true,  desc: "descrição resumida do conceito." }
+  - { name: aliases,      type: json,   nullable: false, desc: "lista de aliases do conceito." }
+  - { name: details_md,   type: string, nullable: true,  desc: "detalhes do conceito em markdown." }
+  - { name: details_json, type: jsonb,  nullable: true,  desc: "detalhes estruturados do conceito." }
+  - { name: source_file,  type: string, nullable: false, desc: "arquivo fonte do conceito." }
+  - { name: source_path,  type: string, nullable: false, desc: "caminho do arquivo fonte do conceito." }
+  - { name: version,      type: string, nullable: false, desc: "versão do bundle (YYYYMMDDHHMM)." }
+
+ordering: [domain, name]
+
+presentation:
+  columns:
+    concept_id:   { as: string }
+    domain:       { as: string }
+    section:      { as: string }
+    concept_type: { as: string }
+    name:         { as: string }
+    description:  { as: string }
+    aliases:      { as: string }
+    details_md:   { as: string }
+    details_json: { as: string }
+    source_file:  { as: string }
+    source_path:  { as: string }
+    version:      { as: string }
+  rules: {}
+
+sample_questions:
+  - "lista de conceitos do catálogo"
+  - "conceitos do domínio macro"
+
+tolerance:
+  extra_columns_allowed: false
+  missing_columns_allowed: false
+  nullable_mismatch_warn_only: false
