@@ -348,3 +348,201 @@ O build step deve falhar (sem escrever output) se ocorrer qualquer um:
      * `docs/ARAQUEM_COVERAGE_MATRIX.md`, `docs/dev/ENTITIES_INVENTORY_2025.md`, `docs/qa/GUIA_ENTIDADES_ARAQUEM.md`, etc.
      * `reports/entities/*` (validação pós-integração)
    * Objetivo: fechar documentação e rastreabilidade.
+
+
+
+---
+
+# CHECKLIST DE REVISÃO DE PR — `concepts_catalog`
+
+> **Regra geral (vale para todos os PRs)**
+>
+> * ❌ Nenhum hardcode sem fonte declarativa (YAML/ontologia/policies).
+> * ❌ Nenhuma heurística sem contrato explícito.
+> * ✅ Diferenças pequenas, auditáveis e alinhadas ao roadmap.
+> * ✅ Diferença “explicável”: todo campo novo sabe de onde vem e para que existe.
+
+---
+
+## PR1 — Contratos + entidade base + template
+
+### 1. Schema (`data/contracts/entities/concepts_catalog.schema.yaml`)
+
+**Revisar no diff:**
+
+* [ ] Campos **exatamente** os definidos no roadmap (sem extras “por conveniência”).
+* [ ] `tolerance` **restritiva** (extras/faltantes proibidos).
+* [ ] `concept_id` e `version` marcados como **NOT NULL**.
+* [ ] `section`, `description`, `details_md`, `details_json` **nullable** (conforme delta).
+* [ ] Tipos coerentes (`string` vs `json` vs `jsonb`), sem ambiguidade.
+
+**Falhas comuns a barrar**
+
+* Coluna adicionada “porque pode ser útil”.
+* `section` forçada como NOT NULL sem regra determinística.
+* Campos implícitos (ex.: `created_at`) sem padrão global no projeto.
+
+---
+
+### 2. Entity YAML (`data/entities/concepts_catalog/concepts_catalog.yaml`)
+
+**Revisar no diff:**
+
+* [ ] `id` correto: `concepts_catalog`.
+* [ ] `result_key` consistente com o schema.
+* [ ] `sql_view` presente (mesmo que placeholder).
+* [ ] `presentation` define colunas **existentes no schema**.
+* [ ] `ask` mínimo: intents conservadores, **sem tuning agressivo**.
+* [ ] Ordenação padrão definida (ex.: `domain`, `section`, `name`).
+
+**Falhas comuns a barrar**
+
+* `ask` muito permissivo (colide com entidades factuais).
+* Coluna referenciada no template que não existe no schema.
+* Dependência implícita de LLM.
+
+---
+
+### 3. Templates / responses
+
+**Revisar no diff:**
+
+* [ ] Template table-kind renderiza com **0 linhas**, **1 linha** e **N linhas**.
+* [ ] Sem lógica condicional complexa (somente apresentação).
+* [ ] `details_md`/`details_json` exibidos **somente** quando presentes.
+
+**Falhas comuns a barrar**
+
+* Template tentando “interpretar” conteúdo.
+* Condicionais que mudam semântica da resposta.
+
+---
+
+## PR2 — Pipeline determinístico (YAML → linhas)
+
+### 4. Conversão / build step
+
+**Revisar no diff:**
+
+* [ ] Fonte de verdade explícita: leitura de `data/concepts/catalog.yaml`.
+* [ ] Padrões suportados **apenas** os definidos (A, B e C-MVP).
+* [ ] `concept_id` gerado por slug determinístico (sem exceções).
+* [ ] `source_file` e `source_path` preenchidos **para todas as linhas**.
+* [ ] `aliases` sempre normalizado para array.
+* [ ] `version` vindo de fonte única (build/bundle), não hardcoded.
+
+**Validações obrigatórias (fail-closed)**
+
+* [ ] Duplicidade (`concept_id`, `version`) → erro.
+* [ ] `name` vazio → erro.
+* [ ] Glossário com valor não-string → erro.
+* [ ] Arquivo fora do índice → erro.
+
+**Falhas comuns a barrar**
+
+* `try/except` que ignora erro e continua.
+* Inferência semântica (“se não tem section, assume X”).
+* Transformação silenciosa de dados inválidos.
+
+---
+
+## PR3 — Quality suites + thresholds
+
+### 5. Suites (`concepts_catalog_suite.json`)
+
+**Revisar no diff:**
+
+* [ ] Perguntas cobrem: domínio, seção, definição.
+* [ ] Expectativas apontam **explicitamente** para `concepts_catalog`.
+* [ ] Não dependem de ordem aleatória de linhas.
+
+### 6. SQL-only suite (se aplicável)
+
+* [ ] Nenhuma expectativa depende de LLM/narrator.
+* [ ] Suite falha se coluna obrigatória faltar.
+
+### 7. Thresholds / samples
+
+* [ ] Thresholds alinhados a entidades snapshot (não relaxados).
+* [ ] Samples adicionados **sem remover** cobertura existente.
+
+**Falhas comuns a barrar**
+
+* Suite “fraca” que sempre passa.
+* Ajuste de threshold para “fazer passar”.
+
+---
+
+## PR4 — Ontologia + policies + colisões
+
+### 8. Ontologia (`data/ontology/entity.yaml`)
+
+**Revisar no diff:**
+
+* [ ] Intent claramente conceitual (ex.: “conceitos”, “glossário”).
+* [ ] Tokens/phrases **não colidem** com entidades factuais.
+* [ ] `anti_tokens` explícitos para termos ambíguos.
+
+### 9. Policies
+
+**Cache**
+
+* [ ] TTL compatível com conteúdo estático.
+* [ ] `key_fields` compatíveis com (`concept_id`, `version`).
+
+**Narrator**
+
+* [ ] `llm_enabled=false` por padrão.
+
+**RAG**
+
+* [ ] Negado por padrão (SQL-only), salvo justificativa explícita.
+
+**Quality**
+
+* [ ] `not_null` aplicado às chaves e campos essenciais.
+
+### 10. Colisões
+
+* [ ] `scripts/ontology/audit_collisions.py` rodado.
+* [ ] `collision_report` sem regressões não justificadas.
+
+**Falhas comuns a barrar**
+
+* Ajuste de tokens sem atualizar anti_tokens.
+* Ativar RAG “porque é texto”.
+
+---
+
+## PR5 — Docs, cobertura e observabilidade
+
+### 11. Documentação
+
+**Revisar no diff:**
+
+* [ ] Entidade aparece no inventário e coverage matrix.
+* [ ] Doc da entidade (se existir) descreve **o contrato**, não implementação.
+
+### 12. Relatórios
+
+* [ ] `entities_surface_report` inclui `concepts_catalog`.
+* [ ] `entities_usage_report` não mostra regressões inesperadas.
+
+**Falhas comuns a barrar**
+
+* Doc desalinhada do código.
+* Atualizar docs sem evidência nos relatórios.
+
+---
+
+## Checklist final de aprovação (gate)
+
+Antes de aprovar **qualquer PR**:
+
+* [ ] PR respeita a ordem (não pula etapa).
+* [ ] Tudo que está no diff está coberto por checklist.
+* [ ] Não há lógica “escondida” fora de YAML/ontologia/policies.
+* [ ] Dado gerado é reproduzível e auditável.
+* [ ] O PR pode ser revertido isoladamente sem quebrar o pipeline.
+
+---
