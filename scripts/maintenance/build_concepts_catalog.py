@@ -396,15 +396,18 @@ def _write_csv(rows: Iterable[Dict[str, Any]], path: Path) -> None:
             writer.writerow(record)
 
 
-def _clean_text(value: Optional[Any]) -> str:
+def _clean_text(value: Optional[Any], concept_id: Any, field: str) -> str:
     if value is None:
         return ""
     if not isinstance(value, str):
-        raise ValueError("Valor não-string fornecido para serialização textual.")
+        raise ValueError(
+            "Valor não-string fornecido para serialização textual "
+            f"(concept_id={concept_id} field={field})."
+        )
     return re.sub(r"\s+", " ", value).strip()
 
 
-def _format_aliases(aliases: Any) -> str:
+def _format_aliases(aliases: Any, concept_id: Any) -> str:
     if not aliases:
         return ""
     if not isinstance(aliases, list):
@@ -412,7 +415,9 @@ def _format_aliases(aliases: Any) -> str:
     for item in aliases:
         if not isinstance(item, str):
             raise ValueError("aliases contém item não-string.")
-    return "; ".join(_clean_text(item) for item in aliases if item.strip())
+    return "; ".join(
+        _clean_text(item, concept_id, "aliases") for item in aliases if item.strip()
+    )
 
 
 def _write_md(rows: Iterable[Dict[str, Any]], path: Path) -> None:
@@ -421,19 +426,29 @@ def _write_md(rows: Iterable[Dict[str, Any]], path: Path) -> None:
         for idx, row in enumerate(rows):
             if idx:
                 handle.write("\n")
-            handle.write(f"concept_id: {_clean_text(row.get('concept_id'))}\n")
-            handle.write(f"domain: {_clean_text(row.get('domain'))}\n")
-            handle.write(f"section: {_clean_text(row.get('section'))}\n")
-            handle.write(f"concept_type: {_clean_text(row.get('concept_type'))}\n")
-            handle.write(f"name: {_clean_text(row.get('name'))}\n")
-            handle.write(f"description: {_clean_text(row.get('description'))}\n")
-            handle.write(f"aliases: {_format_aliases(row.get('aliases'))}\n")
-            handle.write(f"details_md: {_clean_text(row.get('details_md'))}\n")
-            source_file = _clean_text(row.get("source_file"))
-            source_path = _clean_text(row.get("source_path"))
+            concept_id_value = row.get("concept_id")
+            concept_id = _clean_text(concept_id_value, concept_id_value, "concept_id")
+            handle.write(f"concept_id: {concept_id}\n")
+            handle.write(f"domain: {_clean_text(row.get('domain'), concept_id, 'domain')}\n")
+            handle.write(f"section: {_clean_text(row.get('section'), concept_id, 'section')}\n")
+            handle.write(
+                f"concept_type: {_clean_text(row.get('concept_type'), concept_id, 'concept_type')}\n"
+            )
+            handle.write(f"name: {_clean_text(row.get('name'), concept_id, 'name')}\n")
+            handle.write(
+                f"description: {_clean_text(row.get('description'), concept_id, 'description')}\n"
+            )
+            handle.write(
+                f"aliases: {_format_aliases(row.get('aliases'), concept_id)}\n"
+            )
+            handle.write(
+                f"details_md: {_clean_text(row.get('details_md'), concept_id, 'details_md')}\n"
+            )
+            source_file = _clean_text(row.get("source_file"), concept_id, "source_file")
+            source_path = _clean_text(row.get("source_path"), concept_id, "source_path")
             handle.write(f"source_file: {source_file}\n")
             handle.write(f"source_path: {source_path}\n")
-            handle.write(f"version: {_clean_text(row.get('version'))}\n")
+            handle.write(f"version: {_clean_text(row.get('version'), concept_id, 'version')}\n")
 
 
 def build_catalog(

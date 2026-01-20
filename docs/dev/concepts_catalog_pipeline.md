@@ -1,6 +1,7 @@
 # Concepts Catalog Pipeline
 
 1. Defina a variável de ambiente `BUILD_ID` para identificar a versão do build.
+   Se `BUILD_ID` não estiver definida, o script falha por design (fail-closed).
 2. Execute o gerador do catálogo para produzir os artefatos determinísticos.
 3. Em seguida, rode o refresh existente de embeddings/RAG do projeto.
 
