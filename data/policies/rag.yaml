@@ -51,10 +51,10 @@ routing:
   notes: >
     RAG é ativado somente para domínios textuais do Bucket D.
     Buckets A, B e C permanecem puramente SQL; dados numéricos
-    continuam sem RAG. No estado atual ainda não há intents
-    específicas configuradas para o Bucket D, então o RAG
-    permanece efetivamente desligado (rerank desabilitado) até
-    criarmos intents ou entidades textuais elegíveis.
+    continuam sem RAG. Já existe entidade textual elegível e
+    configurada (concepts_catalog) no Bucket D, então o RAG
+    está disponível para esses domínios, enquanto intents
+    específicas adicionais seguem opcionais.
 rerank:
   default:
     enabled: false

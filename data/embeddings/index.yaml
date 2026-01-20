@@ -24,6 +24,10 @@ include:
     path: data/entities/concepts_catalog/concepts_catalog.jsonl
     tags: [concepts, catalog, entities, "entity:concepts_catalog"]
 
+  - id: concepts-catalog-embeddings
+    path: data/entities/concepts_catalog/concepts_catalog_embeddings.md
+    tags: [concepts, catalog, embeddings, "entity:concepts_catalog"]
+
   - id: concepts-fiis
     path: data/concepts/concepts-fiis.yaml
     tags: [concepts, fiis]
