@@ -1,0 +1,17 @@
+{% set rows = rows if rows is defined else [] %}
+{# Só hidrata rows via results se rows estiver vazio (rewrite_only-safe) #}
+{% if (not rows) and results is defined and meta is defined and meta.result_key is defined and (meta.result_key in results) %}
+  {% set rows = results[meta.result_key] %}
+{% endif %}
+
+{% if rows and rows|length > 0 -%}
+  **Catálogo de conceitos**
+
+  | Domínio | Seção | Nome | Tipo | Descrição |
+  | --- | --- | --- | --- | --- |
+  {% for r in rows %}
+  | {{ r.domain if r.domain is not none else '-' }} | {{ r.section if r.section is not none else '-' }} | {{ r.name if r.name is not none else '-' }} | {{ r.concept_type if r.concept_type is not none else '-' }} | {{ r.description if r.description is not none else '-' }} |
+  {% endfor %}
+{%- else -%}
+  {{ empty_message or "Nenhum registro encontrado." }}
+{%- endif %}
