@@ -152,84 +152,124 @@ O build step deve falhar (sem escrever output) se ocorrer qualquer um:
 
 ---
 
-## 4. Checklist executável (passos numerados)
+## 4. Checklist executável (alinhado aos PRs)
 
-> Cada passo lista os **arquivos envolvidos** e o tipo de alteração esperada. **Não executar agora.**
+> Este checklist segue estritamente a sequência PR1 → PR5.
+> Cada item indica **arquivos a criar** e **arquivos a tocar depois** (*to-change later*).
+> **Nenhuma alteração deve ser feita fora da PR correspondente.**
 
-1) **Definir contrato e entidade**
-   - **Arquivos envolvidos (criar):**
-     - `data/contracts/entities/concepts_catalog.schema.yaml`
-     - `data/entities/concepts_catalog/concepts_catalog.yaml`
-     - `data/entities/concepts_catalog/hints.md` (se for desejado para RAG/planner)
-     - `data/entities/concepts_catalog/templates.md` + `data/entities/concepts_catalog/responses/*.md.j2` (se for padrão de resposta)
-   - **Checklist:**
-     - [ ] Schema com colunas mínimas e `tolerance` restritiva.
-     - [ ] Entity YAML com `id`, `result_key`, `sql_view`, `ask` (intents/keywords/synonyms), `presentation`.
+---
 
-2) **Registrar a entidade no catálogo e ontologia**
-   - **Arquivos envolvidos (to-change later):**
-     - `data/entities/catalog.yaml`
-     - `data/ontology/entity.yaml`
-     - `data/ontology/ontology_manifest.yaml`
-   - **Checklist:**
-     - [ ] Adicionar `concepts_catalog` no catálogo (paths + coverage).
-     - [ ] Adicionar intent com tokens/phrases/anti_tokens (sem não-ASCII, sem duplicatas).
-     - [ ] Re-gerar hashes no manifesto (via `scripts/ontology/validate_and_hash.py`).
+### PR1 — Contratos + entidade base + template
 
-3) **Policies (cache/context/narrator/rag/quality)**
-   - **Arquivos envolvidos (to-change later):**
-     - `data/policies/cache.yaml`
-     - `data/policies/context.yaml`
-     - `data/policies/narrator.yaml`
-     - `data/policies/rag.yaml`
-     - `data/policies/quality.yaml`
-   - **Checklist:**
-     - [ ] Cache com TTL e `key_fields` compatíveis com a chave natural.
-     - [ ] Contexto: definir se pode herdar entidade/ticker (provável **não**).
-     - [ ] Narrator: manter `llm_enabled=false` se SQL-only.
-     - [ ] RAG: negar intent se for determinístico; permitir somente se houver coleção textual.
-     - [ ] Quality: adicionar `not_null` para chaves e campos essenciais.
+**Criar**
 
-4) **Ops/Planner/Quality suites**
-   - **Arquivos envolvidos (criar):**
-     - `data/ops/quality/payloads/concepts_catalog_suite.json`
-     - `data/ops/quality/payloads/entities_sqlonly/concepts_catalog_suite.json` (se SQL-only)
-     - `data/ops/quality/projection_concepts_catalog.json` (se houver projection)
-   - **Arquivos envolvidos (to-change later):**
-     - `data/ops/planner_thresholds.yaml`
-     - `data/ops/quality/routing_samples.json`
-     - `data/ops/quality_experimental/planner_rag_integration.json` (se for relevante)
-   - **Checklist:**
-     - [ ] Suite cobre perguntas de catálogo, domínio, seção, definição.
-     - [ ] Projection valida `must_have_columns`.
-     - [ ] Thresholds definidos por analogia com entidades snapshot.
+* `data/contracts/entities/concepts_catalog.schema.yaml`
+* `data/entities/concepts_catalog/concepts_catalog.yaml`
+* `data/entities/concepts_catalog/hints.md` *(se padrão do repo exigir)*
+* Templates/responses table-kind (ex.: `responses/table.md.j2`, `responses/empty.md.j2`, se aplicável)
 
-5) **Roteamento e colisões**
-   - **Arquivos envolvidos (to-change later):**
-     - `data/ontology/entity.yaml`
-     - `reports/ontology/collision_report.json`
-     - `scripts/ontology/audit_collisions.py`
-   - **Checklist:**
-     - [ ] Rodar auditoria de colisões após definir tokens/phrases.
-     - [ ] Adicionar anti_tokens para evitar conflito com entidades factuais.
+**Checklist**
 
-6) **Docs e inventários**
-   - **Arquivos envolvidos (to-change later):**
-     - `docs/dev/ENTITIES_INVENTORY_2025.md`
-     - `docs/ARAQUEM_COVERAGE_MATRIX.md`
-     - `docs/dev/mapa_uso_entidades.md`
-     - `docs/qa/GUIA_ENTIDADES_ARAQUEM.md`
-     - `docs/dev/entities/concepts_catalog.md` (apenas se padrão para novas entidades)
-   - **Checklist:**
-     - [ ] Registrar entidade no inventário e mapa de cobertura.
-     - [ ] Atualizar guia QA com exemplos e paths.
+* [ ] Schema com colunas mínimas (ver Seção 3.2) e `tolerance` restritiva (sem extras/faltas).
+* [ ] Chave natural definida como (`concept_id`, `version`).
+* [ ] Entity YAML com `id`, `result_key`, `sql_view` (placeholder), `presentation` e `ask` **mínimo** (sem tuning fino).
+* [ ] Template table-kind renderiza colunas básicas (`domain`, `section`, `name`, `concept_type`, `description`) sem erro.
 
-7) **Observabilidade e relatórios**
-   - **Arquivos envolvidos (to-change later):**
-     - `reports/entities/entities_surface_report.json`
-     - `reports/entities/entities_usage_report.json`
-   - **Checklist:**
-     - [ ] Validar presença da entidade nos relatórios após integração.
+---
+
+### PR2 — Pipeline determinístico de conversão (YAML → linhas)
+
+**Criar**
+
+* Script/build step de conversão de `data/concepts/catalog.yaml` + `data/concepts/*.yaml` em registros `concepts_catalog` (view/tabela/artefato derivado conforme padrão do repo).
+
+**Checklist**
+
+* [ ] Conversão implementa **apenas** os padrões definidos na Seção 3.3 (A, B e C-MVP).
+* [ ] `concept_id` gerado por slug determinístico (sem heurísticas).
+* [ ] `source_file` e `source_path` preenchidos para **todas** as linhas.
+* [ ] Validações **fail-closed**:
+
+  * duplicidade (`concept_id`, `version`)
+  * `name` vazio
+  * glossário com valor não-string
+  * `domain` ausente no índice
+* [ ] Output estável e reproduzível (mesmo input → mesmo output).
+
+---
+
+### PR3 — Quality suites + thresholds + amostras de roteamento
+
+**Criar**
+
+* `data/ops/quality/payloads/concepts_catalog_suite.json`
+* `data/ops/quality/payloads/entities_sqlonly/concepts_catalog_suite.json` *(se SQL-only)*
+* `data/ops/quality/projection_concepts_catalog.json` *(se padrão exigir projection)*
+
+**To-change later**
+
+* `data/ops/planner_thresholds.yaml`
+* `data/ops/quality/routing_samples.json`
+
+**Checklist**
+
+* [ ] Suite cobre perguntas por **domínio**, **seção** e **definição**.
+* [ ] Projection (se existir) valida `must_have_columns` mínimos.
+* [ ] Thresholds definidos por analogia com entidades snapshot (sem relaxar gates).
+* [ ] Suites passam localmente contra o output do PR2.
+
+---
+
+### PR4 — Ontologia + policies + colisões
+
+**To-change later**
+
+* `data/entities/catalog.yaml`
+* `data/ontology/entity.yaml`
+* `data/ontology/ontology_manifest.yaml`
+* `data/policies/cache.yaml`
+* `data/policies/context.yaml`
+* `data/policies/narrator.yaml`
+* `data/policies/rag.yaml`
+* `data/policies/quality.yaml`
+
+**Checklist**
+
+* [ ] Entidade registrada no catálogo com coverage correto.
+* [ ] Intent/entidade adicionada na ontologia com tokens/phrases **conservadores**.
+* [ ] `anti_tokens` definidos para evitar colisão com entidades factuais.
+* [ ] `llm_enabled=false` por padrão (SQL-only).
+* [ ] Cache configurado com TTL e `key_fields` compatíveis com a chave natural.
+* [ ] Auditoria de colisões rodada (`scripts/ontology/audit_collisions.py`) sem regressões.
+* [ ] Manifesto de ontologia atualizado via `scripts/ontology/validate_and_hash.py`.
+
+---
+
+### PR5 — Docs, cobertura e observabilidade
+
+**To-change later**
+
+* `docs/ARAQUEM_COVERAGE_MATRIX.md`
+* `docs/dev/ENTITIES_INVENTORY_2025.md`
+* `docs/dev/mapa_uso_entidades.md`
+* `docs/qa/GUIA_ENTIDADES_ARAQUEM.md`
+* `docs/dev/entities/concepts_catalog.md` *(somente se padrão do repo exigir)*
+
+**Checklist**
+
+* [ ] Entidade aparece na matriz de cobertura e no inventário.
+* [ ] Guia QA inclui exemplos reais de perguntas para `concepts_catalog`.
+* [ ] Relatórios de superfície/uso (`reports/entities/*`) refletem a nova entidade.
+* [ ] Nenhuma regressão detectada nos relatórios de ontologia ou planner.
+
+---
+
+### Regra de ouro (governança)
+
+* **Nunca** pular PRs.
+* Ontologia/policies **só entram após** existir output + suites passando.
+* Qualquer mudança fora do checklist invalida o PR.
 
 ---
 
