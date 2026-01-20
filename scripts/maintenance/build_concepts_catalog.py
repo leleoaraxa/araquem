@@ -144,7 +144,7 @@ def _normalize_aliases(aliases: Any) -> List[Any]:
     if aliases is None:
         return []
     if not isinstance(aliases, list):
-        raise ValueError(f"aliases presente e não-array (concept_id={concept_id}).")
+        raise ValueError("aliases presente e não-array.")
     for idx, item in enumerate(aliases):
         if not isinstance(item, str):
             raise ValueError(f"aliases[{idx}] inválido (esperado string).")
@@ -363,7 +363,7 @@ def _validate_row(row: Dict[str, Any]) -> None:
         raise ValueError("name ausente ou vazio.")
     aliases = row.get("aliases")
     if not isinstance(aliases, list):
-        raise ValueError(f"aliases presente e não-array (concept_id={concept_id}).")
+        raise ValueError("aliases presente e não-array.")
 
 
 def _serialize_row(row: Dict[str, Any]) -> Dict[str, Any]:
