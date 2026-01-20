@@ -53,7 +53,7 @@ Este roadmap define como introduzir a entidade **`concepts_catalog`** no Araquem
 * **Kind no catálogo (`data/entities/catalog.yaml`):** usar o tipo existente no projeto que melhor represente “derivado/estático”.
 
   * Se o catálogo só suportar `snapshot/view`, usar `snapshot` **com nota explícita**: `source=repo-yaml`.
-* **Schema kind:** `view` (seguindo o padrão de `fiis_rankings.schema.yaml`) **desde que** exista uma `sql_view` exposta como `concepts_catalog` (pode ser view ou tabela).
+* **Schema kind:** `view` (padrão do repositório para entidades SQL), independentemente de a origem ser view ou tabela; o requisito é haver uma relation consultável indicada por `sql_view`.
 * **Fonte de verdade:** `data/concepts/catalog.yaml` (índice) + `data/concepts/*.yaml` (conteúdo).
 
 ### 3.2 Chave natural e colunas mínimas (contrato)
@@ -77,7 +77,7 @@ Este roadmap define como introduzir a entidade **`concepts_catalog`** no Araquem
 * `details_json` (jsonb, **NULLABLE**) — payload estruturado preservado (métricas, blocos, etc.).
 * `source_file` (string, **NOT NULL**) — origem (ex.: `data/concepts/concepts-risk.yaml`).
 * `source_path` (string, **NOT NULL**) — ponteiro determinístico no YAML (ex.: `terms[3]`, `sections.identidade.concepts.ticker`).
-* `version` (string ou int conforme padrão do repositório, **NOT NULL**) — versão do build/bundle que gerou o catálogo.
+* `version` (string, **NOT NULL**) — bundle_id/build_id canônico do projeto (ex.: YYYYMMDDHHMM), usado para auditoria e cache.
 
 **Invariantes de contrato (obrigatórios):**
 
@@ -108,6 +108,7 @@ A entidade `concepts_catalog` é derivada via um **build step determinístico** 
   * `description=item.description` (opcional)
   * `aliases=item.aliases || []`
   * `section=item.section || NULL` (somente se existir no YAML; sem inferência)
+  * Se `section` não existir no item, deve permanecer `NULL` (não preencher valores default/root no MVP).
   * `source_path="terms[i]"`
 
 **Padrão B — Glossário de campos por seção (`sections.<sec>.concepts.<field> = "<desc>"`)**
@@ -140,9 +141,11 @@ O build step deve falhar (sem escrever output) se ocorrer qualquer um:
 
 * Duplicidade de (`concept_id`, `version`)
 * `name` ausente/vazio
+* `aliases` presente e não-array
 * No padrão B, valor do glossário não é string
 * `source_file`/`source_path` ausentes
 * `domain` ausente no índice (`catalog.yaml`) para o arquivo
+* `domain` fora do conjunto permitido pelo índice (`catalog.yaml`)
 
 ### 3.4 Exemplos de perguntas (para roteamento)
 - “Quais conceitos existem na seção Rankings e Popularidade?”
