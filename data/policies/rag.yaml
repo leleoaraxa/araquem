@@ -63,6 +63,12 @@ rerank:
   domains: {}
 rag:
   entities:
+    concepts_catalog:
+      profile: default
+      collections:
+      - concepts-catalog-entity
+      max_chunks: 6
+      min_score: 0.2
     history_market_indicators:
       profile: macro
       collections:

@@ -36,7 +36,8 @@ buckets:
     - history_b3_indexes
     - history_currency_rates
     - consolidated_macroeconomic
-  D: []
+  D:
+    - concepts_catalog
 
 intents:
   - name: ticker_query
@@ -3020,6 +3021,37 @@ intents:
         - longo prazo
     entities:
       - consolidated_macroeconomic
+
+  - name: concepts_catalog
+    bucket: D
+    weight: 1.6
+    options:
+      ignore_tickers: true
+    tokens:
+      include:
+        - conceito
+        - conceitos
+        - glossario
+        - glossario de termos
+        - catalogo
+        - catalogo de conceitos
+        - dicionario
+        - dicionario de termos
+        - terminologia
+        - termos
+        - definicao
+        - definicoes
+      exclude:
+        - ticker
+        - cotacao
+        - preco
+        - rendimento
+        - dividendo
+        - performance
+        - carteira
+        - dados da carteira
+    entities:
+      - concepts_catalog
 
 anti_tokens:
   generic:
