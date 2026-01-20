@@ -47,36 +47,102 @@ Este roadmap define como introduzir a entidade **`concepts_catalog`** no Araquem
 
 ## 3. Especificação da entidade `concepts_catalog`
 
-### 3.1 Tipo esperado
-- **Kind sugerido:** `snapshot` no catálogo (`data/entities/catalog.yaml`) para alinhar com entidades D-1/estáticas. 
-- **Schema kind:** `view` (seguindo `fiis_rankings.schema.yaml`) se a entidade for exposta via view SQL. 
-- **Fonte de verdade:** catálogo de conceitos declarativo (`data/concepts/catalog.yaml` + `data/concepts/*.yaml`).
+### 3.1 Tipo esperado e natureza dos dados
+
+* **Natureza:** entidade **derivada de YAML do repositório** (conteúdo editorial/governado), não D-1.
+* **Kind no catálogo (`data/entities/catalog.yaml`):** usar o tipo existente no projeto que melhor represente “derivado/estático”.
+
+  * Se o catálogo só suportar `snapshot/view`, usar `snapshot` **com nota explícita**: `source=repo-yaml`.
+* **Schema kind:** `view` (seguindo o padrão de `fiis_rankings.schema.yaml`) **desde que** exista uma `sql_view` exposta como `concepts_catalog` (pode ser view ou tabela).
+* **Fonte de verdade:** `data/concepts/catalog.yaml` (índice) + `data/concepts/*.yaml` (conteúdo).
 
 ### 3.2 Chave natural e colunas mínimas (contrato)
-**Chave natural (sugerida):**
-- `concept_id` + `domain` + `version` **ou** `concept_id` + `domain` + `source_file`.
 
-**Colunas mínimas recomendadas (placeholder, sem SQL real):**
-- `concept_id` (string, não nulo) — ID estável do conceito.
-- `domain` (string, não nulo) — domínio (ex.: fiis, macro, risk, carteira).
-- `section` (string, não nulo) — seção do catálogo (ex.: “Rankings e Popularidade”).
-- `concept_type` (string, não nulo) — tipo do conceito (definição, métrica, processo, risco, etc.).
-- `name` (string, não nulo) — título curto do conceito.
-- `description` (string, não nulo) — descrição resumida.
-- `source_file` (string, não nulo) — arquivo de origem (ex.: `data/concepts/concepts-fiis.yaml`).
-- `source_path` (string, não nulo) — path completo do item no YAML (para auditabilidade).
-- `version` (string, não nulo) — versão do catálogo/geração.
-- `created_at` / `updated_at` (datetime, não nulo) — timestamps de geração (se padrão da entidade).
+**Chave natural (fixar, sem ambiguidade):**
 
-**Contrato esperado (placeholder):**
-- `concept_id` deve ser único dentro de (`domain`, `version`).
-- `source_file`/`source_path` devem permitir rastrear 1:1 com `data/concepts/*.yaml`.
-- `tolerance` deve proibir colunas extras/faltantes (como `fiis_rankings`).
+* `concept_id` + `version` (PK lógico / natural key)
 
-### 3.3 Conexão com `data/concepts/catalog.yaml`
-- O pipeline **não deve usar heurísticas**: a fonte de verdade deve ser o YAML (`data/concepts/catalog.yaml` + `data/concepts/*.yaml`).
-- O build step deve ser explícito (script/ETL declarativo) e gerar uma view ou tabela materializada **determinística**. 
-- Responsável provável: módulo de ingest/build de conceitos (a definir), que lê `data/concepts/catalog.yaml`, resolve `sections` e produz linhas em `concepts_catalog`.
+**Campos mínimos (MVP) — placeholder, sem SQL real:**
+
+* `concept_id` (string, **NOT NULL**) — ID estável do conceito (slug).
+* `domain` (string, **NOT NULL**) — domínio (ex.: `fiis`, `macro`, `risk`, `carteira`).
+* `section` (string, **NULLABLE**) — agrupamento humano (ex.: seção do glossário).
+
+  * Regra: pode ser `NULL` quando não houver seção natural (ex.: root/methodology).
+* `concept_type` (string, **NOT NULL**) — enum textual: `concept|field|metric|methodology`.
+* `name` (string, **NOT NULL**) — título curto (ou nome do campo/métrica).
+* `description` (string, **NULLABLE**) — resumo curto (1–3 linhas).
+* `aliases` (json array, **NOT NULL**, default `[]`) — lista de aliases normalizada.
+* `details_md` (string, **NULLABLE**) — texto longo (principalmente para `methodology`).
+* `details_json` (jsonb, **NULLABLE**) — payload estruturado preservado (métricas, blocos, etc.).
+* `source_file` (string, **NOT NULL**) — origem (ex.: `data/concepts/concepts-risk.yaml`).
+* `source_path` (string, **NOT NULL**) — ponteiro determinístico no YAML (ex.: `terms[3]`, `sections.identidade.concepts.ticker`).
+* `version` (string ou int conforme padrão do repositório, **NOT NULL**) — versão do build/bundle que gerou o catálogo.
+
+**Invariantes de contrato (obrigatórios):**
+
+* Unicidade: (`concept_id`, `version`) deve ser **único** (fail-closed no build).
+* Auditabilidade: `source_file` + `source_path` devem permitir rastrear 1:1 o item no YAML.
+* `tolerance` no schema deve ser **restritiva** (proibir colunas extras/faltantes), alinhado ao padrão `fiis_rankings`.
+
+### 3.3 Conversão determinística (flatten) de `data/concepts/*` em linhas
+
+A entidade `concepts_catalog` é derivada via um **build step determinístico** (sem heurísticas), que lê `data/concepts/catalog.yaml` (índice) e transforma os YAMLs em registros “flat” segundo regras fixas abaixo.
+
+#### 3.3.1 Regra de `concept_id` (slug estável)
+
+* `concept_id = "{domain}.{section_slug}.{name_slug}"` quando `section` existir e não estiver vazia
+* caso contrário: `concept_id = "{domain}.{name_slug}"`
+* `domain` vem do índice (`data/concepts/catalog.yaml`) para cada arquivo.
+* `slugify`: lowercase, troca espaços por `_`, remove caracteres especiais de forma determinística.
+
+#### 3.3.2 Padrões suportados (MVP)
+
+**Padrão A — Lista de conceitos (`terms: [...]`)**
+
+* Entrada típica: `terms: [ {name, aliases?, description?, ...}, ... ]`
+* Para cada item `terms[i]`:
+
+  * `concept_type="concept"`
+  * `name=item.name` (obrigatório)
+  * `description=item.description` (opcional)
+  * `aliases=item.aliases || []`
+  * `section=item.section || NULL` (somente se existir no YAML; sem inferência)
+  * `source_path="terms[i]"`
+
+**Padrão B — Glossário de campos por seção (`sections.<sec>.concepts.<field> = "<desc>"`)**
+
+* Entrada típica: `sections: { <sec>: { concepts: { <field>: "<desc>" } } }`
+* Para cada `section_name` e cada `field_name`:
+
+  * `concept_type="field"`
+  * `section=section_name`
+  * `name=field_name`
+  * `description=<desc string>`
+  * `aliases=[]`
+  * `source_path="sections.{section_name}.concepts.{field_name}"`
+
+**Padrão C — Methodology/Métricas (arquivos `*-methodology.yaml`)**
+
+* MVP (seguro): criar **1 linha** por arquivo como `methodology`, preservando estrutura em `details_json`.
+
+  * `concept_type="methodology"`
+  * `name`: usar campo `title` se existir; senão `"methodology"`
+  * `description`: resumo curto se existir; senão `NULL`
+  * `details_md`: texto longo se existir; senão `NULL`
+  * `details_json`: subárvore relevante (ou YAML inteiro) para preservação
+  * `source_path="root"`
+* Expansão futura (não-MVP): gerar linhas `metric` **somente** se houver uma estrutura formal `metrics` claramente definida (lista/dict), sem inferência semântica.
+
+#### 3.3.3 Validações (fail-closed)
+
+O build step deve falhar (sem escrever output) se ocorrer qualquer um:
+
+* Duplicidade de (`concept_id`, `version`)
+* `name` ausente/vazio
+* No padrão B, valor do glossário não é string
+* `source_file`/`source_path` ausentes
+* `domain` ausente no índice (`catalog.yaml`) para o arquivo
 
 ### 3.4 Exemplos de perguntas (para roteamento)
 - “Quais conceitos existem na seção Rankings e Popularidade?”
@@ -196,14 +262,49 @@ Este roadmap define como introduzir a entidade **`concepts_catalog`** no Araquem
 
 ## 7. Plano de PRs (sequência sugerida)
 
-1. **PR1 — Contratos + entidade base**
-   - Criar schema, entity YAML, hints/templates (se aplicável).
-2. **PR2 — Catálogo + ontologia + policies**
-   - Registrar entidade no catálogo, ontologia e políticas (cache/context/narrator/rag/quality).
-3. **PR3 — Quality suites + projections + thresholds**
-   - Adicionar suites, projection, thresholds e samples de roteamento.
-4. **PR4 — Pipeline/build do catálogo de conceitos**
-   - Implementar geração determinística do catálogo (sem heurísticas) + view/tabela.
-5. **PR5 — Docs e observabilidade**
-   - Atualizar inventários, coverage matrix, guia QA e verificar relatórios.
+1. **PR1 — Contratos + entidade base + template**
 
+   * Criar:
+
+     * `data/contracts/entities/concepts_catalog.schema.yaml`
+     * `data/entities/concepts_catalog/concepts_catalog.yaml`
+     * `data/entities/concepts_catalog/hints.md` (se padrão do repo exigir)
+     * templates/responses table-kind (se o padrão de entidades exigir para render)
+   * Objetivo: registrar o contrato e a superfície de resposta, sem pipeline nem ontologia ainda.
+
+2. **PR2 — Pipeline determinístico de conversão (YAML → linhas)**
+
+   * Implementar o build step que lê `data/concepts/catalog.yaml` + `data/concepts/*.yaml` e produz `concepts_catalog` (view/tabela/artefato derivado conforme padrão do repo).
+   * Incluir validações **fail-closed** e rastreabilidade (`source_file`, `source_path`).
+   * Objetivo: produzir output estável e auditável antes de calibrar roteamento.
+
+3. **PR3 — Quality suites + thresholds + amostras de roteamento**
+
+   * Criar suites:
+
+     * `data/ops/quality/payloads/concepts_catalog_suite.json`
+     * `data/ops/quality/payloads/entities_sqlonly/concepts_catalog_suite.json` (se aplicável)
+     * `data/ops/quality/projection_concepts_catalog.json` (se padrão exigir)
+   * Atualizar (to-change):
+
+     * `data/ops/planner_thresholds.yaml`
+     * `data/ops/quality/routing_samples.json`
+   * Objetivo: garantir roteamento + validação de colunas e estabilidade.
+
+4. **PR4 — Ontologia + policies (cache/context/narrator/rag/quality) + colisões**
+
+   * Atualizar (to-change):
+
+     * `data/entities/catalog.yaml`
+     * `data/ontology/entity.yaml` + `data/ontology/ontology_manifest.yaml`
+     * `data/policies/cache.yaml`, `context.yaml`, `narrator.yaml`, `rag.yaml`, `quality.yaml`
+   * Rodar auditoria de colisões (`scripts/ontology/audit_collisions.py`) e registrar mitigação via tokens/anti_tokens.
+   * Objetivo: governança completa após existir output e suites.
+
+5. **PR5 — Docs e observabilidade**
+
+   * Atualizar inventários/cobertura/guias e validar presença nos relatórios:
+
+     * `docs/ARAQUEM_COVERAGE_MATRIX.md`, `docs/dev/ENTITIES_INVENTORY_2025.md`, `docs/qa/GUIA_ENTIDADES_ARAQUEM.md`, etc.
+     * `reports/entities/*` (validação pós-integração)
+   * Objetivo: fechar documentação e rastreabilidade.
