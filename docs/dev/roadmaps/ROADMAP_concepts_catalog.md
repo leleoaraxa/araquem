@@ -196,8 +196,10 @@ O build step deve falhar (sem escrever output) se ocorrer qualquer um:
 
   * duplicidade (`concept_id`, `version`)
   * `name` vazio
+  * `aliases` presente e não-array
   * glossário com valor não-string
   * `domain` ausente no índice
+  * `domain` fora do conjunto permitido pelo índice (`catalog.yaml`)
 * [ ] Output estável e reproduzível (mesmo input → mesmo output).
 
 ---
