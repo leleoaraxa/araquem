@@ -20,7 +20,10 @@ from app.observability.narrator_shadow import (
 )
 from app.rag.context_builder import build_context, get_rag_policy, load_rag_policy
 from app.templates_answer import render_answer
-from app.presenter.institutional import compose_institutional_answer
+from app.presenter.institutional import (
+    compose_institutional_answer,
+    is_institutional_intent,
+)
 from app.core.context import context_manager
 
 LOGGER = logging.getLogger(__name__)
@@ -475,6 +478,8 @@ def present(
     final_answer = baseline_answer
     anchors = _extract_anchors_from_rows(rows)
 
+    is_institutional = is_institutional_intent(facts.intent)
+
     institutional_answer = compose_institutional_answer(
         baseline_answer=baseline_answer,
         intent=facts.intent,
@@ -488,7 +493,7 @@ def present(
 
     # Só chama o Narrator se a policy efetiva da entidade permitir LLM.
     if (
-        institutional_answer is None
+        not is_institutional
         and narrator is not None
         and bool(effective_narrator_policy.get("llm_enabled"))
     ):
