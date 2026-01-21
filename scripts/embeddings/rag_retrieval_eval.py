@@ -97,7 +97,7 @@ def retrieval(store: EmbeddingStore, embedder: OllamaClient, query: str, k: int)
     results = store.search_by_text(query, embedder, k=k)
     ids: List[str] = []
     for item in results:
-        rid = item.get("id") or item.get("doc_id") or item.get("chunk_id")
+        rid = item.get("id") or item.get("chunk_id") or item.get("doc_id")
         if rid:
             ids.append(str(rid))
     return ids
