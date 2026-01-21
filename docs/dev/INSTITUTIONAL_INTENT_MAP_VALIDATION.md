@@ -12,3 +12,8 @@ Validações aplicadas:
 
 Execução local:
 - `python scripts/quality/validate_institutional_intent_map.py`
+
+Teste manual (integração):
+- `curl -X POST http://localhost:8000/ask -H "Content-Type: application/json" -d '{"question":"O que é a SIRIOS?"}'`
+  - Deve retornar 3 camadas (direta, complemento útil, conceito).
+  - Mesmo com `llm_enabled` ligado, a resposta institucional não deve ser reescrita pelo Narrator.

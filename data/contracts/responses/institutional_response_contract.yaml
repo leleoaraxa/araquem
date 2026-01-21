@@ -13,8 +13,7 @@ purpose: >
 
 scope:
   applies_when:
-    - "planner.domain == 'institutional'"
-    - "planner.intent starts_with 'institutional_'"
+    - "planner.chosen.intent starts_with 'institutional_'"
   excludes:
     - "respostas de entidades numéricas (SQL)"
     - "notícias e processos (possuem contrato próprio)"
@@ -70,6 +69,7 @@ response_layers:
       must_include:
         - "1 frase de definição"
         - "1 frase de limite/clareza (sem recomendação)"
+      must_include_text: "A SIRIOS explica dados e conceitos, mas não faz recomendação de investimentos."
     output_shape:
       type: "text"
       fields:
