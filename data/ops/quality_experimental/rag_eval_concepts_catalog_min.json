@@ -1,5 +1,30 @@
 [
-  {"q": "glossario de termos", "expected_ids": ["<ID_1>", "<ID_2>"]},
-  {"q": "o que é concentração e diversificação", "expected_ids": ["<ID_3>"]},
-  {"q": "o que é carteira de fiis do investidor", "expected_ids": ["<ID_4>"]}
+  {
+    "q": "glossario de termos",
+    "expected_ids": [
+      "concepts-catalog:0",
+      "concepts-catalog:1"
+    ]
+  },
+  {
+    "q": "o que é concentração e diversificação",
+    "expected_ids": [
+      "concepts-catalog:0",
+      "concepts-catalog:1"
+    ]
+  },
+  {
+    "q": "catalogo de conceitos da sirios",
+    "expected_ids": [
+      "concepts-catalog:0",
+      "concepts-catalog:1"
+    ]
+  },
+  {
+    "q": "conceitos de carteira do investidor",
+    "expected_ids": [
+      "concepts-catalog:0",
+      "concepts-catalog:1"
+    ]
+  }
 ]
