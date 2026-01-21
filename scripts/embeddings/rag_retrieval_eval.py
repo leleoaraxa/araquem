@@ -113,19 +113,22 @@ def aggregate(metrics: List[Dict[str, float]]) -> Dict[str, float]:
     return agg
 
 
-def log_debug(query: str, expected: Sequence[str], retrieved: Sequence[str]) -> None:
+def log_debug(query: str, expected: Sequence[str], retrieved: Sequence[str], k: int) -> None:
+    topk = retrieved[:k]
     top10 = retrieved[:10]
-    hit = bool(set(expected) & set(top10))
-    print(
-        "[rag-eval] query=",
-        query,
-        "expected=",
-        list(expected),
-        "top10=",
-        top10,
-        "hit=",
-        hit,
-    )
+    expected_list = list(expected)
+    hit_k = bool(set(expected_list) & set(topk))
+    hit_10 = bool(set(expected_list) & set(top10))
+    payload = {
+        "q": query,
+        "expected": expected_list,
+        "topk": topk,
+        "top10": top10,
+        "hit_k": hit_k,
+        "hit_10": hit_10,
+        "k": k,
+    }
+    print(json.dumps(payload, ensure_ascii=False))
 
 
 def main() -> None:
@@ -141,7 +144,7 @@ def main() -> None:
         if not q:
             continue
         retrieved = retrieval(store, embedder, q, k=args.k)
-        log_debug(q, expected, retrieved)
+        log_debug(q, expected, retrieved, args.k)
         per_query.append(
             {
                 "recall_at_5": recall_at_k(expected, retrieved, 5),
