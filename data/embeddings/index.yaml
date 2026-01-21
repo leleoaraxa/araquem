@@ -20,6 +20,10 @@ include:
     path: data/concepts/catalog.yaml
     tags: [concepts, catalog, fiis]
 
+  - id: concepts-glossary
+    path: data/concepts/glossary.md
+    tags: [concepts, glossary, fiis, sirios]
+
   - id: concepts-catalog-entity
     path: data/entities/concepts_catalog/concepts_catalog.jsonl
     tags: [concepts, catalog, entities, "entity:concepts_catalog"]

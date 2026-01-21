@@ -2,14 +2,14 @@
   {
     "q": "glossario de termos",
     "expected_ids": [
-      "concepts-catalog",
-      "entity-concepts-catalog:concepts-catalog-entity"
+      "concepts-glossary",
+      "concepts-catalog"
     ]
   },
   {
     "q": "o que é concentração e diversificação",
     "expected_ids": [
-      "entity-concepts-catalog:concepts-catalog-entity",
+      "concepts-glossary",
       "concepts-carteira"
     ]
   }
