@@ -11,6 +11,24 @@ def load_institutional_policy() -> Dict[str, Any]:
     return load_yaml_cached(POLICY_PATH)
 
 
+def _get_intent_prefix(policy: Dict[str, Any]) -> str:
+    apply_when = policy.get("apply_when") if isinstance(policy, dict) else {}
+    intent_prefix = (
+        apply_when.get("intent_prefix")
+        if isinstance(apply_when, dict)
+        else "institutional_"
+    )
+    if not isinstance(intent_prefix, str) or not intent_prefix.strip():
+        return "institutional_"
+    return intent_prefix
+
+
+def is_institutional_intent(intent: str) -> bool:
+    policy = load_institutional_policy()
+    intent_prefix = _get_intent_prefix(policy if isinstance(policy, dict) else {})
+    return bool(isinstance(intent, str) and intent.startswith(intent_prefix))
+
+
 def _truncate_text(text: str, max_chars: int) -> str:
     if not isinstance(text, str):
         return ""
@@ -23,16 +41,7 @@ def compose_institutional_answer(
     *, baseline_answer: str, intent: str
 ) -> Optional[str]:
     policy = load_institutional_policy()
-    if not isinstance(policy, dict) or not policy.get("enabled"):
-        return None
-
-    apply_when = policy.get("apply_when") if isinstance(policy, dict) else {}
-    intent_prefix = (
-        apply_when.get("intent_prefix")
-        if isinstance(apply_when, dict)
-        else "institutional_"
-    )
-    intent_prefix = intent_prefix or "institutional_"
+    intent_prefix = _get_intent_prefix(policy if isinstance(policy, dict) else {})
 
     if not isinstance(intent, str) or not intent.startswith(intent_prefix):
         return None
@@ -44,18 +53,25 @@ def compose_institutional_answer(
     intent_map_path = paths.get("intent_map") if isinstance(paths, dict) else None
     concepts_path = paths.get("concepts") if isinstance(paths, dict) else None
 
+    if isinstance(response_contract_path, str) and response_contract_path.strip():
+        contract = load_yaml_cached(str(response_contract_path))
+    else:
+        contract = None
+
+    fallback = _render_safe_fallback(contract)
+    fallback = fallback or "Não consegui completar a resposta institucional agora."
+
     if not all(
         isinstance(path, str) and path.strip()
         for path in (response_contract_path, intent_map_path, concepts_path)
     ):
-        return None
+        return fallback
 
-    contract = load_yaml_cached(str(response_contract_path))
     intent_map = load_yaml_cached(str(intent_map_path))
     concepts = load_yaml_cached(str(concepts_path))
 
     if not contract or not intent_map or not concepts:
-        return None
+        return fallback
 
     layers_cfg = contract.get("response_layers") if isinstance(contract, dict) else {}
     layer_1_cfg = layers_cfg.get("layer_1_direct") if isinstance(layers_cfg, dict) else {}
@@ -109,7 +125,7 @@ def compose_institutional_answer(
         if isinstance(fallback_ref, str) and fallback_ref.strip():
             concept_ref = fallback_ref
         else:
-            return None
+            return fallback
 
     concept_entries = concepts.get("concepts") if isinstance(concepts, dict) else []
     concept_text = ""
@@ -119,12 +135,12 @@ def compose_institutional_answer(
                 concept_text = str(item.get("description") or "")
                 break
     if not concept_text:
-        return None
+        return fallback
 
     layer_1_text = _truncate_text(baseline_answer, int(max_layer_1_chars))
     layer_3_text = _truncate_text(concept_text, int(max_layer_3_chars))
     if not layer_1_text and not layer_3_text and not bullets:
-        return None
+        return fallback
 
     composed_sections: List[str] = []
     if layer_1_text:
@@ -141,6 +157,81 @@ def compose_institutional_answer(
 
     if layer_3_text:
         composed_sections.append(f"{layer_3_title}\n{layer_3_text}")
+
+    if not composed_sections:
+        return fallback
+
+    return "\n\n".join(composed_sections)
+
+
+def _render_safe_fallback(contract: Dict[str, Any]) -> Optional[str]:
+    if not isinstance(contract, dict):
+        return None
+
+    compliance = contract.get("compliance") if isinstance(contract, dict) else {}
+    safe_fallback = compliance.get("safe_fallback") if isinstance(compliance, dict) else {}
+    response = safe_fallback.get("response") if isinstance(safe_fallback, dict) else {}
+
+    if not isinstance(response, dict):
+        return None
+
+    layer_1_text = response.get("layer_1_direct")
+    layer_2_data = response.get("layer_2_enrichment")
+    layer_3_text = response.get("layer_3_concept")
+
+    layers_cfg = contract.get("response_layers") if isinstance(contract, dict) else {}
+    layer_1_cfg = layers_cfg.get("layer_1_direct") if isinstance(layers_cfg, dict) else {}
+    layer_2_cfg = (
+        layers_cfg.get("layer_2_enrichment") if isinstance(layers_cfg, dict) else {}
+    )
+    layer_3_cfg = layers_cfg.get("layer_3_concept") if isinstance(layers_cfg, dict) else {}
+
+    layer_1_constraints = (
+        layer_1_cfg.get("constraints") if isinstance(layer_1_cfg, dict) else {}
+    )
+    layer_2_constraints = (
+        layer_2_cfg.get("constraints") if isinstance(layer_2_cfg, dict) else {}
+    )
+    layer_3_constraints = (
+        layer_3_cfg.get("constraints") if isinstance(layer_3_cfg, dict) else {}
+    )
+
+    max_layer_1_chars = layer_1_constraints.get("max_chars", 280)
+    max_bullets = layer_2_constraints.get("max_bullets", 4)
+    max_chars_per_bullet = layer_2_constraints.get("max_chars_per_bullet", 140)
+    max_layer_3_chars = layer_3_constraints.get("max_chars", 350)
+
+    composition = contract.get("composition") if isinstance(contract, dict) else {}
+    presentation = composition.get("presentation") if isinstance(composition, dict) else {}
+    headings = presentation.get("headings") if isinstance(presentation, dict) else {}
+    layer_2_title_default = headings.get("layer_2_default_title") or "Complemento útil"
+    layer_3_title_default = headings.get("layer_3_default_title") or "Conceito"
+
+    composed_sections: List[str] = []
+
+    if isinstance(layer_1_text, str) and layer_1_text.strip():
+        trimmed = _truncate_text(layer_1_text, int(max_layer_1_chars))
+        if trimmed:
+            composed_sections.append(trimmed)
+
+    if isinstance(layer_2_data, dict):
+        items = layer_2_data.get("items")
+        title = layer_2_data.get("title") or layer_2_title_default
+        bullets: List[str] = []
+        if isinstance(items, list):
+            for bullet in items[: int(max_bullets)]:
+                if not isinstance(bullet, str):
+                    continue
+                trimmed = _truncate_text(bullet, int(max_chars_per_bullet))
+                if trimmed:
+                    bullets.append(f"- {trimmed}")
+        if bullets:
+            composed_sections.append(f"{title}\n" + "\n".join(bullets))
+
+    if isinstance(layer_3_text, str) and layer_3_text.strip():
+        trimmed = _truncate_text(layer_3_text, int(max_layer_3_chars))
+        if trimmed:
+            composed_sections.append(f"{layer_3_title_default}\n{trimmed}")
 
     if not composed_sections:
         return None

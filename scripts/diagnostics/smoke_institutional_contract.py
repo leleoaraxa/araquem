@@ -1,3 +1,5 @@
+"""Unit smoke: valida carga e composição determinística do contrato institucional."""
+
 from __future__ import annotations
 
 import sys
