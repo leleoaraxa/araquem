@@ -8,7 +8,7 @@ chunk:
 
 hint_filters:
   # OPCIONAL: para que projections (q-*) também virem hints semânticos.
-  allowlist: ["entity-*", "concepts-*", "q-*"]
+  allowlist: ["concepts-*"]
   denylist: ["golden-*", "ontology-*"]
 required_entity_doc: true
 weight: 0.25
