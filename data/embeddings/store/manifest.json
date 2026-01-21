@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-21T11:31:47Z",
+  "generated_at": "2026-01-21T12:46:20Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -15,6 +15,18 @@
       ],
       "chunks": 2,
       "sha_all": "2e843a6d5edc3ec2e548153ea6854cd2507df3af2be1b1d80051145c04c8564c"
+    },
+    {
+      "id": "concepts-glossary",
+      "path": "data/concepts/glossary.md",
+      "tags": [
+        "concepts",
+        "glossary",
+        "fiis",
+        "sirios"
+      ],
+      "chunks": 4,
+      "sha_all": "b6958e9f26c98308b85a4bcab758fc8ba91d3af99a1e9a986d182e303cd6f3ea"
     },
     {
       "id": "concepts-catalog-entity",
@@ -918,7 +930,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1768995322,
+  "last_refresh_epoch": 1768999816,
   "vector_dimension": 768,
-  "total_chunks": 396
+  "total_chunks": 400
 }
