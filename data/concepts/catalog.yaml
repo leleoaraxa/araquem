@@ -27,9 +27,6 @@ concepts:
       - "Alfa de Jensen, Beta e R²"
       - "Máximo Drawdown (MDD)"
       - "Fronteira eficiente e carteiras"
-  - file: data/concepts/concepts-risk-metrics-methodology.yaml
-    domain: risk
-    owner: research
 
   # Camada macroeconômica e de mercado
   - file: data/concepts/concepts-macro.yaml
@@ -41,9 +38,6 @@ concepts:
       - "Inflação e indexadores (IPCA, IGPM, INPC etc.)"
       - "Moedas e exposição cambial (dólar, euro)"
       - "Contexto macro e tomada de decisão em FIIs"
-  - file: data/concepts/concepts-macro-methodology.yaml
-    domain: macro
-    owner: research
 
   # Camada de carteira do investidor
   - file: data/concepts/concepts-carteira.yaml

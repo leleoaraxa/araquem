@@ -8,7 +8,7 @@ chunk:
 
 hint_filters:
   # OPCIONAL: para que projections (q-*) também virem hints semânticos.
-  allowlist: ["concepts-*"]
+  allowlist: ["entity-*", "concepts-*", "q-*"]
   denylist: ["golden-*", "ontology-*"]
 required_entity_doc: true
 weight: 0.25
@@ -19,18 +19,6 @@ include:
   - id: concepts-catalog
     path: data/concepts/catalog.yaml
     tags: [concepts, catalog, fiis]
-
-  - id: concepts-glossary
-    path: data/concepts/glossary.md
-    tags: [concepts, glossary, fiis, sirios]
-
-  - id: concepts-catalog-entity
-    path: data/entities/concepts_catalog/concepts_catalog.jsonl
-    tags: [concepts, catalog, entities, "entity:concepts_catalog"]
-
-  - id: concepts-catalog-embeddings
-    path: data/entities/concepts_catalog/concepts_catalog_embeddings.md
-    tags: [concepts, catalog, embeddings, "entity:concepts_catalog"]
 
   - id: concepts-fiis
     path: data/concepts/concepts-fiis.yaml

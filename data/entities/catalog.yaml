@@ -378,19 +378,3 @@ entities:
       natural_keys:
       - ref_date
     notes: []
-  concepts_catalog:
-    title: Conceitos – Catálogo
-    kind: snapshot
-    paths:
-      entity_yaml: data/entities/concepts_catalog/concepts_catalog.yaml
-      schema: data/contracts/entities/concepts_catalog.schema.yaml
-    coverage:
-      cache_policy: false
-      rag_policy: true
-      narrator_policy: false
-      param_inference: false
-    identifiers:
-      natural_keys:
-      - concept_id
-    notes:
-    - Catálogo textual para RAG/hints; não substitui dados operacionais.
