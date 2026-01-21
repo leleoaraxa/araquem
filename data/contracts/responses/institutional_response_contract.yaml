@@ -1,0 +1,109 @@
+version: 1
+domain: institutional
+
+agent:
+  name: "Íris"
+product:
+  name: "SIRIOS"
+
+purpose: >
+  Padronizar respostas institucionais em 3 camadas (1-2-3) para garantir:
+  (a) resposta direta, (b) enriquecimento opcional e (c) conceito educacional,
+  sem recomendação financeira, sem previsão e sem inventar dados.
+
+scope:
+  applies_when:
+    - "planner.domain == 'institutional'"
+    - "planner.intent starts_with 'institutional_'"
+  excludes:
+    - "respostas de entidades numéricas (SQL)"
+    - "notícias e processos (possuem contrato próprio)"
+
+response_layers:
+
+  layer_1_direct:
+    required: true
+    goal: "Responder a intenção do usuário de forma curta e direta."
+    constraints:
+      max_chars: 280
+      style:
+        - "objetivo"
+        - "linguagem simples"
+        - "sem jargão desnecessário"
+    must_not:
+      - "recomendação de investimento"
+      - "previsão"
+      - "opinião financeira"
+    output_shape:
+      type: "text"
+      fields:
+        - name: "text"
+          required: true
+
+  layer_2_enrichment:
+    required: false
+    goal: "Adicionar informações úteis e reais relacionadas à intenção, quando fizer sentido."
+    gating:
+      mode: "intent_map"
+      note: "A decisão e bullets vêm do institutional_intent_map.yaml; o runtime só aplica o gating."
+    constraints:
+      max_bullets: 4
+      max_chars_per_bullet: 140
+    output_shape:
+      type: "bullets"
+      fields:
+        - name: "title"
+          required: false
+        - name: "items"
+          required: true
+
+  layer_3_concept:
+    required: true
+    goal: "Explicar o conceito institucional associado à intenção, em tom educacional."
+    source_of_truth:
+      concepts_file: "data/concepts/concepts-institutional.yaml"
+    retrieval_rule:
+      - "match by concept_ref (id) vindo do intent_map"
+      - "fallback: sirios_identity + iris_agent + limitations"
+    constraints:
+      max_chars: 350
+      must_include:
+        - "1 frase de definição"
+        - "1 frase de limite/clareza (sem recomendação)"
+    output_shape:
+      type: "text"
+      fields:
+        - name: "text"
+          required: true
+
+composition:
+  order:
+    - layer_1_direct
+    - layer_2_enrichment
+    - layer_3_concept
+  presentation:
+    headings:
+      layer_2_default_title: "Complemento útil"
+      layer_3_default_title: "Conceito"
+
+compliance:
+  global_must_not:
+    - "inventar funcionalidades"
+    - "inventar planos, preços ou regras se não existirem em fonte de verdade"
+    - "usar linguagem de certeza sobre futuro"
+  safe_fallback:
+    when:
+      - "planner.accepted == false"
+      - "intent unclear"
+    response:
+      layer_1_direct: "Posso te ajudar com a SIRIOS, mas preciso que você detalhe um pouco sua pergunta."
+      layer_2_enrichment:
+        title: "Exemplos"
+        items:
+          - "O que é a SIRIOS?"
+          - "Quem é a Íris?"
+          - "Como funciona a Carteira?"
+          - "Quais calculadoras existem?"
+      layer_3_concept: >
+        A SIRIOS é uma plataforma de análise e educação sobre FIIs, e a Íris ajuda a explicar dados e conceitos
+        sem recomendar investimentos.
