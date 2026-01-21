@@ -420,6 +420,30 @@ def _format_aliases(aliases: Any, concept_id: Any) -> str:
     )
 
 
+def _self_check_format_aliases() -> None:
+    try:
+        _format_aliases("nao_e_lista", "risk.foo.bar")
+    except ValueError as exc:
+        if "concept_id=risk.foo.bar" not in str(exc):
+            raise ValueError(
+                "self-check falhou: concept_id ausente na exceção (aliases não-array)."
+            ) from exc
+    else:
+        raise ValueError("self-check falhou: era esperado ValueError (aliases não-array).")
+
+    try:
+        _format_aliases([123], "macro.x.y")
+    except ValueError as exc:
+        if "concept_id=macro.x.y" not in str(exc):
+            raise ValueError(
+                "self-check falhou: concept_id ausente na exceção (item não-string)."
+            ) from exc
+    else:
+        raise ValueError(
+            "self-check falhou: era esperado ValueError (aliases com item não-string)."
+        )
+
+
 def _write_md(rows: Iterable[Dict[str, Any]], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -510,7 +534,13 @@ def main() -> int:
     parser.add_argument("--out-jsonl", default=str(DEFAULT_JSONL))
     parser.add_argument("--out-csv", default=str(DEFAULT_CSV))
     parser.add_argument("--out-md", default=str(DEFAULT_MD))
+    parser.add_argument("--self-check", action="store_true")
     args = parser.parse_args()
+
+    if args.self_check:
+        _self_check_format_aliases()
+        print("self-check: ok")
+        return 0
 
     version = _load_build_id()
     catalog_entries = _parse_catalog(Path(args.catalog))
