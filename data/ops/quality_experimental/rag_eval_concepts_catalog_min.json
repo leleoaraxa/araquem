@@ -1,0 +1,5 @@
+[
+  {"q": "glossario de termos", "expected_ids": ["<ID_1>", "<ID_2>"]},
+  {"q": "o que é concentração e diversificação", "expected_ids": ["<ID_3>"]},
+  {"q": "o que é carteira de fiis do investidor", "expected_ids": ["<ID_4>"]}
+]

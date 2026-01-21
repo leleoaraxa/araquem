@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-12T20:32:12Z",
+  "generated_at": "2026-01-21T11:31:47Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -14,7 +14,31 @@
         "fiis"
       ],
       "chunks": 2,
-      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
+      "sha_all": "2e843a6d5edc3ec2e548153ea6854cd2507df3af2be1b1d80051145c04c8564c"
+    },
+    {
+      "id": "concepts-catalog-entity",
+      "path": "data/entities/concepts_catalog/concepts_catalog.jsonl",
+      "tags": [
+        "concepts",
+        "catalog",
+        "entities",
+        "entity:concepts_catalog"
+      ],
+      "chunks": 61,
+      "sha_all": "32078214734339cf8f50d2697609ddb0b711e6d5f30dd9ef61aa57e20b31b195"
+    },
+    {
+      "id": "concepts-catalog-embeddings",
+      "path": "data/entities/concepts_catalog/concepts_catalog_embeddings.md",
+      "tags": [
+        "concepts",
+        "catalog",
+        "embeddings",
+        "entity:concepts_catalog"
+      ],
+      "chunks": 40,
+      "sha_all": "b4c00e577390092b645d73a740e5ad17217588dd2c0dbd4d8698f029ec5abc29"
     },
     {
       "id": "concepts-fiis",
@@ -107,7 +131,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "38e3693e4f982f1b93b6ff89515e998f27a53a7e0eb9e45d2988fd149018ee2e"
+      "sha_all": "21803b5ad6a7edf95012d71e08d8b3c96889e34df9230abedcade9c282de3a5f"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -588,7 +612,7 @@
         "rag"
       ],
       "chunks": 2,
-      "sha_all": "193ca14b48fdb9163b891e89e7720416567ae4a0590cb626b33c1816a6a936fa"
+      "sha_all": "70fe559804214b194796a594670796dda052f82b769e06b1a2435f67bebd2ffc"
     },
     {
       "id": "ops-planner-thresholds",
@@ -894,7 +918,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1768250102,
+  "last_refresh_epoch": 1768995322,
   "vector_dimension": 768,
-  "total_chunks": 295
+  "total_chunks": 396
 }
