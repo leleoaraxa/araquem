@@ -8,6 +8,7 @@ POLICY_PATH = "data/policies/institutional.yaml"
 
 
 def load_institutional_policy() -> Dict[str, Any]:
+    # load_yaml_cached já faz cache por mtime; manter leitura simples aqui evita reload no hot path.
     return load_yaml_cached(POLICY_PATH)
 
 
@@ -58,20 +59,23 @@ def compose_institutional_answer(
     else:
         contract = None
 
-    fallback = _render_safe_fallback(contract)
-    fallback = fallback or "Não consegui completar a resposta institucional agora."
+    safe_fallback_text = _render_safe_fallback(contract)
+    safe_fallback_text = (
+        safe_fallback_text
+        or "Não consegui completar a resposta institucional agora."
+    )
 
     if not all(
         isinstance(path, str) and path.strip()
         for path in (response_contract_path, intent_map_path, concepts_path)
     ):
-        return fallback
+        return safe_fallback_text
 
     intent_map = load_yaml_cached(str(intent_map_path))
     concepts = load_yaml_cached(str(concepts_path))
 
     if not contract or not intent_map or not concepts:
-        return fallback
+        return safe_fallback_text
 
     layers_cfg = contract.get("response_layers") if isinstance(contract, dict) else {}
     layer_1_cfg = layers_cfg.get("layer_1_direct") if isinstance(layers_cfg, dict) else {}
@@ -109,7 +113,9 @@ def compose_institutional_answer(
                 intent_entry = item
                 break
 
-    fallback = intent_map.get("fallback") if isinstance(intent_map, dict) else {}
+    intent_map_fallback = (
+        intent_map.get("fallback") if isinstance(intent_map, dict) else {}
+    )
     concept_ref = None
     bullets: List[str] = []
     if isinstance(intent_entry, dict):
@@ -121,11 +127,15 @@ def compose_institutional_answer(
                 bullets = [item for item in items if isinstance(item, str)]
 
     if not isinstance(concept_ref, str) or not concept_ref.strip():
-        fallback_ref = fallback.get("concept_ref") if isinstance(fallback, dict) else None
+        fallback_ref = (
+            intent_map_fallback.get("concept_ref")
+            if isinstance(intent_map_fallback, dict)
+            else None
+        )
         if isinstance(fallback_ref, str) and fallback_ref.strip():
             concept_ref = fallback_ref
         else:
-            return fallback
+            return safe_fallback_text
 
     concept_entries = concepts.get("concepts") if isinstance(concepts, dict) else []
     concept_text = ""
@@ -135,12 +145,12 @@ def compose_institutional_answer(
                 concept_text = str(item.get("description") or "")
                 break
     if not concept_text:
-        return fallback
+        return safe_fallback_text
 
     layer_1_text = _truncate_text(baseline_answer, int(max_layer_1_chars))
     layer_3_text = _truncate_text(concept_text, int(max_layer_3_chars))
     if not layer_1_text and not layer_3_text and not bullets:
-        return fallback
+        return safe_fallback_text
 
     composed_sections: List[str] = []
     if layer_1_text:
@@ -159,7 +169,7 @@ def compose_institutional_answer(
         composed_sections.append(f"{layer_3_title}\n{layer_3_text}")
 
     if not composed_sections:
-        return fallback
+        return safe_fallback_text
 
     return "\n\n".join(composed_sections)
 
