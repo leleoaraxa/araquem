@@ -7,10 +7,52 @@
     ]
   },
   {
-    "q": "o que é concentração e diversificação",
+    "q": "definicoes de termos fiis",
     "expected_ids": [
       "concepts-glossary",
-      "concepts-carteira"
+      "concepts-catalog"
+    ]
+  },
+  {
+    "q": "catalogo de conceitos",
+    "expected_ids": [
+      "concepts-catalog",
+      "concepts-glossary"
+    ]
+  },
+  {
+    "q": "onde fica o catalogo de conceitos",
+    "expected_ids": [
+      "concepts-catalog",
+      "concepts-glossary"
+    ]
+  },
+  {
+    "q": "conceitos da sirios",
+    "expected_ids": [
+      "concepts-catalog",
+      "concepts-glossary"
+    ]
+  },
+  {
+    "q": "concentracao e diversificacao",
+    "expected_ids": [
+      "concepts-carteira",
+      "concepts-glossary"
+    ]
+  },
+  {
+    "q": "diversificacao da carteira",
+    "expected_ids": [
+      "concepts-carteira",
+      "concepts-glossary"
+    ]
+  },
+  {
+    "q": "minha carteira concentrada",
+    "expected_ids": [
+      "concepts-carteira",
+      "concepts-glossary"
     ]
   }
 ]
