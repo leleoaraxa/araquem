@@ -19,6 +19,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from app.presenter.institutional import load_institutional_policy
+from app.utils.filecache import load_yaml_cached
 
 API_DEFAULT = os.getenv("API_URL", "http://localhost:8000")
 TIMEOUT_DEFAULT = float(os.getenv("INSTITUTIONAL_E2E_TIMEOUT_SECONDS", "30.0"))
@@ -56,6 +57,23 @@ def _extract_narrator_used(payload: Dict[str, Any]) -> Optional[bool]:
         if isinstance(used, bool):
             return used
     return None
+
+
+def _get_layer_3_heading(policy: Dict[str, Any]) -> str:
+    paths = policy.get("paths") if isinstance(policy, dict) else {}
+    response_contract_path = (
+        paths.get("response_contract") if isinstance(paths, dict) else None
+    )
+    if isinstance(response_contract_path, str) and response_contract_path.strip():
+        contract = load_yaml_cached(str(response_contract_path))
+    else:
+        contract = {}
+
+    composition = contract.get("composition") if isinstance(contract, dict) else {}
+    presentation = composition.get("presentation") if isinstance(composition, dict) else {}
+    headings = presentation.get("headings") if isinstance(presentation, dict) else {}
+    heading = headings.get("layer_3_default_title") or "Conceito"
+    return heading if isinstance(heading, str) and heading.strip() else "Conceito"
 
 
 def main() -> int:
@@ -100,7 +118,17 @@ def main() -> int:
         print("FAIL: narrator_used")
         return 1
 
-    print("PASS: institutional intent and narrator blocked")
+    answer_text = data.get("answer") if isinstance(data, dict) else None
+    if not isinstance(answer_text, str) or not answer_text.strip():
+        print("FAIL: empty_answer")
+        return 1
+
+    layer_3_heading = _get_layer_3_heading(policy)
+    if layer_3_heading not in answer_text:
+        print("FAIL: missing_concept_heading")
+        return 1
+
+    print("PASS: institutional intent, narrator blocked, and concept heading present")
     return 0
 
 
