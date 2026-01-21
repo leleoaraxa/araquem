@@ -49,7 +49,7 @@
     ]
   },
   {
-    "q": "minha carteira concentrada",
+    "q": "o que significa carteira concentrada",
     "expected_ids": [
       "concepts-carteira",
       "concepts-glossary"
