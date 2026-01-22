@@ -133,6 +133,16 @@ def main() -> int:
 
     layer_3_heading = _get_layer_3_heading(policy)
     if layer_3_heading not in answer_text:
+        answer_prefix = answer_text[:400]
+        safe_prefix = answer_prefix.encode("unicode_escape").decode("utf-8")
+        meta = data.get("meta") if isinstance(data, dict) else {}
+        narrator = meta.get("narrator") if isinstance(meta, dict) else None
+        intent_value = intent if isinstance(intent, str) else "missing"
+        narrator_value = narrator if isinstance(narrator, dict) else "missing"
+        print(f"DEBUG: layer_3_heading={layer_3_heading}")
+        print(f"DEBUG: answer_prefix={safe_prefix}")
+        print(f"DEBUG: meta.intent={intent_value}")
+        print(f"DEBUG: meta.narrator={narrator_value}")
         print("FAIL: missing_concept_heading")
         return 1
 
