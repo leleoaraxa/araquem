@@ -256,6 +256,37 @@ def _is_narrator_blocked_by_intent(
     return False
 
 
+def _normalize_narrator_info(
+    narrator_info: Dict[str, Any],
+    *,
+    narrator_called: bool,
+    narrator_output: Optional[Dict[str, Any]],
+    blocked_by: Optional[str],
+) -> Dict[str, Any]:
+    if not isinstance(narrator_info, dict):
+        narrator_info = {}
+
+    used = narrator_info.get("used")
+    if not isinstance(used, bool):
+        inferred_used = False
+        if narrator_called and isinstance(narrator_output, dict):
+            text = narrator_output.get("text")
+            strategy = narrator_output.get("strategy")
+            if (
+                isinstance(text, str)
+                and text.strip()
+                and isinstance(strategy, str)
+                and strategy == "llm"
+            ):
+                inferred_used = True
+        narrator_info["used"] = inferred_used
+
+    if blocked_by and "blocked_by" not in narrator_info:
+        narrator_info["blocked_by"] = blocked_by
+
+    return narrator_info
+
+
 
 def build_facts(
     *,
@@ -512,6 +543,8 @@ def present(
 
     final_answer = baseline_answer
     anchors = _extract_anchors_from_rows(rows)
+    narrator_called = False
+    narrator_output: Optional[Dict[str, Any]] = None
 
     institutional_answer = compose_institutional_answer(
         baseline_answer=baseline_answer,
@@ -550,6 +583,7 @@ def present(
 
         try:
             t0 = time.perf_counter()
+            narrator_called = True
             # Wire payload para o Narrator (evita deriva quando rewrite-only estiver habilitado)
             facts_wire = facts.dict()
             # adiciona evidência compacta para manter ancoragem factual mesmo em rewrite_only
@@ -569,6 +603,7 @@ def present(
                 facts_wire.pop("aggregates", None)
 
             out = narrator.render(question, facts_wire, meta_for_narrator)
+            narrator_output = out
 
             dt_ms = (time.perf_counter() - t0) * 1000.0
 
@@ -628,6 +663,12 @@ def present(
     )
 
     narrator_info.setdefault("rag", narrator_rag_context)
+    narrator_info = _normalize_narrator_info(
+        narrator_info,
+        narrator_called=narrator_called,
+        narrator_output=narrator_output,
+        blocked_by=effective_narrator_policy.get("blocked_by"),
+    )
 
     try:
         routing_thresholds = None

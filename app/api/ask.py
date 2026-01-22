@@ -239,6 +239,7 @@ def ask(
                 "explain": (plan.get("explain") if explain else None),
                 "explain_analytics": explain_analytics_payload if explain else None,
                 "cache": {"hit": False, "key": None, "ttl": None},
+                "narrator": {"used": False},
             },
             "answer": unroutable_answer,
         }
@@ -490,6 +491,7 @@ def ask(
             "meta": meta_gate,
             "answer": answer_gate or "",
         }
+        meta_gate.setdefault("narrator", {"used": False})
 
         # registro no contexto (assistant)
         try:
