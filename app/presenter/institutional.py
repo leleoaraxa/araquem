@@ -30,6 +30,20 @@ def is_institutional_intent(intent: str) -> bool:
     return bool(isinstance(intent, str) and intent.startswith(intent_prefix))
 
 
+def get_institutional_safe_fallback() -> Optional[str]:
+    policy = load_institutional_policy()
+    paths = policy.get("paths") if isinstance(policy, dict) else {}
+    response_contract_path = (
+        paths.get("response_contract") if isinstance(paths, dict) else None
+    )
+
+    if not isinstance(response_contract_path, str) or not response_contract_path.strip():
+        return None
+
+    contract = load_yaml_cached(str(response_contract_path))
+    return _render_safe_fallback(contract)
+
+
 def _truncate_text(text: str, max_chars: int) -> str:
     if not isinstance(text, str):
         return ""

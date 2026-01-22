@@ -31,6 +31,11 @@ from app.templates_answer import render_answer
 
 # nova camada de apresentação (pós-formatter)
 from app.presenter.presenter import present, _choose_result_key
+from app.presenter.institutional import (
+    compose_institutional_answer,
+    get_institutional_safe_fallback,
+    is_institutional_intent,
+)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Narrator (camada de apresentação M10)
@@ -222,6 +227,20 @@ def ask(
             "Desculpe, não consegui encontrar dados relevantes para a sua pergunta. "
             "Tente reformular em outras palavras ou mencionar um fundo específico."
         )
+        institutional_answer = None
+        if is_institutional_intent(intent):
+            institutional_answer = compose_institutional_answer(
+                baseline_answer="",
+                intent=intent,
+            )
+            if _is_blank_answer(institutional_answer):
+                institutional_answer = get_institutional_safe_fallback()
+
+        final_unroutable_answer = (
+            institutional_answer
+            if isinstance(institutional_answer, str) and institutional_answer.strip()
+            else unroutable_answer
+        )
 
         payload_out_unr = {
             "status": {"reason": "unroutable", "message": "No entity matched"},
@@ -241,7 +260,7 @@ def ask(
                 "cache": {"hit": False, "key": None, "ttl": None},
                 "narrator": {"used": False},
             },
-            "answer": unroutable_answer,
+            "answer": final_unroutable_answer,
         }
 
         # Registro do turno do "assistant" (resposta unroutable)
@@ -250,7 +269,7 @@ def ask(
                 client_id=payload.client_id,
                 conversation_id=payload.conversation_id,
                 role="assistant",
-                content=unroutable_answer,
+                content=final_unroutable_answer,
                 meta={
                     "request_id": request_id,
                     "intent": intent,
@@ -272,7 +291,7 @@ def ask(
             body = {
                 "question": payload.question,
                 "conversation_id": payload.conversation_id,
-                "answer": unroutable_answer,
+                "answer": final_unroutable_answer,
                 "timestamp": response_timestamp,
                 "elapsed_ms": elapsed_ms_unr,
                 "status": "error",
