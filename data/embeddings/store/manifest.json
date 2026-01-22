@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-21T14:25:44Z",
+  "generated_at": "2026-01-21T21:30:10Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -14,7 +14,7 @@
         "fiis"
       ],
       "chunks": 2,
-      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
+      "sha_all": "aedf51be0a218df37365e7c79f1d1501441575434fe935a62dba8fa6a5d8e66f"
     },
     {
       "id": "concepts-fiis",
@@ -24,7 +24,7 @@
         "fiis"
       ],
       "chunks": 6,
-      "sha_all": "f0f2d1dd143b372584bf2cc01042faf444b044ad4719e9f01c6494b0ca2da6a8"
+      "sha_all": "5096218bfc4e965ed4a01ab9eaa05a268a2a7540abd9c6c3f0149d045eb24412"
     },
     {
       "id": "concepts-risk",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769005708,
+  "last_refresh_epoch": 1769031198,
   "vector_dimension": 768,
   "total_chunks": 295
 }

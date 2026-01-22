@@ -70,7 +70,9 @@ def _get_layer_3_heading(policy: Dict[str, Any]) -> str:
         contract = {}
 
     composition = contract.get("composition") if isinstance(contract, dict) else {}
-    presentation = composition.get("presentation") if isinstance(composition, dict) else {}
+    presentation = (
+        composition.get("presentation") if isinstance(composition, dict) else {}
+    )
     headings = presentation.get("headings") if isinstance(presentation, dict) else {}
     heading = headings.get("layer_3_default_title") or "Conceito"
     return heading if isinstance(heading, str) and heading.strip() else "Conceito"
