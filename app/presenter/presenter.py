@@ -234,6 +234,27 @@ def _is_absence_text(answer: str) -> bool:
     return any(marker in text for marker in absence_markers)
 
 
+def _is_narrator_blocked_by_intent(
+    *, intent: str, narrator_policy: Optional[Dict[str, Any]], is_institutional: bool
+) -> bool:
+    if not isinstance(narrator_policy, dict):
+        return False
+
+    deny_cfg = narrator_policy.get("deny_when")
+    if not isinstance(deny_cfg, dict):
+        deny_cfg = {}
+
+    if deny_cfg.get("intent_prefix_from_institutional_policy") and is_institutional:
+        return True
+
+    prefixes = deny_cfg.get("intent_prefixes")
+    if isinstance(prefixes, list):
+        for prefix in prefixes:
+            if isinstance(prefix, str) and prefix.strip() and intent.startswith(prefix):
+                return True
+
+    return False
+
 
 
 def build_facts(
@@ -431,6 +452,20 @@ def present(
 
     template_kind = get_entity_presentation_kind(facts.entity)
 
+    is_institutional = is_institutional_intent(facts.intent)
+    narrator_blocked_by_intent = _is_narrator_blocked_by_intent(
+        intent=facts.intent,
+        narrator_policy=getattr(narrator, "policy", None),
+        is_institutional=is_institutional,
+    )
+    if narrator_blocked_by_intent:
+        effective_narrator_policy = {
+            **effective_narrator_policy,
+            "llm_enabled": False,
+            "shadow": False,
+            "blocked_by": "intent_prefix",
+        }
+
     # Baseline determinístico
     technical_answer = render_answer(
         facts.entity,
@@ -478,8 +513,6 @@ def present(
     final_answer = baseline_answer
     anchors = _extract_anchors_from_rows(rows)
 
-    is_institutional = is_institutional_intent(facts.intent)
-
     institutional_answer = compose_institutional_answer(
         baseline_answer=baseline_answer,
         intent=facts.intent,
@@ -494,6 +527,7 @@ def present(
     # Só chama o Narrator se a policy efetiva da entidade permitir LLM.
     if (
         not is_institutional
+        and not narrator_blocked_by_intent
         and narrator is not None
         and bool(effective_narrator_policy.get("llm_enabled"))
     ):

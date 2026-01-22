@@ -31,6 +31,13 @@ narrator:
       on_error: return_baseline
       on_timeout: return_baseline
 
+  # Bloqueios declarativos por intent (policy-driven).
+  deny_when:
+    # Usa o prefixo definido na policy institucional.
+    intent_prefix_from_institutional_policy: true
+    # Prefixos adicionais (se necessário).
+    intent_prefixes: []
+
   # Objetivo operacional:
   # - reduzir p95/p99 do /ask removendo LLM de respostas numéricas/tabelares
   # - manter LLM apenas onde agrega valor (macro/overview conceitual)
