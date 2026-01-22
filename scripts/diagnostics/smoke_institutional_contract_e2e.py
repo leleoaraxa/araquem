@@ -117,6 +117,12 @@ def main() -> int:
 
     narrator_used = _extract_narrator_used(data)
     if narrator_used is not False:
+        meta = data.get("meta") if isinstance(data, dict) else {}
+        narrator = meta.get("narrator") if isinstance(meta, dict) else None
+        if isinstance(narrator, dict):
+            print(f"DEBUG: meta.narrator = {narrator}")
+        else:
+            print("DEBUG: meta.narrator = missing")
         print("FAIL: narrator_used")
         return 1
 
