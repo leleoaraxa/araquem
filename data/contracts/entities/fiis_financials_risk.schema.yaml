@@ -50,7 +50,7 @@ tolerance:
 
 # 📚 Documentation linkage (safe extension block – ignored by strict loaders)
 x-docs:
-  catalog_path: data/raw/indicators/catalog.md
+  catalog_path: data/concepts/concepts-financials-risk.md
   anchors:
     beta_index:        "#1-beta-índice"
     sharpe_ratio:      "#2-sharpe-ratio"

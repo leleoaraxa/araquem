@@ -2210,6 +2210,7 @@ intents:
       include:
         - ranking
         - rankings
+        - sirios
         - score
         - nota
         - avaliacao
@@ -2367,37 +2368,6 @@ intents:
         - preco agora
     entities:
       - fiis_rankings
-
-  - name: institutional_what_is_sirios
-    weight: 10
-    tokens:
-      include:
-        - sirios
-      exclude:
-        - ranking
-        - rankings
-        - posicao
-        - posicoes
-        - score
-        - nota
-        - avaliacao
-        - top
-        - melhores
-        - piores
-        - lanterna
-        - peso
-        - ifix
-        - ifil
-    phrases:
-      include:
-        - o que e a sirios
-        - o que e sirios
-        - sobre a sirios
-        - sobre sirios
-        - quem e a sirios
-        - quem e sirios
-      exclude: []
-    entities: []
 
   - name: history_b3_indexes
     weight: 6

@@ -4,6 +4,7 @@ from __future__ import annotations
 import logging
 import os
 import time
+from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 
 from pydantic import BaseModel, Field
@@ -20,10 +21,6 @@ from app.observability.narrator_shadow import (
 )
 from app.rag.context_builder import build_context, get_rag_policy, load_rag_policy
 from app.templates_answer import render_answer
-from app.presenter.institutional import (
-    compose_institutional_answer,
-    is_institutional_intent,
-)
 from app.core.context import context_manager
 
 LOGGER = logging.getLogger(__name__)
@@ -234,60 +231,6 @@ def _is_absence_text(answer: str) -> bool:
     return any(marker in text for marker in absence_markers)
 
 
-def _is_narrator_blocked_by_intent(
-    *, intent: str, narrator_policy: Optional[Dict[str, Any]], is_institutional: bool
-) -> bool:
-    if not isinstance(narrator_policy, dict):
-        return False
-
-    deny_cfg = narrator_policy.get("deny_when")
-    if not isinstance(deny_cfg, dict):
-        deny_cfg = {}
-
-    if deny_cfg.get("intent_prefix_from_institutional_policy") and is_institutional:
-        return True
-
-    prefixes = deny_cfg.get("intent_prefixes")
-    if isinstance(prefixes, list):
-        for prefix in prefixes:
-            if isinstance(prefix, str) and prefix.strip() and intent.startswith(prefix):
-                return True
-
-    return False
-
-
-def _normalize_narrator_info(
-    narrator_info: Dict[str, Any],
-    *,
-    narrator_called: bool,
-    narrator_output: Optional[Dict[str, Any]],
-    blocked_by: Optional[str],
-) -> Dict[str, Any]:
-    if not isinstance(narrator_info, dict):
-        narrator_info = {}
-
-    used = narrator_info.get("used")
-    if not isinstance(used, bool):
-        inferred_used = False
-        if narrator_called and isinstance(narrator_output, dict):
-            text = narrator_output.get("text")
-            strategy = narrator_output.get("strategy")
-            if (
-                isinstance(text, str)
-                and text.strip()
-                and isinstance(strategy, str)
-                and strategy == "llm"
-            ):
-                inferred_used = True
-        narrator_info["used"] = inferred_used
-
-    if blocked_by and "blocked_by" not in narrator_info:
-        narrator_info["blocked_by"] = blocked_by
-
-    return narrator_info
-
-
-
 def build_facts(
     *,
     question: str,
@@ -483,20 +426,6 @@ def present(
 
     template_kind = get_entity_presentation_kind(facts.entity)
 
-    is_institutional = is_institutional_intent(facts.intent)
-    narrator_blocked_by_intent = _is_narrator_blocked_by_intent(
-        intent=facts.intent,
-        narrator_policy=getattr(narrator, "policy", None),
-        is_institutional=is_institutional,
-    )
-    if narrator_blocked_by_intent:
-        effective_narrator_policy = {
-            **effective_narrator_policy,
-            "llm_enabled": False,
-            "shadow": False,
-            "blocked_by": "intent_prefix",
-        }
-
     # Baseline determinístico
     technical_answer = render_answer(
         facts.entity,
@@ -543,27 +472,12 @@ def present(
 
     final_answer = baseline_answer
     anchors = _extract_anchors_from_rows(rows)
-    narrator_called = False
-    narrator_output: Optional[Dict[str, Any]] = None
-
-    institutional_answer = compose_institutional_answer(
-        baseline_answer=baseline_answer,
-        intent=facts.intent,
-    )
-    if institutional_answer is not None:
-        final_answer = institutional_answer
-        narrator_info["used"] = False
 
     # Wire payload que pode ser usado pelo Narrator e/ou persistido no Shadow Event.
     facts_wire: Optional[Dict[str, Any]] = None
 
     # Só chama o Narrator se a policy efetiva da entidade permitir LLM.
-    if (
-        not is_institutional
-        and not narrator_blocked_by_intent
-        and narrator is not None
-        and bool(effective_narrator_policy.get("llm_enabled"))
-    ):
+    if narrator is not None and bool(effective_narrator_policy.get("llm_enabled")):
         meta_for_narrator: Dict[str, Any] = {
             "intent": facts.intent,
             "entity": facts.entity,
@@ -583,7 +497,6 @@ def present(
 
         try:
             t0 = time.perf_counter()
-            narrator_called = True
             # Wire payload para o Narrator (evita deriva quando rewrite-only estiver habilitado)
             facts_wire = facts.dict()
             # adiciona evidência compacta para manter ancoragem factual mesmo em rewrite_only
@@ -603,7 +516,6 @@ def present(
                 facts_wire.pop("aggregates", None)
 
             out = narrator.render(question, facts_wire, meta_for_narrator)
-            narrator_output = out
 
             dt_ms = (time.perf_counter() - t0) * 1000.0
 
@@ -663,12 +575,6 @@ def present(
     )
 
     narrator_info.setdefault("rag", narrator_rag_context)
-    narrator_info = _normalize_narrator_info(
-        narrator_info,
-        narrator_called=narrator_called,
-        narrator_output=narrator_output,
-        blocked_by=effective_narrator_policy.get("blocked_by"),
-    )
 
     try:
         routing_thresholds = None

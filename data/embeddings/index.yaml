@@ -45,7 +45,7 @@ include:
     tags: [concepts, risk, metrics, fiis]
 
   - id: indicators-catalog
-    path: data/raw/indicators/catalog.md
+    path: data/concepts/concepts-financials-risk.md
     tags: [concepts, indicators, risk, performance, fiis]
 
   # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────

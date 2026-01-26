@@ -1,3 +1,4 @@
+---
 # Estado atual: buckets neutros por decisão explícita.
 # Não há segmentação A/B/C aplicada; reative somente alterando enabled: true nas regras abaixo.
 terms:

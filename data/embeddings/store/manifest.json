@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-22T12:44:54Z",
+  "generated_at": "2026-01-12T20:32:12Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -14,7 +14,7 @@
         "fiis"
       ],
       "chunks": 2,
-      "sha_all": "aedf51be0a218df37365e7c79f1d1501441575434fe935a62dba8fa6a5d8e66f"
+      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
     },
     {
       "id": "concepts-fiis",
@@ -24,7 +24,7 @@
         "fiis"
       ],
       "chunks": 6,
-      "sha_all": "5096218bfc4e965ed4a01ab9eaa05a268a2a7540abd9c6c3f0149d045eb24412"
+      "sha_all": "f0f2d1dd143b372584bf2cc01042faf444b044ad4719e9f01c6494b0ca2da6a8"
     },
     {
       "id": "concepts-risk",
@@ -87,7 +87,7 @@
     },
     {
       "id": "indicators-catalog",
-      "path": "data/raw/indicators/catalog.md",
+      "path": "data/concepts/concepts-financials-risk.md",
       "tags": [
         "concepts",
         "indicators",
@@ -107,7 +107,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "6306f0feaf93bdf902c60fc5475a05c80e3f1afb725f34cfaedfd738d7a72fe1"
+      "sha_all": "38e3693e4f982f1b93b6ff89515e998f27a53a7e0eb9e45d2988fd149018ee2e"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769086071,
+  "last_refresh_epoch": 1768250102,
   "vector_dimension": 768,
   "total_chunks": 295
 }
