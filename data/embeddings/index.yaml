@@ -18,35 +18,35 @@ include:
   # ── Conceitos (documentos de base do produto) ──────────────────────────────
   - id: concepts-catalog
     path: data/concepts/catalog.yaml
-    tags: [concepts, catalog, fiis]
+    tags: [concepts, catalog, fiis, "domain:concepts_fiis"]
 
   - id: concepts-fiis
     path: data/concepts/concepts-fiis.yaml
-    tags: [concepts, fiis]
+    tags: [concepts, fiis, "domain:concepts_fiis"]
 
   - id: concepts-risk
     path: data/concepts/concepts-risk.yaml
-    tags: [concepts, risk, fiis]
+    tags: [concepts, risk, fiis, "domain:concepts_risk"]
 
   - id: concepts-macro
     path: data/concepts/concepts-macro.yaml
-    tags: [concepts, macro, market, fiis]
+    tags: [concepts, macro, market, fiis, "domain:concepts_macro"]
 
   - id: concepts-macro-methodology
     path: data/concepts/concepts-macro-methodology.yaml
-    tags: [concepts, macro, methodology, fiis]
+    tags: [concepts, macro, methodology, fiis, "domain:concepts_methodology"]
 
   - id: concepts-carteira
     path: data/concepts/concepts-carteira.yaml
-    tags: [concepts, carteira, private, fiis]
+    tags: [concepts, carteira, private, fiis, "domain:concepts_portfolio"]
 
   - id: concepts-risk-metrics-methodology
     path: data/concepts/concepts-risk-metrics-methodology.yaml
-    tags: [concepts, risk, metrics, fiis]
+    tags: [concepts, risk, metrics, fiis, "domain:concepts_methodology"]
 
   - id: indicators-catalog
     path: data/concepts/concepts-financials-risk.md
-    tags: [concepts, indicators, risk, performance, fiis]
+    tags: [concepts, indicators, risk, performance, fiis, "domain:concepts_risk"]
 
   # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────
   - id: ontology-entity
@@ -182,18 +182,6 @@ include:
     path: data/entities/client_fiis_positions/client_fiis_positions.yaml
     tags: [entities, private, positions, "entity:client_fiis_positions"]
 
-  - id: entity-history-b3-indexes-hints
-    path: data/entities/history_b3_indexes/hints.md
-    tags: [entities, market, indexes, b3, "entity:history_b3_indexes"]
-
-  - id: entity-history-currency-rates-hints
-    path: data/entities/history_currency_rates/hints.md
-    tags: [entities, fx, currency, "entity:history_currency_rates"]
-
-  - id: entity-history-market-indicators-hints
-    path: data/entities/history_market_indicators/hints.md
-    tags: [entities, market, macro, indicators, "entity:history_market_indicators"]
-
   # ── Policies (paths corrigidos) ────────────────────────────────────────────
   - id: policies-cache
     path: data/policies/cache.yaml
@@ -210,110 +198,122 @@ include:
   # ── Quality gates & thresholds (telemetria de qualidade) ───────────────────
   - id: ops-planner-thresholds
     path: data/ops/planner_thresholds.yaml
-    tags: [quality, thresholds]
+    tags: [quality, thresholds, "domain:engineering", "rag:deny"]
 
   - id: ops-observability
     path: data/ops/observability.yaml
-    tags: [observability, metrics, tracing]
+    tags: [observability, metrics, tracing, "domain:engineering", "rag:deny"]
 
   # ── Golden set (esperados de qualidade) ────────────────────────────────────
   - id: golden-m65-quality-yaml
     path: data/golden/m65_quality.yaml
-    tags: [golden, quality]
+    tags: [golden, quality, "domain:engineering", "rag:deny"]
 
   - id: golden-m68-collisions
     path: data/golden/m68_collisions.json
-    tags: [golden, quality, collisions]
+    tags: [golden, quality, collisions, "domain:engineering", "rag:deny"]
 
   # ── Samples de qualidade (routing + projeções) ─────────────────────────────
   - id: q-routing-samples
     path: data/ops/quality/routing_samples.json
-    tags: [quality, routing, samples]
+    tags: [quality, routing, samples, "domain:engineering", "rag:deny"]
 
   - id: q-projection-cadastro
     path: data/ops/quality/projection_fiis_registrations.json
-    tags: [quality, projection, cadastro]
+    tags: [quality, projection, cadastro, "domain:engineering", "rag:deny"]
 
   - id: q-projection-dividendos
     path: data/ops/quality/projection_fiis_dividends.json
-    tags: [quality, projection, dividendos]
+    tags: [quality, projection, dividendos, "domain:engineering", "rag:deny"]
 
   - id: q-projection-precos
     path: data/ops/quality/projection_fiis_quota_prices.json
-    tags: [quality, projection, precos]
+    tags: [quality, projection, precos, "domain:engineering", "rag:deny"]
 
   - id: q-projection-rankings
     path: data/ops/quality/projection_fiis_rankings.json
-    tags: [quality, projection, rankings]
+    tags: [quality, projection, rankings, "domain:engineering", "rag:deny"]
 
   - id: q-projection-imoveis
     path: data/ops/quality/projection_fiis_real_estate.json
-    tags: [quality, projection, imoveis]
+    tags: [quality, projection, imoveis, "domain:engineering", "rag:deny"]
 
   - id: q-projection-noticias
     path: data/ops/quality/projection_fiis_news.json
-    tags: [quality, projection, noticias]
+    tags: [quality, projection, noticias, "domain:engineering", "rag:deny"]
 
   - id: q-projection-processos
     path: data/ops/quality/projection_fiis_legal_proceedings.json
-    tags: [quality, projection, processos]
+    tags: [quality, projection, processos, "domain:engineering", "rag:deny"]
 
   - id: q-projection-fin-snapshot
     path: data/ops/quality/projection_fiis_financials_snapshot.json
-    tags: [quality, projection, financials]
+    tags: [quality, projection, financials, "domain:engineering", "rag:deny"]
 
   - id: q-projection-fin-revenue
     path: data/ops/quality/projection_fiis_financials_revenue_schedule.json
-    tags: [quality, projection, financials]
+    tags: [quality, projection, financials, "domain:engineering", "rag:deny"]
 
   - id: q-projection-fin-risk
     path: data/ops/quality/projection_fiis_financials_risk.json
-    tags: [quality, projection, financials]
+    tags: [quality, projection, financials, "domain:engineering", "rag:deny"]
 
   - id: q-projection-client-positions
     path: data/ops/quality/projection_client_fiis_positions.json
-    tags: [quality, projection, private]
+    tags: [quality, projection, private, "domain:engineering", "rag:deny"]
 
   - id: q-projection-client-dividends-evolution
     path: data/ops/quality/projection_client_fiis_dividends.json
-    tags: [quality, projection, private]
+    tags: [quality, projection, private, "domain:engineering", "rag:deny"]
 
   - id: q-projection-client-performance-vs-benchmark
     path: data/ops/quality/projection_client_fiis_performance_vs_benchmark.json
-    tags: [quality, projection, private]
+    tags: [quality, projection, private, "domain:engineering", "rag:deny"]
 
   - id: q-projection-fii-overview
     path: data/ops/quality/projection_fiis_overview.json
-    tags: [quality, projection, overview]
+    tags: [quality, projection, overview, "domain:engineering", "rag:deny"]
 
   - id: q-projection-fiis-yield-history
     path: data/ops/quality/projection_fiis_yield_history.json
-    tags: [quality, projection, yield]
+    tags: [quality, projection, yield, "domain:engineering", "rag:deny"]
 
   - id: q-projection-dividends-yields
     path: data/ops/quality/projection_fiis_dividends_yields.json
-    tags: [quality, projection, dividendos, yield]
+    tags: [quality, projection, dividendos, yield, "domain:engineering", "rag:deny"]
 
   - id: q-projection-carteira-enriquecida
     path: data/ops/quality/projection_client_fiis_enriched_portfolio.json
-    tags: [quality, projection, private, carteira]
+    tags: [quality, projection, private, carteira, "domain:engineering", "rag:deny"]
 
   - id: q-projection-macro-consolidada
     path: data/ops/quality/projection_consolidated_macroeconomic.json
-    tags: [quality, projection, macro, historical]
+    tags: [quality, projection, macro, historical, "domain:engineering", "rag:deny"]
 
   - id: q-m66-projection
     path: data/golden/m66_projection.json
-    tags: [quality, projection, m66]
+    tags: [quality, projection, m66, "domain:engineering", "rag:deny"]
 
   - id: entity-history-b3-indexes
     path: data/entities/history_b3_indexes/history_b3_indexes.yaml
+    tags: [entities, market, indexes, b3, "entity:history_b3_indexes"]
+
+  - id: entity-history-b3-indexes-hints
+    path: data/entities/history_b3_indexes/hints.md
     tags: [entities, market, indexes, b3, "entity:history_b3_indexes"]
 
   - id: entity-history-currency-rates
     path: data/entities/history_currency_rates/history_currency_rates.yaml
     tags: [entities, fx, currency, "entity:history_currency_rates"]
 
+  - id: entity-history-currency-rates-hints
+    path: data/entities/history_currency_rates/hints.md
+    tags: [entities, fx, currency, "entity:history_currency_rates"]
+
   - id: entity-history-market-indicators
     path: data/entities/history_market_indicators/history_market_indicators.yaml
+    tags: [entities, market, macro, indicators, "entity:history_market_indicators"]
+
+  - id: entity-history-market-indicators-hints
+    path: data/entities/history_market_indicators/hints.md
     tags: [entities, market, macro, indicators, "entity:history_market_indicators"]
