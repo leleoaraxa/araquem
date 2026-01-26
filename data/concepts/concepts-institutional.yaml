@@ -7,7 +7,7 @@ concepts:
     aliases:
       - "plataforma SIRIOS"
       - "produto SIRIOS"
-    description: >-
+    description: >
       A SIRIOS é uma plataforma de análise e educação financeira focada em FIIs.
       Ela organiza dados públicos e proprietários em visualizações e respostas
       textuais para apoiar entendimento, comparação e acompanhamento de fundos.
@@ -16,7 +16,7 @@ concepts:
     aliases:
       - "assistente Íris"
       - "iris"
-    description: >-
+    description: >
       Íris é o assistente conversacional da SIRIOS. Ela responde perguntas sobre
       FIIs e indicadores disponíveis na plataforma, sintetizando dados e
       explicações sem recomendar investimentos ou executar operações.
@@ -26,7 +26,7 @@ concepts:
       - "escopo do ask"
       - "o que a SIRIOS faz"
       - "o que a SIRIOS não faz"
-    description: >-
+    description: >
       O canal /ask é voltado a educação e análise de dados de FIIs. Ele explica
       métricas, histórico e contexto, mas não fornece recomendações de compra ou
       venda, nem substitui assessoria financeira, jurídica ou tributária.
@@ -36,7 +36,7 @@ concepts:
       - "dados estruturados"
       - "consultas SQL"
       - "contratos de dados"
-    description: >-
+    description: >
       As respostas são baseadas em dados estruturados e contratos de entidades
       usados na plataforma. Quando há tabelas ou séries históricas, a Íris
       descreve os campos e períodos disponíveis, respeitando limitações de
@@ -47,23 +47,21 @@ concepts:
       - "dados de carteira"
       - "dados pessoais"
       - "lgpd"
-    description: >-
+    description: >
       Informações de carteira e dados pessoais são tratados com cuidado e apenas
       quando necessários para responder às perguntas do usuário. A SIRIOS busca
-      minimizar exposição de dados sensíveis e segue políticas públicas de
-      privacidade e retenção quando aplicáveis.
+      minimizar a exposição de dados sensíveis e manter a explicação de forma
+      geral quando não há necessidade de detalhamento.
 
   - name: "Termos e definições do produto"
     aliases:
       - "glossário"
       - "definições"
-    description: >-
-      Alguns termos comuns na SIRIOS:
-      - Entidade: contrato de dados que define campos, tipo e origem de uma view.
-      - View: tabela ou visão lógica que consolida dados para consulta.
-      - Histórico D-1: último dia disponível, geralmente com um dia de defasagem.
-      - Histórico: série completa dentro do período solicitado.
-      - Snapshot: fotografia de indicadores em uma data específica.
-      - Yield: rendimento (ex.: dividend yield) calculado sobre preço.
-      - Vacância: percentual de área ou receita sem ocupação.
-      - P/VP: preço da cota dividido pelo valor patrimonial por cota.
+    description: >
+      Termos comuns na SIRIOS incluem entidade (contrato de dados que define
+      campos, tipo e origem de uma view), view (tabela ou visão lógica para
+      consulta), histórico D-1 (último dia disponível, geralmente com um dia de
+      defasagem), histórico (série completa no período solicitado), snapshot
+      (fotografia de indicadores em uma data), yield (rendimento calculado sobre
+      preço), vacância (percentual de área ou receita sem ocupação) e P/VP
+      (preço da cota dividido pelo valor patrimonial por cota).
