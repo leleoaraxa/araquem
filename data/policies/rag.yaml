@@ -87,3 +87,15 @@ rag:
     collections:
     - concepts-fiis
     min_score: 0.25
+concepts_shadow:
+  enabled: false
+  allow_intents: []
+  deny_intents: []
+  collections:
+  - concepts-fiis
+  - concepts-macro
+  top_k: 4
+  min_score: 0.25
+  max_chars_per_snippet: 280
+  max_matches: 2
+  include_in_answer: false

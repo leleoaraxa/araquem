@@ -1447,6 +1447,49 @@ class TestRagPolicyAndIndex:
         assert "RAG index não encontrado" in (result.get("error") or "")
 
 
+class TestConceptsShadowPolicy:
+    def test_concepts_shadow_disabled_by_default(self, monkeypatch):
+        monkeypatch.setattr(
+            context_builder,
+            "load_rag_policy",
+            lambda: {"rag": {"default": {"collections": ["concepts-fiis"]}}},
+        )
+
+        result = context_builder.build_context(
+            question="Pergunta?", intent="consulta", entity="entidade"
+        )
+
+        concepts_shadow = result.get("concepts_shadow") or {}
+        assert concepts_shadow.get("enabled") is False
+        assert concepts_shadow.get("reason") == "policy_disabled"
+
+    def test_concepts_shadow_error_when_index_missing(self, tmp_path, monkeypatch):
+        monkeypatch.setattr(
+            context_builder, "_RAG_INDEX_PATH", str(tmp_path / "missing_index.jsonl")
+        )
+        monkeypatch.setattr(
+            context_builder,
+            "load_rag_policy",
+            lambda: {
+                "rag": {"default": {"collections": ["concepts-fiis"]}},
+                "concepts_shadow": {
+                    "enabled": True,
+                    "allow_intents": ["consulta"],
+                    "collections": ["concepts-fiis"],
+                },
+            },
+        )
+
+        result = context_builder.build_context(
+            question="Pergunta?", intent="consulta", entity="entidade"
+        )
+
+        concepts_shadow = result.get("concepts_shadow") or {}
+        assert concepts_shadow.get("enabled") is False
+        assert concepts_shadow.get("reason") == "error"
+        assert concepts_shadow.get("error_class")
+
+
 class TestObservabilityConfig:
     def test_env_missing_file_raises(self, tmp_path, monkeypatch, caplog):
         missing_path = tmp_path / "missing_observability.yaml"
