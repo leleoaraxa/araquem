@@ -13,6 +13,11 @@
       "expected_entity": "history_b3_indexes"
     },
     {
+      "question": "IBOV ontem: pontos e variação percentual",
+      "expected_intent": "history_b3_indexes",
+      "expected_entity": "history_b3_indexes"
+    },
+    {
       "question": "Histórico do IBOV nos últimos 5 dias úteis",
       "expected_intent": "history_b3_indexes",
       "expected_entity": "history_b3_indexes"

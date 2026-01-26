@@ -13,6 +13,11 @@
       "expected_entity": "fiis_legal_proceedings"
     },
     {
+      "question": "Há litígio ou processo na CVM envolvendo o ALMI11 com risco jurídico?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
       "question": "Me dá um resumo das ações judiciais envolvendo o ALMI11.",
       "expected_intent": "fiis_legal_proceedings",
       "expected_entity": "fiis_legal_proceedings"

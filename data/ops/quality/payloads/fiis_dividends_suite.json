@@ -18,6 +18,11 @@
       "expected_entity": "fiis_dividends"
     },
     {
+      "question": "Data de pagamento do provento do KNRI11 em janeiro de 2025",
+      "expected_intent": "fiis_dividends",
+      "expected_entity": "fiis_dividends"
+    },
+    {
       "question": "Lista de pagamentos de proventos do VINO11",
       "expected_intent": "fiis_dividends",
       "expected_entity": "fiis_dividends"

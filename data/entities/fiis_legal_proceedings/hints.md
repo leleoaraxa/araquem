@@ -10,6 +10,7 @@ Panorama de processos ou ações envolvendo FIIs, incluindo status e partes púb
 - Houve movimentações recentes relevantes no processo?
 - Existem tendências por tema ou tipo de ação que impactem o FII?
 - Há riscos de curto prazo sinalizados pelos processos listados?
+- Há litígios, ações judiciais ou processos na CVM que possam afetar o FII?
 
 ### Limites
 - Não inferir desfechos ou valores não presentes nos dados.

@@ -43,6 +43,7 @@ ask:
     - dividendos por mes
     - dividendos por meses
     - esse mes
+    - data de pagamento
     - mes atual
     - nesse mes
     - neste mes
@@ -50,6 +51,7 @@ ask:
     - historico de dividendos
     - pagamento de dividendos
     - pagou em
+    - pago em
     - proventos pagos
     - quanto distribuiu
     - quanto distribuiu em
@@ -104,6 +106,10 @@ ask:
     - "historico de dividendos do"
     - "dividendo pago em"
     - "pagou em"
+    - "pagou em janeiro de 2025"
+    - "dividendos pagos em janeiro de 2025"
+    - "data de pagamento do dividendo"
+    - "data de pagamento do provento"
     - "quanto distribuiu"
     - "media de dividendos do"
     - "quanto o distribuiu"

@@ -15,3 +15,7 @@ Como o Araquem usa:
   12 meses) quando solicitado pelo usuário.
 - Apoiar comparações entre fundos ("quem pagou mais em 12m?") e análises de
   estabilidade de renda.
+
+Exemplos adicionais:
+- "Dividendos que o KNRI11 pagou em janeiro de 2025"
+- "Data de pagamento do provento do HGLG11"
