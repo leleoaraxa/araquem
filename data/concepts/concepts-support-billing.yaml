@@ -1,0 +1,39 @@
+# data/concepts/concepts-support-billing.yaml
+domain: support_billing
+owner: research
+
+concepts:
+  - name: "Planos e assinatura"
+    aliases:
+      - "plano"
+      - "assinatura"
+    description: >
+      Planos definem o tipo de acesso e funcionalidades disponíveis. Consulte
+      sempre as condições vigentes antes de contratar ou alterar um plano.
+
+  - name: "Cobrança e pagamentos"
+    aliases:
+      - "cobranca"
+      - "cobrança"
+      - "pagamento"
+    description: >
+      Questões de cobrança e pagamentos devem considerar o ciclo vigente e os
+      dados apresentados pelos canais oficiais de atendimento.
+
+  - name: "Atualização de plano"
+    aliases:
+      - "mudar plano"
+      - "upgrade"
+      - "downgrade"
+    description: >
+      Mudanças de plano podem alterar limites e acesso a dados. Confirme o
+      escopo de cada plano antes de solicitar uma alteração.
+
+  - name: "Comprovantes e histórico"
+    aliases:
+      - "comprovante"
+      - "historico de pagamento"
+      - "histórico de pagamento"
+    description: >
+      Caso precise de comprovantes ou histórico de cobrança, verifique o canal
+      de suporte indicado pela SIRIOS.

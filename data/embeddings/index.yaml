@@ -52,6 +52,14 @@ include:
     path: data/concepts/concepts-institutional-privacy.yaml
     tags: [concepts, institutional, privacy, "domain:institutional_privacy"]
 
+  - id: concepts-institutional-terms
+    path: data/concepts/concepts-institutional-terms.yaml
+    tags: [concepts, institutional, terms, "domain:institutional_terms"]
+
+  - id: concepts-institutional-product-positioning
+    path: data/concepts/concepts-institutional-product-positioning.yaml
+    tags: [concepts, institutional, positioning, "domain:institutional_product_positioning"]
+
   - id: concepts-support
     path: data/concepts/concepts-support.yaml
     tags: [concepts, support, faq, "domain:support_faq"]
@@ -63,6 +71,14 @@ include:
   - id: concepts-support-errors
     path: data/concepts/concepts-support-errors.yaml
     tags: [concepts, support, errors, "domain:support_errors"]
+
+  - id: concepts-support-troubleshooting
+    path: data/concepts/concepts-support-troubleshooting.yaml
+    tags: [concepts, support, troubleshooting, "domain:support_troubleshooting"]
+
+  - id: concepts-support-billing
+    path: data/concepts/concepts-support-billing.yaml
+    tags: [concepts, support, billing, "domain:support_billing"]
 
   - id: concepts-risk-metrics-methodology
     path: data/concepts/concepts-risk-metrics-methodology.yaml

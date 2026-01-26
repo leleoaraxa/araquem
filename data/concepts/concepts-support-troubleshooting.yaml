@@ -1,0 +1,53 @@
+# data/concepts/concepts-support-troubleshooting.yaml
+domain: support_troubleshooting
+owner: research
+
+concepts:
+  - name: "Checklist rápido de diagnóstico"
+    aliases:
+      - "checklist"
+      - "diagnostico"
+    description: >
+      Confirme o ticker, o período e o indicador desejado. Se comparar FIIs,
+      informe todos os tickers e peça apenas uma métrica por vez.
+
+  - name: "Sem dados ou indicador indisponível"
+    aliases:
+      - "sem dados"
+      - "nao encontrei"
+      - "não encontrei"
+    description: >
+      Se não houver dados, tente outro indicador ou um período menor. Nem todo
+      FII tem todas as métricas em todas as datas.
+
+  - name: "Reduzir escopo da pergunta"
+    aliases:
+      - "reduzir escopo"
+      - "simplificar"
+    description: >
+      Para evitar respostas amplas, peça um único FII, um único indicador e uma
+      janela temporal curta, como 3 ou 6 meses.
+
+  - name: "Timeout ou resposta lenta"
+    aliases:
+      - "timeout"
+      - "demora"
+    description: >
+      Consultas com séries longas ou muitas comparações podem demorar. Reduza o
+      período ou divida a pergunta em partes.
+
+  - name: "Pedir explicação de colunas"
+    aliases:
+      - "explicar colunas"
+      - "o que significa a coluna"
+    description: >
+      Em tabelas, peça para explicar as colunas e unidades antes de aprofundar a
+      análise.
+
+  - name: "Ajustar janela temporal"
+    aliases:
+      - "reduzir janela"
+      - "periodo menor"
+    description: >
+      Se a resposta ficar extensa, limite a janela temporal com datas ou meses
+      específicos para obter um resumo mais direto.
