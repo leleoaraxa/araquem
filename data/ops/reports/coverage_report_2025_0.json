@@ -1,99 +1,99 @@
 {
   "appendix": {
     "catalog_entities": [
-      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
+      "client_fiis_enriched_portfolio",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "fiis_dividends_yields",
-      "fiis_overview",
-      "fiis_registrations",
+      "consolidated_macroeconomic",
       "fiis_dividends",
+      "fiis_dividends_yields",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_real_estate",
-      "fiis_news",
-      "fiis_quota_prices",
       "fiis_legal_proceedings",
+      "fiis_news",
+      "fiis_overview",
+      "fiis_quota_prices",
       "fiis_rankings",
+      "fiis_real_estate",
+      "fiis_registrations",
       "fiis_yield_history",
       "history_b3_indexes",
       "history_currency_rates",
-      "history_market_indicators",
-      "consolidated_macroeconomic"
+      "history_market_indicators"
     ],
     "ontology_entities": [
-      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
+      "client_fiis_enriched_portfolio",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "fiis_dividends_yields",
-      "fiis_overview",
-      "fiis_registrations",
+      "consolidated_macroeconomic",
       "fiis_dividends",
+      "fiis_dividends_yields",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_real_estate",
-      "fiis_news",
-      "fiis_quota_prices",
       "fiis_legal_proceedings",
+      "fiis_news",
+      "fiis_overview",
+      "fiis_quota_prices",
       "fiis_rankings",
+      "fiis_real_estate",
+      "fiis_registrations",
       "fiis_yield_history",
       "history_b3_indexes",
       "history_currency_rates",
-      "history_market_indicators",
-      "consolidated_macroeconomic"
+      "history_market_indicators"
     ],
     "ontology_intents": [
-      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
+      "client_fiis_enriched_portfolio",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "fiis_dividends_yields",
-      "fiis_overview",
-      "fiis_registrations",
+      "consolidated_macroeconomic",
       "fiis_dividends",
+      "fiis_dividends_yields",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_real_estate",
-      "fiis_news",
-      "fiis_quota_prices",
       "fiis_legal_proceedings",
+      "fiis_news",
+      "fiis_overview",
+      "fiis_quota_prices",
       "fiis_rankings",
+      "fiis_real_estate",
+      "fiis_registrations",
       "fiis_yield_history",
       "history_b3_indexes",
       "history_currency_rates",
       "history_market_indicators",
-      "consolidated_macroeconomic",
       "ticker_query"
     ],
     "rag_allow_intents": [],
     "rag_denied_intents": [
-      "client_fiis_enriched_portfolio",
       "client_fiis_dividends_evolution",
+      "client_fiis_enriched_portfolio",
       "client_fiis_performance_vs_benchmark",
       "client_fiis_performance_vs_benchmark_summary",
       "client_fiis_positions",
-      "fiis_dividends_yields",
-      "fiis_overview",
-      "fiis_registrations",
+      "consolidated_macroeconomic",
       "fiis_dividends",
+      "fiis_dividends_yields",
       "fiis_financials_revenue_schedule",
       "fiis_financials_risk",
       "fiis_financials_snapshot",
-      "fiis_real_estate",
-      "fiis_news",
-      "fiis_quota_prices",
       "fiis_legal_proceedings",
+      "fiis_news",
+      "fiis_overview",
+      "fiis_quota_prices",
       "fiis_rankings",
-      "fiis_yield_history",
-      "consolidated_macroeconomic"
+      "fiis_real_estate",
+      "fiis_registrations",
+      "fiis_yield_history"
     ]
   },
   "gaps": {
@@ -101,48 +101,6 @@
     "P1": [],
     "P2": [
       {
-        "entity": "fiis_dividends_yields",
-        "intent": null,
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "path": null,
-        "priority": "P2"
-      },
-      {
-        "entity": "fiis_dividends_yields",
-        "intent": null,
-        "message": "some intents missing param inference configuration",
-        "path": null,
-        "priority": "P2"
-      },
-      {
-        "entity": "fiis_overview",
-        "intent": null,
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "path": null,
-        "priority": "P2"
-      },
-      {
-        "entity": "fiis_overview",
-        "intent": null,
-        "message": "some intents missing param inference configuration",
-        "path": null,
-        "priority": "P2"
-      },
-      {
-        "entity": "fiis_registrations",
-        "intent": null,
-        "message": "catalog rag_policy=false but RAG configuration present",
-        "path": null,
-        "priority": "P2"
-      },
-      {
-        "entity": "fiis_registrations",
-        "intent": null,
-        "message": "some intents missing param inference configuration",
-        "path": null,
-        "priority": "P2"
-      },
-      {
         "entity": "fiis_dividends",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
@@ -151,6 +109,20 @@
       },
       {
         "entity": "fiis_dividends",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_dividends_yields",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_dividends_yields",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -192,14 +164,28 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_real_estate",
+        "entity": "fiis_legal_proceedings",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_real_estate",
+        "entity": "fiis_legal_proceedings",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_overview",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_overview",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -220,28 +206,42 @@
         "priority": "P2"
       },
       {
-        "entity": "fiis_legal_proceedings",
+        "entity": "fiis_rankings",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_legal_proceedings",
+        "entity": "fiis_rankings",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_rankings",
+        "entity": "fiis_real_estate",
         "intent": null,
         "message": "catalog rag_policy=false but RAG configuration present",
         "path": null,
         "priority": "P2"
       },
       {
-        "entity": "fiis_rankings",
+        "entity": "fiis_real_estate",
+        "intent": null,
+        "message": "some intents missing param inference configuration",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_registrations",
+        "intent": null,
+        "message": "catalog rag_policy=false but RAG configuration present",
+        "path": null,
+        "priority": "P2"
+      },
+      {
+        "entity": "fiis_registrations",
         "intent": null,
         "message": "some intents missing param inference configuration",
         "path": null,
@@ -285,57 +285,6 @@
     ]
   },
   "records": {
-    "client_fiis_enriched_portfolio": {
-      "bucket": "B",
-      "coverage_flags": {
-        "cache_policy": true,
-        "narrator_policy": false,
-        "param_inference": true,
-        "rag_policy": false
-      },
-      "intents": [
-        "client_fiis_enriched_portfolio"
-      ],
-      "notes": [
-        "Entidade privada; requer document_number do contexto seguro."
-      ],
-      "paths": {
-        "entity_yaml": {
-          "exists": true,
-          "path": "data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml"
-        },
-        "schema": {
-          "exists": true,
-          "path": "data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml"
-        }
-      },
-      "policies": {
-        "cache": "ok",
-        "narrator": {
-          "context_allowed": false,
-          "llm_enabled": null,
-          "notes": [],
-          "status": "ok"
-        },
-        "param_inference": {
-          "configured_intents": [
-            "client_fiis_enriched_portfolio"
-          ],
-          "missing_intents": [],
-          "notes": [],
-          "status": "ok"
-        },
-        "rag": {
-          "allowed_intents": [],
-          "notes": [],
-          "status": "ok"
-        }
-      },
-      "schema": {
-        "issues": [],
-        "ok": true
-      }
-    },
     "client_fiis_dividends_evolution": {
       "bucket": "B",
       "coverage_flags": {
@@ -372,6 +321,57 @@
         "param_inference": {
           "configured_intents": [
             "client_fiis_dividends_evolution"
+          ],
+          "missing_intents": [],
+          "notes": [],
+          "status": "ok"
+        },
+        "rag": {
+          "allowed_intents": [],
+          "notes": [],
+          "status": "ok"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "client_fiis_enriched_portfolio": {
+      "bucket": "B",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "client_fiis_enriched_portfolio"
+      ],
+      "notes": [
+        "Entidade privada; requer document_number do contexto seguro."
+      ],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/client_fiis_enriched_portfolio/client_fiis_enriched_portfolio.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/client_fiis_enriched_portfolio.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "client_fiis_enriched_portfolio"
           ],
           "missing_intents": [],
           "notes": [],
@@ -540,8 +540,8 @@
         "ok": true
       }
     },
-    "fiis_dividends_yields": {
-      "bucket": "A",
+    "consolidated_macroeconomic": {
+      "bucket": "C",
       "coverage_flags": {
         "cache_policy": true,
         "narrator_policy": false,
@@ -549,18 +549,17 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_dividends_yields",
-        "ticker_query"
+        "consolidated_macroeconomic"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml"
+          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_dividends_yields.schema.yaml"
+          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
         }
       },
       "policies": {
@@ -573,140 +572,16 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_dividends_yields"
+            "consolidated_macroeconomic"
           ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ],
-          "status": "partial"
-        },
-        "rag": {
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ],
-          "status": "policy_present_flag_false"
-        }
-      },
-      "schema": {
-        "issues": [],
-        "ok": true
-      }
-    },
-    "fiis_overview": {
-      "bucket": "A",
-      "coverage_flags": {
-        "cache_policy": true,
-        "narrator_policy": false,
-        "param_inference": true,
-        "rag_policy": false
-      },
-      "intents": [
-        "fiis_overview",
-        "ticker_query"
-      ],
-      "notes": [],
-      "paths": {
-        "entity_yaml": {
-          "exists": true,
-          "path": "data/entities/fiis_overview/fiis_overview.yaml"
-        },
-        "schema": {
-          "exists": true,
-          "path": "data/contracts/entities/fiis_overview.schema.yaml"
-        }
-      },
-      "policies": {
-        "cache": "ok",
-        "narrator": {
-          "context_allowed": true,
-          "llm_enabled": null,
+          "missing_intents": [],
           "notes": [],
           "status": "ok"
         },
-        "param_inference": {
-          "configured_intents": [
-            "fiis_overview"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ],
-          "status": "partial"
-        },
         "rag": {
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ],
-          "status": "policy_present_flag_false"
-        }
-      },
-      "schema": {
-        "issues": [],
-        "ok": true
-      }
-    },
-    "fiis_registrations": {
-      "bucket": "A",
-      "coverage_flags": {
-        "cache_policy": true,
-        "narrator_policy": false,
-        "param_inference": true,
-        "rag_policy": false
-      },
-      "intents": [
-        "fiis_registrations",
-        "ticker_query"
-      ],
-      "notes": [],
-      "paths": {
-        "entity_yaml": {
-          "exists": true,
-          "path": "data/entities/fiis_registrations/fiis_registrations.yaml"
-        },
-        "schema": {
-          "exists": true,
-          "path": "data/contracts/entities/fiis_registrations.schema.yaml"
-        }
-      },
-      "policies": {
-        "cache": "ok",
-        "narrator": {
-          "context_allowed": false,
-          "llm_enabled": null,
+          "allowed_intents": [],
           "notes": [],
           "status": "ok"
-        },
-        "param_inference": {
-          "configured_intents": [
-            "fiis_registrations"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ],
-          "status": "partial"
-        },
-        "rag": {
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ],
-          "status": "policy_present_flag_false"
         }
       },
       "schema": {
@@ -748,6 +623,64 @@
         "param_inference": {
           "configured_intents": [
             "fiis_dividends"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_dividends_yields": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_dividends_yields",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_dividends_yields/fiis_dividends_yields.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_dividends_yields.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_dividends_yields"
           ],
           "missing_intents": [
             "ticker_query"
@@ -943,7 +876,7 @@
         "ok": true
       }
     },
-    "fiis_real_estate": {
+    "fiis_legal_proceedings": {
       "bucket": "A",
       "coverage_flags": {
         "cache_policy": true,
@@ -952,18 +885,18 @@
         "rag_policy": false
       },
       "intents": [
-        "fiis_real_estate",
+        "fiis_legal_proceedings",
         "ticker_query"
       ],
       "notes": [],
       "paths": {
         "entity_yaml": {
           "exists": true,
-          "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml"
+          "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml"
         },
         "schema": {
           "exists": true,
-          "path": "data/contracts/entities/fiis_real_estate.schema.yaml"
+          "path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml"
         }
       },
       "policies": {
@@ -976,7 +909,7 @@
         },
         "param_inference": {
           "configured_intents": [
-            "fiis_real_estate"
+            "fiis_legal_proceedings"
           ],
           "missing_intents": [
             "ticker_query"
@@ -1050,6 +983,64 @@
         "ok": true
       }
     },
+    "fiis_overview": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_overview",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_overview/fiis_overview.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_overview.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_overview"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
     "fiis_quota_prices": {
       "bucket": "A",
       "coverage_flags": {
@@ -1108,64 +1099,6 @@
         "ok": true
       }
     },
-    "fiis_legal_proceedings": {
-      "bucket": "A",
-      "coverage_flags": {
-        "cache_policy": true,
-        "narrator_policy": false,
-        "param_inference": true,
-        "rag_policy": false
-      },
-      "intents": [
-        "fiis_legal_proceedings",
-        "ticker_query"
-      ],
-      "notes": [],
-      "paths": {
-        "entity_yaml": {
-          "exists": true,
-          "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml"
-        },
-        "schema": {
-          "exists": true,
-          "path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml"
-        }
-      },
-      "policies": {
-        "cache": "ok",
-        "narrator": {
-          "context_allowed": true,
-          "llm_enabled": null,
-          "notes": [],
-          "status": "ok"
-        },
-        "param_inference": {
-          "configured_intents": [
-            "fiis_legal_proceedings"
-          ],
-          "missing_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "intents without param inference: ticker_query"
-          ],
-          "status": "partial"
-        },
-        "rag": {
-          "allowed_intents": [
-            "ticker_query"
-          ],
-          "notes": [
-            "RAG configuration exists while catalog flag is false"
-          ],
-          "status": "policy_present_flag_false"
-        }
-      },
-      "schema": {
-        "issues": [],
-        "ok": true
-      }
-    },
     "fiis_rankings": {
       "bucket": "A",
       "coverage_flags": {
@@ -1200,6 +1133,122 @@
         "param_inference": {
           "configured_intents": [
             "fiis_rankings"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_real_estate": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_real_estate",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_real_estate.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": true,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_real_estate"
+          ],
+          "missing_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "intents without param inference: ticker_query"
+          ],
+          "status": "partial"
+        },
+        "rag": {
+          "allowed_intents": [
+            "ticker_query"
+          ],
+          "notes": [
+            "RAG configuration exists while catalog flag is false"
+          ],
+          "status": "policy_present_flag_false"
+        }
+      },
+      "schema": {
+        "issues": [],
+        "ok": true
+      }
+    },
+    "fiis_registrations": {
+      "bucket": "A",
+      "coverage_flags": {
+        "cache_policy": true,
+        "narrator_policy": false,
+        "param_inference": true,
+        "rag_policy": false
+      },
+      "intents": [
+        "fiis_registrations",
+        "ticker_query"
+      ],
+      "notes": [],
+      "paths": {
+        "entity_yaml": {
+          "exists": true,
+          "path": "data/entities/fiis_registrations/fiis_registrations.yaml"
+        },
+        "schema": {
+          "exists": true,
+          "path": "data/contracts/entities/fiis_registrations.schema.yaml"
+        }
+      },
+      "policies": {
+        "cache": "ok",
+        "narrator": {
+          "context_allowed": false,
+          "llm_enabled": null,
+          "notes": [],
+          "status": "ok"
+        },
+        "param_inference": {
+          "configured_intents": [
+            "fiis_registrations"
           ],
           "missing_intents": [
             "ticker_query"
@@ -1434,55 +1483,6 @@
             "RAG configuration exists while catalog flag is false"
           ],
           "status": "policy_present_flag_false"
-        }
-      },
-      "schema": {
-        "issues": [],
-        "ok": true
-      }
-    },
-    "consolidated_macroeconomic": {
-      "bucket": "C",
-      "coverage_flags": {
-        "cache_policy": true,
-        "narrator_policy": false,
-        "param_inference": true,
-        "rag_policy": false
-      },
-      "intents": [
-        "consolidated_macroeconomic"
-      ],
-      "notes": [],
-      "paths": {
-        "entity_yaml": {
-          "exists": true,
-          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
-        },
-        "schema": {
-          "exists": true,
-          "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml"
-        }
-      },
-      "policies": {
-        "cache": "ok",
-        "narrator": {
-          "context_allowed": false,
-          "llm_enabled": null,
-          "notes": [],
-          "status": "ok"
-        },
-        "param_inference": {
-          "configured_intents": [
-            "consolidated_macroeconomic"
-          ],
-          "missing_intents": [],
-          "notes": [],
-          "status": "ok"
-        },
-        "rag": {
-          "allowed_intents": [],
-          "notes": [],
-          "status": "ok"
         }
       },
       "schema": {

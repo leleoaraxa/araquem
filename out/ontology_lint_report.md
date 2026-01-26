@@ -1,5 +1,5 @@
 # Ontology Lint Report
-Gerado em: 2026-01-01T21:59:29.389191+00:00
+Gerado em: 2026-01-26T18:47:01.369503+00:00
 
 ## A) Acentuação
 Nenhuma ocorrência encontrada.
@@ -19,7 +19,7 @@ Nenhum conflito encontrado.
 Substituído pelo Collision Gate.
 
 ## E) Resumo Executivo
-* Totais: A = 0, B = 0, C = 0, D = 0, F = 0
+* Totais: A = 0, B = 0, C = 0, D = 0, F = 1
 
 Top 20 tokens mais colidentes (normalize):
 Token | # Intents
@@ -43,11 +43,13 @@ ipca | 3
 meu | 3
 minha | 3
 minhas | 3
-patrimonio | 3
+proventos | 3
 
 ## F) Collision Gate
-Status: PASS
-Nenhuma violação encontrada.
+Status: FAIL
+Tipo | Campo | Token | #Intents | Max | Intents
+--- | --- | --- | --- | --- | ---
+numeric_token | tokens.include | 12 | 1 | 3 | client_fiis_performance_vs_benchmark
 
 Top 20 tokens mais colidentes (informativo):
 Token | # Intents
@@ -71,4 +73,4 @@ ipca | 3
 meu | 3
 minha | 3
 minhas | 3
-patrimonio | 3
+proventos | 3
