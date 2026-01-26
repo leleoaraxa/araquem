@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-26T18:43:28Z",
+  "generated_at": "2026-01-26T19:13:39Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -107,7 +107,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "38e3693e4f982f1b93b6ff89515e998f27a53a7e0eb9e45d2988fd149018ee2e"
+      "sha_all": "522af1fd900c8373875af9df818eff2f238076dc492f82137c320fee03b8502b"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -143,7 +143,7 @@
         "entity:fiis_dividends"
       ],
       "chunks": 3,
-      "sha_all": "2b94b3209961e1f10458589f5d02137b5141bef35c5443c0b00f6d77c92a8938"
+      "sha_all": "a2745c9cdb3958c37d0de8b3ab4c265adcf77a3647cfd25f853872fe88bd086b"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -155,7 +155,7 @@
         "entity:fiis_dividends"
       ],
       "chunks": 1,
-      "sha_all": "6ec231ece8a9e90bedbff90ea3c2cb1480671bce7b42f9a799335cd7f4e1cb38"
+      "sha_all": "5e36c363be26359a79cefe5ea23a1ad658cb0669681d9a330c56ec6381682c08"
     },
     {
       "id": "entity-fiis-precos",
@@ -167,7 +167,7 @@
         "entity:fiis_quota_prices"
       ],
       "chunks": 5,
-      "sha_all": "fa971c21b15fd6575079c47c604828261505153976b1452714b9ed8f36345ddf"
+      "sha_all": "5b52a234c167dc15c862be1c965d049429aec62a7dc0244bdff06379be35ae30"
     },
     {
       "id": "entity-fiis-precos-hints",
@@ -226,8 +226,8 @@
         "processos",
         "entity:fiis_legal_proceedings"
       ],
-      "chunks": 2,
-      "sha_all": "e37db3c5ff853f9c07290500bcc83485bf24bae59ce5c6585cccb3f06421b883"
+      "chunks": 3,
+      "sha_all": "9524572c395742600f1a29d60c51bb5297c82bef1a9137a50a2fc5d32b5f20f2"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -305,7 +305,7 @@
         "entity:fiis_dividends_yields"
       ],
       "chunks": 5,
-      "sha_all": "5ff2adafa2c9f56750821c3767c6639404fb993f9753617abf4427f127f264a5"
+      "sha_all": "f2255283c22eb1c0103f1a4da0e92fb0a5dfe4dcc42c9bbb6a8f0a6aaf81de41"
     },
     {
       "id": "entity-dividends-yields-hints",
@@ -318,7 +318,7 @@
         "entity:fiis_dividends_yields"
       ],
       "chunks": 1,
-      "sha_all": "6b7f8240c8a50a1ff18679fe7711a68f68c5cca6527ea2710c2a02e61cd98791"
+      "sha_all": "a25a7628453d9c0489b249d2146e87d98706704e6113bb15e0d690c283603494"
     },
     {
       "id": "entity-fiis-yield-history",
@@ -508,7 +508,7 @@
         "entity:consolidated_macroeconomic"
       ],
       "chunks": 1,
-      "sha_all": "5afed6d503d4090ab05054d9eb7a9e34a34fa520b0fb5388fae33c87404264be"
+      "sha_all": "478b3df26b20ada7d9ff3f6cf64c74002f15375dd691c238a8b1636e236d041a"
     },
     {
       "id": "entity-client-fiis-positions",
@@ -533,7 +533,7 @@
         "entity:history_b3_indexes"
       ],
       "chunks": 1,
-      "sha_all": "4c1dcbb85726c7e26f24f71069e79ea737e1d3693c0c7e4f46d3c3eef9b4025b"
+      "sha_all": "2c5d7c574b23af2791b7df7eb1e36bc68948a62a5d60e4edc9d7f3f132a43d91"
     },
     {
       "id": "entity-history-currency-rates-hints",
@@ -641,7 +641,7 @@
         "samples"
       ],
       "chunks": 35,
-      "sha_all": "4b1ad7b1cfc19e89af7ec00648b7055689ec3b9bbb331999ef41e35218a4e6c7"
+      "sha_all": "d981d98c217125d12d5186a3b7b9aef3f1057dff104ac06a3a0834a59d4ad33b"
     },
     {
       "id": "q-projection-cadastro",
@@ -866,7 +866,7 @@
         "entity:history_b3_indexes"
       ],
       "chunks": 3,
-      "sha_all": "8ffc3997c373abdbb20539cba0b64a06cb9dcb72dab3315d75f8bc4dad4eb0bd"
+      "sha_all": "abab8dad5f6b586cb18544fd8d01466ca1545b63fb53c72072647bac120c1167"
     },
     {
       "id": "entity-history-currency-rates",
@@ -894,7 +894,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769453159,
+  "last_refresh_epoch": 1769454977,
   "vector_dimension": 768,
-  "total_chunks": 295
+  "total_chunks": 296
 }
