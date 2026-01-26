@@ -62,6 +62,8 @@ rerank:
   entities: {}
   domains: {}
 rag:
+  # TODO: Quando o runtime suportar filtros por tags, aplicar segmentação
+  # por `domain:*` e exclusão global de `rag:deny` sem alterar o schema.
   entities:
     history_market_indicators:
       profile: macro
