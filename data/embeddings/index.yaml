@@ -44,9 +44,25 @@ include:
     path: data/concepts/concepts-institutional.yaml
     tags: [concepts, institutional, "domain:institutional_core"]
 
+  - id: concepts-institutional-policies
+    path: data/concepts/concepts-institutional-policies.yaml
+    tags: [concepts, institutional, policies, "domain:institutional_policies"]
+
+  - id: concepts-institutional-privacy
+    path: data/concepts/concepts-institutional-privacy.yaml
+    tags: [concepts, institutional, privacy, "domain:institutional_privacy"]
+
   - id: concepts-support
     path: data/concepts/concepts-support.yaml
     tags: [concepts, support, faq, "domain:support_faq"]
+
+  - id: concepts-support-howto
+    path: data/concepts/concepts-support-howto.yaml
+    tags: [concepts, support, howto, "domain:support_howto"]
+
+  - id: concepts-support-errors
+    path: data/concepts/concepts-support-errors.yaml
+    tags: [concepts, support, errors, "domain:support_errors"]
 
   - id: concepts-risk-metrics-methodology
     path: data/concepts/concepts-risk-metrics-methodology.yaml
