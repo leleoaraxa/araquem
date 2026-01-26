@@ -76,6 +76,22 @@ concepts:
       - "Minimização de dados"
       - "Cuidados com dados de carteira"
 
+  - file: data/concepts/concepts-institutional-terms.yaml
+    domain: institutional_terms
+    owner: research
+    sections:
+      - "Glossário do produto"
+      - "Termos de dados e contratos"
+      - "Métricas e indicadores"
+
+  - file: data/concepts/concepts-institutional-product-positioning.yaml
+    domain: institutional_product_positioning
+    owner: research
+    sections:
+      - "Plataforma e público"
+      - "Escopo da Íris"
+      - "Diferenciais e limites"
+
   # Camada de suporte e atendimento
   - file: data/concepts/concepts-support.yaml
     domain: support
@@ -102,3 +118,19 @@ concepts:
       - "Período fora do intervalo"
       - "Sem dados"
       - "Timeout ou latência"
+
+  - file: data/concepts/concepts-support-troubleshooting.yaml
+    domain: support_troubleshooting
+    owner: research
+    sections:
+      - "Checklist de diagnóstico"
+      - "Erros comuns e ajustes rápidos"
+      - "Explicação de colunas e janela temporal"
+
+  - file: data/concepts/concepts-support-billing.yaml
+    domain: support_billing
+    owner: research
+    sections:
+      - "Planos e assinatura"
+      - "Cobrança e pagamentos"
+      - "Histórico e comprovantes"
