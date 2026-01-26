@@ -62,11 +62,16 @@ def _concepts_shadow_section(policy: Dict[str, Any]) -> Dict[str, Any]:
 def _concepts_shadow_snapshot(cfg: Dict[str, Any]) -> Dict[str, Any]:
     collections = cfg.get("collections") if isinstance(cfg.get("collections"), list) else []
     top_k = cfg.get("top_k")
+    top_k_global = cfg.get("top_k_global")
     min_score = cfg.get("min_score")
     try:
         top_k_val = int(top_k) if top_k is not None else None
     except (TypeError, ValueError):
         top_k_val = None
+    try:
+        top_k_global_val = int(top_k_global) if top_k_global is not None else None
+    except (TypeError, ValueError):
+        top_k_global_val = None
     try:
         min_score_val = float(min_score) if min_score is not None else None
     except (TypeError, ValueError):
@@ -74,6 +79,7 @@ def _concepts_shadow_snapshot(cfg: Dict[str, Any]) -> Dict[str, Any]:
     return {
         "collections": [str(c) for c in collections if isinstance(c, str) and c],
         "top_k": top_k_val,
+        "top_k_global": top_k_global_val,
         "min_score": min_score_val,
     }
 
@@ -211,10 +217,21 @@ def _build_concepts_shadow(
     intent: str,
     policy: Dict[str, Any],
 ) -> Dict[str, Any]:
-    cfg = _concepts_shadow_section(policy)
+    raw_section = (
+        policy.get("concepts_shadow") if isinstance(policy, dict) else None
+    )
+    if raw_section is None or not isinstance(raw_section, dict):
+        return {
+            "enabled": False,
+            "reason": "policy_missing",
+            "matches": [],
+            "policy_snapshot": _concepts_shadow_snapshot({}),
+        }
+
+    cfg = raw_section
     snapshot = _concepts_shadow_snapshot(cfg)
     enabled_cfg = bool(cfg.get("enabled"))
-    allow_intents = cfg.get("allow_intents") or []
+    allow_intents = cfg.get("allow_intents")
     deny_intents = cfg.get("deny_intents") or []
     intent_safe = intent or ""
 
@@ -222,6 +239,19 @@ def _build_concepts_shadow(
         return {
             "enabled": False,
             "reason": "policy_disabled",
+            "matches": [],
+            "policy_snapshot": snapshot,
+        }
+
+    allow_list_valid = (
+        isinstance(allow_intents, list)
+        and allow_intents
+        and all(isinstance(item, str) and item for item in allow_intents)
+    )
+    if not allow_list_valid:
+        return {
+            "enabled": False,
+            "reason": "allow_intents_empty",
             "matches": [],
             "policy_snapshot": snapshot,
         }
@@ -234,31 +264,35 @@ def _build_concepts_shadow(
             "policy_snapshot": snapshot,
         }
 
-    if isinstance(allow_intents, list) and allow_intents:
-        if intent_safe not in allow_intents:
-            return {
-                "enabled": False,
-                "reason": "intent_not_allowed",
-                "matches": [],
-                "policy_snapshot": snapshot,
-            }
+    if intent_safe not in allow_intents:
+        return {
+            "enabled": False,
+            "reason": "intent_not_allowed",
+            "matches": [],
+            "policy_snapshot": snapshot,
+        }
 
     collections = snapshot.get("collections") or []
     if not collections:
         return {
             "enabled": False,
-            "reason": "no_candidates",
+            "reason": "collections_empty",
             "matches": [],
             "policy_snapshot": snapshot,
         }
 
     top_k = snapshot.get("top_k") or cfg.get("top_k")
+    top_k_global = snapshot.get("top_k_global") or cfg.get("top_k_global")
     max_matches = cfg.get("max_matches")
     max_chars = cfg.get("max_chars_per_snippet")
     try:
         top_k_val = int(top_k) if top_k is not None else 4
     except (TypeError, ValueError):
         top_k_val = 4
+    try:
+        top_k_global_val = int(top_k_global) if top_k_global is not None else 40
+    except (TypeError, ValueError):
+        top_k_global_val = 40
     try:
         max_matches_val = int(max_matches) if max_matches is not None else 2
     except (TypeError, ValueError):
@@ -267,6 +301,9 @@ def _build_concepts_shadow(
         max_matches_val = 1
     if top_k_val < max_matches_val:
         top_k_val = max_matches_val
+    if top_k_global_val < 1:
+        top_k_global_val = 40
+    k_for_search = max(top_k_global_val, top_k_val, max_matches_val)
 
     min_score = snapshot.get("min_score")
     try:
@@ -294,7 +331,7 @@ def _build_concepts_shadow(
         store: EmbeddingStore = cached_embedding_store(_RAG_INDEX_PATH)
         t_search0 = time.perf_counter()
         results = (
-            store.search_by_vector(qvec, k=top_k_val, min_score=min_score_val) or []
+            store.search_by_vector(qvec, k=k_for_search, min_score=min_score_val) or []
         )
         search_ms = int((time.perf_counter() - t_search0) * 1000)
     except Exception as exc:  # pragma: no cover - robust fallback
@@ -333,7 +370,7 @@ def _build_concepts_shadow(
     if not matches:
         return {
             "enabled": False,
-            "reason": "no_candidates",
+            "reason": "no_matches",
             "matches": [],
             "policy_snapshot": snapshot,
             "query_embedding_ms": embed_ms,

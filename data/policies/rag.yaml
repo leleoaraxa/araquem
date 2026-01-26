@@ -94,6 +94,7 @@ concepts_shadow:
   collections:
   - concepts-fiis
   - concepts-macro
+  top_k_global: 40
   top_k: 4
   min_score: 0.25
   max_chars_per_snippet: 280
