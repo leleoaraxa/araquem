@@ -62,6 +62,8 @@ ask:
     - ano
     - cambio
     - cdi
+    - curva de juros
+    - di
     - dolar
     - euro
     - historico
@@ -71,6 +73,9 @@ ask:
     - ipca
     - macro
     - passado
+    - juros futuros
+    - cenario macro
+    - impacto nos fiis
     - selic
     - serie historica
     - serie longa
@@ -130,6 +135,12 @@ ask:
     - "ibov em"
     - "dolar em"
     - "euro em"
+    - "curva de juros"
+    - "juros futuros"
+    - "taxa di"
+    - "di futuro"
+    - "cenario macro"
+    - "impacto nos fiis"
   synonyms:
     ref_date:
       - data

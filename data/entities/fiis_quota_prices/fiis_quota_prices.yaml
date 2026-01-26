@@ -137,6 +137,9 @@ ask:
     - indexador
     - bucket macro
     - macro
+    - curva de juros
+    - juros futuros
+    - cenario macro
     - selic
     - cdi
     - ipca

@@ -1205,6 +1205,10 @@ intents:
         - proventos
         - proventos do <ticker>
         - proventos de <ticker> esse mes
+        - dividendos pagos em janeiro de 2025
+        - pagou em janeiro de 2025
+        - data de pagamento do dividendo
+        - data de pagamento do provento
         - ultimo dividendo
         - proximo dividendo
         - dividendos acumulados
@@ -2104,6 +2108,11 @@ intents:
         - status
         - litigio
         - litgio
+        - juridico
+        - risco juridico
+        - contencioso
+        - administrativo
+        - cvm
         - causa
         - causas
         - perda
@@ -2187,6 +2196,8 @@ intents:
         - quantos processos o
         - ha processos contra o
         - quais processos o
+        - processo relevante contra o
+        - existe algum processo relevante contra o
         - qual o valor das acoes do
         - processos envolvendo o
         - quem move acao contra o
@@ -2197,6 +2208,9 @@ intents:
         - resumo das acoes judiciais do
         - andamento dos processos do
         - processos judiciais do
+        - processo na cvm
+        - processos na cvm
+        - risco juridico do
       exclude:
         - relacao entre selic cdi e o desempenho medio dos fiis
         - panorama macro
@@ -2384,6 +2398,9 @@ intents:
         - pontos
         - fechamento
         - variacao
+        - ontem
+        - percentual
+        - porcentagem
         - resumo
         - variacoes
         - ultimos
@@ -2432,6 +2449,11 @@ intents:
         - ifix do dia
         - ibov do dia
         - fechamento do ibov ontem
+        - fechamento de ontem do ibovespa
+        - fechamento de ontem do ibov
+        - ibov ontem
+        - ibovespa ontem
+        - pontos e porcentagem
         - variacao do dia
         - variacao diaria
         - do dia
@@ -2654,17 +2676,13 @@ intents:
     tokens:
       include:
         - rendimento_percentual
+        - dy
+        - yield
+        - taxa
+        - percentual
         - comparativo
         - comparacao
         - comparar
-        - dy
-        - dividendo
-        - dividendos
-        - provento
-        - proventos
-        - pagamento
-        - pago
-        - pagou
         - conceito
         - definicao
         - explicacao
@@ -2684,10 +2702,7 @@ intents:
         - yield de dividendos
         - yield mensal
         - yield acumulado
-        - retorno em dividendos
-        - retorno do fundo em dividendos
         - rendimento percentual
-        - rentabilidade via dividendos
         - dividendos e dy do
         - dividendos e dy do <ticker>
         - dividendos e dividend yield do
@@ -2733,7 +2748,6 @@ intents:
         - dividendos e yield
         - dy e dividendos
         - yield e dividendos
-        - comparacao de dividendos
         - dy 12 meses
         - dy 12m
         - dividendo pago e dividend yield
@@ -2915,10 +2929,15 @@ intents:
         - importancia
         - panorama
         - cenario
+        - cenario macro
         - macro
         - favoravel
         - desfavoravel
         - cdi
+        - di
+        - taxa di
+        - juros futuros
+        - curva de juros
         - selic
         - ipca
         - ifix
@@ -2952,6 +2971,9 @@ intents:
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
+        - impacto nos fiis
+        - juros futuros
+        - curva de juros projetada
         - impacto para fiis
         - impacto para fundos imobiliarios
         - significado dos indicadores para fiis

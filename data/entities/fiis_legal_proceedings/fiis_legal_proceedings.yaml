@@ -65,12 +65,19 @@ ask:
   keywords:
     - processo
     - processos
+    - processo relevante
     - judicial
     - judiciais
+    - acao judicial
+    - acoes judiciais
     - andamento
     - status
     - litigio
     - litgio
+    - risco juridico
+    - risco jurídico
+    - contencioso
+    - cvm
     - causa
     - risco de perda
     - partes envolvidas
@@ -78,6 +85,15 @@ ask:
     - fatos principais
     - impacto
     - analise de impacto
+  phrase_includes:
+    - "processo relevante"
+    - "acao judicial"
+    - "acoes judiciais"
+    - "litigio"
+    - "risco juridico"
+    - "risco jurídico"
+    - "processo na cvm"
+    - "processos na cvm"
   synonyms:
     ticker:
       - ativo

@@ -50,6 +50,7 @@ ask:
     - do dia
     - atual
     - historico
+    - ontem
     - ibov
     - ibovespa
     - ifil
@@ -59,6 +60,9 @@ ask:
     - pontos
     - variacao
     - variacao diaria
+    - variacao percentual
+    - percentual
+    - porcentagem
   anti_tokens:
     - minha
     - minhas
@@ -106,8 +110,13 @@ ask:
     - "ifix do dia"
     - "ifil do dia"
     - "ibov do dia"
+    - "fechamento de ontem do ibovespa"
+    - "fechamento de ontem do ibov"
+    - "ibovespa ontem"
+    - "ibov ontem"
     - "pontos do ifix"
     - "pontos do ibov"
+    - "pontos e porcentagem"
   synonyms:
     index_date:
     - data
