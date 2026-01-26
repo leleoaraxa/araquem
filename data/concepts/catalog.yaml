@@ -49,3 +49,23 @@ concepts:
       - "Risco e retorno da carteira"
       - "Projeções de renda e objetivos financeiros"
       - "Princípios de privacidade e segurança de dados"
+
+  # Camada institucional do produto
+  - file: data/concepts/concepts-institutional.yaml
+    domain: institutional
+    owner: research
+    sections:
+      - "Produto e posicionamento da SIRIOS"
+      - "Escopo do /ask e limites"
+      - "Dados, privacidade e LGPD"
+      - "Termos e definições"
+
+  # Camada de suporte e atendimento
+  - file: data/concepts/concepts-support.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Como perguntar e boas práticas"
+      - "Erros comuns e ausência de dados"
+      - "Interpretação de respostas"
+      - "Latência, timeouts e limitações"

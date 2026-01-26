@@ -40,6 +40,14 @@ include:
     path: data/concepts/concepts-carteira.yaml
     tags: [concepts, carteira, private, fiis, "domain:concepts_portfolio"]
 
+  - id: concepts-institutional
+    path: data/concepts/concepts-institutional.yaml
+    tags: [concepts, institutional, "domain:institutional_core"]
+
+  - id: concepts-support
+    path: data/concepts/concepts-support.yaml
+    tags: [concepts, support, faq, "domain:support_faq"]
+
   - id: concepts-risk-metrics-methodology
     path: data/concepts/concepts-risk-metrics-methodology.yaml
     tags: [concepts, risk, metrics, fiis, "domain:concepts_methodology"]
