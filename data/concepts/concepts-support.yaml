@@ -11,10 +11,6 @@ concepts:
       Perguntas objetivas e com contexto ajudam a Íris a responder melhor.
       Informe o ticker, o período e o indicador desejado. Quando possível,
       descreva o tipo de análise esperada (ex.: comparar dois FIIs).
-    typical_questions:
-      - "qual foi o dividend yield do HGLG11 nos últimos 12 meses?"
-      - "compare a vacância de KNRI11 e VISC11 no último trimestre"
-      - "como evoluiu o P/VP do MXRF11 em 2023?"
 
   - name: "Erros comuns e como corrigir"
     aliases:
@@ -26,9 +22,6 @@ concepts:
       ou ausência de dados para um indicador específico. Verifique o código do
       fundo, tente períodos menores e confirme se o indicador existe para aquele
       FII.
-    typical_questions:
-      - "por que não encontrei dados para ABCD11?"
-      - "esse fundo não tem histórico de dividendos?"
 
   - name: "Como interpretar respostas tabulares e listas"
     aliases:
@@ -38,9 +31,6 @@ concepts:
       Respostas tabulares exibem colunas e linhas com dados estruturados; listas
       costumam destacar pontos-chave, rankings ou comparações. Se precisar de
       mais detalhes, peça para explicar as colunas ou filtrar o período.
-    typical_questions:
-      - "o que significa a coluna snapshot_date?"
-      - "pode explicar as colunas dessa tabela?"
 
   - name: "Latência e timeouts"
     aliases:
@@ -60,6 +50,3 @@ concepts:
       Algumas respostas dependem de RAG disponível e de dados existentes nas
       entidades da SIRIOS. Quando não houver informação suficiente, a Íris
       explicará a limitação.
-    typical_questions:
-      - "por que o dado está com um dia de atraso?"
-      - "vocês cobrem todos os FIIs?"
