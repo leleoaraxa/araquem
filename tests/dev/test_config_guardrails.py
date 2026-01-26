@@ -1461,7 +1461,29 @@ class TestConceptsShadowPolicy:
 
         concepts_shadow = result.get("concepts_shadow") or {}
         assert concepts_shadow.get("enabled") is False
-        assert concepts_shadow.get("reason") == "policy_disabled"
+        assert concepts_shadow.get("reason") == "policy_missing"
+
+    def test_concepts_shadow_allow_intents_empty_disables(self, monkeypatch):
+        monkeypatch.setattr(
+            context_builder,
+            "load_rag_policy",
+            lambda: {
+                "rag": {"default": {"collections": ["concepts-fiis"]}},
+                "concepts_shadow": {
+                    "enabled": True,
+                    "allow_intents": [],
+                    "collections": ["concepts-fiis"],
+                },
+            },
+        )
+
+        result = context_builder.build_context(
+            question="Pergunta?", intent="consulta", entity="entidade"
+        )
+
+        concepts_shadow = result.get("concepts_shadow") or {}
+        assert concepts_shadow.get("enabled") is False
+        assert concepts_shadow.get("reason") == "allow_intents_empty"
 
     def test_concepts_shadow_error_when_index_missing(self, tmp_path, monkeypatch):
         monkeypatch.setattr(
