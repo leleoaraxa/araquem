@@ -1,3 +1,8 @@
+terms:
+- name: quota
+  kind: policy
+  scope: cache
+  version: 1
 ask_quota:
   enabled: true
   defaults:
@@ -6,5 +11,5 @@ ask_quota:
     paid: 1000
   blocked_messages:
     anon: "Você está usando uma demonstração da Íris. Crie uma conta gratuita para continuar."
-    free: "Você atingiu o limite do plano gratuito. Faça upgrade para continuar."
-    paid: "Você atingiu o limite do seu plano. Entre em contato com o suporte para ampliar."
+    free: "Você atingiu o limite mensal do plano gratuito. Faça o upgrade para o plano Pro e continue usando a Íris sem interrupções."
+    paid: "Você atingiu o limite mensal do seu plano. Esse limite existe para garantir estabilidade e controle de custos por usuário. Se precisar de um volume maior, fale com a gente para ajustar seu plano."

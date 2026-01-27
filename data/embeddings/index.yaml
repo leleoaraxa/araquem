@@ -44,10 +44,6 @@ include:
     path: data/concepts/concepts-risk-metrics-methodology.yaml
     tags: [concepts, risk, metrics, fiis]
 
-  - id: indicators-catalog
-    path: data/raw/indicators/catalog.md
-    tags: [concepts, indicators, risk, performance, fiis]
-
   # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────
   - id: ontology-entity
     path: data/ontology/entity.yaml

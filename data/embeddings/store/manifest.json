@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-12T20:32:12Z",
+  "generated_at": "2026-01-27T21:45:41Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -84,19 +84,6 @@
       ],
       "chunks": 3,
       "sha_all": "74ad600af50e6cb62135282f86d5526483a9a38ab8f13a0f66a91fc155779602"
-    },
-    {
-      "id": "indicators-catalog",
-      "path": "data/raw/indicators/catalog.md",
-      "tags": [
-        "concepts",
-        "indicators",
-        "risk",
-        "performance",
-        "fiis"
-      ],
-      "chunks": 15,
-      "sha_all": "2d582b45dafd43781fe59ff5e71c0cf7b88101980d5b762b466b02b7810ed2e1"
     },
     {
       "id": "ontology-entity",
@@ -894,7 +881,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1768250102,
+  "last_refresh_epoch": 1769550517,
   "vector_dimension": 768,
   "total_chunks": 295
 }
