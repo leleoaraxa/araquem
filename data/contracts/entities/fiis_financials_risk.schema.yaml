@@ -47,19 +47,3 @@ tolerance:
   extra_columns_allowed: false
   missing_columns_allowed: false
   nullable_mismatch_warn_only: true
-
-# 📚 Documentation linkage (safe extension block – ignored by strict loaders)
-x-docs:
-  catalog_path: data/concepts/concepts-financials-risk.md
-  anchors:
-    beta_index:        "#1-beta-índice"
-    sharpe_ratio:      "#2-sharpe-ratio"
-    jensen_alpha:      "#3-alpha-de-jensen"
-    volatility_ratio:  "#4-volatility-ratio"
-    treynor_ratio:     "#5-treynor-ratio"
-    sortino_ratio:     "#6-sortino-ratio"
-    max_drawdown:      "#7-max-drawdown-mdd"
-    r_squared:         "#8-r²-coeficiente-de-determinação"
-  notes:
-    - "Âncoras seguem slug GitHub-style; ajuste se necessário após render."
-    - "Cálculos feitos na origem (Python). Esta view só consome valores prontos."

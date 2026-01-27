@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-27T10:35:45Z",
+  "generated_at": "2026-01-27T12:53:42Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -212,20 +212,6 @@
       "sha_all": "74ad600af50e6cb62135282f86d5526483a9a38ab8f13a0f66a91fc155779602"
     },
     {
-      "id": "indicators-catalog",
-      "path": "data/concepts/concepts-financials-risk.md",
-      "tags": [
-        "concepts",
-        "indicators",
-        "risk",
-        "performance",
-        "fiis",
-        "domain:concepts_risk"
-      ],
-      "chunks": 15,
-      "sha_all": "2d582b45dafd43781fe59ff5e71c0cf7b88101980d5b762b466b02b7810ed2e1"
-    },
-    {
       "id": "ontology-entity",
       "path": "data/ontology/entity.yaml",
       "tags": [
@@ -234,7 +220,7 @@
         "entities"
       ],
       "chunks": 60,
-      "sha_all": "522af1fd900c8373875af9df818eff2f238076dc492f82137c320fee03b8502b"
+      "sha_all": "1c32ff98746eef83633857f87028d7dceb24ea6a488408065353e3d0701dd5b3"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -1069,7 +1055,7 @@
       "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     }
   ],
-  "last_refresh_epoch": 1769510318,
+  "last_refresh_epoch": 1769518585,
   "vector_dimension": 768,
-  "total_chunks": 315
+  "total_chunks": 300
 }

@@ -196,7 +196,6 @@ data/
         catalog.yaml
         concepts-carteira.yaml
         concepts-fiis.yaml
-        concepts-financials-risk.md
         concepts-macro-methodology.yaml
         concepts-macro.yaml
         concepts-risk-metrics-methodology.yaml
