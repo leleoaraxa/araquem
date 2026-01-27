@@ -1,0 +1,7 @@
+ask_quota:
+  enabled: true
+  defaults:
+    anon: 3
+    free: 30
+    paid: 1000
+  blocked_message: "Você está usando uma demonstração da Íris. Crie uma conta gratuita para continuar."

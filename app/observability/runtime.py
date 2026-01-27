@@ -187,6 +187,9 @@ _METRIC_SCHEMAS = {
     "cache_misses_total": ("counter", ("entity",)),
     "metrics_cache_hits_total": ("counter", ("entity",)),
     "metrics_cache_misses_total": ("counter", ("entity",)),
+    "ask_requests_total": ("counter", ("user_type",)),
+    "ask_blocked_total": ("counter", ("reason", "user_type")),
+    "ask_quota_remaining": ("gauge", ("user_type",)),
     "sirios_planner_route_decisions_total": (
         "counter",
         ("intent", "entity", "outcome"),

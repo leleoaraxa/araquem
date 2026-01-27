@@ -22,6 +22,14 @@ from app.core.context import cache, orchestrator, planner, policies, context_man
 from app.observability.metrics import (
     emit_counter as counter,
     emit_histogram as histogram,
+    emit_gauge as gauge,
+)
+from app.quota.ask_quota import (
+    build_client_key,
+    enforce_ask_quota,
+    get_blocked_message,
+    load_ask_quota_policy,
+    normalize_user_type,
 )
 
 # ainda importamos responder/formatter aqui para retrocompatibilidade
@@ -140,6 +148,47 @@ class AskPayload(BaseModel):
     conversation_id: str
     nickname: str
     client_id: str
+    type_user: str
+
+
+def _build_quota_blocked_response(
+    payload: AskPayload,
+    blocked_message: str,
+    elapsed_ms: int,
+    explain: bool,
+) -> Dict[str, Any]:
+    response_timestamp = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    if explain:
+        return {
+            "status": {"reason": "ok", "message": "ok"},
+            "results": {},
+            "meta": {
+                "planner": None,
+                "result_key": None,
+                "intent": None,
+                "entity": None,
+                "planner_intent": None,
+                "planner_entity": None,
+                "planner_score": None,
+                "rows_total": 0,
+                "elapsed_ms": elapsed_ms,
+                "explain": None,
+                "explain_analytics": None,
+                "cache": {"hit": False, "key": None, "ttl": None, "layer": None},
+                "aggregates": None,
+                "narrator": None,
+                "requested_metrics": None,
+            },
+            "answer": blocked_message,
+        }
+    return {
+        "question": payload.question,
+        "conversation_id": payload.conversation_id,
+        "answer": blocked_message,
+        "timestamp": response_timestamp,
+        "elapsed_ms": elapsed_ms,
+        "status": "ok",
+    }
 
 
 @router.post("/ask")
@@ -149,6 +198,41 @@ def ask(
 ):
     t0 = time.perf_counter()
     request_id = make_request_id()
+
+    quota_policy = load_ask_quota_policy()
+    user_type = normalize_user_type(payload.type_user)
+    client_key = build_client_key(user_type, payload.client_id, payload.conversation_id)
+    quota_decision = enforce_ask_quota(
+        cache.raw,
+        user_type,
+        client_key,
+        now=datetime.now(timezone.utc),
+        policy=quota_policy,
+    )
+    if not quota_decision.bypassed:
+        if quota_decision.allowed:
+            counter("ask_requests_total", user_type=user_type)
+            if quota_decision.remaining is not None:
+                gauge(
+                    "ask_quota_remaining",
+                    value=quota_decision.remaining,
+                    user_type=user_type,
+                )
+        else:
+            counter(
+                "ask_blocked_total",
+                reason="quota_exceeded",
+                user_type=user_type,
+            )
+            elapsed_ms_blocked = int((time.perf_counter() - t0) * 1000)
+            blocked_message = get_blocked_message(quota_policy)
+            body_blocked = _build_quota_blocked_response(
+                payload,
+                blocked_message,
+                elapsed_ms_blocked,
+                explain,
+            )
+            return JSONResponse(json_sanitize(body_blocked))
 
     t_plan0 = time.perf_counter()
     plan = planner.explain(payload.question)
