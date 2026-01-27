@@ -2,6 +2,7 @@ id: fiis_dividends
 result_key: dividendos_fii
 sql_view: fiis_dividends
 private: false
+bucket: A
 description: Histórico de proventos (dividendos) por FII
 
 options:

@@ -2,6 +2,7 @@ id: client_fiis_enriched_portfolio
 result_key: document_number
 sql_view: client_fiis_enriched_portfolio
 private: true
+bucket: B
 description: >
   Visão privada e composta da carteira do cliente, cruzando posição, cadastro do FII,
   métricas financeiras, risco e rankings por ativo.

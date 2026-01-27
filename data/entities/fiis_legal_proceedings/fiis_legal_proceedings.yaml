@@ -2,6 +2,7 @@ id: fiis_legal_proceedings
 result_key: processos_fii
 sql_view: fiis_legal_proceedings
 private: false
+bucket: A
 description: Processos judiciais associados a FIIs (dados 1×N com risco e andamento)
 
 options:

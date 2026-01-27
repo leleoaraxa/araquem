@@ -2,6 +2,7 @@ id: history_b3_indexes
 result_key: history_b3_indexes
 sql_view: history_b3_indexes
 private: false
+bucket: C
 description: Índices de mercado da B3 (IBOV, IFIX, IFIL) em base D-1.
 d_minus: 1
 

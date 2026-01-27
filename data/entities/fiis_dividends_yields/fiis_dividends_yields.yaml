@@ -2,6 +2,7 @@ id: fiis_dividends_yields
 result_key: ticker
 sql_view: fiis_dividends_yields
 private: false
+bucket: A
 description: Histórico mensal de dividendos, dividend yield (DY) e cadastro do FII em uma única visão composta.
 
 options:

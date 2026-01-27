@@ -2,6 +2,7 @@ id: fiis_registrations
 result_key: cadastro_fii
 sql_view: fiis_registrations
 private: false
+bucket: A
 description: Dados cadastrais 1×1 de cada FII (admin, cnpj, site, classificação e
   atributos básicos)
 

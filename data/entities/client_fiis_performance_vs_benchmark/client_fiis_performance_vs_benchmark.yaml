@@ -2,6 +2,7 @@ id: client_fiis_performance_vs_benchmark
 result_key: performance_vs_benchmark
 sql_view: client_fiis_performance_vs_benchmark
 private: true
+bucket: B
 description: >
   Série temporal da performance da carteira de FIIs do cliente versus um benchmark (PRIVADA;
   exige document_number obtido de contexto seguro, nunca do texto livre do usuário). Cada linha representa a performance da carteira e do benchmark em uma data de referência.

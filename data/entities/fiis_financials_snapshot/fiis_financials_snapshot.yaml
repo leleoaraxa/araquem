@@ -2,6 +2,7 @@ id: fiis_financials_snapshot
 result_key: financials_snapshot
 sql_view: fiis_financials_snapshot
 private: false
+bucket: A
 description: Snapshot D-1 de indicadores financeiros por FII (valores, razões, caixa e endividamento).
 
 options:

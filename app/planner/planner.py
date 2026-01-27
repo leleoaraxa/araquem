@@ -6,9 +6,7 @@ import logging
 import os
 import time
 from pathlib import Path
-from functools import lru_cache
-
-from .ontology_loader import load_ontology
+from .ontology_loader import load_ontology, VALID_BUCKETS
 from .ticker_index import resolve_ticker_from_text
 
 # RAG: leitor de índice e hints
@@ -19,87 +17,6 @@ from app.observability.instrumentation import counter, histogram
 
 PUNCT_RE = re.compile(r"[^\w\s]", flags=re.UNICODE)
 _LOG = logging.getLogger("planner.explain")
-
-
-@lru_cache(maxsize=1)
-def _load_bucket_rules(path: str = "data/ontology/bucket_rules.yaml") -> Dict[str, Any]:
-    """
-    Carrega as regras de bucket a partir de YAML.
-
-    Não aplica lógica de negócio; apenas retorna o dicionário cru com:
-    - defaults
-    - rules
-    """
-    try:
-        return load_yaml_cached(path) or {}
-    except Exception:
-        _LOG.exception("Falha ao carregar bucket_rules de %s", path)
-        return {}
-
-
-def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str:
-    """
-    Resolve o bucket (A/B/C/D) de forma 100% declarativa via YAML (bucket_rules).
-    Quando nenhuma regra habilitada casa com a pergunta, retorna string vazia (modo neutro).
-    """
-    cfg = _load_bucket_rules()
-    defaults = cfg.get("defaults") or {}
-    rules = cfg.get("rules") or []
-
-    if not isinstance(rules, list) or not rules:
-        return ""
-
-    # Normalização e tokenização consistentes com o Planner
-    normalize_steps = defaults.get("normalize") or getattr(ontology, "normalize", [])
-    split_pat = defaults.get("token_split") or getattr(ontology, "token_split", r"\b")
-
-    norm = _normalize(question, normalize_steps)
-    tokens = _tokenize(norm, split_pat)
-    tokens_set = set(tokens)
-
-    token_weight = float(defaults.get("token_weight", 1.0))
-    phrase_weight = float(defaults.get("phrase_weight", 3.0))
-    default_min_score = float(defaults.get("min_score", 1.0))
-
-    best_bucket = ""
-    best_score = 0.0
-
-    for rule in rules:
-        if not isinstance(rule, dict):
-            continue
-
-        if not rule.get("enabled", False):
-            continue
-
-        bucket = str(rule.get("bucket", "")).strip()
-        if not bucket:
-            continue
-
-        min_score = float(rule.get("min_score", default_min_score))
-
-        tokens_inc = rule.get("tokens_include") or []
-        tokens_exc = rule.get("tokens_exclude") or []
-        phrases_inc = rule.get("phrases_include") or []
-        phrases_exc = rule.get("phrases_exclude") or []
-
-        # Contagem de hits
-        token_hits_inc = [t for t in tokens_inc if t in tokens_set]
-        token_hits_exc = [t for t in tokens_exc if t in tokens_set]
-        phrase_hits_inc = [p for p in phrases_inc if _phrase_present(norm, p)]
-        phrase_hits_exc = [p for p in phrases_exc if _phrase_present(norm, p)]
-
-        score = (
-            token_weight * len(token_hits_inc)
-            - token_weight * len(token_hits_exc)
-            + phrase_weight * len(phrase_hits_inc)
-            - phrase_weight * len(phrase_hits_exc)
-        )
-
-        if score >= min_score and score >= best_score:
-            best_score = score
-            best_bucket = bucket
-
-    return best_bucket
 
 
 def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
@@ -192,7 +109,15 @@ def _resolve_apply_on(
     return str(apply_on_cfg.get("default", "base"))
 
 
+ROOT = Path(__file__).resolve().parents[2]
 _RAG_POLICY_CACHE: Dict[str, Any] | None = None
+
+
+def _resolve_repo_path(path: str) -> Path:
+    candidate = Path(path)
+    if candidate.is_absolute():
+        return candidate
+    return ROOT / candidate
 
 
 def _load_rag_policy(path: str = "data/policies/rag.yaml") -> Dict[str, Any]:
@@ -200,7 +125,7 @@ def _load_rag_policy(path: str = "data/policies/rag.yaml") -> Dict[str, Any]:
     if _RAG_POLICY_CACHE is not None:
         return _RAG_POLICY_CACHE
 
-    policy_path = Path(path)
+    policy_path = _resolve_repo_path(path)
     if not policy_path.exists():
         _LOG.warning("Política de RAG ausente em %s; usando fallback vazio", path)
         _RAG_POLICY_CACHE = {}
@@ -275,7 +200,7 @@ def _load_thresholds(path: str = "data/ops/planner_thresholds.yaml") -> Dict[str
     if _THRESHOLDS_CACHE is not None:
         return _THRESHOLDS_CACHE
 
-    policy_path = Path(path)
+    policy_path = _resolve_repo_path(path)
     if not policy_path.exists():
         raise ValueError(f"Arquivo de thresholds ausente: {policy_path}")
 
@@ -336,7 +261,7 @@ def _load_context_policy(path: str = "data/policies/context.yaml") -> Dict[str, 
         informa se a entidade escolhida estaria apta a usar contexto,
         segundo data/policies/context.yaml.
     """
-    policy_path = Path(path)
+    policy_path = _resolve_repo_path(path)
     if not policy_path.exists():
         _LOG.warning("Política de contexto ausente; contexto desabilitado")
         return {
@@ -460,14 +385,18 @@ def _entities_for_bucket(ontology: Any, bucket: str) -> List[str]:
             if ent and ent not in all_entities:
                 all_entities.append(ent)
 
-    buckets_map = getattr(ontology, "buckets", None)
-    if not isinstance(buckets_map, dict):
-        return all_entities
-
     if not bucket:
         return all_entities
 
-    entities = buckets_map.get(bucket) or []
+    bucket_index = getattr(ontology, "bucket_index", None)
+    if not isinstance(bucket_index, dict):
+        return all_entities
+
+    bucket_entry = bucket_index.get(bucket, {})
+    if not isinstance(bucket_entry, dict):
+        return all_entities
+
+    entities = bucket_entry.get("entities") or []
     if not isinstance(entities, list) or not entities:
         return all_entities
 
@@ -482,7 +411,7 @@ class Planner:
     def reload(self):
         self.onto = load_ontology(self.ontology_path)
 
-    def explain(self, question: str):
+    def explain(self, question: str, *, bucket_hint: Optional[str] = None):
         norm = _normalize(question, self.onto.normalize)
         tokens = _tokenize(norm, self.onto.token_split)
         tokens_set = set(tokens)
@@ -490,12 +419,22 @@ class Planner:
         resolved_ticker = resolve_ticker_from_text(question)
         has_ticker = bool(resolved_ticker)
 
-        bucket = resolve_bucket(question, {}, self.onto)
+        bucket = (
+            bucket_hint.strip()
+            if isinstance(bucket_hint, str) and bucket_hint.strip() in VALID_BUCKETS
+            else ""
+        )
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
-        bucket_gate_applied = bool(bucket)
+        bucket_gate_applied = bool(bucket) and bucket in VALID_BUCKETS
+        bucket_index = getattr(self.onto, "bucket_index", {}) or {}
+        bucket_intent_names: List[str] = []
+        if isinstance(bucket_index, dict) and bucket:
+            bucket_entry = bucket_index.get(bucket) or {}
+            if isinstance(bucket_entry, dict):
+                bucket_intent_names = list(bucket_entry.get("intents") or [])
         filtered_intents = (
-            [it for it in all_intents if getattr(it, "bucket", "") == bucket]
+            [it for it in all_intents if it.name in bucket_intent_names]
             if bucket
             else all_intents
         )

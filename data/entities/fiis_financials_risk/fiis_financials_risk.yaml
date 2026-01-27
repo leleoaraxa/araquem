@@ -2,6 +2,7 @@ id: fiis_financials_risk
 result_key: financials_risk
 sql_view: fiis_financials_risk
 private: false
+bucket: A
 description: Indicadores de risco do FII (volatilidade, Sharpe, Treynor, Jensen, beta, Sortino, Drawdown, R²), D-1.
 
 options:
