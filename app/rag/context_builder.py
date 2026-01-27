@@ -17,6 +17,19 @@ _RAG_POLICY_PATH = os.getenv("RAG_POLICY_PATH", "data/policies/rag.yaml")
 _RAG_INDEX_PATH = os.getenv("RAG_INDEX_PATH", "data/embeddings/store/embeddings.jsonl")
 
 
+def _rag_trace_enabled() -> bool:
+    return str(os.getenv("RAG_TRACE", "")).strip().lower() in {"1", "true", "yes"}
+
+
+def _rag_trace_log(event: str, payload: Dict[str, Any]) -> None:
+    if not _rag_trace_enabled():
+        return
+    try:
+        LOGGER.info({"rag_trace": event, **payload})
+    except Exception:
+        return
+
+
 def load_rag_policy() -> Dict[str, Any]:
     """Carrega e cacheia a política de RAG.
 
@@ -464,6 +477,20 @@ def build_context(
         has_ticker=has_ticker,
         policy=applied_policy,
     )
+    _rag_trace_log(
+        "rag_policy_snapshot",
+        {
+            "enabled": bool(policy_snapshot.get("enabled")),
+            "reason": policy_snapshot.get("reason"),
+            "entity": policy_snapshot.get("entity"),
+            "intent": policy_snapshot.get("intent"),
+            "collections": policy_snapshot.get("collections"),
+            "max_chunks": policy_snapshot.get("max_chunks"),
+            "min_score": policy_snapshot.get("min_score"),
+            "mode": policy_snapshot.get("mode"),
+            "has_ticker": policy_snapshot.get("has_ticker"),
+        },
+    )
     if not policy_snapshot.get("enabled"):
         return {
             "enabled": False,
@@ -543,6 +570,23 @@ def build_context(
         }
 
     chunks = [_normalize_chunk(item) for item in results]
+    _rag_trace_log(
+        "rag_retrieval_results",
+        {
+            "total_chunks": len(chunks),
+            "samples": [
+                {
+                    "doc_id": chunk.get("doc_id"),
+                    "chunk_id": chunk.get("chunk_id"),
+                    "score": chunk.get("score"),
+                    "tags": chunk.get("tags"),
+                    "entity": chunk.get("entity"),
+                    "collection": chunk.get("collection"),
+                }
+                for chunk in chunks
+            ],
+        },
+    )
 
     snapshot_policy = dict(policy_snapshot)
     snapshot_policy.update(

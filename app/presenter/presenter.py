@@ -376,6 +376,24 @@ def present(
             policy=rag_policy,
         )
 
+    rag_enabled = bool(narrator_rag_context.get("enabled")) if isinstance(narrator_rag_context, dict) else False
+    rag_chunks_count = (
+        len(narrator_rag_context.get("chunks") or [])
+        if isinstance(narrator_rag_context, dict)
+        else 0
+    )
+    if str(os.getenv("RAG_TRACE", "")).strip().lower() in {"1", "true", "yes"}:
+        LOGGER.info(
+            {
+                "rag_trace": "context_injection",
+                "intent": intent,
+                "entity": entity,
+                "compute_mode_meta": compute_mode_meta,
+                "rag_enabled": rag_enabled,
+                "rag_chunks": rag_chunks_count,
+            }
+        )
+
     # CONTEXTO CONVERSACIONAL
     context_history_wire: List[Dict[str, Any]] = []
     try:
@@ -557,6 +575,29 @@ def present(
         except Exception as e:  # noqa: BLE001
             narrator_info.update(error=str(e), strategy="fallback_error")
             counter("sirios_narrator_render_total", outcome="error")
+    if str(os.getenv("RAG_TRACE", "")).strip().lower() in {"1", "true", "yes"}:
+        rows_total = len(rows or [])
+        if rows_total > 0 and rag_chunks_count > 0:
+            path_label = "mixed_sql_rag"
+        elif rows_total > 0:
+            path_label = "sql_only"
+        elif rag_chunks_count > 0:
+            path_label = "rag_only"
+        else:
+            path_label = "no_data"
+        LOGGER.info(
+            {
+                "rag_trace": "presenter_decision",
+                "intent": intent,
+                "entity": entity,
+                "rows_total": rows_total,
+                "rag_chunks": rag_chunks_count,
+                "rag_enabled": rag_enabled,
+                "narrator_used": bool(narrator_info.get("used")),
+                "narrator_strategy": narrator_info.get("strategy"),
+                "path": path_label,
+            }
+        )
 
     # Validação pós-narrator: garante âncoras quando rows_total > 0
     if rows and (_is_absence_text(final_answer) or not _answer_has_anchor(final_answer, anchors)):
