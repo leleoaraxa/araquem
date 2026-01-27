@@ -424,7 +424,7 @@ class Planner:
             if isinstance(bucket_hint, str) and bucket_hint.strip() in VALID_BUCKETS
             else ""
         )
-        bucket_selected = ""
+
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
         bucket_gate_applied = bool(bucket) and bucket in VALID_BUCKETS
@@ -1256,7 +1256,7 @@ class Planner:
                 "note": "telemetria/top_entity_combined (não altera roteamento)",
             }
         meta_explain["bucket"] = {
-            "selected": bucket_selected,
+            "selected": bucket,
             "entities": sorted(bucket_entities),
         }
         combined_block = {

@@ -52,7 +52,7 @@ def test_planner_bucket_filters_intents() -> None:
     planner = planner_module.Planner("data/ontology/entity.yaml")
     plan = planner.explain("teste", bucket_hint="A")
 
-    assert plan["explain"]["bucket"]["selected"] == ""
+    assert plan["explain"]["bucket"]["selected"] == "A"
 
     bucket_gate = next(
         item
