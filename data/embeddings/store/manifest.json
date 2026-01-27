@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-26T21:38:12Z",
+  "generated_at": "2026-01-26T22:34:33Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -14,8 +14,8 @@
         "fiis",
         "domain:concepts_fiis"
       ],
-      "chunks": 2,
-      "sha_all": "5295e0c96370d716de0d5686956875a25a4a78ce9ef58bfaba97bf135485f4ff"
+      "chunks": 4,
+      "sha_all": "b5c6c9bdc69abd9d51ccb72eb736b28e5cc1f817e174ea2421b4f6259a3507c7"
     },
     {
       "id": "concepts-fiis",
@@ -88,7 +88,55 @@
         "domain:institutional_core"
       ],
       "chunks": 3,
-      "sha_all": "3a2e15fb3f624ea0c97587348ab2837cc615e3d88026c8849526ec2b9fee91e4"
+      "sha_all": "fb94a79f0787428ad352eaf89b720f3abc69e3bd404e11fd9a86bc49a520b839"
+    },
+    {
+      "id": "concepts-institutional-policies",
+      "path": "data/concepts/concepts-institutional-policies.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "policies",
+        "domain:institutional_policies"
+      ],
+      "chunks": 1,
+      "sha_all": "3bc7c9aa89e302f7b63e6ae4611a83d742c9b4bd12bc713b9a764feca7ac5f67"
+    },
+    {
+      "id": "concepts-institutional-privacy",
+      "path": "data/concepts/concepts-institutional-privacy.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "privacy",
+        "domain:institutional_privacy"
+      ],
+      "chunks": 1,
+      "sha_all": "3c5446ba0ccf23f71756bd0c40b3154e4024049189757e6f8c8aca4fedcb2b1a"
+    },
+    {
+      "id": "concepts-institutional-terms",
+      "path": "data/concepts/concepts-institutional-terms.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "terms",
+        "domain:institutional_terms"
+      ],
+      "chunks": 3,
+      "sha_all": "d16bdd873dabfb6e52e4e28bd3081311873d11ef270edf923632ee0a6e17b7bc"
+    },
+    {
+      "id": "concepts-institutional-product-positioning",
+      "path": "data/concepts/concepts-institutional-product-positioning.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "positioning",
+        "domain:institutional_product_positioning"
+      ],
+      "chunks": 1,
+      "sha_all": "407400067bf40e9468a58cdf8ae21919794a08cc6497945ef3064d4cc9e9e5bd"
     },
     {
       "id": "concepts-support",
@@ -100,7 +148,55 @@
         "domain:support_faq"
       ],
       "chunks": 2,
-      "sha_all": "d200a753875241fab4fe0bfb029d806bc8a5b5e10886dacf1b3841cec4431b62"
+      "sha_all": "81cdcd33b07371faa8d10035e3ede3980f15218cb57ad672ad7c7b9ac2fce417"
+    },
+    {
+      "id": "concepts-support-howto",
+      "path": "data/concepts/concepts-support-howto.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "howto",
+        "domain:support_howto"
+      ],
+      "chunks": 1,
+      "sha_all": "5b43f2ebeab309c34b12d5c6f5f465aba50c2bdecacca45b6f6de5912b94dab3"
+    },
+    {
+      "id": "concepts-support-errors",
+      "path": "data/concepts/concepts-support-errors.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "errors",
+        "domain:support_errors"
+      ],
+      "chunks": 1,
+      "sha_all": "221a8ace87d88245506c39d1535cf9e5a88d11dbde200f6c41ff533c7a90ff42"
+    },
+    {
+      "id": "concepts-support-troubleshooting",
+      "path": "data/concepts/concepts-support-troubleshooting.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "troubleshooting",
+        "domain:support_troubleshooting"
+      ],
+      "chunks": 2,
+      "sha_all": "35f605609740ec16dce0384643bf8201934d46b3bf38ea66a3d30ef3c97bc3b8"
+    },
+    {
+      "id": "concepts-support-billing",
+      "path": "data/concepts/concepts-support-billing.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "billing",
+        "domain:support_billing"
+      ],
+      "chunks": 1,
+      "sha_all": "ee41cee3dd54332b86b26ffaaf6e7ff3a7aec4191fe63981edaeaadab0b93b67"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -973,7 +1069,7 @@
       "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     }
   ],
-  "last_refresh_epoch": 1769463658,
+  "last_refresh_epoch": 1769467053,
   "vector_dimension": 768,
-  "total_chunks": 303
+  "total_chunks": 316
 }
