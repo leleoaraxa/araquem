@@ -1528,6 +1528,16 @@ intents:
         - nos ultimos
         - soma de
         - media de
+        - o que e p/vp
+        - o que significa p/vp
+        - o que e pvp
+        - o que significa pvp
+        - como funciona vacancia fisica
+        - como funciona vacancia financeira
+        - como funciona vacancia fisica e vacancia financeira
+        - o que significa p/vp em fundos imobiliarios
+        - o que e vacancia fisica
+        - o que e vacancia financeira
         - preco
         - cotacao
         - variacao
@@ -2655,11 +2665,6 @@ intents:
         - comparativo
         - comparacao
         - comparar
-        - conceito
-        - definicao
-        - explicacao
-        - significa
-        - significado
       exclude:
         - meus
         - minha
@@ -2701,13 +2706,6 @@ intents:
         - dy e dividendos do fii <ticker>
         - quanto o <ticker> pagou de dividendos e dy em
         - quanto pagou de dividendos e dy em
-        - o que e dividend yield
-        - o que e dividend yield em fiis
-        - significado de dividend yield
-        - conceito de dividend yield
-        - definicao de dividend yield
-        - explicacao de como funciona dividend yield
-        - explicacao de dividend yield
         - qual o dy de 12 meses do <ticker>
         - ultimo dividendo pago pelo <ticker> e dy
         - ultimo dividendo pago pelo <ticker> e o dy correspondente
@@ -3014,6 +3012,189 @@ intents:
         - longo prazo
     entities:
       - consolidated_macroeconomic
+
+  - name: concepts_fiis
+    weight: 7
+    tokens:
+      include:
+        - conceito
+        - definicao
+        - defina
+        - explicacao
+        - explique
+        - significa
+        - significado
+        - diferenca
+        - fiis
+        - fii
+        - fundos
+        - imobiliarios
+        - p/vp
+        - pvp
+        - dividend
+        - yield
+        - cap
+        - caprate
+      exclude:
+        - preco
+        - cotacao
+        - dividendos
+        - proventos
+        - rendimento
+        - carteira
+        - minha
+        - minhas
+        - meu
+        - meus
+        - historico
+        - serie
+        - mes
+        - mensal
+        - ano
+        - hoje
+    phrases:
+      include:
+        - o que e dividend yield
+        - o que e dividend yield em fiis
+        - como funciona dividend yield
+        - defina dividend yield
+        - explique dividend yield
+        - significado de dividend yield
+        - o que significa p/vp em fundos imobiliarios
+        - o que significa p/vp
+        - o que e p/vp
+        - o que e pvp
+        - o que significa pvp
+        - diferenca entre p/vp e dy
+        - o que e cap rate em fiis
+        - como funciona cap rate em fundos imobiliarios
+        - explique o que e cap rate
+        - o que e fii
+        - o que sao fundos imobiliarios
+        - defina fii
+      exclude:
+        - qual o dy do <ticker>
+        - dy do <ticker>
+        - dividendos do <ticker>
+        - rendimento do <ticker>
+        - qual o p/vp do <ticker>
+        - qual o pvp do <ticker>
+        - p/vp do <ticker>
+        - pvp do <ticker>
+    entities:
+      - concepts
+
+  - name: concepts_risk
+    weight: 7
+    tokens:
+      include:
+        - conceito
+        - definicao
+        - defina
+        - explicacao
+        - explique
+        - significa
+        - significado
+        - diferenca
+        - risco
+        - vacancia
+        - volatilidade
+        - drawdown
+        - mdd
+        - sharpe
+        - sortino
+        - beta
+      exclude:
+        - preco
+        - cotacao
+        - ranking
+        - historico
+        - serie
+        - mes
+        - mensal
+        - ano
+        - hoje
+    phrases:
+      include:
+        - como funciona vacancia fisica e vacancia financeira
+        - diferenca entre vacancia fisica e vacancia financeira
+        - o que e vacancia fisica
+        - o que e vacancia financeira
+        - o que e vacancia em fiis
+        - explique vacancia fisica
+        - explique vacancia financeira
+        - o que e drawdown
+        - o que e max drawdown
+        - o que e volatilidade
+        - o que e beta
+        - o que e indice sharpe
+        - o que e indice sortino
+        - como funciona o indice sharpe
+      exclude:
+        - vacancia do <ticker>
+        - vacancia fisica do <ticker>
+        - vacancia financeira do <ticker>
+        - volatilidade do <ticker>
+        - beta do <ticker>
+    entities:
+      - concepts
+
+  - name: concepts_macro
+    weight: 7
+    tokens:
+      include:
+        - conceito
+        - definicao
+        - defina
+        - explicacao
+        - explique
+        - significa
+        - significado
+        - diferenca
+        - selic
+        - ipca
+        - cdi
+        - inflacao
+        - juros
+        - cambio
+        - dolar
+        - curva
+      exclude:
+        - hoje
+        - ontem
+        - atual
+        - ultima
+        - ultimos
+        - historico
+        - serie
+        - mes
+        - mensal
+        - ano
+    phrases:
+      include:
+        - o que e selic
+        - como funciona a selic
+        - o que significa ipca
+        - o que e ipca
+        - o que e cdi
+        - diferenca entre selic e cdi
+        - diferenca entre ipca e igpm
+        - o que e inflacao
+        - o que e curva de juros
+        - como funciona a curva de juros
+        - o que e cambio
+        - o que e dolar comercial
+      exclude:
+        - selic hoje
+        - ipca hoje
+        - cdi hoje
+        - dolar hoje
+        - cambio hoje
+        - selic ontem
+        - ipca ontem
+        - cdi ontem
+    entities:
+      - concepts
 
 anti_tokens:
   generic:

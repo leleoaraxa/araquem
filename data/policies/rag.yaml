@@ -47,7 +47,10 @@ routing:
   - fiis_dividends_yields
   - client_fiis_enriched_portfolio
   - consolidated_macroeconomic
-  allow_intents: []
+  allow_intents:
+  - concepts_fiis
+  - concepts_risk
+  - concepts_macro
   notes: >
     RAG é ativado somente para domínios textuais do Bucket D.
     Buckets A, B e C permanecem puramente SQL; dados numéricos
@@ -83,6 +86,14 @@ rag:
       - concepts-macro
       max_chunks: 4
       min_score: 0.1
+    concepts:
+      profile: default
+      collections:
+      - concepts-fiis
+      - concepts-risk
+      - concepts-macro
+      max_chunks: 3
+      min_score: 0.25
   default:
     profile: default
     max_chunks: 3
