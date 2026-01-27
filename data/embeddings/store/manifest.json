@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-26T22:34:33Z",
+  "generated_at": "2026-01-27T10:23:36Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -15,7 +15,7 @@
         "domain:concepts_fiis"
       ],
       "chunks": 4,
-      "sha_all": "b5c6c9bdc69abd9d51ccb72eb736b28e5cc1f817e174ea2421b4f6259a3507c7"
+      "sha_all": "3078423e807073e56a9c9dc8bc03f600e402436e68fc47be82a93288239404e7"
     },
     {
       "id": "concepts-fiis",
@@ -123,8 +123,8 @@
         "terms",
         "domain:institutional_terms"
       ],
-      "chunks": 3,
-      "sha_all": "d16bdd873dabfb6e52e4e28bd3081311873d11ef270edf923632ee0a6e17b7bc"
+      "chunks": 2,
+      "sha_all": "4974e0204294cb87ad2c01be4b4f55b46cad766042d369b80eb87f6c78ce1c59"
     },
     {
       "id": "concepts-institutional-product-positioning",
@@ -184,19 +184,19 @@
         "domain:support_troubleshooting"
       ],
       "chunks": 2,
-      "sha_all": "35f605609740ec16dce0384643bf8201934d46b3bf38ea66a3d30ef3c97bc3b8"
+      "sha_all": "a456710e4b04616c01761307b64e045a545d09e179f4e989f150081b62eb65ee"
     },
     {
-      "id": "concepts-support-billing",
-      "path": "data/concepts/concepts-support-billing.yaml",
+      "id": "concepts-support-plans",
+      "path": "data/concepts/concepts-support-plans.yaml",
       "tags": [
         "concepts",
         "support",
-        "billing",
-        "domain:support_billing"
+        "plans",
+        "domain:support_plans"
       ],
       "chunks": 1,
-      "sha_all": "ee41cee3dd54332b86b26ffaaf6e7ff3a7aec4191fe63981edaeaadab0b93b67"
+      "sha_all": "3fd1cc175737370da44d805e71c8bb40c7c81dc5ce898a813d3fc0a779bfe7ac"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -1069,7 +1069,7 @@
       "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     }
   ],
-  "last_refresh_epoch": 1769467053,
+  "last_refresh_epoch": 1769509581,
   "vector_dimension": 768,
-  "total_chunks": 316
+  "total_chunks": 315
 }
