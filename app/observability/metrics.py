@@ -108,6 +108,10 @@ _METRICS_SCHEMA: Dict[str, Dict[str, Any]] = {
     "cache_misses_total": {"type": "counter", "labels": {"entity"}},
     "metrics_cache_hits_total": {"type": "counter", "labels": {"entity"}},
     "metrics_cache_misses_total": {"type": "counter", "labels": {"entity"}},
+    # Ask quota
+    "ask_requests_total": {"type": "counter", "labels": {"user_type"}},
+    "ask_blocked_total": {"type": "counter", "labels": {"reason", "user_type"}},
+    "ask_quota_remaining": {"type": "gauge", "labels": {"user_type"}},
     # Explain persistence
     "sirios_explain_events_failed_total": {"type": "counter", "labels": set()},
     # Narrator
