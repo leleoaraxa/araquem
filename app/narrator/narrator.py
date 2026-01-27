@@ -991,8 +991,9 @@ class Narrator:
         raw_meta = meta or {}
         raw_facts = facts or {}
         bucket = ""
-        if isinstance(raw_meta.get("bucket"), str):
-            bucket = raw_meta.get("bucket", "").strip()
+        raw_bucket = raw_meta.get("bucket")
+        if isinstance(raw_bucket, str):
+            bucket = raw_bucket.strip()
         entity = raw_meta.get("entity") or ""
         intent = raw_meta.get("intent") or ""
         template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
@@ -1528,7 +1529,9 @@ class Narrator:
                         if re.search(r"\d+(?:º|°)", intro):
                             invalid_intro = True
                         if re.search(
-                            r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d", intro, re.IGNORECASE
+                            r"\b(?:posi[cç][aã]o|rank(?:ing)?)\s*\d",
+                            intro,
+                            re.IGNORECASE,
                         ):
                             invalid_intro = True
 
@@ -1562,7 +1565,11 @@ class Narrator:
                             llm_intro_used = False
                             llm_intro_tokens = 0
                         else:
-                            text = f"{intro}\n\n{rendered_text}" if intro else rendered_text
+                            text = (
+                                f"{intro}\n\n{rendered_text}"
+                                if intro
+                                else rendered_text
+                            )
                             tokens_out = len(text.split())
                             llm_intro_used = True
                             llm_intro_tokens = len(intro.split())
