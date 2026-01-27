@@ -4,4 +4,7 @@ ask_quota:
     anon: 3
     free: 30
     paid: 1000
-  blocked_message: "Você está usando uma demonstração da Íris. Crie uma conta gratuita para continuar."
+  blocked_messages:
+    anon: "Você está usando uma demonstração da Íris. Crie uma conta gratuita para continuar."
+    free: "Você atingiu o limite do plano gratuito. Faça upgrade para continuar."
+    paid: "Você atingiu o limite do seu plano. Entre em contato com o suporte para ampliar."

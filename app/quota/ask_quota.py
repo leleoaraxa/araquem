@@ -82,8 +82,13 @@ def build_client_key(user_type: str, client_id: str, conversation_id: str) -> st
     return client_id
 
 
-def get_blocked_message(policy: Optional[Dict[str, Any]]) -> str:
+def get_blocked_message(policy: Optional[Dict[str, Any]], user_type: str) -> str:
     if isinstance(policy, dict):
+        blocked_messages = policy.get("blocked_messages")
+        if isinstance(blocked_messages, dict):
+            message = blocked_messages.get(user_type)
+            if isinstance(message, str) and message.strip():
+                return message.strip()
         message = policy.get("blocked_message")
         if isinstance(message, str) and message.strip():
             return message.strip()
