@@ -4,7 +4,7 @@ normalize:
   - strip_punct
 
 tokenization:
-  split: \s+
+  split: '\s+'
 
 weights:
   token: 1.1
