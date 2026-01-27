@@ -10,7 +10,7 @@ concepts:
       - "acesso"
     description: >
       Planos definem níveis de acesso e funcionalidades disponíveis no produto,
-      conforme as condições vigentes divulgadas pela SIRIOS.
+      conforme as condições informadas pela SIRIOS
 
   - name: "Alteração de plano"
     aliases:
