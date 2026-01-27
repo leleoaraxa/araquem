@@ -2,7 +2,6 @@ id: fiis_real_estate
 result_key: imoveis_fii
 sql_view: fiis_real_estate
 private: false
-bucket: A
 description: Imóveis e propriedades de FIIs (dados operacionais 1×N)
 
 options:

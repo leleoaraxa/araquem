@@ -2,7 +2,6 @@ id: history_market_indicators
 result_key: history_market_indicators
 sql_view: history_market_indicators
 private: false
-bucket: C
 description: Indicadores macroeconômicos do mercado (IPCA, CDI, SELIC, IGPM etc.), em base D-1.
 d_minus: 1
 

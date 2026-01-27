@@ -222,6 +222,7 @@ def glob_files(pattern: str) -> List[Path]:
 def build_used_by(entity_id: str) -> Dict[str, object]:
     ontology_files = [
         Path("data/ontology/entity.yaml"),
+        Path("data/ontology/bucket_rules.yaml"),
         Path("data/ontology/ontology_manifest.yaml"),
     ]
     planner_files = glob_files("app/planner/*.py")

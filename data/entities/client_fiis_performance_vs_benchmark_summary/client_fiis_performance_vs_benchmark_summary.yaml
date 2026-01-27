@@ -2,7 +2,6 @@ id: client_fiis_performance_vs_benchmark_summary
 result_key: client_fiis_performance_vs_benchmark_summary
 sql_view: client_fiis_performance_vs_benchmark_summary
 private: true
-bucket: B
 d_minus: 1
 description: >
   Resumo (última leitura) da performance da carteira de FIIs do cliente frente a benchmarks,

@@ -20,8 +20,9 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 5. Políticas em `data/policies` são carregadas em runtime (cache, narrator, context, rag, formatting). Arquivos de “quality/codex/llm_prompts” aparecem como referenciais/offline (não runtime).
 6. `data/ops` é usado em runtime para thresholds do planner/orchestrator e inferência de parâmetros; conteúdo de quality/experimental é offline (scripts).
 7. `data/concepts` aparece como fallback legado para templates; sem uso direto no runtime de perguntas/respostas.
-8. `data/golden` é utilizado como artefato de testes/benchmarks (manifestos/relatórios/embeddings), sem chamadas runtime detectadas.
-9. `data/ontology/ticker_index.yaml` é usado para resolução/validação de tickers no planner/orchestrator, mas não há job/rota de atualização automática identificada.
+8. `data/raw/indicators/catalog.md` e afins atuam como fonte de conhecimento para embeddings/RAG (sem ingestão ativa detectada).
+9. `data/golden` é utilizado como artefato de testes/benchmarks (manifestos/relatórios/embeddings), sem chamadas runtime detectadas.
+10. `data/ontology/ticker_index.yaml` é usado para resolução/validação de tickers no planner/orchestrator, mas não há job/rota de atualização automática identificada.
 
 ---
 
@@ -138,7 +139,8 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 ## I) `data/ontology`
 
 ### Uso em runtime
-- `data/ontology/entity.yaml`: intents/normas para o planner
+- `data/ontology/entity.yaml`: intents/buckets/normas para o planner
+- `data/ontology/bucket_rules.yaml`: regras de bucket
 - `data/ontology/ticker_index.yaml`: resolução/normalização de ticker em runtime
 
 ### ticker_index.yaml — pontos de atenção

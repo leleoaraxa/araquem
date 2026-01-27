@@ -47,10 +47,7 @@ routing:
   - fiis_dividends_yields
   - client_fiis_enriched_portfolio
   - consolidated_macroeconomic
-  allow_intents:
-  - concepts_fiis
-  - concepts_risk
-  - concepts_macro
+  allow_intents: []
   notes: >
     RAG é ativado somente para domínios textuais do Bucket D.
     Buckets A, B e C permanecem puramente SQL; dados numéricos
@@ -65,8 +62,6 @@ rerank:
   entities: {}
   domains: {}
 rag:
-  # TODO: Quando o runtime suportar filtros por tags, aplicar segmentação
-  # por `domain:*` e exclusão global de `rag:deny` sem alterar o schema.
   entities:
     history_market_indicators:
       profile: macro
@@ -86,30 +81,9 @@ rag:
       - concepts-macro
       max_chunks: 4
       min_score: 0.1
-    concepts:
-      profile: default
-      collections:
-      - concepts-fiis
-      - concepts-risk
-      - concepts-macro
-      max_chunks: 3
-      min_score: 0.25
   default:
     profile: default
     max_chunks: 3
     collections:
     - concepts-fiis
     min_score: 0.25
-concepts_shadow:
-  enabled: false
-  allow_intents: []
-  deny_intents: []
-  collections:
-  - concepts-fiis
-  - concepts-macro
-  top_k_global: 40
-  top_k: 4
-  min_score: 0.25
-  max_chars_per_snippet: 280
-  max_matches: 2
-  include_in_answer: false

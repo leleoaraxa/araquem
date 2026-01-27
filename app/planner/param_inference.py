@@ -13,8 +13,7 @@ from pathlib import Path
 from app.utils.filecache import load_yaml_cached
 from app.planner.ticker_index import resolve_ticker_from_text
 
-ROOT = Path(__file__).resolve().parents[2]
-_DEFAULTS_PATH = ROOT / "data" / "ops" / "param_inference.yaml"
+_DEFAULTS_PATH = Path("data/ops/param_inference.yaml")
 _WORD_RE = re.compile(r"\w+", flags=re.UNICODE)
 _ALLOWED_AGGS = {"avg", "sum", "latest", "list"}
 _WINDOW_KINDS = {"months", "count"}

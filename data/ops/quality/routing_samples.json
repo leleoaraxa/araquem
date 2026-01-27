@@ -2,31 +2,6 @@
   "type": "routing",
   "payloads": [
     {
-      "question": "Evolução dos dividendos da minha carteira de FIIs",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
-      "question": "Histórico de dividendos da minha carteira",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
-      "question": "Minha renda mensal com FIIs está crescendo",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
-      "question": "Quanto minha carteira de FIIs recebeu de dividendos em cada mês",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
-      "question": "Renda mensal dos meus FIIs",
-      "expected_intent": "client_fiis_dividends_evolution",
-      "expected_entity": "client_fiis_dividends_evolution"
-    },
-    {
       "question": "Me mostra a visão consolidada da minha carteira de FIIs.",
       "expected_intent": "client_fiis_enriched_portfolio",
       "expected_entity": "client_fiis_enriched_portfolio"
@@ -95,6 +70,31 @@
       "question": "Ranking dos meus FIIs por Sharpe.",
       "expected_intent": "client_fiis_enriched_portfolio",
       "expected_entity": "client_fiis_enriched_portfolio"
+    },
+    {
+      "question": "Evolução dos dividendos da minha carteira de FIIs",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Histórico de dividendos da minha carteira",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Minha renda mensal com FIIs está crescendo",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Quanto minha carteira de FIIs recebeu de dividendos em cada mês",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
+    },
+    {
+      "question": "Renda mensal dos meus FIIs",
+      "expected_intent": "client_fiis_dividends_evolution",
+      "expected_entity": "client_fiis_dividends_evolution"
     },
     {
       "question": "Como foi a performance da minha carteira de FIIs versus o IFIX nos últimos 12 meses",
@@ -197,79 +197,154 @@
       "expected_entity": "client_fiis_positions"
     },
     {
-      "question": "Cenário macro atual: juros, inflação e câmbio estão favoráveis ou desfavoráveis para FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Histórico de dividendos e dy do MXRF11",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
-      "question": "Como a alta do dólar influencia o cenário para FIIs de recebíveis e fundos em geral?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "O que é dividend yield em FIIs",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
-      "question": "Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Qual o DY de 12 meses do HGLG11",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
-      "question": "Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Quanto o CPTS11 pagou de dividendos e dy em 08/2023",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
-      "question": "Como a queda da Selic tende a impactar FIIs de tijolo?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Último dividendo pago pelo VISC11 e o dy correspondente",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
-      "question": "Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Apresenta um overview detalhado do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Como juros altos costumam afetar fundos imobiliários?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Comparativo de overview entre HGLG11, MXRF11 e VISC11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Ficha resumo do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Me dá um panorama macro consolidado (IPCA, Selic, CDI, IFIX e dólar) pensando em FIIs hoje.",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Ficha tecnica resumida do VISC11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Me explica o cenário de juros e inflação no Brasil em 2025 e o impacto para FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Me mostre um panorama geral do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "O ambiente de juros e inflação em 2025 está mais favorável para FIIs de tijolo ou de papel?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Panorama do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "O que significa IPCA alto para FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Principais pontos do fundo MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Qual é a importância do IPCA e da Selic para quem vive de renda com FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Quais os destaques do VISC11 hoje?",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Qual é a relação entre Selic, CDI e o desempenho médio dos FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Quero um resumo completo do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
     },
     {
-      "question": "Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
+      "question": "Resumo dos principais indicadores de HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Resumo geral do MXRF11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "Visao geral do VISC11 como investimento.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "question": "O HGLG11 é um fundo de gestão ativa ou passiva?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual foi a data do IPO do ALMI11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual o CNPJ do HGLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é a classificação oficial do XPLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o administrador e o CNPJ do administrador do HGLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o código ISIN do HGLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o nome de exibição do fundo ALMI11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o nome de pregão do HGLG11 na B3?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o público-alvo do XPLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o setor e o subsetor do HGLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Qual é o site oficial do fundo XPLG11?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
+    },
+    {
+      "question": "o FPAB11 já fez parte do IFIX?",
+      "expected_intent": "fiis_registrations",
+      "expected_entity": "fiis_registrations"
     },
     {
       "question": "Dividendos do HGLG11 em cada mês do último ano",
@@ -345,31 +420,6 @@
       "question": "Total de dividendos do VISC11 nos últimos 6 meses",
       "expected_intent": "fiis_dividends",
       "expected_entity": "fiis_dividends"
-    },
-    {
-      "question": "Histórico de dividendos e dy do MXRF11",
-      "expected_intent": "fiis_dividends_yields",
-      "expected_entity": "fiis_dividends_yields"
-    },
-    {
-      "question": "O que é dividend yield em FIIs",
-      "expected_intent": "fiis_dividends_yields",
-      "expected_entity": "fiis_dividends_yields"
-    },
-    {
-      "question": "Qual o DY de 12 meses do HGLG11",
-      "expected_intent": "fiis_dividends_yields",
-      "expected_entity": "fiis_dividends_yields"
-    },
-    {
-      "question": "Quanto o CPTS11 pagou de dividendos e dy em 08/2023",
-      "expected_intent": "fiis_dividends_yields",
-      "expected_entity": "fiis_dividends_yields"
-    },
-    {
-      "question": "Último dividendo pago pelo VISC11 e o dy correspondente",
-      "expected_intent": "fiis_dividends_yields",
-      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "As receitas do HGLG11 estão mais concentradas no curto prazo ou no longo prazo?",
@@ -532,64 +582,29 @@
       "expected_entity": "fiis_financials_snapshot"
     },
     {
-      "question": "Desde quando existem processos contra o ALMI11 e como está o andamento deles?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
+      "question": "Quais ativos do MXRF11 estão inadimplentes",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
-      "question": "Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
+      "question": "Quais endereços fazem parte do VISC11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
-      "question": "Me dá um resumo das ações judiciais envolvendo o ALMI11.",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
+      "question": "Quais imóveis compõem o HGLG11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
-      "question": "O ALMI11 tem processos judiciais em aberto?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
+      "question": "Qual o tamanho em metros quadrados dos imóveis do KNRI11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
-      "question": "Quais processos existem contra o ALMI11?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Quais são os principais fatos dos processos do ALMI11?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Quais são os processos do ALMI11 em 1ª instância?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Qual o risco de perda dos processos judiciais do ALMI11?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Qual o status das ações judiciais do ALMI11?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Qual o valor total das causas dos processos do ALMI11?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Quanto o ALMI11 pode perder se perder todas as ações judiciais?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
-    },
-    {
-      "question": "Quantos processos judiciais o ALMI11 possui hoje?",
-      "expected_intent": "fiis_legal_proceedings",
-      "expected_entity": "fiis_legal_proceedings"
+      "question": "Vacância dos ativos do XPML11",
+      "expected_intent": "fiis_real_estate",
+      "expected_entity": "fiis_real_estate"
     },
     {
       "question": "Houve algum fato relevante envolvendo contratos ou locatários do HGLG11?",
@@ -652,72 +667,12 @@
       "expected_entity": "fiis_news"
     },
     {
-      "question": "Apresenta um overview detalhado do HGLG11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Comparativo de overview entre HGLG11, MXRF11 e VISC11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Ficha resumo do fundo MXRF11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Ficha tecnica resumida do VISC11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Me mostre um panorama geral do HGLG11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Panorama do fundo MXRF11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Principais pontos do fundo MXRF11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Quais os destaques do VISC11 hoje?",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Quero um resumo completo do HGLG11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Resumo dos principais indicadores de HGLG11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Resumo geral do MXRF11.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Visao geral do VISC11 como investimento.",
-      "expected_intent": "fiis_overview",
-      "expected_entity": "fiis_overview"
-    },
-    {
-      "question": "Como está o KNRI11 e o XPLG11 hoje?",
+      "question": "Como está o preço do VINO agora?",
       "expected_intent": "fiis_quota_prices",
       "expected_entity": "fiis_quota_prices"
     },
     {
-      "question": "Como está o preço do VINO agora?",
+      "question": "Como está o KNRI11 e o XPLG11 hoje?",
       "expected_intent": "fiis_quota_prices",
       "expected_entity": "fiis_quota_prices"
     },
@@ -780,6 +735,66 @@
       "question": "Quanto o KNRI11 variou hoje em porcentagem?",
       "expected_intent": "fiis_quota_prices",
       "expected_entity": "fiis_quota_prices"
+    },
+    {
+      "question": "Desde quando existem processos contra o ALMI11 e como está o andamento deles?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Me dá um resumo das ações judiciais envolvendo o ALMI11.",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "O ALMI11 tem processos judiciais em aberto?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais processos existem contra o ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais são os principais fatos dos processos do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quais são os processos do ALMI11 em 1ª instância?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o risco de perda dos processos judiciais do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o status das ações judiciais do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Qual o valor total das causas dos processos do ALMI11?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quanto o ALMI11 pode perder se perder todas as ações judiciais?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
+    },
+    {
+      "question": "Quantos processos judiciais o ALMI11 possui hoje?",
+      "expected_intent": "fiis_legal_proceedings",
+      "expected_entity": "fiis_legal_proceedings"
     },
     {
       "question": "Qual é o peso do HGLG11 no IFIX e no IFIL?",
@@ -860,96 +875,6 @@
       "question": "top fiis por menor volatilidade",
       "expected_intent": "fiis_rankings",
       "expected_entity": "fiis_rankings"
-    },
-    {
-      "question": "Quais ativos do MXRF11 estão inadimplentes",
-      "expected_intent": "fiis_real_estate",
-      "expected_entity": "fiis_real_estate"
-    },
-    {
-      "question": "Quais endereços fazem parte do VISC11",
-      "expected_intent": "fiis_real_estate",
-      "expected_entity": "fiis_real_estate"
-    },
-    {
-      "question": "Quais imóveis compõem o HGLG11",
-      "expected_intent": "fiis_real_estate",
-      "expected_entity": "fiis_real_estate"
-    },
-    {
-      "question": "Qual o tamanho em metros quadrados dos imóveis do KNRI11",
-      "expected_intent": "fiis_real_estate",
-      "expected_entity": "fiis_real_estate"
-    },
-    {
-      "question": "Vacância dos ativos do XPML11",
-      "expected_intent": "fiis_real_estate",
-      "expected_entity": "fiis_real_estate"
-    },
-    {
-      "question": "O HGLG11 é um fundo de gestão ativa ou passiva?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual foi a data do IPO do ALMI11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual o CNPJ do HGLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é a classificação oficial do XPLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o administrador e o CNPJ do administrador do HGLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o código ISIN do HGLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o nome de exibição do fundo ALMI11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o nome de pregão do HGLG11 na B3?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o público-alvo do XPLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o setor e o subsetor do HGLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Qual é o site oficial do fundo XPLG11?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "Quantas cotas emitidas e quantos cotistas o HGLG11 possui?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
-    },
-    {
-      "question": "o FPAB11 já fez parte do IFIX?",
-      "expected_intent": "fiis_registrations",
-      "expected_entity": "fiis_registrations"
     },
     {
       "question": "Como foi o dy mensal do HGLG11 nos ultimos 12 meses?",
@@ -1175,6 +1100,81 @@
       "question": "última atualização do ipca",
       "expected_intent": "history_market_indicators",
       "expected_entity": "history_market_indicators"
+    },
+    {
+      "question": "Cenário macro atual: juros, inflação e câmbio estão favoráveis ou desfavoráveis para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a alta do dólar influencia o cenário para FIIs de recebíveis e fundos em geral?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como a queda da Selic tende a impactar FIIs de tijolo?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como juros altos costumam afetar fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Me dá um panorama macro consolidado (IPCA, Selic, CDI, IFIX e dólar) pensando em FIIs hoje.",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Me explica o cenário de juros e inflação no Brasil em 2025 e o impacto para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "O ambiente de juros e inflação em 2025 está mais favorável para FIIs de tijolo ou de papel?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "O que significa IPCA alto para FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é a importância do IPCA e da Selic para quem vive de renda com FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é a relação entre Selic, CDI e o desempenho médio dos FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
+    },
+    {
+      "question": "Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?",
+      "expected_intent": "consolidated_macroeconomic",
+      "expected_entity": "consolidated_macroeconomic"
     }
   ]
 }

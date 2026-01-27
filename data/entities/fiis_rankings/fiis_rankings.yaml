@@ -2,7 +2,6 @@ id: fiis_rankings
 result_key: rankings_fii
 sql_view: fiis_rankings
 private: false
-bucket: A
 description: Rankings de FIIs (top/maiores/melhores/menores) por métricas como liquidez,
   dividend yield, patrimônio líquido, Sharpe, volatilidade, drawdown e presença em
   índices (usuários, Sírios, IFIX e IFIL).

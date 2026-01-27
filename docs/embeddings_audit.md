@@ -1,7 +1,7 @@
 # Auditoria de Embeddings / Índices RAG (Araquem)
 
 ## Resumo executivo (para Leleo)
-- Índice único `araquem-core` centraliza conceitos, contratos de entidades, policies e amostras de qualidade; vetores presentes e consistentes (184 chunks, dimensão 768) usando `nomic-embed-text`.
+- Índice único `araquem-core` centraliza conceitos, contratos de entidades, policies e amostras de qualidade; vetores presentes e consistentes (184 chunks, dimensão 768) usando `nomic-embed-text`. 
 - Manifesto e index.yaml alinham coleção/modelo, mas data de geração (2025-12-02) e `last_refresh_epoch` futuro sugerem carimbo artificial; não há trilhas operacionais claras de refresh.
 - Cobertura privilegia FIIs e amostras de qualidade; RAG policy habilita apenas domínios macro/índices/moedas, criando desalinhamento entre coleções indexadas e rotas autorizadas.
 - Textos de vários contratos YAML/JSON trazem pouco contexto (1–6 chunks), enquanto `routing_samples` domina (33 chunks), gerando distribuição desequilibrada e risco de hints enviesados.
@@ -31,7 +31,7 @@
 ### Ações rápidas
 1. **Corrigir metadados de geração**: ajustar pipeline para gravar `generated_at` e `last_refresh_epoch` reais a cada refresh; adiciona confiabilidade operacional e permite detectar índice stale. Afeta `scripts/embeddings/embeddings_build.py` e job de refresh.
 2. **Alinhar collections com política RAG**: ou atualizar `rag.yaml` para permitir coleções FIIs essenciais, ou reduzir `index.yaml` para apenas coleções autorizadas; evita gastos de embedding desnecessários e resoluções vazias.
-3. **Equalizar distribuição**: aumentar chunks para `concepts-macro` e indicadores (seções descritivas) para evitar que `routing_samples`/`golden` dominem scores; requer revisão de fontes em `data/concepts`.
+3. **Equalizar distribuição**: aumentar chunks para `concepts-macro` e indicadores (seções descritivas) para evitar que `routing_samples`/`golden` dominem scores; requer revisão de fontes em `data/concepts` e `data/raw/indicators`.
 
 ### Ações estruturais
 1. **Cobertura de domínio macro e risco**: criar novos textos explicativos (NOVO: ex. `data/concepts/concepts-macro-methodology.yaml`) descrevendo série, periodicidade, fontes, limitações e exemplos; chunkar com 800–1000 chars/20% overlap para maximizar contexto sem ruído.

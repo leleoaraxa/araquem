@@ -181,6 +181,9 @@ data/
         .hash
         m65_quality.json
         m65_quality.yaml
+    raw/
+        indicators/
+            catalog.md
     embeddings/
         index.yaml
         store/
@@ -194,12 +197,7 @@ data/
         rag.yaml
     concepts/
         catalog.yaml
-        concepts-carteira.yaml
-        concepts-fiis.yaml
-        concepts-macro-methodology.yaml
-        concepts-macro.yaml
-        concepts-risk-metrics-methodology.yaml
-        concepts-risk.yaml
+        fiis.md
 scripts/
     __init__.py
     core/

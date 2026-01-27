@@ -2,7 +2,6 @@ id: fiis_legal_proceedings
 result_key: processos_fii
 sql_view: fiis_legal_proceedings
 private: false
-bucket: A
 description: Processos judiciais associados a FIIs (dados 1×N com risco e andamento)
 
 options:
@@ -66,18 +65,12 @@ ask:
   keywords:
     - processo
     - processos
-    - processo relevante
     - judicial
     - judiciais
-    - acao judicial
-    - acoes judiciais
     - andamento
     - status
     - litigio
     - litgio
-    - risco juridico
-    - contencioso
-    - cvm
     - causa
     - risco de perda
     - partes envolvidas
@@ -85,14 +78,6 @@ ask:
     - fatos principais
     - impacto
     - analise de impacto
-  phrase_includes:
-    - "processo relevante"
-    - "acao judicial"
-    - "acoes judiciais"
-    - "litigio"
-    - "risco juridico"
-    - "processo na cvm"
-    - "processos na cvm"
   synonyms:
     ticker:
       - ativo

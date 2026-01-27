@@ -244,7 +244,6 @@ def _build_rag_block(
 
     collections = rag.get("collections") or rag.get("datasets")
     chunks_raw = rag.get("chunks") or rag.get("chunks_sample") or []
-    concepts_shadow_raw = rag.get("concepts_shadow")
     chunks_sample: List[Dict[str, Any]] = []
     for chunk in list(chunks_raw)[:max_chunks]:
         if not isinstance(chunk, dict):
@@ -256,30 +255,10 @@ def _build_rag_block(
             )
         chunks_sample.append(_mask_fields(entry, mask_fields, masked))
 
-    concepts_shadow: Optional[Dict[str, Any]] = None
-    if isinstance(concepts_shadow_raw, dict):
-        matches = concepts_shadow_raw.get("matches") or []
-        query_ms = concepts_shadow_raw.get("query_embedding_ms")
-        search_ms = concepts_shadow_raw.get("search_ms")
-        latency_ms = None
-        if isinstance(query_ms, int) and isinstance(search_ms, int):
-            latency_ms = query_ms + search_ms
-        elif isinstance(query_ms, int):
-            latency_ms = query_ms
-        elif isinstance(search_ms, int):
-            latency_ms = search_ms
-        concepts_shadow = {
-            "enabled": bool(concepts_shadow_raw.get("enabled")),
-            "reason": concepts_shadow_raw.get("reason"),
-            "matches_count": len(matches) if isinstance(matches, list) else 0,
-            "latency_ms": latency_ms,
-        }
-
     return {
         "enabled": bool(rag.get("enabled")),
         "collections": collections if isinstance(collections, list) else [],
         "chunks_sample": chunks_sample,
-        "concepts_shadow": concepts_shadow,
     }
 
 
@@ -503,3 +482,4 @@ def collect_narrator_shadow(event: NarratorShadowEvent) -> None:
     except Exception:
         LOGGER.exception("Falha ao coletar Narrator Shadow", exc_info=True)
         _safe_counter("sirios_narrator_shadow_total", outcome="error")
+

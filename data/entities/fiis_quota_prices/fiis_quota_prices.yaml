@@ -2,7 +2,6 @@ id: fiis_quota_prices
 result_key: precos_fii
 sql_view: fiis_quota_prices
 private: false
-bucket: A
 description: Consulta de preço/cotação/variação das cotas de FIIs (histórico ou atual).
 
 options:
@@ -138,9 +137,6 @@ ask:
     - indexador
     - bucket macro
     - macro
-    - curva de juros
-    - juros futuros
-    - cenario macro
     - selic
     - cdi
     - ipca

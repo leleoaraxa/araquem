@@ -2,7 +2,6 @@ id: client_fiis_dividends_evolution
 result_key: dividends_evolution
 sql_view: client_fiis_dividends_evolution
 private: true
-bucket: B
 description: >
   Evolução mensal dos dividendos da carteira de FIIs do cliente (PRIVADA; exige
   document_number obtido de contexto seguro, nunca do texto livre do usuário).

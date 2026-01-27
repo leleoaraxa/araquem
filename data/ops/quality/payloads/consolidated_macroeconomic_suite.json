@@ -23,11 +23,6 @@
       "expected_entity": "consolidated_macroeconomic"
     },
     {
-      "question": "Como juros futuros (DI) e curva de juros podem impactar os FIIs?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
-    },
-    {
       "question": "Como a queda da Selic tende a impactar FIIs de tijolo?",
       "expected_intent": "consolidated_macroeconomic",
       "expected_entity": "consolidated_macroeconomic"

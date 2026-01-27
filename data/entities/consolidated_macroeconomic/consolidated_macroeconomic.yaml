@@ -2,7 +2,6 @@ id: consolidated_macroeconomic
 result_key: ref_date
 sql_view: consolidated_macroeconomic
 private: false
-bucket: C
 description: Histórico consolidado de indicadores macroeconômicos, índices de mercado e câmbio por data de referência.
 
 default_date_field: ref_date
@@ -63,8 +62,6 @@ ask:
     - ano
     - cambio
     - cdi
-    - curva de juros
-    - di
     - dolar
     - euro
     - historico
@@ -74,9 +71,6 @@ ask:
     - ipca
     - macro
     - passado
-    - juros futuros
-    - cenario macro
-    - impacto nos fiis
     - selic
     - serie historica
     - serie longa
@@ -136,12 +130,6 @@ ask:
     - "ibov em"
     - "dolar em"
     - "euro em"
-    - "curva de juros"
-    - "juros futuros"
-    - "taxa di"
-    - "di futuro"
-    - "cenario macro"
-    - "impacto nos fiis"
   synonyms:
     ref_date:
       - data

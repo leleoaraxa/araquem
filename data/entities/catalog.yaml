@@ -378,18 +378,3 @@ entities:
       natural_keys:
       - ref_date
     notes: []
-  concepts:
-    title: Conceitos – respostas via RAG
-    kind: conceptual
-    paths:
-      entity_yaml: data/entities/concepts/concepts.yaml
-      schema: data/contracts/entities/concepts.schema.yaml
-    coverage:
-      cache_policy: false
-      rag_policy: true
-      narrator_policy: false
-      param_inference: false
-    identifiers:
-      natural_keys: []
-    notes:
-    - entidade conceitual (RAG-only); sem SQL

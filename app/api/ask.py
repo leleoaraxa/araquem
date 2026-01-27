@@ -45,19 +45,6 @@ _NARR: Optional[Narrator] = Narrator()
 
 # ─────────────────────────────────────────────────────────────────────────────
 
-
-def _rag_trace_enabled() -> bool:
-    return str(os.getenv("RAG_TRACE", "")).strip().lower() in {"1", "true", "yes"}
-
-
-def _rag_trace_log(event: str, payload: Dict[str, Any]) -> None:
-    if not _rag_trace_enabled():
-        return
-    try:
-        LOGGER.info({"rag_trace": event, **payload})
-    except Exception:
-        return
-
 router = APIRouter()
 
 
@@ -179,24 +166,6 @@ def ask(
     if not isinstance(bucket_info, dict):
         bucket_info = {}
     bucket_selected = str(bucket_info.get("selected") or "")
-
-    scoring = exp_safe.get("scoring") if isinstance(exp_safe, dict) else {}
-    top2_gap = None
-    if isinstance(scoring, dict):
-        try:
-            top2_gap = float(scoring.get("intent_top2_gap"))
-        except (TypeError, ValueError):
-            top2_gap = None
-    _rag_trace_log(
-        "planner_decision",
-        {
-            "intent": intent,
-            "entity": entity,
-            "score": score,
-            "top2_gap": top2_gap,
-            "bucket": bucket_selected or None,
-        },
-    )
 
     # ------------------------------------------------------------------
     # CONTEXTO CONVERSACIONAL (M12) — registro do turno do usuário
@@ -743,8 +712,6 @@ def ask(
         },
         "answer": presenter_result.answer,
     }
-    if _rag_trace_enabled():
-        payload_out["meta"]["rag"] = meta.get("rag")
 
     if isinstance(last_reference_resolution, dict):
         meta.setdefault("context", {})["last_reference"] = {

@@ -4,11 +4,39 @@ normalize:
   - strip_punct
 
 tokenization:
-  split: "\\s+"
+  split: \s+
 
 weights:
   token: 1.1
   phrase: 3.3
+
+buckets:
+  A:
+    - fiis_dividends_yields
+    - fiis_overview
+    - fiis_registrations
+    - fiis_dividends
+    - fiis_financials_revenue_schedule
+    - fiis_financials_risk
+    - fiis_financials_snapshot
+    - fiis_real_estate
+    - fiis_news
+    - fiis_quota_prices
+    - fiis_legal_proceedings
+    - fiis_yield_history
+    - fiis_rankings
+  B:
+    - client_fiis_enriched_portfolio
+    - client_fiis_dividends_evolution
+    - client_fiis_performance_vs_benchmark
+    - client_fiis_positions
+    - client_fiis_performance_vs_benchmark_summary
+  C:
+    - history_market_indicators
+    - history_b3_indexes
+    - history_currency_rates
+    - consolidated_macroeconomic
+  D: []
 
 intents:
   - name: ticker_query
@@ -1177,10 +1205,6 @@ intents:
         - proventos
         - proventos do <ticker>
         - proventos de <ticker> esse mes
-        - dividendos pagos em janeiro de 2025
-        - pagou em janeiro de 2025
-        - data de pagamento do dividendo
-        - data de pagamento do provento
         - ultimo dividendo
         - proximo dividendo
         - dividendos acumulados
@@ -1528,16 +1552,6 @@ intents:
         - nos ultimos
         - soma de
         - media de
-        - o que e p/vp
-        - o que significa p/vp
-        - o que e pvp
-        - o que significa pvp
-        - como funciona vacancia fisica
-        - como funciona vacancia financeira
-        - como funciona vacancia fisica e vacancia financeira
-        - o que significa p/vp em fundos imobiliarios
-        - o que e vacancia fisica
-        - o que e vacancia financeira
         - preco
         - cotacao
         - variacao
@@ -2090,11 +2104,6 @@ intents:
         - status
         - litigio
         - litgio
-        - juridico
-        - risco juridico
-        - contencioso
-        - administrativo
-        - cvm
         - causa
         - causas
         - perda
@@ -2178,8 +2187,6 @@ intents:
         - quantos processos o
         - ha processos contra o
         - quais processos o
-        - processo relevante contra o
-        - existe algum processo relevante contra o
         - qual o valor das acoes do
         - processos envolvendo o
         - quem move acao contra o
@@ -2190,9 +2197,6 @@ intents:
         - resumo das acoes judiciais do
         - andamento dos processos do
         - processos judiciais do
-        - processo na cvm
-        - processos na cvm
-        - risco juridico do
       exclude:
         - relacao entre selic cdi e o desempenho medio dos fiis
         - panorama macro
@@ -2380,9 +2384,6 @@ intents:
         - pontos
         - fechamento
         - variacao
-        - ontem
-        - percentual
-        - porcentagem
         - resumo
         - variacoes
         - ultimos
@@ -2431,11 +2432,6 @@ intents:
         - ifix do dia
         - ibov do dia
         - fechamento do ibov ontem
-        - fechamento de ontem do ibovespa
-        - fechamento de ontem do ibov
-        - ibov ontem
-        - ibovespa ontem
-        - pontos e porcentagem
         - variacao do dia
         - variacao diaria
         - do dia
@@ -2658,13 +2654,22 @@ intents:
     tokens:
       include:
         - rendimento_percentual
-        - dy
-        - yield
-        - taxa
-        - percentual
         - comparativo
         - comparacao
         - comparar
+        - dy
+        - dividendo
+        - dividendos
+        - provento
+        - proventos
+        - pagamento
+        - pago
+        - pagou
+        - conceito
+        - definicao
+        - explicacao
+        - significa
+        - significado
       exclude:
         - meus
         - minha
@@ -2679,7 +2684,10 @@ intents:
         - yield de dividendos
         - yield mensal
         - yield acumulado
+        - retorno em dividendos
+        - retorno do fundo em dividendos
         - rendimento percentual
+        - rentabilidade via dividendos
         - dividendos e dy do
         - dividendos e dy do <ticker>
         - dividendos e dividend yield do
@@ -2706,6 +2714,13 @@ intents:
         - dy e dividendos do fii <ticker>
         - quanto o <ticker> pagou de dividendos e dy em
         - quanto pagou de dividendos e dy em
+        - o que e dividend yield
+        - o que e dividend yield em fiis
+        - significado de dividend yield
+        - conceito de dividend yield
+        - definicao de dividend yield
+        - explicacao de como funciona dividend yield
+        - explicacao de dividend yield
         - qual o dy de 12 meses do <ticker>
         - ultimo dividendo pago pelo <ticker> e dy
         - ultimo dividendo pago pelo <ticker> e o dy correspondente
@@ -2718,6 +2733,7 @@ intents:
         - dividendos e yield
         - dy e dividendos
         - yield e dividendos
+        - comparacao de dividendos
         - dy 12 meses
         - dy 12m
         - dividendo pago e dividend yield
@@ -2899,15 +2915,10 @@ intents:
         - importancia
         - panorama
         - cenario
-        - cenario macro
         - macro
         - favoravel
         - desfavoravel
         - cdi
-        - di
-        - taxa di
-        - juros futuros
-        - curva de juros
         - selic
         - ipca
         - ifix
@@ -2941,9 +2952,6 @@ intents:
         - impacto da selic em queda nos fiis
         - impacto da selic nos fiis
         - efeito do ipca nos fiis
-        - impacto nos fiis
-        - juros futuros
-        - curva de juros projetada
         - impacto para fiis
         - impacto para fundos imobiliarios
         - significado dos indicadores para fiis
@@ -3012,189 +3020,6 @@ intents:
         - longo prazo
     entities:
       - consolidated_macroeconomic
-
-  - name: concepts_fiis
-    weight: 7
-    tokens:
-      include:
-        - conceito
-        - definicao
-        - defina
-        - explicacao
-        - explique
-        - significa
-        - significado
-        - diferenca
-        - fiis
-        - fii
-        - fundos
-        - imobiliarios
-        - p/vp
-        - pvp
-        - dividend
-        - yield
-        - cap
-        - caprate
-      exclude:
-        - preco
-        - cotacao
-        - dividendos
-        - proventos
-        - rendimento
-        - carteira
-        - minha
-        - minhas
-        - meu
-        - meus
-        - historico
-        - serie
-        - mes
-        - mensal
-        - ano
-        - hoje
-    phrases:
-      include:
-        - o que e dividend yield
-        - o que e dividend yield em fiis
-        - como funciona dividend yield
-        - defina dividend yield
-        - explique dividend yield
-        - significado de dividend yield
-        - o que significa p/vp em fundos imobiliarios
-        - o que significa p/vp
-        - o que e p/vp
-        - o que e pvp
-        - o que significa pvp
-        - diferenca entre p/vp e dy
-        - o que e cap rate em fiis
-        - como funciona cap rate em fundos imobiliarios
-        - explique o que e cap rate
-        - o que e fii
-        - o que sao fundos imobiliarios
-        - defina fii
-      exclude:
-        - qual o dy do <ticker>
-        - dy do <ticker>
-        - dividendos do <ticker>
-        - rendimento do <ticker>
-        - qual o p/vp do <ticker>
-        - qual o pvp do <ticker>
-        - p/vp do <ticker>
-        - pvp do <ticker>
-    entities:
-      - concepts
-
-  - name: concepts_risk
-    weight: 7
-    tokens:
-      include:
-        - conceito
-        - definicao
-        - defina
-        - explicacao
-        - explique
-        - significa
-        - significado
-        - diferenca
-        - risco
-        - vacancia
-        - volatilidade
-        - drawdown
-        - mdd
-        - sharpe
-        - sortino
-        - beta
-      exclude:
-        - preco
-        - cotacao
-        - ranking
-        - historico
-        - serie
-        - mes
-        - mensal
-        - ano
-        - hoje
-    phrases:
-      include:
-        - como funciona vacancia fisica e vacancia financeira
-        - diferenca entre vacancia fisica e vacancia financeira
-        - o que e vacancia fisica
-        - o que e vacancia financeira
-        - o que e vacancia em fiis
-        - explique vacancia fisica
-        - explique vacancia financeira
-        - o que e drawdown
-        - o que e max drawdown
-        - o que e volatilidade
-        - o que e beta
-        - o que e indice sharpe
-        - o que e indice sortino
-        - como funciona o indice sharpe
-      exclude:
-        - vacancia do <ticker>
-        - vacancia fisica do <ticker>
-        - vacancia financeira do <ticker>
-        - volatilidade do <ticker>
-        - beta do <ticker>
-    entities:
-      - concepts
-
-  - name: concepts_macro
-    weight: 7
-    tokens:
-      include:
-        - conceito
-        - definicao
-        - defina
-        - explicacao
-        - explique
-        - significa
-        - significado
-        - diferenca
-        - selic
-        - ipca
-        - cdi
-        - inflacao
-        - juros
-        - cambio
-        - dolar
-        - curva
-      exclude:
-        - hoje
-        - ontem
-        - atual
-        - ultima
-        - ultimos
-        - historico
-        - serie
-        - mes
-        - mensal
-        - ano
-    phrases:
-      include:
-        - o que e selic
-        - como funciona a selic
-        - o que significa ipca
-        - o que e ipca
-        - o que e cdi
-        - diferenca entre selic e cdi
-        - diferenca entre ipca e igpm
-        - o que e inflacao
-        - o que e curva de juros
-        - como funciona a curva de juros
-        - o que e cambio
-        - o que e dolar comercial
-      exclude:
-        - selic hoje
-        - ipca hoje
-        - cdi hoje
-        - dolar hoje
-        - cambio hoje
-        - selic ontem
-        - ipca ontem
-        - cdi ontem
-    entities:
-      - concepts
 
 anti_tokens:
   generic:

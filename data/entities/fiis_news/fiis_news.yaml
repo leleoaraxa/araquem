@@ -2,7 +2,6 @@ id: fiis_news
 result_key: noticias_fii
 sql_view: fiis_news
 private: false
-bucket: A
 description: Notícias e matérias relevantes sobre FIIs (fonte externa consolidada D-1)
 
 options:

@@ -2,7 +2,6 @@ id: fiis_dividends_yields
 result_key: ticker
 sql_view: fiis_dividends_yields
 private: false
-bucket: A
 description: Histórico mensal de dividendos, dividend yield (DY) e cadastro do FII em uma única visão composta.
 
 options:
@@ -80,27 +79,22 @@ ask:
   requires_identifiers:
     - tickers
   keywords:
-    - dy
+    - dividend yield atual
+    - dividend yields atuais
     - dy atual
     - dy hoje
     - dy na data de hoje
+    - dy atual do fundo
     - dy corrente
+    - dy corrente do fii
     - ultimo dy
-    - dy atualizado
-    - dy 12m
-    - dy 12 meses
-    - dividend yield
-    - dividend yield atual
-    - dividend yield 12m
-    - yield
+    - ultimo dy do fundo
+    - ultimo dividend yield
+    - ultimo rendimento por cota
     - yield atual
     - yield corrente
-    - yield 12m
-    - yield 12 meses
-    - rendimento percentual
-    - taxa de yield
-    - percentual
-    - rolling 12m
+    - yield de hoje
+    - dy atualizado
   anti_tokens:
     - minha
     - minhas
@@ -140,17 +134,16 @@ ask:
   phrase_includes:
     - "dividend yield do"
     - "dividend yield atual do"
-    - "dividend yield 12m do"
     - "dy do"
     - "dy atual do"
     - "dy hoje do"
-    - "dy 12m do"
     - "qual o dy do"
     - "qual o yield do"
     - "ultimo dy do"
+    - "ultimo rendimento do"
+    - "dy atual do"
     - "dy atual do fundo"
     - "yield de hoje"
-    - "yield 12m do"
     - "dy atual do ticker"
   synonyms:
     ticker:

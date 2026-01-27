@@ -217,7 +217,6 @@ _METRIC_SCHEMAS = {
     "sirios_sql_errors_total": ("counter", ("entity", "error_code")),
     "sirios_rag_search_total": ("counter", ("outcome",)),
     "sirios_rag_topscore": ("histogram", ()),
-    "sirios_explain_events_failed_total": ("counter", ()),
     # ---------- M7.3 (RAG Context Explain) ----------
     "planner_rag_hits_total": ("counter", ("intent", "entity")),
     "planner_rag_context_used_total": ("counter", ("intent", "entity")),

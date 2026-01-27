@@ -24,7 +24,7 @@
   * [ ] métricas de contexto/last_reference (hit rate, no-op rate)
   * [ ] logs de resolução (casos “ele/esse fundo”)
 
-> Nota: **Bucket selecionado permanece neutro** (sem classificador ativo). A taxonomia A/B/C/D vive em `entity.yaml`, mas sem bucket selecionado a política de “TTL por bucket” não se aplica.
+> Nota: **Buckets A/B/C/D estão neutros por decisão explícita** (`data/ontology/bucket_rules.yaml` disabled). Portanto, qualquer menção a “TTL por bucket” deve ser considerada **não aplicável** enquanto buckets estiverem neutros.
 
 ---
 
@@ -83,7 +83,7 @@
   * [ ] anexar resultado (ex.: “0 misses”) com data/commit — sem placeholders
 * [ ] Tratar caso “macro sem ticker” para preferir entidade conceitual quando aplicável (via ontologia/policy, sem heurística).
 
-> Nota: **bucket selecionado neutro** ⇒ qualquer “calibração por bucket” não se aplica enquanto não houver bucket selecionado.
+> Nota: **buckets neutros** ⇒ qualquer “calibração por bucket” não se aplica enquanto `bucket_rules.yaml` estiver disabled.
 
 ---
 

@@ -8,13 +8,12 @@ The output is fully derived from repository YAML files (no hardcoded entity list
 ordered deterministically to keep artifacts stable across runs.
 """
 
-# script/quality/build_coverage_report.py
 from __future__ import annotations
 
 import dataclasses
 import json
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional, Tuple
+from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional
 
 import yaml
 
@@ -73,8 +72,13 @@ class Gap:
         }
 
 
-def collect_ontology(path: Path) -> Tuple[Mapping[str, List[str]], List[Mapping]]:
+def collect_ontology(path: Path) -> Tuple[Mapping[str, List[str]], Mapping[str, str], List[Mapping]]:
     data = load_yaml(path)
+    bucket_map = data.get("buckets", {}) or {}
+    entities_to_bucket: Dict[str, str] = {}
+    for bucket, entities in bucket_map.items():
+        for entity in entities or []:
+            entities_to_bucket[entity] = bucket
 
     intents: List[Mapping] = data.get("intents", []) or []
     entity_to_intents: Dict[str, List[str]] = {}
@@ -85,41 +89,7 @@ def collect_ontology(path: Path) -> Tuple[Mapping[str, List[str]], List[Mapping]
     for entity, intent_names in entity_to_intents.items():
         entity_to_intents[entity] = sorted_unique(intent_names)
 
-    return entity_to_intents, intents
-
-
-def collect_entity_buckets(
-    catalog: Mapping[str, Mapping], gaps: List[Gap]
-) -> Mapping[str, str]:
-    buckets: Dict[str, str] = {}
-    valid_buckets = {"A", "B", "C", "D"}
-    for entity, entry in catalog.items():
-        paths = entry.get("paths", {}) or {}
-        entity_yaml_path = paths.get("entity_yaml")
-        if not entity_yaml_path:
-            continue
-        path = ROOT / entity_yaml_path
-        if not path.exists():
-            continue
-        data = load_yaml(path)
-        bucket = data.get("bucket")
-        if bucket is None:
-            continue
-        if not isinstance(bucket, str) or not bucket.strip():
-            continue
-        bucket = bucket.strip()
-        if bucket not in valid_buckets:
-            gaps.append(
-                Gap(
-                    priority="P0",
-                    entity=entity,
-                    path=str(path),
-                    message=f"Invalid bucket value: {bucket}",
-                )
-            )
-            continue
-        buckets[entity] = bucket
-    return buckets
+    return entity_to_intents, entities_to_bucket, intents
 
 
 def collect_catalog(path: Path) -> Mapping[str, Mapping]:
@@ -409,9 +379,8 @@ def format_coverage_matrix_row(entity: str, record: Mapping) -> str:
 
 def build_reports() -> Dict[str, object]:
     gaps: List[Gap] = []
+    entity_to_intents, entities_to_bucket, intents_data = collect_ontology(ONTOLOGY_PATH)
     catalog = collect_catalog(CATALOG_PATH)
-    entity_to_intents, intents_data = collect_ontology(ONTOLOGY_PATH)
-    entities_to_bucket = collect_entity_buckets(catalog, gaps)
     policies = read_policies()
     param_inference = load_yaml(PARAM_INFERENCE_PATH)
 

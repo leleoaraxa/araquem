@@ -480,12 +480,6 @@ class Orchestrator:
         ask_conf = entity_conf.get("ask") if isinstance(entity_conf, dict) else None
         if not isinstance(ask_conf, dict):
             return False
-        compute_mode = ask_conf.get("compute_mode")
-        if isinstance(compute_mode, str) and compute_mode.strip().lower() in {
-            "conceptual",
-            "no_sql",
-        }:
-            return True
 
         required_ids = ask_conf.get("requires_identifiers")
         if not isinstance(required_ids, (list, tuple, set)):

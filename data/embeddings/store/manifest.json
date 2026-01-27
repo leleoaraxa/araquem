@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-27T17:47:40Z",
+  "generated_at": "2026-01-12T20:32:12Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -11,19 +11,17 @@
       "tags": [
         "concepts",
         "catalog",
-        "fiis",
-        "domain:concepts_fiis"
+        "fiis"
       ],
-      "chunks": 4,
-      "sha_all": "3078423e807073e56a9c9dc8bc03f600e402436e68fc47be82a93288239404e7"
+      "chunks": 2,
+      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
     },
     {
       "id": "concepts-fiis",
       "path": "data/concepts/concepts-fiis.yaml",
       "tags": [
         "concepts",
-        "fiis",
-        "domain:concepts_fiis"
+        "fiis"
       ],
       "chunks": 6,
       "sha_all": "f0f2d1dd143b372584bf2cc01042faf444b044ad4719e9f01c6494b0ca2da6a8"
@@ -34,8 +32,7 @@
       "tags": [
         "concepts",
         "risk",
-        "fiis",
-        "domain:concepts_risk"
+        "fiis"
       ],
       "chunks": 6,
       "sha_all": "884125b12fc0ffe2ac6d2ddccad1a54161f4228b39d4f1f5cf0b7508667ad195"
@@ -47,8 +44,7 @@
         "concepts",
         "macro",
         "market",
-        "fiis",
-        "domain:concepts_macro"
+        "fiis"
       ],
       "chunks": 4,
       "sha_all": "4d9d5c1d2eba52314db6e9aeab5395c46420321af975c8083d438976331729c5"
@@ -60,8 +56,7 @@
         "concepts",
         "macro",
         "methodology",
-        "fiis",
-        "domain:concepts_methodology"
+        "fiis"
       ],
       "chunks": 4,
       "sha_all": "4cbff044eae36a74ec285ab1b1a97c957ea882644b63f35bbc6d6f2fbd9ddfbd"
@@ -73,130 +68,10 @@
         "concepts",
         "carteira",
         "private",
-        "fiis",
-        "domain:concepts_portfolio"
+        "fiis"
       ],
       "chunks": 4,
       "sha_all": "bd37e2357003117fb1692f2952dd00e796bf48ff3b6c8f26b6291244c46700a9"
-    },
-    {
-      "id": "concepts-institutional",
-      "path": "data/concepts/concepts-institutional.yaml",
-      "tags": [
-        "concepts",
-        "institutional",
-        "domain:institutional_core"
-      ],
-      "chunks": 3,
-      "sha_all": "fb94a79f0787428ad352eaf89b720f3abc69e3bd404e11fd9a86bc49a520b839"
-    },
-    {
-      "id": "concepts-institutional-policies",
-      "path": "data/concepts/concepts-institutional-policies.yaml",
-      "tags": [
-        "concepts",
-        "institutional",
-        "policies",
-        "domain:institutional_policies"
-      ],
-      "chunks": 1,
-      "sha_all": "3bc7c9aa89e302f7b63e6ae4611a83d742c9b4bd12bc713b9a764feca7ac5f67"
-    },
-    {
-      "id": "concepts-institutional-privacy",
-      "path": "data/concepts/concepts-institutional-privacy.yaml",
-      "tags": [
-        "concepts",
-        "institutional",
-        "privacy",
-        "domain:institutional_privacy"
-      ],
-      "chunks": 1,
-      "sha_all": "3c5446ba0ccf23f71756bd0c40b3154e4024049189757e6f8c8aca4fedcb2b1a"
-    },
-    {
-      "id": "concepts-institutional-terms",
-      "path": "data/concepts/concepts-institutional-terms.yaml",
-      "tags": [
-        "concepts",
-        "institutional",
-        "terms",
-        "domain:institutional_terms"
-      ],
-      "chunks": 2,
-      "sha_all": "4974e0204294cb87ad2c01be4b4f55b46cad766042d369b80eb87f6c78ce1c59"
-    },
-    {
-      "id": "concepts-institutional-product-positioning",
-      "path": "data/concepts/concepts-institutional-product-positioning.yaml",
-      "tags": [
-        "concepts",
-        "institutional",
-        "positioning",
-        "domain:institutional_product_positioning"
-      ],
-      "chunks": 1,
-      "sha_all": "407400067bf40e9468a58cdf8ae21919794a08cc6497945ef3064d4cc9e9e5bd"
-    },
-    {
-      "id": "concepts-support",
-      "path": "data/concepts/concepts-support.yaml",
-      "tags": [
-        "concepts",
-        "support",
-        "faq",
-        "domain:support_faq"
-      ],
-      "chunks": 2,
-      "sha_all": "81cdcd33b07371faa8d10035e3ede3980f15218cb57ad672ad7c7b9ac2fce417"
-    },
-    {
-      "id": "concepts-support-howto",
-      "path": "data/concepts/concepts-support-howto.yaml",
-      "tags": [
-        "concepts",
-        "support",
-        "howto",
-        "domain:support_howto"
-      ],
-      "chunks": 1,
-      "sha_all": "5b43f2ebeab309c34b12d5c6f5f465aba50c2bdecacca45b6f6de5912b94dab3"
-    },
-    {
-      "id": "concepts-support-errors",
-      "path": "data/concepts/concepts-support-errors.yaml",
-      "tags": [
-        "concepts",
-        "support",
-        "errors",
-        "domain:support_errors"
-      ],
-      "chunks": 1,
-      "sha_all": "221a8ace87d88245506c39d1535cf9e5a88d11dbde200f6c41ff533c7a90ff42"
-    },
-    {
-      "id": "concepts-support-troubleshooting",
-      "path": "data/concepts/concepts-support-troubleshooting.yaml",
-      "tags": [
-        "concepts",
-        "support",
-        "troubleshooting",
-        "domain:support_troubleshooting"
-      ],
-      "chunks": 2,
-      "sha_all": "a456710e4b04616c01761307b64e045a545d09e179f4e989f150081b62eb65ee"
-    },
-    {
-      "id": "concepts-support-plans",
-      "path": "data/concepts/concepts-support-plans.yaml",
-      "tags": [
-        "concepts",
-        "support",
-        "plans",
-        "domain:support_plans"
-      ],
-      "chunks": 1,
-      "sha_all": "84af6d933e38cca31cf65b34710fb010bfaa2172f0cbe33e9dca3b2c6db01b8f"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -205,11 +80,23 @@
         "concepts",
         "risk",
         "metrics",
-        "fiis",
-        "domain:concepts_methodology"
+        "fiis"
       ],
       "chunks": 3,
       "sha_all": "74ad600af50e6cb62135282f86d5526483a9a38ab8f13a0f66a91fc155779602"
+    },
+    {
+      "id": "indicators-catalog",
+      "path": "data/raw/indicators/catalog.md",
+      "tags": [
+        "concepts",
+        "indicators",
+        "risk",
+        "performance",
+        "fiis"
+      ],
+      "chunks": 15,
+      "sha_all": "2d582b45dafd43781fe59ff5e71c0cf7b88101980d5b762b466b02b7810ed2e1"
     },
     {
       "id": "ontology-entity",
@@ -219,8 +106,8 @@
         "intents",
         "entities"
       ],
-      "chunks": 63,
-      "sha_all": "a656eca6d72361569eec8bc85beae7f974640f331e3e8f1140abdf809e56e9dd"
+      "chunks": 60,
+      "sha_all": "38e3693e4f982f1b93b6ff89515e998f27a53a7e0eb9e45d2988fd149018ee2e"
     },
     {
       "id": "entity-fiis-cadastro",
@@ -232,7 +119,7 @@
         "entity:fiis_registrations"
       ],
       "chunks": 4,
-      "sha_all": "a3571b1d6b7dcaf142104f012c9586202a423d77a93d10ea67977a8fdf38f884"
+      "sha_all": "3a66c9e044aaed3a194b3895b61d10ca7c90751df38159292040d0532b80818e"
     },
     {
       "id": "entity-fiis-cadastro-hints",
@@ -256,7 +143,7 @@
         "entity:fiis_dividends"
       ],
       "chunks": 3,
-      "sha_all": "272e1ee678fa58a6081579e65d94cb4dfc5a529d613172f91f240586173626e2"
+      "sha_all": "2b94b3209961e1f10458589f5d02137b5141bef35c5443c0b00f6d77c92a8938"
     },
     {
       "id": "entity-fiis-dividendos-hints",
@@ -268,7 +155,7 @@
         "entity:fiis_dividends"
       ],
       "chunks": 1,
-      "sha_all": "5e36c363be26359a79cefe5ea23a1ad658cb0669681d9a330c56ec6381682c08"
+      "sha_all": "6ec231ece8a9e90bedbff90ea3c2cb1480671bce7b42f9a799335cd7f4e1cb38"
     },
     {
       "id": "entity-fiis-precos",
@@ -280,7 +167,7 @@
         "entity:fiis_quota_prices"
       ],
       "chunks": 5,
-      "sha_all": "4847e6b2f8ded9f0c6da0e34e4801523d6b840a4522b9284a4df1b9b5b4ca24c"
+      "sha_all": "fa971c21b15fd6575079c47c604828261505153976b1452714b9ed8f36345ddf"
     },
     {
       "id": "entity-fiis-precos-hints",
@@ -304,7 +191,7 @@
         "entity:fiis_rankings"
       ],
       "chunks": 5,
-      "sha_all": "9f651184ff0926ab207e5662cbad0862594ca7a0158b547fc5643ef6ad3c8228"
+      "sha_all": "ff812421124c33c0e70806efbe1e55ba22ab92dc19e62d15d5102bca515684bb"
     },
     {
       "id": "entity-fiis-imoveis",
@@ -316,7 +203,7 @@
         "entity:fiis_real_estate"
       ],
       "chunks": 3,
-      "sha_all": "d0caf4f546f571d1ae916b9341f6e2c630116decd4c74485271d1b8af088258a"
+      "sha_all": "95e0e63cd8eaa3fb1f774edd7e1fc1b781ff6fbfcff6b060284669e20b639241"
     },
     {
       "id": "entity-fiis-noticias",
@@ -328,7 +215,7 @@
         "entity:fiis_news"
       ],
       "chunks": 4,
-      "sha_all": "3e2043ac538209a3ca7e8597616b27be7d925291514c32eb62d32b1ce7cde04f"
+      "sha_all": "ff20e1687a8609fb5d88d6dfdaf7b6cf4828faccc33a0641fb393027f78deda9"
     },
     {
       "id": "entity-fiis-processos",
@@ -339,8 +226,8 @@
         "processos",
         "entity:fiis_legal_proceedings"
       ],
-      "chunks": 3,
-      "sha_all": "fcf35abcae0918c640ef2d83c04d3be83d6e61b35a04d96370b8a2d9b84cfe20"
+      "chunks": 2,
+      "sha_all": "e37db3c5ff853f9c07290500bcc83485bf24bae59ce5c6585cccb3f06421b883"
     },
     {
       "id": "entity-fiis-financials-snapshot",
@@ -353,7 +240,7 @@
         "entity:fiis_financials_snapshot"
       ],
       "chunks": 5,
-      "sha_all": "528f9491591ac54d05b4eeb92d0f5df164a100ffbdc793d19bda3c793140d94f"
+      "sha_all": "54bad24e91edfb68da574a2ccad5f65c7ef83572ea13595cac2f84e346061826"
     },
     {
       "id": "entity-fiis-financials-revenue",
@@ -366,7 +253,7 @@
         "entity:fiis_financials_revenue_schedule"
       ],
       "chunks": 4,
-      "sha_all": "755f536f2a94707232ca5a0d7520eebdd4469b20d962e038758980e6caef680c"
+      "sha_all": "5d5688994466125f5f920e3a971fa83722eb73828e874b3e4f99e91393cbebcd"
     },
     {
       "id": "entity-fiis-financials-risk",
@@ -379,7 +266,7 @@
         "entity:fiis_financials_risk"
       ],
       "chunks": 4,
-      "sha_all": "cb09b2f180152b2d46e724ca30c2ee11c2ceeccb252d7300df13df51883571e1"
+      "sha_all": "66c9617775376f153e2af922280e765c439216b841d1854eb9e6a0ddeeb597ea"
     },
     {
       "id": "entity-fiis-financials-risk-hints",
@@ -418,7 +305,7 @@
         "entity:fiis_dividends_yields"
       ],
       "chunks": 5,
-      "sha_all": "1695a7951d6730c53ff988444960217aa6d9ef91c9155e6fa5b7c5816edd3277"
+      "sha_all": "5ff2adafa2c9f56750821c3767c6639404fb993f9753617abf4427f127f264a5"
     },
     {
       "id": "entity-dividends-yields-hints",
@@ -431,7 +318,7 @@
         "entity:fiis_dividends_yields"
       ],
       "chunks": 1,
-      "sha_all": "a25a7628453d9c0489b249d2146e87d98706704e6113bb15e0d690c283603494"
+      "sha_all": "6b7f8240c8a50a1ff18679fe7711a68f68c5cca6527ea2710c2a02e61cd98791"
     },
     {
       "id": "entity-fiis-yield-history",
@@ -445,7 +332,7 @@
         "entity:fiis_yield_history"
       ],
       "chunks": 3,
-      "sha_all": "754cbc480da49f4b063632c735f5ccda57fae35c2513f33a05a3086bfcafb86a"
+      "sha_all": "41c7af41d16490a5bd385d74702a3304f08433a88e2d256b4f78a66066fb937b"
     },
     {
       "id": "entity-fiis-yield-history-hints",
@@ -471,7 +358,7 @@
         "entity:fiis_overview"
       ],
       "chunks": 7,
-      "sha_all": "606f77432f549eb211b919143177f27743eabca09706d24e47c80f0e46ff08d2"
+      "sha_all": "157ffffa064724c0597345eb16a832d2c27f45cd42e297dd258f5dbc5b176b17"
     },
     {
       "id": "entity-fii-overview-hints",
@@ -496,7 +383,7 @@
         "entity:client_fiis_enriched_portfolio"
       ],
       "chunks": 5,
-      "sha_all": "a13d873151936c4bd3ebacc3f7b9702bfcfd0324a35ead70e46edcfa526a2d43"
+      "sha_all": "def05980f688dd9bbb0864017bdbc6e130bc3f46f845aa3e982e0f1974201781"
     },
     {
       "id": "entity-carteira-enriquecida-hints",
@@ -523,7 +410,7 @@
         "entity:client_fiis_dividends_evolution"
       ],
       "chunks": 3,
-      "sha_all": "e7395c6418f6b7c0018b091cdb03b112c94d96d3a7c93fe3a0dbf180579d3233"
+      "sha_all": "01f30b09861ee2162ccd81fb306266a8a23923026a21bb302e2d70e911f372f1"
     },
     {
       "id": "entity-client-fiis-dividends-evolution-hints",
@@ -551,7 +438,7 @@
         "entity:client_fiis_performance_vs_benchmark"
       ],
       "chunks": 3,
-      "sha_all": "6f3c9ca9945594a93a47e405b59af0cc9c6da18ff4dd6ea300094ee97cb65c59"
+      "sha_all": "bfcdc61758958b7c514e7a519ed13a8369c306c3d9b26e6d210b97e00a69e253"
     },
     {
       "id": "entity-client-fiis-performance-vs-benchmark-hints",
@@ -580,7 +467,7 @@
         "entity:client_fiis_performance_vs_benchmark_summary"
       ],
       "chunks": 4,
-      "sha_all": "1e80df25c9dc18e77a2181b7f694c4c510ccd12475a6d7864f437dab7f8dae5d"
+      "sha_all": "705590be7c2cc63084eac67ed5e1f522bd8a821b375924508df27173d00bec0d"
     },
     {
       "id": "entity-client-fiis-performance-vs-benchmark-summary-hints",
@@ -599,7 +486,7 @@
     },
     {
       "id": "entity-macro-consolidada",
-      "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
+      "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
       "tags": [
         "entities",
         "macro",
@@ -607,8 +494,8 @@
         "indicators",
         "entity:consolidated_macroeconomic"
       ],
-      "chunks": 4,
-      "sha_all": "8ce3ed0d11e09058ff3594e92e541bd2d748313eef00b83ab6fc8b80b96bd350"
+      "chunks": 2,
+      "sha_all": "28fe9f3ab534f6ecdbdd8bd6989ed37669a6aa8228d18baa3b618bedea5d59a6"
     },
     {
       "id": "entity-macro-consolidada-hints",
@@ -621,7 +508,7 @@
         "entity:consolidated_macroeconomic"
       ],
       "chunks": 1,
-      "sha_all": "478b3df26b20ada7d9ff3f6cf64c74002f15375dd691c238a8b1636e236d041a"
+      "sha_all": "5afed6d503d4090ab05054d9eb7a9e34a34fa520b0fb5388fae33c87404264be"
     },
     {
       "id": "entity-client-fiis-positions",
@@ -633,7 +520,45 @@
         "entity:client_fiis_positions"
       ],
       "chunks": 4,
-      "sha_all": "4827d7f7ff41549a766f085509f392ae935c07ba3c800fb48c3e8fa703271de8"
+      "sha_all": "eb1cf05c8facd108286991224732ca4c3cc627a38665a8ae99b9135c846134a2"
+    },
+    {
+      "id": "entity-history-b3-indexes-hints",
+      "path": "data/entities/history_b3_indexes/hints.md",
+      "tags": [
+        "entities",
+        "market",
+        "indexes",
+        "b3",
+        "entity:history_b3_indexes"
+      ],
+      "chunks": 1,
+      "sha_all": "4c1dcbb85726c7e26f24f71069e79ea737e1d3693c0c7e4f46d3c3eef9b4025b"
+    },
+    {
+      "id": "entity-history-currency-rates-hints",
+      "path": "data/entities/history_currency_rates/hints.md",
+      "tags": [
+        "entities",
+        "fx",
+        "currency",
+        "entity:history_currency_rates"
+      ],
+      "chunks": 1,
+      "sha_all": "9d2480caf1a271c5b2381a36f0496cb5db8642044f911de3f3ea644c2457e0df"
+    },
+    {
+      "id": "entity-history-market-indicators-hints",
+      "path": "data/entities/history_market_indicators/hints.md",
+      "tags": [
+        "entities",
+        "market",
+        "macro",
+        "indicators",
+        "entity:history_market_indicators"
+      ],
+      "chunks": 1,
+      "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     },
     {
       "id": "policies-cache",
@@ -662,17 +587,15 @@
         "policies",
         "rag"
       ],
-      "chunks": 3,
-      "sha_all": "e498d3f0088b154fc336ff50497096aba8d368d1b0a9d0861b3882e01d71eaad"
+      "chunks": 2,
+      "sha_all": "193ca14b48fdb9163b891e89e7720416567ae4a0590cb626b33c1816a6a936fa"
     },
     {
       "id": "ops-planner-thresholds",
       "path": "data/ops/planner_thresholds.yaml",
       "tags": [
         "quality",
-        "thresholds",
-        "domain:engineering",
-        "rag:deny"
+        "thresholds"
       ],
       "chunks": 3,
       "sha_all": "ca574bd4fa13fc1ddc9af1df6b4eee4610f1373d4835ef21a857dbb1506c005b"
@@ -683,9 +606,7 @@
       "tags": [
         "observability",
         "metrics",
-        "tracing",
-        "domain:engineering",
-        "rag:deny"
+        "tracing"
       ],
       "chunks": 5,
       "sha_all": "ca61c26988b62679c07f3ebed1a7a46d994c1c971a3461b43025be43c8612385"
@@ -695,9 +616,7 @@
       "path": "data/golden/m65_quality.yaml",
       "tags": [
         "golden",
-        "quality",
-        "domain:engineering",
-        "rag:deny"
+        "quality"
       ],
       "chunks": 16,
       "sha_all": "63d2cfe05258a222cbcd42260f9c1ab6ab00c7db20eed51dd0ef8a67647b08d2"
@@ -708,9 +627,7 @@
       "tags": [
         "golden",
         "quality",
-        "collisions",
-        "domain:engineering",
-        "rag:deny"
+        "collisions"
       ],
       "chunks": 1,
       "sha_all": "a0adecc10f49c19ff35b1d3b56ea4cbe72e9670a083e1bb91905121fa3afd9c9"
@@ -721,12 +638,10 @@
       "tags": [
         "quality",
         "routing",
-        "samples",
-        "domain:engineering",
-        "rag:deny"
+        "samples"
       ],
       "chunks": 35,
-      "sha_all": "d981d98c217125d12d5186a3b7b9aef3f1057dff104ac06a3a0834a59d4ad33b"
+      "sha_all": "4b1ad7b1cfc19e89af7ec00648b7055689ec3b9bbb331999ef41e35218a4e6c7"
     },
     {
       "id": "q-projection-cadastro",
@@ -734,9 +649,7 @@
       "tags": [
         "quality",
         "projection",
-        "cadastro",
-        "domain:engineering",
-        "rag:deny"
+        "cadastro"
       ],
       "chunks": 1,
       "sha_all": "fd0e79113430886a3d6e9daedfbf929667f44da2b046077b234a47fc8af49307"
@@ -747,9 +660,7 @@
       "tags": [
         "quality",
         "projection",
-        "dividendos",
-        "domain:engineering",
-        "rag:deny"
+        "dividendos"
       ],
       "chunks": 1,
       "sha_all": "55569e2e30f8a6e83243357d738f1cd9bebaa9c966a530d3b2ef200c33b74a4f"
@@ -760,9 +671,7 @@
       "tags": [
         "quality",
         "projection",
-        "precos",
-        "domain:engineering",
-        "rag:deny"
+        "precos"
       ],
       "chunks": 1,
       "sha_all": "05580567b26dcd15af3fee7e385969d24d8f9795eb04dfd3f4d18b71bd9e2a21"
@@ -773,9 +682,7 @@
       "tags": [
         "quality",
         "projection",
-        "rankings",
-        "domain:engineering",
-        "rag:deny"
+        "rankings"
       ],
       "chunks": 1,
       "sha_all": "70627d6b0e7ceb81d5eaa23b220b8f43fb37e9d9b93a71607893917a79dcb4c6"
@@ -786,9 +693,7 @@
       "tags": [
         "quality",
         "projection",
-        "imoveis",
-        "domain:engineering",
-        "rag:deny"
+        "imoveis"
       ],
       "chunks": 1,
       "sha_all": "8734ff61a3d57c0d2e1e30e4ba02831b0b083c827aed373db5dc2b716f79e968"
@@ -799,9 +704,7 @@
       "tags": [
         "quality",
         "projection",
-        "noticias",
-        "domain:engineering",
-        "rag:deny"
+        "noticias"
       ],
       "chunks": 1,
       "sha_all": "c0af7aeeb5456f50e2d06850788b1fcad24f331937e8e0fe66eb02935faf940d"
@@ -812,9 +715,7 @@
       "tags": [
         "quality",
         "projection",
-        "processos",
-        "domain:engineering",
-        "rag:deny"
+        "processos"
       ],
       "chunks": 1,
       "sha_all": "1e76527bb35a343b3358c10c7624a0fc4e0cc9ce52276837f87e80efcdfe25b1"
@@ -825,9 +726,7 @@
       "tags": [
         "quality",
         "projection",
-        "financials",
-        "domain:engineering",
-        "rag:deny"
+        "financials"
       ],
       "chunks": 1,
       "sha_all": "dd73798e67146aae5d912a6ea840584422d00471cf99faeffddeca936805f5c8"
@@ -838,9 +737,7 @@
       "tags": [
         "quality",
         "projection",
-        "financials",
-        "domain:engineering",
-        "rag:deny"
+        "financials"
       ],
       "chunks": 1,
       "sha_all": "4c02c5e6d5d4e8ecf4b28434946c771e122a6fc12c370d70965bf8510029c2a2"
@@ -851,9 +748,7 @@
       "tags": [
         "quality",
         "projection",
-        "financials",
-        "domain:engineering",
-        "rag:deny"
+        "financials"
       ],
       "chunks": 1,
       "sha_all": "0db2950df95e1ef1b44e0ef67212e41240c90d97da6227f16f527d7ca25b12df"
@@ -864,9 +759,7 @@
       "tags": [
         "quality",
         "projection",
-        "private",
-        "domain:engineering",
-        "rag:deny"
+        "private"
       ],
       "chunks": 1,
       "sha_all": "36c086c2a9f903a0dca8dc4b14f386ddcd489032684f854c2aca6ec3da3419ac"
@@ -877,9 +770,7 @@
       "tags": [
         "quality",
         "projection",
-        "private",
-        "domain:engineering",
-        "rag:deny"
+        "private"
       ],
       "chunks": 1,
       "sha_all": "e41b0b689112630ee9d139f3a97dfa4933ff6a537a0e9ed1287fc76649ff47c4"
@@ -890,9 +781,7 @@
       "tags": [
         "quality",
         "projection",
-        "private",
-        "domain:engineering",
-        "rag:deny"
+        "private"
       ],
       "chunks": 1,
       "sha_all": "87213ab153fd82148f73019c7669219c3a42a3e820751462f47e1492e6b1c3e0"
@@ -903,9 +792,7 @@
       "tags": [
         "quality",
         "projection",
-        "overview",
-        "domain:engineering",
-        "rag:deny"
+        "overview"
       ],
       "chunks": 1,
       "sha_all": "a71666c0430bae24c5f48ad480c8b05dae594071e6eb38a280d5609bd9021518"
@@ -916,9 +803,7 @@
       "tags": [
         "quality",
         "projection",
-        "yield",
-        "domain:engineering",
-        "rag:deny"
+        "yield"
       ],
       "chunks": 1,
       "sha_all": "a357e34ae0149ae6439dae54ac102c2eceb2147d217cb9e538cd9ca84ad0f0e2"
@@ -930,9 +815,7 @@
         "quality",
         "projection",
         "dividendos",
-        "yield",
-        "domain:engineering",
-        "rag:deny"
+        "yield"
       ],
       "chunks": 1,
       "sha_all": "1b0e0823eb81b3f63a202e4e4eef5993af8f4c99565ad2aba3134d0969836545"
@@ -944,9 +827,7 @@
         "quality",
         "projection",
         "private",
-        "carteira",
-        "domain:engineering",
-        "rag:deny"
+        "carteira"
       ],
       "chunks": 1,
       "sha_all": "896df4ed4dca971bb213237efa9a75070e0d5cee8fd492f8757327b3b5ee8d83"
@@ -958,9 +839,7 @@
         "quality",
         "projection",
         "macro",
-        "historical",
-        "domain:engineering",
-        "rag:deny"
+        "historical"
       ],
       "chunks": 1,
       "sha_all": "15661ea171ce9a179caaaf255ca766cbab2be2fd15ae8cefaab078eba3aeec28"
@@ -971,9 +850,7 @@
       "tags": [
         "quality",
         "projection",
-        "m66",
-        "domain:engineering",
-        "rag:deny"
+        "m66"
       ],
       "chunks": 1,
       "sha_all": "08a3d3d4ee73c2bdcd57d308044a2273f5091934d5dee4d4748bbb4fd8efe01b"
@@ -989,20 +866,7 @@
         "entity:history_b3_indexes"
       ],
       "chunks": 3,
-      "sha_all": "3a291a72b40932c3986ef5e19f8de14c5945a6d1a09a62711e28146f63c17a71"
-    },
-    {
-      "id": "entity-history-b3-indexes-hints",
-      "path": "data/entities/history_b3_indexes/hints.md",
-      "tags": [
-        "entities",
-        "market",
-        "indexes",
-        "b3",
-        "entity:history_b3_indexes"
-      ],
-      "chunks": 1,
-      "sha_all": "2c5d7c574b23af2791b7df7eb1e36bc68948a62a5d60e4edc9d7f3f132a43d91"
+      "sha_all": "8ffc3997c373abdbb20539cba0b64a06cb9dcb72dab3315d75f8bc4dad4eb0bd"
     },
     {
       "id": "entity-history-currency-rates",
@@ -1014,19 +878,7 @@
         "entity:history_currency_rates"
       ],
       "chunks": 2,
-      "sha_all": "80f357bdd9cb798b0295bc407dab26986b4fb7794d2289f2f24c36cfe0b0fad6"
-    },
-    {
-      "id": "entity-history-currency-rates-hints",
-      "path": "data/entities/history_currency_rates/hints.md",
-      "tags": [
-        "entities",
-        "fx",
-        "currency",
-        "entity:history_currency_rates"
-      ],
-      "chunks": 1,
-      "sha_all": "9d2480caf1a271c5b2381a36f0496cb5db8642044f911de3f3ea644c2457e0df"
+      "sha_all": "e5b00bb1c8b38bedd763b467909babbc011f713fe6451b9a52ec1b0620890209"
     },
     {
       "id": "entity-history-market-indicators",
@@ -1039,23 +891,10 @@
         "entity:history_market_indicators"
       ],
       "chunks": 2,
-      "sha_all": "5d63d53653f07c0d6c3d421d09e6a80586aa39d66d549776a53554219042214e"
-    },
-    {
-      "id": "entity-history-market-indicators-hints",
-      "path": "data/entities/history_market_indicators/hints.md",
-      "tags": [
-        "entities",
-        "market",
-        "macro",
-        "indicators",
-        "entity:history_market_indicators"
-      ],
-      "chunks": 1,
-      "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
+      "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769536232,
+  "last_refresh_epoch": 1768250102,
   "vector_dimension": 768,
-  "total_chunks": 304
+  "total_chunks": 295
 }

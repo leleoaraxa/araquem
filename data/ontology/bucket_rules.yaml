@@ -1,0 +1,88 @@
+---
+# Estado atual: buckets neutros por decisão explícita.
+# Não há segmentação A/B/C aplicada; reative somente alterando enabled: true nas regras abaixo.
+terms:
+  - name: "bucket_rules"
+    kind: "planner"
+    scope: "buckets"
+    version: 1
+
+defaults:
+  normalize:
+    - lower
+    - strip_accents
+    - strip_punct
+  token_split: "\\b"
+  token_weight: 1.0
+  phrase_weight: 3.0
+  min_score: 1.0
+  # Mantém segmentação desativada até decisão futura.
+  enabled: false
+
+rules:
+  - name: "bucket_A_ticker"
+    bucket: "A"
+    enabled: false
+    min_score: 1.0
+    tokens_include:
+      - AAAA11
+      - aaaa11
+    phrases_include: []
+    tokens_exclude: []
+    phrases_exclude: []
+
+  - name: "bucket_B_cliente"
+    bucket: "B"
+    enabled: false
+    min_score: 1.0
+    tokens_include:
+      - minha
+      - minhas
+      - meu
+      - meus
+      - carteira
+      - carteira de fiis
+      - portfolio
+      - portfólio
+    phrases_include:
+      - minha carteira
+      - meus fiis
+      - meu portfólio
+    tokens_exclude: []
+    phrases_exclude: []
+
+  - name: "bucket_C_macro_indices_moedas"
+    bucket: "C"
+    enabled: false
+    min_score: 1.0
+    tokens_include:
+      - ipca
+      - cdi
+      - selic
+      - ifix
+      - ifil
+      - ibov
+      - ibovespa
+      - dolar
+      - dólar
+      - usd
+      - eur
+      - euro
+    phrases_include:
+      - indice de fiis
+      - indice de fundos
+      - taxa de juros
+      - taxa selic
+      - taxa de inflacao
+      - taxa de inflação
+    tokens_exclude: []
+    phrases_exclude: []
+
+  - name: "bucket_D_fallback"
+    bucket: "D"
+    enabled: false
+    min_score: 0.0
+    tokens_include: []
+    phrases_include: []
+    tokens_exclude: []
+    phrases_exclude: []

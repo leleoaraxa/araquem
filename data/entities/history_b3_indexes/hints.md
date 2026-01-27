@@ -14,7 +14,3 @@ Como o Araquem usa:
   interpretar como recomendação.
 - Atender perguntas como "quanto fechou o IFIX ontem?" ou "como o IFIL variou no
   último trimestre?".
-
-Exemplos adicionais:
-- "Fechamento de ontem do Ibovespa em pontos e porcentagem"
-- "IBOV ontem: pontos e variação percentual"

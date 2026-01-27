@@ -125,25 +125,3 @@ def test_bucket_disabled_does_not_enable_multi(monkeypatch: pytest.MonkeyPatch) 
 
     assert bundle["multi_ticker_enabled"] is False
     assert bundle["multi_ticker_mode"] == "none"
-
-
-def test_plan_hash_changes_with_bucket(monkeypatch: pytest.MonkeyPatch) -> None:
-    plan_a = _plan(bucket="A")
-    plan_b = _plan(bucket="B")
-    orchestrator = _orchestrator(plan_a)
-    monkeypatch.setattr(routing, "infer_params", lambda **kwargs: {"metric": "close_price"})
-
-    bundle_a = orchestrator.prepare_plan(
-        "preço do HGLG11",
-        client_id="c1",
-        conversation_id="conv",
-        planner_plan=plan_a,
-    )
-    bundle_b = orchestrator.prepare_plan(
-        "preço do HGLG11",
-        client_id="c1",
-        conversation_id="conv",
-        planner_plan=plan_b,
-    )
-
-    assert bundle_a["plan_hash"] != bundle_b["plan_hash"]
