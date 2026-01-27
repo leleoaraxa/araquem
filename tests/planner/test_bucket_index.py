@@ -52,7 +52,7 @@ def test_planner_bucket_filters_intents() -> None:
     planner = planner_module.Planner("data/ontology/entity.yaml")
     plan = planner.explain("teste", bucket_hint="A")
 
-    assert plan["explain"]["bucket"]["selected"] == "A"
+    assert plan["explain"]["bucket"]["selected"] == ""
 
     bucket_gate = next(
         item
@@ -75,3 +75,17 @@ def test_planner_bucket_neutral_keeps_all_intents() -> None:
     )
     assert bucket_gate["applied"] is False
     assert bucket_gate["filtered_count"] == len(planner.onto.intents)
+
+
+def test_planner_never_inferrs_bucket_from_text() -> None:
+    planner = planner_module.Planner("data/ontology/entity.yaml")
+    plan = planner.explain("pergunta com bucket A e bucket D no texto")
+
+    assert plan["explain"]["bucket"]["selected"] == ""
+
+    bucket_gate = next(
+        item
+        for item in plan["explain"]["decision_path"]
+        if item.get("stage") == "bucket_gate"
+    )
+    assert bucket_gate["applied"] is False

@@ -74,5 +74,6 @@ Resultado:
    * O baseline foi medido em cima do scorer do Planner, respeitando:
 
      * Índice de bucket vigente (bucket em `data/entities/*/*.yaml`).
+     * `bucket_rules.yaml` **REMOVIDO** — buckets são taxonomia estrutural por entidade, sem classificador textual.
      * Anti-tokens entre entidades públicas, privadas e macro.
    * O comportamento em `/ask` deve ser periodicamente auditado com experimentos dedicados (shadow mode).
