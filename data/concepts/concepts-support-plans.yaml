@@ -1,7 +1,3 @@
-# Summary:
-# - Mudanças: substitui o slice anterior por planos e acesso, com conceitos focados em planos, alterações e suporte relacionado.
-# - Compatibilidade: mantém o mesmo schema de concepts YAML (domain, owner, concepts, name, aliases, description).
-# - Evitado: qualquer referência financeira ou lógica operacional/heurística.
 # data/concepts/concepts-support-plans.yaml
 domain: support_plans
 owner: research
