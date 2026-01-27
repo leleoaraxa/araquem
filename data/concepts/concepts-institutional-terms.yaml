@@ -33,14 +33,6 @@ concepts:
       Intenção identificada na pergunta para direcionar a consulta e o tipo de
       resposta.
 
-  - name: "Bucket"
-    aliases:
-      - "faixa"
-      - "intervalo"
-    description: >
-      Agrupamento de valores em faixas padronizadas para resumir séries ou
-      distribuições.
-
   - name: "Histórico D-1"
     aliases:
       - "d-1"

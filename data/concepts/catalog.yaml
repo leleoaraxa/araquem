@@ -127,10 +127,10 @@ concepts:
       - "Erros comuns e ajustes rápidos"
       - "Explicação de colunas e janela temporal"
 
-  - file: data/concepts/concepts-support-billing.yaml
-    domain: support_billing
+  - file: data/concepts/concepts-support-plans.yaml
+    domain: support_plans
     owner: research
     sections:
-      - "Planos e assinatura"
-      - "Cobrança e pagamentos"
-      - "Histórico e comprovantes"
+      - "Planos e acesso"
+      - "Alteração de plano"
+      - "Suporte relacionado a planos"
