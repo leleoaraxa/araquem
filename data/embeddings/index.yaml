@@ -76,9 +76,9 @@ include:
     path: data/concepts/concepts-support-troubleshooting.yaml
     tags: [concepts, support, troubleshooting, "domain:support_troubleshooting"]
 
-  - id: concepts-support-billing
-    path: data/concepts/concepts-support-billing.yaml
-    tags: [concepts, support, billing, "domain:support_billing"]
+  - id: concepts-support-plans
+    path: data/concepts/concepts-support-plans.yaml
+    tags: [concepts, support, plans, "domain:support_plans"]
 
   - id: concepts-risk-metrics-methodology
     path: data/concepts/concepts-risk-metrics-methodology.yaml
