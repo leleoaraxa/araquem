@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-27T10:32:03Z",
+  "generated_at": "2026-01-27T10:35:45Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -1069,7 +1069,7 @@
       "sha_all": "4df26f37f97422083337fe4fd911d2e5d8339f5e13a5b16abf4cdee85983695e"
     }
   ],
-  "last_refresh_epoch": 1769510096,
+  "last_refresh_epoch": 1769510318,
   "vector_dimension": 768,
   "total_chunks": 315
 }

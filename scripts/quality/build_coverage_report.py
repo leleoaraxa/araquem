@@ -8,12 +8,13 @@ The output is fully derived from repository YAML files (no hardcoded entity list
 ordered deterministically to keep artifacts stable across runs.
 """
 
+# script/quality/build_coverage_report.py
 from __future__ import annotations
 
 import dataclasses
 import json
 from pathlib import Path
-from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional
+from typing import Dict, Iterable, List, Mapping, MutableMapping, Optional, Tuple
 
 import yaml
 
