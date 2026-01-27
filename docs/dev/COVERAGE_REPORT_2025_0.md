@@ -37,7 +37,7 @@
 | client_fiis_performance_vs_benchmark | B | client_fiis_performance_vs_benchmark | ok | ok | ok | ok | ok | entidade privada de carteira; comparação determinística vs IFIX/IFIL/IBOV/CDI; binding de document_number via contexto seguro; benchmark_code pode ser texto do usuário |
 | client_fiis_performance_vs_benchmark_summary | B | client_fiis_performance_vs_benchmark_summary | ok | ok | ok | ok | ok | entidade privada dependente de document_number |
 | client_fiis_positions | B | client_fiis_positions | ok | ok | ok | ok | ok |  |
-| consolidated_macroeconomic | C | consolidated_macroeconomic | ok | ok | ok | ok | ok |  |
+| consolidated_macroeconomic | — | consolidated_macroeconomic | ok | ok | ok | ok | ok |  |
 | fiis_dividends | A | fiis_dividends, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_dividends_yields | A | fiis_dividends_yields, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |
 | fiis_financials_revenue_schedule | A | fiis_financials_revenue_schedule, ticker_query | ok | policy_present_flag_false | ok | partial | ok |  |

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-02T15:01:47.399593+00:00",
+  "generated_at": "2026-01-27T13:45:17.161592+00:00",
   "root": "data/entities",
   "entities": [
     {
@@ -291,6 +291,65 @@
       ]
     },
     {
+      "entity_id": "consolidated_macroeconomic",
+      "dir_exists": true,
+      "dir_path": "data/entities/consolidated_macroeconomic",
+      "catalog": {
+        "listed_in_catalog": false,
+        "catalog_path": "data/entities/catalog.yaml",
+        "catalog_line": 365
+      },
+      "entity_yaml": {
+        "exists": true,
+        "path": "data/entities/consolidated_macroeconomic/consolidated_macroeconomic.yaml",
+        "parse_ok": true,
+        "schema_path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
+        "schema_exists": true
+      },
+      "responses": {
+        "dir_exists": true,
+        "dir_path": "data/entities/consolidated_macroeconomic/responses",
+        "templates": [
+          {
+            "filename": "table.md.j2",
+            "path": "data/entities/consolidated_macroeconomic/responses/table.md.j2",
+            "size_bytes": 2431
+          }
+        ]
+      },
+      "support_files": {
+        "hints_md": {
+          "exists": true,
+          "path": "data/entities/consolidated_macroeconomic/hints.md"
+        },
+        "template_md": {
+          "exists": true,
+          "path": "data/entities/consolidated_macroeconomic/template.md",
+          "canonical": true,
+          "legacy_fallback": false
+        },
+        "templates_md": {
+          "exists": false,
+          "path": null
+        }
+      },
+      "db_samples": {
+        "csv_exists": true,
+        "path": "docs/database/samples/consolidated_macroeconomic.csv"
+      },
+      "golden": {
+        "in_projection_quality": true,
+        "projection_files": [
+          "data/ops/quality/projection_consolidated_macroeconomic.json"
+        ]
+      },
+      "tags": [
+        "has_contract_schema",
+        "has_db_sample",
+        "has_projection"
+      ]
+    },
+    {
       "entity_id": "entities",
       "dir_exists": false,
       "dir_path": "data/entities/entities",
@@ -346,7 +405,7 @@
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 96
+        "catalog_line": 20
       },
       "entity_yaml": {
         "exists": true,
@@ -635,40 +694,40 @@
       ]
     },
     {
-      "entity_id": "fiis_real_estate",
+      "entity_id": "fiis_legal_proceedings",
       "dir_exists": true,
-      "dir_path": "data/entities/fiis_real_estate",
+      "dir_path": "data/entities/fiis_legal_proceedings",
       "catalog": {
         "listed_in_catalog": false,
         "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 196
+        "catalog_line": 247
       },
       "entity_yaml": {
         "exists": true,
-        "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml",
+        "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml",
         "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_real_estate.schema.yaml",
+        "schema_path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml",
         "schema_exists": true
       },
       "responses": {
         "dir_exists": true,
-        "dir_path": "data/entities/fiis_real_estate/responses",
+        "dir_path": "data/entities/fiis_legal_proceedings/responses",
         "templates": [
           {
-            "filename": "table.md.j2",
-            "path": "data/entities/fiis_real_estate/responses/table.md.j2",
-            "size_bytes": 1611
+            "filename": "list.md.j2",
+            "path": "data/entities/fiis_legal_proceedings/responses/list.md.j2",
+            "size_bytes": 1472
           }
         ]
       },
       "support_files": {
         "hints_md": {
           "exists": true,
-          "path": "data/entities/fiis_real_estate/hints.md"
+          "path": "data/entities/fiis_legal_proceedings/hints.md"
         },
         "template_md": {
           "exists": true,
-          "path": "data/entities/fiis_real_estate/template.md",
+          "path": "data/entities/fiis_legal_proceedings/template.md",
           "canonical": true,
           "legacy_fallback": false
         },
@@ -679,12 +738,12 @@
       },
       "db_samples": {
         "csv_exists": true,
-        "path": "docs/database/samples/fiis_real_estate.csv"
+        "path": "docs/database/samples/fiis_legal_proceedings.csv"
       },
       "golden": {
         "in_projection_quality": true,
         "projection_files": [
-          "data/ops/quality/projection_fiis_real_estate.json"
+          "data/ops/quality/projection_fiis_legal_proceedings.json"
         ]
       },
       "tags": [
@@ -871,65 +930,6 @@
       ]
     },
     {
-      "entity_id": "fiis_legal_proceedings",
-      "dir_exists": true,
-      "dir_path": "data/entities/fiis_legal_proceedings",
-      "catalog": {
-        "listed_in_catalog": false,
-        "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 247
-      },
-      "entity_yaml": {
-        "exists": true,
-        "path": "data/entities/fiis_legal_proceedings/fiis_legal_proceedings.yaml",
-        "parse_ok": true,
-        "schema_path": "data/contracts/entities/fiis_legal_proceedings.schema.yaml",
-        "schema_exists": true
-      },
-      "responses": {
-        "dir_exists": true,
-        "dir_path": "data/entities/fiis_legal_proceedings/responses",
-        "templates": [
-          {
-            "filename": "list.md.j2",
-            "path": "data/entities/fiis_legal_proceedings/responses/list.md.j2",
-            "size_bytes": 1472
-          }
-        ]
-      },
-      "support_files": {
-        "hints_md": {
-          "exists": true,
-          "path": "data/entities/fiis_legal_proceedings/hints.md"
-        },
-        "template_md": {
-          "exists": true,
-          "path": "data/entities/fiis_legal_proceedings/template.md",
-          "canonical": true,
-          "legacy_fallback": false
-        },
-        "templates_md": {
-          "exists": false,
-          "path": null
-        }
-      },
-      "db_samples": {
-        "csv_exists": true,
-        "path": "docs/database/samples/fiis_legal_proceedings.csv"
-      },
-      "golden": {
-        "in_projection_quality": true,
-        "projection_files": [
-          "data/ops/quality/projection_fiis_legal_proceedings.json"
-        ]
-      },
-      "tags": [
-        "has_contract_schema",
-        "has_db_sample",
-        "has_projection"
-      ]
-    },
-    {
       "entity_id": "fiis_rankings",
       "dir_exists": true,
       "dir_path": "data/entities/fiis_rankings",
@@ -980,6 +980,65 @@
         "in_projection_quality": true,
         "projection_files": [
           "data/ops/quality/projection_fiis_rankings.json"
+        ]
+      },
+      "tags": [
+        "has_contract_schema",
+        "has_db_sample",
+        "has_projection"
+      ]
+    },
+    {
+      "entity_id": "fiis_real_estate",
+      "dir_exists": true,
+      "dir_path": "data/entities/fiis_real_estate",
+      "catalog": {
+        "listed_in_catalog": false,
+        "catalog_path": "data/entities/catalog.yaml",
+        "catalog_line": 196
+      },
+      "entity_yaml": {
+        "exists": true,
+        "path": "data/entities/fiis_real_estate/fiis_real_estate.yaml",
+        "parse_ok": true,
+        "schema_path": "data/contracts/entities/fiis_real_estate.schema.yaml",
+        "schema_exists": true
+      },
+      "responses": {
+        "dir_exists": true,
+        "dir_path": "data/entities/fiis_real_estate/responses",
+        "templates": [
+          {
+            "filename": "table.md.j2",
+            "path": "data/entities/fiis_real_estate/responses/table.md.j2",
+            "size_bytes": 1611
+          }
+        ]
+      },
+      "support_files": {
+        "hints_md": {
+          "exists": true,
+          "path": "data/entities/fiis_real_estate/hints.md"
+        },
+        "template_md": {
+          "exists": true,
+          "path": "data/entities/fiis_real_estate/template.md",
+          "canonical": true,
+          "legacy_fallback": false
+        },
+        "templates_md": {
+          "exists": false,
+          "path": null
+        }
+      },
+      "db_samples": {
+        "csv_exists": true,
+        "path": "docs/database/samples/fiis_real_estate.csv"
+      },
+      "golden": {
+        "in_projection_quality": true,
+        "projection_files": [
+          "data/ops/quality/projection_fiis_real_estate.json"
         ]
       },
       "tags": [
@@ -1275,65 +1334,6 @@
         "in_projection_quality": true,
         "projection_files": [
           "data/ops/quality/projection_history_market_indicators.json"
-        ]
-      },
-      "tags": [
-        "has_contract_schema",
-        "has_db_sample",
-        "has_projection"
-      ]
-    },
-    {
-      "entity_id": "consolidated_macroeconomic",
-      "dir_exists": true,
-      "dir_path": "data/entities/consolidated_macroeconomic",
-      "catalog": {
-        "listed_in_catalog": false,
-        "catalog_path": "data/entities/catalog.yaml",
-        "catalog_line": 365
-      },
-      "entity_yaml": {
-        "exists": true,
-        "path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
-        "parse_ok": true,
-        "schema_path": "data/contracts/entities/consolidated_macroeconomic.schema.yaml",
-        "schema_exists": true
-      },
-      "responses": {
-        "dir_exists": true,
-        "dir_path": "data/entities/consolidated_macroeconomic/responses",
-        "templates": [
-          {
-            "filename": "table.md.j2",
-            "path": "data/entities/consolidated_macroeconomic/responses/table.md.j2",
-            "size_bytes": 2431
-          }
-        ]
-      },
-      "support_files": {
-        "hints_md": {
-          "exists": true,
-          "path": "data/entities/consolidated_macroeconomic/hints.md"
-        },
-        "template_md": {
-          "exists": true,
-          "path": "data/entities/consolidated_macroeconomic/template.md",
-          "canonical": true,
-          "legacy_fallback": false
-        },
-        "templates_md": {
-          "exists": false,
-          "path": null
-        }
-      },
-      "db_samples": {
-        "csv_exists": true,
-        "path": "docs/database/samples/consolidated_macroeconomic.csv"
-      },
-      "golden": {
-        "in_projection_quality": true,
-        "projection_files": [
-          "data/ops/quality/projection_consolidated_macroeconomic.json"
         ]
       },
       "tags": [
