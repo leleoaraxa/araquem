@@ -7,15 +7,13 @@ from app.quota.ask_quota import QuotaDecision
 
 
 def test_ask_returns_blocked_message_before_planner(monkeypatch):
-    blocked_message = (
-        "Você está usando uma demonstração da Íris. Crie uma conta gratuita para continuar."
-    )
+    blocked_message = "Mensagem anon"
 
     def fake_enforce(*_args, **_kwargs):
         return QuotaDecision(allowed=False, remaining=0)
 
     def fake_policy():
-        return {"enabled": True, "blocked_message": blocked_message}
+        return {"enabled": True, "blocked_messages": {"anon": blocked_message}}
 
     def fail_planner(*_args, **_kwargs):
         raise AssertionError("planner should not be called")

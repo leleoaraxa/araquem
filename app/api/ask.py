@@ -225,7 +225,7 @@ def ask(
                 user_type=user_type,
             )
             elapsed_ms_blocked = int((time.perf_counter() - t0) * 1000)
-            blocked_message = get_blocked_message(quota_policy)
+            blocked_message = get_blocked_message(quota_policy, user_type)
             body_blocked = _build_quota_blocked_response(
                 payload,
                 blocked_message,
