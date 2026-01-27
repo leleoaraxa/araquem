@@ -990,6 +990,9 @@ class Narrator:
         t0_global = time.perf_counter()
         raw_meta = meta or {}
         raw_facts = facts or {}
+        bucket = ""
+        if isinstance(raw_meta.get("bucket"), str):
+            bucket = raw_meta.get("bucket", "").strip()
         entity = raw_meta.get("entity") or ""
         intent = raw_meta.get("intent") or ""
         template_id = raw_meta.get("template_id") or raw_facts.get("result_key")
@@ -1470,8 +1473,13 @@ class Narrator:
                     narrator_meta["policy_timeout_seconds"] = timeout_s
 
                 try:
+                    model_to_use = (
+                        effective_model or self.model or "sirios-narrator:latest"
+                    )
+                    if not isinstance(model_to_use, str) or not model_to_use.strip():
+                        model_to_use = "sirios-narrator:latest"
                     response = self.client.generate(
-                        prompt, model=effective_model, stream=False
+                        prompt, model=model_to_use, stream=False
                     )
                 finally:
                     if applied:
