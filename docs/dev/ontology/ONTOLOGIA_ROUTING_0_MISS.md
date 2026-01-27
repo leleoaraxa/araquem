@@ -73,6 +73,6 @@ Resultado:
 
    * O baseline foi medido em cima do scorer do Planner, respeitando:
 
-     * Regras de bucket vigentes (`data/ontology/bucket_rules.yaml`).
+     * Índice de bucket vigente (bucket em `data/entities/*/*.yaml`).
      * Anti-tokens entre entidades públicas, privadas e macro.
    * O comportamento em `/ask` deve ser periodicamente auditado com experimentos dedicados (shadow mode).

@@ -2,6 +2,7 @@ id: consolidated_macroeconomic
 result_key: ref_date
 sql_view: consolidated_macroeconomic
 private: false
+bucket: C
 description: Histórico consolidado de indicadores macroeconômicos, índices de mercado e câmbio por data de referência.
 
 default_date_field: ref_date

@@ -2,6 +2,7 @@ id: client_fiis_positions
 result_key: positions
 sql_view: client_fiis_positions
 private: true
+bucket: B
 description: >
   Posições do cliente em FIIs (PRIVADA; exige parâmetro document_number obtido de contexto seguro,
   nunca do texto livre do usuário).

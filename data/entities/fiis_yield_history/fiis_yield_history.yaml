@@ -2,6 +2,7 @@ id: fiis_yield_history
 result_key: yield_history
 sql_view: fiis_yield_history
 private: false
+bucket: A
 description: Serie histórica do dividend yield por mes/ano.
 
 options:

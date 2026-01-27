@@ -138,8 +138,7 @@ Branch/commit: `work @ 5e15018dc71d5fa66629f0cc42b23d0ce5737b82`
 ## I) `data/ontology`
 
 ### Uso em runtime
-- `data/ontology/entity.yaml`: intents/buckets/normas para o planner
-- `data/ontology/bucket_rules.yaml`: regras de bucket
+- `data/ontology/entity.yaml`: intents/normas para o planner
 - `data/ontology/ticker_index.yaml`: resolução/normalização de ticker em runtime
 
 ### ticker_index.yaml — pontos de atenção

@@ -2,6 +2,7 @@ id: fiis_overview
 result_key: fiis_overview
 sql_view: fiis_overview
 private: false
+bucket: A
 description: >
   Visão consolidada D-1 do FII combinando cadastro, indicadores financeiros,
   risco quantitativo e posições em rankings.
