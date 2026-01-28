@@ -7,9 +7,6 @@ import string
 from typing import Any, Dict, Iterable, List, Set
 
 _ENTITY_TEMPLATE_ROOT = Path("data/entities")
-_LEGACY_TEMPLATE_ROOT = Path("data/concepts")
-
-
 _FORMATTER = string.Formatter()
 
 
@@ -18,7 +15,6 @@ def _load_templates(entity: str) -> Dict[str, str]:
     candidates = [
         _ENTITY_TEMPLATE_ROOT / entity / "template.md",
         _ENTITY_TEMPLATE_ROOT / entity / "templates.md",
-        _LEGACY_TEMPLATE_ROOT / f"{entity}_templates.md",
     ]
     path = next((p for p in candidates if p.exists()), None)
     if path is None:
