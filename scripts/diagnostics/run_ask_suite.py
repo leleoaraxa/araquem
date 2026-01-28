@@ -12,15 +12,14 @@ import sys
 from pathlib import Path
 import time
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import requests
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
-
-from scripts.diagnostics.suite_contracts import SuiteValidationError, load_suite_file
 
 
 DEFAULT_QUESTIONS: List[str] = [
@@ -56,20 +55,33 @@ def _ask_url(cfg: Config) -> str:
     return base
 
 
+def _looks_like_path(value: str) -> bool:
+    if value.endswith(".json"):
+        return True
+    if os.path.isabs(value):
+        return True
+    return os.sep in value or (os.altsep and os.altsep in value)
+
+
+def _resolve_suite_arg(value: str, suite_dir: str) -> str:
+    if _looks_like_path(value):
+        return value
+    return os.path.join(suite_dir.rstrip("/"), f"{value}_suite.json")
+
+
 def _resolve_suite_paths(args: argparse.Namespace) -> List[str]:
+    suite_paths: List[str] = []
+    base_dir = args.suite_dir.rstrip("/")
     if args.suite_path:
-        return [args.suite_path]
-    if args.suite:
-        return [
-            os.path.join(
-                args.suite_dir.rstrip("/"),
-                f"{args.suite}_suite.json",
-            )
-        ]
+        suite_paths.append(args.suite_path)
+    if getattr(args, "suite_name", ""):
+        suite_paths.append(_resolve_suite_arg(args.suite_name, base_dir))
+    for item in args.suite or []:
+        suite_paths.append(_resolve_suite_arg(item, base_dir))
     if args.all_suites:
-        pattern = os.path.join(args.suite_dir, args.suite_glob)
-        return sorted(glob.glob(pattern))
-    return []
+        pattern = os.path.join(base_dir, args.suite_glob)
+        suite_paths.extend(sorted(glob.glob(pattern)))
+    return suite_paths
 
 
 def _safe_get(d: Dict[str, Any], path: str, default=None):
@@ -438,6 +450,7 @@ def _extract_row(
     chosen_entity = _safe_get(resp, "meta.entity") or _safe_get(
         resp, "meta.planner.chosen.entity"
     )
+    chosen_accepted = _safe_get(resp, "meta.planner.chosen.accepted")
     planner_score = _safe_get(resp, "meta.planner_score") or _safe_get(
         resp, "meta.planner.chosen.score"
     )
@@ -537,6 +550,7 @@ def _extract_row(
         "status_message": status_message,
         "chosen_intent": chosen_intent,
         "chosen_entity": chosen_entity,
+        "chosen_accepted": chosen_accepted,
         "planner_score": planner_score,
         "gate_accepted": gate_accepted,
         "gate_source": gate_source,
@@ -592,16 +606,112 @@ def _load_questions(args: argparse.Namespace) -> List[str]:
         return DEFAULT_QUESTIONS[:n]
     raise SystemExit("Use --inline ou --questions-file.")
 
+def _load_json_file(path: str) -> Any:
+    with open(path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _extract_expected_from_payload(payload: Dict[str, Any]) -> Tuple[Optional[str], Optional[str]]:
+    expected_intent = payload.get("expected_intent")
+    expected_entity = payload.get("expected_entity")
+    expected_block = payload.get("expected")
+    if isinstance(expected_block, dict) and (
+        expected_intent is None or expected_entity is None
+    ):
+        route = expected_block.get("route")
+        if isinstance(route, dict):
+            if expected_intent is None and isinstance(route.get("intent"), str):
+                expected_intent = route.get("intent")
+            if expected_entity is None and isinstance(route.get("entity"), str):
+                expected_entity = route.get("entity")
+        if expected_intent is None and isinstance(expected_block.get("intent"), str):
+            expected_intent = expected_block.get("intent")
+        if expected_entity is None and isinstance(expected_block.get("entity"), str):
+            expected_entity = expected_block.get("entity")
+    return expected_intent, expected_entity
+
+
+def _normalize_payloads(
+    payloads: Sequence[Any],
+    path: str,
+) -> List[Dict[str, Any]]:
+    normalized: List[Dict[str, Any]] = []
+    for idx, payload in enumerate(payloads, start=1):
+        if not isinstance(payload, dict):
+            raise SystemExit(
+                f"Payload #{idx} inválido em {path}: esperado objeto com question/expected_*"
+            )
+        question = payload.get("question")
+        if not isinstance(question, str) or not question.strip():
+            raise SystemExit(f"Payload #{idx} inválido em {path}: campo 'question' vazio")
+        payload_id = payload.get("id")
+        if payload_id is not None and not isinstance(payload_id, str):
+            raise SystemExit(f"Payload #{idx} inválido em {path}: campo 'id' deve ser string")
+        expected_intent, expected_entity = _extract_expected_from_payload(payload)
+        if expected_intent is not None and not isinstance(expected_intent, str):
+            raise SystemExit(
+                f"Payload #{idx} inválido em {path}: expected_intent deve ser string ou null"
+            )
+        if expected_entity is not None and not isinstance(expected_entity, str):
+            raise SystemExit(
+                f"Payload #{idx} inválido em {path}: expected_entity deve ser string ou null"
+            )
+        normalized.append(
+            {
+                "id": payload_id,
+                "question": question,
+                "expected_intent": expected_intent,
+                "expected_entity": expected_entity,
+            }
+        )
+    return normalized
+
+
+def _parse_suite_data(path: str, data: Any) -> Dict[str, Any]:
+    suite_name: Optional[str] = None
+    suite_description = ""
+    payloads_raw: Optional[Sequence[Any]] = None
+
+    if isinstance(data, list):
+        payloads_raw = data
+    elif isinstance(data, dict):
+        if "payloads" in data:
+            payloads_raw = data.get("payloads")
+            suite_name = data.get("suite") or data.get("type")
+            suite_description = data.get("description") or ""
+        else:
+            raise SystemExit(
+                f"Formato inválido em {path}: esperado objeto com 'payloads' ou lista direta"
+            )
+    else:
+        raise SystemExit(
+            f"Formato inválido em {path}: esperado objeto com 'payloads' ou lista direta"
+        )
+
+    if not isinstance(payloads_raw, list):
+        raise SystemExit(f"Suite inválida em {path}: 'payloads' deve ser uma lista")
+
+    if suite_name is None:
+        suite_name = Path(path).stem
+    if not isinstance(suite_name, str):
+        raise SystemExit(f"Suite inválida em {path}: 'suite' deve ser string")
+    if not isinstance(suite_description, str):
+        raise SystemExit(f"Suite inválida em {path}: 'description' deve ser string")
+
+    return {
+        "suite": suite_name,
+        "description": suite_description,
+        "payloads": _normalize_payloads(payloads_raw, path),
+    }
+
 
 def _load_suites(paths: List[str]) -> List[Dict[str, Any]]:
     suites: List[Dict[str, Any]] = []
     for path in paths:
         if not os.path.exists(path):
             raise SystemExit(f"Suite não encontrada: {path}")
-        try:
-            suites.append(load_suite_file(path))
-        except SuiteValidationError as exc:
-            raise SystemExit(str(exc)) from exc
+        data = _load_json_file(path)
+        suites.append(_parse_suite_data(path, data))
     return suites
 
 
@@ -612,7 +722,7 @@ def _ensure_out_dir(out_dir: str) -> None:
 def _write_jsonl(path: str, rows: List[Dict[str, Any]]) -> None:
     with open(path, "w", encoding="utf-8") as f:
         for r in rows:
-            f.write(json.dumps(r, ensure_ascii=False) + "\n")
+            f.write(json.dumps(r, ensure_ascii=False, sort_keys=True) + "\n")
 
 
 def _write_csv(path: str, rows: List[Dict[str, Any]]) -> None:
@@ -640,6 +750,226 @@ def _collect_stats(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
         "narrator_used": sum(1 for r in rows if r.get("narrator_used") is True),
         "accuracy": acc,
     }
+
+
+def _percentile(values: List[float], pct: float) -> Optional[float]:
+    if not values:
+        return None
+    if pct <= 0:
+        return values[0]
+    if pct >= 100:
+        return values[-1]
+    values_sorted = sorted(values)
+    k = (len(values_sorted) - 1) * (pct / 100.0)
+    f = int(k)
+    c = min(f + 1, len(values_sorted) - 1)
+    if f == c:
+        return values_sorted[f]
+    d0 = values_sorted[f] * (c - k)
+    d1 = values_sorted[c] * (k - f)
+    return d0 + d1
+
+
+def _evaluate_suite_status(row: Dict[str, Any]) -> Dict[str, Any]:
+    expected_intent = row.get("expected_intent")
+    expected_entity = row.get("expected_entity")
+
+    if row.get("request_error"):
+        row["suite_status"] = "ERROR"
+        row["suite_error"] = row.get("request_error")
+        return row
+
+    http_status = row.get("http_status")
+    if not isinstance(http_status, int) or not (200 <= http_status < 300):
+        row["suite_status"] = "ERROR"
+        row["suite_error"] = f"http_status={http_status}"
+        return row
+
+    if expected_intent is None and expected_entity is None:
+        row["suite_status"] = "SKIP"
+        row["suite_error"] = None
+        return row
+
+    intent_ok = row.get("match_intent") if expected_intent is not None else True
+    entity_ok = row.get("match_entity") if expected_entity is not None else True
+    if intent_ok is False or entity_ok is False:
+        row["suite_status"] = "FAIL"
+    else:
+        row["suite_status"] = "PASS"
+    row["suite_error"] = None
+    return row
+
+
+def _suite_metrics(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
+    total = len(rows)
+    pass_count = sum(1 for r in rows if r.get("suite_status") == "PASS")
+    fail_count = sum(1 for r in rows if r.get("suite_status") == "FAIL")
+    skip_count = sum(1 for r in rows if r.get("suite_status") == "SKIP")
+    error_count = sum(1 for r in rows if r.get("suite_status") == "ERROR")
+
+    intent_checked = [
+        r
+        for r in rows
+        if r.get("expected_intent") is not None and r.get("suite_status") != "ERROR"
+    ]
+    entity_checked = [
+        r
+        for r in rows
+        if r.get("expected_entity") is not None and r.get("suite_status") != "ERROR"
+    ]
+    pass_intent = sum(1 for r in intent_checked if r.get("match_intent") is True)
+    pass_entity = sum(1 for r in entity_checked if r.get("match_entity") is True)
+
+    latencies = [
+        float(r.get("elapsed_ms_client"))
+        for r in rows
+        if isinstance(r.get("elapsed_ms_client"), (int, float))
+    ]
+    latencies = sorted(latencies)
+
+    return {
+        "total": total,
+        "pass": pass_count,
+        "fail": fail_count,
+        "skip": skip_count,
+        "error": error_count,
+        "accuracy_intent": (
+            pass_intent / len(intent_checked) if intent_checked else None
+        ),
+        "accuracy_entity": (
+            pass_entity / len(entity_checked) if entity_checked else None
+        ),
+        "intent_checked": len(intent_checked),
+        "entity_checked": len(entity_checked),
+        "latency_ms": {
+            "p50": _percentile(latencies, 50) if latencies else None,
+            "p95": _percentile(latencies, 95) if latencies else None,
+            "avg": (sum(latencies) / len(latencies) if latencies else None),
+            "max": (max(latencies) if latencies else None),
+        },
+    }
+
+
+def _truncate(text: str, max_len: int) -> str:
+    if len(text) <= max_len:
+        return text
+    return text[: max_len - 1].rstrip() + "…"
+
+
+def _render_report(rows: List[Dict[str, Any]]) -> str:
+    metrics = _suite_metrics(rows)
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    lines: List[str] = [
+        "# Ask Suite Report",
+        "",
+        f"_Generated at: {timestamp}_",
+        "",
+        "## Summary",
+        "",
+        f"- Total: **{metrics['total']}**",
+        f"- Pass: **{metrics['pass']}**",
+        f"- Fail: **{metrics['fail']}**",
+        f"- Skip: **{metrics['skip']}**",
+        f"- Error: **{metrics['error']}**",
+    ]
+
+    acc_intent = metrics["accuracy_intent"]
+    acc_entity = metrics["accuracy_entity"]
+    lines.extend(
+        [
+            "",
+            "## Metrics",
+            "",
+            f"- Accuracy (intent): **{(acc_intent * 100):.1f}%**"
+            f" ({metrics['intent_checked']} checked)"
+            if acc_intent is not None
+            else f"- Accuracy (intent): **n/a** ({metrics['intent_checked']} checked)",
+            f"- Accuracy (entity): **{(acc_entity * 100):.1f}%**"
+            f" ({metrics['entity_checked']} checked)"
+            if acc_entity is not None
+            else f"- Accuracy (entity): **n/a** ({metrics['entity_checked']} checked)",
+        ]
+    )
+
+    latency = metrics["latency_ms"]
+    lines.extend(
+        [
+            "",
+            "### Latency (ms)",
+            "",
+            f"- p50: {latency['p50']:.1f}" if latency["p50"] is not None else "- p50: n/a",
+            f"- p95: {latency['p95']:.1f}" if latency["p95"] is not None else "- p95: n/a",
+            f"- avg: {latency['avg']:.1f}" if latency["avg"] is not None else "- avg: n/a",
+            f"- max: {latency['max']:.1f}" if latency["max"] is not None else "- max: n/a",
+        ]
+    )
+
+    lines.extend(
+        [
+            "",
+            "## Cases",
+            "",
+            "| # | Question | Expected Intent | Expected Entity | Chosen Intent | Chosen Entity | Status | Latency (ms) |",
+            "|---:|---|---|---|---|---|---|---:|",
+        ]
+    )
+    for row in sorted(rows, key=lambda r: r.get("idx") or 0):
+        question = row.get("question") or ""
+        lines.append(
+            "| {idx} | {question} | {expected_intent} | {expected_entity} | {chosen_intent} | {chosen_entity} | {status} | {latency} |".format(
+                idx=row.get("idx"),
+                question=_truncate(str(question), 120),
+                expected_intent=row.get("expected_intent") or "-",
+                expected_entity=row.get("expected_entity") or "-",
+                chosen_intent=row.get("chosen_intent") or "-",
+                chosen_entity=row.get("chosen_entity") or "-",
+                status=row.get("suite_status") or "-",
+                latency=(
+                    f"{row.get('elapsed_ms_client'):.1f}"
+                    if isinstance(row.get("elapsed_ms_client"), (int, float))
+                    else "-"
+                ),
+            )
+        )
+
+    details = [
+        r
+        for r in sorted(rows, key=lambda r: r.get("idx") or 0)
+        if r.get("suite_status") in ("FAIL", "ERROR")
+    ]
+    if details:
+        lines.extend(["", "## Details (failures/errors)", ""])
+        for row in details:
+            lines.extend(
+                [
+                    f"### Case {row.get('idx')} ({row.get('suite_status')})",
+                    "",
+                    f"- Question: {row.get('question')}",
+                    f"- Expected intent: {row.get('expected_intent') or '-'}",
+                    f"- Expected entity: {row.get('expected_entity') or '-'}",
+                    f"- Chosen intent: {row.get('chosen_intent') or '-'}",
+                    f"- Chosen entity: {row.get('chosen_entity') or '-'}",
+                    f"- Match intent: {row.get('match_intent')}",
+                    f"- Match entity: {row.get('match_entity')}",
+                    f"- HTTP status: {row.get('http_status')}",
+                    f"- Error: {row.get('suite_error') or '-'}",
+                    "",
+                ]
+            )
+
+    return "\n".join(lines).strip() + "\n"
+
+
+def _write_report(path: str, rows: List[Dict[str, Any]]) -> None:
+    report = _render_report(rows)
+    if path in ("", "-"):
+        print(report)
+        return
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(report)
+    print(f"Wrote: {path}")
 
 
 def _top_fail_reasons(
@@ -717,6 +1047,11 @@ def _evaluate_case(row: Dict[str, Any]) -> Dict[str, Any]:
     if expected_entity and expected_entity != chosen_entity:
         reasons.append("entity_mismatch")
 
+    expected_intent = row.get("expected_intent")
+    chosen_intent = row.get("chosen_intent")
+    if expected_intent and expected_intent != chosen_intent:
+        reasons.append("intent_mismatch")
+
     answer_text = row.get("answer_text")
     if isinstance(answer_text, str):
         if "{{" in answer_text or "{%" in answer_text:
@@ -733,7 +1068,7 @@ def main() -> int:
     examples = (
         "Exemplos:\\n"
         "  python scripts/diagnostics/run_ask_suite.py --suite fiis_registrations --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
-        "  python scripts/diagnostics/run_ask_suite.py --suite-path data/ops/quality/payloads/fiis_registrations_suite.json --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
+        "  python scripts/diagnostics/run_ask_suite.py --suite data/ops/quality/payloads/fiis_registrations_suite.json --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
         "  python scripts/diagnostics/run_ask_suite.py --all-suites --base-url http://localhost:8000 --conversation-id X --client-id Y\\n"
         "  python scripts/diagnostics/run_ask_suite.py --inline --questions 5 --base-url http://localhost:8000 --conversation-id X --client-id Y"
     )
@@ -769,20 +1104,36 @@ def main() -> int:
     )
     ap.add_argument(
         "--suite",
-        default="",
-        help="Nome lógico da suite (resolve para {suite-dir}/{suite}_suite.json).",
+        action="append",
+        default=[],
+        help=(
+            "Suite JSON (path) ou nome lógico (resolve para {suite-dir}/{suite}_suite.json). "
+            "Pode repetir."
+        ),
     )
     ap.add_argument(
         "--all-suites",
         action="store_true",
         help="Roda todas as suites encontradas em suite-dir que batam suite-glob.",
     )
-    ap.add_argument("--base-url", required=True, help="Ex: http://localhost:8000")
-    ap.add_argument("--conversation-id", required=True)
+    ap.add_argument(
+        "--suite-name",
+        default="",
+        help="Compat: nome lógico da suite (deprecated; use --suite).",
+    )
+    ap.add_argument("--base-url", default="http://localhost:8000", help="Ex: http://localhost:8000")
+    ap.add_argument("--conversation-id", default="diagnostics")
     ap.add_argument("--client-id", default="dev")
     ap.add_argument("--nickname", default="diagnostics")
     ap.add_argument("--timeout-s", type=float, default=90.0)
     ap.add_argument("--out-dir", default="out")
+    ap.add_argument(
+        "--out",
+        default="docs/DIAGNOSTICS/ASK_SUITE_REPORT.md",
+        help="Arquivo markdown para report (use '-' para stdout).",
+    )
+    ap.add_argument("--fail-fast", action="store_true", help="Para na primeira falha/erro.")
+    ap.add_argument("--limit", type=int, default=0, help="Limita o número total de casos.")
     explain_group = ap.add_mutually_exclusive_group()
     explain_group.add_argument(
         "--explain",
@@ -841,6 +1192,8 @@ def main() -> int:
             suite_description = suite_data.get("description")
             payloads = suite_data.get("payloads") or []
             for payload in payloads:
+                if args.limit and idx >= args.limit:
+                    break
                 idx += 1
                 q = payload.get("question")
                 expected_intent = payload.get("expected_intent")
@@ -861,6 +1214,7 @@ def main() -> int:
                 row["payload_id"] = payload.get("id")
                 row["idx"] = idx
                 row = _evaluate_case(row)
+                row = _evaluate_suite_status(row)
                 rows.append(row)
                 suite_rows.setdefault(suite_name, []).append(row)
 
@@ -907,14 +1261,23 @@ def main() -> int:
                     ans = _safe_get(resp, "answer")
                     if isinstance(ans, str) and ans.strip():
                         print(f"   answer: {ans.strip()[:500]}")
+                if args.fail_fast and row.get("suite_status") in ("FAIL", "ERROR"):
+                    break
+            if args.limit and idx >= args.limit:
+                break
+            if args.fail_fast and rows and rows[-1].get("suite_status") in ("FAIL", "ERROR"):
+                break
     else:
         questions = _load_questions(args)
         for q in questions:
+            if args.limit and idx >= args.limit:
+                break
             idx += 1
             resp, dt_ms, err = _post_question(cfg, q)
             row = _extract_row(resp, q, dt_ms, err, cfg.explain)
             row["idx"] = idx
             row = _evaluate_case(row)
+            row = _evaluate_suite_status(row)
             rows.append(row)
 
             intent = (row.get("chosen_intent") or "-")[:12]
@@ -989,12 +1352,18 @@ def main() -> int:
                 ].get("suite_description")
         summary_path = os.path.join(cfg.out_dir, "audit_summary_all.json")
         with open(summary_path, "w", encoding="utf-8") as f:
-            json.dump(summary_all, f, ensure_ascii=False, indent=2)
+            json.dump(summary_all, f, ensure_ascii=False, indent=2, sort_keys=True)
         print(f"Wrote: {summary_path}")
 
     if suite_mode:
+        _write_report(args.out, rows)
         _print_suite_summary(rows)
     _print_final_summary(rows)
+    if suite_mode:
+        has_fail = any(
+            r.get("suite_status") in ("FAIL", "ERROR") for r in rows
+        )
+        return 2 if has_fail else 0
     return 0
 
 
