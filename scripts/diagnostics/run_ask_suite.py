@@ -417,8 +417,10 @@ def _post_question(
     t0 = time.time()
     try:
         r = requests.post(url, json=payload, timeout=cfg.timeout_s)
-        if r.status_code == 422 and _is_missing_type_user(r) and not payload.get(
-            "type_user"
+        if (
+            r.status_code == 422
+            and _is_missing_type_user(r)
+            and not payload.get("type_user")
         ):
             payload["type_user"] = cfg.type_user or "diagnostics"
             r = requests.post(url, json=payload, timeout=cfg.timeout_s)
@@ -635,12 +637,15 @@ def _load_questions(args: argparse.Namespace) -> List[str]:
         return DEFAULT_QUESTIONS[:n]
     raise SystemExit("Use --inline ou --questions-file.")
 
+
 def _load_json_file(path: str) -> Any:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-def _extract_expected_from_payload(payload: Dict[str, Any]) -> Tuple[Optional[str], Optional[str]]:
+def _extract_expected_from_payload(
+    payload: Dict[str, Any],
+) -> Tuple[Optional[str], Optional[str]]:
     expected_intent = payload.get("expected_intent")
     expected_entity = payload.get("expected_entity")
     expected_block = payload.get("expected")
@@ -672,10 +677,14 @@ def _normalize_payloads(
             )
         question = payload.get("question")
         if not isinstance(question, str) or not question.strip():
-            raise SystemExit(f"Payload #{idx} inválido em {path}: campo 'question' vazio")
+            raise SystemExit(
+                f"Payload #{idx} inválido em {path}: campo 'question' vazio"
+            )
         payload_id = payload.get("id")
         if payload_id is not None and not isinstance(payload_id, str):
-            raise SystemExit(f"Payload #{idx} inválido em {path}: campo 'id' deve ser string")
+            raise SystemExit(
+                f"Payload #{idx} inválido em {path}: campo 'id' deve ser string"
+            )
         expected_intent, expected_entity = _extract_expected_from_payload(payload)
         if expected_intent is not None and not isinstance(expected_intent, str):
             raise SystemExit(
@@ -915,14 +924,18 @@ def _render_report(rows: List[Dict[str, Any]]) -> str:
             "",
             "## Metrics",
             "",
-            f"- Accuracy (intent): **{(acc_intent * 100):.1f}%**"
-            f" ({metrics['intent_checked']} checked)"
-            if acc_intent is not None
-            else f"- Accuracy (intent): **n/a** ({metrics['intent_checked']} checked)",
-            f"- Accuracy (entity): **{(acc_entity * 100):.1f}%**"
-            f" ({metrics['entity_checked']} checked)"
-            if acc_entity is not None
-            else f"- Accuracy (entity): **n/a** ({metrics['entity_checked']} checked)",
+            (
+                f"- Accuracy (intent): **{(acc_intent * 100):.1f}%**"
+                f" ({metrics['intent_checked']} checked)"
+                if acc_intent is not None
+                else f"- Accuracy (intent): **n/a** ({metrics['intent_checked']} checked)"
+            ),
+            (
+                f"- Accuracy (entity): **{(acc_entity * 100):.1f}%**"
+                f" ({metrics['entity_checked']} checked)"
+                if acc_entity is not None
+                else f"- Accuracy (entity): **n/a** ({metrics['entity_checked']} checked)"
+            ),
         ]
     )
 
@@ -932,10 +945,26 @@ def _render_report(rows: List[Dict[str, Any]]) -> str:
             "",
             "### Latency (ms)",
             "",
-            f"- p50: {latency['p50']:.1f}" if latency["p50"] is not None else "- p50: n/a",
-            f"- p95: {latency['p95']:.1f}" if latency["p95"] is not None else "- p95: n/a",
-            f"- avg: {latency['avg']:.1f}" if latency["avg"] is not None else "- avg: n/a",
-            f"- max: {latency['max']:.1f}" if latency["max"] is not None else "- max: n/a",
+            (
+                f"- p50: {latency['p50']:.1f}"
+                if latency["p50"] is not None
+                else "- p50: n/a"
+            ),
+            (
+                f"- p95: {latency['p95']:.1f}"
+                if latency["p95"] is not None
+                else "- p95: n/a"
+            ),
+            (
+                f"- avg: {latency['avg']:.1f}"
+                if latency["avg"] is not None
+                else "- avg: n/a"
+            ),
+            (
+                f"- max: {latency['max']:.1f}"
+                if latency["max"] is not None
+                else "- max: n/a"
+            ),
         ]
     )
 
@@ -1159,11 +1188,13 @@ def main() -> int:
         default="",
         help="Compat: nome lógico da suite (deprecated; use --suite).",
     )
-    ap.add_argument("--base-url", default="http://localhost:8000", help="Ex: http://localhost:8000")
+    ap.add_argument(
+        "--base-url", default="http://localhost:8000", help="Ex: http://localhost:8000"
+    )
     ap.add_argument("--conversation-id", default="diagnostics")
     ap.add_argument("--client-id", default="dev")
     ap.add_argument("--nickname", default="diagnostics")
-    ap.add_argument("--type-user", default="diagnostics")
+    ap.add_argument("--type-user", default="paid")
     ap.add_argument("--timeout-s", type=float, default=90.0)
     ap.add_argument("--out-dir", default="out")
     ap.add_argument(
@@ -1171,8 +1202,12 @@ def main() -> int:
         default="docs/DIAGNOSTICS/ASK_SUITE_REPORT.md",
         help="Arquivo markdown para report (use '-' para stdout).",
     )
-    ap.add_argument("--fail-fast", action="store_true", help="Para na primeira falha/erro.")
-    ap.add_argument("--limit", type=int, default=0, help="Limita o número total de casos.")
+    ap.add_argument(
+        "--fail-fast", action="store_true", help="Para na primeira falha/erro."
+    )
+    ap.add_argument(
+        "--limit", type=int, default=0, help="Limita o número total de casos."
+    )
     explain_group = ap.add_mutually_exclusive_group()
     explain_group.add_argument(
         "--explain",
@@ -1305,7 +1340,11 @@ def main() -> int:
                     break
             if args.limit and idx >= args.limit:
                 break
-            if args.fail_fast and rows and rows[-1].get("suite_status") in ("FAIL", "ERROR"):
+            if (
+                args.fail_fast
+                and rows
+                and rows[-1].get("suite_status") in ("FAIL", "ERROR")
+            ):
                 break
     else:
         questions = _load_questions(args)
@@ -1399,9 +1438,7 @@ def main() -> int:
         _print_suite_summary(rows)
     _print_final_summary(rows)
     if suite_mode:
-        has_fail = any(
-            r.get("suite_status") in ("FAIL", "ERROR") for r in rows
-        )
+        has_fail = any(r.get("suite_status") in ("FAIL", "ERROR") for r in rows)
         return 2 if has_fail else 0
     return 0
 

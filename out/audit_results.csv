@@ -1,250 +1,30 @@
-question,http_status,request_error,explain_enabled,status_status,status_raw,status_ok,status_reason,status_message,chosen_intent,chosen_entity,planner_score,gate_accepted,gate_source,gate_reason,gate_min_score,gate_min_gap,gate_gap,score_for_gate,intent_top2_gap_base,intent_top2_gap_final,intent_top1,intent_top2,scoring_mode,scoring_keys,rows_total,result_key,cache_hit,cache_hit_response,cache_hit_metrics,cache_layer,cache_ttl,cache_key,rag_used,fusion_used,elapsed_ms_server,elapsed_ms_total_est,elapsed_ms_client,narrator_used,narrator_latency_ms,narrator_error,answer_text,expected_intent,expected_entity,match_intent,match_entity,match_both,suite_name,suite_description,payload_id,idx,fail_reasons,case_pass
-"Cenário macro atual: juros, inflação e câmbio estão favoráveis ou desfavoráveis para FIIs?",200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,6.599999999999997,True,base,,0.9,0.2,8.799999999999997,6.599999999999997,8.799999999999997,8.799999999999997,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,False,False,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,600,600.0,809.921,False,,,"**Último registro em 14/11/2025**
+question,http_status,request_error,explain_enabled,status_status,status_raw,status_ok,status_reason,status_message,chosen_intent,chosen_entity,chosen_accepted,planner_score,gate_accepted,gate_source,gate_reason,gate_min_score,gate_min_gap,gate_gap,score_for_gate,intent_top2_gap_base,intent_top2_gap_final,intent_top1,intent_top2,scoring_mode,scoring_keys,rows_total,result_key,cache_hit,cache_hit_response,cache_hit_metrics,cache_layer,cache_ttl,cache_key,rag_used,fusion_used,elapsed_ms_server,elapsed_ms_total_est,elapsed_ms_client,narrator_used,narrator_latency_ms,narrator_error,answer_text,expected_intent,expected_entity,match_intent,match_entity,match_both,suite_name,suite_description,payload_id,idx,fail_reasons,case_pass,suite_status,suite_error
+Mostre um overview do HGLG11.,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_overview,fiis_overview,True,7.699999999999999,True,base,,1.0,0.2,6.6,7.699999999999999,6.6,6.6,fiis_overview,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,fiis_overview,True,True,,response,86400,araquem:dev-20251030:cfg-fe8e9cb7:pub:fiis_overview:plan:e51dbab6d5bcf3ed8af505ea8eb761cd88fc013d5270164b459c10d35257fc4e,True,False,222,222.0,390.886,False,,,"### Overview do HGLG11
 
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
+- Nome: **Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda**
+- Classificação e gestão: **Tijolo / Ativa**
+- Setor e subsetor: **Imóveis Industriais e Logísticos / Multicategoria**
+- DY mensal / 12m: **0,70% / 8,39%**
 
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,1,[],True
-Como a alta do dólar influencia o cenário para FIIs de recebíveis e fundos em geral?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,4.3999999999999995,True,base,,0.9,0.2,5.5,4.3999999999999995,5.5,5.5,consolidated_macroeconomic,client_fiis_performance_vs_benchmark_summary,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,206,206.0,378.946,False,,,"**Último registro em 14/11/2025**
+| Código | Nome | Classificação | Setor | Subsetor | Tipo de gestão | DY mensal (%) | DY 12m (%) | Último dividendo (R$) | Último pagamento | Valor de mercado (R$) | Atualizado em |
+| --- | --- | --- | --- | --- | --- | ---: | ---: | ---: | --- | ---: | --- |
+| HGLG11 | Pátria Log Fundo Investimento Imobiliário Responsabilidade Ltda | Tijolo | Imóveis Industriais e Logísticos | Multicategoria | Ativa | 0,70% | 8,39% | R$ 1,10 | 15/01/2026 | R$ 6.673.223.705,00 | 27/01/2026 00:00 |
 
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
+**Detalhes**
 
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,2,[],True
-Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,1.1,True,base,,0.9,0.2,3.3000000000000003,1.1,3.3000000000000003,3.3000000000000003,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,182,182.0,364.258,False,,,"**Último registro em 14/11/2025**
+| Código | Mercado-alvo | Exclusivo | Dividendos 12m (R$) | P/BV | PL por cota (R$) | Receita por cota | Payout (%) | Taxa de crescimento | Cap rate | Alavancagem | Patrimônio líquido (R$) | Nº de cotas | Nº de cotistas | Variação mês (%) | Variação ano (%) | Volatilidade | Sharpe | Sortino | Máx. drawdown | Peso IFIX (%) | Peso IFIL (%) | Rank usuários | Rank Sírios | Rank IFIX | Rank IFIL | Rank DY 12m | Rank DY mensal | Rank dividendos 12m | Rank valor de mercado | Rank patrimônio líquido | Snapshot criado em | Indicadores de risco criados em | Indicadores de risco atualizados em | Rankings atualizados em |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- | --- | --- |
+| HGLG11 | Investidores Em Geral | Não | R$ 13,20 | 1,22% | R$ 129,26 | 5,06% | 0,00% | 28,21% | 0,00% | 0,23 | R$ 5.481.068.156,00 | 42.404.675 | 46.644.989,6 | 0,01% | 0,00% | 1,49 | -0,88 | -0,08 | 8,08% | 4,38% | 5,04% | 0 | 0 | 4 | 4 | 261 | 311 | 62 | 4 | 4 | 22/05/2024 00:00 | 22/05/2024 00:00 | 27/01/2026 00:00 | 27/01/2026 00:00 |",fiis_overview,fiis_overview,True,True,True,routing,Suite mínima para validar roteamento via /ask.,routing_001,1,[],True,PASS,
+Qual é o DY do HGLG11?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_dividends_yields,fiis_dividends_yields,True,3.3000000000000003,True,base,,0.9,0.2,3.3000000000000003,3.3000000000000003,3.3000000000000003,3.3000000000000003,fiis_dividends_yields,client_fiis_enriched_portfolio,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,12,ticker,True,True,,response,86400,araquem:dev-20251030:cfg-fe8e9cb7:pub:fiis_dividends_yields:plan:f3009bb2f88e4e70596dbd3512b515e629b481ac8c640c73230f522e4c9786c8,True,False,159,159.0,332.077,False,,,"**Dividendos e yield do HGLG11**
 
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
+- Mês de referência: **01/01/2026**
+- Data-com (cutoff): **30/12/2025**
+- Data de pagamento: **15/01/2026**
+- Dividendo por cota: **R$ 1,10**
+- DY mensal: **0,70%**
+- DY 12 meses: **8,39%**
+- Dividendos acumulados 12m: **R$ 13,20**
+- Último dividendo pago: **R$ 1,10** em **15/01/2026**
 
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,3,[],True
-Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,fiis_quota_prices,fiis_quota_prices,3.3000000000000003,True,base,,0.9,0.05,3.3000000000000003,3.3000000000000003,0.0,0.0,consolidated_macroeconomic,fiis_quota_prices,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,0,precos_fii,False,False,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:fiis_quota_prices:plan:bd9d107b12c69ece92e2de84132da0270b3235468f185308629910a76fde1fa9,True,False,220,220.0,393.884,False,,,Sem preços para exibir.,consolidated_macroeconomic,consolidated_macroeconomic,False,False,False,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,4,['entity_mismatch'],False
-Como a queda da Selic tende a impactar FIIs de tijolo?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,1.1,True,base,,0.9,0.2,2.2,1.1,2.2,2.2,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,151,151.0,285.856,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,5,[],True
-"Como está o cenário macro hoje para FIIs, considerando Selic, IPCA e câmbio?",200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,12.099999999999998,True,base,,0.9,0.2,14.299999999999997,12.099999999999998,14.299999999999997,14.299999999999997,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,ref_date,False,False,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:b5e49112607e9d4dbeb947b793088c2873a5debef99b51787c2facdcd1226386,True,False,867,867.0,1020.098,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,6,[],True
-Como juros altos costumam afetar fundos imobiliários?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.699999999999999,True,base,,0.9,0.2,7.699999999999999,7.699999999999999,7.699999999999999,7.699999999999999,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,144,144.0,379.745,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,7,[],True
-Como um ambiente de juros altos e inflação controlada afeta fundos imobiliários?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.699999999999999,True,base,,0.9,0.2,7.699999999999999,7.699999999999999,7.699999999999999,7.699999999999999,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,False,False,159,159.0,314.452,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,8,[],True
-"Me dá um panorama macro consolidado (IPCA, Selic, CDI, IFIX e dólar) pensando em FIIs hoje.",200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.700000000000002,True,base,,0.9,0.2,13.200000000000001,7.700000000000002,13.200000000000001,13.200000000000001,consolidated_macroeconomic,client_fiis_performance_vs_benchmark,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,1,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:b5e49112607e9d4dbeb947b793088c2873a5debef99b51787c2facdcd1226386,True,False,162,162.0,296.584,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,9,[],True
-Me explica o cenário de juros e inflação no Brasil em 2025 e o impacto para FIIs?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.700000000000001,True,base,,0.9,0.2,8.8,7.700000000000001,8.8,8.8,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,264,264.0,409.06,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,10,[],True
-O ambiente de juros e inflação em 2025 está mais favorável para FIIs de tijolo ou de papel?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.1499999999999995,True,base,,0.9,0.2,7.699999999999999,7.1499999999999995,7.699999999999999,7.699999999999999,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,158,158.0,303.988,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,11,[],True
-O que significa IPCA alto para FIIs?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,7.1499999999999995,True,base,,0.9,0.2,6.6,7.1499999999999995,6.6,6.6,consolidated_macroeconomic,fiis_dividends_yields,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,153,153.0,435.126,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,12,[],True
-Qual é a importância do IPCA e da Selic para quem vive de renda com FIIs?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,8.8,True,base,,0.9,0.2,8.8,8.8,8.8,8.8,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,169,169.0,354.084,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,13,[],True
-"Qual é a relação entre Selic, CDI e o desempenho médio dos FIIs?",200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,4.3999999999999995,True,base,,0.9,0.2,4.3999999999999995,4.3999999999999995,4.3999999999999995,4.3999999999999995,consolidated_macroeconomic,client_fiis_performance_vs_benchmark,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,272,272.0,596.822,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,14,[],True
-Qual é o impacto de um IPCA acelerando e Selic estável nos FIIs?,200,,True,,"{'reason': 'ok', 'message': 'ok'}",True,ok,ok,consolidated_macroeconomic,consolidated_macroeconomic,1.6500000000000001,True,base,,0.9,0.2,3.3000000000000003,1.6500000000000001,3.3000000000000003,3.3000000000000003,consolidated_macroeconomic,client_fiis_dividends_evolution,list:final_combined,combined;entity;entity_top_telemetry;final_combined;intent;intent_top2_gap_base;intent_top2_gap_final;rag_hint;rag_signal;thresholds_applied,10,ref_date,True,True,,response,86400,araquem:dev-20251030:cfg-7561fe57:pub:consolidated_macroeconomic:plan:a7c6b1988b6ed3eb5099dde392abbb2205357945f8219d9ab54dc63a658e3231,True,False,167,167.0,465.81,False,,,"**Último registro em 14/11/2025**
-
-  - IPCA: **-**
-  - Juros: **SELIC 14,9**, **CDI -**
-  - Índices: **IFIX 3.617 pts (0,71%)**, **IBOV 157.739 pts (0,37%)**
-  - Câmbio: **USD compra 5,3, venda 5,3 (0,00%)**; **EUR compra 6,15, venda 6,16 (-0,01%)**
-
-  | Data ref. | IPCA | SELIC | CDI | IFIX (pts) | IFIX var. (%) | IBOV (pts) | IBOV var. (%) | USD compra (R$) | USD venda (R$) | USD var. (%) | EUR compra (R$) | EUR venda (R$) | EUR var. (%) |
-  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 14/11/2025 | - | 14,9 | - | 3.617 | 0,71% | 157.739 | 0,37% | 5,3 | 5,3 | 0,00% | 6,15 | 6,16 | -0,01% |
-| 13/11/2025 | - | 14,9 | 14,9 | 3.591 | -0,17% | 157.162 | -0,30% | 5,3 | 5,3 | 0,04% | 6,16 | 6,17 | 0,08% |
-| 12/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,12% | 157.633 | -0,07% | 5,29 | 5,29 | 0,02% | 6,14 | 6,14 | 0,03% |
-| 11/11/2025 | - | 14,9 | 14,9 | 3.593 | -0,01% | 157.749 | 1,60% | 5,27 | 5,27 | 0,02% | 6,11 | 6,11 | -0,02% |
-| 10/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 09/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 08/11/2025 | - | - | - | - | - | - | - | - | - | - | - | - | - |
-| 07/11/2025 | - | 14,9 | 14,9 | 3.597 | 0,11% | 154.064 | 0,47% | 5,33 | 5,33 | 0,00% | 6,17 | 6,17 | 0,12% |
-| 06/11/2025 | - | 14,9 | 14,9 | 3.593 | 0,05% | 153.339 | 0,03% | 5,35 | 5,35 | 0,05% | 6,18 | 6,18 | 0,06% |
-| 05/11/2025 | - | 14,9 | 14,9 | 3.591 | 0,03% | 153.294 | 1,72% | 5,36 | 5,36 | 0,09% | 6,16 | 6,16 | 0,09% |",consolidated_macroeconomic,consolidated_macroeconomic,True,True,True,consolidated_macroeconomic,"Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",,15,[],True
+| Mês de referência | Dividendo (R$) | DY mensal | DY 12m |
+| --- | --- | --- | --- || 01/01/2026 | R$ 1,10 | 0,70% | 8,39% || 01/12/2025 | R$ 1,10 | 0,70% | 8,39% || 01/11/2025 | R$ 1,10 | 0,70% | 8,39% || 01/10/2025 | R$ 1,10 | 0,70% | 8,39% || 01/09/2025 | R$ 1,10 | 0,70% | 8,39% || 01/08/2025 | R$ 1,10 | 0,70% | 8,39% || 01/07/2025 | R$ 1,10 | 0,70% | 8,39% || 01/06/2025 | R$ 1,10 | 0,70% | 8,39% || 01/05/2025 | R$ 1,10 | 0,70% | 8,39% || 01/04/2025 | R$ 1,10 | 0,70% | 8,39% || 01/03/2025 | R$ 1,10 | 0,70% | 8,39% || 01/02/2025 | R$ 1,10 | 0,70% | 8,39% |",fiis_dividends_yields,fiis_dividends_yields,True,True,True,routing,Suite mínima para validar roteamento via /ask.,routing_002,2,[],True,PASS,
