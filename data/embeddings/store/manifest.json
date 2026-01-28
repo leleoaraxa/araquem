@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-28T00:54:18Z",
+  "generated_at": "2026-01-28T13:24:29Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -13,8 +13,8 @@
         "catalog",
         "fiis"
       ],
-      "chunks": 2,
-      "sha_all": "d0664c77c82e20753c06d2e632eb0a403e5ade6052b117ade9d5bfb4bdb27e2f"
+      "chunks": 3,
+      "sha_all": "a9ab6315862c73d2d2c0ed4a54234c8a8b59c91e903f24835fdc6784d1095bd7"
     },
     {
       "id": "concepts-fiis",
@@ -23,8 +23,8 @@
         "concepts",
         "fiis"
       ],
-      "chunks": 6,
-      "sha_all": "f0f2d1dd143b372584bf2cc01042faf444b044ad4719e9f01c6494b0ca2da6a8"
+      "chunks": 8,
+      "sha_all": "7c8eaf950418548b7af4a3ffa339ca7a047c3afdc1ec8eb12f427a8e7d6d4d5a"
     },
     {
       "id": "concepts-risk",
@@ -35,7 +35,7 @@
         "fiis"
       ],
       "chunks": 6,
-      "sha_all": "884125b12fc0ffe2ac6d2ddccad1a54161f4228b39d4f1f5cf0b7508667ad195"
+      "sha_all": "55aea42baed0920b53f340f393a47205fad147218b6e8b418e89c9c632135b2f"
     },
     {
       "id": "concepts-macro",
@@ -47,7 +47,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "4d9d5c1d2eba52314db6e9aeab5395c46420321af975c8083d438976331729c5"
+      "sha_all": "8e6a540a4158786a0b6b933d3da63f544f315a8aa3a41594df5f7ad4b05f9224"
     },
     {
       "id": "concepts-macro-methodology",
@@ -59,7 +59,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "4cbff044eae36a74ec285ab1b1a97c957ea882644b63f35bbc6d6f2fbd9ddfbd"
+      "sha_all": "7ccad7e965f02c1f5d2b261a51b86147fd78ff9109701283beb4a2c7331d8b93"
     },
     {
       "id": "concepts-carteira",
@@ -71,7 +71,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "bd37e2357003117fb1692f2952dd00e796bf48ff3b6c8f26b6291244c46700a9"
+      "sha_all": "0c7afb8a45e61dffc6a4a34552a1a53cc1396754559dab96866220957dfc953a"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -82,8 +82,116 @@
         "metrics",
         "fiis"
       ],
+      "chunks": 4,
+      "sha_all": "560f753eea8a737bdc9ea4657801aeeee724ecee84b717f010b6086276653067"
+    },
+    {
+      "id": "concepts-institutional",
+      "path": "data/concepts/concepts-institutional.yaml",
+      "tags": [
+        "concepts",
+        "institutional"
+      ],
       "chunks": 3,
-      "sha_all": "74ad600af50e6cb62135282f86d5526483a9a38ab8f13a0f66a91fc155779602"
+      "sha_all": "fce982cb9ad96a8dd2d57df1fd2e1b534f9a14c1dc7ba4fe547b42cca64b190e"
+    },
+    {
+      "id": "concepts-institutional-policies",
+      "path": "data/concepts/concepts-institutional-policies.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "policies"
+      ],
+      "chunks": 1,
+      "sha_all": "48216041665866d0b4fea8bd8a5964a6fe86ddede55c2a31ec429dddb75e2890"
+    },
+    {
+      "id": "concepts-institutional-privacy",
+      "path": "data/concepts/concepts-institutional-privacy.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "privacy"
+      ],
+      "chunks": 1,
+      "sha_all": "14646984a7525b3b7dfb941f3d11aec2dff37c9028f6294e3d42ca53c1edbe3a"
+    },
+    {
+      "id": "concepts-institutional-product-positioning",
+      "path": "data/concepts/concepts-institutional-product-positioning.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "positioning"
+      ],
+      "chunks": 2,
+      "sha_all": "8dd101adbf8c10c902bbb331e289ff664a70ac78b3ec3e426ae75b4ebf241cc1"
+    },
+    {
+      "id": "concepts-institutional-terms",
+      "path": "data/concepts/concepts-institutional-terms.yaml",
+      "tags": [
+        "concepts",
+        "institutional",
+        "terms"
+      ],
+      "chunks": 2,
+      "sha_all": "6b59153789199119f5d972bf2d202a75d453d6f87c7203b1073b28a116e68726"
+    },
+    {
+      "id": "concepts-support",
+      "path": "data/concepts/concepts-support.yaml",
+      "tags": [
+        "concepts",
+        "support"
+      ],
+      "chunks": 2,
+      "sha_all": "d3dce2745866cb870a49b3c9f59500e40f5d9afbeb6a677b2870caec9e868ba7"
+    },
+    {
+      "id": "concepts-support-errors",
+      "path": "data/concepts/concepts-support-errors.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "errors"
+      ],
+      "chunks": 1,
+      "sha_all": "b9defe1a232efa128f9c04fda9c47b5bb546626a3d11dc6b119d502163c8eb60"
+    },
+    {
+      "id": "concepts-support-howto",
+      "path": "data/concepts/concepts-support-howto.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "howto"
+      ],
+      "chunks": 1,
+      "sha_all": "c75690b13c45e4725172dcccf774444230e3bb8d6a95d395903a181f5743c434"
+    },
+    {
+      "id": "concepts-support-plans",
+      "path": "data/concepts/concepts-support-plans.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "plans"
+      ],
+      "chunks": 1,
+      "sha_all": "e1aadc701f1192f9329e53a46296fb0086c3635f2deaaaec115ca140e9ff1498"
+    },
+    {
+      "id": "concepts-support-troubleshooting",
+      "path": "data/concepts/concepts-support-troubleshooting.yaml",
+      "tags": [
+        "concepts",
+        "support",
+        "troubleshooting"
+      ],
+      "chunks": 2,
+      "sha_all": "2f59a53730caf9df382a747467622392f1ed1c8ffbd9af37d94aa6e3f75b92b4"
     },
     {
       "id": "ontology-entity",
@@ -881,7 +989,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769561817,
+  "last_refresh_epoch": 1769606825,
   "vector_dimension": 768,
-  "total_chunks": 280
+  "total_chunks": 300
 }
