@@ -2,7 +2,7 @@
   "version": 1,
   "collection": "araquem-core",
   "embedding_model": "nomic-embed-text",
-  "generated_at": "2026-01-28T13:38:58Z",
+  "generated_at": "2026-01-28T13:57:50Z",
   "source": "data/embeddings/index.yaml",
   "docs": [
     {
@@ -23,8 +23,8 @@
         "concepts",
         "fiis"
       ],
-      "chunks": 8,
-      "sha_all": "7c8eaf950418548b7af4a3ffa339ca7a047c3afdc1ec8eb12f427a8e7d6d4d5a"
+      "chunks": 9,
+      "sha_all": "2ed450ad01c815fb0cb5f889c79b8313739539fae93a79e97b4556ae4f8aa18e"
     },
     {
       "id": "concepts-risk",
@@ -71,7 +71,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "0c7afb8a45e61dffc6a4a34552a1a53cc1396754559dab96866220957dfc953a"
+      "sha_all": "b38d1a19f6f95a97aa7922787729968bbf1a692be871c5927dce92f413f0baa7"
     },
     {
       "id": "concepts-risk-metrics-methodology",
@@ -83,7 +83,7 @@
         "fiis"
       ],
       "chunks": 4,
-      "sha_all": "560f753eea8a737bdc9ea4657801aeeee724ecee84b717f010b6086276653067"
+      "sha_all": "436a756c5390ceaa7ea22af72a48e5bfd73b3ee7e25f584e30c8a115bfe176e2"
     },
     {
       "id": "concepts-institutional",
@@ -989,7 +989,7 @@
       "sha_all": "6def8883b43192e936ed886d07797f8807e03cbda765cbdf75d10d69aa27ed69"
     }
   ],
-  "last_refresh_epoch": 1769607714,
+  "last_refresh_epoch": 1769608878,
   "vector_dimension": 768,
-  "total_chunks": 300
+  "total_chunks": 301
 }
