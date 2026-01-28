@@ -2,7 +2,7 @@
 
 ## 0) Executive Summary (10–15 linhas)
 1) **Bucket A/B/C (governance)** será fonte única em `data/ontology/entity.yaml`, onde há blocos `buckets` (entidades) e `intents[].bucket` (intents). (data/ontology/entity.yaml:L13-L44) (data/ontology/entity.yaml:L41-L120)
-2) Hoje existe **duplicidade** com `data/ontology/bucket_rules.yaml`, que também define buckets A/B/C e está **desativado** (`enabled: false`). (data/ontology/bucket_rules.yaml:L19-L87)
+2) Hoje existe **duplicidade** com `data/ontology/bucket_rules.yaml`, que também define buckets de governança (legado) e está **desativado** (`enabled: false`). (data/ontology/bucket_rules.yaml:L19-L87)
 3) O Planner resolve bucket via `resolve_bucket` e retorna **string vazia** quando não há regra habilitada, propagando bucket vazio para as camadas seguintes. (app/planner/planner.py:L40-L103)
 4) O bucket é escrito no `explain` do Planner (`meta_explain["bucket"]`) e é propagado para `/ask`, ContextManager, Orchestrator e `plan_hash`. (app/planner/planner.py:L1286-L1321) (app/api/ask.py:L248-L268) (app/orchestrator/routing.py:L348-L470) (app/cache/rt_cache.py:L323-L370)
 5) O ContextManager aplica TTL por bucket (`bucket_ttl`) com fallback para `max_age_turns` quando bucket está vazio/None. (data/policies/context.yaml:L63-L83) (app/context/context_manager.py:L586-L607)
@@ -14,7 +14,7 @@
 
 **Evidências‑chave**
 - Fonte única proposta: `buckets` e `intents[].bucket` em `entity.yaml`. (data/ontology/entity.yaml:L13-L44) (data/ontology/entity.yaml:L41-L44)
-- Duplicidade: bucket_rules.yaml com A/B/C desativado. (data/ontology/bucket_rules.yaml:L19-L87)
+- Duplicidade: bucket_rules.yaml com buckets de governança (legado) desativado. (data/ontology/bucket_rules.yaml:L19-L87)
 - resolve_bucket retorna "" quando não há regra habilitada. (app/planner/planner.py:L40-L103)
 - bucket propagado para explain → /ask → plan_hash. (app/planner/planner.py:L1286-L1321) (app/api/ask.py:L248-L268) (app/cache/rt_cache.py:L323-L370)
 - Colisões semânticas (observability, conceitos, catálogo). (data/ops/observability.yaml:L74-L179) (data/concepts/concepts-fiis.yaml:L72-L90) (data/entities/catalog.yaml:L61-L66)
@@ -60,7 +60,6 @@
 - **Bucket A**: lista de entidades de FIIs (ex.: `fiis_quota_prices`, `fiis_rankings`, etc.). (data/ontology/entity.yaml:L14-L27)
 - **Bucket B**: entidades de carteira do cliente. (data/ontology/entity.yaml:L28-L34)
 - **Bucket C**: entidades macro/índices. (data/ontology/entity.yaml:L35-L38)
-
 
 **Evidências‑chave**
 - `buckets` A/B/C em entity.yaml. (data/ontology/entity.yaml:L13-L39)
@@ -153,7 +152,7 @@
 
 ## 6) DRIFT REPORT (duplicidades e inconsistências)
 **Duplicação #1 — bucket_rules.yaml vs fonte única (entity.yaml)**
-- **Evidência de existência**: bucket_rules define A/B/C e está desativado. (data/ontology/bucket_rules.yaml:L19-L87)
+- **Evidência de existência**: bucket_rules define buckets de governança (legado) e está desativado. (data/ontology/bucket_rules.yaml:L19-L87)
 - **Evidência de uso no runtime**: Planner carrega bucket_rules via `_load_bucket_rules` e resolve bucket por regras. (app/planner/planner.py:L24-L103)
 - **Recomendação**: descontinuar/ignorar no futuro (sem alteração agora). (data/ontology/bucket_rules.yaml:L19-L87)
 
