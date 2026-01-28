@@ -2210,7 +2210,6 @@ intents:
       include:
         - ranking
         - rankings
-        - sirios
         - score
         - nota
         - avaliacao
