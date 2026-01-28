@@ -23,60 +23,52 @@ sections:
           Desvio-padrão dos retornos periódicos do FII. Mede a oscilação em torno da
           média de retorno. Janelas curtas capturam ruído recente; janelas longas
           suavizam eventos isolados.
-        interpretation: >
-          Volatilidade alta indica trajetória mais instável; volatilidade baixa sugere
-          comportamento mais previsível, mas não garante proteção contra quedas.
+        interpretation:
+          - "Volatilidade alta indica trajetória mais instável; volatilidade baixa sugere comportamento mais previsível, mas não garante proteção contra quedas."
 
       - name: "Max Drawdown"
         definition: >
           Maior perda acumulada entre um topo e o fundo subsequente na janela
           analisada. É um indicador de estresse para quem entrou no pior momento.
-        interpretation: >
-          Drawdowns profundos mostram vulnerabilidade em crises; números mais
-          contidos indicam quedas historicamente mais controladas.
+        interpretation:
+          - "Drawdowns profundos mostram vulnerabilidade em crises; números mais contidos indicam quedas historicamente mais controladas."
 
       - name: "Sharpe"
         definition: >
           (Retorno médio do FII - retorno do CDI/SELIC) dividido pela volatilidade.
           Avalia retorno excedente por unidade de risco total.
-        interpretation: >
-          Sharpe alto sugere bom equilíbrio risco-retorno; Sharpe negativo indica que
-          o fundo rendeu menos que o ativo livre de risco no período.
+        interpretation:
+          - "Sharpe alto sugere bom equilíbrio risco-retorno; Sharpe negativo indica que o fundo rendeu menos que o ativo livre de risco no período."
 
       - name: "Sortino"
         definition: >
           Versão do Sharpe que considera apenas desvios negativos. Penaliza quedas com
           mais intensidade que altas.
-        interpretation: >
-          Sortino elevado mostra consistência de retornos com poucas quedas fortes;
-          valores baixos sinalizam distribuição de retornos assimétrica para baixo.
+        interpretation:
+          - "Sortino elevado mostra consistência de retornos com poucas quedas fortes; valores baixos sinalizam distribuição de retornos assimétrica para baixo."
 
       - name: "Treynor"
         definition: >
           (Retorno médio do FII - retorno do CDI/SELIC) dividido pelo beta em relação
           ao IFIX. Mede retorno excedente por unidade de risco sistemático.
-        interpretation: >
-          Treynor positivo indica compensação pelo risco de mercado; Treynor negativo
-          sugere que o risco sistemático não foi remunerado.
+        interpretation:
+          - "Treynor positivo indica compensação pelo risco de mercado; Treynor negativo sugere que o risco sistemático não foi remunerado."
 
       - name: "Alfa de Jensen"
         definition: >
           Diferença entre o retorno observado e o retorno esperado pelo CAPM
           considerando beta e o benchmark de mercado. Mostra se houve geração de
           valor além do que o risco explicaria.
-        interpretation: >
-          Alfa positivo sugere desempenho acima do esperado; alfa negativo revela
-          entrega aquém do risco assumido.
+        interpretation:
+          - "Alfa positivo sugere desempenho acima do esperado; alfa negativo revela entrega aquém do risco assumido."
 
       - name: "Beta e R²"
         definition: >
           Beta mede sensibilidade do FII ao IFIX; R² mostra quanto do retorno é
           explicado pelo índice. Ambos são calculados via regressão sobre retornos
           históricos.
-        interpretation: >
-          Beta próximo de 1 indica aderência ao mercado; acima de 1 sugere efeito
-          amplificador; abaixo de 1 sugere perfil mais defensivo. R² alto indica
-          comportamento alinhado ao índice; R² baixo aponta idiossincrasia.
+        interpretation:
+          - "Beta próximo de 1 indica aderência ao mercado; acima de 1 sugere efeito amplificador; abaixo de 1 sugere perfil mais defensivo. R² alto indica comportamento alinhado ao índice; R² baixo aponta idiossincrasia."
 
   - id: boas-praticas
     title: "Boas práticas de resposta"

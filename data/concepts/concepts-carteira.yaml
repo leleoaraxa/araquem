@@ -38,7 +38,7 @@ sections:
           - client_fiis_positions
           - fiis_registrations
           - fiis_financials_snapshot
-        typical_metrics:
+        notes:
           - "peso de cada FII na carteira (%)"
           - "top N FIIs por participação"
           - "distribuição por setor (logístico, shopping, lajes, CRI etc.)"

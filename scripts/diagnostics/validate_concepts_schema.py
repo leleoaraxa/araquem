@@ -669,6 +669,8 @@ def main() -> int:
                     item.get("interpretation"),
                     item.get("notes"),
                 ]
+                subitems = item.get("subitems")
+                has_subitems = isinstance(subitems, list) and len(subitems) > 0
                 body_has_text = any(
                     isinstance(value, str) and value.strip() for value in body_fields
                 ) or any(
@@ -677,7 +679,7 @@ def main() -> int:
                     )
                     for value in list_body_fields
                 )
-                if not body_has_text:
+                if not body_has_text and not has_subitems:
                     add_issue(
                         issues,
                         gate="Gate 3",
