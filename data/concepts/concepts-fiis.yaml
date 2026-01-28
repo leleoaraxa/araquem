@@ -58,6 +58,7 @@ sections:
     title: "Indicadores Financeiros e Valuation"
     items:
       - name: "Renda"
+        description: "Indicadores de geração de renda e distribuição do fundo."
         subitems:
           - name: "dy"
             description: "Dividend Yield mensal e anual."
@@ -67,6 +68,7 @@ sections:
             description: "Percentual de lucro distribuído."
 
       - name: "Valuation"
+        description: "Métricas de valor e precificação do fundo."
         subitems:
           - name: "market_cap"
             description: "Valor de mercado."
@@ -80,6 +82,7 @@ sections:
             description: "Renda anual sobre valor da cota."
 
       - name: "Estrutura financeira"
+        description: "Componentes de caixa, dívidas e reservas do fundo."
         subitems:
           - name: "caixa"
             description: "Disponibilidades do fundo."
@@ -91,6 +94,7 @@ sections:
             description: "Reservas de dividendos."
 
       - name: "Crescimento"
+        description: "Indicadores de evolução de receitas e proventos."
         subitems:
           - name: "crescimento_dividendos"
             description: "Crescimento dos dividendos em 12/24/36 meses."
@@ -121,6 +125,7 @@ sections:
     title: "Recebíveis e Indexadores"
     items:
       - name: "Buckets"
+        description: "Distribuição dos recebíveis por janelas de vencimento."
         subitems:
           - name: "revenue_due_0_3m_pct"
             description: "Receitas com vencimento em 0–3 meses."
@@ -156,6 +161,7 @@ sections:
           - "Faixas apuradas: 0–3m, 3–6m, 6–9m, 9–12m, 12–15m, 15–18m, 18–21m, 21–24m, 24–27m, 27–30m, 30–33m, 33–36m, acima de 36m e indeterminado."
 
       - name: "Indexadores"
+        description: "Quebra de receitas por índice de correção."
         subitems:
           - name: "ipca"
             description: "Receitas indexadas ao IPCA."
@@ -240,6 +246,7 @@ sections:
     title: "Contexto de Mercado e Macroeconomia"
     items:
       - name: "Índices da B3"
+        description: "Indicadores de desempenho dos índices de mercado."
         subitems:
           - name: "ibov"
             description: "Pontos e variação do Ibovespa."
@@ -248,12 +255,14 @@ sections:
           - name: "ifil"
             description: "Pontos e variação do IFIL."
       - name: "Moedas"
+        description: "Cotações e variações das principais moedas."
         subitems:
           - name: "dolar"
             description: "Compra, venda e variação."
           - name: "euro"
             description: "Compra, venda e variação."
       - name: "Macroindicadores"
+        description: "Indicadores macroeconômicos de referência."
         subitems:
           - name: "cdi"
             description: "Taxa DI."
