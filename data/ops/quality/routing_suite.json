@@ -1,0 +1,18 @@
+{
+  "type": "routing",
+  "description": "Suite mínima para validar roteamento via /ask.",
+  "payloads": [
+    {
+      "id": "routing_001",
+      "question": "Mostre um overview do HGLG11.",
+      "expected_intent": "fiis_overview",
+      "expected_entity": "fiis_overview"
+    },
+    {
+      "id": "routing_002",
+      "question": "Qual é o DY do HGLG11?",
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
+    }
+  ]
+}
