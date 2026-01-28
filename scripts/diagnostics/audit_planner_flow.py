@@ -220,7 +220,7 @@ def _render_markdown(payloads: List[Dict[str, Any]]) -> str:
         "## Fluxo real do Planner",
         "- Normalização/tokenização conforme ontologia (steps e regex de split).",
         "- Extração de ticker via ticker_index (exact/prefix4) sem alterar score.",
-        "- Bucket derivado de data/ontology/entity.yaml seguido de filtro de entidades.",
+        "- Bucket derivado de data/ontology/entity.yaml a partir do intent/entity escolhido (pós-seleção).",
         "- Scoring base por tokens/phrases + anti-penalty, fusão opcional com RAG, e gate por thresholds.",
         "",
         "## Casos com 1 ticker vs multi ticker",

@@ -492,8 +492,6 @@ class Planner:
         bucket = ""
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
-        bucket_gate_applied = False
-        bucket_gate_fallback = False
         candidate_intents = all_intents
 
         try:
@@ -529,12 +527,10 @@ class Planner:
         ]
         bucket_decision = {"stage": "bucketize", "type": "planner_bucket", "bucket": ""}
         bucket_gate_decision = {
-            "stage": "bucket_gate",
-            "type": "intent_filter",
+            "stage": "bucket_derived_post_choice",
+            "type": "bucket_derived",
             "bucket": "",
-            "applied": bucket_gate_applied,
-            "filtered_count": len(candidate_intents),
-            "fallback_to_all": bucket_gate_fallback,
+            "applied": False,
         }
         decision_path.append(bucket_decision)
         decision_path.append(bucket_gate_decision)
