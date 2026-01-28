@@ -2,7 +2,7 @@
 
 ## 0) Executive Summary (10–15 linhas)
 1) **Bucket A/B/C (governance)** será fonte única em `data/ontology/entity.yaml`, onde há blocos `buckets` (entidades) e `intents[].bucket` (intents). (data/ontology/entity.yaml:L13-L44) (data/ontology/entity.yaml:L41-L120)
-2) Hoje existe **duplicidade** com `data/ontology/bucket_rules.yaml`, que também define buckets A/B/C (entrada D legado) e está **desativado** (`enabled: false`). (data/ontology/bucket_rules.yaml:L19-L87)
+2) Hoje existe **duplicidade** com `data/ontology/bucket_rules.yaml`, que também define buckets A/B/C e está **desativado** (`enabled: false`). (data/ontology/bucket_rules.yaml:L19-L87)
 3) O Planner resolve bucket via `resolve_bucket` e retorna **string vazia** quando não há regra habilitada, propagando bucket vazio para as camadas seguintes. (app/planner/planner.py:L40-L103)
 4) O bucket é escrito no `explain` do Planner (`meta_explain["bucket"]`) e é propagado para `/ask`, ContextManager, Orchestrator e `plan_hash`. (app/planner/planner.py:L1286-L1321) (app/api/ask.py:L248-L268) (app/orchestrator/routing.py:L348-L470) (app/cache/rt_cache.py:L323-L370)
 5) O ContextManager aplica TTL por bucket (`bucket_ttl`) com fallback para `max_age_turns` quando bucket está vazio/None. (data/policies/context.yaml:L63-L83) (app/context/context_manager.py:L586-L607)
@@ -14,7 +14,7 @@
 
 **Evidências‑chave**
 - Fonte única proposta: `buckets` e `intents[].bucket` em `entity.yaml`. (data/ontology/entity.yaml:L13-L44) (data/ontology/entity.yaml:L41-L44)
-- Duplicidade: bucket_rules.yaml com A/B/C (entrada D legado) desativado. (data/ontology/bucket_rules.yaml:L19-L87)
+- Duplicidade: bucket_rules.yaml com A/B/C desativado. (data/ontology/bucket_rules.yaml:L19-L87)
 - resolve_bucket retorna "" quando não há regra habilitada. (app/planner/planner.py:L40-L103)
 - bucket propagado para explain → /ask → plan_hash. (app/planner/planner.py:L1286-L1321) (app/api/ask.py:L248-L268) (app/cache/rt_cache.py:L323-L370)
 - Colisões semânticas (observability, conceitos, catálogo). (data/ops/observability.yaml:L74-L179) (data/concepts/concepts-fiis.yaml:L72-L90) (data/entities/catalog.yaml:L61-L66)
@@ -53,17 +53,17 @@
 
 ## 2) Fonte única: Prova e inventário em data/ontology/entity.yaml
 **Provas**
-- Bloco `buckets` (A/B/C; D vazio/legacy) com entidades agrupadas. (data/ontology/entity.yaml:L13-L39)
+- Bloco `buckets` (A/B/C) com entidades agrupadas. (data/ontology/entity.yaml:L13-L39)
 - Campo `intents[].bucket` (ex.: `ticker_query` → A). (data/ontology/entity.yaml:L41-L44)
 
 **Inventário (resumo por bucket, conforme YAML)**
 - **Bucket A**: lista de entidades de FIIs (ex.: `fiis_quota_prices`, `fiis_rankings`, etc.). (data/ontology/entity.yaml:L14-L27)
 - **Bucket B**: entidades de carteira do cliente. (data/ontology/entity.yaml:L28-L34)
 - **Bucket C**: entidades macro/índices. (data/ontology/entity.yaml:L35-L38)
-- **Entrada D**: vazia/legacy (fora do contrato de governança). (data/ontology/entity.yaml:L39-L39)
+
 
 **Evidências‑chave**
-- `buckets` A/B/C em entity.yaml (entrada D vazia/legacy). (data/ontology/entity.yaml:L13-L39)
+- `buckets` A/B/C em entity.yaml. (data/ontology/entity.yaml:L13-L39)
 - `intents[].bucket` presente (ex.: `ticker_query`). (data/ontology/entity.yaml:L41-L44)
 
 ---
@@ -102,7 +102,7 @@
 | app/api/ask.py | /ask flow | Lê bucket do explain e injeta em meta | D1 | Lê/Escreve | (app/api/ask.py:L248-L268) |
 | app/context/context_manager.py | last_reference TTL | TTL por bucket + fallback | D1 | Lê | (app/context/context_manager.py:L586-L607) |
 | app/narrator/narrator.py | render / render_global_post_sql | Lê bucket de meta e usa em métricas | D1 | Lê | (app/narrator/narrator.py:L987-L1035) (app/narrator/narrator.py:L860-L938) |
-| app/narrator/prompts.py | build_bucket_d_global_prompt | Insere bucket no prompt | D1 | Lê | (app/narrator/prompts.py:L490-L513) |
+| app/narrator/prompts.py | build_bucket_d_global_prompt | Prompt global textual (nome legacy no código; não implica domínio de governança adicional) | D1 | Lê | (app/narrator/prompts.py:L490-L513) |
 | app/observability/metrics.py | metrics labels | Bucket como label (métricas Narrator) | D1 | Lê | (app/observability/metrics.py:L44-L51) |
 | app/analytics/repository.py | bucket_minute | Bucketing temporal (analytics) | D5 | Lê/Escreve | (app/analytics/repository.py:L120-L203) |
 
@@ -153,7 +153,7 @@
 
 ## 6) DRIFT REPORT (duplicidades e inconsistências)
 **Duplicação #1 — bucket_rules.yaml vs fonte única (entity.yaml)**
-- **Evidência de existência**: bucket_rules define A/B/C (entrada D legado) e está desativado. (data/ontology/bucket_rules.yaml:L19-L87)
+- **Evidência de existência**: bucket_rules define A/B/C e está desativado. (data/ontology/bucket_rules.yaml:L19-L87)
 - **Evidência de uso no runtime**: Planner carrega bucket_rules via `_load_bucket_rules` e resolve bucket por regras. (app/planner/planner.py:L24-L103)
 - **Recomendação**: descontinuar/ignorar no futuro (sem alteração agora). (data/ontology/bucket_rules.yaml:L19-L87)
 
@@ -190,8 +190,7 @@
    - D4: `buckets` → `maturity_bands` / `term_bands`. (data/concepts/concepts-fiis.yaml:L72-L90)
    - D5: `bucket_minute` → `time_bin`/`interval_bin` (plano). (app/analytics/repository.py:L120-L203)
 4) **Consumidores D1 devem ler exclusivamente `entity.yaml`** (Planner/Orchestrator/Context/Narrator). **RAG não depende de bucket** (texto é outra dimensão). (app/planner/planner.py:L453-L503) (app/orchestrator/routing.py:L357-L470)
-5) **Bucket D removido do contrato** (entrada vazia/legacy; não governança). (data/ontology/entity.yaml:L39-L39)
-6) **bucket_rules.yaml**: declarar legado/descontinuar/arquivar no futuro (sem alteração agora). (data/ontology/bucket_rules.yaml:L19-L87)
+5) **bucket_rules.yaml**: declarar legado/descontinuar/arquivar no futuro (sem alteração agora). (data/ontology/bucket_rules.yaml:L19-L87)
 
 **Evidências‑chave**
 - Fonte única alvo: entity.yaml (buckets/intents). (data/ontology/entity.yaml:L13-L44)
@@ -238,6 +237,6 @@
 **Principais outputs (resumo)**
 - Lista de arquivos com “bucket” (rg -l) usada para inventário de app/data/scripts/tests/docs. (listado no comando acima; ver seções 4 e 5)
 - `bucket_rules.yaml` contém `enabled: false` em defaults e rules. (data/ontology/bucket_rules.yaml:L19-L87)
-- `entity.yaml` contém buckets A/B/C e intents[].bucket (entrada D vazia/legacy). (data/ontology/entity.yaml:L13-L44)
+- `entity.yaml` contém buckets A/B/C e intents[].bucket. (data/ontology/entity.yaml:L13-L44)
 - `build_plan_hash` inclui `bucket` como string vazia quando ausente. (app/cache/rt_cache.py:L323-L370)
 - `bucket_ttl` e fallback em ContextManager. (data/policies/context.yaml:L63-L83) (app/context/context_manager.py:L586-L607)
