@@ -1,0 +1,8 @@
+entity: support_howto_core
+name: support_howto_core
+description: Conteúdo de suporte determinístico (sem SQL).
+kind: view
+version: 1
+
+columns:
+  - { name: content, type: string, nullable: true, desc: "Texto institucional ou de suporte." }

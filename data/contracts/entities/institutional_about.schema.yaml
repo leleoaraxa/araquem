@@ -1,0 +1,8 @@
+entity: institutional_about
+name: institutional_about
+description: Conteúdo institucional determinístico (sem SQL).
+kind: view
+version: 1
+
+columns:
+  - { name: content, type: string, nullable: true, desc: "Texto institucional ou de suporte." }

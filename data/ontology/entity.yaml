@@ -36,7 +36,13 @@ buckets:
     - history_b3_indexes
     - history_currency_rates
     - consolidated_macroeconomic
-  D: []
+  D:
+    - institutional_about
+    - institutional_privacy
+    - institutional_terms
+    - institutional_limits
+    - institutional_pricing
+    - support_howto_core
 
 intents:
   - name: ticker_query
@@ -3019,6 +3025,146 @@ intents:
         - longo prazo
     entities:
       - consolidated_macroeconomic
+
+  - name: institutional_about
+    tokens:
+      include:
+        - sirios
+        - plataforma
+        - iris
+        - institucional
+      exclude:
+        - ranking
+        - posicao
+        - top
+        - melhores
+        - piores
+    phrases:
+      include:
+        - o que a sirios faz
+        - o que a sirios e
+        - o que e a sirios
+        - o que a plataforma sirios faz
+        - o que e a plataforma sirios
+      exclude:
+        - posicao no ranking
+        - ranking sirios
+    entities:
+      - institutional_about
+
+  - name: institutional_privacy
+    tokens:
+      include:
+        - privacidade
+        - lgpd
+        - dados
+        - pessoais
+        - protecao
+      exclude:
+        - ranking
+        - posicao
+    phrases:
+      include:
+        - politica de privacidade
+        - dados pessoais
+        - protecao de dados
+      exclude: []
+    entities:
+      - institutional_privacy
+
+  - name: institutional_terms
+    tokens:
+      include:
+        - termos
+        - uso
+        - condicoes
+      exclude:
+        - ranking
+        - posicao
+    phrases:
+      include:
+        - termos de uso
+        - condicoes de uso
+        - termos e condicoes
+      exclude: []
+    entities:
+      - institutional_terms
+
+  - name: institutional_limits
+    tokens:
+      include:
+        - limite
+        - limites
+        - escopo
+        - restricao
+        - restricoes
+        - free
+        - gratis
+        - gratuito
+      exclude:
+        - preco
+        - custo
+        - valor
+        - assinatura
+    phrases:
+      include:
+        - limites do ask
+        - escopo do ask
+        - qual limite do free
+        - limite do free
+      exclude: []
+    entities:
+      - institutional_limits
+
+  - name: institutional_pricing
+    tokens:
+      include:
+        - preco
+        - custo
+        - valor
+        - plano
+        - assinatura
+        - pro
+        - premium
+      exclude:
+        - limite
+        - limites
+        - gratis
+        - free
+    phrases:
+      include:
+        - quanto custa
+        - quanto custa pro
+        - quanto custa o pro
+        - preco do pro
+        - valor do pro
+      exclude: []
+    entities:
+      - institutional_pricing
+
+  - name: support_howto
+    tokens:
+      include:
+        - como
+        - usar
+        - uso
+        - filtro
+        - classificacao
+        - tela
+        - interface
+        - passo
+        - passos
+      exclude:
+        - ranking
+        - posicao
+    phrases:
+      include:
+        - como usar o filtro
+        - como usar o filtro classificacao
+        - como usar o filtro de classificacao
+      exclude: []
+    entities:
+      - support_howto_core
 
 anti_tokens:
   generic:

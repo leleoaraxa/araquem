@@ -1,0 +1,41 @@
+{
+  "suite": "institutional_support_routing",
+  "description": "Suíte de roteamento institucional e suporte (domínios textuais determinísticos, sem SQL/RAG).",
+  "payloads": [
+    {
+      "question": "o que a sirios faz",
+      "expected_intent": "institutional_about",
+      "expected_entity": "institutional_about"
+    },
+    {
+      "question": "lgpd privacidade",
+      "expected_intent": "institutional_privacy",
+      "expected_entity": "institutional_privacy"
+    },
+    {
+      "question": "termos de uso",
+      "expected_intent": "institutional_terms",
+      "expected_entity": "institutional_terms"
+    },
+    {
+      "question": "qual limite do free",
+      "expected_intent": "institutional_limits",
+      "expected_entity": "institutional_limits"
+    },
+    {
+      "question": "quanto custa pro",
+      "expected_intent": "institutional_pricing",
+      "expected_entity": "institutional_pricing"
+    },
+    {
+      "question": "como usar o filtro classificacao nesta tela",
+      "expected_intent": "support_howto",
+      "expected_entity": "support_howto_core"
+    },
+    {
+      "question": "qual a posição no ranking sirios do hglg11",
+      "expected_intent": "fiis_rankings",
+      "expected_entity": "fiis_rankings"
+    }
+  ]
+}

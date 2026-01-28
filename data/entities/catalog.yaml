@@ -378,3 +378,93 @@ entities:
       natural_keys:
       - ref_date
     notes: []
+  institutional_about:
+    title: Institucional – Sobre a SIRIOS
+    kind: textual
+    paths:
+      entity_yaml: data/entities/institutional_about/institutional_about.yaml
+      schema: data/contracts/entities/institutional_about.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo institucional determinístico; SQL e RAG desativados.
+  institutional_privacy:
+    title: Institucional – Privacidade
+    kind: textual
+    paths:
+      entity_yaml: data/entities/institutional_privacy/institutional_privacy.yaml
+      schema: data/contracts/entities/institutional_privacy.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo institucional determinístico; SQL e RAG desativados.
+  institutional_terms:
+    title: Institucional – Termos de uso
+    kind: textual
+    paths:
+      entity_yaml: data/entities/institutional_terms/institutional_terms.yaml
+      schema: data/contracts/entities/institutional_terms.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo institucional determinístico; SQL e RAG desativados.
+  institutional_limits:
+    title: Institucional – Limites do /ask
+    kind: textual
+    paths:
+      entity_yaml: data/entities/institutional_limits/institutional_limits.yaml
+      schema: data/contracts/entities/institutional_limits.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo institucional determinístico; SQL e RAG desativados.
+  institutional_pricing:
+    title: Institucional – Planos e preços
+    kind: textual
+    paths:
+      entity_yaml: data/entities/institutional_pricing/institutional_pricing.yaml
+      schema: data/contracts/entities/institutional_pricing.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo institucional determinístico; SQL e RAG desativados.
+  support_howto_core:
+    title: Suporte – Como fazer (núcleo)
+    kind: textual
+    paths:
+      entity_yaml: data/entities/support_howto_core/support_howto_core.yaml
+      schema: data/contracts/entities/support_howto_core.schema.yaml
+    coverage:
+      cache_policy: false
+      rag_policy: false
+      narrator_policy: false
+      param_inference: false
+    identifiers:
+      natural_keys: []
+    notes:
+    - Conteúdo de suporte determinístico; SQL e RAG desativados.

@@ -1,0 +1,29 @@
+id: institutional_limits
+result_key: institutional_limits
+description: Limites de uso e escopo do /ask.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto institucional determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo de limites indisponível no momento."
+
+ask:
+  intents:
+    - institutional_limits
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-institutional-policies.yaml
+  section_id: politicas-e-limites
+  item_name: "Limites do /ask"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2

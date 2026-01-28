@@ -33,3 +33,17 @@ sections:
           O /ask responde perguntas sobre dados e conceitos de FIIs dentro do que
           está disponível na plataforma. Quando não houver informação suficiente,
           a resposta indicará a limitação de forma objetiva.
+
+      - name: "Planos e preços"
+        aliases:
+          - "preço"
+          - "precos"
+          - "valor"
+          - "custo"
+          - "plano pro"
+          - "plano free"
+          - "assinatura"
+        description: >
+          Os planos da SIRIOS definem o escopo de acesso e limites de uso. Para
+          valores e detalhes comerciais, consulte a comunicação oficial e as
+          páginas de planos disponibilizadas pela SIRIOS.

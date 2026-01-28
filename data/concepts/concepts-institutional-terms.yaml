@@ -99,3 +99,14 @@ sections:
         description: >
           Facilidade de negociação do FII, geralmente medida por volume e frequência
           de negociação.
+
+      - name: "Termos de uso"
+        aliases:
+          - "termos"
+          - "condicoes"
+          - "condições"
+          - "termos de uso"
+        description: >
+          Os termos de uso descrevem as condições e regras para utilizar a SIRIOS.
+          Eles detalham direitos, deveres e limites de responsabilidade no uso da
+          plataforma e dos conteúdos disponibilizados.

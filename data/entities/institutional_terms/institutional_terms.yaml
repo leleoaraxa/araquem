@@ -1,0 +1,29 @@
+id: institutional_terms
+result_key: institutional_terms
+description: Termos institucionais e condições de uso da SIRIOS.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto institucional determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo de termos indisponível no momento."
+
+ask:
+  intents:
+    - institutional_terms
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-institutional-terms.yaml
+  section_id: glossario
+  item_name: "Termos de uso"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2

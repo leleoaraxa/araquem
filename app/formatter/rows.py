@@ -11,6 +11,7 @@ from typing import List, Dict, Any, Optional, Callable
 from jinja2 import Environment, StrictUndefined
 
 from app.utils.filecache import load_yaml_cached
+from app.utils.concepts_loader import load_concept_item
 
 LOGGER = logging.getLogger(__name__)
 
@@ -654,6 +655,25 @@ def render_rows_template(
     if kind == "list" and (not key_field or not value_field):
         return ""
 
+    concept_cfg = cfg.get("concept") if isinstance(cfg, dict) else None
+    concept_context = {
+        "source": None,
+        "domain": None,
+        "version": None,
+        "section": None,
+        "item": None,
+    }
+    if isinstance(concept_cfg, dict):
+        source = concept_cfg.get("source")
+        section_id = concept_cfg.get("section_id")
+        item_name = concept_cfg.get("item_name")
+        if isinstance(source, str) and isinstance(section_id, str) and isinstance(item_name, str):
+            concept_context = load_concept_item(
+                source=source.strip(),
+                section_id=section_id.strip(),
+                item_name=item_name.strip(),
+            )
+
     context = {
         "rows": rows_list,
         "fields": {"key": key_field, "value": value_field},
@@ -661,6 +681,7 @@ def render_rows_template(
         "identifiers": identifiers_safe or {},
         "aggregates": aggregates if isinstance(aggregates, dict) else {},
         "ticker": _extract_ticker(identifiers_safe, rows_list),
+        "concept": concept_context,
     }
 
     try:
