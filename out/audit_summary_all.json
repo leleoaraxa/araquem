@@ -1,0 +1,781 @@
+{
+  "overall": {
+    "accuracy": {
+      "both": {
+        "accuracy": 0.9831223628691983,
+        "matches": 233,
+        "total": 237
+      },
+      "entity": {
+        "accuracy": 0.9831223628691983,
+        "matches": 233,
+        "total": 237
+      },
+      "intent": {
+        "accuracy": 0.9831223628691983,
+        "matches": 233,
+        "total": 237
+      }
+    },
+    "cache_hit_metrics": 0,
+    "cache_hit_response": 114,
+    "fail": 4,
+    "gate_fail": 1,
+    "gate_ok": 236,
+    "narrator_used": 0,
+    "pass": 233,
+    "top_fail_reasons": [
+      [
+        "entity_mismatch",
+        4
+      ],
+      [
+        "intent_mismatch",
+        4
+      ],
+      [
+        "status_not_ok",
+        1
+      ]
+    ],
+    "total": 237
+  },
+  "suites": {
+    "client_fiis_dividends_evolution": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para client_fiis_dividends_evolution — evolução mensal de dividendos da carteira do cliente",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "client_fiis_enriched_portfolio": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para client_fiis_enriched_portfolio — visão consolidada da carteira privada de FIIs do cliente, com pesos, DY, risco e rankings por ativo.",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 14,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [],
+      "total": 14
+    },
+    "client_fiis_performance_vs_benchmark": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para client_fiis_performance_vs_benchmark — performance da carteira do cliente versus benchmarks",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "client_fiis_performance_vs_benchmark_summary": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 8,
+          "total": 8
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 8,
+          "total": 8
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 8,
+          "total": 8
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para o resumo de performance da carteira de FIIs versus benchmarks (última leitura por benchmark)",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 8,
+      "narrator_used": 0,
+      "pass": 8,
+      "top_fail_reasons": [],
+      "total": 8
+    },
+    "client_fiis_positions": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 7,
+          "total": 7
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 7,
+          "total": 7
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 7,
+          "total": 7
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para client_fiis_positions — posições, quantidades, corretora, preço médio e peso na carteira",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 7,
+      "narrator_used": 0,
+      "pass": 7,
+      "top_fail_reasons": [],
+      "total": 7
+    },
+    "consolidated_macroeconomic": {
+      "accuracy": {
+        "both": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 12,
+      "description": "Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",
+      "fail": 1,
+      "gate_fail": 0,
+      "gate_ok": 15,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [
+        [
+          "entity_mismatch",
+          1
+        ],
+        [
+          "intent_mismatch",
+          1
+        ]
+      ],
+      "total": 15
+    },
+    "fiis_dividends": {
+      "accuracy": {
+        "both": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 8,
+      "description": "Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",
+      "fail": 1,
+      "gate_fail": 0,
+      "gate_ok": 15,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [
+        [
+          "entity_mismatch",
+          1
+        ],
+        [
+          "intent_mismatch",
+          1
+        ]
+      ],
+      "total": 15
+    },
+    "fiis_dividends_yields": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 2,
+      "description": "Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "fiis_financials_revenue_schedule": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 4,
+      "description": "Suíte de testes para fiis_financials_revenue_schedule — cronograma de receitas futuras por faixa de vencimento e indexador",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 12,
+      "narrator_used": 0,
+      "pass": 12,
+      "top_fail_reasons": [],
+      "total": 12
+    },
+    "fiis_financials_risk": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para fiis_financials_risk — indicadores de risco (Sharpe, beta, volatilidade, drawdown)",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "fiis_financials_snapshot": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 9,
+      "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 15,
+      "narrator_used": 0,
+      "pass": 15,
+      "top_fail_reasons": [],
+      "total": 15
+    },
+    "fiis_legal_proceedings": {
+      "accuracy": {
+        "both": {
+          "accuracy": 0.9166666666666666,
+          "matches": 11,
+          "total": 12
+        },
+        "entity": {
+          "accuracy": 0.9166666666666666,
+          "matches": 11,
+          "total": 12
+        },
+        "intent": {
+          "accuracy": 0.9166666666666666,
+          "matches": 11,
+          "total": 12
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 10,
+      "description": "Suíte de testes para fiis_legal_proceedings — existência de processos, quantidade, status, valor e risco de perda",
+      "fail": 1,
+      "gate_fail": 0,
+      "gate_ok": 12,
+      "narrator_used": 0,
+      "pass": 11,
+      "top_fail_reasons": [
+        [
+          "entity_mismatch",
+          1
+        ],
+        [
+          "intent_mismatch",
+          1
+        ]
+      ],
+      "total": 12
+    },
+    "fiis_news": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 9,
+      "description": "Suíte de testes para fiis_news — notícias, fatos relevantes, manchetes e atualizações recentes associadas a FIIs.",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 12,
+      "narrator_used": 0,
+      "pass": 12,
+      "top_fail_reasons": [],
+      "total": 12
+    },
+    "fiis_overview": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 12,
+          "total": 12
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 9,
+      "description": "Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 12,
+      "narrator_used": 0,
+      "pass": 12,
+      "top_fail_reasons": [],
+      "total": 12
+    },
+    "fiis_quota_prices": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 4,
+      "description": "Suíte de testes para fiis_quota_prices — preço hoje, ontem, max/min, variação, ticker sem 11",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 14,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [],
+      "total": 14
+    },
+    "fiis_rankings": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 14,
+          "total": 14
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 7,
+      "description": "Suíte de testes para fiis_rankings — rankings de FIIs por usuários, SIRIOS, IFIX/IFIL e métricas quantitativas (DY, Sharpe, volatilidade, drawdown etc.)",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 14,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [],
+      "total": 14
+    },
+    "fiis_real_estate": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 0,
+      "description": "Suíte de testes para fiis_real_estate — ativos, endereços, área e vacância dos FIIs",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "fiis_registrations": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 9,
+      "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 15,
+      "narrator_used": 0,
+      "pass": 15,
+      "top_fail_reasons": [],
+      "total": 15
+    },
+    "fiis_yield_history": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 15,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 10,
+      "description": "Roteiro de perguntas canônicas para rota fiis_yield_history (histórico de dividend yield mensal por FII). Foco: dy historico, dy mensal, dy 12m/24m, sempre com ticker.",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 15,
+      "narrator_used": 0,
+      "pass": 15,
+      "top_fail_reasons": [],
+      "total": 15
+    },
+    "history_b3_indexes": {
+      "accuracy": {
+        "both": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "entity": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        },
+        "intent": {
+          "accuracy": 0.9333333333333333,
+          "matches": 14,
+          "total": 15
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 10,
+      "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1).",
+      "fail": 1,
+      "gate_fail": 1,
+      "gate_ok": 14,
+      "narrator_used": 0,
+      "pass": 14,
+      "top_fail_reasons": [
+        [
+          "status_not_ok",
+          1
+        ],
+        [
+          "entity_mismatch",
+          1
+        ],
+        [
+          "intent_mismatch",
+          1
+        ]
+      ],
+      "total": 15
+    },
+    "history_currency_rates": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 5,
+          "total": 5
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 1,
+      "description": "Suíte de testes para history_currency_rates — câmbio USD/EUR em BRL D-1",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 5,
+      "narrator_used": 0,
+      "pass": 5,
+      "top_fail_reasons": [],
+      "total": 5
+    },
+    "history_market_indicators": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 6,
+          "total": 6
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 6,
+          "total": 6
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 6,
+          "total": 6
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 4,
+      "description": "Suíte de testes para history_market_indicators — séries históricas e valores pontuais (hoje, ontem) de indicadores macro como SELIC, CDI, IPCA, IGPM e INCC",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 6,
+      "narrator_used": 0,
+      "pass": 6,
+      "top_fail_reasons": [],
+      "total": 6
+    },
+    "negativos_indices": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 4,
+          "total": 4
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 4,
+          "total": 4
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 4,
+          "total": 4
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 4,
+      "description": "Testes negativos — índices, câmbio e macro NÃO devem ir para fiis_quota_prices",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 4,
+      "narrator_used": 0,
+      "pass": 4,
+      "top_fail_reasons": [],
+      "total": 4
+    },
+    "routing": {
+      "accuracy": {
+        "both": {
+          "accuracy": 1.0,
+          "matches": 2,
+          "total": 2
+        },
+        "entity": {
+          "accuracy": 1.0,
+          "matches": 2,
+          "total": 2
+        },
+        "intent": {
+          "accuracy": 1.0,
+          "matches": 2,
+          "total": 2
+        }
+      },
+      "cache_hit_metrics": 0,
+      "cache_hit_response": 2,
+      "description": "Suite mínima para validar roteamento via /ask.",
+      "fail": 0,
+      "gate_fail": 0,
+      "gate_ok": 2,
+      "narrator_used": 0,
+      "pass": 2,
+      "top_fail_reasons": [],
+      "total": 2
+    }
+  }
+}
