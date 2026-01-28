@@ -72,7 +72,9 @@ def _resolve_bucket_from_plan(
     """
     bucket_entities = _extract_bucket_entities(cfg)
     valid_buckets = {
-        bucket for bucket, ents in bucket_entities.items() if isinstance(ents, list) and ents
+        bucket
+        for bucket, ents in bucket_entities.items()
+        if isinstance(ents, list) and ents
     }
 
     def _bucket_valid(bucket: str | None) -> str:
@@ -490,7 +492,6 @@ class Planner:
         has_ticker = bool(resolved_ticker)
 
         bucket = ""
-        bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
         candidate_intents = all_intents
 

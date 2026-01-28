@@ -1,4 +1,4 @@
-# tests/narrator/test_narrator_bucket_d_llm.py
+# tests/narrator/test_narrator_global_post_sql_llm.py
 from app.narrator.narrator import Narrator
 
 
@@ -61,9 +61,7 @@ def test_invalid_bucket_does_not_abort_flow(monkeypatch):
     dummy_client = DummyClient()
     narrator.client = dummy_client
     monkeypatch.setattr("app.narrator.narrator.counter", lambda *args, **kwargs: None)
-    monkeypatch.setattr(
-        "app.narrator.narrator.histogram", lambda *args, **kwargs: None
-    )
+    monkeypatch.setattr("app.narrator.narrator.histogram", lambda *args, **kwargs: None)
 
     enriched_meta = narrator.render_global_post_sql(
         question="Pergunta genérica",
