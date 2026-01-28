@@ -49,12 +49,13 @@ routing:
   - consolidated_macroeconomic
   allow_intents: []
   notes: >
-    RAG é ativado somente para domínios textuais do Bucket D.
+    RAG é ativado somente para domínios textuais declarados nesta policy.
     Buckets A, B e C permanecem puramente SQL; dados numéricos
-    continuam sem RAG. No estado atual ainda não há intents
-    específicas configuradas para o Bucket D, então o RAG
-    permanece efetivamente desligado (rerank desabilitado) até
-    criarmos intents ou entidades textuais elegíveis.
+    continuam sem RAG. O RAG não é governado por bucket.
+    No estado atual ainda não há intents específicas configuradas
+    para domínios textuais elegíveis, então o RAG permanece
+    efetivamente desligado (rerank desabilitado) até evoluirmos
+    intents ou entidades textuais.
 rerank:
   default:
     enabled: false

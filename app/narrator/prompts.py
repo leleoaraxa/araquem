@@ -486,7 +486,7 @@ def render_narrative(
     return ""
 
 
-def build_bucket_d_global_prompt(
+def build_global_prompt(
     *,
     question: str,
     entity: str,
@@ -495,7 +495,7 @@ def build_bucket_d_global_prompt(
     policy: dict | None = None,
     meta: dict | None = None,
 ) -> str:
-    """Prompt seguro para narrativas globais (bucket D, pós-SQL)."""
+    """Prompt seguro para narrativas globais (pós-SQL)."""
 
     facts_json = json.dumps(facts_payload or {}, ensure_ascii=False, indent=2)
     temperature = None
@@ -509,7 +509,7 @@ def build_bucket_d_global_prompt(
 
     return f"""Você é o Narrator do Araquem, especializado em análises macro.
 
-Você recebeu fatos já consolidados via SQL (bucket={bucket}, entidade={entity}).
+Você recebeu fatos já consolidados via SQL (entidade={entity}, bucket={bucket}).
 Gere uma narrativa global em português do Brasil, com tom executivo e acessível.
 
 Regras obrigatórias:
