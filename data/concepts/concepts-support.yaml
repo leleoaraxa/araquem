@@ -1,0 +1,52 @@
+# data/concepts/concepts-support.yaml
+domain: support
+owner: research
+
+concepts:
+  - name: "Como fazer boas perguntas"
+    aliases:
+      - "como perguntar"
+      - "boas perguntas"
+    description: >
+      Perguntas objetivas e com contexto ajudam a Íris a responder melhor.
+      Informe o ticker, o período e o indicador desejado. Quando possível,
+      descreva o tipo de análise esperada (ex.: comparar dois FIIs).
+
+  - name: "Erros comuns e como corrigir"
+    aliases:
+      - "erro de ticker"
+      - "não encontrei dados"
+      - "sem dados"
+    description: >
+      Erros comuns incluem ticker inválido, período fora do intervalo disponível
+      ou ausência de dados para um indicador específico. Verifique o código do
+      fundo, tente períodos menores e confirme se o indicador existe para aquele
+      FII.
+
+  - name: "Como interpretar respostas tabulares e listas"
+    aliases:
+      - "tabela"
+      - "lista"
+    description: >
+      Respostas tabulares exibem colunas e linhas com dados estruturados; listas
+      costumam destacar pontos-chave, rankings ou comparações. Se precisar de
+      mais detalhes, peça para explicar as colunas ou filtrar o período.
+
+  - name: "Latência e timeouts"
+    aliases:
+      - "demora"
+      - "timeout"
+    description: >
+      Algumas consultas podem levar mais tempo quando envolvem séries longas ou
+      comparações entre muitos FIIs. Se houver timeout, tente reduzir o período
+      ou especificar um conjunto menor de fundos.
+
+  - name: "Limitações conhecidas"
+    aliases:
+      - "limites"
+      - "o que não cobre"
+    description: >
+      Dados podem ter defasagem (por exemplo, D-1) e nem todo tema está coberto.
+      Algumas respostas dependem de RAG disponível e de dados existentes nas
+      entidades da SIRIOS. Quando não houver informação suficiente, a Íris
+      explicará a limitação.

@@ -1,0 +1,31 @@
+# data/concepts/concepts-support-plans.yaml
+domain: support_plans
+owner: research
+
+concepts:
+  - name: "Planos e acesso"
+    aliases:
+      - "plano"
+      - "assinatura"
+      - "acesso"
+    description: >
+      Planos definem níveis de acesso e funcionalidades disponíveis no produto,
+      conforme as condições informadas pela SIRIOS
+
+  - name: "Alteração de plano"
+    aliases:
+      - "mudar plano"
+      - "upgrade"
+      - "downgrade"
+    description: >
+      Alterações de plano podem ajustar limites e escopo de acesso. Consulte as
+      descrições de cada plano para entender o que muda.
+
+  - name: "Suporte relacionado a planos"
+    aliases:
+      - "duvidas sobre plano"
+      - "suporte de plano"
+      - "acesso restrito"
+    description: >
+      Questões sobre planos e acesso são tratadas pelo suporte, com base nas
+      regras e materiais oficiais informados pela SIRIOS.
