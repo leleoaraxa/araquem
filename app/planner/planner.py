@@ -540,6 +540,9 @@ class Planner:
         anti_hits_items: List[Dict[str, Any]] = []
         intent_base_breakdown: List[Dict[str, Any]] = []
 
+        # bucket_entities precisa existir antes do scoring-base (explain/details).
+        # Neste estágio ainda não sabemos o bucket vencedor; bucket="" => universo = todas as entidades.
+        bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         # --- scoring base (como já havia) ---
         for it in candidate_intents:
             score = 0.0
@@ -636,7 +639,7 @@ class Planner:
                 "phrase_includes": phrase_incl_hits,
                 "phrase_excludes": phrase_excl_hits,
                 "anti_penalty": anti_penalty,
-                "entities": [e for e in it.entities if e in bucket_entities],
+                "entities": list(it.entities or []),
             }
             intent_base_breakdown.append(
                 {
