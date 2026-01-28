@@ -1,168 +1,283 @@
+# data/concepts/concepts-fiis.yaml
 version: 1
 domain: fiis
 owner: research
 
 sections:
-
-  identidade_classificacao:
+  - id: identidade-classificacao
     title: "Identidade e Classificação"
-    concepts:
-      - ticker: "Código oficial do fundo, ex.: HGLG11."
-      - cnpj: "Registro legal do FII e do administrador."
-      - nomes: "Nome de pregão e nome de exibição usados na B3."
-      - setor_tipo: "Classificação por setor, subsetor e tipo (tijolo, papel, híbrido, desenvolvimento)."
-      - gestao: "Gestão ativa ou passiva."
-      - publico_alvo: "Investidores em geral, qualificados etc."
-      - isin: "Código internacional de negociação."
-      - ipo: "Data de início das negociações."
-      - governanca: "Administrador, gestor, custodiante e site oficial."
-      - participacao_indices: "Participação e pesos no IFIX/IFIL."
+    items:
+      - name: "ticker"
+        description: "Código oficial do fundo, ex.: HGLG11."
+      - name: "cnpj"
+        description: "Registro legal do FII e do administrador."
+      - name: "nomes"
+        description: "Nome de pregão e nome de exibição usados na B3."
+      - name: "setor_tipo"
+        description: "Classificação por setor, subsetor e tipo (tijolo, papel, híbrido, desenvolvimento)."
+      - name: "gestao"
+        description: "Gestão ativa ou passiva."
+      - name: "publico_alvo"
+        description: "Investidores em geral, qualificados etc."
+      - name: "isin"
+        description: "Código internacional de negociação."
+      - name: "ipo"
+        description: "Data de início das negociações."
+      - name: "governanca"
+        description: "Administrador, gestor, custodiante e site oficial."
+      - name: "participacao_indices"
+        description: "Participação e pesos no IFIX/IFIL."
 
-  precos:
+  - id: precos
     title: "Preço e Cotação"
-    concepts:
-      - preco_fechamento: "Preço de fechamento ajustado da cota."
-      - ohlc: "Abertura, máxima e mínima do dia."
-      - variacao: "Variação diária em percentual e valor."
-      - serie_historica: "Evolução da cota ao longo do tempo."
+    items:
+      - name: "preco_fechamento"
+        description: "Preço de fechamento ajustado da cota."
+      - name: "ohlc"
+        description: "Abertura, máxima e mínima do dia."
+      - name: "variacao"
+        description: "Variação diária em percentual e valor."
+      - name: "serie_historica"
+        description: "Evolução da cota ao longo do tempo."
 
-  dividendos:
+  - id: dividendos
     title: "Dividendos e Renda"
-    concepts:
-      - dividendo: "Valor distribuído por cota."
-      - data_pagamento: "Data do recebimento."
-      - data_com: "Determina quem tem direito ao dividendo."
-      - acumulados: "Somatórios de 3, 6 e 12 meses."
-      - dy: "Dividend Yield: dividendo anualizado sobre preço."
+    items:
+      - name: "dividendo"
+        description: "Valor distribuído por cota."
+      - name: "data_pagamento"
+        description: "Data do recebimento."
+      - name: "data_com"
+        description: "Determina quem tem direito ao dividendo."
+      - name: "acumulados"
+        description: "Somatórios de 3, 6 e 12 meses."
+      - name: "dy"
+        description: "Dividend Yield: dividendo anualizado sobre preço."
 
-  financials_snapshot:
+  - id: financials-snapshot
     title: "Indicadores Financeiros e Valuation"
-    concepts:
-      renda:
-        - dy: "Dividend Yield mensal e anual."
-        - soma_12m: "Total de proventos em 12 meses."
-        - payout: "Percentual de lucro distribuído."
-      valuation:
-        - market_cap: "Valor de mercado."
-        - enterprise_value: "Valor econômico considerando dívidas."
-        - vpa: "Valor patrimonial por cota."
-        - pvp: "Preço dividido pelo valor patrimonial."
-        - cap_rate: "Renda anual sobre valor da cota."
-      estrutura_financeira:
-        - caixa: "Disponibilidades do fundo."
-        - passivos: "Dívidas e obrigações."
-        - alavancagem: "Indicadores de endividamento."
-        - reservas: "Reservas de dividendos."
-      crescimento:
-        - crescimento_dividendos: "Crescimento dos dividendos em 12/24/36 meses."
-        - crescimento_receita: "Crescimento de receita ou patrimônio."
+    items:
+      - name: "Renda"
+        subitems:
+          - name: "dy"
+            description: "Dividend Yield mensal e anual."
+          - name: "soma_12m"
+            description: "Total de proventos em 12 meses."
+          - name: "payout"
+            description: "Percentual de lucro distribuído."
 
-  risco:
+      - name: "Valuation"
+        subitems:
+          - name: "market_cap"
+            description: "Valor de mercado."
+          - name: "enterprise_value"
+            description: "Valor econômico considerando dívidas."
+          - name: "vpa"
+            description: "Valor patrimonial por cota."
+          - name: "pvp"
+            description: "Preço dividido pelo valor patrimonial."
+          - name: "cap_rate"
+            description: "Renda anual sobre valor da cota."
+
+      - name: "Estrutura financeira"
+        subitems:
+          - name: "caixa"
+            description: "Disponibilidades do fundo."
+          - name: "passivos"
+            description: "Dívidas e obrigações."
+          - name: "alavancagem"
+            description: "Indicadores de endividamento."
+          - name: "reservas"
+            description: "Reservas de dividendos."
+
+      - name: "Crescimento"
+        subitems:
+          - name: "crescimento_dividendos"
+            description: "Crescimento dos dividendos em 12/24/36 meses."
+          - name: "crescimento_receita"
+            description: "Crescimento de receita ou patrimônio."
+
+  - id: risco
     title: "Risco Quantitativo"
-    concepts:
-      - volatilidade: "Oscilação dos preços no tempo."
-      - sharpe: "Retorno acima do CDI dividido pela volatilidade."
-      - sortino: "Sharpe que penaliza apenas quedas."
-      - treynor: "Retorno excedente dividido pelo beta."
-      - jensen_alpha: "Retorno acima do esperado pelo CAPM."
-      - beta: "Sensibilidade em relação ao IFIX."
-      - r2: "Grau de explicação pelo índice de referência."
-      - max_drawdown: "Maior queda acumulada."
+    items:
+      - name: "volatilidade"
+        description: "Oscilação dos preços no tempo."
+      - name: "sharpe"
+        description: "Retorno acima do CDI dividido pela volatilidade."
+      - name: "sortino"
+        description: "Sharpe que penaliza apenas quedas."
+      - name: "treynor"
+        description: "Retorno excedente dividido pelo beta."
+      - name: "jensen_alpha"
+        description: "Retorno acima do esperado pelo CAPM."
+      - name: "beta"
+        description: "Sensibilidade em relação ao IFIX."
+      - name: "r2"
+        description: "Grau de explicação pelo índice de referência."
+      - name: "max_drawdown"
+        description: "Maior queda acumulada."
 
-  revenue_schedule:
+  - id: revenue-schedule
     title: "Recebíveis e Indexadores"
-    concepts:
-      buckets:
-        - revenue_due_0_3m_pct: "Receitas com vencimento em 0–3 meses."
-        - revenue_due_3_6m_pct: "Receitas com vencimento em 3–6 meses."
-        - revenue_due_6_9m_pct: "Receitas com vencimento em 6–9 meses."
-        - revenue_due_9_12m_pct: "Receitas com vencimento em 9–12 meses."
-        - revenue_due_12_15m_pct: "Receitas com vencimento em 12–15 meses."
-        - revenue_due_15_18m_pct: "Receitas com vencimento em 15–18 meses."
-        - revenue_due_18_21m_pct: "Receitas com vencimento em 18–21 meses."
-        - revenue_due_21_24m_pct: "Receitas com vencimento em 21–24 meses."
-        - revenue_due_24_27m_pct: "Receitas com vencimento em 24–27 meses."
-        - revenue_due_27_30m_pct: "Receitas com vencimento em 27–30 meses."
-        - revenue_due_30_33m_pct: "Receitas com vencimento em 30–33 meses."
-        - revenue_due_33_36m_pct: "Receitas com vencimento em 33–36 meses."
-        - revenue_due_over_36m_pct: "Receitas com vencimento acima de 36 meses."
-        - revenue_due_undetermined_pct: "Receitas com vencimento indeterminado."
-      janelas_padrao:
-        - "Faixas apuradas: 0–3m, 3–6m, 6–9m, 9–12m, 12–15m, 15–18m, 18–21m, 21–24m, 24–27m, 27–30m, 30–33m, 33–36m, acima de 36m e indeterminado."
-      indexadores:
-        - ipca: "Receitas indexadas ao IPCA."
-        - igpm: "Receitas indexadas ao IGPM."
-        - inpc: "Receitas indexadas ao INPC."
-        - incc: "Receitas indexadas ao INCC."
+    items:
+      - name: "Buckets"
+        subitems:
+          - name: "revenue_due_0_3m_pct"
+            description: "Receitas com vencimento em 0–3 meses."
+          - name: "revenue_due_3_6m_pct"
+            description: "Receitas com vencimento em 3–6 meses."
+          - name: "revenue_due_6_9m_pct"
+            description: "Receitas com vencimento em 6–9 meses."
+          - name: "revenue_due_9_12m_pct"
+            description: "Receitas com vencimento em 9–12 meses."
+          - name: "revenue_due_12_15m_pct"
+            description: "Receitas com vencimento em 12–15 meses."
+          - name: "revenue_due_15_18m_pct"
+            description: "Receitas com vencimento em 15–18 meses."
+          - name: "revenue_due_18_21m_pct"
+            description: "Receitas com vencimento em 18–21 meses."
+          - name: "revenue_due_21_24m_pct"
+            description: "Receitas com vencimento em 21–24 meses."
+          - name: "revenue_due_24_27m_pct"
+            description: "Receitas com vencimento em 24–27 meses."
+          - name: "revenue_due_27_30m_pct"
+            description: "Receitas com vencimento em 27–30 meses."
+          - name: "revenue_due_30_33m_pct"
+            description: "Receitas com vencimento em 30–33 meses."
+          - name: "revenue_due_33_36m_pct"
+            description: "Receitas com vencimento em 33–36 meses."
+          - name: "revenue_due_over_36m_pct"
+            description: "Receitas com vencimento acima de 36 meses."
+          - name: "revenue_due_undetermined_pct"
+            description: "Receitas com vencimento indeterminado."
 
-  imoveis:
+      - name: "Janelas padrão"
+        notes:
+          - "Faixas apuradas: 0–3m, 3–6m, 6–9m, 9–12m, 12–15m, 15–18m, 18–21m, 21–24m, 24–27m, 27–30m, 30–33m, 33–36m, acima de 36m e indeterminado."
+
+      - name: "Indexadores"
+        subitems:
+          - name: "ipca"
+            description: "Receitas indexadas ao IPCA."
+          - name: "igpm"
+            description: "Receitas indexadas ao IGPM."
+          - name: "inpc"
+            description: "Receitas indexadas ao INPC."
+          - name: "incc"
+            description: "Receitas indexadas ao INCC."
+
+  - id: imoveis
     title: "Imóveis e Portfólio Físico"
-    concepts:
-      - nome_ativo: "Nome do imóvel/ativo."
-      - classe: "Tipo (logístico, corporativo, shopping etc.)."
-      - localizacao: "Cidade e estado."
-      - area_total: "Área total ocupada."
-      - unidades: "Número de unidades."
-      - vacancia: "Vacância física e financeira."
-      - inadimplencia: "Atrasos no pagamento."
-      - status: "Ativo, Inativo, etc."
+    items:
+      - name: "nome_ativo"
+        description: "Nome do imóvel/ativo."
+      - name: "classe"
+        description: "Tipo (logístico, corporativo, shopping etc.)."
+      - name: "localizacao"
+        description: "Cidade e estado."
+      - name: "area_total"
+        description: "Área total ocupada."
+      - name: "unidades"
+        description: "Número de unidades."
+      - name: "vacancia"
+        description: "Vacância física e financeira."
+      - name: "inadimplencia"
+        description: "Atrasos no pagamento."
+      - name: "status"
+        description: "Ativo, Inativo, etc."
 
-  noticias:
+  - id: noticias
     title: "Notícias de FIIs"
-    concepts:
-      - fonte: "Origem da notícia."
-      - tags: "Classificação do tema."
-      - resumo: "Descrição curta do conteúdo."
-      - tickers_mencionados: "FIIs impactados."
-      - data_publicacao: "Data da notícia."
+    items:
+      - name: "fonte"
+        description: "Origem da notícia."
+      - name: "tags"
+        description: "Classificação do tema."
+      - name: "resumo"
+        description: "Descrição curta do conteúdo."
+      - name: "tickers_mencionados"
+        description: "FIIs impactados."
+      - name: "data_publicacao"
+        description: "Data da notícia."
 
-  processos:
+  - id: processos
     title: "Processos Judiciais"
-    concepts:
-      - numero_processo: "Identificador judicial."
-      - instancia: "Grau do processo."
-      - julgamento: "Fase atual."
-      - valor_causa: "Montante envolvido."
-      - risco_perda: "Classificação do risco."
-      - fatos_principais: "Resumo objetivo do caso."
-      - impacto_potencial: "Possível efeito no fundo."
+    items:
+      - name: "numero_processo"
+        description: "Identificador judicial."
+      - name: "instancia"
+        description: "Grau do processo."
+      - name: "julgamento"
+        description: "Fase atual."
+      - name: "valor_causa"
+        description: "Montante envolvido."
+      - name: "risco_perda"
+        description: "Classificação do risco."
+      - name: "fatos_principais"
+        description: "Resumo objetivo do caso."
+      - name: "impacto_potencial"
+        description: "Possível efeito no fundo."
 
-  rankings:
+  - id: rankings
     title: "Rankings e Posição Relativa"
-    concepts:
-      - posicao: "Posição atual do FII em diferentes rankings (usuários, SIRIOS, IFIX, IFIL)."
-      - movimentos: "Subidas e quedas na posição do FII ao longo do tempo."
-      - rankings_ifix_ifil: "Posição do FII nos índices IFIX e IFIL, inclusive entrada e saída em rebalanceamentos."
-    typical_questions:
-      - "qual a posição do HGLG11 no ranking de usuários?"
-      - "qual a posição do HGLG11 no ranking da SIRIOS?"
-      - "qual a posição do KNRI11 no IFIX?"
-      - "o FPAB11 já fez parte do IFIX? qual a posição dele?"
-      - "fiis com maior liquidez no IFIX"
+    items:
+      - name: "Rankings e posições"
+        subitems:
+          - name: "posicao"
+            description: "Posição atual do FII em diferentes rankings (usuários, SIRIOS, IFIX, IFIL)."
+          - name: "movimentos"
+            description: "Subidas e quedas na posição do FII ao longo do tempo."
+          - name: "rankings_ifix_ifil"
+            description: "Posição do FII nos índices IFIX e IFIL, inclusive entrada e saída em rebalanceamentos."
+        typical_questions:
+          - "qual a posição do HGLG11 no ranking de usuários?"
+          - "qual a posição do HGLG11 no ranking da SIRIOS?"
+          - "qual a posição do KNRI11 no IFIX?"
+          - "o FPAB11 já fez parte do IFIX? qual a posição dele?"
+          - "fiis com maior liquidez no IFIX"
 
-  macro:
+  - id: macro
     title: "Contexto de Mercado e Macroeconomia"
-    concepts:
-      indices_b3:
-        - ibov: "Pontos e variação do Ibovespa."
-        - ifix: "Pontos e variação do IFIX."
-        - ifil: "Pontos e variação do IFIL."
-      moedas:
-        - dolar: "Compra, venda e variação."
-        - euro: "Compra, venda e variação."
-      macroindicadores:
-        - cdi: "Taxa DI."
-        - selic: "Taxa básica de juros."
-        - ipca: "Inflação medida pelo IPCA."
-        - igpm: "Inflação medida pelo IGPM."
-        - inpc: "Inflação medida pelo INPC."
+    items:
+      - name: "Índices da B3"
+        subitems:
+          - name: "ibov"
+            description: "Pontos e variação do Ibovespa."
+          - name: "ifix"
+            description: "Pontos e variação do IFIX."
+          - name: "ifil"
+            description: "Pontos e variação do IFIL."
+      - name: "Moedas"
+        subitems:
+          - name: "dolar"
+            description: "Compra, venda e variação."
+          - name: "euro"
+            description: "Compra, venda e variação."
+      - name: "Macroindicadores"
+        subitems:
+          - name: "cdi"
+            description: "Taxa DI."
+          - name: "selic"
+            description: "Taxa básica de juros."
+          - name: "ipca"
+            description: "Inflação medida pelo IPCA."
+          - name: "igpm"
+            description: "Inflação medida pelo IGPM."
+          - name: "inpc"
+            description: "Inflação medida pelo INPC."
 
-  carteira:
+  - id: carteira
     title: "Carteira do Investidor"
-    concepts:
-      - identificador_cliente: "CPF/CNPJ do investidor."
-      - data_posicao: "Data da posição."
-      - quantidade: "Quantidade em custódia e disponível."
-      - preco_avaliacao: "Preço usado no cálculo da carteira."
-      - valor_posicao: "Valor total da posição."
-      - corretora: "Participante responsável."
+    items:
+      - name: "identificador_cliente"
+        description: "CPF/CNPJ do investidor."
+      - name: "data_posicao"
+        description: "Data da posição."
+      - name: "quantidade"
+        description: "Quantidade em custódia e disponível."
+      - name: "preco_avaliacao"
+        description: "Preço usado no cálculo da carteira."
+      - name: "valor_posicao"
+        description: "Valor total da posição."
+      - name: "corretora"
+        description: "Participante responsável."

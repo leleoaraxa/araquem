@@ -1,56 +1,60 @@
 # data/concepts/concepts-support-troubleshooting.yaml
-domain: support_troubleshooting
+version: 1
+domain: support
 owner: research
 
-concepts:
-  - name: "Checklist rápido de diagnóstico"
-    aliases:
-      - "checklist"
-      - "diagnostico"
-    description: >
-      O diagnóstico depende de informar ticker, período e indicador desejado.
-      Comparações entre FIIs requerem todos os tickers e uma única métrica por
-      vez.
+sections:
+  - id: troubleshooting
+    title: "Troubleshooting"
+    items:
+      - name: "Checklist rápido de diagnóstico"
+        aliases:
+          - "checklist"
+          - "diagnostico"
+        description: >
+          O diagnóstico depende de informar ticker, período e indicador desejado.
+          Comparações entre FIIs requerem todos os tickers e uma única métrica por
+          vez.
 
-  - name: "Sem dados ou indicador indisponível"
-    aliases:
-      - "sem dados"
-      - "nao encontrei"
-      - "não encontrei"
-    description: >
-      A ausência de dados pode ocorrer quando o indicador não está disponível
-      para todas as datas ou FIIs. Uma janela temporal menor ou um período mais
-      recente pode trazer respostas mais objetivas.
+      - name: "Sem dados ou indicador indisponível"
+        aliases:
+          - "sem dados"
+          - "nao encontrei"
+          - "não encontrei"
+        description: >
+          A ausência de dados pode ocorrer quando o indicador não está disponível
+          para todas as datas ou FIIs. Uma janela temporal menor ou um período mais
+          recente pode trazer respostas mais objetivas.
 
-  - name: "Reduzir escopo da pergunta"
-    aliases:
-      - "reduzir escopo"
-      - "simplificar"
-    description: >
-      Perguntas com um único FII, um único indicador e uma janela temporal menor
-      ou um período mais recente favorecem respostas mais objetivas.
+      - name: "Reduzir escopo da pergunta"
+        aliases:
+          - "reduzir escopo"
+          - "simplificar"
+        description: >
+          Perguntas com um único FII, um único indicador e uma janela temporal menor
+          ou um período mais recente favorecem respostas mais objetivas.
 
-  - name: "Timeout ou resposta lenta"
-    aliases:
-      - "timeout"
-      - "demora"
-    description: >
-      Consultas com séries longas ou muitas comparações podem ter maior
-      latência. Janelas menores ou divisão da pergunta em partes tendem a
-      reduzir o volume consultado.
+      - name: "Timeout ou resposta lenta"
+        aliases:
+          - "timeout"
+          - "demora"
+        description: >
+          Consultas com séries longas ou muitas comparações podem ter maior
+          latência. Janelas menores ou divisão da pergunta em partes tendem a
+          reduzir o volume consultado.
 
-  - name: "Pedir explicação de colunas"
-    aliases:
-      - "explicar colunas"
-      - "o que significa a coluna"
-    description: >
-      Em tabelas, uma explicação de colunas e unidades ajuda a interpretar o
-      conteúdo antes de aprofundar a análise.
+      - name: "Pedir explicação de colunas"
+        aliases:
+          - "explicar colunas"
+          - "o que significa a coluna"
+        description: >
+          Em tabelas, uma explicação de colunas e unidades ajuda a interpretar o
+          conteúdo antes de aprofundar a análise.
 
-  - name: "Ajustar janela temporal"
-    aliases:
-      - "reduzir janela"
-      - "periodo menor"
-    description: >
-      Se a resposta ficar extensa, uma janela temporal menor com datas ou meses
-      específicos tende a gerar um resumo mais direto.
+      - name: "Ajustar janela temporal"
+        aliases:
+          - "reduzir janela"
+          - "periodo menor"
+        description: >
+          Se a resposta ficar extensa, uma janela temporal menor com datas ou meses
+          específicos tende a gerar um resumo mais direto.

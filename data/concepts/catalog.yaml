@@ -5,47 +5,117 @@ concepts:
     domain: fiis
     owner: research
     sections:
-      - "Identidade do Fundo e Classificação"
-      - "Preço e Renda: Cotas e Dividendos"
+      - "Identidade e Classificação"
+      - "Preço e Cotação"
+      - "Dividendos e Renda"
       - "Indicadores Financeiros e Valuation"
-      - "Risco Quantitativo e Fronteira da Eficiência"
-      - "Recebíveis e Indexadores de Receita"
+      - "Risco Quantitativo"
+      - "Recebíveis e Indexadores"
       - "Imóveis e Portfólio Físico"
-      - "Notícias, Processos e Eventos"
-      - "Rankings e Popularidade"
+      - "Notícias de FIIs"
+      - "Processos Judiciais"
+      - "Rankings e Posição Relativa"
       - "Contexto de Mercado e Macroeconomia"
-      - "Carteira de FIIs do Investidor"
+      - "Carteira do Investidor"
 
   # Camada específica de risco quantitativo
   - file: data/concepts/concepts-risk.yaml
     domain: risk
     owner: research
     sections:
-      - "Visão SIRIOS de risco em FIIs"
-      - "Volatilidade histórica"
-      - "Sharpe, Treynor e Sortino"
-      - "Alfa de Jensen, Beta e R²"
-      - "Máximo Drawdown (MDD)"
-      - "Fronteira eficiente e carteiras"
+      - "Métricas de risco em FIIs"
+
+  # Metodologia de métricas de risco
+  - file: data/concepts/concepts-risk-metrics-methodology.yaml
+    domain: risk
+    owner: research
+    sections:
+      - "Abordagem geral"
+      - "Métricas"
+      - "Boas práticas de resposta"
 
   # Camada macroeconômica e de mercado
   - file: data/concepts/concepts-macro.yaml
     domain: macro
     owner: research
     sections:
-      - "Índices de mercado da B3 (IBOV, IFIX, IFIL)"
-      - "Taxas de juros e referências de renda fixa (CDI, SELIC)"
-      - "Inflação e indexadores (IPCA, IGPM, INPC etc.)"
-      - "Moedas e exposição cambial (dólar, euro)"
-      - "Contexto macro e tomada de decisão em FIIs"
+      - "Conceitos macroeconômicos"
+
+  # Metodologia macroeconômica
+  - file: data/concepts/concepts-macro-methodology.yaml
+    domain: macro
+    owner: research
+    sections:
+      - "Propósito e princípios"
+      - "Séries monitoradas"
+      - "Periodicidade e janelas"
+      - "Limitações"
 
   # Camada de carteira do investidor
   - file: data/concepts/concepts-carteira.yaml
     domain: carteira
     owner: research
     sections:
-      - "Carteira de FIIs do investidor"
-      - "Concentração e diversificação"
-      - "Risco e retorno da carteira"
-      - "Projeções de renda e objetivos financeiros"
-      - "Princípios de privacidade e segurança de dados"
+      - "Carteira do investidor"
+
+  # Conteúdo institucional
+  - file: data/concepts/concepts-institutional.yaml
+    domain: institutional
+    owner: research
+    sections:
+      - "Visão geral institucional"
+
+  - file: data/concepts/concepts-institutional-policies.yaml
+    domain: institutional
+    owner: research
+    sections:
+      - "Políticas e limites"
+
+  - file: data/concepts/concepts-institutional-privacy.yaml
+    domain: institutional
+    owner: research
+    sections:
+      - "Privacidade e proteção de dados"
+
+  - file: data/concepts/concepts-institutional-product-positioning.yaml
+    domain: institutional-product-positioning
+    owner: research
+    sections:
+      - "Posicionamento de produto"
+
+  - file: data/concepts/concepts-institutional-terms.yaml
+    domain: institutional-terms
+    owner: research
+    sections:
+      - "Glossário institucional"
+
+  # Conteúdo de suporte
+  - file: data/concepts/concepts-support.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Orientações gerais de suporte"
+
+  - file: data/concepts/concepts-support-errors.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Erros comuns"
+
+  - file: data/concepts/concepts-support-howto.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Como fazer"
+
+  - file: data/concepts/concepts-support-plans.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Planos e acesso"
+
+  - file: data/concepts/concepts-support-troubleshooting.yaml
+    domain: support
+    owner: research
+    sections:
+      - "Troubleshooting"

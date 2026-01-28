@@ -1,31 +1,35 @@
 # data/concepts/concepts-institutional-policies.yaml
+version: 1
 domain: institutional
 owner: research
 
-concepts:
-  - name: "O que fazemos e o que não fazemos"
-    aliases:
-      - "o que a SIRIOS faz"
-      - "o que a SIRIOS não faz"
-    description: >
-      A SIRIOS oferece informações e explicações sobre FIIs com foco educativo.
-      Não executa operações, não intermedia ordens e não presta assessoria
-      financeira, jurídica ou tributária.
+sections:
+  - id: politicas-e-limites
+    title: "Políticas e limites"
+    items:
+      - name: "O que fazemos e o que não fazemos"
+        aliases:
+          - "o que a SIRIOS faz"
+          - "o que a SIRIOS não faz"
+        description: >
+          A SIRIOS oferece informações e explicações sobre FIIs com foco educativo.
+          Não executa operações, não intermedia ordens e não presta assessoria
+          financeira, jurídica ou tributária.
 
-  - name: "Sem recomendação de investimento"
-    aliases:
-      - "recomendação"
-      - "compra ou venda"
-    description: >
-      As respostas são informativas e não constituem recomendação de compra,
-      venda ou alocação. O usuário decide com base no próprio perfil e nas
-      informações disponíveis.
+      - name: "Sem recomendação de investimento"
+        aliases:
+          - "recomendação"
+          - "compra ou venda"
+        description: >
+          As respostas são informativas e não constituem recomendação de compra,
+          venda ou alocação. O usuário decide com base no próprio perfil e nas
+          informações disponíveis.
 
-  - name: "Limites do /ask"
-    aliases:
-      - "limites do ask"
-      - "escopo do /ask"
-    description: >
-      O /ask responde perguntas sobre dados e conceitos de FIIs dentro do que
-      está disponível na plataforma. Quando não houver informação suficiente,
-      a resposta indicará a limitação de forma objetiva.
+      - name: "Limites do /ask"
+        aliases:
+          - "limites do ask"
+          - "escopo do /ask"
+        description: >
+          O /ask responde perguntas sobre dados e conceitos de FIIs dentro do que
+          está disponível na plataforma. Quando não houver informação suficiente,
+          a resposta indicará a limitação de forma objetiva.

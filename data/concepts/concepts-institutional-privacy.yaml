@@ -1,28 +1,32 @@
 # data/concepts/concepts-institutional-privacy.yaml
+version: 1
 domain: institutional
 owner: research
 
-concepts:
-  - name: "Princípios gerais de privacidade"
-    aliases:
-      - "privacidade"
-      - "proteção de dados"
-    description: >
-      A SIRIOS trata dados com responsabilidade, mantendo foco em informações
-      necessárias para responder às perguntas e explicar indicadores.
+sections:
+  - id: privacidade
+    title: "Privacidade e proteção de dados"
+    items:
+      - name: "Princípios gerais de privacidade"
+        aliases:
+          - "privacidade"
+          - "proteção de dados"
+        description: >
+          A SIRIOS trata dados com responsabilidade, mantendo foco em informações
+          necessárias para responder às perguntas e explicar indicadores.
 
-  - name: "Minimização de dados"
-    aliases:
-      - "dados mínimos"
-      - "coleta mínima"
-    description: >
-      Quando uma resposta pode ser dada sem detalhes sensíveis, a explicação é
-      mantida no nível mais geral possível.
+      - name: "Minimização de dados"
+        aliases:
+          - "dados mínimos"
+          - "coleta mínima"
+        description: >
+          Quando uma resposta pode ser dada sem detalhes sensíveis, a explicação é
+          mantida no nível mais geral possível.
 
-  - name: "Cuidados com dados de carteira"
-    aliases:
-      - "dados de carteira"
-      - "informações sensíveis"
-    description: >
-      Dados de carteira, quando aplicáveis, são tratados com cautela e usados
-      apenas para contextualizar a resposta solicitada pelo usuário.
+      - name: "Cuidados com dados de carteira"
+        aliases:
+          - "dados de carteira"
+          - "informações sensíveis"
+        description: >
+          Dados de carteira, quando aplicáveis, são tratados com cautela e usados
+          apenas para contextualizar a resposta solicitada pelo usuário.

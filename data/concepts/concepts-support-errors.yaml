@@ -1,36 +1,40 @@
 # data/concepts/concepts-support-errors.yaml
+version: 1
 domain: support
 owner: research
 
-concepts:
-  - name: "Ticker inválido"
-    aliases:
-      - "erro de ticker"
-      - "ticker incorreto"
-    description: >
-      Se o ticker não for reconhecido, confirme o código do FII e tente novamente.
-      Evite espaços ou caracteres extras.
+sections:
+  - id: erros-comuns
+    title: "Erros comuns"
+    items:
+      - name: "Ticker inválido"
+        aliases:
+          - "erro de ticker"
+          - "ticker incorreto"
+        description: >
+          Se o ticker não for reconhecido, confirme o código do FII e tente novamente.
+          Evite espaços ou caracteres extras.
 
-  - name: "Período fora do intervalo"
-    aliases:
-      - "período inválido"
-      - "fora do intervalo"
-    description: >
-      Quando o período solicitado não está disponível, tente um intervalo menor
-      ou datas mais recentes.
+      - name: "Período fora do intervalo"
+        aliases:
+          - "período inválido"
+          - "fora do intervalo"
+        description: >
+          Quando o período solicitado não está disponível, tente um intervalo menor
+          ou datas mais recentes.
 
-  - name: "Sem dados"
-    aliases:
-      - "não encontrei dados"
-      - "sem histórico"
-    description: >
-      Alguns indicadores não estão disponíveis para todos os FIIs. Verifique se
-      a métrica existe para o fundo ou peça uma alternativa.
+      - name: "Sem dados"
+        aliases:
+          - "não encontrei dados"
+          - "sem histórico"
+        description: >
+          Alguns indicadores não estão disponíveis para todos os FIIs. Verifique se
+          a métrica existe para o fundo ou peça uma alternativa.
 
-  - name: "Timeout ou latência"
-    aliases:
-      - "timeout"
-      - "demora"
-    description: >
-      Consultas longas podem demorar. Se houver timeout, reduza o período ou
-      simplifique a consulta para obter a resposta.
+      - name: "Timeout ou latência"
+        aliases:
+          - "timeout"
+          - "demora"
+        description: >
+          Consultas longas podem demorar. Se houver timeout, reduza o período ou
+          simplifique a consulta para obter a resposta.

@@ -44,6 +44,46 @@ include:
     path: data/concepts/concepts-risk-metrics-methodology.yaml
     tags: [concepts, risk, metrics, fiis]
 
+  - id: concepts-institutional
+    path: data/concepts/concepts-institutional.yaml
+    tags: [concepts, institutional]
+
+  - id: concepts-institutional-policies
+    path: data/concepts/concepts-institutional-policies.yaml
+    tags: [concepts, institutional, policies]
+
+  - id: concepts-institutional-privacy
+    path: data/concepts/concepts-institutional-privacy.yaml
+    tags: [concepts, institutional, privacy]
+
+  - id: concepts-institutional-product-positioning
+    path: data/concepts/concepts-institutional-product-positioning.yaml
+    tags: [concepts, institutional, positioning]
+
+  - id: concepts-institutional-terms
+    path: data/concepts/concepts-institutional-terms.yaml
+    tags: [concepts, institutional, terms]
+
+  - id: concepts-support
+    path: data/concepts/concepts-support.yaml
+    tags: [concepts, support]
+
+  - id: concepts-support-errors
+    path: data/concepts/concepts-support-errors.yaml
+    tags: [concepts, support, errors]
+
+  - id: concepts-support-howto
+    path: data/concepts/concepts-support-howto.yaml
+    tags: [concepts, support, howto]
+
+  - id: concepts-support-plans
+    path: data/concepts/concepts-support-plans.yaml
+    tags: [concepts, support, plans]
+
+  - id: concepts-support-troubleshooting
+    path: data/concepts/concepts-support-troubleshooting.yaml
+    tags: [concepts, support, troubleshooting]
+
   # ── Ontologia (fonte de verdade para intents/entities) ─────────────────────
   - id: ontology-entity
     path: data/ontology/entity.yaml

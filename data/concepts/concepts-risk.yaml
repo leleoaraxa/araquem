@@ -1,176 +1,177 @@
 # data/concepts/concepts-risk.yaml
+version: 1
 domain: risk
 owner: research
 
-concepts:
-  - name: "Visão SIRIOS de risco em FIIs"
-    aliases:
-      - "risco em fundos imobiliários"
-      - "análise quantitativa de risco"
-    description: >
-      A SIRIOS enxerga risco como a combinação entre oscilação de preços,
-      retorno ajustado ao risco, comportamento em crises e dependência em relação
-      ao mercado de referência. Os principais insumos são séries históricas de
-      preços, dividendos e benchmarks (IFIX, CDI, outros índices).
+sections:
+  - id: metricas-de-risco
+    title: "Métricas de risco em FIIs"
+    items:
+      - name: "Visão SIRIOS de risco em FIIs"
+        aliases:
+          - "risco em fundos imobiliários"
+          - "análise quantitativa de risco"
+        description: >
+          A SIRIOS enxerga risco como a combinação entre oscilação de preços,
+          retorno ajustado ao risco, comportamento em crises e dependência em relação
+          ao mercado de referência. Os principais insumos são séries históricas de
+          preços, dividendos e benchmarks (IFIX, CDI, outros índices).
+        related_entities:
+          - fiis_financials_risk
+          - fiis_financials_snapshot
+          - history_b3_indexes
+          - history_market_indicators
+        related_intents:
+          - fiis_financials_risk
+          - metricas
+        typical_questions:
+          - "quão arriscado é o HGLG11?"
+          - "qual o Sharpe do KNRI11?"
+          - "esse FII é muito volátil?"
+          - "como minha carteira se comporta em crises?"
 
-    related_entities:
-      - fiis_financials_risk
-      - fiis_financials_snapshot
-      - history_b3_indexes
-      - history_market_indicators
+      - name: "Volatilidade histórica"
+        aliases:
+          - "volatilidade"
+          - "volatility ratio"
+        description: >
+          Mede o quanto o preço de um FII oscila em torno da sua média em um
+          determinado período. Quanto maior a volatilidade, mais instável é o
+          comportamento da cota no tempo.
+        related_entities:
+          - fiis_financials_risk
+          - fiis_quota_prices
+          - history_b3_indexes
+        interpretation:
+          - "volatilidade baixa: preço mais estável, menor variação diária"
+          - "volatilidade alta: movimentos mais bruscos, maior incerteza"
+        typical_questions:
+          - "qual a volatilidade do MXRF11?"
+          - "esse FII oscila mais do que o IFIX?"
 
-    related_intents:
-      - fiis_financials_risk
-      - metricas
+      - name: "Sharpe Ratio"
+        aliases:
+          - "índice de Sharpe"
+        description: >
+          Mede o retorno excedente do fundo em relação a um ativo livre de risco
+          (tipicamente o CDI), dividido pela volatilidade. Avalia o quanto de
+          retorno o investidor recebe para cada unidade de risco assumido.
+        related_entities:
+          - fiis_financials_risk
+          - history_market_indicators
+        interpretation:
+          - "Sharpe positivo e alto: bom retorno ajustado ao risco"
+          - "Sharpe próximo de zero: retorno parecido com o ativo livre de risco"
+          - "Sharpe negativo: retorno pior que o ativo livre de risco, dado o risco"
+        typical_questions:
+          - "qual o Sharpe do KNRI11?"
+          - "entre esses FIIs, qual tem melhor Sharpe?"
 
-    typical_questions:
-      - "quão arriscado é o HGLG11?"
-      - "qual o Sharpe do KNRI11?"
-      - "esse FII é muito volátil?"
-      - "como minha carteira se comporta em crises?"
+      - name: "Treynor Ratio"
+        aliases:
+          - "índice de Treynor"
+        description: >
+          Mede o retorno excedente do fundo em relação ao ativo livre de risco,
+          dividido pelo beta. Foca no risco sistemático, isto é, aquele ligado ao
+          mercado como um todo.
+        related_entities:
+          - fiis_financials_risk
+          - history_b3_indexes
+          - history_market_indicators
+        interpretation:
+          - "Treynor positivo: o fundo entregou retorno acima do esperado pelo risco de mercado"
+          - "Treynor negativo: o fundo não compensou o risco sistemático que assumiu"
+        typical_questions:
+          - "qual o Treynor do HGLG11?"
+          - "qual desses FIIs utiliza melhor o risco de mercado?"
 
-  - name: "Volatilidade histórica"
-    aliases:
-      - "volatilidade"
-      - "volatility ratio"
-    description: >
-      Mede o quanto o preço de um FII oscila em torno da sua média em um
-      determinado período. Quanto maior a volatilidade, mais instável é o
-      comportamento da cota no tempo.
-    related_entities:
-      - fiis_financials_risk
-      - fiis_quota_prices
-      - history_b3_indexes
-    interpretation:
-      - "volatilidade baixa: preço mais estável, menor variação diária"
-      - "volatilidade alta: movimentos mais bruscos, maior incerteza"
-    typical_questions:
-      - "qual a volatilidade do MXRF11?"
-      - "esse FII oscila mais do que o IFIX?"
+      - name: "Alfa de Jensen"
+        aliases:
+          - "alpha de Jensen"
+          - "Jensen alpha"
+        description: >
+          Mostra quanto o fundo entregou acima (ou abaixo) do retorno esperado pelo
+          modelo de precificação de ativos (CAPM), dado o seu beta. Indica se o
+          gestor gerou valor além do que o risco de mercado explicaria.
+        related_entities:
+          - fiis_financials_risk
+          - history_b3_indexes
+        interpretation:
+          - "alfa positivo: desempenho acima do esperado para o nível de risco"
+          - "alfa negativo: desempenho abaixo do esperado"
+        typical_questions:
+          - "esse FII gera alfa positivo?"
+          - "qual o alfa de Jensen do VISC11?"
 
-  - name: "Sharpe Ratio"
-    aliases:
-      - "índice de Sharpe"
-    description: >
-      Mede o retorno excedente do fundo em relação a um ativo livre de risco
-      (tipicamente o CDI), dividido pela volatilidade. Avalia o quanto de
-      retorno o investidor recebe para cada unidade de risco assumido.
-    related_entities:
-      - fiis_financials_risk
-      - history_market_indicators
-    interpretation:
-      - "Sharpe positivo e alto: bom retorno ajustado ao risco"
-      - "Sharpe próximo de zero: retorno parecido com o ativo livre de risco"
-      - "Sharpe negativo: retorno pior que o ativo livre de risco, dado o risco"
-    typical_questions:
-      - "qual o Sharpe do KNRI11?"
-      - "entre esses FIIs, qual tem melhor Sharpe?"
+      - name: "Sortino Ratio"
+        aliases:
+          - "índice de Sortino"
+        description: >
+          Versão do Sharpe que considera apenas a volatilidade negativa (quedas).
+          Penaliza mais os movimentos para baixo do que os para cima.
+        related_entities:
+          - fiis_financials_risk
+        interpretation:
+          - "Sortino alto: bom retorno com poucas quedas relevantes"
+          - "Sortino baixo ou negativo: retorno frágil frente às quedas"
+        typical_questions:
+          - "qual o Sortino desse FII?"
+          - "qual fundo tem melhor equilíbrio retorno vs quedas?"
 
-  - name: "Treynor Ratio"
-    aliases:
-      - "índice de Treynor"
-    description: >
-      Mede o retorno excedente do fundo em relação ao ativo livre de risco,
-      dividido pelo beta. Foca no risco sistemático, isto é, aquele ligado ao
-      mercado como um todo.
-    related_entities:
-      - fiis_financials_risk
-      - history_b3_indexes
-      - history_market_indicators
-    interpretation:
-      - "Treynor positivo: o fundo entregou retorno acima do esperado pelo risco de mercado"
-      - "Treynor negativo: o fundo não compensou o risco sistemático que assumiu"
-    typical_questions:
-      - "qual o Treynor do HGLG11?"
-      - "qual desses FIIs utiliza melhor o risco de mercado?"
+      - name: "Máximo Drawdown (MDD)"
+        aliases:
+          - "max drawdown"
+          - "queda máxima acumulada"
+        description: >
+          Representa a maior queda acumulada entre um topo e um fundo em determinado
+          período. Mostra o pior cenário de perda para quem entrou no topo e saiu no
+          pior momento da janela.
+        related_entities:
+          - fiis_financials_risk
+          - fiis_quota_prices
+        interpretation:
+          - "MDD alto (em valor absoluto): o fundo já passou por quedas profundas"
+          - "MDD mais contido: quedas históricas menos severas"
+        typical_questions:
+          - "qual foi o pior drawdown do MXRF11?"
+          - "como o MDD desse fundo se compara ao IFIX?"
 
-  - name: "Alfa de Jensen"
-    aliases:
-      - "alpha de Jensen"
-      - "Jensen alpha"
-    description: >
-      Mostra quanto o fundo entregou acima (ou abaixo) do retorno esperado pelo
-      modelo de precificação de ativos (CAPM), dado o seu beta. Indica se o
-      gestor gerou valor além do que o risco de mercado explicaria.
-    related_entities:
-      - fiis_financials_risk
-      - history_b3_indexes
-    interpretation:
-      - "alfa positivo: desempenho acima do esperado para o nível de risco"
-      - "alfa negativo: desempenho abaixo do esperado"
-    typical_questions:
-      - "esse FII gera alfa positivo?"
-      - "qual o alfa de Jensen do VISC11?"
+      - name: "Beta e R²"
+        aliases:
+          - "beta em relação ao índice"
+          - "coeficiente de determinação"
+        description: >
+          Beta mede a sensibilidade do fundo em relação a um índice de referência
+          (ex.: IFIX). R² indica o quanto do comportamento do fundo é explicado por
+          esse índice. Juntos, mostram o quanto o FII acompanha o mercado.
+        related_entities:
+          - fiis_financials_risk
+          - history_b3_indexes
+        interpretation:
+          - "beta ~1 e R² alto: fundo se move parecido com o índice"
+          - "beta >1: fundo amplifica movimentos do mercado"
+          - "beta <1: fundo mais defensivo em relação ao índice"
+          - "R² baixo: comportamento menos explicado pelo índice, mais idiossincrático"
+        typical_questions:
+          - "esse fundo acompanha o IFIX?"
+          - "esse FII é mais agressivo ou defensivo que o índice?"
 
-  - name: "Sortino Ratio"
-    aliases:
-      - "índice de Sortino"
-    description: >
-      Versão do Sharpe que considera apenas a volatilidade negativa (quedas).
-      Penaliza mais os movimentos para baixo do que os para cima.
-    related_entities:
-      - fiis_financials_risk
-    interpretation:
-      - "Sortino alto: bom retorno com poucas quedas relevantes"
-      - "Sortino baixo ou negativo: retorno frágil frente às quedas"
-    typical_questions:
-      - "qual o Sortino desse FII?"
-      - "qual fundo tem melhor equilíbrio retorno vs quedas?"
-
-  - name: "Máximo Drawdown (MDD)"
-    aliases:
-      - "max drawdown"
-      - "queda máxima acumulada"
-    description: >
-      Representa a maior queda acumulada entre um topo e um fundo em determinado
-      período. Mostra o pior cenário de perda para quem entrou no topo e saiu no
-      pior momento da janela.
-    related_entities:
-      - fiis_financials_risk
-      - fiis_quota_prices
-    interpretation:
-      - "MDD alto (em valor absoluto): o fundo já passou por quedas profundas"
-      - "MDD mais contido: quedas históricas menos severas"
-    typical_questions:
-      - "qual foi o pior drawdown do MXRF11?"
-      - "como o MDD desse fundo se compara ao IFIX?"
-
-  - name: "Beta e R²"
-    aliases:
-      - "beta em relação ao índice"
-      - "coeficiente de determinação"
-    description: >
-      Beta mede a sensibilidade do fundo em relação a um índice de referência
-      (ex.: IFIX). R² indica o quanto do comportamento do fundo é explicado por
-      esse índice. Juntos, mostram o quanto o FII acompanha o mercado.
-    related_entities:
-      - fiis_financials_risk
-      - history_b3_indexes
-    interpretation:
-      - "beta ~1 e R² alto: fundo se move parecido com o índice"
-      - "beta >1: fundo amplifica movimentos do mercado"
-      - "beta <1: fundo mais defensivo em relação ao índice"
-      - "R² baixo: comportamento menos explicado pelo índice, mais idiossincrático"
-    typical_questions:
-      - "esse fundo acompanha o IFIX?"
-      - "esse FII é mais agressivo ou defensivo que o índice?"
-
-  - name: "Fronteira eficiente e carteiras"
-    aliases:
-      - "fronteira de Markowitz"
-      - "eficiência risco-retorno"
-    description: >
-      A SIRIOS utiliza as métricas de risco e retorno para posicionar FIIs e
-      carteiras em um plano risco versus retorno, aproximando-se do conceito de
-      fronteira eficiente de Markowitz. A ideia é mostrar combinações de ativos
-      que entregam o melhor retorno possível para cada nível de risco.
-    related_entities:
-      - fiis_financials_risk
-      - fiis_financials_snapshot
-      - client_fiis_positions
-    interpretation:
-      - "carteiras próximas da fronteira: melhor equilíbrio risco-retorno"
-      - "carteiras abaixo da fronteira: há combinações potencialmente mais eficientes"
-    typical_questions:
-      - "minha carteira está eficiente?"
-      - "como esse FII se posiciona em relação à fronteira de risco-retorno?"
+      - name: "Fronteira eficiente e carteiras"
+        aliases:
+          - "fronteira de Markowitz"
+          - "eficiência risco-retorno"
+        description: >
+          A SIRIOS utiliza as métricas de risco e retorno para posicionar FIIs e
+          carteiras em um plano risco versus retorno, aproximando-se do conceito de
+          fronteira eficiente de Markowitz. A ideia é mostrar combinações de ativos
+          que entregam o melhor retorno possível para cada nível de risco.
+        related_entities:
+          - fiis_financials_risk
+          - fiis_financials_snapshot
+          - client_fiis_positions
+        interpretation:
+          - "carteiras próximas da fronteira: melhor equilíbrio risco-retorno"
+          - "carteiras abaixo da fronteira: há combinações potencialmente mais eficientes"
+        typical_questions:
+          - "minha carteira está eficiente?"
+          - "como esse FII se posiciona em relação à fronteira de risco-retorno?"

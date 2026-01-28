@@ -1,43 +1,47 @@
 # data/concepts/concepts-institutional-product-positioning.yaml
-domain: institutional_product_positioning
+version: 1
+domain: institutional-product-positioning
 owner: research
 
-concepts:
-  - name: "SIRIOS como plataforma"
-    aliases:
-      - "plataforma sirios"
-    description: >
-      A SIRIOS é uma plataforma de dados e análise para FIIs, organizada para
-      consultas, comparações e acompanhamento de indicadores.
+sections:
+  - id: posicionamento
+    title: "Posicionamento de produto"
+    items:
+      - name: "SIRIOS como plataforma"
+        aliases:
+          - "plataforma sirios"
+        description: >
+          A SIRIOS é uma plataforma de dados e análise para FIIs, organizada para
+          consultas, comparações e acompanhamento de indicadores.
 
-  - name: "Para quem serve"
-    aliases:
-      - "publico"
-      - "quem usa"
-    description: >
-      Serve a usuários que precisam entender métricas e contexto de FIIs, com
-      foco em leitura de dados e educação financeira.
+      - name: "Para quem serve"
+        aliases:
+          - "publico"
+          - "quem usa"
+        description: >
+          Serve a usuários que precisam entender métricas e contexto de FIIs, com
+          foco em leitura de dados e educação financeira.
 
-  - name: "O que a Íris faz"
-    aliases:
-      - "assistente iris"
-      - "iris"
-    description: >
-      Íris responde perguntas sobre dados disponíveis na SIRIOS, explica
-      indicadores e ajuda a interpretar tabelas e séries históricas.
+      - name: "O que a Íris faz"
+        aliases:
+          - "assistente iris"
+          - "iris"
+        description: >
+          Íris responde perguntas sobre dados disponíveis na SIRIOS, explica
+          indicadores e ajuda a interpretar tabelas e séries históricas.
 
-  - name: "O que a Íris não faz"
-    aliases:
-      - "nao recomenda"
-      - "não recomenda"
-      - "nao opera"
-    description: >
-      A Íris não recomenda compra ou venda de ativos e não executa operações.
+      - name: "O que a Íris não faz"
+        aliases:
+          - "nao recomenda"
+          - "não recomenda"
+          - "nao opera"
+        description: >
+          A Íris não recomenda compra ou venda de ativos e não executa operações.
 
-  - name: "Diferenciais de produto"
-    aliases:
-      - "diferenciais"
-      - "valor"
-    description: >
-      O produto prioriza consistência de dados, respostas objetivas e contratos
-      claros de entidades, sem prometer cobertura além do que está disponível.
+      - name: "Diferenciais de produto"
+        aliases:
+          - "diferenciais"
+          - "valor"
+        description: >
+          O produto prioriza consistência de dados, respostas objetivas e contratos
+          claros de entidades, sem prometer cobertura além do que está disponível.
