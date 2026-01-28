@@ -868,8 +868,6 @@ class Narrator:
             else set()
         )
         safe_bucket = bucket if bucket in allowed_buckets else ""
-        if safe_bucket:
-            return effective_meta
         prompt = build_global_prompt(
             question=question,
             entity=entity,

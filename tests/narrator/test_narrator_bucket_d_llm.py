@@ -11,7 +11,7 @@ class DummyClient:
         return "Narrativa macro gerada"
 
 
-def test_bucket_d_triggers_llm(monkeypatch):
+def test_valid_bucket_triggers_llm(monkeypatch):
     narrator = Narrator()
     narrator.client = DummyClient()
 
@@ -38,7 +38,7 @@ def test_bucket_d_triggers_llm(monkeypatch):
     enriched_meta = narrator.render_global_post_sql(
         question="Como estão os indicadores macro?",
         entity="consolidated_macroeconomic",
-        bucket="D",
+        bucket="A",
         results=results,
         meta=meta,
     )
@@ -56,18 +56,22 @@ def test_bucket_d_triggers_llm(monkeypatch):
     )
 
 
-def test_other_buckets_skip_llm(monkeypatch):
+def test_invalid_bucket_does_not_abort_flow(monkeypatch):
     narrator = Narrator()
     dummy_client = DummyClient()
     narrator.client = dummy_client
+    monkeypatch.setattr("app.narrator.narrator.counter", lambda *args, **kwargs: None)
+    monkeypatch.setattr(
+        "app.narrator.narrator.histogram", lambda *args, **kwargs: None
+    )
 
     enriched_meta = narrator.render_global_post_sql(
         question="Pergunta genérica",
         entity="consolidated_macroeconomic",
-        bucket="A",
+        bucket="Z",
         results={"rows": [{"x": 1}]},
         meta={},
     )
 
-    assert "narrative" not in enriched_meta
-    assert dummy_client.calls == []
+    assert enriched_meta.get("narrative") == "Narrativa macro gerada"
+    assert dummy_client.calls

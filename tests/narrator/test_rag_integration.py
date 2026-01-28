@@ -40,6 +40,11 @@ class FakeClient:
         return "texto-gerado-pelo-fake-llm"
 
 
+def _stub_metrics(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setattr(narrator_mod, "counter", lambda *args, **kwargs: None)
+    monkeypatch.setattr(narrator_mod, "histogram", lambda *args, **kwargs: None)
+
+
 def test_narrator_passes_rag_context_to_build_prompt(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -49,6 +54,7 @@ def test_narrator_passes_rag_context_to_build_prompt(
 
     # 1) Força policy com LLM habilitado
     monkeypatch.setattr(narrator_mod, "_load_narrator_policy", _fake_policy_enabled)
+    _stub_metrics(monkeypatch)
 
     # 2) Cria Narrator com cliente fake (sem dependência de Ollama real)
     narrator = Narrator(model="dummy-model", style="executivo")
@@ -128,6 +134,7 @@ def test_narrator_handles_absent_rag_gracefully(
 
     # 1) Policy com LLM habilitado
     monkeypatch.setattr(narrator_mod, "_load_narrator_policy", _fake_policy_enabled)
+    _stub_metrics(monkeypatch)
 
     narrator = Narrator(model="dummy-model", style="executivo")
     narrator.client = FakeClient()
