@@ -1,31 +1,35 @@
 # data/concepts/concepts-support-howto.yaml
+version: 1
 domain: support
 owner: research
 
-concepts:
-  - name: "Como perguntar com contexto"
-    aliases:
-      - "como perguntar"
-      - "boa pergunta"
-    description: >
-      Para respostas mais objetivas, informe o ticker, o período e a métrica
-      desejada. Quando fizer comparações, cite os fundos envolvidos.
+sections:
+  - id: como-fazer
+    title: "Como fazer"
+    items:
+      - name: "Como perguntar com contexto"
+        aliases:
+          - "como perguntar"
+          - "boa pergunta"
+        description: >
+          Para respostas mais objetivas, informe o ticker, o período e a métrica
+          desejada. Quando fizer comparações, cite os fundos envolvidos.
 
-  - name: "Pedir explicação de colunas"
-    aliases:
-      - "explicar colunas"
-      - "o que significa essa coluna"
-    description: >
-      Se receber uma tabela, você pode pedir a explicação de colunas e unidades
-      para entender o significado de cada campo.
+      - name: "Pedir explicação de colunas"
+        aliases:
+          - "explicar colunas"
+          - "o que significa essa coluna"
+        description: >
+          Se receber uma tabela, você pode pedir a explicação de colunas e unidades
+          para entender o significado de cada campo.
 
-  - name: "Exemplos rápidos"
-    aliases:
-      - "exemplos"
-      - "perguntas de exemplo"
-    description: >
-      Exemplos ajudam a guiar o formato do pedido.
-    typical_questions:
-      - "qual foi o dividend yield do HGLG11 nos últimos 12 meses?"
-      - "compare a vacância de KNRI11 e VISC11 no último trimestre"
-      - "o que significa a coluna snapshot_date nessa tabela?"
+      - name: "Exemplos rápidos"
+        aliases:
+          - "exemplos"
+          - "perguntas de exemplo"
+        description: >
+          Exemplos ajudam a guiar o formato do pedido.
+        typical_questions:
+          - "qual foi o dividend yield do HGLG11 nos últimos 12 meses?"
+          - "compare a vacância de KNRI11 e VISC11 no último trimestre"
+          - "o que significa a coluna snapshot_date nessa tabela?"

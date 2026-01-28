@@ -1,100 +1,104 @@
 # data/concepts/concepts-carteira.yaml
+version: 1
 domain: carteira
 owner: research
 
-concepts:
-  - name: "Carteira de FIIs do investidor"
-    aliases:
-      - "minha carteira"
-      - "posições em FIIs"
-      - "wallet de FIIs"
-    description: >
-      Representa o conjunto de posições em fundos imobiliários de um investidor,
-      com quantidades, valores e participantes (corretoras/custodiantes). É uma
-      camada privada, ligada ao CPF/CNPJ do cliente.
-    related_entities:
-      - client_fiis_positions
-      - fiis_registrations
-      - fiis_financials_snapshot
-      - fiis_financials_risk
-    typical_questions:
-      - "quais são minhas posições em FIIs?"
-      - "quantas cotas tenho de MXRF11?"
-      - "qual é o valor total da minha carteira de FIIs hoje?"
+sections:
+  - id: carteira-do-investidor
+    title: "Carteira do investidor"
+    items:
+      - name: "Carteira de FIIs do investidor"
+        aliases:
+          - "minha carteira"
+          - "posições em FIIs"
+          - "wallet de FIIs"
+        description: >
+          Representa o conjunto de posições em fundos imobiliários de um investidor,
+          com quantidades, valores e participantes (corretoras/custodiantes). É uma
+          camada privada, ligada ao CPF/CNPJ do cliente.
+        related_entities:
+          - client_fiis_positions
+          - fiis_registrations
+          - fiis_financials_snapshot
+          - fiis_financials_risk
+        typical_questions:
+          - "quais são minhas posições em FIIs?"
+          - "quantas cotas tenho de MXRF11?"
+          - "qual é o valor total da minha carteira de FIIs hoje?"
 
-  - name: "Concentração e diversificação"
-    aliases:
-      - "concentração por FII"
-      - "diversificação da carteira"
-    description: >
-      Mede quanto cada FII representa do valor total da carteira e como os
-      investimentos estão distribuídos entre setores, tipos de fundo e
-      estratégias. Ajuda a evitar concentração excessiva em poucos ativos.
-    related_entities:
-      - client_fiis_positions
-      - fiis_registrations
-      - fiis_financials_snapshot
-    typical_metrics:
-      - "peso de cada FII na carteira (%)"
-      - "top N FIIs por participação"
-      - "distribuição por setor (logístico, shopping, lajes, CRI etc.)"
-      - "distribuição por tipo (tijolo, papel, híbrido, FOF)"
-    typical_questions:
-      - "quais fundos representam mais de 10% da minha carteira?"
-      - "minha carteira está muito concentrada em um setor?"
-      - "estou equilibrado entre tijolo e papel?"
+      - name: "Concentração e diversificação"
+        aliases:
+          - "concentração por FII"
+          - "diversificação da carteira"
+        description: >
+          Mede quanto cada FII representa do valor total da carteira e como os
+          investimentos estão distribuídos entre setores, tipos de fundo e
+          estratégias. Ajuda a evitar concentração excessiva em poucos ativos.
+        related_entities:
+          - client_fiis_positions
+          - fiis_registrations
+          - fiis_financials_snapshot
+        typical_metrics:
+          - "peso de cada FII na carteira (%)"
+          - "top N FIIs por participação"
+          - "distribuição por setor (logístico, shopping, lajes, CRI etc.)"
+          - "distribuição por tipo (tijolo, papel, híbrido, FOF)"
+        typical_questions:
+          - "quais fundos representam mais de 10% da minha carteira?"
+          - "minha carteira está muito concentrada em um setor?"
+          - "estou equilibrado entre tijolo e papel?"
 
-  - name: "Risco e retorno da carteira"
-    aliases:
-      - "risco da carteira"
-      - "performance ajustada ao risco da carteira"
-    description: >
-      A SIRIOS consolida indicadores de risco e retorno dos FIIs individuais para
-      calcular métricas no nível da carteira: volatilidade, Sharpe, Treynor,
-      drawdown e retorno acumulado. O objetivo é mostrar se, como conjunto, a
-      carteira está eficiente.
-    related_entities:
-      - client_fiis_positions
-      - fiis_financials_risk
-      - fiis_financials_snapshot
-      - history_b3_indexes
-      - history_market_indicators
-    typical_questions:
-      - "minha carteira está eficiente em termos de risco-retorno?"
-      - "como o risco da minha carteira compara com o IFIX?"
-      - "quais FIIs mais puxam o risco da carteira?"
+      - name: "Risco e retorno da carteira"
+        aliases:
+          - "risco da carteira"
+          - "performance ajustada ao risco da carteira"
+        description: >
+          A SIRIOS consolida indicadores de risco e retorno dos FIIs individuais para
+          calcular métricas no nível da carteira: volatilidade, Sharpe, Treynor,
+          drawdown e retorno acumulado. O objetivo é mostrar se, como conjunto, a
+          carteira está eficiente.
+        related_entities:
+          - client_fiis_positions
+          - fiis_financials_risk
+          - fiis_financials_snapshot
+          - history_b3_indexes
+          - history_market_indicators
+        typical_questions:
+          - "minha carteira está eficiente em termos de risco-retorno?"
+          - "como o risco da minha carteira compara com o IFIX?"
+          - "quais FIIs mais puxam o risco da carteira?"
 
-  - name: "Projeções de renda e objetivos financeiros"
-    aliases:
-      - "simulação de renda com FIIs"
-      - "liberdade financeira com FIIs"
-    description: >
-      A partir das posições atuais e de hipóteses de dividendos, é possível
-      projetar cenários de renda futura e tempo estimado para atingir metas
-      financeiras. Essa camada conecta carteira real, simuladores e objetivos
-      do investidor.
-    related_entities:
-      - client_fiis_positions
-      - fiis_dividends
-      - fiis_financials_snapshot
-      - history_market_indicators
-    typical_questions:
-      - "se eu mantiver essa carteira, quanto posso receber de renda mensal?"
-      - "quanto falta para minha renda com FIIs cobrir meus gastos?"
-      - "como mudar a carteira para chegar mais rápido na meta?"
+      - name: "Projeções de renda e objetivos financeiros"
+        aliases:
+          - "simulação de renda com FIIs"
+          - "liberdade financeira com FIIs"
+        description: >
+          A partir das posições atuais e de hipóteses de dividendos, é possível
+          projetar cenários de renda futura e tempo estimado para atingir metas
+          financeiras. Essa camada conecta carteira real, simuladores e objetivos
+          do investidor.
+        related_entities:
+          - client_fiis_positions
+          - fiis_dividends
+          - fiis_financials_snapshot
+          - history_market_indicators
+        typical_questions:
+          - "se eu mantiver essa carteira, quanto posso receber de renda mensal?"
+          - "quanto falta para minha renda com FIIs cobrir meus gastos?"
+          - "como mudar a carteira para chegar mais rápido na meta?"
 
-  - name: "Princípios de privacidade e segurança de dados"
-    aliases:
-      - "privacidade da carteira"
-      - "dados pessoais da carteira"
-    description: >
-      Dados de carteira (cliente, documento, posições, valores) são tratados
-      como informações sensíveis. A SIRIOS utiliza autenticação, controle de
-      escopo e políticas de uso da IA para garantir que consultas sobre
-      carteira só sejam respondidas quando o contexto de usuário autenticado
-      permitir.
-    related_entities:
-      - client_fiis_positions
-    typical_questions:
-      - "a IA consegue ver a carteira de qualquer usuário?"
-      - "quais dados da minha carteira a SIRIOS utiliza para responder perguntas?"
+      - name: "Princípios de privacidade e segurança de dados"
+        aliases:
+          - "privacidade da carteira"
+          - "dados pessoais da carteira"
+        description: >
+          Dados de carteira (cliente, documento, posições, valores) são tratados
+          como informações sensíveis. A SIRIOS utiliza autenticação, controle de
+          escopo e políticas de uso da IA para garantir que consultas sobre
+          carteira só sejam respondidas quando o contexto de usuário autenticado
+          permitir.
+        related_entities:
+          - client_fiis_positions
+        typical_questions:
+          - "a IA consegue ver a carteira de qualquer usuário?"
+          - "quais dados da minha carteira a SIRIOS utiliza para responder perguntas?"
