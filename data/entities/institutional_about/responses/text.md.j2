@@ -1,0 +1,13 @@
+{% if concept.item %}
+**{{ concept.item.name }}**
+{{ concept.item.description }}
+
+{% if concept.item.get("typical_questions") %}
+**Exemplos**
+{% for question in concept.item.get("typical_questions", []) %}
+- {{ question }}
+{% endfor %}
+{% endif %}
+{% else %}
+{{ empty_message or "Conteúdo indisponível no momento." }}
+{% endif %}

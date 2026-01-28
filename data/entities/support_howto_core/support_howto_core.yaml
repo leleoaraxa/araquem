@@ -1,0 +1,29 @@
+id: support_howto_core
+result_key: support_howto_core
+description: Instruções de suporte sobre uso da interface e filtros.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto de suporte determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo de suporte indisponível no momento."
+
+ask:
+  intents:
+    - support_howto
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-support-howto.yaml
+  section_id: como-fazer
+  item_name: "Uso de filtros na interface"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2

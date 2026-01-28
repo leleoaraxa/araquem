@@ -1,0 +1,29 @@
+id: institutional_about
+result_key: institutional_about
+description: Informações institucionais sobre a SIRIOS e o escopo do produto.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto institucional determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo institucional indisponível no momento."
+
+ask:
+  intents:
+    - institutional_about
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-institutional-product-positioning.yaml
+  section_id: posicionamento
+  item_name: "SIRIOS como plataforma"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2

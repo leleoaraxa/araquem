@@ -1,0 +1,29 @@
+id: institutional_privacy
+result_key: institutional_privacy
+description: Política institucional de privacidade e proteção de dados.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto institucional determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo de privacidade indisponível no momento."
+
+ask:
+  intents:
+    - institutional_privacy
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-institutional-privacy.yaml
+  section_id: privacidade
+  item_name: "Princípios gerais de privacidade"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2

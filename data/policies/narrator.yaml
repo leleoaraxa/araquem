@@ -202,6 +202,30 @@ narrator:
         destaque se o contexto está mais favorável ou desfavorável para quem busca
         renda com FIIs.
 
+    institutional_about:
+      llm_enabled: false
+      shadow: false
+
+    institutional_privacy:
+      llm_enabled: false
+      shadow: false
+
+    institutional_terms:
+      llm_enabled: false
+      shadow: false
+
+    institutional_limits:
+      llm_enabled: false
+      shadow: false
+
+    institutional_pricing:
+      llm_enabled: false
+      shadow: false
+
+    support_howto_core:
+      llm_enabled: false
+      shadow: false
+
     # ──────────────────
     # Cadastro / preços / processos / rankings / notícias / riscos
     # ──────────────────

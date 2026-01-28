@@ -33,3 +33,15 @@ sections:
           - "qual foi o dividend yield do HGLG11 nos últimos 12 meses?"
           - "compare a vacância de KNRI11 e VISC11 no último trimestre"
           - "o que significa a coluna snapshot_date nessa tabela?"
+
+      - name: "Uso de filtros na interface"
+        aliases:
+          - "filtro"
+          - "filtro de classificacao"
+          - "filtro de classificação"
+          - "classificacao"
+          - "classificação"
+        description: >
+          Para usar filtros na interface, escolha o critério desejado, revise os
+          resultados apresentados e ajuste o filtro conforme a necessidade. Caso
+          não encontre o item esperado, verifique se há mais de um filtro ativo.

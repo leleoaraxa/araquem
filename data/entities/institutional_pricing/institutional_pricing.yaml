@@ -1,0 +1,29 @@
+id: institutional_pricing
+result_key: institutional_pricing
+description: Informações institucionais sobre planos e preços.
+private: false
+
+columns:
+  - name: content
+    alias: Conteúdo
+    description: Texto institucional determinístico.
+
+presentation:
+  kind: text
+  empty_message: "Conteúdo de preços indisponível no momento."
+
+ask:
+  intents:
+    - institutional_pricing
+  requires_identifiers:
+    - text_only
+
+concept:
+  source: data/concepts/concepts-institutional-policies.yaml
+  section_id: politicas-e-limites
+  item_name: "Planos e preços"
+
+responses:
+  default:
+    kind: text
+    template: responses/text.md.j2
