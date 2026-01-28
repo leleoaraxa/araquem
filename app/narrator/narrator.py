@@ -14,7 +14,7 @@ from contextlib import contextmanager
 from app.narrator.canonical import extract_canonical_value
 from app.narrator.formatter import build_narrator_text
 from app.narrator.prompts import (
-    build_bucket_d_global_prompt,
+    build_global_prompt,
     build_prompt,
     render_narrative,
 )
@@ -815,7 +815,7 @@ class Narrator:
         return enabled
 
     # ------------------------------------------------------------------
-    # Narrativa pós-SQL para buckets globais (D)
+    # Narrativa pós-SQL global
     # ------------------------------------------------------------------
 
     def render_global_post_sql(
@@ -836,24 +836,15 @@ class Narrator:
         if not bool(global_policy.get("llm_enabled", False)):
             return effective_meta
 
-        bucket_cfg = (
-            self.bucket_policy.get(bucket, {})
-            if isinstance(self.bucket_policy, dict)
-            else {}
-        )
-        if not isinstance(bucket_cfg, dict) or not bucket_cfg.get("llm_enabled"):
+        entity_policy = self.get_effective_policy(entity)
+        if not bool(entity_policy.get("llm_enabled", False)):
             return effective_meta
 
-        if bucket_cfg.get("mode") != "global_post_sql":
+        if entity_policy.get("mode") != "global_post_sql":
             return effective_meta
 
-        entities_allowed = bucket_cfg.get("entities")
-        if isinstance(entities_allowed, list) and entities_allowed:
-            if entity not in entities_allowed:
-                return effective_meta
-
-        max_rows = bucket_cfg.get("max_rows", 5)
-        max_columns = bucket_cfg.get("max_columns", 6)
+        max_rows = entity_policy.get("max_rows", 5)
+        max_columns = entity_policy.get("max_columns", 6)
         try:
             max_rows = int(max_rows)
         except (TypeError, ValueError):
@@ -867,16 +858,24 @@ class Narrator:
             results, effective_meta, max_rows=max_rows, max_columns=max_columns
         )
 
-        model = bucket_cfg.get("model") or self.model
-        temperature = bucket_cfg.get("temperature")
-        max_tokens = bucket_cfg.get("max_tokens")
+        model = entity_policy.get("model") or self.model
+        temperature = entity_policy.get("temperature")
+        max_tokens = entity_policy.get("max_tokens")
 
-        prompt = build_bucket_d_global_prompt(
+        allowed_buckets = (
+            set(self.bucket_policy.keys())
+            if isinstance(self.bucket_policy, dict)
+            else set()
+        )
+        safe_bucket = bucket if bucket in allowed_buckets else ""
+        if safe_bucket:
+            return effective_meta
+        prompt = build_global_prompt(
             question=question,
             entity=entity,
-            bucket=bucket,
+            bucket=safe_bucket,
             facts_payload=facts_payload,
-            policy=bucket_cfg,
+            policy=entity_policy,
             meta=context or {},
         )
 
@@ -887,7 +886,7 @@ class Narrator:
         t0 = time.perf_counter()
         outcome = "ok"
         entity_label = str(entity or "")
-        bucket_label = str(bucket or "")
+        bucket_label = str(safe_bucket or "")
         with _narrator_llm_slot(timeout_s=0) as acquired:
             if not acquired:
                 latency_s = time.perf_counter() - t0
@@ -923,7 +922,7 @@ class Narrator:
         latency_s = time.perf_counter() - t0
 
         entity_label = str(entity or "")
-        bucket_label = str(bucket or "")
+        bucket_label = str(safe_bucket or "")
         counter(
             "services_narrator_llm_requests_total",
             outcome=outcome,

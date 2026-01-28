@@ -37,7 +37,6 @@ narrator:
 
   # Buckets:
   # - A/B/C → SQL-only (llm_enabled=false via entities)
-  # - D     → conceitual/chitchat (usa default.llm_enabled=true quando não há entidade)
   buckets:
     A:
       llm_enabled: false
@@ -45,13 +44,6 @@ narrator:
       llm_enabled: false
     C:
       llm_enabled: false
-    D:
-      llm_enabled: true
-      mode: global_post_sql
-      max_tokens: 512
-      temperature: 0.1
-      entities:
-        - consolidated_macroeconomic
   default:
     # Default agora é SQL-first: LLM somente quando uma entidade habilitar explicitamente.
     llm_enabled: false
@@ -185,12 +177,17 @@ narrator:
       strict_mode: false
 
     consolidated_macroeconomic:
-      llm_enabled: false
+      llm_enabled: true
+      mode: global_post_sql
       shadow: false
       rewrite_only: false
-      max_llm_rows: 50
+      max_llm_rows: 0
+      max_rows: 5
+      max_columns: 6
       max_prompt_tokens: 1200
       max_output_tokens: 280
+      max_tokens: 512
+      temperature: 0.1
       use_rag_in_prompt: false
       use_conversation_context: false
       rag_fallback_when_no_rows: false

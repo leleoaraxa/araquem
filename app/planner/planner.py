@@ -22,84 +22,83 @@ _LOG = logging.getLogger("planner.explain")
 
 
 @lru_cache(maxsize=1)
-def _load_bucket_rules(path: str = "data/ontology/bucket_rules.yaml") -> Dict[str, Any]:
+def _load_entity_ontology(path: str = "data/ontology/entity.yaml") -> Dict[str, Any]:
     """
-    Carrega as regras de bucket a partir de YAML.
-
-    Não aplica lógica de negócio; apenas retorna o dicionário cru com:
-    - defaults
-    - rules
+    Carrega a ontologia de entidades/buckets a partir do YAML declarativo.
     """
     try:
-        return load_yaml_cached(path) or {}
+        data = load_yaml_cached(path) or {}
+        return data if isinstance(data, dict) else {}
     except Exception:
-        _LOG.exception("Falha ao carregar bucket_rules de %s", path)
+        _LOG.exception("Falha ao carregar entity.yaml de %s", path)
         return {}
 
 
-def resolve_bucket(question: str, context: Dict[str, Any], ontology: Any) -> str:
+def _extract_bucket_entities(cfg: Dict[str, Any]) -> Dict[str, List[str]]:
+    buckets_cfg = cfg.get("buckets") or {}
+    if not isinstance(buckets_cfg, dict):
+        return {}
+    buckets: Dict[str, List[str]] = {}
+    for bucket, entities in buckets_cfg.items():
+        if not isinstance(entities, list):
+            continue
+        buckets[str(bucket)] = [str(e) for e in entities if e]
+    return buckets
+
+
+def _extract_intent_buckets(cfg: Dict[str, Any]) -> Dict[str, str]:
+    intents_cfg = cfg.get("intents") or []
+    if not isinstance(intents_cfg, list):
+        return {}
+    intent_buckets: Dict[str, str] = {}
+    for intent in intents_cfg:
+        if not isinstance(intent, dict):
+            continue
+        name = intent.get("name")
+        bucket = intent.get("bucket")
+        if isinstance(name, str) and name.strip() and isinstance(bucket, str):
+            intent_buckets[name.strip()] = bucket.strip()
+    return intent_buckets
+
+
+def _resolve_bucket_from_plan(
+    intent: Optional[str], entities: List[str], cfg: Dict[str, Any]
+) -> str:
     """
-    Resolve o bucket (A/B/C/D) de forma 100% declarativa via YAML (bucket_rules).
-    Quando nenhuma regra habilitada casa com a pergunta, retorna string vazia (modo neutro).
+    Resolve bucket exclusivamente via entity.yaml:
+      1) bucket explícito do intent vencedor
+      2) bucket da(s) entity(s) selecionada(s)
+      3) fallback string vazia
     """
-    cfg = _load_bucket_rules()
-    defaults = cfg.get("defaults") or {}
-    rules = cfg.get("rules") or []
+    bucket_entities = _extract_bucket_entities(cfg)
+    valid_buckets = {
+        bucket for bucket, ents in bucket_entities.items() if isinstance(ents, list) and ents
+    }
 
-    if not isinstance(rules, list) or not rules:
-        return ""
+    def _bucket_valid(bucket: str | None) -> str:
+        if not isinstance(bucket, str):
+            return ""
+        candidate = bucket.strip()
+        return candidate if candidate in valid_buckets else ""
 
-    # Normalização e tokenização consistentes com o Planner
-    normalize_steps = defaults.get("normalize") or getattr(ontology, "normalize", [])
-    split_pat = defaults.get("token_split") or getattr(ontology, "token_split", r"\b")
+    intent_buckets = _extract_intent_buckets(cfg)
+    if intent:
+        bucket = _bucket_valid(intent_buckets.get(intent))
+        if bucket:
+            return bucket
 
-    norm = _normalize(question, normalize_steps)
-    tokens = _tokenize(norm, split_pat)
-    tokens_set = set(tokens)
+    entity_to_bucket: Dict[str, str] = {}
+    for bucket, ents in bucket_entities.items():
+        for ent in ents:
+            if ent and ent not in entity_to_bucket:
+                entity_to_bucket[ent] = bucket
 
-    token_weight = float(defaults.get("token_weight", 1.0))
-    phrase_weight = float(defaults.get("phrase_weight", 3.0))
-    default_min_score = float(defaults.get("min_score", 1.0))
+    for ent in entities or []:
+        bucket = _bucket_valid(entity_to_bucket.get(ent))
+        if bucket:
+            return bucket
 
-    best_bucket = ""
-    best_score = 0.0
-
-    for rule in rules:
-        if not isinstance(rule, dict):
-            continue
-
-        if not rule.get("enabled", False):
-            continue
-
-        bucket = str(rule.get("bucket", "")).strip()
-        if not bucket:
-            continue
-
-        min_score = float(rule.get("min_score", default_min_score))
-
-        tokens_inc = rule.get("tokens_include") or []
-        tokens_exc = rule.get("tokens_exclude") or []
-        phrases_inc = rule.get("phrases_include") or []
-        phrases_exc = rule.get("phrases_exclude") or []
-
-        # Contagem de hits
-        token_hits_inc = [t for t in tokens_inc if t in tokens_set]
-        token_hits_exc = [t for t in tokens_exc if t in tokens_set]
-        phrase_hits_inc = [p for p in phrases_inc if _phrase_present(norm, p)]
-        phrase_hits_exc = [p for p in phrases_exc if _phrase_present(norm, p)]
-
-        score = (
-            token_weight * len(token_hits_inc)
-            - token_weight * len(token_hits_exc)
-            + phrase_weight * len(phrase_hits_inc)
-            - phrase_weight * len(phrase_hits_exc)
-        )
-
-        if score >= min_score and score >= best_score:
-            best_score = score
-            best_bucket = bucket
-
-    return best_bucket
+    return ""
 
 
 def _require_key(cfg: Dict[str, Any], key: str, *, path: str) -> Any:
@@ -469,7 +468,7 @@ def _entities_for_bucket(ontology: Any, bucket: str) -> List[str]:
 
     entities = buckets_map.get(bucket) or []
     if not isinstance(entities, list) or not entities:
-        return all_entities
+        return []
 
     return [str(e) for e in entities if e]
 
@@ -490,17 +489,12 @@ class Planner:
         resolved_ticker = resolve_ticker_from_text(question)
         has_ticker = bool(resolved_ticker)
 
-        bucket = resolve_bucket(question, {}, self.onto)
+        bucket = ""
         bucket_entities = set(_entities_for_bucket(self.onto, bucket))
         all_intents = list(self.onto.intents)
-        bucket_gate_applied = bool(bucket)
-        filtered_intents = (
-            [it for it in all_intents if getattr(it, "bucket", "") == bucket]
-            if bucket
-            else all_intents
-        )
-        bucket_gate_fallback = bucket_gate_applied and not filtered_intents
-        candidate_intents = filtered_intents if filtered_intents else all_intents
+        bucket_gate_applied = False
+        bucket_gate_fallback = False
+        candidate_intents = all_intents
 
         try:
             _LOG.info(
@@ -514,19 +508,6 @@ class Planner:
                     "tokens_set_sample": list(sorted(tokens_set))[:30],
                     "resolved_ticker": resolved_ticker,
                     "has_ticker": has_ticker,
-                }
-            )
-        except Exception:
-            pass
-
-        try:
-            _LOG.info(
-                {
-                    "planner_phase": "bucket_resolve",
-                    "raw_question": question,
-                    "bucket": bucket,
-                    "bucket_entities_count": len(bucket_entities),
-                    "bucket_entities_sample": list(sorted(bucket_entities))[:50],
                 }
             )
         except Exception:
@@ -546,19 +527,17 @@ class Planner:
                 "result": tokens[:],
             }
         ]
-        decision_path.append(
-            {"stage": "bucketize", "type": "planner_bucket", "bucket": bucket}
-        )
-        decision_path.append(
-            {
-                "stage": "bucket_gate",
-                "type": "intent_filter",
-                "bucket": bucket,
-                "applied": bucket_gate_applied,
-                "filtered_count": len(candidate_intents),
-                "fallback_to_all": bucket_gate_fallback,
-            }
-        )
+        bucket_decision = {"stage": "bucketize", "type": "planner_bucket", "bucket": ""}
+        bucket_gate_decision = {
+            "stage": "bucket_gate",
+            "type": "intent_filter",
+            "bucket": "",
+            "applied": bucket_gate_applied,
+            "filtered_count": len(candidate_intents),
+            "fallback_to_all": bucket_gate_fallback,
+        }
+        decision_path.append(bucket_decision)
+        decision_path.append(bucket_gate_decision)
         token_score_items: List[Dict[str, Any]] = []
         phrase_score_items: List[Dict[str, Any]] = []
         anti_hits_items: List[Dict[str, Any]] = []
@@ -1107,6 +1086,29 @@ class Planner:
             if abs(float(item["combined"]) - float(item["base"])) > 1e-9
         ]
         gate_rerank_policy = thresholds_result["rerank_policy"]
+
+        entity_cfg = _load_entity_ontology()
+        bucket = _resolve_bucket_from_plan(
+            chosen_intent,
+            [chosen_entity] if chosen_entity else [],
+            entity_cfg,
+        )
+        bucket_entities = set(_entities_for_bucket(self.onto, bucket))
+        bucket_decision["bucket"] = bucket
+        bucket_gate_decision["bucket"] = bucket
+
+        try:
+            _LOG.info(
+                {
+                    "planner_phase": "bucket_resolve",
+                    "raw_question": question,
+                    "bucket": bucket,
+                    "bucket_entities_count": len(bucket_entities),
+                    "bucket_entities_sample": list(sorted(bucket_entities))[:50],
+                }
+            )
+        except Exception:
+            pass
 
         if rag_fusion_applied:
             decision_path.append(
