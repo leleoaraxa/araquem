@@ -3030,9 +3030,6 @@ intents:
     tokens:
       include:
         - sirios
-        - plataforma
-        - iris
-        - institucional
       exclude:
         - ranking
         - posicao
@@ -3145,15 +3142,10 @@ intents:
   - name: support_howto
     tokens:
       include:
-        - como
-        - usar
-        - uso
         - filtro
         - classificacao
         - tela
         - interface
-        - passo
-        - passos
       exclude:
         - ranking
         - posicao
