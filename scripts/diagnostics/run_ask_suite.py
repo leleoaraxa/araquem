@@ -785,6 +785,11 @@ def _evaluate_suite_status(row: Dict[str, Any]) -> Dict[str, Any]:
         row["suite_error"] = f"http_status={http_status}"
         return row
 
+    if row.get("status_ok") is not True:
+        row["suite_status"] = "ERROR"
+        row["suite_error"] = "status_not_ok"
+        return row
+
     if expected_intent is None and expected_entity is None:
         row["suite_status"] = "SKIP"
         row["suite_error"] = None
@@ -1091,7 +1096,11 @@ def main() -> int:
     ap.add_argument(
         "--questions-file", default="", help="Arquivo txt com perguntas (1 por linha)."
     )
-    ap.add_argument("--suite-path", default="", help="Caminho para *_suite.json.")
+    ap.add_argument(
+        "--suite-path",
+        default="",
+        help="Caminho para *_suite.json (deprecated; use --suite).",
+    )
     ap.add_argument(
         "--suite-dir",
         default="data/ops/quality/payloads",
@@ -1277,7 +1286,6 @@ def main() -> int:
             row = _extract_row(resp, q, dt_ms, err, cfg.explain)
             row["idx"] = idx
             row = _evaluate_case(row)
-            row = _evaluate_suite_status(row)
             rows.append(row)
 
             intent = (row.get("chosen_intent") or "-")[:12]
