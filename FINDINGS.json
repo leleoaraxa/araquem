@@ -1,0 +1,65 @@
+{
+  "concepts": {
+    "writers": [
+      {
+        "name": "embeddings_build",
+        "path": "scripts/embeddings/embeddings_build.py",
+        "role": "reads data/embeddings/index.yaml include list (which references data/concepts) and writes embeddings.jsonl/manifest.json",
+        "evidence": "scripts/embeddings/embeddings_build.py:85-215; data/embeddings/index.yaml:17-45"
+      }
+    ],
+    "readers": [
+      {
+        "name": "templates_fallback",
+        "path": "app/templates_answer/__init__.py",
+        "role": "fallback reader for legacy *_templates.md under data/concepts",
+        "evidence": "app/templates_answer/__init__.py:9-26"
+      },
+      {
+        "name": "embeddings_store_runtime",
+        "path": "app/rag/context_builder.py",
+        "role": "loads embeddings store (RAG_INDEX_PATH) that contains docs sourced from data/concepts",
+        "evidence": "app/rag/context_builder.py:15-339; data/embeddings/store/manifest.json:8-87"
+      },
+      {
+        "name": "entities_audit",
+        "path": "scripts/dev/entities_audit.py",
+        "role": "audits references including data/concepts/*.yaml",
+        "evidence": "scripts/dev/entities_audit.py:222-239"
+      }
+    ],
+    "ask_path_usage": "UNKNOWN",
+    "conditions": {
+      "rag_policy": "RAG enabled only when rag.yaml allows intent/entity; otherwise disabled",
+      "env": {
+        "RAG_POLICY_PATH": "data/policies/rag.yaml",
+        "RAG_INDEX_PATH": "data/embeddings/store/embeddings.jsonl",
+        "FILECACHE_DISABLE": "disables YAML/JSONL/EmbeddingStore cache"
+      },
+      "narrator_flags": [
+        "prefer_concept_when_no_ticker",
+        "rag_fallback_when_no_rows",
+        "concept_with_data_when_rag"
+      ]
+    },
+    "related_policies": [
+      "data/policies/rag.yaml",
+      "data/policies/narrator.yaml"
+    ],
+    "related_env": [
+      "RAG_POLICY_PATH",
+      "RAG_INDEX_PATH",
+      "FILECACHE_DISABLE"
+    ],
+    "tests": [
+      {
+        "path": "tests/narrator/test_concept_mode.py",
+        "covers": "narrator concept_mode + rag chunk integration (no direct validation of data/concepts files)"
+      }
+    ],
+    "risks": [
+      "Direct runtime reads from data/concepts are limited to legacy templates; missing *_templates.md suggests dead path.",
+      "If data/concepts change, embeddings store must be rebuilt to reflect updated text; runtime reads only embeddings.jsonl."
+    ]
+  }
+}
