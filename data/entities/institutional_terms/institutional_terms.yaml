@@ -15,8 +15,7 @@ presentation:
 ask:
   intents:
     - institutional_terms
-  requires_identifiers:
-    - text_only
+  requires_identifiers: []
 
 concept:
   source: data/concepts/concepts-institutional-terms.yaml
