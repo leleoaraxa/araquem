@@ -358,8 +358,8 @@
     },
     {
       "question": "Dividendos que o KNRI11 pagou em janeiro de 2025",
-      "expected_intent": "fiis_dividends",
-      "expected_entity": "fiis_dividends"
+      "expected_intent": "fiis_dividends_yields",
+      "expected_entity": "fiis_dividends_yields"
     },
     {
       "question": "Lista de pagamentos de proventos do VINO11",
@@ -742,7 +742,7 @@
       "expected_entity": "fiis_legal_proceedings"
     },
     {
-      "question": "Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?",
+      "question": "Existe algum processo judicial relevante contra o ALMI11 que possa afetar o fundo?",
       "expected_intent": "fiis_legal_proceedings",
       "expected_entity": "fiis_legal_proceedings"
     },
@@ -1113,11 +1113,6 @@
     },
     {
       "question": "Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
-    },
-    {
-      "question": "Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?",
       "expected_intent": "consolidated_macroeconomic",
       "expected_entity": "consolidated_macroeconomic"
     },

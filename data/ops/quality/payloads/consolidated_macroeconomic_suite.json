@@ -18,11 +18,6 @@
       "expected_entity": "consolidated_macroeconomic"
     },
     {
-      "question": "Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?",
-      "expected_intent": "consolidated_macroeconomic",
-      "expected_entity": "consolidated_macroeconomic"
-    },
-    {
       "question": "Como a queda da Selic tende a impactar FIIs de tijolo?",
       "expected_intent": "consolidated_macroeconomic",
       "expected_entity": "consolidated_macroeconomic"

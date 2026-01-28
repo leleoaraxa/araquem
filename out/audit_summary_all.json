@@ -2,43 +2,43 @@
   "overall": {
     "accuracy": {
       "both": {
-        "accuracy": 0.9831223628691983,
-        "matches": 233,
-        "total": 237
+        "accuracy": 0.9957627118644068,
+        "matches": 235,
+        "total": 236
       },
       "entity": {
-        "accuracy": 0.9831223628691983,
-        "matches": 233,
-        "total": 237
+        "accuracy": 0.9957627118644068,
+        "matches": 235,
+        "total": 236
       },
       "intent": {
-        "accuracy": 0.9831223628691983,
-        "matches": 233,
-        "total": 237
+        "accuracy": 0.9957627118644068,
+        "matches": 235,
+        "total": 236
       }
     },
     "cache_hit_metrics": 0,
-    "cache_hit_response": 114,
-    "fail": 4,
+    "cache_hit_response": 195,
+    "fail": 1,
     "gate_fail": 1,
-    "gate_ok": 236,
+    "gate_ok": 235,
     "narrator_used": 0,
-    "pass": 233,
+    "pass": 235,
     "top_fail_reasons": [
-      [
-        "entity_mismatch",
-        4
-      ],
-      [
-        "intent_mismatch",
-        4
-      ],
       [
         "status_not_ok",
         1
+      ],
+      [
+        "entity_mismatch",
+        1
+      ],
+      [
+        "intent_mismatch",
+        1
       ]
     ],
-    "total": 237
+    "total": 236
   },
   "suites": {
     "client_fiis_dividends_evolution": {
@@ -189,77 +189,59 @@
     "consolidated_macroeconomic": {
       "accuracy": {
         "both": {
-          "accuracy": 0.9333333333333333,
+          "accuracy": 1.0,
           "matches": 14,
-          "total": 15
+          "total": 14
         },
         "entity": {
-          "accuracy": 0.9333333333333333,
+          "accuracy": 1.0,
           "matches": 14,
-          "total": 15
+          "total": 14
         },
         "intent": {
-          "accuracy": 0.9333333333333333,
+          "accuracy": 1.0,
           "matches": 14,
-          "total": 15
+          "total": 14
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 12,
+      "cache_hit_response": 14,
       "description": "Suíte de testes para consolidated_macroeconomic — perguntas de cenário macro (juros, inflação, câmbio, índices) e impacto em FIIs.",
-      "fail": 1,
+      "fail": 0,
       "gate_fail": 0,
-      "gate_ok": 15,
+      "gate_ok": 14,
       "narrator_used": 0,
       "pass": 14,
-      "top_fail_reasons": [
-        [
-          "entity_mismatch",
-          1
-        ],
-        [
-          "intent_mismatch",
-          1
-        ]
-      ],
-      "total": 15
+      "top_fail_reasons": [],
+      "total": 14
     },
     "fiis_dividends": {
       "accuracy": {
         "both": {
-          "accuracy": 0.9333333333333333,
-          "matches": 14,
+          "accuracy": 1.0,
+          "matches": 15,
           "total": 15
         },
         "entity": {
-          "accuracy": 0.9333333333333333,
-          "matches": 14,
+          "accuracy": 1.0,
+          "matches": 15,
           "total": 15
         },
         "intent": {
-          "accuracy": 0.9333333333333333,
-          "matches": 14,
+          "accuracy": 1.0,
+          "matches": 15,
           "total": 15
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 8,
+      "cache_hit_response": 15,
       "description": "Suíte de testes para fiis_dividends — histórico e valores de dividendos/proventos por FII (últimos meses, 12m, mês atual, último/próximo pagamento).",
-      "fail": 1,
+      "fail": 0,
       "gate_fail": 0,
       "gate_ok": 15,
       "narrator_used": 0,
-      "pass": 14,
-      "top_fail_reasons": [
-        [
-          "entity_mismatch",
-          1
-        ],
-        [
-          "intent_mismatch",
-          1
-        ]
-      ],
+      "pass": 15,
+      "top_fail_reasons": [],
       "total": 15
     },
     "fiis_dividends_yields": {
@@ -281,7 +263,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 2,
+      "cache_hit_response": 5,
       "description": "Suíte de testes para fiis_dividends_yields — histórico de dividendos e dividend yield por FII",
       "fail": 0,
       "gate_fail": 0,
@@ -310,7 +292,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 4,
+      "cache_hit_response": 11,
       "description": "Suíte de testes para fiis_financials_revenue_schedule — cronograma de receitas futuras por faixa de vencimento e indexador",
       "fail": 0,
       "gate_fail": 0,
@@ -339,7 +321,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 5,
       "description": "Suíte de testes para fiis_financials_risk — indicadores de risco (Sharpe, beta, volatilidade, drawdown)",
       "fail": 0,
       "gate_fail": 0,
@@ -368,7 +350,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 9,
+      "cache_hit_response": 15,
       "description": "Suíte de testes para fiis_financials_snapshot — patrimônio, VP/cota, alavancagem, ABL, vacância e receitas (snapshot D-1)",
       "fail": 0,
       "gate_fail": 0,
@@ -381,39 +363,30 @@
     "fiis_legal_proceedings": {
       "accuracy": {
         "both": {
-          "accuracy": 0.9166666666666666,
-          "matches": 11,
+          "accuracy": 1.0,
+          "matches": 12,
           "total": 12
         },
         "entity": {
-          "accuracy": 0.9166666666666666,
-          "matches": 11,
+          "accuracy": 1.0,
+          "matches": 12,
           "total": 12
         },
         "intent": {
-          "accuracy": 0.9166666666666666,
-          "matches": 11,
+          "accuracy": 1.0,
+          "matches": 12,
           "total": 12
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 10,
+      "cache_hit_response": 12,
       "description": "Suíte de testes para fiis_legal_proceedings — existência de processos, quantidade, status, valor e risco de perda",
-      "fail": 1,
+      "fail": 0,
       "gate_fail": 0,
       "gate_ok": 12,
       "narrator_used": 0,
-      "pass": 11,
-      "top_fail_reasons": [
-        [
-          "entity_mismatch",
-          1
-        ],
-        [
-          "intent_mismatch",
-          1
-        ]
-      ],
+      "pass": 12,
+      "top_fail_reasons": [],
       "total": 12
     },
     "fiis_news": {
@@ -435,7 +408,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 9,
+      "cache_hit_response": 12,
       "description": "Suíte de testes para fiis_news — notícias, fatos relevantes, manchetes e atualizações recentes associadas a FIIs.",
       "fail": 0,
       "gate_fail": 0,
@@ -464,7 +437,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 9,
+      "cache_hit_response": 12,
       "description": "Roteiro de perguntas canônicas para rota fiis_overview (overview consolidado de cada FII, 1 linha por fundo). Foco: resumo geral, principais indicadores, tamanho, liquidez, risco sintético.",
       "fail": 0,
       "gate_fail": 0,
@@ -493,7 +466,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 4,
+      "cache_hit_response": 14,
       "description": "Suíte de testes para fiis_quota_prices — preço hoje, ontem, max/min, variação, ticker sem 11",
       "fail": 0,
       "gate_fail": 0,
@@ -522,7 +495,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 7,
+      "cache_hit_response": 14,
       "description": "Suíte de testes para fiis_rankings — rankings de FIIs por usuários, SIRIOS, IFIX/IFIL e métricas quantitativas (DY, Sharpe, volatilidade, drawdown etc.)",
       "fail": 0,
       "gate_fail": 0,
@@ -551,7 +524,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 0,
+      "cache_hit_response": 5,
       "description": "Suíte de testes para fiis_real_estate — ativos, endereços, área e vacância dos FIIs",
       "fail": 0,
       "gate_fail": 0,
@@ -580,7 +553,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 9,
+      "cache_hit_response": 15,
       "description": "Perguntas de cadastro estático dos FIIs (CNPJ, administrador, classificação, setor, público-alvo, ISIN, IPO, pesos em índices, cotas e cotistas).",
       "fail": 0,
       "gate_fail": 0,
@@ -609,7 +582,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 10,
+      "cache_hit_response": 15,
       "description": "Roteiro de perguntas canônicas para rota fiis_yield_history (histórico de dividend yield mensal por FII). Foco: dy historico, dy mensal, dy 12m/24m, sempre com ticker.",
       "fail": 0,
       "gate_fail": 0,
@@ -638,7 +611,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 10,
+      "cache_hit_response": 14,
       "description": "Suíte de testes para history_b3_indexes — série histórica diária de IBOV, IFIX e IFIL (pontos e variação percentual diária, D-1).",
       "fail": 1,
       "gate_fail": 1,
@@ -680,7 +653,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 1,
+      "cache_hit_response": 5,
       "description": "Suíte de testes para history_currency_rates — câmbio USD/EUR em BRL D-1",
       "fail": 0,
       "gate_fail": 0,
@@ -709,7 +682,7 @@
         }
       },
       "cache_hit_metrics": 0,
-      "cache_hit_response": 4,
+      "cache_hit_response": 6,
       "description": "Suíte de testes para history_market_indicators — séries históricas e valores pontuais (hoje, ontem) de indicadores macro como SELIC, CDI, IPCA, IGPM e INCC",
       "fail": 0,
       "gate_fail": 0,

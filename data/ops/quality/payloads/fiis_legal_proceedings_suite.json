@@ -8,7 +8,7 @@
       "expected_entity": "fiis_legal_proceedings"
     },
     {
-      "question": "Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?",
+      "question": "Existe algum processo judicial relevante contra o ALMI11 que possa afetar o fundo?",
       "expected_intent": "fiis_legal_proceedings",
       "expected_entity": "fiis_legal_proceedings"
     },

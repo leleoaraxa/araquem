@@ -756,7 +756,7 @@ Atende ao(s) intent(s): fiis_legal_proceedings. Requer identificadores: tickers.
 - Pergunta: “Desde quando existem processos contra o ALMI11 e como está o andamento deles?”
   - Fonte: data/ops/quality/routing_samples.json#payloads[147]
   - expected_entity: fiis_legal_proceedings; expected_intent: fiis_legal_proceedings
-- Pergunta: “Existe algum processo relevante contra o ALMI11 que possa afetar o fundo?”
+- Pergunta: “Existe algum processo judicial relevante contra o ALMI11 que possa afetar o fundo?”
   - Fonte: data/ops/quality/routing_samples.json#payloads[148]
   - expected_entity: fiis_legal_proceedings; expected_intent: fiis_legal_proceedings
 - Pergunta: “Me dá um resumo das ações judiciais envolvendo o ALMI11.”
@@ -1109,9 +1109,6 @@ Atende ao(s) intent(s): consolidated_macroeconomic. (fonte: data/contracts/entit
   - expected_entity: consolidated_macroeconomic; expected_intent: consolidated_macroeconomic
 - Pergunta: “Como a combinação de Selic em queda e dólar volátil costuma impactar os fundos imobiliários?”
   - Fonte: data/ops/quality/routing_samples.json#payloads[222]
-  - expected_entity: consolidated_macroeconomic; expected_intent: consolidated_macroeconomic
-- Pergunta: “Como a curva de juros projetada pode afetar o preço dos FIIs nos próximos anos?”
-  - Fonte: data/ops/quality/routing_samples.json#payloads[223]
   - expected_entity: consolidated_macroeconomic; expected_intent: consolidated_macroeconomic
 - Pergunta: “Como a queda da Selic tende a impactar FIIs de tijolo?”
   - Fonte: data/ops/quality/routing_samples.json#payloads[224]
