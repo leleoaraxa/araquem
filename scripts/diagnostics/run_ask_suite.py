@@ -42,6 +42,7 @@ class Config:
     conversation_id: str
     client_id: str
     nickname: str
+    type_user: str
     timeout_s: float
     out_dir: str
     print_answer: bool
@@ -411,10 +412,16 @@ def _post_question(
         "conversation_id": cfg.conversation_id,
         "nickname": cfg.nickname,
         "client_id": cfg.client_id,
+        "type_user": cfg.type_user,
     }
     t0 = time.time()
     try:
         r = requests.post(url, json=payload, timeout=cfg.timeout_s)
+        if r.status_code == 422 and _is_missing_type_user(r) and not payload.get(
+            "type_user"
+        ):
+            payload["type_user"] = cfg.type_user or "diagnostics"
+            r = requests.post(url, json=payload, timeout=cfg.timeout_s)
         dt_ms = (time.time() - t0) * 1000.0
         try:
             data = r.json()
@@ -425,6 +432,28 @@ def _post_question(
     except Exception as e:
         dt_ms = (time.time() - t0) * 1000.0
         return {}, dt_ms, str(e)
+
+
+def _is_missing_type_user(response: requests.Response) -> bool:
+    try:
+        data = response.json()
+    except Exception:
+        return False
+    detail = data.get("detail")
+    if isinstance(detail, list):
+        for item in detail:
+            if not isinstance(item, dict):
+                continue
+            loc = item.get("loc")
+            msg = item.get("msg")
+            if (
+                isinstance(loc, list)
+                and "type_user" in loc
+                and isinstance(msg, str)
+                and "field required" in msg.lower()
+            ):
+                return True
+    return False
 
 
 def _extract_row(
@@ -1134,6 +1163,7 @@ def main() -> int:
     ap.add_argument("--conversation-id", default="diagnostics")
     ap.add_argument("--client-id", default="dev")
     ap.add_argument("--nickname", default="diagnostics")
+    ap.add_argument("--type-user", default="diagnostics")
     ap.add_argument("--timeout-s", type=float, default=90.0)
     ap.add_argument("--out-dir", default="out")
     ap.add_argument(
@@ -1182,6 +1212,7 @@ def main() -> int:
         conversation_id=args.conversation_id,
         client_id=args.client_id,
         nickname=args.nickname,
+        type_user=args.type_user,
         timeout_s=args.timeout_s,
         out_dir=args.out_dir,
         print_answer=args.print_answer,
