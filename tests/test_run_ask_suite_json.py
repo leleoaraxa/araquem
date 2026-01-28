@@ -57,6 +57,7 @@ def test_evaluate_suite_status_pass_fail_skip_error():
     row = {
         "http_status": 200,
         "request_error": None,
+        "status_ok": True,
         "expected_intent": "intent",
         "expected_entity": "entity",
         "match_intent": True,
@@ -67,6 +68,7 @@ def test_evaluate_suite_status_pass_fail_skip_error():
     row = {
         "http_status": 200,
         "request_error": None,
+        "status_ok": True,
         "expected_intent": "intent",
         "expected_entity": "entity",
         "match_intent": True,
@@ -77,6 +79,7 @@ def test_evaluate_suite_status_pass_fail_skip_error():
     row = {
         "http_status": 200,
         "request_error": None,
+        "status_ok": True,
         "expected_intent": None,
         "expected_entity": None,
         "match_intent": None,
@@ -87,6 +90,7 @@ def test_evaluate_suite_status_pass_fail_skip_error():
     row = {
         "http_status": 500,
         "request_error": None,
+        "status_ok": True,
         "expected_intent": "intent",
         "expected_entity": "entity",
         "match_intent": False,
@@ -97,9 +101,23 @@ def test_evaluate_suite_status_pass_fail_skip_error():
     row = {
         "http_status": 200,
         "request_error": "timeout",
+        "status_ok": True,
         "expected_intent": "intent",
         "expected_entity": "entity",
         "match_intent": False,
         "match_entity": False,
     }
     assert _evaluate_suite_status(row)["suite_status"] == "ERROR"
+
+    row = {
+        "http_status": 200,
+        "request_error": None,
+        "status_ok": False,
+        "expected_intent": "intent",
+        "expected_entity": "entity",
+        "match_intent": True,
+        "match_entity": True,
+    }
+    evaluated = _evaluate_suite_status(row)
+    assert evaluated["suite_status"] == "ERROR"
+    assert evaluated["suite_error"] == "status_not_ok"
